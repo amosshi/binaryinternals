@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <!--
+        
+          @(#)package.html    April 11, 2009
+        
+        -->
+    </head>
+    <body>
+
+        Parse a Java class file Byte Array, and provides a serious of friendly
+        classes to get information from the parsed class file.
+
+
+        <h2>Package Specification</h2>
+
+        We start to use this package by constructing a
+        {@link org.freeinternals.format.classfile.ClassFile} object from
+        a byte java class byte array:
+
+        <pre>
+    byte[] classByteArray = ...
+    ClassFile classfile = new ClassFile(classByteArray)
+        </pre>
+
+        and then, we can get various information from the class file:
+
+        <pre>
+    AccessFlags af = classfile.getAccessFlags();
+    AbstractConstantPool[] cp = classfile.getConstantPool();
+    FieldCount fc = classfile.getFieldCount();
+    FieldInfo[] fi = classfile.getFields();
+    MethodCount mc = classfile.getMethodCount();
+    MethodInfo[] mi = classfile.getMethods();
+    ...
+        </pre>
+
+        <h2>Related Documentation</h2>
+
+        For overviews, tutorials, examples, guides, and tool documentation, please see:
+        <ul>
+            <li><a href="https://code.google.com/p/freeinternals/">https://code.google.com/p/freeinternals/</a>
+            <li><a href="http://docs.oracle.com/javase/specs/">Java Language and Virtual Machine Specifications</a>
+        </ul>
+
+        <!-- Put @see and @since tags down here. -->
+        @see org.freeinternals.format.classfile.ClassFile
+        @since JDK 6.0
+        @author Amos Shi
+
+    </body>
+</html>
+
