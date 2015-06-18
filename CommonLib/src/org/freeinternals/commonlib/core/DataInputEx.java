@@ -7,6 +7,7 @@
 package org.freeinternals.commonlib.core;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * The <code>DataInputEx</code> interface provides for reading bytes
@@ -34,7 +35,22 @@ public interface DataInputEx {
 
     /**
      * Reads two input bytes and returns an <code>int</code> value in the range 
-     * <code>0</code>  through <code>65535</code>.
+     * <code>-32768</code> through <code>32767</code>, inclusive.
+     * Let <code>a</code> be the first byte read and <code>b</code> be the
+     * second byte. The value returned is:
+     * <p>
+     * <pre><code>(((b &amp; 0xff) &lt;&lt; 8) | (a &amp; 0xff))
+     * </code></pre>
+     * </p>
+     *
+     * @return the signed 16-bit value read. 
+     * @throws IOException I/O Error
+     */
+    short readShort_LittleEndian() throws IOException;
+    
+    /**
+     * Reads two input bytes and returns an <code>int</code> value in the range 
+     * <code>0</code> through <code>65535</code>.
      * Let <code>a</code> be the first byte read and <code>b</code> be the
      * second byte. The value returned is:
      * <p>
@@ -43,7 +59,7 @@ public interface DataInputEx {
      * </p>
      *
      * @return the unsigned 16-bit value read. 
-     * @throws IOException 
+     * @throws IOException I/O Error
      */
     int readUnsignedShort_LittleEndian() throws IOException;
 
@@ -68,7 +84,7 @@ public interface DataInputEx {
      * <code>long</code> value.
      *
      * @return the <code>long</code> value read.
-     * @throws IOException 
+     * @throws IOException I/O Error
      */
     long readUnsignedInt() throws IOException;
 
@@ -77,17 +93,43 @@ public interface DataInputEx {
      * <code>long</code> value.
      *
      * @return the <code>long</code> value read.
-     * @throws IOException
+     * @throws java.io.IOException I/O Error
      */
     long readUnsignedInt_LittleEndian() throws IOException;
 
+    /**
+     * Reads eight input bytes and returns
+     * a {@code long} value.
+     * 
+     * @return the <code>long</code> value read.
+     * @throws java.io.IOException I/O Error
+     */
+    long readLong_LittleEndian() throws IOException;
+
+    /**
+     * Reads eight input bytes and returns
+     * a {@code unsigned long} value.
+     * 
+     * @return the <code>unsigned long</code> value read
+     * @throws java.io.IOException I/O Error
+     */
+    BigInteger readUnsignedLong() throws IOException;
+
+    /**
+     * Reads eight input bytes and returns
+     * a {@code unsigned long} value.
+     * 
+     * @return the <code>unsigned long</code> value read
+     * @throws java.io.IOException I/O Error
+     */
+    BigInteger readUnsignedLong_LittleEndian() throws IOException;
 
     /**
      * Reads length input bytes as an ASCII string.
      *
      * @param length Then number of bytes to read
      * @return the <code>String</code> value read.
-     * @throws IOException
+     * @throws IOException I/O Error
      */
     String readASCII(int length) throws IOException;
 
@@ -96,7 +138,7 @@ public interface DataInputEx {
      * String.
      *
      * @return the <code>String</code> value read.
-     * @throws IOException
+     * @throws IOException I/O Error
      */
     String readASCII() throws IOException;
 
@@ -106,20 +148,20 @@ public interface DataInputEx {
      *
      * @param end
      * @return the <code>String</code> value read.
-     * @throws IOException
+     * @throws IOException I/O Error
      */
     String readASCIIUntil(byte end) throws IOException;
 
     /**
      * Read until a null terminator, or the end of the buffer as binary.
      * @return 
-     * @throws java.io.IOException
+     * @throws java.io.IOException I/O Error
      */
     byte[] readBinary() throws IOException;
 
     /**
      * Skip to the end of the buffer.
-     * @throws java.io.IOException
+     * @throws java.io.IOException I/O Error
      */
     void skipToEnd() throws IOException;
 

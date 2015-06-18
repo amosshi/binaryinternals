@@ -9,6 +9,7 @@ package org.freeinternals.commonlib.core;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.math.BigInteger;
 import org.freeinternals.commonlib.util.Tool;
 
 /**
@@ -21,7 +22,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /**
      * Offset of the 1st byte
      */
-    private int offset = 0;
+    protected int offset = 0;
 
     /**
      * Creates a new instance of PosDataInputStream
@@ -35,6 +36,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /**
      * Create a sub {@link PosDataInputStream}, which starts from
      * <code>offset</code>.
+     *
      * @param in
      * @param offset
      */
@@ -121,6 +123,16 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
+    public short readShort_LittleEndian() throws IOException {
+        int ch1 = this.in.read();
+        int ch2 = this.in.read();
+        if ((ch1 | ch2) < 0) {
+            throw new EOFException();
+        }
+        return (short) ((ch2 << 8) + (ch1));
+    }
+
+    @Override
     public int readUnsignedShort_LittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
@@ -139,9 +151,10 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         if ((ch1 | ch2 | ch3 | ch4) < 0) {
             throw new EOFException();
         }
-        return ((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1));
+        return (int) (((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1)));
     }
 
+    @Override
     public long readUnsignedInt() throws IOException {
         final byte readBuffer[] = new byte[8];
 
@@ -161,6 +174,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                 + ((readBuffer[7] & 255)));
     }
 
+    @Override
     public long readUnsignedInt_LittleEndian() throws IOException {
         final byte readBuffer[] = new byte[8];
 
@@ -185,6 +199,44 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     @Override
+    public long readLong_LittleEndian() throws IOException {
+        final byte readBuffer[] = new byte[8];
+        super.readFully(readBuffer, 0, 8);
+        return (((long) readBuffer[7] << 56)
+                + ((long) (readBuffer[6] & 255) << 48)
+                + ((long) (readBuffer[5] & 255) << 40)
+                + ((long) (readBuffer[4] & 255) << 32)
+                + ((long) (readBuffer[3] & 255) << 24)
+                + ((readBuffer[2] & 255) << 16)
+                + ((readBuffer[1] & 255) << 8)
+                + ((readBuffer[0] & 255)));
+    }
+
+    /**
+     * @see
+     * <a href="http://technologicaloddity.com/2010/09/22/biginteger-as-unsigned-long-in-java/">
+     * BigInteger as unsigned long in Java</a>
+     */
+    @Override
+    public BigInteger readUnsignedLong() throws IOException {
+        final byte readBuffer[] = new byte[8];
+        super.readFully(readBuffer, 0, 8);
+        return new BigInteger(1, readBuffer);
+    }
+
+    @Override
+    public BigInteger readUnsignedLong_LittleEndian() throws IOException {
+        final byte readBuffer[] = new byte[8];
+        final byte readBufferLE[] = new byte[8];
+        super.readFully(readBuffer, 0, 8);
+        for (int i = 0; i < 8; i++) {
+            readBufferLE[i] = readBuffer[7 - i];
+        }
+
+        return new BigInteger(1, readBufferLE);
+    }
+
+    @Override
     public String readASCII(int length) throws IOException {
         if (length <= 0) {
             throw new IllegalArgumentException(
@@ -204,9 +256,9 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Read current byte array as ASCII string until
-     * <code>byte</code>
+     * Read current byte array as ASCII string until <code>byte</code>
      * <code>end</code>.
+     *
      * @param end
      * @throws java.io.IOException
      */
@@ -231,11 +283,11 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Read current byte array as ASCII string until any
-     * <code>byte</code> in array
-     * <code>end</code>.
+     * Read current byte array as ASCII string until any <code>byte</code> in
+     * array <code>end</code>.
+     *
      * @param end
-     * @return 
+     * @return
      * @throws java.io.IOException
      */
     public String readASCIIUntil(byte... end) throws IOException {
@@ -264,7 +316,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /**
      * Read current byte array as ASCII string until a {@link NEWLINE} flag
      * found.
-     * @return 
+     *
+     * @return
      * @throws java.io.IOException
      */
     public ASCIILine readASCIILine() throws IOException {
@@ -323,8 +376,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Set the current position back for
-     * <code>i</code> positions.
+     * Set the current position back for <code>i</code> positions.
      *
      * This method supports {@link PosByteArrayInputStream} only, nothing will
      * do for other input stream types.
@@ -346,12 +398,10 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Backward current position until the byte value
-     * <code>b</code>.
+     * Backward current position until the byte value <code>b</code>.
      *
      * This method supports {@link PosByteArrayInputStream} only as input stream
-     * only, otherwise
-     * <code>-1</code> is returned.
+     * only, otherwise <code>-1</code> is returned.
      *
      * @see PosByteArrayInputStream
      * @return the new position, or -1 if <code>b</code> not found
@@ -379,12 +429,10 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Forward current position until the byte value
-     * <code>b</code>.
+     * Forward current position until the byte value <code>b</code>.
      *
      * This method supports {@link PosByteArrayInputStream} only as input stream
-     * only, otherwise
-     * <code>-1</code> is returned.
+     * only, otherwise <code>-1</code> is returned.
      *
      * @param b
      * @see PosByteArrayInputStream
@@ -412,12 +460,10 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Backward current position until the byte array value
-     * <code>b</code>.
+     * Backward current position until the byte array value <code>b</code>.
      *
      * This method supports {@link PosByteArrayInputStream} only as input stream
-     * only, otherwise
-     * <code>-1</code> is returned.
+     * only, otherwise <code>-1</code> is returned.
      *
      * @see PosByteArrayInputStream
      */
@@ -453,6 +499,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      *
      * @see PosByteArrayInputStream
      */
+    @Override
     public void skipToEnd() throws IOException {
         if (this.in instanceof PosByteArrayInputStream) {
             PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
@@ -467,6 +514,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      *
      * @see PosByteArrayInputStream
      */
+    @Override
     public void flyTo(int position) {
         if (this.in instanceof PosByteArrayInputStream) {
             ((PosByteArrayInputStream) this.in).setPos(position);
@@ -513,6 +561,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
         /**
          * Length of the line, including the {@link NEWLINE}.
+         *
+         * @return {@link ASCIILine} length
          */
         public int Length() {
             return this.Line.length() + NewLineLength;

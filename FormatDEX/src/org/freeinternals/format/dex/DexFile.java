@@ -22,7 +22,7 @@ import org.freeinternals.format.FileFormatException;
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
  * Dalvik Executable (DEX) format</a>
  */
-public class DEXFile extends FileFormat {
+public class DexFile extends FileFormat {
 
     /**
      * The constant array/string {@link #DEX_FILE_MAGIC} is the list of bytes
@@ -38,7 +38,7 @@ public class DEXFile extends FileFormat {
      */
     public static final byte[] DEX_FILE_MAGIC = {'d', 'e', 'x', '\n', '0', '3', '5', '\0'};
 
-    public DEXFile(File file) throws IOException, FileFormatException {
+    public DexFile(File file) throws IOException, FileFormatException {
         super(file);
         
         // Check the file signature

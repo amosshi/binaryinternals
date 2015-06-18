@@ -8,7 +8,7 @@
 package org.freeinternals.biv.plugin.dex;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
-import org.freeinternals.format.dex.DEXFile;
+import org.freeinternals.format.dex.DexFile;
 
 
 /**
@@ -27,7 +27,7 @@ public class PluginDescriptorDEX implements PluginDescriptor{
     }
 
     public Class getFileFormatClass() {
-        return DEXFile.class;
+        return DexFile.class;
     }
 
 }
