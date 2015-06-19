@@ -16,8 +16,19 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  */
 public class PosDataInputStreamDex extends PosDataInputStream {
 
+    /**
+     * Endian of the {@link DexFile}. The default value is little-endian
+     * {@link HeaderItem.Endian#ENDIAN_CONSTANT}, as the DEX format
+     * specification said.
+     */
+    protected HeaderItem.Endian endian = HeaderItem.Endian.ENDIAN_CONSTANT;
+
     public PosDataInputStreamDex(PosByteArrayInputStream in) {
         super(in);
+    }
+
+    protected void setEndian(HeaderItem.Endian e) {
+        this.endian = e;
     }
 
     /**
@@ -47,7 +58,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexshort dexshort() throws IOException {
-        return new dexshort(this.readShort_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexshort(this.readShort_LittleEndian());
+        } else {
+            return new dexshort(this.readShort());
+        }
     }
 
     /**
@@ -57,7 +72,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexushort dexushort() throws IOException {
-        return new dexushort(this.readUnsignedShort_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexushort(this.readUnsignedShort_LittleEndian());
+        } else {
+            return new dexushort(this.readUnsignedShort());
+        }
     }
 
     /**
@@ -67,7 +86,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexint dexint() throws IOException {
-        return new dexint(this.readInt_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexint(this.readInt_LittleEndian());
+        } else {
+            return new dexint(this.readInt());
+        }
     }
 
     /**
@@ -77,7 +100,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexuint dexuint() throws IOException {
-        return new dexuint(this.readUnsignedInt_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexuint(this.readUnsignedInt_LittleEndian());
+        } else {
+            return new dexuint(this.readUnsignedInt());
+        }
     }
 
     /**
@@ -87,7 +114,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexlong dexlong() throws IOException {
-        return new dexlong(this.readLong_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexlong(this.readLong_LittleEndian());
+        } else {
+            return new dexlong(this.readLong());
+        }
     }
 
     /**
@@ -97,7 +128,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public dexulong dexulong() throws IOException {
-        return new dexulong(this.readUnsignedLong_LittleEndian());
+        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+            return new dexulong(this.readUnsignedLong_LittleEndian());
+        } else {
+            return new dexulong(this.readUnsignedLong());
+        }
     }
 
     /**

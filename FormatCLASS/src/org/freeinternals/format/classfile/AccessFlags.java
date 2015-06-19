@@ -134,7 +134,7 @@ public class AccessFlags extends U2ClassComponent {
                 sb.append(' ');
             }
             sb.append("enum ");
-            isFirstModifier = false;
+            // isFirstModifier = false;
         }
 
         return sb.toString();

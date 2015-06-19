@@ -36,15 +36,19 @@ public class DexFile extends FileFormat {
      * monotonically over time as the format evolves.
      * </p>
      */
-    public static final byte[] DEX_FILE_MAGIC = {'d', 'e', 'x', '\n', '0', '3', '5', '\0'};
+    public static final byte[] DEX_FILE_MAGIC1 = {'d', 'e', 'x', '\n'};
+    public static final byte[] DEX_FILE_MAGIC2 = {'0', '3', '5', '\0'};
 
     public DexFile(File file) throws IOException, FileFormatException {
         super(file);
         
         // Check the file signature
-        byte[] magic = new byte[DEX_FILE_MAGIC.length];
-        System.arraycopy(super.fileByteArray, 0, magic, 0, DEX_FILE_MAGIC.length);
-        if (Tool.isByteArraySame(DEX_FILE_MAGIC, magic) == false) {
+        byte[] magic1 = new byte[DEX_FILE_MAGIC1.length];
+        byte[] magic2 = new byte[DEX_FILE_MAGIC2.length];
+        System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.length);
+        System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.length);
+        if (Tool.isByteArraySame(DEX_FILE_MAGIC1, magic1) == false
+                || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
         
@@ -53,8 +57,9 @@ public class DexFile extends FileFormat {
 
     private void parse() throws IOException {
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
-        
-        stream.skip(DEX_FILE_MAGIC.length);
+
+        stream.skip(DEX_FILE_MAGIC1.length);
+        stream.skip(DEX_FILE_MAGIC2.length);
     }
 
     @Override
