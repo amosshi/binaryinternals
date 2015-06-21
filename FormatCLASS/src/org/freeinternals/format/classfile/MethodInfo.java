@@ -37,42 +37,6 @@ public class MethodInfo extends FileComponent {
     public transient final u2 descriptor_index;
     public transient final u2 attributes_count;
     public transient final AttributeInfo[] attributes;
-    /**
-     * Value for access flag {@code ACC_PUBLIC} for a {@code Method}.
-     */
-    public static final int ACC_PUBLIC = 0x0001;
-    /**
-     * Value for access flag {@code ACC_PRIVATE} for a {@code Method}.
-     */
-    public static final int ACC_PRIVATE = 0x0002;
-    /**
-     * Value for access flag {@code ACC_PROTECTED} for a {@code Method}.
-     */
-    public static final int ACC_PROTECTED = 0x0004;
-    /**
-     * Value for access flag {@code ACC_STATIC} for a {@code Method}.
-     */
-    public static final int ACC_STATIC = 0x0008;
-    /**
-     * Value for access flag {@code ACC_FINAL} for a {@code Method}.
-     */
-    public static final int ACC_FINAL = 0x0010;
-    /**
-     * Value for access flag {@code ACC_SYNCHRONIZED} for a {@code Method}.
-     */
-    public static final int ACC_SYNCHRONIZED = 0x0020;
-    /**
-     * Value for access flag {@code ACC_NATIVE} for a {@code Method}.
-     */
-    public static final int ACC_NATIVE = 0x0100;
-    /**
-     * Value for access flag {@code ACC_ABSTRACT} for a {@code Method}.
-     */
-    public static final int ACC_ABSTRACT = 0x0400;
-    /**
-     * Value for access flag {@code ACC_STRICT} for a {@code Method}.
-     */
-    public static final int ACC_STRICT = 0x0800;
     private String declaration;
 
     MethodInfo(final PosDataInputStream posDataInputStream, final AbstractCPInfo[] cp)
@@ -131,71 +95,12 @@ public class MethodInfo extends FileComponent {
      * @return A string for modifier
      */
     public String getModifiers() {
-        final StringBuilder sb = new StringBuilder(20);
-        Boolean isTheFirstModifier = true;
-
-        if ((this.access_flags.value & MethodInfo.ACC_PUBLIC) > 0) {
-            sb.append("public");
-            isTheFirstModifier = false;
-        } else if ((this.access_flags.value & MethodInfo.ACC_PRIVATE) > 0) {
-            sb.append("private");
-            isTheFirstModifier = false;
-        } else if ((this.access_flags.value & MethodInfo.ACC_PROTECTED) > 0) {
-            sb.append("protected");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_ABSTRACT) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("abstract");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_STATIC) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("static");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_FINAL) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("final");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_NATIVE) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("native");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_SYNCHRONIZED) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("synchronized");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & MethodInfo.ACC_STRICT) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("strictfp");
-            isTheFirstModifier = false;
-        }
-
-        return sb.toString();
+        return AccessFlag.getMethodModifier(this.access_flags.value);
     }
 
+    /**
+     * Set the declaration string.
+     */
     final void setDeclaration(final String declaration) {
         this.declaration = declaration;
     }

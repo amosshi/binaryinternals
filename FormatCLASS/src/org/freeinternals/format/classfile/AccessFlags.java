@@ -36,39 +36,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  */
 public class AccessFlags extends U2ClassComponent {
 
-    /**
-     * Value for access flag {@code ACC_PUBLIC}.
-     */
-    public static final int ACC_PUBLIC = 0x0001;
-    /**
-     * Value for access flag {@code ACC_FINAL}.
-     */
-    public static final int ACC_FINAL = 0x0010;
-    /**
-     * Value for access flag {@code ACC_SUPER}.
-     */
-    public static final int ACC_SUPER = 0x0020;
-    /**
-     * Value for access flag {@code ACC_INTERFACE}.
-     */
-    public static final int ACC_INTERFACE = 0x0200;
-    /**
-     * Value for access flag {@code ACC_ABSTRACT}.
-     */
-    public static final int ACC_ABSTRACT = 0x0400;
-    /**
-     * Value for access flag {@code ACC_SYNTHETIC}.
-     */
-    public static final int ACC_SYNTHETIC = 0x1000;
-    /**
-     * Value for access flag {@code ACC_ANNOTATION}.
-     */
-    public static final int ACC_ANNOTATION = 0x2000;
-    /**
-     * Value for access flag {@code ACC_ENUM}.
-     */
-    public static final int ACC_ENUM = 0x4000;
-
     AccessFlags(final PosDataInputStream posDis)
             throws IOException {
         super(posDis);
@@ -80,64 +47,7 @@ public class AccessFlags extends U2ClassComponent {
      * @return A string for modifier
      */
     public String getModifiers() {
-        final StringBuilder sb = new StringBuilder(25);
-        Boolean isFirstModifier = true;
-
-        if ((this.value.value & AccessFlags.ACC_PUBLIC) > 0) {
-            sb.append("public ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_FINAL) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("final ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_SUPER) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("super ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_INTERFACE) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("interface ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_ABSTRACT) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("abstract ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_SYNTHETIC) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("synthetic ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_ANNOTATION) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("@interface ");
-            isFirstModifier = false;
-        }
-        if ((this.value.value & AccessFlags.ACC_ENUM) > 0) {
-            if (isFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("enum ");
-            // isFirstModifier = false;
-        }
-
-        return sb.toString();
+        return AccessFlag.getClassModifier(super.value.value);
     }
 
     /**
@@ -149,21 +59,21 @@ public class AccessFlags extends U2ClassComponent {
     public String toString() {
         final StringBuilder sb = new StringBuilder(25);
 
-        sb.append(String.format("%04X  (", this.value.value));
+        sb.append(String.format("%04X  (", super.value.value));
 
-        if ((this.value.value & AccessFlags.ACC_PUBLIC) > 0) {
+        if ((this.value.value & AccessFlag.ACC_PUBLIC.value) > 0) {
             sb.append("public ");
         }
-        if ((this.value.value & AccessFlags.ACC_FINAL) > 0) {
+        if ((this.value.value & AccessFlag.ACC_FINAL.value) > 0) {
             sb.append("final ");
         }
-        if ((this.value.value & AccessFlags.ACC_SUPER) > 0) {
+        if ((this.value.value & AccessFlag.ACC_SUPER.value) > 0) {
             sb.append("super ");
         }
-        if ((this.value.value & AccessFlags.ACC_INTERFACE) > 0) {
+        if ((this.value.value & AccessFlag.ACC_INTERFACE.value) > 0) {
             sb.append("interface ");
         }
-        if ((this.value.value & AccessFlags.ACC_ABSTRACT) > 0) {
+        if ((this.value.value & AccessFlag.ACC_ABSTRACT.value) > 0) {
             sb.append("abstract ");
         }
 

@@ -535,7 +535,7 @@ class JTreeAttribute {
             treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                     startPos + 8,
                     innerClasses.getClass(numOfClasses - 1).getStartPos() + innerClasses.getClass(numOfClasses - 1).getLength() - (startPos + 8),
-                    "classes"));
+                    "inner classes"));
 
             AttributeInnerClasses.Class cls;
             for (i = 0; i < numOfClasses; i++) {
@@ -544,7 +544,7 @@ class JTreeAttribute {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("class %d", i + 1)));
+                        String.format("inner class %d", i + 1)));
                 this.generate(treeNodeInnerClassItem, cls);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
             }
@@ -1157,7 +1157,7 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                 startPos + 6,
                 2,
-                "inner_class_access_flags: " + innerClass.inner_class_access_flags.value
+                "inner_class_access_flags: " + innerClass.inner_class_access_flags.value + " - " + innerClass.getModifiers()
         )));
     }
 

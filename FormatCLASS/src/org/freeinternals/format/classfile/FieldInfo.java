@@ -39,34 +39,6 @@ public class FieldInfo extends FileComponent {
     public transient final u2 descriptor_index;
     public transient final u2 attributes_count;
     public transient final AttributeInfo[] attributes;
-    /**
-     * Value for access flag {@code ACC_PUBLIC} for a {@code Field}.
-     */
-    public static final int ACC_PUBLIC = 0x0001;
-    /**
-     * Value for access flag {@code ACC_PRIVATE} for a {@code Field}.
-     */
-    public static final int ACC_PRIVATE = 0x0002;
-    /**
-     * Value for access flag {@code ACC_PROTECTED} for a {@code Field}.
-     */
-    public static final int ACC_PROTECTED = 0x0004;
-    /**
-     * Value for access flag {@code ACC_STATIC} for a {@code Field}.
-     */
-    public static final int ACC_STATIC = 0x0008;
-    /**
-     * Value for access flag {@code ACC_FINAL} for a {@code Field}.
-     */
-    public static final int ACC_FINAL = 0x0010;
-    /**
-     * Value for access flag {@code ACC_VOLATILE} for a {@code Field}.
-     */
-    public static final int ACC_VOLATILE = 0x0040;
-    /**
-     * Value for access flag {@code ACC_TRANSIENT} for a {@code Field}.
-     */
-    public static final int ACC_TRANSIENT = 0x0080;
     private String declaration;
 
     FieldInfo(final PosDataInputStream posDataInputStream, final AbstractCPInfo[] cp)
@@ -120,59 +92,17 @@ public class FieldInfo extends FileComponent {
     ///////////////////////////////////////////////////////////////////////////
     // Get extracted data
     /**
-     * Generate the modifier of a {@code Field} from the {@code access_flags}
-     * value.
+     * Generate the modifier string from the {@link #access_flags} value.
      *
      * @return A string for modifier
      */
     public String getModifiers() {
-        final StringBuilder sb = new StringBuilder(20);
-        Boolean isTheFirstModifier = true;
-
-        if ((this.access_flags.value & FieldInfo.ACC_PUBLIC) > 0) {
-            sb.append("public");
-            isTheFirstModifier = false;
-        } else if ((this.access_flags.value & FieldInfo.ACC_PRIVATE) > 0) {
-            sb.append("private");
-            isTheFirstModifier = false;
-        } else if ((this.access_flags.value & FieldInfo.ACC_PROTECTED) > 0) {
-            sb.append("protected");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & FieldInfo.ACC_STATIC) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("static");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & FieldInfo.ACC_FINAL) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("final");
-            isTheFirstModifier = false;
-        } else if ((this.access_flags.value & FieldInfo.ACC_VOLATILE) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("volatile");
-            isTheFirstModifier = false;
-        }
-
-        if ((this.access_flags.value & FieldInfo.ACC_TRANSIENT) > 0) {
-            if (isTheFirstModifier == false) {
-                sb.append(' ');
-            }
-            sb.append("transient");
-            isTheFirstModifier = false;
-        }
-
-        return sb.toString();
+        return AccessFlag.getFieldModifier(this.access_flags.value);
     }
 
+    /**
+     * Set the declaration string.
+     */
     final void setDeclaration(final String declaration) {
         this.declaration = declaration;
     }

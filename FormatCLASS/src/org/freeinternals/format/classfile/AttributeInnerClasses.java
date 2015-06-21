@@ -12,8 +12,8 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 
 /**
- * The class for the {@code InnerClasses} attribute.
- * The {@code InnerClasses} attribute has the following format:
+ * The class for the {@code InnerClasses} attribute. The {@code InnerClasses}
+ * attribute has the following format:
  *
  * <pre>
  *    InnerClasses_attribute {
@@ -30,7 +30,8 @@ import org.freeinternals.format.FileFormatException;
  *
  * @author Amos Shi
  * @since JDK 6.0
- * @see <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#79996">
+ * @see
+ * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#79996">
  * VM Spec: The InnerClasses Attribute
  * </a>
  */
@@ -78,6 +79,7 @@ public class AttributeInnerClasses extends AttributeInfo {
      * @since JDK 6.0
      */
     public final class Class extends FileComponent {
+
         /**
          * The length of current component.
          */
@@ -99,5 +101,13 @@ public class AttributeInnerClasses extends AttributeInfo {
             this.inner_class_access_flags = new u2(posDataInputStream.readUnsignedShort());
         }
 
+        /**
+         * Generate the modifier string from the {@link #access_flags} value.
+         *
+         * @return A string for modifier
+         */
+        public String getModifiers() {
+            return AccessFlag.getInnerClassModifier(this.inner_class_access_flags.value);
+        }
     }
 }
