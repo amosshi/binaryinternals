@@ -14,7 +14,7 @@ package org.freeinternals.format.dex;
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
  * Dalvik Executable (DEX) format</a>
  */
-public class dexbyte {
+public class Dex_byte {
 
     /**
      * Length of the type in bytes.
@@ -30,7 +30,7 @@ public class dexbyte {
      */
     public final byte value;
 
-    protected dexbyte(byte b) {
+    protected Dex_byte(byte b) {
         this.value = b;
     }
 }

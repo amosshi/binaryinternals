@@ -17,32 +17,49 @@ public class HeaderItem {
      * adler32 checksum of the rest of the file (everything but magic and this
      * field); used to detect file corruption.
      */
-    public dexuint checksum;
+    public Dex_uint checksum;
 
     /**
      * SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
      * {@link #checksum}, and this field {@link #signature}); used to uniquely
      * identify files.
      */
-    public dexubyte[] signature = new dexubyte[20];
+    public Dex_ubyte[] signature = new Dex_ubyte[20];
 
     /**
      * size of the entire file (including the {@link HeaderItem}), in bytes.
      */
-    public dexuint file_size;
+    public Dex_uint file_size;
 
     /**
      * size of the header (this entire section), in bytes. This allows for at
      * least a limited amount of backwards/forwards compatibility without
      * invalidating the format.
      */
-    public final dexuint header_size = new dexuint(0x70);
+    public final Dex_uint header_size = new Dex_uint(0x70);
 
     /**
      * Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
      * {@link Endian#REVERSE_ENDIAN_CONSTANT}.
      */
-    public dexuint endian_tag;
+    public Dex_uint endian_tag;
+    public Dex_uint link_size;
+    public Dex_uint link_off;
+    public Dex_uint map_off;
+    public Dex_uint string_ids_size;
+    public Dex_uint string_ids_off;
+    public Dex_uint type_ids_size;
+    public Dex_uint type_ids_off;
+    public Dex_uint proto_ids_size;
+    public Dex_uint proto_ids_off;
+    public Dex_uint field_ids_size;
+    public Dex_uint field_ids_off;
+    public Dex_uint method_ids_size;
+    public Dex_uint method_ids_off;
+    public Dex_uint class_defs_size;
+    public Dex_uint class_defs_off;
+    public Dex_uint data_size;
+    public Dex_uint data_off;
 
     /**
      * The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the

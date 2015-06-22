@@ -9,6 +9,7 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.FileFormatException;
 
 /**
  *
@@ -32,133 +33,182 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     }
 
     /**
-     * Read a {@link dexbyte} from the input stream.
+     * Read a {@link Dex_byte} from the input stream.
      *
-     * @return a {@link dexbyte}
+     * @return a {@link Dex_byte}
      * @throws java.io.IOException I/O error
      */
-    public dexbyte dexbyte() throws IOException {
-        return new dexbyte(this.readByte());
+    public Dex_byte Dex_byte() throws IOException {
+        return new Dex_byte(this.readByte());
     }
 
     /**
-     * Read a {@link dexubyte} from the input stream.
+     * Read a {@link Dex_ubyte} from the input stream.
      *
-     * @return a {@link dexubyte}
+     * @return a {@link Dex_ubyte}
      * @throws java.io.IOException I/O error
      */
-    public dexubyte dexubyte() throws IOException {
-        return new dexubyte(this.readUnsignedByte());
+    public Dex_ubyte Dex_ubyte() throws IOException {
+        return new Dex_ubyte(this.readUnsignedByte());
     }
 
     /**
-     * Read a {@link dexshort} from the input stream.
+     * Read a {@link Dex_short} from the input stream.
      *
-     * @return a {@link dexshort}
+     * @return a {@link Dex_short}
      * @throws java.io.IOException I/O Error
      */
-    public dexshort dexshort() throws IOException {
+    public Dex_short Dex_short() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexshort(this.readShort_LittleEndian());
+            return new Dex_short(this.readShort_LittleEndian());
         } else {
-            return new dexshort(this.readShort());
+            return new Dex_short(this.readShort());
         }
     }
 
     /**
-     * Read a {@link dexushort} from the input stream.
+     * Read a {@link Dex_ushort} from the input stream.
      *
-     * @return a {@link dexushort}
+     * @return a {@link Dex_ushort}
      * @throws java.io.IOException I/O Error
      */
-    public dexushort dexushort() throws IOException {
+    public Dex_ushort Dex_ushort() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexushort(this.readUnsignedShort_LittleEndian());
+            return new Dex_ushort(this.readUnsignedShort_LittleEndian());
         } else {
-            return new dexushort(this.readUnsignedShort());
+            return new Dex_ushort(this.readUnsignedShort());
         }
     }
 
     /**
-     * Read a {@link dexint} from the input stream.
+     * Read a {@link Dex_int} from the input stream.
      *
-     * @return a {@link dexint}
+     * @return a {@link Dex_int}
      * @throws java.io.IOException I/O Error
      */
-    public dexint dexint() throws IOException {
+    public Dex_int Dex_int() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexint(this.readInt_LittleEndian());
+            return new Dex_int(this.readInt_LittleEndian());
         } else {
-            return new dexint(this.readInt());
+            return new Dex_int(this.readInt());
         }
     }
 
     /**
-     * Read a {@link dexuint} from the input stream.
+     * Read a {@link Dex_uint} from the input stream.
      *
-     * @return a {@link dexuint}
+     * @return a {@link Dex_uint}
      * @throws java.io.IOException I/O Error
      */
-    public dexuint dexuint() throws IOException {
+    public Dex_uint Dex_uint() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexuint(this.readUnsignedInt_LittleEndian());
+            return new Dex_uint(this.readUnsignedInt_LittleEndian());
         } else {
-            return new dexuint(this.readUnsignedInt());
+            return new Dex_uint(this.readUnsignedInt());
         }
     }
 
     /**
-     * Read a {@link dexlong} from the input stream.
+     * Read a {@link Dex_long} from the input stream.
      *
-     * @return a {@link dexlong}
+     * @return a {@link Dex_long}
      * @throws java.io.IOException I/O Error
      */
-    public dexlong dexlong() throws IOException {
+    public Dex_long Dex_long() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexlong(this.readLong_LittleEndian());
+            return new Dex_long(this.readLong_LittleEndian());
         } else {
-            return new dexlong(this.readLong());
+            return new Dex_long(this.readLong());
         }
     }
 
     /**
-     * Read a {@link dexulong} from the input stream.
+     * Read a {@link Dex_ulong} from the input stream.
      *
-     * @return a {@link dexulong}
+     * @return a {@link Dex_ulong}
      * @throws java.io.IOException I/O Error
      */
-    public dexulong dexulong() throws IOException {
+    public Dex_ulong Dex_ulong() throws IOException {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
-            return new dexulong(this.readUnsignedLong_LittleEndian());
+            return new Dex_ulong(this.readUnsignedLong_LittleEndian());
         } else {
-            return new dexulong(this.readUnsignedLong());
+            return new Dex_ulong(this.readUnsignedLong());
         }
     }
 
     /**
-     * Read a {@link dexsleb128} from the input stream.
+     * Read a {@link Dex_sleb128} from the input stream.
      *
-     * @return a {@link dexsleb128}
+     * @throws java.io.IOException I/O Error
+     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * format
+     * @return a {@link Dex_sleb128}
+     * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>
      */
-    public dexsleb128 dexsleb128() {
-        return null;
+    public Dex_sleb128 Dex_sleb128() throws IOException, FileFormatException {
+        int startPos = super.getPos();
+        int result = 0;
+        int cur;
+        int count = 0;
+        int signBits = -1;
+
+        do {
+            cur = super.readByte() & 0xff;
+            result |= (cur & 0x7f) << (count * 7);
+            signBits <<= 7;
+            count++;
+        } while (((cur & 0x80) == 0x80) && count < 5);
+
+        if ((cur & 0x80) == 0x80) {
+            throw new FileFormatException("Invalid LEB128 sequence at file position " + super.getPos());
+        }
+
+        if (((signBits >> 1) & result) != 0) {
+            result |= signBits;
+        }
+
+        return new Dex_sleb128(result, super.getPos() - startPos);
     }
 
     /**
-     * Read a {@link dexuleb128} from the input stream.
+     * Read a {@link Dex_uleb128} from the input stream.
      *
-     * @return a {@link dexuleb128}
+     * @throws java.io.IOException I/O Error
+     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * format
+     * @return a {@link Dex_uleb128}
+     * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>
      */
-    public dexuleb128 dexuleb128() {
-        return null;
+    public Dex_uleb128 Dex_uleb128() throws IOException, FileFormatException {
+        int startPos = super.getPos();
+        int result = 0;
+        int cur;
+        int count = 0;
+
+        do {
+            cur = super.readByte() & 0xff;
+            result |= (cur & 0x7f) << (count * 7);
+            count++;
+        } while (((cur & 0x80) == 0x80) && count < 5);
+
+        if ((cur & 0x80) == 0x80) {
+            throw new FileFormatException("Invalid LEB128 sequence at file position " + super.getPos());
+        }
+
+        return new Dex_uleb128(result, super.getPos() - startPos);
     }
 
     /**
-     * Read a {@link dexuleb128p1} from the input stream.
+     * Read a {@link Dex_uleb128p1} from the input stream.
      *
-     * @return a {@link dexuleb128p1}
+     * @throws java.io.IOException I/O Error
+     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * format
+     * @return a {@link Dex_uleb128p1}
+     * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>
      */
-    public dexuleb128p1 dexuleb128p1() {
-        return null;
+    public Dex_uleb128p1 Dex_uleb128p1() throws IOException, FileFormatException {
+        Dex_uleb128 uleb128 = this.Dex_uleb128();
+        return new Dex_uleb128p1(uleb128.value - 1, uleb128.length);
     }
 }
