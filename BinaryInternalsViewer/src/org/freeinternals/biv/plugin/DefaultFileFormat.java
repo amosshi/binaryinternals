@@ -6,6 +6,7 @@
  */
 package org.freeinternals.biv.plugin;
 
+import org.freeinternals.commonlib.core.FileFormat;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;

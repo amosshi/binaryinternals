@@ -21,7 +21,7 @@ public class PluginDescriptorZIP implements PluginDescriptor{
     }
 
     public String[] getExtensions() {
-        return new String[]{"ZIP"};
+        return new String[]{"zip"};
     }
 
     public Class getFileFormatClass() {

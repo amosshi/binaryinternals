@@ -16,14 +16,17 @@ import org.freeinternals.format.png.PNGFile;
  */
 public class PluginDescriptorPNG implements PluginDescriptor{
 
+    @Override
     public String getExtensionDescription() {
         return "Portable Network Graphic (*.png)";
     }
 
+    @Override
     public String[] getExtensions() {
-        return new String[]{"PNG"};
+        return new String[]{"png"};
     }
 
+    @Override
     public Class getFileFormatClass() {
         return PNGFile.class;
     }

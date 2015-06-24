@@ -9,7 +9,7 @@ package org.freeinternals.format.bmp;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.biv.plugin.FileFormat;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;

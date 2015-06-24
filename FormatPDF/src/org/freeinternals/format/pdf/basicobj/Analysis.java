@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.util.DefaultFileComponent;
+import org.freeinternals.commonlib.core.DefaultFileComponent;
 import org.freeinternals.format.pdf.PDFStatics;
 import org.freeinternals.format.pdf.Texts;
 

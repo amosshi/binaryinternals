@@ -146,7 +146,7 @@ public class Main extends JFrame {
         menuBar.add(menuHelp);
 
         // Help --> Homepage
-        final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage");
+        final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
         menuItem_HelpHomepage.setMnemonic(KeyEvent.VK_P);
         menuItem_HelpHomepage.addActionListener(new ActionListener() {
 
@@ -156,6 +156,18 @@ public class Main extends JFrame {
             }
         });
         menuHelp.add(menuItem_HelpHomepage);
+
+        // Help --> Plugins
+        final JMenuItem menuItem_HelpPlugins = new JMenuItem("Plug-ins");
+        menuItem_HelpPlugins.setMnemonic(KeyEvent.VK_A);
+        menuItem_HelpPlugins.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                menu_HelpPlugins();
+            }
+        });
+        menuHelp.add(menuItem_HelpPlugins);
 
         // Help --> About
         final JMenuItem menuItem_HelpAbout = new JMenuItem("About");
@@ -241,6 +253,12 @@ public class Main extends JFrame {
         this.setSize(this.getWidth() - 1, this.getHeight());
     }
 
+    private void menu_HelpPlugins() {
+        final JDialogPlugins plugins = new JDialogPlugins(this, "Plug-ins");
+        plugins.setLocationRelativeTo(this);
+        plugins.setVisible(true);
+    }
+    
     private void menu_HelpAbout() {
         final JDialogAbout about = new JDialogAbout(this, "About");
         about.setLocationRelativeTo(this);

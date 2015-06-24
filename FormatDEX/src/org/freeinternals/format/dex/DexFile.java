@@ -9,7 +9,7 @@ package org.freeinternals.format.dex;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.biv.plugin.FileFormat;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.util.Tool;
@@ -39,9 +39,19 @@ public class DexFile extends FileFormat {
     public static final byte[] DEX_FILE_MAGIC1 = {'d', 'e', 'x', '\n'};
     public static final byte[] DEX_FILE_MAGIC2 = {'0', '3', '5', '\0'};
 
+    public HeaderItem header;
+    public StringIdItem[] string_ids;
+    public TypeIdItem[] type_ids;
+    public ProtoIdItem[] proto_ids;
+    public FieldIdItem[] field_ids;
+    public MethodIdItem[] method_ids;
+    public ClassDefItem[] class_defs;
+    public Dex_ubyte[] data;
+    public Dex_ubyte[] link_data;
+
     public DexFile(File file) throws IOException, FileFormatException {
         super(file);
-        
+
         // Check the file signature
         byte[] magic1 = new byte[DEX_FILE_MAGIC1.length];
         byte[] magic2 = new byte[DEX_FILE_MAGIC2.length];
@@ -51,7 +61,7 @@ public class DexFile extends FileFormat {
                 || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
-        
+
         this.parse();
     }
 

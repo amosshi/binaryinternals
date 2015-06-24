@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.GenerateTreeNodeUtil;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.util.Tool;
 
 /**
  *
@@ -82,7 +82,7 @@ public class ICCProfile extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (int) ((this.startPos + ref.tag.Offset) - lastPos);
             if (diff > 0) {
-                GenerateTreeNodeUtil.generateTreeNode_Diff(
+                Tool.generateTreeNode_Diff(
                         parentNode, lastPos, diff,
                         this.rawData, this.startPos);
             }
@@ -96,7 +96,7 @@ public class ICCProfile extends FileComponent {
 
         diff = (this.startPos + this.rawData.length) - lastPos;
         if (diff > 0) {
-            GenerateTreeNodeUtil.generateTreeNode_Diff(
+            Tool.generateTreeNode_Diff(
                     parentNode, lastPos, diff,
                     this.rawData, this.startPos);
         }

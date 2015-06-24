@@ -20,7 +20,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.freeinternals.biv.plugin.FileFormat;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.JFrameTool;

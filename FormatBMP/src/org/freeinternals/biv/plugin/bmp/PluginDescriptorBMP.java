@@ -21,7 +21,7 @@ public class PluginDescriptorBMP implements PluginDescriptor{
     }
 
     public String[] getExtensions() {
-        return new String[]{"BMP"};
+        return new String[]{"bmp"};
     }
 
     public Class getFileFormatClass() {

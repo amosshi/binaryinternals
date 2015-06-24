@@ -6,12 +6,14 @@
  */
 package org.freeinternals.format.dex;
 
+import org.freeinternals.commonlib.core.FileComponent;
+
 /**
  * The <code>header_item</code> structure of the DEX file.
  *
  * @author Amos Shi
  */
-public class HeaderItem {
+public class HeaderItem extends FileComponent{
 
     /**
      * adler32 checksum of the rest of the file (everything but magic and this
@@ -43,7 +45,13 @@ public class HeaderItem {
      * {@link Endian#REVERSE_ENDIAN_CONSTANT}.
      */
     public Dex_uint endian_tag;
+    /**
+     * Size of the link section, or 0 if this file isn't statically linked.
+     */
     public Dex_uint link_size;
+    /**
+     * Offset from the start of the file to the link section, or 0 if {@link #link_size} == 0. The offset, if non-zero, should be to an offset into the {@link DexFile#link_data} section. The format of the data pointed at is left unspecified by this document; this header field (and the previous) are left as hooks for use by runtime implementations.
+     */
     public Dex_uint link_off;
     public Dex_uint map_off;
     public Dex_uint string_ids_size;

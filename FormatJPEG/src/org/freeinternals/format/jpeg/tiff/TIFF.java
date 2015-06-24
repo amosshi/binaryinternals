@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.GenerateTreeNodeUtil;
+import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 
@@ -70,7 +70,7 @@ public class TIFF extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (this.startPos + ref.offset) - lastEnd;
             if (diff > 0) {
-                GenerateTreeNodeUtil.generateTreeNode_Diff(
+                Tool.generateTreeNode_Diff(
                         parentNode, lastEnd, diff,
                         this.tiffByteArray, this.startPos);
             }
@@ -94,7 +94,7 @@ public class TIFF extends FileComponent {
         // In case, there is some extra space in the end
         diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
         if (diff > 0) {
-            GenerateTreeNodeUtil.generateTreeNode_Diff(
+            Tool.generateTreeNode_Diff(
                     parentNode, lastEnd, diff,
                     this.tiffByteArray, this.startPos);
         }

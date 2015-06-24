@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.biv.plugin.FileFormat;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;

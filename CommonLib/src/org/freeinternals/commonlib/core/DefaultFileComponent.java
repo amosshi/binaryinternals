@@ -1,7 +1,6 @@
-package org.freeinternals.commonlib.util;
+package org.freeinternals.commonlib.core;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
@@ -36,6 +35,7 @@ public class DefaultFileComponent extends FileComponent implements GenerateTreeN
         this.treeNodeText = text;
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,

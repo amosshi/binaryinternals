@@ -41,14 +41,14 @@ public class IRB_8BIM extends FileComponent {
         }
         this.name = sb.toString();
 
+        // size
+        this.size = input.readInt();
+
         // skip for name
         this.data_skip1byte = ((this.size & 1) != 0);
         if (this.data_skip1byte) {
             input.skip(1);
         }
-
-        // size
-        this.size = input.readInt();
 
         // data
         if (this.size > 0) {

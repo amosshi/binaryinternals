@@ -7,8 +7,6 @@
 package org.freeinternals.commonlib.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -18,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  * Utility Class.
@@ -31,7 +31,8 @@ public final class Tool {
      * Returns byte array from the {@code file}
      *
      * @param file The file
-     * @return Byte array of the {@code file}, or {@code null} if error happened.
+     * @return Byte array of the {@code file}, or {@code null} if error
+     * happened.
      */
     public static byte[] readFileAsBytes(final File file) {
         byte[] fileBytes = null;
@@ -43,7 +44,7 @@ public final class Tool {
 
         return fileBytes;
     }
-    
+
     /**
      * Read byte array from {@code zipFile} of entry {@code zipEntry}
      *
@@ -69,12 +70,12 @@ public final class Tool {
 
         try {
             is = zipFile.getInputStream(zipEntry);
-            while(true){
+            while (true) {
                 bytesRead = is.read(contents);
-                if (bytesRead != -1){
+                if (bytesRead != -1) {
                     byteBuf.put(contents, 0, bytesRead);
                     bytesAll += bytesRead;
-                }else{
+                } else {
                     break;
                 }
             }
@@ -83,7 +84,7 @@ public final class Tool {
             throw ex;
         }
 
-        if (bytesAll == fileSize){
+        if (bytesAll == fileSize) {
             return byteBuf.array();
         } else {
             throw new IOException(String.format(
@@ -93,7 +94,7 @@ public final class Tool {
                     zipFile.getName(),
                     zipEntry.getName()));
         }
-    }    
+    }
 
     /**
      * Get a string for the {@code hex} view of byte array {@code data}.
@@ -130,13 +131,12 @@ public final class Tool {
      * Compares if the contents of two byte array are the same.
      * <p>
      * When either <code>bin1</code> or <code>bin2</code> is <code>null</code>,
-     * <code>false</code> will be returned.
-     * When either <code>bin1</code> or <code>bin2</code> is empty,
-     * <code>false</code> will be returned.
+     * <code>false</code> will be returned. When either <code>bin1</code> or
+     * <code>bin2</code> is empty, <code>false</code> will be returned.
      * </p>
      *
-     * @param bin1  The first byte array
-     * @param  bin2 The second byte array
+     * @param bin1 The first byte array
+     * @param bin2 The second byte array
      * @return  <code>true</code> if the content are the same, else false
      */
     public static boolean isByteArraySame(byte[] bin1, byte[] bin2) {
@@ -162,10 +162,11 @@ public final class Tool {
     }
 
     /**
-     * Checks if the byte array <code>bigBin</code> starts from 
+     * Checks if the byte array <code>bigBin</code> starts from
      * <code>start</code> is the same as <code>sampleBin</code>.
-     * @param bin1  The first byte array
-     * @param  bin2 The second byte array
+     *
+     * @param bin1 The first byte array
+     * @param bin2 The second byte array
      * @param start The start position for compare
      * @return  <code>true</code> if the content are the same, else false
      */
@@ -192,5 +193,47 @@ public final class Tool {
         }
 
         return same;
+    }
+
+    /**
+     * 
+     * @param parentNode
+     * @param lastEnd
+     * @param diff
+     * @param buff
+     * @param buffStartPos
+     */
+    public static void generateTreeNode_Diff(
+            DefaultMutableTreeNode parentNode,
+            int lastEnd,
+            int diff,
+            byte[] buff, int buffStartPos) {
+        String diffStr;
+
+        if (Tool.isBuffEmpty(buff, lastEnd - buffStartPos, diff - 1)) {
+            diffStr = String.format("Empty [0x%04X, 0x%04X] length = %d", lastEnd, lastEnd + diff - 1, diff);
+        } else {
+            diffStr = String.format("Unknown [0x%04X, 0x%04X] length = %d", lastEnd, lastEnd + diff - 1, diff);
+        }
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                lastEnd,
+                diff,
+                diffStr)));
+    }
+
+    private static boolean isBuffEmpty(byte[] buff, int startPos, int length) {
+        boolean result = false;
+
+        if (buff[startPos] == 0x00 || buff[startPos] == ((byte) 0xFF)) {
+            result = true;
+            for (int i = 1; i <= length; i++) {
+                if (buff[startPos + i] != buff[startPos]) {
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        return result;
     }
 }

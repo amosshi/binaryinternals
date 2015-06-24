@@ -15,14 +15,17 @@ import org.freeinternals.format.pdf.PDFFile;
  */
 public class PluginDescriptorPDF implements PluginDescriptor {
 
+    @Override
     public String getExtensionDescription() {
         return "Portable Document Format (*.pdf)";
     }
 
+    @Override
     public String[] getExtensions() {
-        return new String[]{"PDF"};
+        return new String[]{"pdf"};
     }
 
+    @Override
     public Class getFileFormatClass() {
         return PDFFile.class;
     }
