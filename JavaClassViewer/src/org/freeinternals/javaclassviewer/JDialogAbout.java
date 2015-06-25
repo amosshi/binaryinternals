@@ -64,7 +64,9 @@ public class JDialogAbout extends JDialog {
         label.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         listPane.add(label);
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Version: 1.0.4"));
+        listPane.add(new JLabelHyperLink(
+                "for Java Virtual Machine Specification 8",
+                "https://docs.oracle.com/javase/specs/jvms/se8/html/"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
         listPane.add(new JLabel("Author: Amos Shi"));
         listPane.add(Box.createRigidArea(new Dimension(0, 20)));
