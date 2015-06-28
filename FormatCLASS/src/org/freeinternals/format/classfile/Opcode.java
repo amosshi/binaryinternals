@@ -19,7 +19,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * @author Amos Shi
  * @since JDK 6.0
  * @see <a
- * href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/Instructions.doc.html">
+ * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html">
  * VM Spec: The Java Virtual Machine Instruction Set
  * </a>
  */
@@ -27,431 +27,238 @@ public final class Opcode {
 
     private static final String FORMAT_SD = "%s %d";
     private static final String FORMAT_SDS = "%s %d [%s]";
+
     // Opcode value
-    private static final int op_nop = 0;
-    private static final int op_aconst_null = 1;
-    private static final int op_iconst_m1 = 2;
-    private static final int op_iconst_0 = 3;
-    private static final int op_iconst_1 = 4;
-    private static final int op_iconst_2 = 5;
-    private static final int op_iconst_3 = 6;
-    private static final int op_iconst_4 = 7;
-    private static final int op_iconst_5 = 8;
-    private static final int op_lconst_0 = 9;
-    private static final int op_lconst_1 = 10;
-    private static final int op_fconst_0 = 11;
-    private static final int op_fconst_1 = 12;
-    private static final int op_fconst_2 = 13;
-    private static final int op_dconst_0 = 14;
-    private static final int op_dconst_1 = 15;
-    private static final int op_bipush = 16;
-    private static final int op_sipush = 17;
-    private static final int op_ldc = 18;
-    private static final int op_ldc_w = 19;
-    private static final int op_ldc2_w = 20;
-    private static final int op_iload = 21;
-    private static final int op_lload = 22;
-    private static final int op_fload = 23;
-    private static final int op_dload = 24;
-    private static final int op_aload = 25;
-    private static final int op_iload_0 = 26;
-    private static final int op_iload_1 = 27;
-    private static final int op_iload_2 = 28;
-    private static final int op_iload_3 = 29;
-    private static final int op_lload_0 = 30;
-    private static final int op_lload_1 = 31;
-    private static final int op_lload_2 = 32;
-    private static final int op_lload_3 = 33;
-    private static final int op_fload_0 = 34;
-    private static final int op_fload_1 = 35;
-    private static final int op_fload_2 = 36;
-    private static final int op_fload_3 = 37;
-    private static final int op_dload_0 = 38;
-    private static final int op_dload_1 = 39;
-    private static final int op_dload_2 = 40;
-    private static final int op_dload_3 = 41;
-    private static final int op_aload_0 = 42;
-    private static final int op_aload_1 = 43;
-    private static final int op_aload_2 = 44;
-    private static final int op_aload_3 = 45;
-    private static final int op_iaload = 46;
-    private static final int op_laload = 47;
-    private static final int op_faload = 48;
-    private static final int op_daload = 49;
-    private static final int op_aaload = 50;
-    private static final int op_baload = 51;
-    private static final int op_caload = 52;
-    private static final int op_saload = 53;
-    private static final int op_istore = 54;
-    private static final int op_lstore = 55;
-    private static final int op_fstore = 56;
-    private static final int op_dstore = 57;
-    private static final int op_astore = 58;
-    private static final int op_istore_0 = 59;
-    private static final int op_istore_1 = 60;
-    private static final int op_istore_2 = 61;
-    private static final int op_istore_3 = 62;
-    private static final int op_lstore_0 = 63;
-    private static final int op_lstore_1 = 64;
-    private static final int op_lstore_2 = 65;
-    private static final int op_lstore_3 = 66;
-    private static final int op_fstore_0 = 67;
-    private static final int op_fstore_1 = 68;
-    private static final int op_fstore_2 = 69;
-    private static final int op_fstore_3 = 70;
-    private static final int op_dstore_0 = 71;
-    private static final int op_dstore_1 = 72;
-    private static final int op_dstore_2 = 73;
-    private static final int op_dstore_3 = 74;
-    private static final int op_astore_0 = 75;
-    private static final int op_astore_1 = 76;
-    private static final int op_astore_2 = 77;
-    private static final int op_astore_3 = 78;
-    private static final int op_iastore = 79;
-    private static final int op_lastore = 80;
-    private static final int op_fastore = 81;
-    private static final int op_dastore = 82;
-    private static final int op_aastore = 83;
-    private static final int op_bastore = 84;
-    private static final int op_castore = 85;
-    private static final int op_sastore = 86;
-    private static final int op_pop = 87;
-    private static final int op_pop2 = 88;
-    private static final int op_dup = 89;
-    private static final int op_dup_x1 = 90;
-    private static final int op_dup_x2 = 91;
-    private static final int op_dup2 = 92;
-    private static final int op_dup2_x1 = 93;
-    private static final int op_dup2_x2 = 94;
-    private static final int op_swap = 95;
-    private static final int op_iadd = 96;
-    private static final int op_ladd = 97;
-    private static final int op_fadd = 98;
-    private static final int op_dadd = 99;
-    private static final int op_isub = 100;
-    private static final int op_lsub = 101;
-    private static final int op_fsub = 102;
-    private static final int op_dsub = 103;
-    private static final int op_imul = 104;
-    private static final int op_lmul = 105;
-    private static final int op_fmul = 106;
-    private static final int op_dmul = 107;
-    private static final int op_idiv = 108;
-    private static final int op_ldiv = 109;
-    private static final int op_fdiv = 110;
-    private static final int op_ddiv = 111;
-    private static final int op_irem = 112;
-    private static final int op_lrem = 113;
-    private static final int op_frem = 114;
-    private static final int op_drem = 115;
-    private static final int op_ineg = 116;
-    private static final int op_lneg = 117;
-    private static final int op_fneg = 118;
-    private static final int op_dneg = 119;
-    private static final int op_ishl = 120;
-    private static final int op_lshl = 121;
-    private static final int op_ishr = 122;
-    private static final int op_lshr = 123;
-    private static final int op_iushr = 124;
-    private static final int op_lushr = 125;
-    private static final int op_iand = 126;
-    private static final int op_land = 127;
-    private static final int op_ior = 128;
-    private static final int op_lor = 129;
-    private static final int op_ixor = 130;
-    private static final int op_lxor = 131;
-    private static final int op_iinc = 132;
-    private static final int op_i2l = 133;
-    private static final int op_i2f = 134;
-    private static final int op_i2d = 135;
-    private static final int op_l2i = 136;
-    private static final int op_l2f = 137;
-    private static final int op_l2d = 138;
-    private static final int op_f2i = 139;
-    private static final int op_f2l = 140;
-    private static final int op_f2d = 141;
-    private static final int op_d2i = 142;
-    private static final int op_d2l = 143;
-    private static final int op_d2f = 144;
-    private static final int op_i2b = 145;
-    private static final int op_i2c = 146;
-    private static final int op_i2s = 147;
-    private static final int op_lcmp = 148;
-    private static final int op_fcmpl = 149;
-    private static final int op_fcmpg = 150;
-    private static final int op_dcmpl = 151;
-    private static final int op_dcmpg = 152;
-    private static final int op_ifeq = 153;
-    private static final int op_ifne = 154;
-    private static final int op_iflt = 155;
-    private static final int op_ifge = 156;
-    private static final int op_ifgt = 157;
-    private static final int op_ifle = 158;
-    private static final int op_if_icmpeq = 159;
-    private static final int op_if_icmpne = 160;
-    private static final int op_if_icmplt = 161;
-    private static final int op_if_icmpge = 162;
-    private static final int op_if_icmpgt = 163;
-    private static final int op_if_icmple = 164;
-    private static final int op_if_acmpeq = 165;
-    private static final int op_if_acmpne = 166;
-    private static final int op_goto = 167;
-    private static final int op_jsr = 168;
-    private static final int op_ret = 169;
-    private static final int op_tableswitch = 170;
-    private static final int op_lookupswitch = 171;
-    private static final int op_ireturn = 172;
-    private static final int op_lreturn = 173;
-    private static final int op_freturn = 174;
-    private static final int op_dreturn = 175;
-    private static final int op_areturn = 176;
-    private static final int op_return = 177;
-    private static final int op_getstatic = 178;
-    private static final int op_putstatic = 179;
-    private static final int op_getfield = 180;
-    private static final int op_putfield = 181;
-    private static final int op_invokevirtual = 182;
-    private static final int op_invokespecial = 183;
-    private static final int op_invokestatic = 184;
-    private static final int op_invokeinterface = 185;
-    // 186: For historical reasons, opcode value 186 is not used.
-    private static final int op_new = 187;
-    private static final int op_newarray = 188;
-    private static final int op_anewarray = 189;
-    private static final int op_arraylength = 190;
-    private static final int op_athrow = 191;
-    private static final int op_checkcast = 192;
-    private static final int op_instanceof = 193;
-    private static final int op_monitorenter = 194;
-    private static final int op_monitorexit = 195;
-    private static final int op_wide = 196;
-    private static final int op_multianewarray = 197;
-    private static final int op_ifnull = 198;
-    private static final int op_ifnonnull = 199;
-    private static final int op_goto_w = 200;
-    private static final int op_jsr_w = 201;
-    // Opcode name text
-    private static final String name_nop = "nop";
-    private static final String name_aconst_null = "aconst_null";
-    private static final String name_iconst_m1 = "iconst_m1";
-    private static final String name_iconst_0 = "iconst_0";
-    private static final String name_iconst_1 = "iconst_1";
-    private static final String name_iconst_2 = "iconst_2";
-    private static final String name_iconst_3 = "iconst_3";
-    private static final String name_iconst_4 = "iconst_4";
-    private static final String name_iconst_5 = "iconst_5";
-    private static final String name_lconst_0 = "lconst_0";
-    private static final String name_lconst_1 = "lconst_1";
-    private static final String name_fconst_0 = "fconst_0";
-    private static final String name_fconst_1 = "fconst_1";
-    private static final String name_fconst_2 = "fconst_2";
-    private static final String name_dconst_0 = "dconst_0";
-    private static final String name_dconst_1 = "dconst_1";
-    private static final String name_bipush = "bipush";
-    private static final String name_sipush = "sipush";
-    private static final String name_ldc = "ldc";
-    private static final String name_ldc_w = "ldc_w";
-    private static final String name_ldc2_w = "ldc2_w";
-    private static final String name_iload = "iload";
-    private static final String name_lload = "lload";
-    private static final String name_fload = "fload";
-    private static final String name_dload = "dload";
-    private static final String name_aload = "aload";
-    private static final String name_iload_0 = "iload_0";
-    private static final String name_iload_1 = "iload_1";
-    private static final String name_iload_2 = "iload_2";
-    private static final String name_iload_3 = "iload_3";
-    private static final String name_lload_0 = "lload_0";
-    private static final String name_lload_1 = "lload_1";
-    private static final String name_lload_2 = "lload_2";
-    private static final String name_lload_3 = "lload_3";
-    private static final String name_fload_0 = "fload_0";
-    private static final String name_fload_1 = "fload_1";
-    private static final String name_fload_2 = "fload_2";
-    private static final String name_fload_3 = "fload_3";
-    private static final String name_dload_0 = "dload_0";
-    private static final String name_dload_1 = "dload_1";
-    private static final String name_dload_2 = "dload_2";
-    private static final String name_dload_3 = "dload_3";
-    private static final String name_aload_0 = "aload_0";
-    private static final String name_aload_1 = "aload_1";
-    private static final String name_aload_2 = "aload_2";
-    private static final String name_aload_3 = "aload_3";
-    private static final String name_iaload = "iaload";
-    private static final String name_laload = "laload";
-    private static final String name_faload = "faload";
-    private static final String name_daload = "daload";
-    private static final String name_aaload = "aaload";
-    private static final String name_baload = "baload";
-    private static final String name_caload = "caload";
-    private static final String name_saload = "saload";
-    private static final String name_istore = "istore";
-    private static final String name_lstore = "lstore";
-    private static final String name_fstore = "fstore";
-    private static final String name_dstore = "dstore";
-    private static final String name_astore = "astore";
-    private static final String name_istore_0 = "istore_0";
-    private static final String name_istore_1 = "istore_1";
-    private static final String name_istore_2 = "istore_2";
-    private static final String name_istore_3 = "istore_3";
-    private static final String name_lstore_0 = "lstore_0";
-    private static final String name_lstore_1 = "lstore_1";
-    private static final String name_lstore_2 = "lstore_2";
-    private static final String name_lstore_3 = "lstore_3";
-    private static final String name_fstore_0 = "fstore_0";
-    private static final String name_fstore_1 = "fstore_1";
-    private static final String name_fstore_2 = "fstore_2";
-    private static final String name_fstore_3 = "fstore_3";
-    private static final String name_dstore_0 = "dstore_0";
-    private static final String name_dstore_1 = "dstore_1";
-    private static final String name_dstore_2 = "dstore_2";
-    private static final String name_dstore_3 = "dstore_3";
-    private static final String name_astore_0 = "astore_0";
-    private static final String name_astore_1 = "astore_1";
-    private static final String name_astore_2 = "astore_2";
-    private static final String name_astore_3 = "astore_3";
-    private static final String name_iastore = "iastore";
-    private static final String name_lastore = "lastore";
-    private static final String name_fastore = "fastore";
-    private static final String name_dastore = "dastore";
-    private static final String name_aastore = "aastore";
-    private static final String name_bastore = "bastore";
-    private static final String name_castore = "castore";
-    private static final String name_sastore = "sastore";
-    private static final String name_pop = "pop";
-    private static final String name_pop2 = "pop2";
-    private static final String name_dup = "dup";
-    private static final String name_dup_x1 = "dup_x1";
-    private static final String name_dup_x2 = "dup_x2";
-    private static final String name_dup2 = "dup2";
-    private static final String name_dup2_x1 = "dup2_x1";
-    private static final String name_dup2_x2 = "dup2_x2";
-    private static final String name_swap = "swap";
-    private static final String name_iadd = "iadd";
-    private static final String name_ladd = "ladd";
-    private static final String name_fadd = "fadd";
-    private static final String name_dadd = "dadd";
-    private static final String name_isub = "isub";
-    private static final String name_lsub = "lsub";
-    private static final String name_fsub = "fsub";
-    private static final String name_dsub = "dsub";
-    private static final String name_imul = "imul";
-    private static final String name_lmul = "lmul";
-    private static final String name_fmul = "fmul";
-    private static final String name_dmul = "dmul";
-    private static final String name_idiv = "idiv";
-    private static final String name_ldiv = "ldiv";
-    private static final String name_fdiv = "fdiv";
-    private static final String name_ddiv = "ddiv";
-    private static final String name_irem = "irem";
-    private static final String name_lrem = "lrem";
-    private static final String name_frem = "frem";
-    private static final String name_drem = "drem";
-    private static final String name_ineg = "ineg";
-    private static final String name_lneg = "lneg";
-    private static final String name_fneg = "fneg";
-    private static final String name_dneg = "dneg";
-    private static final String name_ishl = "ishl";
-    private static final String name_lshl = "lshl";
-    private static final String name_ishr = "ishr";
-    private static final String name_lshr = "lshr";
-    private static final String name_iushr = "iushr";
-    private static final String name_lushr = "lushr";
-    private static final String name_iand = "iand";
-    private static final String name_land = "land";
-    private static final String name_ior = "ior";
-    private static final String name_lor = "lor";
-    private static final String name_ixor = "ixor";
-    private static final String name_lxor = "lxor";
-    private static final String name_iinc = "iinc";
-    private static final String name_i2l = "i2l";
-    private static final String name_i2f = "i2f";
-    private static final String name_i2d = "i2d";
-    private static final String name_l2i = "l2i";
-    private static final String name_l2f = "l2f";
-    private static final String name_l2d = "l2d";
-    private static final String name_f2i = "f2i";
-    private static final String name_f2l = "f2l";
-    private static final String name_f2d = "f2d";
-    private static final String name_d2i = "d2i";
-    private static final String name_d2l = "d2l";
-    private static final String name_d2f = "d2f";
-    private static final String name_i2b = "i2b";
-    private static final String name_i2c = "i2c";
-    private static final String name_i2s = "i2s";
-    private static final String name_lcmp = "lcmp";
-    private static final String name_fcmpl = "fcmpl";
-    private static final String name_fcmpg = "fcmpg";
-    private static final String name_dcmpl = "dcmpl";
-    private static final String name_dcmpg = "dcmpg";
-    private static final String name_ifeq = "ifeq";
-    private static final String name_ifne = "ifne";
-    private static final String name_iflt = "iflt";
-    private static final String name_ifge = "ifge";
-    private static final String name_ifgt = "ifgt";
-    private static final String name_ifle = "ifle";
-    private static final String name_if_icmpeq = "if_icmpeq";
-    private static final String name_if_icmpne = "if_icmpne";
-    private static final String name_if_icmplt = "if_icmplt";
-    private static final String name_if_icmpge = "if_icmpge";
-    private static final String name_if_icmpgt = "if_icmpgt";
-    private static final String name_if_icmple = "if_icmple";
-    private static final String name_if_acmpeq = "if_acmpeq";
-    private static final String name_if_acmpne = "if_acmpne";
-    private static final String name_goto = "goto";
-    private static final String name_jsr = "jsr";
-    private static final String name_ret = "ret";
-    private static final String name_tableswitch = "tableswitch";
-    private static final String name_lookupswitch = "lookupswitch";
-    private static final String name_ireturn = "ireturn";
-    private static final String name_lreturn = "lreturn";
-    private static final String name_freturn = "freturn";
-    private static final String name_dreturn = "dreturn";
-    private static final String name_areturn = "areturn";
-    private static final String name_return = "return";
-    private static final String name_getstatic = "getstatic";
-    private static final String name_putstatic = "putstatic";
-    private static final String name_getfield = "getfield";
-    private static final String name_putfield = "putfield";
-    private static final String name_invokevirtual = "invokevirtual";
-    private static final String name_invokespecial = "invokespecial";
-    private static final String name_invokestatic = "invokestatic";
-    private static final String name_invokeinterface = "invokeinterface";
-    private static final String name_new = "name_new";
-    private static final String name_newarray = "newarray";
-    private static final String name_anewarray = "anewarray";
-    private static final String name_arraylength = "arraylength";
-    private static final String name_athrow = "athrow";
-    private static final String name_checkcast = "checkcast";
-    private static final String name_instanceof = "instanceof";
-    private static final String name_monitorenter = "monitorenter";
-    private static final String name_monitorexit = "monitorexit";
-    private static final String name_wide = "wide";
-    private static final String name_wide_iload = "wide iload";
-    private static final String name_wide_lload = "wide lload";
-    private static final String name_wide_fload = "wide fload";
-    private static final String name_wide_dload = "wide dload";
-    private static final String name_wide_aload = "wide aload";
-    private static final String name_wide_istore = "wide istore";
-    private static final String name_wide_lstore = "wide lstore";
-    private static final String name_wide_fstore = "wide fstore";
-    private static final String name_wide_dstore = "wide dstore";
-    private static final String name_wide_astore = "wide astore";
-    private static final String name_wide_iinc = "wide iinc";
-    private static final String name_wide_ret = "wide ret";
-    private static final String name_multianewarray = "multianewarray";
-    private static final String name_ifnull = "ifnull";
-    private static final String name_ifnonnull = "ifnonnull";
-    private static final String name_goto_w = "goto_w";
-    private static final String name_jsr_w = "jsr_w";
-    // Quick opcodes
-    // Reserved opcodes
-    private static final int op_breakpoint = 202;
-    private static final int op_impdep1 = 254;
-    private static final int op_impdep2 = 255;
-    private static final String name_breakpoint = "breakpoint";
-    private static final String name_impdep1 = "impdep1";
-    private static final String name_impdep2 = "impdep2";
+    public static enum Instruction {
+
+        nop(0),
+        aconst_null(1),
+        iconst_m1(2),
+        iconst_0(3),
+        iconst_1(4),
+        iconst_2(5),
+        iconst_3(6),
+        iconst_4(7),
+        iconst_5(8),
+        lconst_0(9),
+        lconst_1(10),
+        fconst_0(11),
+        fconst_1(12),
+        fconst_2(13),
+        dconst_0(14),
+        dconst_1(15),
+        bipush(16),
+        sipush(17),
+        ldc(18),
+        ldc_w(19),
+        ldc2_w(20),
+        iload(21),
+        lload(22),
+        fload(23),
+        dload(24),
+        aload(25),
+        iload_0(26),
+        iload_1(27),
+        iload_2(28),
+        iload_3(29),
+        lload_0(30),
+        lload_1(31),
+        lload_2(32),
+        lload_3(33),
+        fload_0(34),
+        fload_1(35),
+        fload_2(36),
+        fload_3(37),
+        dload_0(38),
+        dload_1(39),
+        dload_2(40),
+        dload_3(41),
+        aload_0(42),
+        aload_1(43),
+        aload_2(44),
+        aload_3(45),
+        iaload(46),
+        laload(47),
+        faload(48),
+        daload(49),
+        aaload(50),
+        baload(51),
+        caload(52),
+        saload(53),
+        istore(54),
+        lstore(55),
+        fstore(56),
+        dstore(57),
+        astore(58),
+        istore_0(59),
+        istore_1(60),
+        istore_2(61),
+        istore_3(62),
+        lstore_0(63),
+        lstore_1(64),
+        lstore_2(65),
+        lstore_3(66),
+        fstore_0(67),
+        fstore_1(68),
+        fstore_2(69),
+        fstore_3(70),
+        dstore_0(71),
+        dstore_1(72),
+        dstore_2(73),
+        dstore_3(74),
+        astore_0(75),
+        astore_1(76),
+        astore_2(77),
+        astore_3(78),
+        iastore(79),
+        lastore(80),
+        fastore(81),
+        dastore(82),
+        aastore(83),
+        bastore(84),
+        castore(85),
+        sastore(86),
+        pop(87),
+        pop2(88),
+        dup(89),
+        dup_x1(90),
+        dup_x2(91),
+        dup2(92),
+        dup2_x1(93),
+        dup2_x2(94),
+        swap(95),
+        iadd(96),
+        ladd(97),
+        fadd(98),
+        dadd(99),
+        isub(100),
+        lsub(101),
+        fsub(102),
+        dsub(103),
+        imul(104),
+        lmul(105),
+        fmul(106),
+        dmul(107),
+        idiv(108),
+        ldiv(109),
+        fdiv(110),
+        ddiv(111),
+        irem(112),
+        lrem(113),
+        frem(114),
+        drem(115),
+        ineg(116),
+        lneg(117),
+        fneg(118),
+        dneg(119),
+        ishl(120),
+        lshl(121),
+        ishr(122),
+        lshr(123),
+        iushr(124),
+        lushr(125),
+        iand(126),
+        land(127),
+        ior(128),
+        lor(129),
+        ixor(130),
+        lxor(131),
+        iinc(132),
+        i2l(133),
+        i2f(134),
+        i2d(135),
+        l2i(136),
+        l2f(137),
+        l2d(138),
+        f2i(139),
+        f2l(140),
+        f2d(141),
+        d2i(142),
+        d2l(143),
+        d2f(144),
+        i2b(145),
+        i2c(146),
+        i2s(147),
+        lcmp(148),
+        fcmpl(149),
+        fcmpg(150),
+        dcmpl(151),
+        dcmpg(152),
+        ifeq(153),
+        ifne(154),
+        iflt(155),
+        ifge(156),
+        ifgt(157),
+        ifle(158),
+        if_icmpeq(159),
+        if_icmpne(160),
+        if_icmplt(161),
+        if_icmpge(162),
+        if_icmpgt(163),
+        if_icmple(164),
+        if_acmpeq(165),
+        if_acmpne(166),
+        goto_(167), // Remove the '_' from the name
+        jsr(168),
+        ret(169),
+        tableswitch(170),
+        lookupswitch(171),
+        ireturn(172),
+        lreturn(173),
+        freturn(174),
+        dreturn(175),
+        areturn(176),
+        return_(177), // Remove the '_' from the name
+        getstatic(178),
+        putstatic(179),
+        getfield(180),
+        putfield(181),
+        invokevirtual(182),
+        invokespecial(183),
+        invokestatic(184),
+        invokeinterface(185),
+        // 186: For historical reasons, opcode value 186 is not used.
+        new_(187),
+        newarray(188),
+        anewarray(189),
+        arraylength(190),
+        athrow(191),
+        checkcast(192),
+        instanceof_(193),
+        monitorenter(194),
+        monitorexit(195),
+        wide(196),
+        multianewarray(197),
+        ifnull(198),
+        ifnonnull(199),
+        goto_w(200),
+        jsr_w(201),
+        // Reserved opcodes
+        breakpoint(202),
+        impdep1(254),
+        impdep2(255);
+
+        public final int code;
+
+        Instruction(int i) {
+            this.code = i;
+        }
+
+        /**
+         * Remove the postfix "_" from the {@link #name()}. Only applied for
+         * {@link #goto_}, {@link #return_}, {@link #new_}, and
+         * {@link #instanceof_}.
+         *
+         * @return The postfix "_" from the name
+         */
+        String getName() {
+            String n = super.name();
+            if (n.endsWith("_")) {
+                n = n.substring(0, n.length() - 1);
+            }
+            return n;
+        }
+    }
 
     private Opcode() {
     }
@@ -507,831 +314,539 @@ public final class Opcode {
 
         String opcodeText = null;
 
-        switch (opcode) {
+        if (Opcode.Instruction.nop.code == opcode) {
             // Do nothing
-            case Opcode.op_nop:
-                opcodeText = Opcode.name_nop;
-                break;
-
+            opcodeText = Opcode.Instruction.nop.name();
+        } else if (Opcode.Instruction.aconst_null.code == opcode) {
             // Push null
             // Push the null object reference onto the operand stack.
-            case Opcode.op_aconst_null:
-                opcodeText = Opcode.name_aconst_null;
-                break;
-
+            opcodeText = Opcode.Instruction.aconst_null.name();
+        } else if (Opcode.Instruction.iconst_m1.code == opcode) {
             // Push int constant -1
-            case Opcode.op_iconst_m1:
-                opcodeText = Opcode.name_iconst_m1;
-                break;
-
+            opcodeText = Opcode.Instruction.iconst_m1.name();
+        } else if (Opcode.Instruction.iconst_0.code == opcode) {
             // Push int constant
             // Push the int constant <i> (-1, 0, 1, 2, 3, 4 or 5) onto the operand stack. 
             // ???: -1, is iconst_m1 is a new one?
-            case Opcode.op_iconst_0:
-                opcodeText = Opcode.name_iconst_0;
-                break;
-
-            case Opcode.op_iconst_1:
-                opcodeText = Opcode.name_iconst_1;
-                break;
-
-            case Opcode.op_iconst_2:
-                opcodeText = Opcode.name_iconst_2;
-                break;
-
-            case Opcode.op_iconst_3:
-                opcodeText = Opcode.name_iconst_3;
-                break;
-
-            case Opcode.op_iconst_4:
-                opcodeText = Opcode.name_iconst_4;
-                break;
-
-            case Opcode.op_iconst_5:
-                opcodeText = Opcode.name_iconst_5;
-                break;
-
+            opcodeText = Opcode.Instruction.iconst_0.name();
+        } else if (Opcode.Instruction.iconst_1.code == opcode) {
+            opcodeText = Opcode.Instruction.iconst_1.name();
+        } else if (Opcode.Instruction.iconst_2.code == opcode) {
+            opcodeText = Opcode.Instruction.iconst_2.name();
+        } else if (Opcode.Instruction.iconst_3.code == opcode) {
+            opcodeText = Opcode.Instruction.iconst_3.name();
+        } else if (Opcode.Instruction.iconst_4.code == opcode) {
+            opcodeText = Opcode.Instruction.iconst_4.name();
+        } else if (Opcode.Instruction.iconst_5.code == opcode) {
+            opcodeText = Opcode.Instruction.iconst_5.name();
+        } else if (Opcode.Instruction.lconst_0.code == opcode) {
             // Push long constant
             // Push the long constant <l> (0 or 1) onto the operand stack. 
-            case Opcode.op_lconst_0:
-                opcodeText = Opcode.name_lconst_0;
-                break;
-
-            case Opcode.op_lconst_1:
-                opcodeText = Opcode.name_lconst_1;
-                break;
-
+            opcodeText = Opcode.Instruction.lconst_0.name();
+        } else if (Opcode.Instruction.lconst_1.code == opcode) {
+            opcodeText = Opcode.Instruction.lconst_1.name();
+        } else if (Opcode.Instruction.fconst_0.code == opcode) {
             // Push float
             // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack.
-            case Opcode.op_fconst_0:
-                opcodeText = Opcode.name_fconst_0;
-                break;
-
-            case Opcode.op_fconst_1:
-                opcodeText = Opcode.name_fconst_1;
-                break;
-
-            case Opcode.op_fconst_2:
-                opcodeText = Opcode.name_fconst_2;
-                break;
-
+            opcodeText = Opcode.Instruction.fconst_0.name();
+        } else if (Opcode.Instruction.fconst_1.code == opcode) {
+            opcodeText = Opcode.Instruction.fconst_1.name();
+        } else if (Opcode.Instruction.fconst_2.code == opcode) {
+            opcodeText = Opcode.Instruction.fconst_2.name();
+        } else if (Opcode.Instruction.dconst_0.code == opcode) {
             // Push double
             // Push the double constant <d> (0.0 or 1.0) onto the operand stack. 
-            case Opcode.op_dconst_0:
-                opcodeText = Opcode.name_dconst_0;
-                break;
-
-            case Opcode.op_dconst_1:
-                opcodeText = Opcode.name_dconst_1;
-                break;
-
+            opcodeText = Opcode.Instruction.dconst_0.name();
+        } else if (Opcode.Instruction.bipush.code == opcode) {
             // Push the immediate byte value
-            case Opcode.op_bipush:
-                // The immediate byte is sign-extended to an int value. 
-                // That value is pushed onto the operand stack.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_bipush, byteValue);
-                break;
-
+            // --
+            // The immediate byte is sign-extended to an int value. 
+            // That value is pushed onto the operand stack.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.bipush.name(), byteValue);
+        } else if (Opcode.Instruction.sipush.code == opcode) {
             // Push the immediate short value
-            case Opcode.op_sipush:
-                // The immediate unsigned byte1 and byte2 values are assembled into an intermediate short 
-                // where the value of the short is (byte1 << 8) | byte2. 
-                // The intermediate value is then sign-extended to an int value. 
-                // That value is pushed onto the operand stack.
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.op_sipush, shortValue);
-                break;
-
+            // --
+            // The immediate unsigned byte1 and byte2 values are assembled into an intermediate short 
+            // where the value of the short is (byte1 << 8) | byte2. 
+            // The intermediate value is then sign-extended to an int value. 
+            // That value is pushed onto the operand stack.
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.sipush.name(), shortValue);
+        } else if (Opcode.Instruction.ldc.code == opcode) {
             // Push item from runtime constant pool
-            case Opcode.op_ldc:
-                // The index is an unsigned byte that must be a valid index into the runtime constant pool of the current class (?.6). 
-                // The runtime constant pool entry at index 
-                //   either must be a runtime constant of type int or float, 
-                //   or must be a symbolic reference to a string literal (?.1).
-                byteValue = pdis.readUnsignedByte();
-                parseResult.CPIndex1 = byteValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_ldc, byteValue, classFile.getCPDescription(byteValue));
-                break;
-
+            // -- 
+            // The index is an unsigned byte that must be a valid index into the runtime constant pool of the current class (?.6). 
+            // The runtime constant pool entry at index 
+            //   either must be a runtime constant of type int or float, 
+            //   or must be a symbolic reference to a string literal (?.1).
+            byteValue = pdis.readUnsignedByte();
+            parseResult.CPIndex1 = byteValue;
+            opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc.name(), byteValue, classFile.getCPDescription(byteValue));
+        } else if (Opcode.Instruction.ldc_w.code == opcode) {
             // Push item from runtime constant pool (wide index)
-            case Opcode.op_ldc_w:
-                // The unsigned indexbyte1 and indexbyte2 are assembled into an unsigned 16-bit index
-                // into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is calculated as (indexbyte1 << 8) | indexbyte2. 
-                // The index must be a valid index into the runtime constant pool of the current class. 
-                // The runtime constant pool entry at the index 
-                //   either must be a runtime constant of type int or float, 
-                //   or must be a symbolic reference to a string literal (?.1). 
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_ldc_w, shortValue, classFile.getCPDescription(shortValue));
-                break;
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are assembled into an unsigned 16-bit index
+            // into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is calculated as (indexbyte1 << 8) | indexbyte2. 
+            // The index must be a valid index into the runtime constant pool of the current class. 
+            // The runtime constant pool entry at the index 
+            //   either must be a runtime constant of type int or float, 
+            //   or must be a symbolic reference to a string literal (?.1). 
 
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc_w.name(), shortValue, classFile.getCPDescription(shortValue));
+
+        } else if (Opcode.Instruction.ldc2_w.code == opcode) {
             // Push long or double from runtime constant pool (wide index)
-            case Opcode.op_ldc2_w:
-                // The unsigned indexbyte1 and indexbyte2 are assembled into an unsigned 16-bit index 
-                // into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is calculated as (indexbyte1 << 8) | indexbyte2. 
-                // The index must be a valid index into the runtime constant pool of the current class. 
-                // The runtime constant pool entry at the index must be a runtime constant of type long or double (?.1). 
-                // The numeric value of that runtime constant is pushed onto the operand stack as a long or double, respectively.
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_ldc2_w, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are assembled into an unsigned 16-bit index 
+            // into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is calculated as (indexbyte1 << 8) | indexbyte2. 
+            // The index must be a valid index into the runtime constant pool of the current class. 
+            // The runtime constant pool entry at the index must be a runtime constant of type long or double (?.1). 
+            // The numeric value of that runtime constant is pushed onto the operand stack as a long or double, respectively.
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc2_w.name(), shortValue, classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.iload.code == opcode) {
             // Load int from local variable
-            case Opcode.op_iload:
-                // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain an int. 
-                // The value of the local variable at index is pushed onto the operand stack.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_iload, byteValue);
-                break;
-
+            // --
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain an int. 
+            // The value of the local variable at index is pushed onto the operand stack.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.iload.name(), byteValue);
+        } else if (Opcode.Instruction.lload.code == opcode) {
             // Load long from local variable
-            case Opcode.op_lload:
-                // The index is an unsigned byte. 
-                // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain a long. 
-                // The value of the local variable at index is pushed onto the operand stack. 
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_lload, byteValue);
-                break;
-
+            // --
+            // The index is an unsigned byte. 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain a long. 
+            // The value of the local variable at index is pushed onto the operand stack. 
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.lload.name(), byteValue);
+        } else if (Opcode.Instruction.fload.code == opcode) {
             // Load float from local variable
-            case Opcode.op_fload:
-                // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain a float. 
-                // The value of the local variable at index is pushed onto the operand stack.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_fload, byteValue);
-                break;
-
+            // -
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain a float. 
+            // The value of the local variable at index is pushed onto the operand stack.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.fload.name(), byteValue);
+        } else if (Opcode.Instruction.dload.code == opcode) {
             // Load double from local variable
-            case Opcode.op_dload:
-                // The index is an unsigned byte. 
-                // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain a double. 
-                // The value of the local variable at index is pushed onto the operand stack.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_dload, byteValue);
-                break;
-
+            // -
+            // The index is an unsigned byte. 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain a double. 
+            // The value of the local variable at index is pushed onto the operand stack.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.dload.name(), byteValue);
+        } else if (Opcode.Instruction.aload.code == opcode) {
             // Load reference from local variable
-            case Opcode.op_aload:
-                // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain a reference. 
-                // The objectref in the local variable at index is pushed onto the operand stack.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_aload, byteValue);
-                break;
-
+            // --
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain a reference. 
+            // The objectref in the local variable at index is pushed onto the operand stack.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.aload.name(), byteValue);
+        } else if (Opcode.Instruction.iload_0.code == opcode) {
             // Load int from local variable
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The local variable at <n> must contain an int. 
             // The value of the local variable at <n> is pushed onto the operand stack.
-            case Opcode.op_iload_0:
-                opcodeText = Opcode.name_iload_0;
-                break;
-
-            case Opcode.op_iload_1:
-                opcodeText = Opcode.name_iload_1;
-                break;
-
-            case Opcode.op_iload_2:
-                opcodeText = Opcode.name_iload_2;
-                break;
-
-            case Opcode.op_iload_3:
-                opcodeText = Opcode.name_iload_3;
-                break;
-
-            case Opcode.op_lload_0:
-                opcodeText = Opcode.name_lload_0;
-                break;
-
+            opcodeText = Opcode.Instruction.iload_0.name();
+        } else if (Opcode.Instruction.iload_1.code == opcode) {
+            opcodeText = Opcode.Instruction.iload_1.name();
+        } else if (Opcode.Instruction.iload_2.code == opcode) {
+            opcodeText = Opcode.Instruction.iload_2.name();
+        } else if (Opcode.Instruction.iload_3.code == opcode) {
+            opcodeText = Opcode.Instruction.iload_3.name();
+        } else if (Opcode.Instruction.lload_0.code == opcode) {
             // Load long from local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
             // The local variable at <n> must contain a long. 
             // The value of the local variable at <n> is pushed onto the operand stack. 
-            case Opcode.op_lload_1:
-                opcodeText = Opcode.name_lload_1;
-                break;
-
-            case Opcode.op_lload_2:
-                opcodeText = Opcode.name_lload_2;
-                break;
-
-            case Opcode.op_lload_3:
-                opcodeText = Opcode.name_lload_3;
-                break;
-
+            opcodeText = Opcode.Instruction.lload_0.name();
+        } else if (Opcode.Instruction.lload_1.code == opcode) {
+            opcodeText = Opcode.Instruction.lload_1.name();
+        } else if (Opcode.Instruction.lload_2.code == opcode) {
+            opcodeText = Opcode.Instruction.lload_2.name();
+        } else if (Opcode.Instruction.lload_3.code == opcode) {
+            opcodeText = Opcode.Instruction.lload_3.name();
+        } else if (Opcode.Instruction.fload_0.code == opcode) {
             // Load float from local variable
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The local variable at <n> must contain a float. 
             // The value of the local variable at <n> is pushed onto the operand stack.
-            case Opcode.op_fload_0:
-                opcodeText = Opcode.name_fload_0;
-                break;
-
-            case Opcode.op_fload_1:
-                opcodeText = Opcode.name_fload_1;
-                break;
-
-            case Opcode.op_fload_2:
-                opcodeText = Opcode.name_fload_2;
-                break;
-
-            case Opcode.op_fload_3:
-                opcodeText = Opcode.name_fload_3;
-                break;
-
+            opcodeText = Opcode.Instruction.fload_0.name();
+        } else if (Opcode.Instruction.fload_1.code == opcode) {
+            opcodeText = Opcode.Instruction.fload_1.name();
+        } else if (Opcode.Instruction.fload_2.code == opcode) {
+            opcodeText = Opcode.Instruction.fload_2.name();
+        } else if (Opcode.Instruction.fload_3.code == opcode) {
+            opcodeText = Opcode.Instruction.fload_3.name();
+        } else if (Opcode.Instruction.dload_0.code == opcode) {
             // Load double from local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
             // The local variable at <n> must contain a double. 
             // The value of the local variable at <n> is pushed onto the operand stack. 
-            case Opcode.op_dload_0:
-                opcodeText = Opcode.name_dload_0;
-                break;
-
-            case Opcode.op_dload_1:
-                opcodeText = Opcode.name_dload_1;
-                break;
-
-            case Opcode.op_dload_2:
-                opcodeText = Opcode.name_dload_2;
-                break;
-
-            case Opcode.op_dload_3:
-                opcodeText = Opcode.name_dload_3;
-                break;
-
+            opcodeText = Opcode.Instruction.dload_0.name();
+        } else if (Opcode.Instruction.dload_1.code == opcode) {
+            opcodeText = Opcode.Instruction.dload_1.name();
+        } else if (Opcode.Instruction.dload_2.code == opcode) {
+            opcodeText = Opcode.Instruction.dload_2.name();
+        } else if (Opcode.Instruction.dload_3.code == opcode) {
+            opcodeText = Opcode.Instruction.dload_3.name();
+        } else if (Opcode.Instruction.aload_0.code == opcode) {
             // Load reference from local variable
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The local variable at <n> must contain a reference. 
             // The objectref in the local variable at index is pushed onto the operand stack.
-            case Opcode.op_aload_0:
-                opcodeText = Opcode.name_aload_0;
-                break;
-
-            case Opcode.op_aload_1:
-                opcodeText = Opcode.name_aload_1;
-                break;
-
-            case Opcode.op_aload_2:
-                opcodeText = Opcode.name_aload_2;
-                break;
-
-            case Opcode.op_aload_3:
-                opcodeText = Opcode.name_aload_3;
-                break;
-
+            opcodeText = Opcode.Instruction.aload_0.name();
+        } else if (Opcode.Instruction.aload_1.code == opcode) {
+            opcodeText = Opcode.Instruction.aload_1.name();
+        } else if (Opcode.Instruction.aload_2.code == opcode) {
+            opcodeText = Opcode.Instruction.aload_2.name();
+        } else if (Opcode.Instruction.aload_3.code == opcode) {
+            opcodeText = Opcode.Instruction.aload_3.name();
+        } else if (Opcode.Instruction.iaload.code == opcode) {
             // Load int from array
             // The arrayref must be of type reference and must refer to an array 
             // whose components are of type int. 
             // The index must be of type int. 
             // Both arrayref and index are popped from the operand stack. 
             // The int value in the component of the array at index is retrieved and pushed onto the operand stack.
-            case Opcode.op_iaload:
-                opcodeText = Opcode.name_iaload;
-                break;
-
+            opcodeText = Opcode.Instruction.iaload.name();
+        } else if (Opcode.Instruction.laload.code == opcode) {
             // Load long from array
-            case Opcode.op_laload:
-                opcodeText = Opcode.name_laload;
-                break;
-
+            opcodeText = Opcode.Instruction.laload.name();
+        } else if (Opcode.Instruction.faload.code == opcode) {
             // Load float from array
-            case Opcode.op_faload:
-                opcodeText = Opcode.name_faload;
-                break;
-
+            opcodeText = Opcode.Instruction.faload.name();
+        } else if (Opcode.Instruction.daload.code == opcode) {
             // Load double from array
-            case Opcode.op_daload:
-                opcodeText = Opcode.name_daload;
-                break;
-
+            opcodeText = Opcode.Instruction.daload.name();
+        } else if (Opcode.Instruction.aaload.code == opcode) {
             // Load reference from array
-            case Opcode.op_aaload:
-                opcodeText = Opcode.name_aaload;
-                break;
-
+            opcodeText = Opcode.Instruction.aaload.name();
+        } else if (Opcode.Instruction.baload.code == opcode) {
             // Load byte or boolean from array
-            case Opcode.op_baload:
-                opcodeText = Opcode.name_baload;
-                break;
-
+            opcodeText = Opcode.Instruction.baload.name();
+        } else if (Opcode.Instruction.caload.code == opcode) {
             // Load char from array
-            case Opcode.op_caload:
-                opcodeText = Opcode.name_caload;
-                break;
-
+            opcodeText = Opcode.Instruction.caload.name();
+        } else if (Opcode.Instruction.saload.code == opcode) {
             // Load short from array
-            case Opcode.op_saload:
-                opcodeText = Opcode.name_saload;
-                break;
-
+            opcodeText = Opcode.Instruction.saload.name();
+        } else if (Opcode.Instruction.istore.code == opcode) {
             // Store int into local variable
-            case Opcode.op_istore:
-                // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
-                // The value on the top of the operand stack must be of type int. 
-                // It is popped from the operand stack, and the value of the local variable at index is set to value.
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_istore, byteValue);
-                break;
-
+            // --
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The value on the top of the operand stack must be of type int. 
+            // It is popped from the operand stack, and the value of the local variable at index is set to value.
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.istore.name(), byteValue);
+        } else if (Opcode.Instruction.lstore.code == opcode) {
             // Store long into local variable
-            case Opcode.op_lstore:
-                // The index is an unsigned byte. 
-                // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
-                // The value on the top of the operand stack must be of type long. 
-                // It is popped from the operand stack, and the local variables at index and index + 1 are set to value. 
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_lstore, byteValue);
-                break;
-
+            // --
+            // The index is an unsigned byte. 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // The value on the top of the operand stack must be of type long. 
+            // It is popped from the operand stack, and the local variables at index and index + 1 are set to value. 
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.lstore.name(), byteValue);
+        } else if (Opcode.Instruction.fstore.code == opcode) {
             // Store float into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type float. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The value of the local variable at index is set to value'.
-            case Opcode.op_fstore:
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_fstore, byteValue);
-                break;
-
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.fstore.name(), byteValue);
+        } else if (Opcode.Instruction.dstore.code == opcode) {
             // Store double into local variable
             // The index is an unsigned byte. Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type double. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The local variables at index and index + 1 are set to value'. 
-            case Opcode.op_dstore:
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_dstore, byteValue);
-                break;
-
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.dstore.name(), byteValue);
+        } else if (Opcode.Instruction.astore.code == opcode) {
             // Store reference into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference. 
             // It is popped from the operand stack, and the value of the local variable at index is set to objectref.
-            case Opcode.op_astore:
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_dstore, byteValue);
-                break;
-
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.astore.name(), byteValue);
+        } else if (Opcode.Instruction.istore_0.code == opcode) {
             // Store int into local variable
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type int. 
             // It is popped from the operand stack, and the value of the local variable at <n> is set to value. 
-            case Opcode.op_istore_0:
-                opcodeText = Opcode.name_istore_0;
-                break;
-
-            case Opcode.op_istore_1:
-                opcodeText = Opcode.name_istore_1;
-                break;
-
-            case Opcode.op_istore_2:
-                opcodeText = Opcode.name_istore_2;
-                break;
-
-            case Opcode.op_istore_3:
-                opcodeText = Opcode.name_istore_3;
-                break;
-
+            opcodeText = Opcode.Instruction.istore_0.name();
+        } else if (Opcode.Instruction.istore_1.code == opcode) {
+            opcodeText = Opcode.Instruction.istore_1.name();
+        } else if (Opcode.Instruction.istore_2.code == opcode) {
+            opcodeText = Opcode.Instruction.istore_2.name();
+        } else if (Opcode.Instruction.istore_3.code == opcode) {
+            opcodeText = Opcode.Instruction.istore_3.name();
+        } else if (Opcode.Instruction.lstore_0.code == opcode) {
             // Store long into local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type long. 
             // It is popped from the operand stack, and the local variables at <n> and <n> + 1 are set to value.
-            case Opcode.op_lstore_0:
-                opcodeText = Opcode.name_lstore_0;
-                break;
-
-            case Opcode.op_lstore_1:
-                opcodeText = Opcode.name_lstore_1;
-                break;
-
-            case Opcode.op_lstore_2:
-                opcodeText = Opcode.name_lstore_2;
-                break;
-
-            case Opcode.op_lstore_3:
-                opcodeText = Opcode.name_lstore_3;
-                break;
-
+            opcodeText = Opcode.Instruction.lstore_0.name();
+        } else if (Opcode.Instruction.lstore_1.code == opcode) {
+            opcodeText = Opcode.Instruction.lstore_1.name();
+        } else if (Opcode.Instruction.lstore_2.code == opcode) {
+            opcodeText = Opcode.Instruction.lstore_2.name();
+        } else if (Opcode.Instruction.lstore_3.code == opcode) {
+            opcodeText = Opcode.Instruction.lstore_3.name();
+        } else if (Opcode.Instruction.fstore_0.code == opcode) {
             // Store float into local variable 
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type float. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The value of the local variable at <n> is set to value'.
-            case Opcode.op_fstore_0:
-                opcodeText = Opcode.name_fstore_0;
-                break;
-
-            case Opcode.op_fstore_1:
-                opcodeText = Opcode.name_fstore_1;
-                break;
-
-            case Opcode.op_fstore_2:
-                opcodeText = Opcode.name_fstore_2;
-                break;
-
-            case Opcode.op_fstore_3:
-                opcodeText = Opcode.name_fstore_3;
-                break;
-
+            opcodeText = Opcode.Instruction.fstore_0.name();
+        } else if (Opcode.Instruction.fstore_1.code == opcode) {
+            opcodeText = Opcode.Instruction.fstore_1.name();
+        } else if (Opcode.Instruction.fstore_2.code == opcode) {
+            opcodeText = Opcode.Instruction.fstore_2.name();
+        } else if (Opcode.Instruction.fstore_3.code == opcode) {
+            opcodeText = Opcode.Instruction.fstore_3.name();
+        } else if (Opcode.Instruction.dstore_0.code == opcode) {
             // Store double into local variable 
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
             // The value on the top of the operand stack must be of type double. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The local variables at <n> and <n> + 1 are set to value'.
-            case Opcode.op_dstore_0:
-                opcodeText = Opcode.name_dstore_0;
-                break;
-
-            case Opcode.op_dstore_1:
-                opcodeText = Opcode.name_dstore_1;
-                break;
-
-            case Opcode.op_dstore_2:
-                opcodeText = Opcode.name_dstore_2;
-                break;
-
-            case Opcode.op_dstore_3:
-                opcodeText = Opcode.name_dstore_3;
-                break;
-
+            opcodeText = Opcode.Instruction.dstore_0.name();
+        } else if (Opcode.Instruction.dstore_1.code == opcode) {
+            opcodeText = Opcode.Instruction.dstore_1.name();
+        } else if (Opcode.Instruction.dstore_2.code == opcode) {
+            opcodeText = Opcode.Instruction.dstore_2.name();
+        } else if (Opcode.Instruction.dstore_3.code == opcode) {
+            opcodeText = Opcode.Instruction.dstore_3.name();
+        } else if (Opcode.Instruction.astore_0.code == opcode) {
             // Store reference into local variable 
             // The <n> must be an index into the local variable array of the current frame (?.6). 
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference. 
             // It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
-            case Opcode.op_astore_0:
-                opcodeText = Opcode.name_astore_0;
-                break;
-
-            case Opcode.op_astore_1:
-                opcodeText = Opcode.name_astore_1;
-                break;
-
-            case Opcode.op_astore_2:
-                opcodeText = Opcode.name_astore_2;
-                break;
-
-            case Opcode.op_astore_3:
-                opcodeText = Opcode.name_astore_3;
-                break;
-
+            opcodeText = Opcode.Instruction.astore_0.name();
+        } else if (Opcode.Instruction.astore_1.code == opcode) {
+            opcodeText = Opcode.Instruction.astore_1.name();
+        } else if (Opcode.Instruction.astore_2.code == opcode) {
+            opcodeText = Opcode.Instruction.astore_2.name();
+        } else if (Opcode.Instruction.astore_3.code == opcode) {
+            opcodeText = Opcode.Instruction.astore_3.name();
+        } else if (Opcode.Instruction.iastore.code == opcode) {
             // Store into int array
             // ..., arrayref, index, value
             // The arrayref must be of type reference and must refer to an array whose components are of type int. 
             // Both index and value must be of type int. 
             // The arrayref, index, and value are popped from the operand stack. 
             // The int value is stored as the component of the array indexed by index. 
-            case Opcode.op_iastore:
-                opcodeText = Opcode.name_iastore;
-                break;
-
+            opcodeText = Opcode.Instruction.iastore.name();
+        } else if (Opcode.Instruction.lastore.code == opcode) {
             // Store into long array
             // ..., arrayref, index, value
-            case Opcode.op_lastore:
-                opcodeText = Opcode.name_lastore;
-                break;
-
+            opcodeText = Opcode.Instruction.lastore.name();
+        } else if (Opcode.Instruction.fastore.code == opcode) {
             // Store into float array
             // ..., arrayref, index, value
-            case Opcode.op_fastore:
-                opcodeText = Opcode.name_fastore;
-                break;
-
+            opcodeText = Opcode.Instruction.fastore.name();
+        } else if (Opcode.Instruction.dastore.code == opcode) {
             // Store into double array
             // ..., arrayref, index, value
-            case Opcode.op_dastore:
-                opcodeText = Opcode.name_dastore;
-                break;
-
+            opcodeText = Opcode.Instruction.dastore.name();
+        } else if (Opcode.Instruction.aastore.code == opcode) {
             // Store into reference array
             // ..., arrayref, index, value
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_aastore:
-                opcodeText = Opcode.name_aastore;
-                break;
-
+            opcodeText = Opcode.Instruction.aastore.name();
+        } else if (Opcode.Instruction.bastore.code == opcode) {
             // Store into byte or boolean array
             // ..., arrayref, index, value
-            case Opcode.op_bastore:
-                opcodeText = Opcode.name_bastore;
-                break;
-
+            opcodeText = Opcode.Instruction.bastore.name();
+        } else if (Opcode.Instruction.castore.code == opcode) {
             // Store into char array
             // ..., arrayref, index, value
-            case Opcode.op_castore:
-                opcodeText = Opcode.name_castore;
-                break;
-
+            opcodeText = Opcode.Instruction.castore.name();
+        } else if (Opcode.Instruction.sastore.code == opcode) {
             // Store into short array 
             // ..., arrayref, index, value
-            case Opcode.op_sastore:
-                opcodeText = Opcode.name_sastore;
-                break;
-
+            opcodeText = Opcode.Instruction.sastore.name();
+        } else if (Opcode.Instruction.pop.code == opcode) {
             // Pop the top operand stack value
             // The pop instruction must not be used unless value is a value of a category 1 computational type (?.11.1).
-            case Opcode.op_pop:
-                opcodeText = Opcode.name_pop;
-                break;
-
+            opcodeText = Opcode.Instruction.pop.name();
+        } else if (Opcode.Instruction.pop2.code == opcode) {
             // Pop the top one or two operand stack values
             // Form 1: ..., value2, value1
             //   where each of value1 and value2 is a value of a category 1 computational type (?.11.1).
             // Form 2: ..., value
             //   where value is a value of a category 2 computational type (?.11.1).
-            case Opcode.op_pop2:
-                opcodeText = Opcode.name_pop2;
-                break;
-
+            opcodeText = Opcode.Instruction.pop2.name();
+        } else if (Opcode.Instruction.dup.code == opcode) {
             // Duplicate the top operand stack value
             // ..., value --> ..., value, value
-            case Opcode.op_dup:
-                opcodeText = Opcode.name_dup;
-                break;
-
+            opcodeText = Opcode.Instruction.dup.name();
+        } else if (Opcode.Instruction.dup_x1.code == opcode) {
             // Duplicate the top operand stack value and insert two values down
             // ..., value2, value1 --> ..., value1, value2, value1
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_dup_x1:
-                opcodeText = Opcode.name_dup_x1;
-                break;
-
+            opcodeText = Opcode.Instruction.dup_x1.name();
+        } else if (Opcode.Instruction.dup_x2.code == opcode) {
             // Duplicate the top operand stack value and insert two or three values down
             // Form 1: ..., value3, value2, value1 -->  ..., value1, value3, value2, value1
             // Form 2: ..., value2, value1 --> ..., value1, value2, value1
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_dup_x2:
-                opcodeText = Opcode.name_dup_x2;
-                break;
-
+            opcodeText = Opcode.Instruction.dup_x2.name();
+        } else if (Opcode.Instruction.dup2.code == opcode) {
             // Duplicate the top one or two operand stack values
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_dup2:
-                opcodeText = Opcode.name_dup2;
-                break;
-
+            opcodeText = Opcode.Instruction.dup2.name();
+        } else if (Opcode.Instruction.dup2_x1.code == opcode) {
             // Duplicate the top one or two operand stack values and insert two or three values down
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_dup2_x1:
-                opcodeText = Opcode.name_dup2_x1;
-                break;
-
+            opcodeText = Opcode.Instruction.dup2_x1.name();
+        } else if (Opcode.Instruction.dup2_x2.code == opcode) {
             // Duplicate the top one or two operand stack values and insert two, three, or four values down
             // ** Very complex, see the <VM Spec> for detail
-            case Opcode.op_dup2_x2:
-                opcodeText = Opcode.name_dup2_x2;
-                break;
-
+            opcodeText = Opcode.Instruction.dup2_x2.name();
+        } else if (Opcode.Instruction.swap.code == opcode) {
             // Swap the top two operand stack values
             // ..., value2, value1 --> ..., value1, value2
             // The swap instruction must not be used unless value1 and value2 are both values of a category 1 computational type (?.11.1).
-            case Opcode.op_swap:
-                opcodeText = Opcode.name_swap;
-                break;
-
-            case Opcode.op_iadd:
-                opcodeText = Opcode.name_iadd;
-                break;
-
-            case Opcode.op_ladd:
-                opcodeText = Opcode.name_ladd;
-                break;
-
-            case Opcode.op_fadd:
-                opcodeText = Opcode.name_fadd;
-                break;
-
-            case Opcode.op_dadd:
-                opcodeText = Opcode.name_dadd;
-                break;
-
-            case Opcode.op_isub:
-                opcodeText = Opcode.name_isub;
-                break;
-
-            case Opcode.op_lsub:
-                opcodeText = Opcode.name_lsub;
-                break;
-
-            case Opcode.op_fsub:
-                opcodeText = Opcode.name_fsub;
-                break;
-
-            case Opcode.op_dsub:
-                opcodeText = Opcode.name_dsub;
-                break;
-
-            case Opcode.op_imul:
-                opcodeText = Opcode.name_imul;
-                break;
-
-            case Opcode.op_lmul:
-                opcodeText = Opcode.name_lmul;
-                break;
-
-            case Opcode.op_fmul:
-                opcodeText = Opcode.name_fmul;
-                break;
-
-            case Opcode.op_dmul:
-                opcodeText = Opcode.name_dmul;
-                break;
-
-            case Opcode.op_idiv:
-                opcodeText = Opcode.name_idiv;
-                break;
-
-            case Opcode.op_ldiv:
-                opcodeText = Opcode.name_ldiv;
-                break;
-
-            case Opcode.op_fdiv:
-                opcodeText = Opcode.name_fdiv;
-                break;
-
-            case Opcode.op_ddiv:
-                opcodeText = Opcode.name_ddiv;
-                break;
-
-            case Opcode.op_irem:
-                opcodeText = Opcode.name_irem;
-                break;
-
-            case Opcode.op_lrem:
-                opcodeText = Opcode.name_lrem;
-                break;
-
-            case Opcode.op_frem:
-                opcodeText = Opcode.name_frem;
-                break;
-
-            case Opcode.op_drem:
-                opcodeText = Opcode.name_drem;
-                break;
-
-            case Opcode.op_ineg:
-                opcodeText = Opcode.name_ineg;
-                break;
-
-            case Opcode.op_lneg:
-                opcodeText = Opcode.name_lneg;
-                break;
-
-            case Opcode.op_fneg:
-                opcodeText = Opcode.name_fneg;
-                break;
-
-            case Opcode.op_dneg:
-                opcodeText = Opcode.name_dneg;
-                break;
-
-            case Opcode.op_ishl:
-                opcodeText = Opcode.name_ishl;
-                break;
-
-            case Opcode.op_lshl:
-                opcodeText = Opcode.name_lshl;
-                break;
-
-            case Opcode.op_ishr:
-                opcodeText = Opcode.name_ishr;
-                break;
-
-            case Opcode.op_lshr:
-                opcodeText = Opcode.name_lshr;
-                break;
-
-            case Opcode.op_iushr:
-                opcodeText = Opcode.name_iushr;
-                break;
-
-            case Opcode.op_lushr:
-                opcodeText = Opcode.name_lushr;
-                break;
-
-            case Opcode.op_iand:
-                opcodeText = Opcode.name_iand;
-                break;
-
-            case Opcode.op_land:
-                opcodeText = Opcode.name_land;
-                break;
-
-            case Opcode.op_ior:
-                opcodeText = Opcode.name_ior;
-                break;
-
-            case Opcode.op_lor:
-                opcodeText = Opcode.name_lor;
-                break;
-
-            case Opcode.op_ixor:
-                opcodeText = Opcode.name_ixor;
-                break;
-
-            case Opcode.op_lxor:
-                opcodeText = Opcode.name_lxor;
-                break;
-
+            opcodeText = Opcode.Instruction.swap.name();
+        } else if (Opcode.Instruction.iadd.code == opcode) {
+            opcodeText = Opcode.Instruction.iadd.name();
+        } else if (Opcode.Instruction.ladd.code == opcode) {
+            opcodeText = Opcode.Instruction.ladd.name();
+        } else if (Opcode.Instruction.fadd.code == opcode) {
+            opcodeText = Opcode.Instruction.fadd.name();
+        } else if (Opcode.Instruction.dadd.code == opcode) {
+            opcodeText = Opcode.Instruction.dadd.name();
+        } else if (Opcode.Instruction.isub.code == opcode) {
+            opcodeText = Opcode.Instruction.isub.name();
+        } else if (Opcode.Instruction.lsub.code == opcode) {
+            opcodeText = Opcode.Instruction.lsub.name();
+        } else if (Opcode.Instruction.fsub.code == opcode) {
+            opcodeText = Opcode.Instruction.fsub.name();
+        } else if (Opcode.Instruction.dsub.code == opcode) {
+            opcodeText = Opcode.Instruction.dsub.name();
+        } else if (Opcode.Instruction.imul.code == opcode) {
+            opcodeText = Opcode.Instruction.imul.name();
+        } else if (Opcode.Instruction.lmul.code == opcode) {
+            opcodeText = Opcode.Instruction.lmul.name();
+        } else if (Opcode.Instruction.fmul.code == opcode) {
+            opcodeText = Opcode.Instruction.fmul.name();
+        } else if (Opcode.Instruction.dmul.code == opcode) {
+            opcodeText = Opcode.Instruction.dmul.name();
+        } else if (Opcode.Instruction.idiv.code == opcode) {
+            opcodeText = Opcode.Instruction.idiv.name();
+        } else if (Opcode.Instruction.ldiv.code == opcode) {
+            opcodeText = Opcode.Instruction.ldiv.name();
+        } else if (Opcode.Instruction.fdiv.code == opcode) {
+            opcodeText = Opcode.Instruction.fdiv.name();
+        } else if (Opcode.Instruction.ddiv.code == opcode) {
+            opcodeText = Opcode.Instruction.ddiv.name();
+        } else if (Opcode.Instruction.irem.code == opcode) {
+            opcodeText = Opcode.Instruction.irem.name();
+        } else if (Opcode.Instruction.lrem.code == opcode) {
+            opcodeText = Opcode.Instruction.lrem.name();
+        } else if (Opcode.Instruction.frem.code == opcode) {
+            opcodeText = Opcode.Instruction.frem.name();
+        } else if (Opcode.Instruction.drem.code == opcode) {
+            opcodeText = Opcode.Instruction.drem.name();
+        } else if (Opcode.Instruction.ineg.code == opcode) {
+            opcodeText = Opcode.Instruction.ineg.name();
+        } else if (Opcode.Instruction.lneg.code == opcode) {
+            opcodeText = Opcode.Instruction.lneg.name();
+        } else if (Opcode.Instruction.fneg.code == opcode) {
+            opcodeText = Opcode.Instruction.fneg.name();
+        } else if (Opcode.Instruction.dneg.code == opcode) {
+            opcodeText = Opcode.Instruction.dneg.name();
+        } else if (Opcode.Instruction.ishl.code == opcode) {
+            opcodeText = Opcode.Instruction.ishl.name();
+        } else if (Opcode.Instruction.lshl.code == opcode) {
+            opcodeText = Opcode.Instruction.lshl.name();
+        } else if (Opcode.Instruction.ishr.code == opcode) {
+            opcodeText = Opcode.Instruction.ishr.name();
+        } else if (Opcode.Instruction.lshr.code == opcode) {
+            opcodeText = Opcode.Instruction.lshr.name();
+        } else if (Opcode.Instruction.iushr.code == opcode) {
+            opcodeText = Opcode.Instruction.iushr.name();
+        } else if (Opcode.Instruction.lushr.code == opcode) {
+            opcodeText = Opcode.Instruction.lushr.name();
+        } else if (Opcode.Instruction.iand.code == opcode) {
+            opcodeText = Opcode.Instruction.iand.name();
+        } else if (Opcode.Instruction.land.code == opcode) {
+            opcodeText = Opcode.Instruction.land.name();
+        } else if (Opcode.Instruction.ior.code == opcode) {
+            opcodeText = Opcode.Instruction.ior.name();
+        } else if (Opcode.Instruction.lor.code == opcode) {
+            opcodeText = Opcode.Instruction.lor.name();
+        } else if (Opcode.Instruction.ixor.code == opcode) {
+            opcodeText = Opcode.Instruction.ixor.name();
+        } else if (Opcode.Instruction.lxor.code == opcode) {
+            opcodeText = Opcode.Instruction.lxor.name();
+        } else if (Opcode.Instruction.iinc.code == opcode) {
             // Increment local variable by constant
-            case Opcode.op_iinc:
-                // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
-                // The local variable at index must contain an int. 
-                byteValue = pdis.readUnsignedByte();
+            // --
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The local variable at index must contain an int. 
+            byteValue = pdis.readUnsignedByte();
                 // The const is an immediate signed byte. 
-                // The value const is first sign-extended to an int, and then the local variable at index is incremented by that amount.
-                byteValue2 = pdis.readByte();
-                opcodeText = String.format("%s %d %d        ; index const", Opcode.name_iinc, byteValue, byteValue2);
-                break;
-
-            case Opcode.op_i2l:
-                opcodeText = Opcode.name_i2l;
-                break;
-
-            case Opcode.op_i2f:
-                opcodeText = Opcode.name_i2f;
-                break;
-
-            case Opcode.op_i2d:
-                opcodeText = Opcode.name_i2d;
-                break;
-
-            case Opcode.op_l2i:
-                opcodeText = Opcode.name_l2i;
-                break;
-
-            case Opcode.op_l2f:
-                opcodeText = Opcode.name_l2f;
-                break;
-
-            case Opcode.op_l2d:
-                opcodeText = Opcode.name_l2d;
-                break;
-
-            case Opcode.op_f2i:
-                opcodeText = Opcode.name_f2i;
-                break;
-
-            case Opcode.op_f2l:
-                opcodeText = Opcode.name_f2l;
-                break;
-
-            case Opcode.op_f2d:
-                opcodeText = Opcode.name_f2d;
-                break;
-
-            case Opcode.op_d2i:
-                opcodeText = Opcode.name_d2i;
-                break;
-
-            case Opcode.op_d2l:
-                opcodeText = Opcode.name_d2l;
-                break;
-
-            case Opcode.op_d2f:
-                opcodeText = Opcode.name_d2f;
-                break;
-
-            case Opcode.op_i2b:
-                opcodeText = Opcode.name_i2b;
-                break;
-
-            case Opcode.op_i2c:
-                opcodeText = Opcode.name_i2c;
-                break;
-
-            case Opcode.op_i2s:
-                opcodeText = Opcode.name_i2s;
-                break;
-
-            case Opcode.op_lcmp:
-                opcodeText = Opcode.name_lcmp;
-                break;
-
-            case Opcode.op_fcmpl:
-                opcodeText = Opcode.name_fcmpl;
-                break;
-
-            case Opcode.op_fcmpg:
-                opcodeText = Opcode.name_fcmpg;
-                break;
-
-            case Opcode.op_dcmpl:
-                opcodeText = Opcode.name_dcmpl;
-                break;
-
-            case Opcode.op_dcmpg:
-                opcodeText = Opcode.name_dcmpg;
-                break;
-
+            // The value const is first sign-extended to an int, and then the local variable at index is incremented by that amount.
+            byteValue2 = pdis.readByte();
+            opcodeText = String.format("%s %d %d        ; index const",
+                    Opcode.Instruction.iinc.name(), byteValue, byteValue2);
+        } else if (Opcode.Instruction.i2l.code == opcode) {
+            opcodeText = Opcode.Instruction.i2l.name();
+        } else if (Opcode.Instruction.i2f.code == opcode) {
+            opcodeText = Opcode.Instruction.i2f.name();
+        } else if (Opcode.Instruction.i2d.code == opcode) {
+            opcodeText = Opcode.Instruction.i2d.name();
+        } else if (Opcode.Instruction.l2i.code == opcode) {
+            opcodeText = Opcode.Instruction.l2i.name();
+        } else if (Opcode.Instruction.l2f.code == opcode) {
+            opcodeText = Opcode.Instruction.l2f.name();
+        } else if (Opcode.Instruction.l2d.code == opcode) {
+            opcodeText = Opcode.Instruction.l2d.name();
+        } else if (Opcode.Instruction.f2i.code == opcode) {
+            opcodeText = Opcode.Instruction.f2i.name();
+        } else if (Opcode.Instruction.f2l.code == opcode) {
+            opcodeText = Opcode.Instruction.f2l.name();
+        } else if (Opcode.Instruction.f2d.code == opcode) {
+            opcodeText = Opcode.Instruction.f2d.name();
+        } else if (Opcode.Instruction.d2i.code == opcode) {
+            opcodeText = Opcode.Instruction.d2i.name();
+        } else if (Opcode.Instruction.d2l.code == opcode) {
+            opcodeText = Opcode.Instruction.d2l.name();
+        } else if (Opcode.Instruction.d2f.code == opcode) {
+            opcodeText = Opcode.Instruction.d2f.name();
+        } else if (Opcode.Instruction.i2b.code == opcode) {
+            opcodeText = Opcode.Instruction.i2b.name();
+        } else if (Opcode.Instruction.i2c.code == opcode) {
+            opcodeText = Opcode.Instruction.i2c.name();
+        } else if (Opcode.Instruction.i2s.code == opcode) {
+            opcodeText = Opcode.Instruction.i2s.name();
+        } else if (Opcode.Instruction.lcmp.code == opcode) {
+            opcodeText = Opcode.Instruction.lcmp.name();
+        } else if (Opcode.Instruction.fcmpl.code == opcode) {
+            opcodeText = Opcode.Instruction.fcmpl.name();
+        } else if (Opcode.Instruction.fcmpg.code == opcode) {
+            opcodeText = Opcode.Instruction.fcmpg.name();
+        } else if (Opcode.Instruction.dcmpl.code == opcode) {
+            opcodeText = Opcode.Instruction.dcmpl.name();
+        } else if (Opcode.Instruction.dcmpg.code == opcode) {
+            opcodeText = Opcode.Instruction.dcmpg.name();
+        } else if (Opcode.Instruction.ifeq.code == opcode) {
             // if<cond>: ifeq = 153 (0x99) ifne = 154 (0x9a) iflt = 155 (0x9b) ifge = 156 (0x9c) ifgt = 157 (0x9d) ifle = 158 (0x9e)
             // Branch if int comparison with zero succeeds
             //
@@ -1339,68 +854,44 @@ public final class Opcode {
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2. 
             // Execution then proceeds at that offset from the address of the opcode of this if<cond> instruction. 
             // The target address must be that of an opcode of an instruction within the method that contains this if<cond> instruction.
-            case Opcode.op_ifeq:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifeq, shortValue);
-                break;
-
-            case Opcode.op_ifne:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifne, shortValue);
-                break;
-
-            case Opcode.op_iflt:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_iflt, shortValue);
-                break;
-
-            case Opcode.op_ifge:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifge, shortValue);
-                break;
-
-            case Opcode.op_ifgt:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifgt, shortValue);
-                break;
-
-            case Opcode.op_ifle:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifle, shortValue);
-                break;
-
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifeq.name(), shortValue);
+        } else if (Opcode.Instruction.ifne.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifne.name(), shortValue);
+        } else if (Opcode.Instruction.iflt.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.iflt.name(), shortValue);
+        } else if (Opcode.Instruction.ifge.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifge.name(), shortValue);
+        } else if (Opcode.Instruction.ifgt.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifgt.name(), shortValue);
+        } else if (Opcode.Instruction.ifle.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifle.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmpeq.code == opcode) {
             // if_icmp<cond>: if_icmpeq = 159 (0x9f) if_icmpne = 160 (0xa0) if_icmplt = 161 (0xa1) if_icmpge = 162 (0xa2) if_icmpgt = 163 (0xa3) if_icmple = 164 (0xa4)
             // Branch if int comparison succeeds
-            case Opcode.op_if_icmpeq:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmpeq, shortValue);
-                break;
-
-            case Opcode.op_if_icmpne:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmpne, shortValue);
-                break;
-
-            case Opcode.op_if_icmplt:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmplt, shortValue);
-                break;
-
-            case Opcode.op_if_icmpge:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmpge, shortValue);
-                break;
-
-            case Opcode.op_if_icmpgt:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmpgt, shortValue);
-                break;
-
-            case Opcode.op_if_icmple:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_icmple, shortValue);
-                break;
-
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_icmpeq.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmpne.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_icmpne.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmplt.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_icmplt.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmpge.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, opcodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmpgt.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_icmpgt.name(), shortValue);
+        } else if (Opcode.Instruction.if_icmple.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_icmple.name(), shortValue);
+        } else if (Opcode.Instruction.if_acmpeq.code == opcode) {
             // if_acmp<cond>: if_acmpeq = 165 (0xa5) if_acmpne = 166 (0xa6)
             // Branch if reference comparison succeeds
             // ..., value1, value2 
@@ -1410,26 +901,20 @@ public final class Opcode {
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2. 
             // Execution then proceeds at that offset from the address of the opcode of this if_acmp<cond> instruction. 
             // The target address must be that of an opcode of an instruction within the method that contains this if_acmp<cond> instruction.
-            case Opcode.op_if_acmpeq:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_acmpeq, shortValue);
-                break;
-
-            case Opcode.op_if_acmpne:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_if_acmpne, shortValue);
-                break;
-
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_acmpeq.name(), shortValue);
+        } else if (Opcode.Instruction.if_acmpne.code == opcode) {
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_acmpne.name(), shortValue);
+        } else if (Opcode.Instruction.goto_.code == opcode) {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset, 
             // where branchoffset is (branchbyte1 << 8) | branchbyte2. 
             // Execution proceeds at that offset from the address of the opcode of this goto instruction. 
             // The target address must be that of an opcode of an instruction within the method that contains this goto instruction.
-            case Opcode.op_goto:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_goto, shortValue);
-                break;
-
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.goto_.getName(), shortValue);
+        } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
             // The address of the opcode of the instruction immediately following this jsr instruction 
             // is pushed onto the operand stack as a value of type returnAddress. 
@@ -1437,258 +922,229 @@ public final class Opcode {
             // where the offset is (branchbyte1 << 8) | branchbyte2. 
             // Execution proceeds at that offset from the address of this jsr instruction. 
             // The target address must be that of an opcode of an instruction within the method that contains this jsr instruction.
-            case Opcode.op_jsr:
-                shortValue = pdis.readShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_jsr, shortValue);
-                break;
-
+            shortValue = pdis.readShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.jsr.name(), shortValue);
+        } else if (Opcode.Instruction.ret.code == opcode) {
             // Return from subroutine
             // The index is an unsigned byte between 0 and 255, inclusive. 
             // The local variable at index in the current frame (?.6) must contain a value of type returnAddress. 
             // The contents of the local variable are written into the Java virtual machine's pc register, and execution continues there.
-            case Opcode.op_ret:
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ret, byteValue);
-                break;
-
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ret.name(), byteValue);
+        } else if (Opcode.Instruction.tableswitch.code == opcode) {
             // Access jump table by index and jump
-            case Opcode.op_tableswitch:
-                pdis.skipBytes(3);
-                opcodeText = Opcode.getOpcodeTableSwitchText(pdis, 8);
-                break;
-
+            pdis.skipBytes(3);
+            opcodeText = Opcode.getOpcodeTableSwitchText(pdis, 8);
+            // opcodeText = Opcode.Instruction.tableswitch.name();
+        } else if (Opcode.Instruction.lookupswitch.code == opcode) {
             // Access jump table by key match and jump
-            case Opcode.op_lookupswitch:
-                pdis.skipBytes(3);
-                opcodeText = Opcode.getOpcodeLookupSwitchText(pdis, 8);
-                break;
-
-            case Opcode.op_ireturn:
-                opcodeText = Opcode.name_ireturn;
-                break;
-
-            case Opcode.op_lreturn:
-                opcodeText = Opcode.name_lreturn;
-                break;
-
-            case Opcode.op_freturn:
-                opcodeText = Opcode.name_freturn;
-                break;
-
-            case Opcode.op_dreturn:
-                opcodeText = Opcode.name_dreturn;
-                break;
-
-            case Opcode.op_areturn:
-                opcodeText = Opcode.name_areturn;
-                break;
-
-            case Opcode.op_return:
-                opcodeText = Opcode.name_return;
-                break;
-
+            pdis.skipBytes(3);
+            opcodeText = Opcode.getOpcodeLookupSwitchText(pdis, 8);
+            // opcodeText = Opcode.Instruction.lookupswitch.name();
+        } else if (Opcode.Instruction.ireturn.code == opcode) {
+            opcodeText = Opcode.Instruction.ireturn.name();
+        } else if (Opcode.Instruction.lreturn.code == opcode) {
+            opcodeText = Opcode.Instruction.lreturn.name();
+        } else if (Opcode.Instruction.freturn.code == opcode) {
+            opcodeText = Opcode.Instruction.freturn.name();
+        } else if (Opcode.Instruction.dreturn.code == opcode) {
+            opcodeText = Opcode.Instruction.dreturn.name();
+        } else if (Opcode.Instruction.areturn.code == opcode) {
+            opcodeText = Opcode.Instruction.areturn.name();
+        } else if (Opcode.Instruction.return_.code == opcode) {
+            opcodeText = Opcode.Instruction.return_.getName();
+        } else if (Opcode.Instruction.getstatic.code == opcode) {
             // Get static field from class
-            case Opcode.op_getstatic:
-                // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
-                // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
-                // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface 
-                // in which the field is to be found. 
-                // The referenced field is resolved (?.4.3.2). 
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_getstatic, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
+            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
+            // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface 
+            // in which the field is to be found. 
+            // The referenced field is resolved (?.4.3.2). 
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.getstatic.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.putstatic.code == opcode) {
             // Set static field in class
-            case Opcode.op_putstatic:
-                // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
-                // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
-                // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface 
-                // in which the field is to be found. The referenced field is resolved (?.4.3.2).
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_putstatic, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
+            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
+            // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface 
+            // in which the field is to be found. The referenced field is resolved (?.4.3.2).
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.putstatic.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.getfield.code == opcode) {
             // Fetch field from object
-            case Opcode.op_getfield:
-                // The objectref, which must be of type reference, is popped from the operand stack. 
-                // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
-                // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
-                // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_getfield, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The objectref, which must be of type reference, is popped from the operand stack. 
+            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
+            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
+            // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.getfield.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.putfield.code == opcode) {
             // Set field in object
-            case Opcode.op_putfield:
-                // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
-                // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
-                // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_putfield, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
+            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
+            // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.putfield.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.invokevirtual.code == opcode) {
             // Invoke instance method; dispatch based on class
-            case Opcode.op_invokevirtual:
-                // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
-                // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
-                // The runtime constant pool item at that index must be a symbolic reference to a method (?.1), 
-                // which gives the name and descriptor (?.3.3) of the method as well as a symbolic reference to the class 
-                // in which the method is to be found. 
-                // The named method is resolved (?.4.3.3). 
-                // The method must not be an instance initialization method (?.9) or the class or interface initialization method (?.9). 
-                // Finally, if the resolved method is protected (?.6), and it is 
-                //   either a member of the current class 
-                //   or a member of a superclass of the current class, 
-                // then the class of objectref must be either the current class or a subclass of the current class.
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_invokevirtual, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
-            // Invoke instance method; special handling for superclass, private, and instance initialization method invocations
-            case Opcode.op_invokespecial:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_invokespecial, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            // --
+            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6), 
+            // where the value of the index is (indexbyte1 << 8) | indexbyte2. 
+            // The runtime constant pool item at that index must be a symbolic reference to a method (?.1), 
+            // which gives the name and descriptor (?.3.3) of the method as well as a symbolic reference to the class 
+            // in which the method is to be found. 
+            // The named method is resolved (?.4.3.3). 
+            // The method must not be an instance initialization method (?.9) or the class or interface initialization method (?.9). 
+            // Finally, if the resolved method is protected (?.6), and it is 
+            //   either a member of the current class 
+            //   or a member of a superclass of the current class, 
+            // then the class of objectref must be either the current class or a subclass of the current class.
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.invokevirtual.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.invokespecial.code == opcode) {
+            // Invoke instance method; 
+            // special handling for superclass, private, and instance initialization method invocations
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.invokespecial.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.invokestatic.code == opcode) {
             // Invoke a class (static) method
-            case Opcode.op_invokestatic:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_invokestatic, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.invokestatic.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.invokeinterface.code == opcode) {
             // Invoke interface method
-            case Opcode.op_invokeinterface:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                byteValue = pdis.readUnsignedByte();
-                pdis.skipBytes(1);
-                opcodeText = String.format("%s interface=%d [%s], nargs=%d",
-                        Opcode.name_invokeinterface,
-                        shortValue,
-                        classFile.getCPDescription(shortValue),
-                        byteValue);
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            byteValue = pdis.readUnsignedByte();
+            pdis.skipBytes(1);
+            opcodeText = String.format("%s interface=%d [%s], nargs=%d",
+                    Opcode.Instruction.invokeinterface.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue),
+                    byteValue);
+        } else if (Opcode.Instruction.new_.code == opcode) {
             // Create new object
-            case Opcode.op_new:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_new, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.new_.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.newarray.code == opcode) {
             // Create new array
-            case Opcode.op_newarray:
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format("%s %s", Opcode.name_newarray, getOpcodeNewarrayAtype(byteValue));
-                break;
-
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format("%s %s",
+                    Opcode.Instruction.newarray.name(),
+                    getOpcodeNewarrayAtype(byteValue));
+        } else if (Opcode.Instruction.anewarray.code == opcode) {
             // Create new array of reference
-            case Opcode.op_anewarray:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_anewarray, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
-            case Opcode.op_arraylength:
-                opcodeText = Opcode.name_arraylength;
-                break;
-
-            case Opcode.op_athrow:
-                opcodeText = Opcode.name_athrow;
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.anewarray.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.arraylength.code == opcode) {
+            opcodeText = Opcode.Instruction.arraylength.name();
+        } else if (Opcode.Instruction.athrow.code == opcode) {
+            opcodeText = Opcode.Instruction.athrow.name();
+        } else if (Opcode.Instruction.checkcast.code == opcode) {
             // Check whether object is of given type
-            case Opcode.op_checkcast:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_checkcast, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.checkcast.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.instanceof_.code == opcode) {
             // Determine if object is of given type
-            case Opcode.op_instanceof:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                opcodeText = String.format(FORMAT_SDS, Opcode.name_instanceof, shortValue, classFile.getCPDescription(shortValue));
-                break;
-
-            case Opcode.op_monitorenter:
-                opcodeText = Opcode.name_monitorenter;
-                break;
-
-            case Opcode.op_monitorexit:
-                opcodeText = Opcode.name_monitorexit;
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            opcodeText = String.format(FORMAT_SDS,
+                    Opcode.Instruction.instanceof_.getName(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue));
+        } else if (Opcode.Instruction.monitorenter.code == opcode) {
+            opcodeText = Opcode.Instruction.monitorenter.name();
+        } else if (Opcode.Instruction.monitorexit.code == opcode) {
+            opcodeText = Opcode.Instruction.monitorexit.name();
+        } else if (Opcode.Instruction.wide.code == opcode) {
             // Extend local variable index by additional bytes
-            case Opcode.op_wide:
-                opcodeText = Opcode.getOpcodeWideText(pdis);
-                break;
-
+            opcodeText = Opcode.Instruction.wide.name();
+        } else if (Opcode.Instruction.multianewarray.code == opcode) {
             // Create new multidimensional array
-            case Opcode.op_multianewarray:
-                shortValue = pdis.readUnsignedShort();
-                parseResult.CPIndex1 = shortValue;
-                byteValue = pdis.readUnsignedByte();
-                opcodeText = String.format("%s index=%d [%s] dimensions=%d",
-                        Opcode.name_instanceof,
-                        shortValue,
-                        classFile.getCPDescription(shortValue),
-                        byteValue);
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            parseResult.CPIndex1 = shortValue;
+            byteValue = pdis.readUnsignedByte();
+            opcodeText = String.format("%s index=%d [%s] dimensions=%d",
+                    Opcode.Instruction.multianewarray.name(),
+                    shortValue,
+                    classFile.getCPDescription(shortValue),
+                    byteValue);
+        } else if (Opcode.Instruction.ifnull.code == opcode) {
             // Branch if reference is null
-            case Opcode.op_ifnull:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifnull, shortValue);
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifnull.name(), shortValue);
+        } else if (Opcode.Instruction.ifnonnull.code == opcode) {
             // Branch if reference not null
-            case Opcode.op_ifnonnull:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_ifnonnull, shortValue);
-                break;
-
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifnonnull.name(), shortValue);
+        } else if (Opcode.Instruction.goto_w.code == opcode) {
             // Branch always (wide index)
-            case Opcode.op_goto_w:
-                intValue = pdis.readInt();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_goto_w, intValue);
-                break;
-
+            intValue = pdis.readInt();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.goto_w.name(), intValue);
+        } else if (Opcode.Instruction.jsr_w.code == opcode) {
             // Jump subroutine (wide index)
-            case Opcode.op_jsr_w:
-                // The unsigned branchbyte1, branchbyte2, branchbyte3, and branchbyte4 are used to 
-                // construct a signed 32-bit offset, where the offset is 
-                // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4. 
-                intValue = pdis.readInt();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_jsr_w, intValue);
-                break;
-
+            // --
+            // The unsigned branchbyte1, branchbyte2, branchbyte3, and branchbyte4 are used to 
+            // construct a signed 32-bit offset, where the offset is 
+            // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4. 
+            intValue = pdis.readInt();
+            opcodeText = String.format(FORMAT_SD, Opcode.Instruction.jsr_w.name(), intValue);
+        } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
-            case Opcode.op_breakpoint:
-                opcodeText = "[Reserved] - " + Opcode.name_breakpoint;
-                break;
-
-            case Opcode.op_impdep1:
-                opcodeText = "[Reserved] - " + Opcode.name_impdep1;
-                break;
-
-            case Opcode.op_impdep2:
-                opcodeText = "[Reserved] - " + Opcode.name_impdep2;
-                break;
-
-            default:
-                opcodeText = "[Unknown opcode]";
+            opcodeText = "[Reserved] - " + Opcode.Instruction.breakpoint.name();
+        } else if (Opcode.Instruction.impdep1.code == opcode) {
+            opcodeText = "[Reserved] - " + Opcode.Instruction.impdep1.name();
+        } else if (Opcode.Instruction.impdep2.code == opcode) {
+            opcodeText = "[Reserved] - " + Opcode.Instruction.impdep2.name();
+        } else {
+            opcodeText = "[Unknown opcode]";
         }
 
         parseResult.OpcodeText = String.format("opcode [%02X] - %04d: %s", opcode, curPos, opcodeText);
@@ -1758,7 +1214,7 @@ public final class Opcode {
         final int defaultJump = pdis.readInt();
 
         final StringBuilder sb = new StringBuilder(200);
-        sb.append(Opcode.name_lookupswitch);
+        sb.append(Opcode.Instruction.lookupswitch.name());
         sb.append(String.format(": default=%d", defaultJump));
 
         final int pairCount = pdis.readInt();
@@ -1795,7 +1251,7 @@ public final class Opcode {
         int offsetValue;
 
         final StringBuilder sb = new StringBuilder(200);
-        sb.append(Opcode.name_tableswitch);
+        sb.append(Opcode.Instruction.tableswitch.name());
         sb.append(String.format(" %d to %d: default=%d", valueLow, valueHigh, defaultJump));
         for (i = 0; i < tableLength; i++) {
             offsetValue = pdis.readInt();
@@ -1807,76 +1263,52 @@ public final class Opcode {
 
     private static String getOpcodeWideText(final PosDataInputStream pdis)
             throws IOException {
+        final String WIDE = "wide ";
         final int opcode = pdis.readUnsignedByte();
         String opcodeText = null;
 
         int shortValue;
         int shortValue2;
 
-        switch (opcode) {
-            case Opcode.op_iload:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_iload, shortValue);
-                break;
-
-            case Opcode.op_lload:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_lload, shortValue);
-                break;
-
-            case Opcode.op_fload:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_fload, shortValue);
-                break;
-
-            case Opcode.op_dload:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_dload, shortValue);
-                break;
-
-            case Opcode.op_aload:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_aload, shortValue);
-                break;
-
-            case Opcode.op_istore:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_istore, shortValue);
-                break;
-
-            case Opcode.op_lstore:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_lstore, shortValue);
-                break;
-
-            case Opcode.op_fstore:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_fstore, shortValue);
-                break;
-
-            case Opcode.op_dstore:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_dstore, shortValue);
-                break;
-
-            case Opcode.op_astore:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_astore, shortValue);
-                break;
-
-            case Opcode.op_iinc:
-                shortValue = pdis.readUnsignedShort();
-                shortValue2 = pdis.readUnsignedShort();
-                opcodeText = String.format("%s %d %d", Opcode.name_wide_iinc, shortValue, shortValue2);
-                break;
-
-            case Opcode.op_ret:
-                shortValue = pdis.readUnsignedShort();
-                opcodeText = String.format(FORMAT_SD, Opcode.name_wide_ret, shortValue);
-                break;
-
-            default:
-                opcodeText = String.format("%s [Unknown opcode]", Opcode.name_wide);
+        if (opcode == Opcode.Instruction.iload.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.iload.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.lload.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.lload.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.fload.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.fload.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.dload.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.dload.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.aload.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.aload.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.istore.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.istore.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.lstore.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.lstore.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.fstore.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.fstore.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.dstore.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.dstore.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.astore.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.astore.name(), shortValue);
+        } else if (opcode == Opcode.Instruction.iinc.code) {
+            shortValue = pdis.readUnsignedShort();
+            shortValue2 = pdis.readUnsignedShort();
+            opcodeText = String.format("%s %d %d", WIDE + Opcode.Instruction.iinc.name(), shortValue, shortValue2);
+        } else if (opcode == Opcode.Instruction.ret.code) {
+            shortValue = pdis.readUnsignedShort();
+            opcodeText = String.format(FORMAT_SD, WIDE + Opcode.Instruction.ret.name(), shortValue);
+        } else {
+            opcodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
         }
 
         return opcodeText;
@@ -1893,5 +1325,4 @@ public final class Opcode {
         String OpcodeText;
         int CPIndex1 = -1;
     }
-
 }
