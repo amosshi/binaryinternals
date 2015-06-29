@@ -44,6 +44,7 @@ import org.freeinternals.format.classfile.u2;
  */
 class JTreeAttribute {
 
+    public static final String ATTRIBUTE_CODE_NODE = "code";
     private final ClassFile classFile;
 
     JTreeAttribute(final ClassFile classFile) {
@@ -178,7 +179,7 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                 startPos + 14,
                 codeLength,
-                "code")));
+                ATTRIBUTE_CODE_NODE)));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                 startPos + 14 + codeLength,
                 2,

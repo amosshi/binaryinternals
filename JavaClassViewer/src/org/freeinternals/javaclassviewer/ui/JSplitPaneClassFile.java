@@ -8,6 +8,7 @@ package org.freeinternals.javaclassviewer.ui;
 
 import java.awt.Component;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -28,7 +29,7 @@ import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.MethodInfo;
 import org.freeinternals.format.classfile.Opcode;
-import org.freeinternals.format.classfile.Opcode.CodeResult;
+import org.freeinternals.format.classfile.Opcode.InstructionResult;
 
 /**
  * A split panel created from a class file byte array.
@@ -123,8 +124,7 @@ public class JSplitPaneClassFile extends JSplitPane {
                 // clear opcode values;
                 this.opcode.setText(null);
                 // Get the code bytes
-                if (objTncc.getText().equals("code")) {
-                    //System.out.println("code");
+                if (JTreeAttribute.ATTRIBUTE_CODE_NODE.equals(objTncc.getText())) {
                     final byte[] data = this.classFile.getClassByteArray(objTncc.getStartPos(), objTncc.getLength());
                     this.generateOpcodeParseResult(data);
                 }
@@ -136,19 +136,30 @@ public class JSplitPaneClassFile extends JSplitPane {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(HTMLKit.Start());
 
+        int cpindexCounter = 0;
+
         // The Extracted Code
         sb.append("<pre>");
         sb.append(Tool.getByteDataHexView(opcodeData));
-        sb.append("\n");
-        CodeResult codeResult = Opcode.parseCode(opcodeData, this.classFile);
-        sb.append(codeResult.OpcodeTexts);
+        sb.append('\n');
+        List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData, this.classFile);
+        for (InstructionResult iResult : codeResult) {
+            sb.append(iResult.getInstructionText());
+            sb.append('\n');
+            if (iResult.getCPIndex1() > -1) {
+                cpindexCounter++;
+            }
+        }
         sb.append("</pre>");
 
         // The Reference Object
-        if (!codeResult.CPIndexes.isEmpty()) {
+        if (cpindexCounter > 0) {
             sb.append("<ol>");
-            for (Integer i : codeResult.CPIndexes) {
-                sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(this.classFile.getCPDescription(i))));
+            for (InstructionResult iResult : codeResult) {
+                if (iResult.getCPIndex1() > -1) {
+                    sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(
+                            this.classFile.getCPDescription(iResult.getCPIndex1()))));
+                }
             }
             sb.append("</ol>");
         }
