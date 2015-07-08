@@ -11,12 +11,18 @@ package org.freeinternals.format.classfile;
  * @author Amos Shi
  * @since JDK 6.0
  */
-final class SignatureConvertor {
+final public class SignatureConvertor {
 
-    private SignatureConvertor() {
-    }
-
-    protected static String parseMethodReturnType(final String signature)
+    /**
+     * Get return type from method descriptor
+     * {@link MethodInfo#descriptor_index}.
+     *
+     * @param signature Method signature in JVM internal format
+     * @return Method return type in Java Programming language format
+     * @throws org.freeinternals.format.classfile.SignatureException Invalid
+     * signature string found
+     */
+    public static String parseMethodReturnType(final String signature)
             throws SignatureException {
         if (signature == null) {
             throw new IllegalArgumentException("'signature' should not be null.");
@@ -30,7 +36,7 @@ final class SignatureConvertor {
             throw new IllegalArgumentException(String.format("There is no ')' in the method signature: %s", signature));
         }
 
-        String returnValue = null;
+        String returnValue;
         final String returnType = signature.substring(bracketEnd + 1);
         if ("V".equals(returnType)) {
             returnValue = JavaLangSpec.Keyword.kw_void;
@@ -41,8 +47,20 @@ final class SignatureConvertor {
         return returnValue;
     }
 
-    // (ILjava/lang/String;[I)   -->  (intb, String, int[])
-    protected static String parseMethodParameters(final String signature)
+    // 
+    /**
+     * Get parameters type from method descriptor
+     * {@link MethodInfo#descriptor_index}.
+     * <p>
+     * Example: <code>(ILjava/lang/String;[I)</code>   -->  <code>(int, String, int[])</code>
+     * </p>
+     *
+     * @param signature
+     * @return Method parameters in Java Programming language format
+     * @throws org.freeinternals.format.classfile.SignatureException Invalid
+     * signature string found
+     */
+    public static String parseMethodParameters(final String signature)
             throws SignatureException {
         // check parameter
         if (signature == null) {
@@ -103,9 +121,21 @@ final class SignatureConvertor {
         return sbResult.toString();
     }
 
-    // [[[ + type
-    // Used to analysis the field type
-    protected static String signature2Type(final String signature)
+    /**
+     * Convert field signature from JVM internal format
+     * ({@link FieldInfo#descriptor_index} text) to Java programming language
+     * format.
+     * <p>
+     * Its format is <code>[[[ + type</code>.</p>
+     * <p>
+     * Used to analysis the field type.</p>
+     *
+     * @param signature JVM internal format of field signature
+     * @return Java programming language format of field signature
+     * @throws org.freeinternals.format.classfile.SignatureException Invalid
+     * signature string found
+     */
+    public static String signature2Type(final String signature)
             throws SignatureException {
         if ((signature == null) || signature.isEmpty()) {
             throw new IllegalArgumentException("'signature' should not be null or empty.");
@@ -175,8 +205,18 @@ final class SignatureConvertor {
         return returnValue.replace('/', '.');
     }
 
-    // java/lang/String;  --> java.lang.String
-    protected static String parseClassSignature(final String classSignature)
+    /**
+     * Convert class signature from JVM internal format to Java programming
+     * language format.
+     * <p>
+     * Example: convert <code>java/lang/String;</code> to
+     * <code>java.lang.String</code>.
+     * </p>
+     *
+     * @param classSignature JVM internal format of class signature
+     * @return Java programming language format of class signature
+     */
+    public static String parseClassSignature(final String classSignature)
             throws IllegalArgumentException {
         if (classSignature == null) {
             throw new IllegalArgumentException("'ClassSignature' should not be null.");

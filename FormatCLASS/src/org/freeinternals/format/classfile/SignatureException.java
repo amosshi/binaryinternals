@@ -11,7 +11,7 @@ package org.freeinternals.format.classfile;
  * @author Amos Shi
  * @since JDK 6.0
  */
-class SignatureException extends java.lang.Exception {
+public class SignatureException extends java.lang.Exception {
 
     private static final long serialVersionUID = 4876543219876500002L;
 

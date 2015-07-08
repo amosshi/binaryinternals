@@ -140,9 +140,62 @@ public class ClassFile {
     }
 
     /**
-     * Get a UTF-8 text from the constant pool.
+     * Get the text of {@link #this_class}, which is the class name.
      *
-     * @param cpIndex Constant Pool object Index
+     * @return Corresponding text of {@link #this_class}
+     * @throws org.freeinternals.format.FileFormatException Invalid
+     * {@link #constant_pool} item found
+     */
+    public String getThisClassName() throws FileFormatException {
+        return this.getConstantClassInfoName(this.this_class.getValue());
+    }
+
+    /**
+     * Get the text of {@link #super_class}, which is the super class name.
+     *
+     * @return Corresponding text of {@link #super_class}
+     * @throws org.freeinternals.format.FileFormatException Invalid
+     * {@link #constant_pool} item found
+     */
+    public String getSuperClassName() throws FileFormatException {
+        int superClass = this.super_class.getValue();
+        if (superClass == 0) {
+            // java.lang.Object.class
+            return "";
+        } else {
+            return this.getConstantClassInfoName(superClass);
+        }
+    }
+
+    /**
+     * Get <code>CONSTANT_Class_info</code> name from the
+     * {@link #constant_pool}.
+     *
+     * @param cpIndex {@link #constant_pool} item index
+     * @return Get <code>CONSTANT_Class_info</code> name at <code>cpIndex</code>
+     * @throws org.freeinternals.format.FileFormatException Invalid
+     * {@link #constant_pool} item found
+     */
+    public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
+        String name = null;
+        if ((cpIndex >= 0 && cpIndex < ClassFile.this.constant_pool.length)
+                && (this.constant_pool[cpIndex] instanceof ConstantClassInfo)) {
+            ConstantClassInfo clsInfo = (ConstantClassInfo) this.constant_pool[cpIndex];
+            name = this.getConstantUtf8Value(clsInfo.name_index.value);
+        } else {
+            throw new FileFormatException(String.format("Constant Pool index (value = %d) is out of range, or it is not a CONSTANT_Class_info. ",
+                    cpIndex));
+        }
+
+        return name;
+    }
+
+    /**
+     * Get <code>CONSTANT_Utf8_info</code> text from the
+     * {@link #constant_pool}..
+     *
+     * @param cpIndex Constant Pool object Index for
+     * <code>CONSTANT_Utf8_info</code>
      * @return The UTF-8 text
      * @throws org.freeinternals.format.FileFormatException Invalid class file
      * format
@@ -281,7 +334,7 @@ public class ClassFile {
 
     @Override
     public String toString() {
-        return "Class contains " 
+        return "Class contains "
                 + this.fields_count.value.value + " field(s) and "
                 + this.methods_count.value.value + " method(s)";
     }

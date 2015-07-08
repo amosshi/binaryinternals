@@ -195,6 +195,17 @@ public enum AccessFlag {
     }
 
     /**
+     * Check if the the <code>accFlags</code> matches the access flag or not.
+     *
+     * @param accFlags the access flags value
+     * @return <code>true</code> if the access flag matches the
+     * <code>accFlags</code>, else <code>false</code>
+     */
+    public boolean match(int accFlags) {
+        return (accFlags & this.value) > 0;
+    }
+
+    /**
      * Get the modifiers text for a {@link ClassFile}.
      *
      * @param value Value in the Class file
@@ -248,7 +259,7 @@ public enum AccessFlag {
         final StringBuilder sb = new StringBuilder(25);
 
         for (AccessFlag af : list) {
-            if ((value & af.value) > 0) {
+            if (af.match(value)) {
                 sb.append(af.modifier);
                 sb.append(" ");
             }
