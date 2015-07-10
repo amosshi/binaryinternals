@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec: The CONSTANT_Float_info Structure
  * </a>
  */
-public class ConstantFloatInfo extends AbstractCPInfo {
+public class ConstantFloatInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     public final Float floatValue;
@@ -35,7 +35,7 @@ public class ConstantFloatInfo extends AbstractCPInfo {
     ConstantFloatInfo(final PosDataInputStream posDataInputStream)
         throws IOException
     {
-        super(AbstractCPInfo.CONSTANT_Float);
+        super(CPInfo.CONSTANT_Float);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
         

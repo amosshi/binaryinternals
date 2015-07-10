@@ -53,7 +53,7 @@ public class AttributeCode extends AttributeInfo {
     public transient final u2 attributes_count;
     public transient AttributeInfo[] attributes;
 
-    AttributeCode(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final AbstractCPInfo[] cp)
+    AttributeCode(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp)
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 

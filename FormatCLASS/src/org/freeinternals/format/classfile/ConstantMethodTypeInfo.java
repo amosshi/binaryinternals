@@ -27,7 +27,7 @@ import org.freeinternals.format.FileFormatException;
  * VM Spec: The CONSTANT_MethodType_info Structure
  * </a>
  */
-public class ConstantMethodTypeInfo extends AbstractCPInfo {
+public class ConstantMethodTypeInfo extends CPInfo {
 
     public static final int LENGTH = 3;
     /**
@@ -40,7 +40,7 @@ public class ConstantMethodTypeInfo extends AbstractCPInfo {
 
     ConstantMethodTypeInfo(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(AbstractCPInfo.CONSTANT_MethodType);
+        super(CPInfo.CONSTANT_MethodType);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream.readUnsignedShort());
         super.length = LENGTH;

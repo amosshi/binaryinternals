@@ -59,12 +59,12 @@ public class AttributeInfo extends FileComponent {
 
     static AttributeInfo parse(
             final PosDataInputStream posDataInputStream,
-            final AbstractCPInfo[] cp)
+            final CPInfo[] cp)
             throws IOException, FileFormatException {
         AttributeInfo attr;
 
         final u2 attrNameIndex = new u2(posDataInputStream.readUnsignedShort());
-        if (AbstractCPInfo.CONSTANT_Utf8 == cp[attrNameIndex.value].tag.value) {
+        if (CPInfo.CONSTANT_Utf8 == cp[attrNameIndex.value].tag.value) {
             final String type = ((ConstantUtf8Info) cp[attrNameIndex.value]).getValue();
 
             if (AttributeName.ConstantValue.name().equals(type)) {

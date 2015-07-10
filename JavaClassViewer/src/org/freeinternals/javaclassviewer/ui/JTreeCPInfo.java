@@ -7,7 +7,7 @@
 package org.freeinternals.javaclassviewer.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.format.classfile.AbstractCPInfo;
+import org.freeinternals.format.classfile.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.ConstantClassInfo;
 import org.freeinternals.format.classfile.ConstantDoubleInfo;
@@ -37,7 +37,7 @@ final class JTreeCPInfo {
         this.classFile = classFile;
     }
 
-    public void generateTreeNode(final DefaultMutableTreeNode rootNode, final AbstractCPInfo cp_info)
+    public void generateTreeNode(final DefaultMutableTreeNode rootNode, final CPInfo cp_info)
             throws InvalidTreeNodeException {
         if (cp_info == null) {
             return;

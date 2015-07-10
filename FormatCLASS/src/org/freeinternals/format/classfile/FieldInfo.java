@@ -41,7 +41,7 @@ public class FieldInfo extends FileComponent {
     public transient final AttributeInfo[] attributes;
     private String declaration;
 
-    FieldInfo(final PosDataInputStream posDataInputStream, final AbstractCPInfo[] cp)
+    FieldInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp)
             throws IOException, FileFormatException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;

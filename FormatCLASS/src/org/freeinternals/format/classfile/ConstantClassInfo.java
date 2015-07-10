@@ -26,14 +26,14 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec:  The CONSTANT_Class_info Structure
  * </a>
  */
-public class ConstantClassInfo extends AbstractCPInfo {
+public class ConstantClassInfo extends CPInfo {
 
     public static final int LENGTH = 3;
     public final u2 name_index;
 
     ConstantClassInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_Class);
+        super(CPInfo.CONSTANT_Class);
 
         this.startPos = posDataInputStream.getPos() - 1;
         this.length = LENGTH;

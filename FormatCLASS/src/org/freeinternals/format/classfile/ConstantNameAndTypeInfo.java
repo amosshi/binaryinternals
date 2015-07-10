@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec: The CONSTANT_NameAndType_info Structure
  * </a>
  */
-public class ConstantNameAndTypeInfo extends AbstractCPInfo {
+public class ConstantNameAndTypeInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     public final u2 name_index;
@@ -35,7 +35,7 @@ public class ConstantNameAndTypeInfo extends AbstractCPInfo {
 
     ConstantNameAndTypeInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_NameAndType);
+        super(CPInfo.CONSTANT_NameAndType);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

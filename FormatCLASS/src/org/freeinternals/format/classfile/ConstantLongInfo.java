@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec:  The CONSTANT_Long_info Structure
  * </a>
  */
-public class ConstantLongInfo extends AbstractCPInfo {
+public class ConstantLongInfo extends CPInfo {
 
     public static final int LENGTH = 9;
 
@@ -37,7 +37,7 @@ public class ConstantLongInfo extends AbstractCPInfo {
 
     ConstantLongInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_Long);
+        super(CPInfo.CONSTANT_Long);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

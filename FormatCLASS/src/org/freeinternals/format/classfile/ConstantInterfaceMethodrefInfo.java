@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec:  The CONSTANT_InterfaceMethodref_info Structure
  * </a>
  */
-public class ConstantInterfaceMethodrefInfo extends AbstractCPInfo {
+public class ConstantInterfaceMethodrefInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     public final u2 class_index;
@@ -35,7 +35,7 @@ public class ConstantInterfaceMethodrefInfo extends AbstractCPInfo {
 
     ConstantInterfaceMethodrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_InterfaceMethodref);
+        super(CPInfo.CONSTANT_InterfaceMethodref);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

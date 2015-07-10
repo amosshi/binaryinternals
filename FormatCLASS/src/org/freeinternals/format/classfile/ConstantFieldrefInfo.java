@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec:  The CONSTANT_Fieldref_info Structure
  * </a>
  */
-public class ConstantFieldrefInfo extends AbstractCPInfo {
+public class ConstantFieldrefInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     public final u2 class_index;
@@ -35,7 +35,7 @@ public class ConstantFieldrefInfo extends AbstractCPInfo {
 
     ConstantFieldrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_Fieldref);
+        super(CPInfo.CONSTANT_Fieldref);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

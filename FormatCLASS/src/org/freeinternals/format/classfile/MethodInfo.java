@@ -39,7 +39,7 @@ public class MethodInfo extends FileComponent {
     public transient final AttributeInfo[] attributes;
     private String declaration;
 
-    MethodInfo(final PosDataInputStream posDataInputStream, final AbstractCPInfo[] cp)
+    MethodInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp)
             throws IOException, FileFormatException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;

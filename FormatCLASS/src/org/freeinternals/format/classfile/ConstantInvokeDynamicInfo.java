@@ -31,7 +31,7 @@ import org.freeinternals.format.FileFormatException;
  * VM Spec: The CONSTANT_InvokeDynamic_info Structure
  * </a>
  */
-public class ConstantInvokeDynamicInfo extends AbstractCPInfo {
+public class ConstantInvokeDynamicInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     /**
@@ -51,7 +51,7 @@ public class ConstantInvokeDynamicInfo extends AbstractCPInfo {
 
     ConstantInvokeDynamicInfo(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(AbstractCPInfo.CONSTANT_MethodType);
+        super(CPInfo.CONSTANT_MethodType);
         super.startPos = posDataInputStream.getPos() - 1;
         this.bootstrap_method_attr_index = new u2(posDataInputStream.readUnsignedShort());
         this.name_and_type_index = new u2(posDataInputStream.readUnsignedShort());

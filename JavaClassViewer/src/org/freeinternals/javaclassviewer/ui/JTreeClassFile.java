@@ -12,7 +12,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.freeinternals.format.classfile.AttributeInfo;
-import org.freeinternals.format.classfile.AbstractCPInfo;
+import org.freeinternals.format.classfile.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.Interface;
@@ -90,7 +90,7 @@ public class JTreeClassFile extends JTree {
                 "constant_pool_count: " + cpCount));
         this.root.add(constant_pool_count);
 
-        final AbstractCPInfo[] cp = this.classFile.getConstantPool();
+        final CPInfo[] cp = this.classFile.getConstantPool();
         final DefaultMutableTreeNode constant_pool = new DefaultMutableTreeNode(
                 new JTreeNodeClassComponent(
                 STARTPOS_constant_pool,

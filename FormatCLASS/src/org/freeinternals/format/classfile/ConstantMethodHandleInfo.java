@@ -28,7 +28,7 @@ import org.freeinternals.format.FileFormatException;
  * VM Spec: The CONSTANT_MethodHandle_info Structure
  * </a>
  */
-public class ConstantMethodHandleInfo extends AbstractCPInfo {
+public class ConstantMethodHandleInfo extends CPInfo {
 
     public static final int LENGTH = 5;
     /**
@@ -45,7 +45,7 @@ public class ConstantMethodHandleInfo extends AbstractCPInfo {
 
     ConstantMethodHandleInfo(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(AbstractCPInfo.CONSTANT_MethodHandle);
+        super(CPInfo.CONSTANT_MethodHandle);
         super.startPos = posDataInputStream.getPos() - 1;
         this.reference_kind = new u1((short) posDataInputStream.readUnsignedByte());
         this.reference_index = new u2(posDataInputStream.readUnsignedShort());

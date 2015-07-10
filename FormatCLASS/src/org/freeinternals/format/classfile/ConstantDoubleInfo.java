@@ -28,7 +28,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec: The CONSTANT_Double_info Structure
  * </a>
  */
-public class ConstantDoubleInfo extends AbstractCPInfo {
+public class ConstantDoubleInfo extends CPInfo {
 
     public static final int LENGTH = 9;
     //private u4 high_bytes;
@@ -37,7 +37,7 @@ public class ConstantDoubleInfo extends AbstractCPInfo {
 
     ConstantDoubleInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(AbstractCPInfo.CONSTANT_Double);
+        super(CPInfo.CONSTANT_Double);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

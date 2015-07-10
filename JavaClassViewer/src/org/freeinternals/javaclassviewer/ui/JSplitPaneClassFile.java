@@ -24,7 +24,7 @@ import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.format.FileFormatException;
-import org.freeinternals.format.classfile.AbstractCPInfo;
+import org.freeinternals.format.classfile.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.MethodInfo;
@@ -180,15 +180,15 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append(String.format("Constant Pool Count: %d", count));
         sb.append(HTMLKit.NewLine());
         if (count > 0) {
-            AbstractCPInfo[] CPInfoList = this.classFile.getConstantPool();
+            CPInfo[] CPInfoList = this.classFile.getConstantPool();
 
             // Constant Pool - by Type
             sb.append("Constant Pool - Class");
-            this.generateCPTypeReport(sb, CPInfoList, count, AbstractCPInfo.CONSTANT_Class);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Class);
             sb.append("Constant Pool - Field");
-            this.generateCPTypeReport(sb, CPInfoList, count, AbstractCPInfo.CONSTANT_Fieldref);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Fieldref);
             sb.append("Constant Pool - Method");
-            this.generateCPTypeReport(sb, CPInfoList, count, AbstractCPInfo.CONSTANT_Methodref);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Methodref);
 
             // Constant Pool Object List
             sb.append("Constant Pool Object List");
@@ -232,7 +232,7 @@ public class JSplitPaneClassFile extends JSplitPane {
         this.report.setText(sb.toString());
     }
 
-    private void generateCPTypeReport(StringBuilder sb, AbstractCPInfo[] CPInfoList, int count, short tag) {
+    private void generateCPTypeReport(StringBuilder sb, CPInfo[] CPInfoList, int count, short tag) {
         sb.append(HTMLKit.NewLine());
         sb.append("<ul>");
         for (int i = 1; i < count; i++) {

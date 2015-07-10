@@ -28,14 +28,14 @@ import org.freeinternals.format.FileFormatException;
  * VM Spec: The CONSTANT_Utf8_info Structure
  * </a>
  */
-public class ConstantUtf8Info extends AbstractCPInfo {
+public class ConstantUtf8Info extends CPInfo {
 
     public final u2 length_utf8;
     private final byte[] bytes;
 
     ConstantUtf8Info(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(AbstractCPInfo.CONSTANT_Utf8);
+        super(CPInfo.CONSTANT_Utf8);
         super.startPos = posDataInputStream.getPos() - 1;
 
         this.length_utf8 = new u2(posDataInputStream.readUnsignedShort());

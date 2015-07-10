@@ -1,5 +1,5 @@
 /*
- * AbstractCPInfo.java    3:44 AM, August 5, 2007
+ * CPInfo.java    3:44 AM, August 5, 2007
  *
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -28,7 +28,7 @@ import org.freeinternals.commonlib.core.FileComponent;
  * VM Spec: The Constant Pool
  * </a>
  */
-public abstract class AbstractCPInfo extends FileComponent {
+public abstract class CPInfo extends FileComponent {
 
     /**
      * The value for constant type {@code CONSTANT_Utf8}.
@@ -171,7 +171,7 @@ public abstract class AbstractCPInfo extends FileComponent {
      */
     public final transient u1 tag;
 
-    AbstractCPInfo(short tag) {
+    CPInfo(short tag) {
         this.tag = new u1(tag);
     }
 

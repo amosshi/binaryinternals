@@ -27,7 +27,7 @@ public class AttributeSignature extends AttributeInfo {
             final u2 nameIndex,
             final String type,
             final PosDataInputStream posDataInputStream,
-            final AbstractCPInfo[] cp)
+            final CPInfo[] cp)
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
         this.signature_index = new u2(posDataInputStream.readUnsignedShort());
