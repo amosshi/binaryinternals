@@ -451,7 +451,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.iload.code == opcode) {
             // Load int from local variable
             // --
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The local variable at index must contain an int. 
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
@@ -460,7 +460,7 @@ public final class Opcode {
             // Load long from local variable
             // --
             // The index is an unsigned byte. 
-            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (2.6). 
             // The local variable at index must contain a long. 
             // The value of the local variable at index is pushed onto the operand stack. 
             byteValue = pdis.readUnsignedByte();
@@ -468,7 +468,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.fload.code == opcode) {
             // Load float from local variable
             // -
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The local variable at index must contain a float. 
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
@@ -477,7 +477,7 @@ public final class Opcode {
             // Load double from local variable
             // -
             // The index is an unsigned byte. 
-            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (2.6). 
             // The local variable at index must contain a double. 
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
@@ -485,14 +485,14 @@ public final class Opcode {
         } else if (Opcode.Instruction.aload.code == opcode) {
             // Load reference from local variable
             // --
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The local variable at index must contain a reference. 
             // The objectref in the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.aload.name(), byteValue);
         } else if (Opcode.Instruction.iload_0.code == opcode) {
             // Load int from local variable
-            // The <n> must be an index into the local variable array of the current frame (?.6). 
+            // The <n> must be an index into the local variable array of the current frame (2.6). 
             // The local variable at <n> must contain an int. 
             // The value of the local variable at <n> is pushed onto the operand stack.
             opcodeText = Opcode.Instruction.iload_0.name();
@@ -504,7 +504,7 @@ public final class Opcode {
             opcodeText = Opcode.Instruction.iload_3.name();
         } else if (Opcode.Instruction.lload_0.code == opcode) {
             // Load long from local variable
-            // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
+            // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (2.6). 
             // The local variable at <n> must contain a long. 
             // The value of the local variable at <n> is pushed onto the operand stack. 
             opcodeText = Opcode.Instruction.lload_0.name();
@@ -516,7 +516,7 @@ public final class Opcode {
             opcodeText = Opcode.Instruction.lload_3.name();
         } else if (Opcode.Instruction.fload_0.code == opcode) {
             // Load float from local variable
-            // The <n> must be an index into the local variable array of the current frame (?.6). 
+            // The <n> must be an index into the local variable array of the current frame (2.6). 
             // The local variable at <n> must contain a float. 
             // The value of the local variable at <n> is pushed onto the operand stack.
             opcodeText = Opcode.Instruction.fload_0.name();
@@ -528,7 +528,7 @@ public final class Opcode {
             opcodeText = Opcode.Instruction.fload_3.name();
         } else if (Opcode.Instruction.dload_0.code == opcode) {
             // Load double from local variable
-            // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6). 
+            // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (2.6). 
             // The local variable at <n> must contain a double. 
             // The value of the local variable at <n> is pushed onto the operand stack. 
             opcodeText = Opcode.Instruction.dload_0.name();
@@ -540,7 +540,7 @@ public final class Opcode {
             opcodeText = Opcode.Instruction.dload_3.name();
         } else if (Opcode.Instruction.aload_0.code == opcode) {
             // Load reference from local variable
-            // The <n> must be an index into the local variable array of the current frame (?.6). 
+            // The <n> must be an index into the local variable array of the current frame (2.6). 
             // The local variable at <n> must contain a reference. 
             // The objectref in the local variable at index is pushed onto the operand stack.
             opcodeText = Opcode.Instruction.aload_0.name();
@@ -582,7 +582,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.istore.code == opcode) {
             // Store int into local variable
             // --
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The value on the top of the operand stack must be of type int. 
             // It is popped from the operand stack, and the value of the local variable at index is set to value.
             byteValue = pdis.readUnsignedByte();
@@ -591,14 +591,14 @@ public final class Opcode {
             // Store long into local variable
             // --
             // The index is an unsigned byte. 
-            // Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // Both index and index + 1 must be indices into the local variable array of the current frame (2.6). 
             // The value on the top of the operand stack must be of type long. 
             // It is popped from the operand stack, and the local variables at index and index + 1 are set to value. 
             byteValue = pdis.readUnsignedByte();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.lstore.name(), byteValue);
         } else if (Opcode.Instruction.fstore.code == opcode) {
             // Store float into local variable
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The value on the top of the operand stack must be of type float. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The value of the local variable at index is set to value'.
@@ -606,7 +606,7 @@ public final class Opcode {
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.fstore.name(), byteValue);
         } else if (Opcode.Instruction.dstore.code == opcode) {
             // Store double into local variable
-            // The index is an unsigned byte. Both index and index + 1 must be indices into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte. Both index and index + 1 must be indices into the local variable array of the current frame (2.6). 
             // The value on the top of the operand stack must be of type double. 
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'. 
             // The local variables at index and index + 1 are set to value'. 
@@ -614,7 +614,7 @@ public final class Opcode {
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.dstore.name(), byteValue);
         } else if (Opcode.Instruction.astore.code == opcode) {
             // Store reference into local variable
-            // The index is an unsigned byte that must be an index into the local variable array of the current frame (?.6). 
+            // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6). 
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference. 
             // It is popped from the operand stack, and the value of the local variable at index is set to objectref.
             byteValue = pdis.readUnsignedByte();
