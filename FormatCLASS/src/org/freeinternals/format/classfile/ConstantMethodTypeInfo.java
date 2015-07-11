@@ -40,7 +40,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
 
     ConstantMethodTypeInfo(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(CPInfo.CONSTANT_MethodType);
+        super(CPInfo.ConstantType.CONSTANT_MethodType.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream.readUnsignedShort());
         super.length = LENGTH;

@@ -343,14 +343,14 @@ public final class Opcode {
             throws IOException {
         final int curPos = pdis.getPos();
         final int opcode = pdis.read();
-        InstructionResult instructionResult = new InstructionResult();
 
-        int byteValue = 0;
-        int byteValue2 = 0;
-        int shortValue = 0;
-        int intValue = 0;
+        int byteValue;
+        int byteValue2;
+        int shortValue;
+        int intValue;
 
-        String opcodeText = null;
+        int cpIndex1 = -1;
+        String opcodeText;
 
         if (Opcode.Instruction.nop.code == opcode) {
             // Do nothing
@@ -419,7 +419,7 @@ public final class Opcode {
             //   either must be a runtime constant of type int or float, 
             //   or must be a symbolic reference to a string literal (?.1).
             byteValue = pdis.readUnsignedByte();
-            instructionResult.CPIndex1 = byteValue;
+            cpIndex1 = byteValue;
             opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc.name(), byteValue, classFile.getCPDescription(byteValue));
         } else if (Opcode.Instruction.ldc_w.code == opcode) {
             // Push item from runtime constant pool (wide index)
@@ -433,7 +433,7 @@ public final class Opcode {
             //   or must be a symbolic reference to a string literal (?.1). 
 
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc_w.name(), shortValue, classFile.getCPDescription(shortValue));
 
         } else if (Opcode.Instruction.ldc2_w.code == opcode) {
@@ -446,7 +446,7 @@ public final class Opcode {
             // The runtime constant pool entry at the index must be a runtime constant of type long or double (?.1). 
             // The numeric value of that runtime constant is pushed onto the operand stack as a long or double, respectively.
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS, Opcode.Instruction.ldc2_w.name(), shortValue, classFile.getCPDescription(shortValue));
         } else if (Opcode.Instruction.iload.code == opcode) {
             // Load int from local variable
@@ -890,8 +890,8 @@ public final class Opcode {
             //
             // If the comparison succeeds, the unsigned branchbyte1 and branchbyte2 are used to construct a signed 16-bit offset, 
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2. 
-            // Execution then proceeds at that offset from the address of the opcode of this if<cond> instruction. 
-            // The target address must be that of an opcode of an instruction within the method that contains this if<cond> instruction.
+            // Execution then proceeds at that offset from the address of the opCode of this if<cond> instruction. 
+            // The target address must be that of an opCode of an instruction within the method that contains this if<cond> instruction.
             shortValue = pdis.readShort();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.ifeq.name(), shortValue);
         } else if (Opcode.Instruction.ifne.code == opcode) {
@@ -937,8 +937,8 @@ public final class Opcode {
             // 
             // If the comparison succeeds, the unsigned branchbyte1 and branchbyte2 are used to construct a signed 16-bit offset, 
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2. 
-            // Execution then proceeds at that offset from the address of the opcode of this if_acmp<cond> instruction. 
-            // The target address must be that of an opcode of an instruction within the method that contains this if_acmp<cond> instruction.
+            // Execution then proceeds at that offset from the address of the opCode of this if_acmp<cond> instruction. 
+            // The target address must be that of an opCode of an instruction within the method that contains this if_acmp<cond> instruction.
             shortValue = pdis.readShort();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.if_acmpeq.name(), shortValue);
         } else if (Opcode.Instruction.if_acmpne.code == opcode) {
@@ -948,18 +948,18 @@ public final class Opcode {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset, 
             // where branchoffset is (branchbyte1 << 8) | branchbyte2. 
-            // Execution proceeds at that offset from the address of the opcode of this goto instruction. 
-            // The target address must be that of an opcode of an instruction within the method that contains this goto instruction.
+            // Execution proceeds at that offset from the address of the opCode of this goto instruction. 
+            // The target address must be that of an opCode of an instruction within the method that contains this goto instruction.
             shortValue = pdis.readShort();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.goto_.getName(), shortValue);
         } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
-            // The address of the opcode of the instruction immediately following this jsr instruction 
+            // The address of the opCode of the instruction immediately following this jsr instruction 
             // is pushed onto the operand stack as a value of type returnAddress. 
             // The unsigned branchbyte1 and branchbyte2 are used to construct a signed 16-bit offset, 
             // where the offset is (branchbyte1 << 8) | branchbyte2. 
             // Execution proceeds at that offset from the address of this jsr instruction. 
-            // The target address must be that of an opcode of an instruction within the method that contains this jsr instruction.
+            // The target address must be that of an opCode of an instruction within the method that contains this jsr instruction.
             shortValue = pdis.readShort();
             opcodeText = String.format(FORMAT_SD, Opcode.Instruction.jsr.name(), shortValue);
         } else if (Opcode.Instruction.ret.code == opcode) {
@@ -973,12 +973,12 @@ public final class Opcode {
             // Access jump table by index and jump
             pdis.skipBytes(3);
             opcodeText = Opcode.getText_tableswitch(pdis, 8);
-            // opcodeText = Opcode.Instruction.tableswitch.name();
+            // opCodeText = Opcode.Instruction.tableswitch.name();
         } else if (Opcode.Instruction.lookupswitch.code == opcode) {
             // Access jump table by key match and jump
             pdis.skipBytes(3);
             opcodeText = Opcode.getText_lookupswitch(pdis, 8);
-            // opcodeText = Opcode.Instruction.lookupswitch.name();
+            // opCodeText = Opcode.Instruction.lookupswitch.name();
         } else if (Opcode.Instruction.ireturn.code == opcode) {
             opcodeText = Opcode.Instruction.ireturn.name();
         } else if (Opcode.Instruction.lreturn.code == opcode) {
@@ -1001,7 +1001,7 @@ public final class Opcode {
             // in which the field is to be found. 
             // The referenced field is resolved (?.4.3.2). 
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.getstatic.name(),
                     shortValue,
@@ -1015,7 +1015,7 @@ public final class Opcode {
             // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface 
             // in which the field is to be found. The referenced field is resolved (?.4.3.2).
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.putstatic.name(),
                     shortValue,
@@ -1029,7 +1029,7 @@ public final class Opcode {
             // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
             // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.getfield.name(),
                     shortValue,
@@ -1042,7 +1042,7 @@ public final class Opcode {
             // The runtime constant pool item at that index must be a symbolic reference to a field (?.1), 
             // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.putfield.name(),
                     shortValue,
@@ -1062,7 +1062,7 @@ public final class Opcode {
             //   or a member of a superclass of the current class, 
             // then the class of objectref must be either the current class or a subclass of the current class.
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.invokevirtual.name(),
                     shortValue,
@@ -1071,7 +1071,7 @@ public final class Opcode {
             // Invoke instance method; 
             // special handling for superclass, private, and instance initialization method invocations
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.invokespecial.name(),
                     shortValue,
@@ -1079,7 +1079,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.invokestatic.code == opcode) {
             // Invoke a class (static) method
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.invokestatic.name(),
                     shortValue,
@@ -1087,7 +1087,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.invokeinterface.code == opcode) {
             // Invoke interface method
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             byteValue = pdis.readUnsignedByte();
             pdis.skipBytes(1);
             opcodeText = String.format("%s interface=%d [%s], nargs=%d",
@@ -1101,7 +1101,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.new_.code == opcode) {
             // Create new object
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.new_.getName(),
                     shortValue,
@@ -1115,7 +1115,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.anewarray.code == opcode) {
             // Create new array of reference
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.anewarray.name(),
                     shortValue,
@@ -1127,7 +1127,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.checkcast.code == opcode) {
             // Check whether object is of given type
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.checkcast.name(),
                     shortValue,
@@ -1135,7 +1135,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.instanceof_.code == opcode) {
             // Determine if object is of given type
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             opcodeText = String.format(FORMAT_SDS,
                     Opcode.Instruction.instanceof_.getName(),
                     shortValue,
@@ -1150,7 +1150,7 @@ public final class Opcode {
         } else if (Opcode.Instruction.multianewarray.code == opcode) {
             // Create new multidimensional array
             shortValue = pdis.readUnsignedShort();
-            instructionResult.CPIndex1 = shortValue;
+            cpIndex1 = shortValue;
             byteValue = pdis.readUnsignedByte();
             opcodeText = String.format("%s index=%d [%s] dimensions=%d",
                     Opcode.Instruction.multianewarray.name(),
@@ -1188,8 +1188,7 @@ public final class Opcode {
             opcodeText = "[Unknown opcode]";
         }
 
-        instructionResult.InstructionText = String.format("opcode [%02X] - %04d: %s", opcode, curPos, opcodeText);
-        return instructionResult;
+        return new InstructionResult(curPos, opcode, opcodeText, cpIndex1);
     }
 
     private static String getText_lookupswitch(final PosDataInputStream pdis, final int spaceLength)
@@ -1312,32 +1311,38 @@ public final class Opcode {
     public static class InstructionResult {
 
         /**
+         * Current position of the opCode in the class file <code>Code</code>
+         * attribute byte array.
+         */
+        public final int position;
+
+        /**
+         * JVM Opcode value.
+         */
+        public final int opCode;
+
+        /**
          * Text of the {@link Instruction}.
          */
-        String InstructionText;
+        public final String opCodeText;
+
         /**
          * Referenced {@link ClassFile#constant_pool} object index if exist. It
          * will be <code>-1</code> if the {@link Instruction} did not reference
          * to any {@link ClassFile#constant_pool} object.
          */
-        int CPIndex1 = -1;
-        
-        /**
-         * Get {@link #InstructionText} value.
-         * 
-         * @return {@link #InstructionText} value
-         */
-        public String getInstructionText(){
-            return this.InstructionText;
+        public final int cpIndex1;
+
+        InstructionResult(int curPos, int opcode, String opcodeText, int cpIdx1) {
+            this.position = curPos;
+            this.opCode = opcode;
+            this.opCodeText = opcodeText;
+            this.cpIndex1 = cpIdx1;
         }
-        
-        /**
-         * Get {@link #CPIndex1} value.
-         * 
-         * @return {@link #CPIndex1} value
-         */
-        public int getCPIndex1(){
-            return this.CPIndex1;
+
+        @Override
+        public String toString() {
+            return String.format("opcode [%02X] - %04d: %s", this.opCode, this.position, this.opCodeText);
         }
     }
 }

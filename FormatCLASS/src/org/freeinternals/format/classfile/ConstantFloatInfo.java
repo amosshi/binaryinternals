@@ -35,7 +35,7 @@ public class ConstantFloatInfo extends CPInfo {
     ConstantFloatInfo(final PosDataInputStream posDataInputStream)
         throws IOException
     {
-        super(CPInfo.CONSTANT_Float);
+        super(CPInfo.ConstantType.CONSTANT_Float.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
         

@@ -144,9 +144,9 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append('\n');
         List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData, this.classFile);
         for (InstructionResult iResult : codeResult) {
-            sb.append(iResult.getInstructionText());
+            sb.append(iResult.toString());
             sb.append('\n');
-            if (iResult.getCPIndex1() > -1) {
+            if (iResult.cpIndex1 > -1) {
                 cpindexCounter++;
             }
         }
@@ -156,9 +156,9 @@ public class JSplitPaneClassFile extends JSplitPane {
         if (cpindexCounter > 0) {
             sb.append("<ol>");
             for (InstructionResult iResult : codeResult) {
-                if (iResult.getCPIndex1() > -1) {
+                if (iResult.cpIndex1 > -1) {
                     sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(
-                            this.classFile.getCPDescription(iResult.getCPIndex1()))));
+                            this.classFile.getCPDescription(iResult.cpIndex1 ))));
                 }
             }
             sb.append("</ol>");
@@ -184,11 +184,11 @@ public class JSplitPaneClassFile extends JSplitPane {
 
             // Constant Pool - by Type
             sb.append("Constant Pool - Class");
-            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Class);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Class.tag);
             sb.append("Constant Pool - Field");
-            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Fieldref);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Fieldref.tag);
             sb.append("Constant Pool - Method");
-            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.CONSTANT_Methodref);
+            this.generateCPTypeReport(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Methodref.tag);
 
             // Constant Pool Object List
             sb.append("Constant Pool Object List");

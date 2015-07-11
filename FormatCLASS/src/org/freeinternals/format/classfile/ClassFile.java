@@ -211,13 +211,13 @@ public class ClassFile {
                     cpIndex));
         }
 
-        if (this.constant_pool[cpIndex].tag.value == CPInfo.CONSTANT_Utf8) {
+        if (this.constant_pool[cpIndex].tag.value == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
             final ConstantUtf8Info utf8Info = (ConstantUtf8Info) this.constant_pool[cpIndex];
             returnValue = utf8Info.getValue();
         } else {
             throw new FileFormatException(String.format(
                     "Unexpected constant pool type: Utf8(%d) expected, but it is '%d'.",
-                    CPInfo.CONSTANT_Utf8,
+                    CPInfo.ConstantType.CONSTANT_Utf8.tag,
                     this.constant_pool[cpIndex].tag.value));
         }
 
@@ -382,68 +382,39 @@ public class ClassFile {
             for (int i = 1; i < cp_count; i++) {
                 tag = (short) ClassFile.this.posDataInputStream.readUnsignedByte();
 
-                switch (tag) {
-                    case CPInfo.CONSTANT_Utf8:
-                        ClassFile.this.constant_pool[i] = new ConstantUtf8Info(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_Integer:
-                        ClassFile.this.constant_pool[i] = new ConstantIntegerInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_Float:
-                        ClassFile.this.constant_pool[i] = new ConstantFloatInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_Long:
-                        ClassFile.this.constant_pool[i] = new ConstantLongInfo(ClassFile.this.posDataInputStream);
-                        i++;
-                        break;
-
-                    case CPInfo.CONSTANT_Double:
-                        ClassFile.this.constant_pool[i] = new ConstantDoubleInfo(ClassFile.this.posDataInputStream);
-                        i++;
-                        break;
-
-                    case CPInfo.CONSTANT_Class:
-                        ClassFile.this.constant_pool[i] = new ConstantClassInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_String:
-                        ClassFile.this.constant_pool[i] = new ConstantStringInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_Fieldref:
-                        ClassFile.this.constant_pool[i] = new ConstantFieldrefInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_Methodref:
-                        ClassFile.this.constant_pool[i] = new ConstantMethodrefInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_InterfaceMethodref:
-                        ClassFile.this.constant_pool[i] = new ConstantInterfaceMethodrefInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_NameAndType:
-                        ClassFile.this.constant_pool[i] = new ConstantNameAndTypeInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_MethodHandle:
-                        ClassFile.this.constant_pool[i] = new ConstantMethodHandleInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_MethodType:
-                        ClassFile.this.constant_pool[i] = new ConstantMethodTypeInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    case CPInfo.CONSTANT_InvokeDynamic:
-                        ClassFile.this.constant_pool[i] = new ConstantInvokeDynamicInfo(ClassFile.this.posDataInputStream);
-                        break;
-
-                    default:
-                        throw new FileFormatException(
-                                String.format("Unreconizable constant pool type found. Constant pool tag: [%d]; class file offset: [%d].", tag, ClassFile.this.posDataInputStream.getPos() - 1));
+                if (tag == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantUtf8Info(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Integer.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantIntegerInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Float.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantFloatInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantLongInfo(ClassFile.this.posDataInputStream);
+                    i++;
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantDoubleInfo(ClassFile.this.posDataInputStream);
+                    i++;
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantClassInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_String.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantStringInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Fieldref.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantFieldrefInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Methodref.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantMethodrefInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantInterfaceMethodrefInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_NameAndType.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantNameAndTypeInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_MethodHandle.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantMethodHandleInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_MethodType.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantMethodTypeInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantInvokeDynamicInfo(ClassFile.this.posDataInputStream);
+                } else {
+                    throw new FileFormatException(
+                            String.format("Unreconizable constant pool type found. Constant pool tag: [%d]; class file offset: [%d].", tag, ClassFile.this.posDataInputStream.getPos() - 1));
                 }
             }
         }
@@ -525,63 +496,50 @@ public class ClassFile {
 
             if (index >= 0 && index < ClassFile.this.constant_pool.length) {
                 if (ClassFile.this.constant_pool[index] != null) {
-                    switch (ClassFile.this.constant_pool[index].tag.value) {
-                        case CPInfo.CONSTANT_Utf8:
-                            sb.append("Utf8: ");
-                            sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Integer:
-                            sb.append("Integer: ");
-                            sb.append(this.getDescr_Integer((ConstantIntegerInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Float:
-                            sb.append("Float: ");
-                            sb.append(this.getDescr_Float((ConstantFloatInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Long:
-                            sb.append("Long: ");
-                            sb.append(this.getDescr_Long((ConstantLongInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Double:
-                            sb.append("Double: ");
-                            sb.append(this.getDescr_Double((ConstantDoubleInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Class:
-                            sb.append("Class: ");
-                            sb.append(this.getDescr_Class((ConstantClassInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_String:
-                            sb.append("String: ");
-                            sb.append(this.getDescr_String((ConstantStringInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Fieldref:
-                            sb.append("Fieldref: ");
-                            sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_Methodref:
-                            sb.append("Methodref: ");
-                            sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_InterfaceMethodref:
-                            sb.append("InterfaceMethodref: ");
-                            sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) ClassFile.this.constant_pool[index]));
-                            break;
-                        case CPInfo.CONSTANT_NameAndType:
-                            sb.append("NameAndType: ");
-                            sb.append(this.getDescr_NameAndType(
-                                    (ConstantNameAndTypeInfo) ClassFile.this.constant_pool[index],
-                                    ClassFile.Descr_NameAndType.RAW));
-                            break;
-                        case CPInfo.CONSTANT_MethodHandle:
-                        case CPInfo.CONSTANT_MethodType:
-                        case CPInfo.CONSTANT_InvokeDynamic:
-                            sb.append(ClassFile.this.constant_pool[index].getDescription());
-                            break;
-                        default:
-                            sb.append("!!! Un-supported CP type.");
-                            break;
+                    short tag = ClassFile.this.constant_pool[index].tag.value;
+                    if (tag == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
+                        sb.append("Utf8: ");
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Integer.tag) {
+                        sb.append("Integer: ");
+                        sb.append(this.getDescr_Integer((ConstantIntegerInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Float.tag) {
+                        sb.append("Float: ");
+                        sb.append(this.getDescr_Float((ConstantFloatInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
+                        sb.append("Long: ");
+                        sb.append(this.getDescr_Long((ConstantLongInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
+                        sb.append("Double: ");
+                        sb.append(this.getDescr_Double((ConstantDoubleInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
+                        sb.append("Class: ");
+                        sb.append(this.getDescr_Class((ConstantClassInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_String.tag) {
+                        sb.append("String: ");
+                        sb.append(this.getDescr_String((ConstantStringInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Fieldref.tag) {
+                        sb.append("Fieldref: ");
+                        sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_Methodref.tag) {
+                        sb.append("Methodref: ");
+                        sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag) {
+                        sb.append("InterfaceMethodref: ");
+                        sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) ClassFile.this.constant_pool[index]));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_NameAndType.tag) {
+                        sb.append("NameAndType: ");
+                        sb.append(this.getDescr_NameAndType(
+                                (ConstantNameAndTypeInfo) ClassFile.this.constant_pool[index],
+                                ClassFile.Descr_NameAndType.RAW));
+                    } else if (tag == CPInfo.ConstantType.CONSTANT_MethodHandle.tag
+                            || tag == CPInfo.ConstantType.CONSTANT_MethodType.tag
+                            || tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
+                        sb.append(ClassFile.this.constant_pool[index].getDescription());
+                    } else {
+                        sb.append("!!! Un-supported CP type.");
                     }
-                }
+                } // End if
             } else {
                 sb.append("ERROR - Index (" + index + ") out of bound of constant_pool (" + ClassFile.this.constant_pool.length + ")");
             }

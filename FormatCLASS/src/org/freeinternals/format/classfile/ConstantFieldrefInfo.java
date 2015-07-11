@@ -35,7 +35,7 @@ public class ConstantFieldrefInfo extends CPInfo {
 
     ConstantFieldrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_Fieldref);
+        super(CPInfo.ConstantType.CONSTANT_Fieldref.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

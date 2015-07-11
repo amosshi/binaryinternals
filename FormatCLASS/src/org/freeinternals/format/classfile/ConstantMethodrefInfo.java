@@ -35,7 +35,7 @@ public class ConstantMethodrefInfo extends CPInfo {
 
     ConstantMethodrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_Methodref);
+        super(CPInfo.ConstantType.CONSTANT_Methodref.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

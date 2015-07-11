@@ -33,7 +33,7 @@ public class ConstantIntegerInfo extends CPInfo {
 
     ConstantIntegerInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_Integer);
+        super(CPInfo.ConstantType.CONSTANT_Integer.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

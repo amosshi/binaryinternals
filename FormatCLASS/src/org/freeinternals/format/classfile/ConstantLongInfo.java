@@ -37,7 +37,7 @@ public class ConstantLongInfo extends CPInfo {
 
     ConstantLongInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_Long);
+        super(CPInfo.ConstantType.CONSTANT_Long.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

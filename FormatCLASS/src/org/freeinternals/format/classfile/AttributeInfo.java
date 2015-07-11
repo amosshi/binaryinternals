@@ -64,7 +64,7 @@ public class AttributeInfo extends FileComponent {
         AttributeInfo attr;
 
         final u2 attrNameIndex = new u2(posDataInputStream.readUnsignedShort());
-        if (CPInfo.CONSTANT_Utf8 == cp[attrNameIndex.value].tag.value) {
+        if (CPInfo.ConstantType.CONSTANT_Utf8.tag == cp[attrNameIndex.value].tag.value) {
             final String type = ((ConstantUtf8Info) cp[attrNameIndex.value]).getValue();
 
             if (AttributeName.ConstantValue.name().equals(type)) {

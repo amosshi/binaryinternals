@@ -37,7 +37,7 @@ public class ConstantDoubleInfo extends CPInfo {
 
     ConstantDoubleInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_Double);
+        super(CPInfo.ConstantType.CONSTANT_Double.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

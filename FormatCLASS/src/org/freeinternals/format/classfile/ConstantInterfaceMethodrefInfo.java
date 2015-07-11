@@ -35,7 +35,7 @@ public class ConstantInterfaceMethodrefInfo extends CPInfo {
 
     ConstantInterfaceMethodrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.CONSTANT_InterfaceMethodref);
+        super(CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

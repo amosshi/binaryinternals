@@ -35,7 +35,7 @@ public class ConstantUtf8Info extends CPInfo {
 
     ConstantUtf8Info(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(CPInfo.CONSTANT_Utf8);
+        super(CPInfo.ConstantType.CONSTANT_Utf8.tag);
         super.startPos = posDataInputStream.getPos() - 1;
 
         this.length_utf8 = new u2(posDataInputStream.readUnsignedShort());
