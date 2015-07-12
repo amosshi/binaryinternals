@@ -421,7 +421,7 @@ public class JTreeTable extends JTable {
 
         /**
          * This is overridden to forward the event to the tree. This will
-         * return true if the click count >= 3, or the event is null.
+         * return true if the click count Greater Equals 3, or the event is null.
          * 
          * @param e
          */

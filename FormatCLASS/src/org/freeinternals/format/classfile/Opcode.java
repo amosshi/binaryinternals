@@ -266,6 +266,8 @@ public final class Opcode {
 
         /**
          * Get the name with "wide " prefix. Only applied for {@link #wide}.
+         *
+         * @return opcode name with "wide " prefix
          */
         String getWideName() {
             return "wide " + super.name();

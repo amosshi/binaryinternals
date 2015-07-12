@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-import javax.swing.JTree;
 import org.freeinternals.commonlib.ui.jtreetable.JTreeTable;
 import org.freeinternals.commonlib.ui.jtreetable.TreeTableModel;
 
@@ -14,7 +13,7 @@ import org.freeinternals.commonlib.ui.jtreetable.TreeTableModel;
  * To fix them, I sub-classed it.
  * 
  * <p>
- * A little change may be done on formatting, annotation, java doc, etc. <br/>
+ * A little change may be done on formatting, annotation, java doc, etc. 
  * The class name is <code>XMLTreeTable</code> originally in the link bellow.
  * </p>
  *

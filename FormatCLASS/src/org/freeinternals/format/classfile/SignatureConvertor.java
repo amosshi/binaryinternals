@@ -52,10 +52,10 @@ final public class SignatureConvertor {
      * Get parameters type from method descriptor
      * {@link MethodInfo#descriptor_index}.
      * <p>
-     * Example: <code>(ILjava/lang/String;[I)</code>   -->  <code>(int, String, int[])</code>
+     * Example: <code>(ILjava/lang/String;[I)</code> to <code>(int, String, int[])</code>
      * </p>
      *
-     * @param signature
+     * @param signature JVM internal format of method signature
      * @return Method parameters in Java Programming language format
      * @throws org.freeinternals.format.classfile.SignatureException Invalid
      * signature string found

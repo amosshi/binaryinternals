@@ -40,8 +40,6 @@ import org.freeinternals.format.FileFormatException;
  *
  * The {@code ClassFile} object is constructed from the class byte array.
  *
- *
- *
  * @author Amos Shi
  * @since JDK 6.0
  * @see <a
@@ -324,9 +322,9 @@ public class ClassFile {
     }
 
     /**
-     * Get the {@code attributes}[] of the {@code ClassFile} structure.
+     * Get the {@link #attributes} of the {@code ClassFile} structure.
      *
-     * @return The {@code attributes}[]
+     * @return The {@link #attributes}, it could be <code>null</code> or an array of attributes
      */
     public AttributeInfo[] getAttributes() {
         return this.attributes;

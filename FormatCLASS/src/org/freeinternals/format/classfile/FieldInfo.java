@@ -102,6 +102,8 @@ public class FieldInfo extends FileComponent {
 
     /**
      * Set the declaration string.
+     * 
+     * @param declaration Human readable declaration string
      */
     final void setDeclaration(final String declaration) {
         this.declaration = declaration;

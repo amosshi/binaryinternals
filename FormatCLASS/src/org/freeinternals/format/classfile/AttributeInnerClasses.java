@@ -102,7 +102,7 @@ public class AttributeInnerClasses extends AttributeInfo {
         }
 
         /**
-         * Generate the modifier string from the {@link #access_flags} value.
+         * Generate the modifier string from the {@link #inner_class_access_flags} value.
          *
          * @return A string for modifier
          */

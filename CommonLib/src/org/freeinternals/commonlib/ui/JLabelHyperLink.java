@@ -20,7 +20,6 @@ import javax.swing.JLabel;
  *
  * @author Amos Shi
  * @since JDK 6.0
- * </a>
  */
 public class JLabelHyperLink extends JLabel {
 
