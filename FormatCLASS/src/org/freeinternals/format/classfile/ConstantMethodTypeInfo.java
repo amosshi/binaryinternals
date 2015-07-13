@@ -48,7 +48,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "MethodType";
+        return ConstantType.CONSTANT_MethodType.name();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ConstantUtf8Info extends CPInfo {
 
     @Override
     public String getName() {
-        return "Utf8";
+        return ConstantType.CONSTANT_Utf8.name();
     }
 
     @Override

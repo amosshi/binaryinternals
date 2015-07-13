@@ -60,7 +60,7 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "InvokeDynamicInfo";
+        return ConstantType.CONSTANT_InvokeDynamic.name();
     }
 
     @Override

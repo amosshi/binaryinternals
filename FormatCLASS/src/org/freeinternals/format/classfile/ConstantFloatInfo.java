@@ -45,7 +45,7 @@ public class ConstantFloatInfo extends CPInfo {
     @Override
     public String getName()
     {
-        return "Float";
+        return ConstantType.CONSTANT_Float.name();
     }
 
     @Override

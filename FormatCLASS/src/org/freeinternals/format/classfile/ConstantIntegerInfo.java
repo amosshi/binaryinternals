@@ -42,7 +42,7 @@ public class ConstantIntegerInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "Integer";
+        return ConstantType.CONSTANT_Integer.name();
     }
 
     @Override

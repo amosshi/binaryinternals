@@ -46,7 +46,7 @@ public class ConstantLongInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "Long";
+        return ConstantType.CONSTANT_Long.name();
     }
 
     @Override

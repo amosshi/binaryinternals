@@ -45,7 +45,7 @@ public class ConstantInterfaceMethodrefInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "InterfaceMethodref";
+        return ConstantType.CONSTANT_InterfaceMethodref.name();
     }
 
     @Override

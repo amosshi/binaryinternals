@@ -39,18 +39,35 @@ public class AttributeInfo extends FileComponent {
      * the VM Spec.
      */
     public static final String Extended = "[Extended Attr.] ";
-    public transient final String type;
+    /**
+     * Name of the attribute. It is one of the enum names in
+     * {@link AttributeName}.
+     */
+    public transient final String name;
+    /**
+     * The {@link #attribute_name_index} must be a valid unsigned 16-bit index
+     * into the {@link ClassFile#constant_pool} of the {@link ClassFile}, the
+     * {@link ClassFile#constant_pool} entry at {@link #attribute_name_index}
+     * must be a <code>CONSTANT_Utf8_info structure</code>
+     * ({@link ConstantUtf8Info}) representing the name of the attribute.
+     */
     public transient final u2 attribute_name_index;
+    /**
+     * The value of the {@link #attribute_length} item indicates the length of
+     * the subsequent information in bytes. The length does not include the
+     * initial six bytes that contain the {@link #attribute_name_index} and
+     * {@link #attribute_length} items.
+     */
     public transient final u4 attribute_length;
 
     AttributeInfo(
             final u2 nameIndex,
-            final String type,
+            final String name,
             final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
         super.startPos = posDataInputStream.getPos() - 2;
 
-        this.type = type;
+        this.name = name;
         this.attribute_name_index = new u2(nameIndex.value);
         this.attribute_length = new u4(posDataInputStream.readInt());
 
@@ -158,9 +175,10 @@ public class AttributeInfo extends FileComponent {
     /**
      * Get the name of the attribute.
      *
-     * Attributes are used in the {@code ClassFile}, {@code field_info},
-     * {@code method_info}, and {@code Code_attribute} structures of the class
-     * file format.
+     * Attributes are used in the {@code ClassFile}
+     * ({@link ClassFile}), {@code field_info} ({@link FieldInfo}),
+     * {@code method_info} ({@link MethodInfo}), and {@code Code_attribute}
+     * structures of the class file format.
      *
      * @return A string of the attribute name
      * @see
@@ -169,7 +187,7 @@ public class AttributeInfo extends FileComponent {
      * </a>
      */
     public String getName() {
-        return (this.type != null) ? this.type : "";
+        return (this.name != null) ? this.name : "";
     }
 
     public enum AttributeName {

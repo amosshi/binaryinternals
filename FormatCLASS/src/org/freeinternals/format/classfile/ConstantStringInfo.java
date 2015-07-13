@@ -42,7 +42,7 @@ public class ConstantStringInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "String";
+        return ConstantType.CONSTANT_String.name();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class ConstantFieldrefInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "Fieldref";
+        return ConstantType.CONSTANT_Fieldref.name();
     }
 
     @Override

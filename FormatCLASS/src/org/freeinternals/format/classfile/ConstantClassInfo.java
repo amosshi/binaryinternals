@@ -43,7 +43,7 @@ public class ConstantClassInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "Class";
+        return ConstantType.CONSTANT_Class.name();
     }
 
     @Override

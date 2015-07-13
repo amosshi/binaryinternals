@@ -34,6 +34,8 @@ public abstract class CPInfo extends FileComponent {
      * Each item in the {@link ClassFile#constant_pool} table must begin with a
      * 1-byte {@link #tag} indicating the kind of <code>cp_info</code> entry.
      *
+     * The value come from the enum field {@link ConstantType#tag}.
+     *
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.4">
      * VM Spec: The Constant Pool

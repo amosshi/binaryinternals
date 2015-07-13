@@ -45,7 +45,7 @@ public class ConstantNameAndTypeInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "NameAndType";
+        return ConstantType.CONSTANT_NameAndType.name();
     }
 
     @Override

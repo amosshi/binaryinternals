@@ -46,7 +46,7 @@ public class ConstantDoubleInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return "Double";
+        return ConstantType.CONSTANT_Double.name();
     }
 
     @Override

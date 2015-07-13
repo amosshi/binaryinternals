@@ -274,6 +274,20 @@ public class ClassFile {
     }
 
     /**
+     * Get the constant pool item at index <code>i</code>.
+     *
+     * @param i Constant pool index
+     * @return Constant pool item or <code>null</code> if index is out of range
+     */
+    public CPInfo getConstantPool(int i) {
+        if (i < 0 || i > this.constant_pool.length) {
+            return null;
+        } else {
+            return this.constant_pool[i];
+        }
+    }
+
+    /**
      * Returns a string of the constant pool item at the specified
      * {@code index}.
      *
@@ -324,7 +338,8 @@ public class ClassFile {
     /**
      * Get the {@link #attributes} of the {@code ClassFile} structure.
      *
-     * @return The {@link #attributes}, it could be <code>null</code> or an array of attributes
+     * @return The {@link #attributes}, it could be <code>null</code> or an
+     * array of attributes
      */
     public AttributeInfo[] getAttributes() {
         return this.attributes;
@@ -486,47 +501,45 @@ public class ClassFile {
 
     private class CPDescr {
 
-        CPDescr() {
-        }
-
         public String getCPDescr(final int index) {
             final StringBuilder sb = new StringBuilder(40);
 
             if (index >= 0 && index < ClassFile.this.constant_pool.length) {
-                if (ClassFile.this.constant_pool[index] != null) {
-                    short tag = ClassFile.this.constant_pool[index].tag.value;
+                CPInfo cp_info = ClassFile.this.constant_pool[index];
+                if (cp_info != null) {
+                    short tag = cp_info.tag.value;
                     if (tag == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
-                        sb.append("Utf8: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Integer.tag) {
-                        sb.append("Integer: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Integer((ConstantIntegerInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Float.tag) {
-                        sb.append("Float: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Float((ConstantFloatInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
-                        sb.append("Long: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Long((ConstantLongInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
-                        sb.append("Double: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Double((ConstantDoubleInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
-                        sb.append("Class: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Class((ConstantClassInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_String.tag) {
-                        sb.append("String: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_String((ConstantStringInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Fieldref.tag) {
-                        sb.append("Fieldref: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_Methodref.tag) {
-                        sb.append("Methodref: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag) {
-                        sb.append("InterfaceMethodref: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) ClassFile.this.constant_pool[index]));
                     } else if (tag == CPInfo.ConstantType.CONSTANT_NameAndType.tag) {
-                        sb.append("NameAndType: ");
+                        sb.append(cp_info.getName()).append(": ");
                         sb.append(this.getDescr_NameAndType(
                                 (ConstantNameAndTypeInfo) ClassFile.this.constant_pool[index],
                                 ClassFile.Descr_NameAndType.RAW));
