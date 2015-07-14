@@ -7,13 +7,15 @@
 package org.freeinternals.format.classfile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 
 /**
- * The class for the {@code Code} attribute.
- * The {@code Code} attribute has the following format:
+ * The class for the {@code Code} attribute. The {@code Code} attribute has the
+ * following format:
  *
  * <pre>
  *    Code_attribute {
@@ -38,7 +40,8 @@ import org.freeinternals.format.FileFormatException;
  *
  * @author Amos Shi
  * @since JDK 6.0
- * @see <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1546">
+ * @see
+ * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1546">
  * VM Spec: The Code Attribute
  * </a>
  */
@@ -95,6 +98,20 @@ public class AttributeCode extends AttributeInfo {
     }
 
     /**
+     * Get the {@link #code} parse result. This method will return an empty list
+     * if {@link #code} is <code>null</code>.
+     * 
+     * @return Parsed {@link Opcode} list
+     */
+    public List<Opcode.InstructionResult> parseCode() {
+        if (this.code != null && this.code.length > 0) {
+            return Opcode.parseCode(this.code);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    /**
      * Get the value of {@code exception_table}[{@code index}].
      *
      * @param index Index of the exception table
@@ -125,7 +142,7 @@ public class AttributeCode extends AttributeInfo {
      * @since JDK 6.0
      */
     public final class ExceptionTable extends FileComponent {
-        
+
         public static final int LENGTH = 8;
         public transient final u2 start_pc;
         public transient final u2 end_pc;

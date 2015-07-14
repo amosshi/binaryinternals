@@ -142,9 +142,9 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append("<pre>");
         sb.append(Tool.getByteDataHexView(opcodeData));
         sb.append('\n');
-        List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData, this.classFile);
+        List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData);
         for (InstructionResult iResult : codeResult) {
-            sb.append(iResult.toString());
+            sb.append(iResult.toString(this.classFile));
             sb.append('\n');
             if (iResult.cpIndex1 > -1) {
                 cpindexCounter++;

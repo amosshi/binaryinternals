@@ -173,7 +173,8 @@ public class AttributeInfo extends FileComponent {
     }
 
     /**
-     * Get the name of the attribute.
+     * Get the {@link #name} of the attribute, if {@link #name} is
+     * <code>null</code>, it will return an empty string.
      *
      * Attributes are used in the {@code ClassFile}
      * ({@link ClassFile}), {@code field_info} ({@link FieldInfo}),
