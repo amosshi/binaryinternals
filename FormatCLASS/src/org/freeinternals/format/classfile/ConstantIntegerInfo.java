@@ -47,6 +47,7 @@ public class ConstantIntegerInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantIntegerInfo: Start Position: [%d], length: [%d], value: [%d].", this.startPos, this.length, this.integerValue);
+        return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
+                this.getName(), this.startPos, this.length, this.integerValue);
     }
 }

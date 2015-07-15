@@ -50,6 +50,7 @@ public class ConstantNameAndTypeInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantNameAndTypeInfo: Start Position: [%d], length: [%d], value: name_index=[%d], descriptor_index=[%d].", this.startPos, this.length, this.name_index.value, this.descriptor_index.value);
+        return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d], descriptor_index=[%d].",
+                this.getName(), this.startPos, this.length, this.name_index.value, this.descriptor_index.value);
     }
 }

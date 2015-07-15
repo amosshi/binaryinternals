@@ -48,7 +48,8 @@ public class ConstantClassInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantClassInfo: Start Position: [%d], length: [%d], value: name_index = [%d].", this.startPos, this.length, this.name_index.value);
+        return String.format("%s: Start Position: [%d], length: [%d], value: name_index = [%d].",
+                this.getName(), this.startPos, this.length, this.name_index.value);
     }
 
 }

@@ -51,6 +51,7 @@ public class ConstantDoubleInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantDoubleInfo: Start Position: [%d], length: [%d], value: [%f].", this.startPos, this.length, this.doubleValue);
+        return String.format("%s: Start Position: [%d], length: [%d], value: [%f].",
+                this.getName(), this.startPos, this.length, this.doubleValue);
     }
 }

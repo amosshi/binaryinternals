@@ -59,11 +59,11 @@ public class ConstantMethodHandleInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return "ConstantMethodHandleInfo: Start Position: [" + super.startPos 
-                + "], length: [" + super.length 
+        return this.getName() + ": Start Position: [" + super.startPos
+                + "], length: [" + super.length
                 + "], reference_kind: [" + this.reference_kind.value
                 + "], reference_index = [" + this.reference_index.value + "]";
-   }
+    }
 
     /**
      * The value denotes the {@code kind} of this method handle, which
@@ -86,10 +86,32 @@ public class ConstantMethodHandleInfo extends CPInfo {
         REF_newInvokeSpecial(8),
         REF_invokeInterface(9);
 
+        /**
+         * ID of the {@link ReferenceKind}.
+         */
         public final int value;
 
         private ReferenceKind(int value) {
             this.value = value;
+        }
+
+        /**
+         * Get the {@link ReferenceKind} name based on its internal
+         * {@link #value}.
+         *
+         * @param value Internal {@link #value}
+         * @return {@link ReferenceKind} name
+         */
+        public static String name(int value) {
+            String result = "Un-recognized";
+            for (ReferenceKind item : ReferenceKind.values()) {
+                if (item.value == value) {
+                    result = item.name();
+                    break;
+                }
+            }
+
+            return result;
         }
     }
 }

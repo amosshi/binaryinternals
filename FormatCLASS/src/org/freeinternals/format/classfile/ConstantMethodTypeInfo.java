@@ -53,7 +53,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantMethodTypeInfo: Start Position: [%d], length: [%d], descriptor_index: [%d]. ",
-                this.startPos, super.length, this.descriptor_index.value);
+        return String.format("%s: Start Position: [%d], length: [%d], descriptor_index: [%d]. ",
+                this.getName(), this.startPos, super.length, this.descriptor_index.value);
     }
 }

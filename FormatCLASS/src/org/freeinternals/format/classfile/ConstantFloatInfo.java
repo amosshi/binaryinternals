@@ -51,6 +51,7 @@ public class ConstantFloatInfo extends CPInfo {
     @Override
     public String getDescription()
     {
-        return String.format("ConstantFloatInfo: Start Position: [%d], length: [%d], value: [%f].", this.startPos, this.length, this.floatValue);
+        return String.format("%s: Start Position: [%d], length: [%d], value: [%f].",
+                this.getName(), this.startPos, this.length, this.floatValue);
     }
 }

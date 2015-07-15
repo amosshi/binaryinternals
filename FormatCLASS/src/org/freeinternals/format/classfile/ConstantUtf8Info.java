@@ -55,7 +55,8 @@ public class ConstantUtf8Info extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantUtf8Info: Start Position: [%d], length: [%d], value: [%s].", this.startPos, super.length, this.getValue());
+        return String.format("%s: Start Position: [%d], length: [%d], value: [%s].", 
+                this.getName(), this.startPos, super.length, this.getValue());
     }
 
     /**

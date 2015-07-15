@@ -24,4 +24,13 @@ public class u1 {
     u1(short value) {
         this.value = value;
     }
+    
+    /**
+     * Return the {@link #value} as <code>int</code>.
+     * 
+     * @return The {@link #value} as <code>int</code>
+     */
+    public int IntValue(){
+        return new Short(value).intValue();
+    }
 }

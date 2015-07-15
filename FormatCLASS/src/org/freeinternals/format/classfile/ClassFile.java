@@ -507,48 +507,42 @@ public class ClassFile {
             if (index >= 0 && index < ClassFile.this.constant_pool.length) {
                 CPInfo cp_info = ClassFile.this.constant_pool[index];
                 if (cp_info != null) {
-                    short tag = cp_info.tag.value;
-                    if (tag == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Integer.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Integer((ConstantIntegerInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Float.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Float((ConstantFloatInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Long((ConstantLongInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Double((ConstantDoubleInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Class((ConstantClassInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_String.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_String((ConstantStringInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Fieldref.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_Methodref.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag) {
-                        sb.append(cp_info.getName()).append(": ");
-                        sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) ClassFile.this.constant_pool[index]));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_NameAndType.tag) {
-                        sb.append(cp_info.getName()).append(": ");
+                    sb.append(cp_info.getName()).append(": ");
+                    if (cp_info instanceof ConstantUtf8Info) {
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) cp_info));
+                    } else if (cp_info instanceof ConstantIntegerInfo) {
+                        sb.append(String.valueOf(((ConstantIntegerInfo) cp_info).integerValue));
+                    } else if (cp_info instanceof ConstantFloatInfo) {
+                        sb.append(String.valueOf(((ConstantFloatInfo) cp_info).floatValue));
+                    } else if (cp_info instanceof ConstantLongInfo) {
+                        sb.append(String.valueOf(((ConstantLongInfo) cp_info).longValue));
+                    } else if (cp_info instanceof ConstantDoubleInfo) {
+                        sb.append(String.valueOf(((ConstantDoubleInfo) cp_info).doubleValue));
+                    } else if (cp_info instanceof ConstantClassInfo) {
+                        sb.append(this.getDescr_Class((ConstantClassInfo) cp_info));
+                    } else if (cp_info instanceof ConstantStringInfo) {
+                        sb.append(this.getDescr_String((ConstantStringInfo) cp_info));
+                    } else if (cp_info instanceof ConstantFieldrefInfo) {
+                        sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) cp_info));
+                    } else if (cp_info instanceof ConstantMethodrefInfo) {
+                        sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) cp_info));
+                    } else if (cp_info instanceof ConstantInterfaceMethodrefInfo) {
+                        sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) cp_info));
+                    } else if (cp_info instanceof ConstantNameAndTypeInfo) {
                         sb.append(this.getDescr_NameAndType(
-                                (ConstantNameAndTypeInfo) ClassFile.this.constant_pool[index],
+                                (ConstantNameAndTypeInfo) cp_info,
                                 ClassFile.Descr_NameAndType.RAW));
-                    } else if (tag == CPInfo.ConstantType.CONSTANT_MethodHandle.tag
-                            || tag == CPInfo.ConstantType.CONSTANT_MethodType.tag
-                            || tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
-                        sb.append(ClassFile.this.constant_pool[index].getDescription());
+                    } else if (cp_info instanceof ConstantMethodTypeInfo) {
+                        ConstantMethodTypeInfo mti = (ConstantMethodTypeInfo)cp_info;
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[mti.descriptor_index.value]));
+                    } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
+                        sb.append("bootstrap_method_attr_index = ").append(((ConstantInvokeDynamicInfo)cp_info).bootstrap_method_attr_index.value);
+                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantInvokeDynamicInfo)cp_info).name_and_type_index.value));
+                    } else if (cp_info instanceof ConstantMethodHandleInfo) {
+                        sb.append("reference_kind = ").append(ConstantMethodHandleInfo.ReferenceKind.name(((ConstantMethodHandleInfo) cp_info).reference_kind.value));
+                        sb.append(", reference_index = ").append(this.getCPDescr(((ConstantMethodHandleInfo) cp_info).reference_index.value));
                     } else {
-                        sb.append("!!! Un-supported CP type.");
+                        sb.append("!!! Un-recognized CP type.");
                     }
                 } // End if
             } else {
@@ -560,22 +554,6 @@ public class ClassFile {
 
         private String getDescr_Utf8(final ConstantUtf8Info info) {
             return info.getValue();
-        }
-
-        private String getDescr_Integer(final ConstantIntegerInfo info) {
-            return String.valueOf(info.integerValue);
-        }
-
-        private String getDescr_Float(final ConstantFloatInfo info) {
-            return String.valueOf(info.floatValue);
-        }
-
-        private String getDescr_Long(final ConstantLongInfo info) {
-            return String.valueOf(info.longValue);
-        }
-
-        private String getDescr_Double(final ConstantDoubleInfo info) {
-            return String.valueOf(info.doubleValue);
         }
 
         private String getDescr_Class(final ConstantClassInfo info) {

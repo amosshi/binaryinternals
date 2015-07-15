@@ -51,7 +51,7 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
 
     ConstantInvokeDynamicInfo(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodType.tag);
+        super(CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.bootstrap_method_attr_index = new u2(posDataInputStream.readUnsignedShort());
         this.name_and_type_index = new u2(posDataInputStream.readUnsignedShort());
@@ -65,7 +65,8 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantMethodTypeInfo: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
+        return String.format("%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
+                this.getName(),
                 this.startPos, 
                 super.length,
                 this.bootstrap_method_attr_index.value,

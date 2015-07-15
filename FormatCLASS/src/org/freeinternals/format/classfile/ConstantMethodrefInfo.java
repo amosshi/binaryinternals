@@ -50,6 +50,7 @@ public class ConstantMethodrefInfo extends CPInfo {
 
     @Override
     public String getDescription() {
-        return String.format("ConstantMethodrefInfo: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].", this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
+        return String.format("%s: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].", 
+                this.getName(), this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
     }
 }

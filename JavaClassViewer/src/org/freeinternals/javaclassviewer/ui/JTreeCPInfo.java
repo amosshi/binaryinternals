@@ -259,7 +259,7 @@ final class JTreeCPInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                 startPos + 1,
                 1,
-                "reference_kind: " + info.reference_kind.value
+                "reference_kind: " + info.reference_kind.value + " - " + ConstantMethodHandleInfo.ReferenceKind.name(info.reference_kind.value)
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
                 startPos + 2,
