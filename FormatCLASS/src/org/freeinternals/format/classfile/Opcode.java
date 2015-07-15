@@ -1088,6 +1088,9 @@ public final class Opcode {
                     byteValue);
         } else if (Opcode.Instruction.invokedynamic.code == opcode) {
             // Invoke dynamic method
+            shortValue = pdis.readUnsignedShort();
+            cpIndex1 = shortValue;
+            pdis.skipBytes(2);  // Skip 2 zero bytes
             opcodeText = Opcode.Instruction.invokedynamic.name();
         } else if (Opcode.Instruction.new_.code == opcode) {
             // Create new object
@@ -1300,7 +1303,11 @@ public final class Opcode {
 
         @Override
         public String toString() {
-            return String.format("Offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
+            if (this.cpIndex1 > -1) {
+                return String.format("Offset %04d: opcode [%02X] %s %d", this.offset, this.opCode, this.opCodeText, this.cpIndex1);
+            } else {
+                return String.format("Offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
+            }
         }
 
         /**
