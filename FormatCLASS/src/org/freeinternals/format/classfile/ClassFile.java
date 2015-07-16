@@ -101,7 +101,7 @@ public class ClassFile {
             String type;
             for (FieldInfo field : fields) {
                 try {
-                    type = SignatureConvertor.signature2Type(this.getConstantUtf8Value(field.descriptor_index.value));
+                    type = SignatureConvertor.parseFieldSignature(this.getConstantUtf8Value(field.descriptor_index.value));
                 } catch (SignatureException se) {
                     type = "[Unexpected signature type]: " + this.getConstantUtf8Value(field.descriptor_index.value);
                 }
@@ -618,7 +618,7 @@ public class ClassFile {
                 case FIELD:
                     try {
                         sb.append("type = ");
-                        sb.append(SignatureConvertor.signature2Type(type));
+                        sb.append(SignatureConvertor.parseFieldSignature(type));
                     } catch (SignatureException ex) {
                         Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
 

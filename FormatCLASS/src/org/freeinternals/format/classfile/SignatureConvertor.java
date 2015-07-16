@@ -41,7 +41,7 @@ final public class SignatureConvertor {
         if ("V".equals(returnType)) {
             returnValue = JavaLangSpec.Keyword.kw_void;
         } else {
-            returnValue = SignatureConvertor.signature2Type(returnType);
+            returnValue = SignatureConvertor.parseFieldSignature(returnType);
         }
 
         return returnValue;
@@ -135,7 +135,7 @@ final public class SignatureConvertor {
      * @throws org.freeinternals.format.classfile.SignatureException Invalid
      * signature string found
      */
-    public static String signature2Type(final String signature)
+    public static String parseFieldSignature(final String signature)
             throws SignatureException {
         if ((signature == null) || signature.isEmpty()) {
             throw new IllegalArgumentException("'signature' should not be null or empty.");
