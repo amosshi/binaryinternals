@@ -101,7 +101,7 @@ public class ClassFile {
             String type;
             for (FieldInfo field : fields) {
                 try {
-                    type = SignatureConvertor.parseFieldSignature(this.getConstantUtf8Value(field.descriptor_index.value));
+                    type = SignatureConvertor.FieldDescriptor2Readable(this.getConstantUtf8Value(field.descriptor_index.value));
                 } catch (SignatureException se) {
                     type = "[Unexpected signature type]: " + this.getConstantUtf8Value(field.descriptor_index.value);
                 }
@@ -118,12 +118,12 @@ public class ClassFile {
             String mtdParameters;
             for (MethodInfo method : methods) {
                 try {
-                    mtdReturnType = SignatureConvertor.parseMethodReturnType(this.getConstantUtf8Value(method.descriptor_index.value));
+                    mtdReturnType = SignatureConvertor.MethodReturnType2Readable(this.getConstantUtf8Value(method.descriptor_index.value));
                 } catch (SignatureException se) {
                     mtdReturnType = String.format("[Unexpected method return type: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
                 }
                 try {
-                    mtdParameters = SignatureConvertor.parseMethodParameters(this.getConstantUtf8Value(method.descriptor_index.value));
+                    mtdParameters = SignatureConvertor.MethodParameters2Readable(this.getConstantUtf8Value(method.descriptor_index.value));
                 } catch (SignatureException se) {
                     mtdParameters = String.format("[Unexpected method parameters: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
                 }
@@ -618,7 +618,7 @@ public class ClassFile {
                 case FIELD:
                     try {
                         sb.append("type = ");
-                        sb.append(SignatureConvertor.parseFieldSignature(type));
+                        sb.append(SignatureConvertor.FieldDescriptor2Readable(type));
                     } catch (SignatureException ex) {
                         Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -631,9 +631,9 @@ public class ClassFile {
                     final StringBuilder sb_mtd = new StringBuilder();
                     try {
                         sb_mtd.append("parameter = ");
-                        sb_mtd.append(SignatureConvertor.parseMethodParameters(type));
+                        sb_mtd.append(SignatureConvertor.MethodParameters2Readable(type));
                         sb_mtd.append(", returns = ");
-                        sb_mtd.append(SignatureConvertor.parseMethodReturnType(type));
+                        sb_mtd.append(SignatureConvertor.MethodReturnType2Readable(type));
 
                         sb.append(sb_mtd);
                     } catch (SignatureException ex) {

@@ -37,9 +37,9 @@ public class AttributeSignature extends AttributeInfo {
     /**
      * A primitive type of the Java programming language.
      *
-     * @see <a
-     * href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-BaseType">
-     * VM Spec: Primitive type
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-BaseType">
+     * VM Spec: BaseType
      * </a>
      */
     public enum BaseType {
@@ -130,13 +130,14 @@ public class AttributeSignature extends AttributeInfo {
      * variable, or an array type.
      *
      * @see <a
-     * href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-ReferenceTypeSignature">
+     * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1">
      * VM Spec: Reference Type Signature
      * </a>
      */
     public enum ReferenceType {
 
         ClassTypeSignature('L'),
+        ClassTypeSignatureSuffix(';'),
         TypeVariableSignature('T'),
         ArrayTypeSignature('[');
 
