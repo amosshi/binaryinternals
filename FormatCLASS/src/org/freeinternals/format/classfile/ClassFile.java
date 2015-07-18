@@ -101,7 +101,7 @@ public class ClassFile {
             String type;
             for (FieldInfo field : fields) {
                 try {
-                    type = SignatureConvertor.FieldDescriptor2Readable(this.getConstantUtf8Value(field.descriptor_index.value));
+                    type = SignatureConvertor.FieldDescriptorExtractor(this.getConstantUtf8Value(field.descriptor_index.value)).toString();
                 } catch (SignatureException se) {
                     type = "[Unexpected signature type]: " + this.getConstantUtf8Value(field.descriptor_index.value);
                 }
@@ -118,7 +118,7 @@ public class ClassFile {
             String mtdParameters;
             for (MethodInfo method : methods) {
                 try {
-                    mtdReturnType = SignatureConvertor.MethodReturnType2Readable(this.getConstantUtf8Value(method.descriptor_index.value));
+                    mtdReturnType = SignatureConvertor.MethodReturnTypeExtractor(this.getConstantUtf8Value(method.descriptor_index.value)).toString();
                 } catch (SignatureException se) {
                     mtdReturnType = String.format("[Unexpected method return type: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
                 }
@@ -618,7 +618,7 @@ public class ClassFile {
                 case FIELD:
                     try {
                         sb.append("type = ");
-                        sb.append(SignatureConvertor.FieldDescriptor2Readable(type));
+                        sb.append(SignatureConvertor.FieldDescriptorExtractor(type).toString());
                     } catch (SignatureException ex) {
                         Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -633,7 +633,7 @@ public class ClassFile {
                         sb_mtd.append("parameter = ");
                         sb_mtd.append(SignatureConvertor.MethodParameters2Readable(type));
                         sb_mtd.append(", returns = ");
-                        sb_mtd.append(SignatureConvertor.MethodReturnType2Readable(type));
+                        sb_mtd.append(SignatureConvertor.MethodReturnTypeExtractor(type).toString());
 
                         sb.append(sb_mtd);
                     } catch (SignatureException ex) {

@@ -6,6 +6,8 @@
  */
 package org.freeinternals.format.classfile;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.freeinternals.format.classfile.AttributeSignature.ReferenceType;
 
 /**
@@ -27,16 +29,16 @@ final public class SignatureConvertor {
      * </a>
      */
     public static final char BINARY_NAME_SEPARATOR = '/';
-    
+
     /**
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
-     * VM Spec: Binary Class and Interface Names
+     * VM Spec: Method Descriptors
      * </a>
      */
     public static final char METHODDESCRIPTOR_LEFT = '(';
     /**
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
-     * VM Spec: Binary Class and Interface Names
+     * VM Spec: Method Descriptors
      * </a>
      */
     public static final char METHODDESCRIPTOR_RIGHT = ')';
@@ -49,8 +51,11 @@ final public class SignatureConvertor {
      * @return Method return type in Java Programming language format
      * @throws org.freeinternals.format.classfile.SignatureException Invalid
      * signature string found
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
+     * VM Spec: Method Descriptors
+     * </a>
      */
-    public static String MethodReturnType2Readable(final String signature)
+    public static SignatureResult MethodReturnTypeExtractor(final String signature)
             throws SignatureException {
         if (signature == null) {
             throw new IllegalArgumentException("'signature' should not be null.");
@@ -59,23 +64,22 @@ final public class SignatureConvertor {
             throw new IllegalArgumentException("'signature' should be more than 2 characters.");
         }
 
-        final int bracketEnd = signature.indexOf(')');
+        final int bracketEnd = signature.indexOf(METHODDESCRIPTOR_RIGHT); // ')'
         if (bracketEnd == -1) {
             throw new IllegalArgumentException(String.format("There is no ')' in the method signature: %s", signature));
         }
 
-        String returnValue;
+        SignatureResult returnValue;
         final String returnType = signature.substring(bracketEnd + 1);
         if ("V".equals(returnType)) {
-            returnValue = JavaLangSpec.Keyword.kw_void;
+            returnValue = new SignatureResult(0, returnType, JavaLangSpec.Keyword.kw_void);
         } else {
-            returnValue = SignatureConvertor.FieldDescriptor2Readable(returnType);
+            returnValue = SignatureConvertor.FieldDescriptorExtractor(returnType);
         }
-
+        
         return returnValue;
     }
-
-    // 
+    
     /**
      * Get parameters type from method descriptor
      * {@link MethodInfo#descriptor_index}.
@@ -85,11 +89,32 @@ final public class SignatureConvertor {
      * </p>
      *
      * @param signature JVM internal format of method signature
-     * @return Method parameters in Java Programming language format
+     * @return Java Language Specification (JLS) format of parameters
      * @throws org.freeinternals.format.classfile.SignatureException Invalid
      * signature string found
      */
     public static String MethodParameters2Readable(final String signature)
+            throws SignatureException {
+        List<SignatureResult> paramters = MethodParametersSplit(signature);
+        StringBuilder result = new StringBuilder();
+        
+        result.append(METHODDESCRIPTOR_LEFT);
+        int size = paramters.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                result.append(paramters.get(i).toString());
+                if (i != size - 1) {
+                    result.append(',');
+                }
+            }
+        }
+        result.append(METHODDESCRIPTOR_RIGHT);
+
+        return result.toString();
+    }
+
+    // (com/sun/java/accessibility/AccessBridge;Ljavax/accessibility/AccessibleContext;)V
+    public static List<SignatureResult> MethodParametersSplit(final String signature)
             throws SignatureException {
         // check parameter
         if (signature == null) {
@@ -108,157 +133,87 @@ final public class SignatureConvertor {
         //   '[': omited
         //   Primitive type; end
         //   'L': find the next ';', parse it; then end
-        final StringBuilder sbResult = new StringBuilder(signature.length() + signature.length());
-        sbResult.append(METHODDESCRIPTOR_LEFT);  // '('
+        StringBuilder sbParameter = new StringBuilder();
+        List<String> parameters = new ArrayList<>();
+        List<SignatureResult> parametersResult = new ArrayList<>();
 
-        StringBuilder sbParameter = new StringBuilder(sbResult.capacity());
-        int commaIndex;
-
-        String rawParameters = signature.substring(1, bracketEnd + 1);
-        int parametersCounter = 0;
+        String rawParameters = signature.substring(1, bracketEnd + 1);  // com/sun/java/accessibility/AccessBridge;Ljavax/accessibility/AccessibleContext;)
         while (rawParameters.charAt(0) != METHODDESCRIPTOR_RIGHT) {  // ')'
             if (rawParameters.charAt(0) == '[') {
-                sbParameter.append("[]");
+                sbParameter.append(rawParameters.charAt(0));
                 rawParameters = rawParameters.substring(1);
+            } else if (AttributeSignature.BaseType.isPrimitiveType(rawParameters.charAt(0))) {
+                sbParameter.append(rawParameters.charAt(0));
+                rawParameters = rawParameters.substring(1);
+                // Add one parameter
+                parameters.add(sbParameter.toString());
+                sbParameter.setLength(0);
+                sbParameter.trimToSize();
+            } else if (rawParameters.charAt(0) == ReferenceType.ClassTypeSignature.signature) {     // 'L'
+                int commaIndex = rawParameters.indexOf(';');
+                sbParameter.append(rawParameters.substring(0, commaIndex + 1));
+                rawParameters = rawParameters.substring(commaIndex + 1);
+                // Add one parameter
+                parameters.add(sbParameter.toString());
+                sbParameter.setLength(0);
+                sbParameter.trimToSize();
             } else {
-                if (AttributeSignature.BaseType.isPrimitiveType(rawParameters.charAt(0))) {
-                    sbParameter = sbParameter.insert(0, AttributeSignature.BaseType.extractPrimitiveType(rawParameters.charAt(0)));
-                    sbResult.append(sbParameter);
-                    parametersCounter++;
-                    sbParameter = sbParameter.delete(0, sbParameter.capacity());
-
-                    rawParameters = rawParameters.substring(1);
-                } else if (rawParameters.charAt(0) == 'L') {     // 'L'
-                    commaIndex = rawParameters.indexOf(';');
-                    sbParameter = sbParameter.insert(0, SignatureConvertor.extractObjectType(
-                            rawParameters.substring(0, commaIndex + 1)));
-                    sbResult.append(sbParameter);
-                    parametersCounter++;
-                    sbParameter = sbParameter.delete(0, sbParameter.capacity());
-
-                    rawParameters = rawParameters.substring(commaIndex + 1);
-                }
-
-                sbResult.append(", ");
+                throw new SignatureException("Un-recognized method descriptor: " + signature);
             }
         }
-        if (parametersCounter > 0) {
-            sbResult.delete(sbResult.length() - 2, sbResult.length());
+
+        if (parameters.size() > 0) {
+            for (String s : parameters) {
+                parametersResult.add(FieldDescriptorExtractor(s));
+            }
         }
 
-        sbResult.append(')');
-        return sbResult.toString();
+        return parametersResult;
     }
 
     /**
-     * Convert field signature from JVM internal format
-     * ({@link FieldInfo#descriptor_index} text) to Java programming language
-     * format.
-     * <p>
-     * Its format is <code>[[[ + type</code>.</p>
-     * Used to analysis the field type.
+     * Extract field descriptor. Example:
+     * <pre>
+     * B                   -- byte
+     * [I                  -- int[]
+     * Ljava/lang/Object;  -- java.lang.Object
+     * [Ljava/lang/String; -- java.lang.String[]
+     * </pre>
      *
      * @param signature JVM internal format of field signature
-     * @return Java programming language format of field signature
+     * @return Signature Parse result
      * @throws org.freeinternals.format.classfile.SignatureException Invalid
      * signature string found
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2">
+     * VM Spec: Field Descriptors
+     * </a>
      */
-    public static String FieldDescriptor2Readable(final String signature)
+    public static SignatureResult FieldDescriptorExtractor(final String signature)
             throws SignatureException {
+
         if ((signature == null) || signature.isEmpty()) {
             throw new IllegalArgumentException("'signature' should not be null or empty.");
         }
 
-        final StringBuilder sb = new StringBuilder(signature.length());
         String sig = signature;
         int arrayCount = 0;
-        while (sig.charAt(0) == ReferenceType.ArrayTypeSignature.signature) {
+        while (sig.charAt(0) == ReferenceType.ArrayTypeSignature.signature) {  // '['
             arrayCount++;
             sig = sig.substring(1);
         }
-
-        sb.append(SignatureConvertor.ConvertBaseTypeObjectType(sig));
-        while (arrayCount > 0) {
-            sb.append("[]");
-            arrayCount--;
+        
+        //
+        final int sigLength = sig.length();
+        String sigJls;
+        if (sigLength == 1) {
+            sigJls = AttributeSignature.BaseType.extractPrimitiveType(sig.charAt(0));
+        }else {
+            sig = sig.substring(1, sigLength - 1);
+            sigJls = parseClassSignature(sig);
         }
 
-        return sb.toString();
-    }
-
-    public static SignatureResult FieldDescriptorExtractor(final String signature)
-            throws SignatureException {
-        return new SignatureResult(0, "a", "b");
-   }
-    
-    
-    /**
-     * Convert <code>BaseType</code> and <code>ObjectType</code>.
-     * <pre>
-     *  Primitive types;
-     *    and
-     *  L full-qualified-class ;
-     * </pre>
-     * 
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2">
-     * VM Spec: Field Descriptors
-     * </a>
-     */
-    private static String ConvertBaseTypeObjectType(final String signature)
-            throws IllegalArgumentException, SignatureException {
-        if (signature == null) {
-            throw new IllegalArgumentException("'signature' should not be null.");
-        }
-
-        String returnValue;
-        final int signatureLength = signature.length();
-        switch (signatureLength) {
-            case 0:
-            case 2:
-                throw new SignatureException(String.format("Sinagure length cannot be 0, or 2. Current 'signature' length=%d.", signatureLength));
-
-            case 1:
-                returnValue = AttributeSignature.BaseType.extractPrimitiveType(signature.charAt(0));
-                break;
-
-            default:
-                returnValue = extractObjectType(signature);
-        }
-
-        return returnValue;
-    }
-
-    /**
-     * Extract object type from internal format to java language specification
-     * format. Example:
-     * <pre>
-     * L full-qualified-class ;
-     * Ljava/lang/String;  --> java.lang.String
-     * </pre>
-     *
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2">
-     * VM Spec: Field Descriptors
-     * </a>
-     */
-    private static String extractObjectType(final String objectType)
-            throws IllegalArgumentException, SignatureException {
-        if (objectType == null) {
-            throw new IllegalArgumentException("'ClassSignature' should not be null.");
-        }
-
-        final int length = objectType.length();
-        if (length < 3) {
-            throw new SignatureException(String.format("Fully-qualified class sinagure length cannot be less than 3. Current length=%d.", length));
-        }
-        if ((objectType.charAt(0) != ReferenceType.ClassTypeSignature.signature)
-                || (objectType.charAt(length - 1) != ReferenceType.ClassTypeSignatureSuffix.signature)) {
-            throw new SignatureException(String.format("Fully-qualified class sinagure format is not 'L-xxx-;'. it is '%s'.", objectType));
-        }
-
-        String returnValue = objectType.substring(1, length - 1);
-        return parseClassSignature(returnValue);
+        return new SignatureResult(arrayCount, sig, sigJls);
     }
 
     /**
@@ -270,7 +225,7 @@ final public class SignatureConvertor {
      * </p>
      *
      * @param classSignature JVM internal format of class signature
-     * @return Java programming language format of class signature
+     * @return Java Language Specification (JLS) format of class signature
      */
     public static String parseClassSignature(final String classSignature)
             throws IllegalArgumentException {
@@ -280,9 +235,9 @@ final public class SignatureConvertor {
 
         return classSignature.replace(SignatureConvertor.BINARY_NAME_SEPARATOR, '.');
     }
-    
-    
+
     public static class SignatureResult {
+
         /**
          * Dimension if it is an array.
          */
@@ -295,11 +250,29 @@ final public class SignatureConvertor {
          * Parsed Java Language Specification type name.
          */
         public final String TypeJLSName;
-        
-        SignatureResult(int count, String bin, String jls){
+
+        SignatureResult(int count, String bin, String jls) {
             this.ArrayDimension = count;
             this.TypeBinaryName = bin;
             this.TypeJLSName = jls;
+        }
+
+        /**
+         * Get the readable format of signature.
+         * 
+         * @return Readable format of signature
+         */
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            int count = this.ArrayDimension;
+            sb.append(this.TypeJLSName);
+            while (count > 0) {
+                sb.append("[]");
+                count--;
+            }
+
+            return sb.toString();
         }
     }
 }
