@@ -1319,7 +1319,11 @@ public final class Opcode {
          */
         public String toString(ClassFile cf) {
             if (this.cpIndex1 > -1) {
-                return this.toString() + " - " + cf.getCPDescription(this.cpIndex1);
+                String cpDesc = cf.getCPDescription(this.cpIndex1);
+                if (cpDesc.length() > 1000) {
+                    cpDesc = cpDesc.substring(1, 1000);
+                }
+                return this.toString() + " - " + cpDesc;
             } else {
                 return this.toString();
             }

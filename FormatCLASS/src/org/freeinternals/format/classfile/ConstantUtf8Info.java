@@ -31,7 +31,7 @@ import org.freeinternals.format.FileFormatException;
 public class ConstantUtf8Info extends CPInfo {
 
     public final u2 length_utf8;
-    private final byte[] bytes;
+    public final byte[] bytes;
 
     ConstantUtf8Info(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
@@ -60,7 +60,7 @@ public class ConstantUtf8Info extends CPInfo {
     }
 
     /**
-     * Get a string for the content of the Utf8 info.
+     * Get the {@link #bytes} value as a String, using platform's default charset.
      *
      * @return String for the content
      */
