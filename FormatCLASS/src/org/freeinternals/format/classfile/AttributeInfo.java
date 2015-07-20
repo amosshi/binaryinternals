@@ -7,6 +7,8 @@
 package org.freeinternals.format.classfile;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
@@ -33,6 +35,8 @@ import org.freeinternals.format.FileFormatException;
  * </a>
  */
 public class AttributeInfo extends FileComponent {
+
+    private static final Logger Log = Logger.getLogger(AttributeInfo.class.getName());
 
     /**
      * Non-standard attributes. All of the attributes which are not defined in
@@ -148,7 +152,8 @@ public class AttributeInfo extends FileComponent {
                 attr = new AttributeBootstrapMethods(attrNameIndex, type, posDataInputStream);
                 // 4.7.24. The MethodParameters Attribute
             } else {
-                System.out.println("-- Warning: Un-recognized Attribute Found !!! Type = " + type);
+                Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
+                System.out.println( "Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist
                 attr = new AttributeExtended(attrNameIndex, Extended + type, posDataInputStream);
             }
         } else {

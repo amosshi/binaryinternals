@@ -9,6 +9,8 @@ package org.freeinternals.format.classfile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
@@ -24,6 +26,8 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * </a>
  */
 public final class Opcode {
+
+    private static final Logger Log = Logger.getLogger(Opcode.class.getName());
 
     /**
      * Opcode and non {@link ClassFile#constant_pool} index value. Example:
@@ -337,6 +341,9 @@ public final class Opcode {
             try {
                 codeResult.add(parseInstruction(pdis));
             } catch (IOException ioe) {
+                Log.log(Level.SEVERE, "parseCode() with code length - {0}", code.length);
+                Log.log(Level.SEVERE, ioe.toString(), ioe);
+                // We keep the System.err here, in case there is no logger settings exist
                 System.err.println("parseCode() with code length - " + code.length);
                 System.err.println(ioe.toString());
                 break;
