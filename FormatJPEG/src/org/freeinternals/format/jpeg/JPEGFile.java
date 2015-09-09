@@ -88,9 +88,7 @@ public class JPEGFile extends FileFormat{
                     System.arraycopy(this.fileByteArray, marker.getStartPos(), markerByteArray, 0, markerByteArraySize);
                     try {
                         marker.parse(new PosDataInputStream(new PosByteArrayInputStream(markerByteArray), marker.getStartPos()));
-                    } catch (IOException ex) {
-                        System.out.println("JPEGFile.parse() - " + marker.getMarkerName() + " - " + ex.toString());
-                    } catch (FileFormatException ex) {
+                    } catch (IOException | FileFormatException ex) {
                         System.out.println("JPEGFile.parse() - " + marker.getMarkerName() + " - " + ex.toString());
                     }
                 }

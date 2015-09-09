@@ -15,6 +15,7 @@ package org.freeinternals.format.dex;
  * Dalvik Executable (DEX) format</a>
  */
 public class Dex_ubyte {
+
     /**
      * Length of the type in bytes.
      */
@@ -27,5 +28,29 @@ public class Dex_ubyte {
 
     protected Dex_ubyte(int i) {
         this.value = i;
+    }
+
+    /**
+     * Get string for <code>ubyte</code> array.
+     * 
+     * @param bytes <code>ubyte</code> array
+     * @return String value
+     */
+    public static String toString(Dex_ubyte[] bytes) {
+        if (bytes == null || bytes.length < 1) {
+            return "empty array";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("array (");
+        for (int i = 0; i < bytes.length; i++) {
+            sb.append(Integer.toHexString(bytes[i].value).toUpperCase());
+            if (i != bytes.length - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append(")");
+
+        return sb.toString();
     }
 }

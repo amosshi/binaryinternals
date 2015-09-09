@@ -8,18 +8,19 @@ package org.freeinternals.format.dex;
 
 /**
  * 32-bit unsigned int, little-endian.
- * 
+ *
  * @author Amos Shi
  * @see
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
  * Dalvik Executable (DEX) format</a>
  */
 public class Dex_uint {
+
     /**
      * Length of the type in bytes.
      */
     public static final int LENGTH = 4;
-    
+
     /**
      * Value of the DEX <code>uint</code>.
      */
@@ -27,5 +28,14 @@ public class Dex_uint {
 
     protected Dex_uint(long l) {
         this.value = l;
+    }
+
+    public int intValue() {
+        return Long.valueOf(this.value).intValue();
+    }
+
+    @Override
+    public String toString() {
+        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + Long.toString(this.value);
     }
 }

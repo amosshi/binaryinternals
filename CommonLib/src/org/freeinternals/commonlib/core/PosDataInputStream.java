@@ -509,6 +509,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
+     * Fly to the specific <code>position</code>.
+     * 
      * This method supports {@link PosByteArrayInputStream} only, nothing will
      * do for other input stream types.
      *

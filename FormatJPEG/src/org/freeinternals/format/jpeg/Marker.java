@@ -94,6 +94,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
         return this.marker_length;
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         if (MarkerCode.isLengthAvailable(this.marker_code)) {
             DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);

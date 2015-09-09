@@ -29,4 +29,9 @@ public class Dex_ushort {
     protected Dex_ushort(int i) {
         this.value = i;
     }
+    
+    @Override
+    public String toString() {
+        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
+    }    
 }

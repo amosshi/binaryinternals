@@ -7,6 +7,7 @@
 package org.freeinternals.javaclassviewer.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.ConstantClassInfo;
@@ -44,7 +45,7 @@ final class JTreeCPInfo {
         }
 
         final short tag = cp_info.tag.value;
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 cp_info.getStartPos(),
                 1,
                 "tag: " + tag)));
@@ -90,11 +91,11 @@ final class JTreeCPInfo {
         final int startPos = utf8Info.getStartPos();
         final int bytesLength = utf8Info.length_utf8.value;
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "length: " + bytesLength)));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 bytesLength,
                 "bytes: " + utf8Info.getValue())));
@@ -104,7 +105,7 @@ final class JTreeCPInfo {
             final DefaultMutableTreeNode rootNode,
             final ConstantIntegerInfo integerInfo)
             throws InvalidTreeNodeException {
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 integerInfo.getStartPos() + 1,
                 4,
                 "bytes: " + integerInfo.integerValue)));
@@ -114,7 +115,7 @@ final class JTreeCPInfo {
             final DefaultMutableTreeNode rootNode,
             final ConstantFloatInfo floatInfo)
             throws InvalidTreeNodeException {
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatInfo.getStartPos() + 1,
                 4,
                 "bytes: " + floatInfo.floatValue)));
@@ -126,12 +127,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = longInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 4,
                 "high_bytes - value: " + longInfo.longValue
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 5,
                 4,
                 "low_bytes"
@@ -144,12 +145,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = doubleInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 4,
                 "high_bytes - value: " + doubleInfo.doubleValue
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 5,
                 4,
                 "low_bytes"
@@ -160,7 +161,7 @@ final class JTreeCPInfo {
             final DefaultMutableTreeNode rootNode,
             final ConstantClassInfo classInfo)
             throws InvalidTreeNodeException {
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 classInfo.getStartPos() + 1,
                 2,
                 "name_index: " + classInfo.name_index.value + " - " + this.classFile.getCPDescription(classInfo.name_index.value)
@@ -171,7 +172,7 @@ final class JTreeCPInfo {
             final DefaultMutableTreeNode rootNode,
             final ConstantStringInfo stringInfo)
             throws InvalidTreeNodeException {
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 stringInfo.getStartPos() + 1,
                 2,
                 "string_index: " + stringInfo.string_index.value + " - " + this.classFile.getCPDescription(stringInfo.string_index.value)
@@ -184,12 +185,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = fieldrefInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "class_index: " + fieldrefInfo.class_index.value + " - " + this.classFile.getCPDescription(fieldrefInfo.class_index.value)
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
                 "name_and_type_index: " + fieldrefInfo.name_and_type_index.value + " - " + this.classFile.getCPDescription(fieldrefInfo.name_and_type_index.value)
@@ -202,12 +203,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = methodrefInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "class_index: " + methodrefInfo.class_index.value + " - " + this.classFile.getCPDescription(methodrefInfo.class_index.value)
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
                 "name_and_type_index: " + methodrefInfo.name_and_type_index.value + " - " + this.classFile.getCPDescription(methodrefInfo.name_and_type_index.value)
@@ -220,12 +221,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = interfaceMethodrefInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "class_index: " + interfaceMethodrefInfo.class_index.value + " - " + this.classFile.getCPDescription(interfaceMethodrefInfo.class_index.value)
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
                 "name_and_type_index: " + interfaceMethodrefInfo.name_and_type_index.value + " - " + this.classFile.getCPDescription(interfaceMethodrefInfo.name_and_type_index.value)
@@ -238,12 +239,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = nameAndTypeInfo.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "name_index: " + nameAndTypeInfo.name_index.value + " - " + this.classFile.getCPDescription(nameAndTypeInfo.name_index.value)
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
                 "descriptor_index: " + nameAndTypeInfo.descriptor_index.value + " - " + this.classFile.getCPDescription(nameAndTypeInfo.descriptor_index.value)
@@ -256,12 +257,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = info.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 1,
                 "reference_kind: " + info.reference_kind.value + " - " + ConstantMethodHandleInfo.ReferenceKind.name(info.reference_kind.value)
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
                 "reference_index: " + info.reference_index.value + " - " + this.classFile.getCPDescription(info.reference_index.value)
@@ -274,7 +275,7 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = info.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "descriptor_index: " + info.descriptor_index.value + " - " + this.classFile.getCPDescription(info.descriptor_index.value)
@@ -287,12 +288,12 @@ final class JTreeCPInfo {
             throws InvalidTreeNodeException {
         final int startPos = info.getStartPos();
 
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
                 "bootstrap_method_attr_index: " + info.bootstrap_method_attr_index.value
         )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeClassComponent(
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
                 "name_and_type_index: " + info.name_and_type_index.value + " - " + this.classFile.getCPDescription(info.name_and_type_index.value)

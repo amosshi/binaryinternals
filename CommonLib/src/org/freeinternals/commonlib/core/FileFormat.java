@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.format.FileFormatException;
 

@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.dex;
 
+import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 
 /**
@@ -13,7 +14,7 @@ import org.freeinternals.commonlib.core.FileComponent;
  *
  * @author Amos Shi
  */
-public class HeaderItem extends FileComponent{
+public class HeaderItem extends FileComponent {
 
     /**
      * adler32 checksum of the rest of the file (everything but magic and this
@@ -50,7 +51,11 @@ public class HeaderItem extends FileComponent{
      */
     public Dex_uint link_size;
     /**
-     * Offset from the start of the file to the link section, or 0 if {@link #link_size} == 0. The offset, if non-zero, should be to an offset into the {@link DexFile#link_data} section. The format of the data pointed at is left unspecified by this document; this header field (and the previous) are left as hooks for use by runtime implementations.
+     * Offset from the start of the file to the link section, or 0 if
+     * {@link #link_size} == 0. The offset, if non-zero, should be to an offset
+     * into the {@link DexFile#link_data} section. The format of the data
+     * pointed at is left unspecified by this document; this header field (and
+     * the previous) are left as hooks for use by runtime implementations.
      */
     public Dex_uint link_off;
     public Dex_uint map_off;
@@ -68,6 +73,37 @@ public class HeaderItem extends FileComponent{
     public Dex_uint class_defs_off;
     public Dex_uint data_size;
     public Dex_uint data_off;
+
+    HeaderItem(PosDataInputStreamDex stream) throws IOException {
+        super.startPos = stream.getPos();
+
+        this.checksum = stream.Dex_uint(); //  new Dex_uint(stream.readUnsignedInt());
+        for (int i = 0; i < this.signature.length; i++) {
+            this.signature[i] = stream.Dex_ubyte(); //  new Dex_ubyte(stream.readUnsignedByte());
+        }
+        this.file_size = stream.Dex_uint();                                     // new Dex_uint(stream.readUnsignedInt_LittleEndian());
+        stream.skip(Dex_uint.LENGTH);                                           // header_item-header_size - constant value 0x70
+        this.endian_tag = new Dex_uint(stream.readUnsignedInt());               // Always read from left to right
+        this.link_size = stream.Dex_uint();
+        this.link_off = stream.Dex_uint();
+        this.map_off = stream.Dex_uint();
+        this.string_ids_size = stream.Dex_uint();
+        this.string_ids_off = stream.Dex_uint();
+        this.type_ids_size = stream.Dex_uint();
+        this.type_ids_off = stream.Dex_uint();
+        this.proto_ids_size = stream.Dex_uint();
+        this.proto_ids_off = stream.Dex_uint();
+        this.field_ids_size = stream.Dex_uint();
+        this.field_ids_off = stream.Dex_uint();
+        this.method_ids_size = stream.Dex_uint();
+        this.method_ids_off = stream.Dex_uint();
+        this.class_defs_size = stream.Dex_uint();
+        this.class_defs_off = stream.Dex_uint();
+        this.data_size = stream.Dex_uint();
+        this.data_off = stream.Dex_uint();
+
+        super.length = this.header_size.intValue() - DexFile.DEX_FILE_MAGIC1.length - DexFile.DEX_FILE_MAGIC2.length;
+    }
 
     /**
      * The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the
@@ -93,9 +129,31 @@ public class HeaderItem extends FileComponent{
          * Internal value of the endianness.
          */
         public final int value;
+        public final int byte1;
+        public final int byte2;
+        public final int byte3;
+        public final int byte4;
 
         private Endian(int i) {
             this.value = i;
+            this.byte1 = i >> 24;
+            this.byte2 = (i << 8) >> 24;
+            this.byte3 = (i << 16) >> 24;
+            this.byte4 = (i << 24) >> 24;
+        }
+
+        public boolean equals(int i1, int i2, int i3, int i4) {
+            return (i1 == this.byte1) && (i2 == this.byte2) && (i3 == this.byte3) && (i4 == this.byte4);
+        }
+
+        public static String toString(int i) {
+            if (Endian.ENDIAN_CONSTANT.value == i) {
+                return Endian.ENDIAN_CONSTANT.name();
+            } else if (Endian.REVERSE_ENDIAN_CONSTANT.value == i) {
+                return Endian.REVERSE_ENDIAN_CONSTANT.name();
+            } else {
+                return "Un-recognized !!!";
+            }
         }
     }
 }

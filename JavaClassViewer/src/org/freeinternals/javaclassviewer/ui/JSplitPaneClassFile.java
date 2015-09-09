@@ -22,6 +22,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.HTMLKit;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.JPanelForTree;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.CPInfo;
@@ -115,8 +116,8 @@ public class JSplitPaneClassFile extends JSplitPane {
         if (obj instanceof DefaultMutableTreeNode) {
             final DefaultMutableTreeNode objDmtn = (DefaultMutableTreeNode) obj;
             obj = objDmtn.getUserObject();
-            if (obj instanceof JTreeNodeClassComponent) {
-                final JTreeNodeClassComponent objTncc = (JTreeNodeClassComponent) obj;
+            if (obj instanceof JTreeNodeFileComponent) {
+                final JTreeNodeFileComponent objTncc = (JTreeNodeFileComponent) obj;
 
                 // Select the bytes of this data
                 this.binaryViewer.setSelection(objTncc.getStartPos(), objTncc.getLength());

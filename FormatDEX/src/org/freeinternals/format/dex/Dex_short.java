@@ -15,6 +15,7 @@ package org.freeinternals.format.dex;
  * Dalvik Executable (DEX) format</a>
  */
 public class Dex_short {
+
     /**
      * Length of the type in bytes.
      */
@@ -27,5 +28,10 @@ public class Dex_short {
 
     protected Dex_short(short s) {
         this.value = s;
+    }
+
+    @Override
+    public String toString() {
+        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
     }
 }
