@@ -36,6 +36,16 @@ public class Dex_uint {
 
     @Override
     public String toString() {
-        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + Long.toString(this.value);
+        return Dex_uint.toString(this.value);
+    }
+
+    /**
+     * Convert <code>long</code> to String with both offset and readable format.
+     * 
+     * @param l The <code>long</code> value
+     * @return The String for <code>l</code>
+     */
+    public static String toString(long l) {
+        return "0x" + Long.toHexString(l).toUpperCase() + " | " + String.format("%,d", l);
     }
 }

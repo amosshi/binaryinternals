@@ -69,6 +69,16 @@ public class JTreeNodeFileComponent {
     public int getLength() {
         return this.length;
     }
+    
+    /**
+     * Get the last position of current node plus 1, which equals to the first position of the next node.
+     * The value is ({@link #startPos} + {@link #length}).
+     * 
+     * @return Last position plus 1
+     */
+    public int getLastPosPlus1(){
+        return this.startPos + this.length;
+    }
 
     public String getText() {
         return this.text;
