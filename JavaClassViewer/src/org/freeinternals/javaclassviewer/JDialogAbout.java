@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,7 +23,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.freeinternals.commonlib.ui.JLabelHyperLink;
-
 
 /**
  *
@@ -34,7 +34,7 @@ public class JDialogAbout extends JDialog {
     private static final long serialVersionUID = 4876543219876500000L;
 
     /**
-     * 
+     *
      * @param owner Owner window
      * @param title Title for the Dialog
      */
@@ -52,8 +52,12 @@ public class JDialogAbout extends JDialog {
         this.setLayout(new FlowLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> {
-            buttonOK_Clicked();
+        buttonClose.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonOK_Clicked();
+            }
         });
 
 //      Lay out the labels from top to bottom.

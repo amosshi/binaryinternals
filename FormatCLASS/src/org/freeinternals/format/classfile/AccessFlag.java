@@ -113,23 +113,23 @@ public enum AccessFlag {
     /**
      * Modifiers for {@link ClassFile}.
      */
-    public static List<AccessFlag> ForClass = Collections.synchronizedList(new ArrayList<>());
+    public static List<AccessFlag> ForClass = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
      * Modifiers for {@link FieldInfo}.
      */
-    public static List<AccessFlag> ForField = Collections.synchronizedList(new ArrayList<>());
+    public static List<AccessFlag> ForField = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
      * Modifiers for {@link MethodInfo}.
      */
-    public static List<AccessFlag> ForMethod = Collections.synchronizedList(new ArrayList<>());
+    public static List<AccessFlag> ForMethod = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
      * Modifiers for {@link AttributeInnerClasses}.
      */
-    public static List<AccessFlag> ForInnerClass = Collections.synchronizedList(new ArrayList<>());
+    public static List<AccessFlag> ForInnerClass = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
      * Modifiers for {@link AttributeMethodParameters}.
      */
-    public static List<AccessFlag> ForMethodParameters = Collections.synchronizedList(new ArrayList<>());
+    public static List<AccessFlag> ForMethodParameters = Collections.synchronizedList(new ArrayList<AccessFlag>());
 
     static {
         // Access flags for a Class File
