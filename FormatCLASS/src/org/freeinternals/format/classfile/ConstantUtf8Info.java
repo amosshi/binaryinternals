@@ -38,7 +38,7 @@ public class ConstantUtf8Info extends CPInfo {
         super(CPInfo.ConstantType.CONSTANT_Utf8.tag);
         super.startPos = posDataInputStream.getPos() - 1;
 
-        this.length_utf8 = new u2(posDataInputStream.readUnsignedShort());
+        this.length_utf8 = new u2(posDataInputStream);
         this.bytes = new byte[this.length_utf8.value];
         final int bytesRead = posDataInputStream.read(this.bytes);
         if (bytesRead != this.length_utf8.value) {

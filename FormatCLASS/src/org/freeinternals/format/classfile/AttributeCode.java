@@ -62,13 +62,13 @@ public class AttributeCode extends AttributeInfo {
 
         int i;
 
-        this.max_stack = new u2(posDataInputStream.readUnsignedShort());
-        this.max_locals = new u2(posDataInputStream.readUnsignedShort());
-        this.code_length = new u4(posDataInputStream.readInt());
+        this.max_stack = new u2(posDataInputStream);
+        this.max_locals = new u2(posDataInputStream);
+        this.code_length = new u4(posDataInputStream);
         this.code = new byte[this.code_length.value];
         posDataInputStream.read(this.code);
 
-        this.exception_table_length = new u2(posDataInputStream.readUnsignedShort());
+        this.exception_table_length = new u2(posDataInputStream);
         if (this.exception_table_length.value > 0) {
             this.exceptionTable = new ExceptionTable[this.exception_table_length.value];
             for (i = 0; i < this.exception_table_length.value; i++) {
@@ -76,7 +76,7 @@ public class AttributeCode extends AttributeInfo {
             }
         }
 
-        this.attributes_count = new u2(posDataInputStream.readUnsignedShort());
+        this.attributes_count = new u2(posDataInputStream);
         if (this.attributes_count.value > 0) {
             this.attributes = new AttributeInfo[this.attributes_count.value];
             for (i = 0; i < this.attributes_count.value; i++) {
@@ -100,7 +100,7 @@ public class AttributeCode extends AttributeInfo {
     /**
      * Get the {@link #code} parse result. This method will return an empty list
      * if {@link #code} is <code>null</code>.
-     * 
+     *
      * @return Parsed {@link Opcode} list
      */
     public List<Opcode.InstructionResult> parseCode() {
@@ -154,10 +154,10 @@ public class AttributeCode extends AttributeInfo {
             this.startPos = posDataInputStream.getPos();
             this.length = LENGTH;
 
-            this.start_pc = new u2(posDataInputStream.readUnsignedShort());
-            this.end_pc = new u2(posDataInputStream.readUnsignedShort());
-            this.handler_pc = new u2(posDataInputStream.readUnsignedShort());
-            this.catch_type = new u2(posDataInputStream.readUnsignedShort());
+            this.start_pc = new u2(posDataInputStream);
+            this.end_pc = new u2(posDataInputStream);
+            this.handler_pc = new u2(posDataInputStream);
+            this.catch_type = new u2(posDataInputStream);
         }
     }
 }

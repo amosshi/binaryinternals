@@ -53,8 +53,8 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
             throws IOException, FileFormatException {
         super(CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag);
         super.startPos = posDataInputStream.getPos() - 1;
-        this.bootstrap_method_attr_index = new u2(posDataInputStream.readUnsignedShort());
-        this.name_and_type_index = new u2(posDataInputStream.readUnsignedShort());
+        this.bootstrap_method_attr_index = new u2(posDataInputStream);
+        this.name_and_type_index = new u2(posDataInputStream);
         super.length = LENGTH;
     }
 

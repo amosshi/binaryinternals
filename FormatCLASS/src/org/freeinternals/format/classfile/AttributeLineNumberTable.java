@@ -41,7 +41,7 @@ public class AttributeLineNumberTable extends AttributeInfo {
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.line_number_table_length = new u2(posDataInputStream.readUnsignedShort());
+        this.line_number_table_length = new u2(posDataInputStream);
         if (this.line_number_table_length.value > 0) {
             this.lineNumberTable = new LineNumberTable[this.line_number_table_length.value];
             for (int i = 0; i < this.line_number_table_length.value; i++) {
@@ -87,8 +87,8 @@ public class AttributeLineNumberTable extends AttributeInfo {
             this.startPos = posDataInputStream.getPos();
             this.length = LENGTH;
 
-            this.start_pc = new u2(posDataInputStream.readUnsignedShort());
-            this.line_number = new u2(posDataInputStream.readUnsignedShort());
+            this.start_pc = new u2(posDataInputStream);
+            this.line_number = new u2(posDataInputStream);
         }
     }
 }

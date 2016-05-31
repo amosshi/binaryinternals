@@ -50,11 +50,11 @@ public class AttributeExceptions extends AttributeInfo {
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.number_of_exceptions = new u2(posDataInputStream.readUnsignedShort());
+        this.number_of_exceptions = new u2(posDataInputStream);
         if (this.number_of_exceptions.value > 0) {
             this.exception_index_table = new u2[this.number_of_exceptions.value];
             for (int i = 0; i < this.number_of_exceptions.value; i++) {
-                this.exception_index_table[i] = new u2(posDataInputStream.readUnsignedShort());
+                this.exception_index_table[i] = new u2(posDataInputStream);
             }
         } else {
             this.exception_index_table = null;

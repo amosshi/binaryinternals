@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.AttributeSignature.ReferenceType;
 
 /**
@@ -49,14 +50,13 @@ final public class SignatureConvertor {
      *
      * @param signature Method signature in JVM internal format
      * @return Method return type in Java Programming language format
-     * @throws org.freeinternals.format.classfile.SignatureException Invalid
-     * signature string found
+     * @throws FileFormatException  Invalid signature string found
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
      */
     public static SignatureResult MethodReturnTypeExtractor(final String signature)
-            throws SignatureException {
+            throws FileFormatException {
         if (signature == null) {
             throw new IllegalArgumentException("'signature' should not be null.");
         }
@@ -90,11 +90,10 @@ final public class SignatureConvertor {
      *
      * @param signature JVM internal format of method signature
      * @return Java Language Specification (JLS) format of parameters
-     * @throws org.freeinternals.format.classfile.SignatureException Invalid
-     * signature string found
+     * @throws FileFormatException Invalid signature string found
      */
     public static String MethodParameters2Readable(final String signature)
-            throws SignatureException {
+            throws FileFormatException {
         List<SignatureResult> paramters = MethodParametersSplit(signature);
         StringBuilder result = new StringBuilder();
         
@@ -115,7 +114,7 @@ final public class SignatureConvertor {
 
     // (com/sun/java/accessibility/AccessBridge;Ljavax/accessibility/AccessibleContext;)V
     public static List<SignatureResult> MethodParametersSplit(final String signature)
-            throws SignatureException {
+            throws FileFormatException {
         // check parameter
         if (signature == null) {
             throw new IllegalArgumentException("'signature' should not be null.");
@@ -158,7 +157,7 @@ final public class SignatureConvertor {
                 sbParameter.setLength(0);
                 sbParameter.trimToSize();
             } else {
-                throw new SignatureException("Un-recognized method descriptor: " + signature);
+                throw new FileFormatException("Un-recognized method descriptor: " + signature);
             }
         }
 
@@ -182,15 +181,14 @@ final public class SignatureConvertor {
      *
      * @param signature JVM internal format of field signature
      * @return Signature Parse result
-     * @throws org.freeinternals.format.classfile.SignatureException Invalid
-     * signature string found
+     * @throws FileFormatException Invalid signature string found
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.2">
      * VM Spec: Field Descriptors
      * </a>
      */
     public static SignatureResult FieldDescriptorExtractor(final String signature)
-            throws SignatureException {
+            throws FileFormatException {
 
         if ((signature == null) || signature.isEmpty()) {
             throw new IllegalArgumentException("'signature' should not be null or empty.");

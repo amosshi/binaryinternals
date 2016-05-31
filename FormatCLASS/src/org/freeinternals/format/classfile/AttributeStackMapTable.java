@@ -42,7 +42,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.number_of_entries = new u2(posDataInputStream.readUnsignedShort());
+        this.number_of_entries = new u2(posDataInputStream);
         if (this.number_of_entries.value > 0) {
             this.entries = new StackMapFrame[this.number_of_entries.value];
             for (int i = 0; i < this.number_of_entries.value; i++) {
@@ -69,7 +69,7 @@ public class AttributeStackMapTable extends AttributeInfo {
                 throws IOException {
             super.startPos = posDataInputStream.getPos();
 
-            this.frame_type = new u1((short) posDataInputStream.readUnsignedByte());
+            this.frame_type = new u1(posDataInputStream, true);
             if (FrameTypeEnum.SAME.inRange(this.frame_type.value)) {
                 this.union_same_locals_1_stack_item_frame = null;
                 this.union_same_locals_1_stack_item_frame_extended = null;
@@ -151,7 +151,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             private SameLocals1StackItemFrameExtended(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
-                this.offset_delta = new u2(posDataInputStream.readUnsignedShort());
+                this.offset_delta = new u2(posDataInputStream);
                 this.stack[0] = new VerificationTypeInfo(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
@@ -164,7 +164,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             private ChopFrame(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
-                this.offset_delta = new u2(posDataInputStream.readUnsignedShort());
+                this.offset_delta = new u2(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
         }
@@ -176,7 +176,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             private SameFrameExtended(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
-                this.offset_delta = new u2(posDataInputStream.readUnsignedShort());
+                this.offset_delta = new u2(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
         }
@@ -189,7 +189,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             private AppendFrame(final PosDataInputStream posDataInputStream, short frameType)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
-                this.offset_delta = new u2(posDataInputStream.readUnsignedShort());
+                this.offset_delta = new u2(posDataInputStream);
                 int size = frameType - 251;
                 this.locals = new VerificationTypeInfo[size];
                 for (int i = 0; i < size; i++) {
@@ -211,8 +211,8 @@ public class AttributeStackMapTable extends AttributeInfo {
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
 
-                this.offset_delta = new u2(posDataInputStream.readUnsignedShort());
-                this.number_of_locals = new u2(posDataInputStream.readUnsignedShort());
+                this.offset_delta = new u2(posDataInputStream);
+                this.number_of_locals = new u2(posDataInputStream);
                 if (this.number_of_locals.value > 0) {
                     this.locals = new VerificationTypeInfo[this.number_of_locals.value];
                     for (int i = 0; i < this.number_of_locals.value; i++) {
@@ -222,7 +222,7 @@ public class AttributeStackMapTable extends AttributeInfo {
                     this.locals = null;
                 }
 
-                this.number_of_stack_items = new u2(posDataInputStream.readUnsignedShort());
+                this.number_of_stack_items = new u2(posDataInputStream);
                 if (this.number_of_stack_items.value > 0) {
                     this.stack = new VerificationTypeInfo[this.number_of_stack_items.value];
                     for (int i = 0; i < this.number_of_stack_items.value; i++) {
@@ -299,7 +299,7 @@ public class AttributeStackMapTable extends AttributeInfo {
                 throws IOException {
             super.startPos = posDataInputStream.getPos();
 
-            this.tag = new u1((short) posDataInputStream.readUnsignedByte());
+            this.tag = new u1(posDataInputStream, true);
             if (this.tag.value == TagEnum.ITEM_Object.value) {
                 this.union_Object_variable_info = new ObjectVariableInfo(posDataInputStream);
                 this.union_Uninitialized_variable_info = null;
@@ -319,7 +319,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             public final u2 cpool_index;
 
             ObjectVariableInfo(final PosDataInputStream posDataInputStream) throws IOException {
-                this.cpool_index = new u2(posDataInputStream.readUnsignedShort());
+                this.cpool_index = new u2(posDataInputStream);
             }
         }
 
@@ -328,7 +328,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             public u2 offset;
 
             UninitializedVariableInfo(final PosDataInputStream posDataInputStream) throws IOException {
-                this.offset = new u2(posDataInputStream.readUnsignedShort());
+                this.offset = new u2(posDataInputStream);
             }
         }
 

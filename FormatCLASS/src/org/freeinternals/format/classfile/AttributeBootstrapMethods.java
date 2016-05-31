@@ -46,7 +46,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.num_bootstrap_methods = new u2(posDataInputStream.readUnsignedShort());
+        this.num_bootstrap_methods = new u2(posDataInputStream);
         if (this.num_bootstrap_methods.value > 0) {
             this.bootstrap_methods = new BootstrapMethod[this.num_bootstrap_methods.value];
             for (int i = 0; i < this.num_bootstrap_methods.value; i++) {
@@ -89,12 +89,12 @@ public class AttributeBootstrapMethods extends AttributeInfo {
                 throws IOException {
             super.startPos = posDataInputStream.getPos();
 
-            this.bootstrap_method_ref = new u2(posDataInputStream.readUnsignedShort());
-            this.num_bootstrap_arguments = new u2(posDataInputStream.readUnsignedShort());
+            this.bootstrap_method_ref = new u2(posDataInputStream);
+            this.num_bootstrap_arguments = new u2(posDataInputStream);
             if (this.num_bootstrap_arguments.value > 0) {
                 this.bootstrap_arguments = new u2[this.num_bootstrap_arguments.value];
                 for (int i = 0; i < this.num_bootstrap_arguments.value; i++) {
-                    this.bootstrap_arguments[i] = new u2(posDataInputStream.readUnsignedShort());
+                    this.bootstrap_arguments[i] = new u2(posDataInputStream);
                 }
             } else {
                 this.bootstrap_arguments = null;

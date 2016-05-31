@@ -48,7 +48,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.local_variable_table_length = new u2(posDataInputStream.readUnsignedShort());
+        this.local_variable_table_length = new u2(posDataInputStream);
         if (this.local_variable_table_length.value > 0) {
             this.localVariableTable = new LocalVariableTable[this.local_variable_table_length.value];
             for (int i = 0; i < this.local_variable_table_length.value; i++) {
@@ -124,11 +124,11 @@ public class AttributeLocalVariableTable extends AttributeInfo {
             super.startPos = posDataInputStream.getPos();
             super.length = LENGTH;
 
-            this.start_pc = new u2(posDataInputStream.readUnsignedShort());
-            this.length = new u2(posDataInputStream.readUnsignedShort());
-            this.name_index = new u2(posDataInputStream.readUnsignedShort());
-            this.descriptor_index = new u2(posDataInputStream.readUnsignedShort());
-            this.index = new u2(posDataInputStream.readUnsignedShort());
+            this.start_pc = new u2(posDataInputStream);
+            this.length = new u2(posDataInputStream);
+            this.name_index = new u2(posDataInputStream);
+            this.descriptor_index = new u2(posDataInputStream);
+            this.index = new u2(posDataInputStream);
         }
     }
 }

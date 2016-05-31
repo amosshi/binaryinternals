@@ -38,7 +38,7 @@ public class ConstantClassInfo extends CPInfo {
         this.startPos = posDataInputStream.getPos() - 1;
         this.length = LENGTH;
 
-        this.name_index = new u2(posDataInputStream.readUnsignedShort());
+        this.name_index = new u2(posDataInputStream);
     }
 
     @Override

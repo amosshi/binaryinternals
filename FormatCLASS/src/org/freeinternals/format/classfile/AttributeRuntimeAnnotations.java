@@ -19,7 +19,7 @@ public class AttributeRuntimeAnnotations extends AttributeInfo {
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.num_annotations = new u2(posDataInputStream.readUnsignedShort());
+        this.num_annotations = new u2(posDataInputStream);
         if (this.num_annotations.value > 0) {
             this.annotations = new Annotation[this.num_annotations.value];
             for (int i = 0; i < this.num_annotations.value; i++) {

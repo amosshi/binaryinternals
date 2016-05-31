@@ -6,6 +6,9 @@
  */
 package org.freeinternals.format.classfile;
 
+import java.io.IOException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
+
 /**
  *
  * @author Amos Shi
@@ -13,20 +16,17 @@ package org.freeinternals.format.classfile;
  */
 public class u4 {
 
-    static final int MIN_VALUE = 0;
-    static final int MAX_VALUE = 0xFFFFFFFF;
+    /**
+     * Length of the {@link u4} component.
+     */
+    public static final int LENGTH = 4;
 
     /**
      * Value of the {@link u4} component.
      */
     public int value;
 
-    /**
-     * Creates a new instance of u4
-     *
-     * @param v value of the {@link u4}
-     */
-    public u4(final int v) {
-        value = v;
+    u4(final PosDataInputStream posDataInputStream) throws IOException {
+        value = posDataInputStream.readInt();
     }
 }

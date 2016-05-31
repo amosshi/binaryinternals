@@ -40,7 +40,7 @@ public class AttributeSourceFile extends AttributeInfo {
             throw new FileFormatException(String.format("The attribute_length of AttributeSourceFile is not 2, it is %d.", this.attribute_length.value));
         }
 
-        this.sourcefile_index = new u2(posDataInputStream.readUnsignedShort());
+        this.sourcefile_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
     }

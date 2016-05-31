@@ -39,8 +39,8 @@ public class ConstantFieldrefInfo extends CPInfo {
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 
-        this.class_index = new u2(posDataInputStream.readUnsignedShort());
-        this.name_and_type_index = new u2(posDataInputStream.readUnsignedShort());
+        this.class_index = new u2(posDataInputStream);
+        this.name_and_type_index = new u2(posDataInputStream);
     }
 
     @Override

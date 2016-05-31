@@ -44,7 +44,7 @@ public class AttributeInnerClasses extends AttributeInfo {
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.number_of_classes = new u2(posDataInputStream.readUnsignedShort());
+        this.number_of_classes = new u2(posDataInputStream);
         if (this.number_of_classes.value > 0) {
             this.classes = new Class[this.number_of_classes.value];
             for (int i = 0; i < this.number_of_classes.value; i++) {
@@ -95,10 +95,10 @@ public class AttributeInnerClasses extends AttributeInfo {
             this.startPos = posDataInputStream.getPos();
             this.length = LENGTH;
 
-            this.inner_class_info_index = new u2(posDataInputStream.readUnsignedShort());
-            this.outer_class_info_index = new u2(posDataInputStream.readUnsignedShort());
-            this.inner_name_index = new u2(posDataInputStream.readUnsignedShort());
-            this.inner_class_access_flags = new u2(posDataInputStream.readUnsignedShort());
+            this.inner_class_info_index = new u2(posDataInputStream);
+            this.outer_class_info_index = new u2(posDataInputStream);
+            this.inner_name_index = new u2(posDataInputStream);
+            this.inner_class_access_flags = new u2(posDataInputStream);
         }
 
         /**

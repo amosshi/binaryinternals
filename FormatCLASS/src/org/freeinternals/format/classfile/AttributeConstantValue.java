@@ -45,7 +45,7 @@ public class AttributeConstantValue extends AttributeInfo {
         if (this.attribute_length.value != 2) {
             throw new FileFormatException(String.format("The attribute_length of AttributeConstantValue is not 2, it is %d.", this.attribute_length.value));
         }
-        this.constantvalue_index = new u2(posDataInputStream.readUnsignedShort());
+        this.constantvalue_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
     }

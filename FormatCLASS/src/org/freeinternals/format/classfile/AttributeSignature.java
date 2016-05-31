@@ -30,7 +30,7 @@ public class AttributeSignature extends AttributeInfo {
             final CPInfo[] cp)
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
-        this.signature_index = new u2(posDataInputStream.readUnsignedShort());
+        this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }
 

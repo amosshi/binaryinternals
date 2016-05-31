@@ -47,8 +47,8 @@ public class ConstantMethodHandleInfo extends CPInfo {
             throws IOException, FileFormatException {
         super(CPInfo.ConstantType.CONSTANT_MethodHandle.tag);
         super.startPos = posDataInputStream.getPos() - 1;
-        this.reference_kind = new u1((short) posDataInputStream.readUnsignedByte());
-        this.reference_index = new u2(posDataInputStream.readUnsignedShort());
+        this.reference_kind = new u1(posDataInputStream, true);
+        this.reference_index = new u2(posDataInputStream);
         super.length = LENGTH;
     }
 

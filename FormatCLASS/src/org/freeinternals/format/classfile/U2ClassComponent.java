@@ -27,7 +27,7 @@ public class U2ClassComponent extends FileComponent {
         this.startPos = posDataInputStream.getPos();
         this.length = 2;
 
-        this.value = new u2(posDataInputStream.readUnsignedShort());
+        this.value = new u2(posDataInputStream);
     }
 
     /**

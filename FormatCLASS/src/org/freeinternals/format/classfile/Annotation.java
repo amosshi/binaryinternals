@@ -38,8 +38,8 @@ public class Annotation extends FileComponent {
             throws IOException, FileFormatException {
         this.startPos = posDataInputStream.getPos();
 
-        this.type_index = new u2(posDataInputStream.readUnsignedShort());
-        this.num_element_value_pairs = new u2(posDataInputStream.readUnsignedShort());
+        this.type_index = new u2(posDataInputStream);
+        this.num_element_value_pairs = new u2(posDataInputStream);
         if (this.num_element_value_pairs.value > 0) {
             this.element_value_pairs = new ElementValuePair[this.num_element_value_pairs.value];
             for (int i = 0; i < this.num_element_value_pairs.value; i++) {
@@ -93,7 +93,7 @@ public class Annotation extends FileComponent {
                 throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
-            this.element_name_index = new u2(posDataInputStream.readUnsignedShort());
+            this.element_name_index = new u2(posDataInputStream);
             this.value = new ElementValue(posDataInputStream);
 
             this.length = posDataInputStream.getPos() - this.startPos;
@@ -182,7 +182,7 @@ public class Annotation extends FileComponent {
                     || this.tag == TagEnum.S.value
                     || this.tag == TagEnum.Z.value
                     || this.tag == TagEnum.s.value) {
-                this.union_const_value_index = new u2(posDataInputStream.readUnsignedShort());
+                this.union_const_value_index = new u2(posDataInputStream);
                 this.union_enum_const_value = null;
                 this.union_class_info_index = null;
                 this.union_annotation_value = null;
@@ -198,7 +198,7 @@ public class Annotation extends FileComponent {
             } else if (this.tag == TagEnum.c.value) {
                 this.union_const_value_index = null;
                 this.union_enum_const_value = null;
-                this.union_class_info_index = new u2(posDataInputStream.readUnsignedShort());
+                this.union_class_info_index = new u2(posDataInputStream);
                 this.union_annotation_value = null;
                 this.union_array_value = null;
 
@@ -339,8 +339,8 @@ public class Annotation extends FileComponent {
                 this.startPos = posDataInputStream.getPos();
                 this.length = LENGTH;
 
-                this.type_name_index = new u2(posDataInputStream.readUnsignedShort());
-                this.const_name_index = new u2(posDataInputStream.readUnsignedShort());
+                this.type_name_index = new u2(posDataInputStream);
+                this.const_name_index = new u2(posDataInputStream);
             }
         }
 
@@ -353,7 +353,7 @@ public class Annotation extends FileComponent {
                     throws IOException, FileFormatException {
                 this.startPos = posDataInputStream.getPos();
 
-                this.num_values = new u2(posDataInputStream.readUnsignedShort());
+                this.num_values = new u2(posDataInputStream);
                 if (this.num_values.value > 0) {
                     this.values = new ElementValue[this.num_values.value];
                     for (int i = 0; i < this.num_values.value; i++) {

@@ -42,8 +42,8 @@ public class AttributeEnclosingMethod extends AttributeInfo {
             throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.class_index = new u2(posDataInputStream.readUnsignedShort());
-        this.method_index = new u2(posDataInputStream.readUnsignedShort());
+        this.class_index = new u2(posDataInputStream);
+        this.method_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
     }

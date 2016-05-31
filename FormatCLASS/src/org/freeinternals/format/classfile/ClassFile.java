@@ -102,7 +102,7 @@ public class ClassFile {
             for (FieldInfo field : fields) {
                 try {
                     type = SignatureConvertor.FieldDescriptorExtractor(this.getConstantUtf8Value(field.descriptor_index.value)).toString();
-                } catch (SignatureException se) {
+                } catch (FileFormatException se) {
                     type = "[Unexpected signature type]: " + this.getConstantUtf8Value(field.descriptor_index.value);
                 }
                 field.setDeclaration(String.format("%s %s %s",
@@ -119,12 +119,12 @@ public class ClassFile {
             for (MethodInfo method : methods) {
                 try {
                     mtdReturnType = SignatureConvertor.MethodReturnTypeExtractor(this.getConstantUtf8Value(method.descriptor_index.value)).toString();
-                } catch (SignatureException se) {
+                } catch (FileFormatException se) {
                     mtdReturnType = String.format("[Unexpected method return type: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
                 }
                 try {
                     mtdParameters = SignatureConvertor.MethodParameters2Readable(this.getConstantUtf8Value(method.descriptor_index.value));
-                } catch (SignatureException se) {
+                } catch (FileFormatException se) {
                     mtdParameters = String.format("[Unexpected method parameters: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
                 }
 
@@ -366,7 +366,7 @@ public class ClassFile {
             final PosByteArrayInputStream posByteArrayInputStream = new PosByteArrayInputStream(classByteArray);
             ClassFile.this.posDataInputStream = new PosDataInputStream(posByteArrayInputStream);
 
-            ClassFile.this.magic = new u4(ClassFile.this.posDataInputStream.readInt());
+            ClassFile.this.magic = new u4(ClassFile.this.posDataInputStream);
             if (ClassFile.this.magic.value != ClassFile.MAGIC) {
                 throw new FileFormatException("The magic number of the byte array is not 0xCAFEBABE");
             }
@@ -619,7 +619,7 @@ public class ClassFile {
                     try {
                         sb.append("type = ");
                         sb.append(SignatureConvertor.FieldDescriptorExtractor(type).toString());
-                    } catch (SignatureException ex) {
+                    } catch (FileFormatException ex) {
                         Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
 
                         sb.append(type);
@@ -636,7 +636,7 @@ public class ClassFile {
                         sb_mtd.append(SignatureConvertor.MethodReturnTypeExtractor(type).toString());
 
                         sb.append(sb_mtd);
-                    } catch (SignatureException ex) {
+                    } catch (FileFormatException ex) {
                         Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
 
                         sb.append(type);

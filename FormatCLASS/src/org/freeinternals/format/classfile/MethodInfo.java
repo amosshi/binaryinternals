@@ -44,11 +44,11 @@ public class MethodInfo extends FileComponent {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;
 
-        this.access_flags = new u2(posDataInputStream.readUnsignedShort());
-        this.name_index = new u2(posDataInputStream.readUnsignedShort());
-        this.descriptor_index = new u2(posDataInputStream.readUnsignedShort());
+        this.access_flags = new u2(posDataInputStream);
+        this.name_index = new u2(posDataInputStream);
+        this.descriptor_index = new u2(posDataInputStream);
 
-        this.attributes_count = new u2(posDataInputStream.readUnsignedShort());
+        this.attributes_count = new u2(posDataInputStream);
         final int attrCount = this.attributes_count.value;
         if (attrCount > 0) {
             this.attributes = new AttributeInfo[attrCount];

@@ -72,8 +72,8 @@ public class AttributeInfo extends FileComponent {
         super.startPos = posDataInputStream.getPos() - 2;
 
         this.name = name;
-        this.attribute_name_index = new u2(nameIndex.value);
-        this.attribute_length = new u4(posDataInputStream.readInt());
+        this.attribute_name_index = nameIndex;
+        this.attribute_length = new u4(posDataInputStream);
 
         super.length = this.attribute_length.value + 6;
     }
@@ -84,7 +84,7 @@ public class AttributeInfo extends FileComponent {
             throws IOException, FileFormatException {
         AttributeInfo attr;
 
-        final u2 attrNameIndex = new u2(posDataInputStream.readUnsignedShort());
+        final u2 attrNameIndex = new u2(posDataInputStream);
         if (CPInfo.ConstantType.CONSTANT_Utf8.tag == cp[attrNameIndex.value].tag.value) {
             final String type = ((ConstantUtf8Info) cp[attrNameIndex.value]).getValue();
 

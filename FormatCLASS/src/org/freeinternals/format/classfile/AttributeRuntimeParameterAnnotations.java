@@ -1,10 +1,12 @@
 package org.freeinternals.format.classfile;
 
+import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 
 /**
+ * The Runtime(In)VisibleParameterAnnotations Attribute.
  * 
  * @author Amos Shi
  */
@@ -17,11 +19,11 @@ public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
             final u2 nameIndex,
             final String type,
             final PosDataInputStream posDataInputStream)
-            throws java.io.IOException, FileFormatException {
+            throws IOException, FileFormatException {
 
         super(nameIndex, type, posDataInputStream);
 
-        this.num_parameters = new u1(posDataInputStream.readByte());
+        this.num_parameters = new u1(posDataInputStream);
         if (this.num_parameters.value > 0) {
             this.parameter_annotations = new ParameterAnnotation[this.num_parameters.value];
             for (int i = 0; i < this.num_parameters.value; i++) {
@@ -40,10 +42,10 @@ public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
         public transient final Annotation[] annotations;
 
         private ParameterAnnotation(final PosDataInputStream posDataInputStream)
-                throws java.io.IOException, FileFormatException {
+                throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
-            this.num_annotations = new u2(posDataInputStream.readUnsignedShort());
+            this.num_annotations = new u2(posDataInputStream);
             if (this.num_annotations.value > 0) {
                 this.annotations = new Annotation[this.num_annotations.value];
                 for (int i = 0; i < this.num_annotations.value; i++) {
