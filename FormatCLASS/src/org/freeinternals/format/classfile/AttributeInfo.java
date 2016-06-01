@@ -142,15 +142,19 @@ public class AttributeInfo extends FileComponent {
             } else if (AttributeName.RuntimeInvisibleParameterAnnotations.name().equals(type)) {
                 // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute 
                 attr = new AttributeRuntimeInvisibleParameterAnnotations(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.RuntimeVisibleTypeAnnotations.name().equals(type)) {
                 // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
+                attr = new AttributeRuntimeVisibleTypeAnnotations(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.RuntimeInvisibleTypeAnnotations.name().equals(type)) {
                 // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
+                attr = new AttributeRuntimeInvisibleTypeAnnotations(attrNameIndex, type, posDataInputStream);
             } else if (AttributeName.AnnotationDefault.name().equals(type)) {
                 // 4.7.22. The AnnotationDefault Attribute
                 attr = new AttributeAnnotationDefault(attrNameIndex, type, posDataInputStream);
             } else if (AttributeName.BootstrapMethods.name().equals(type)) {
                 // 4.7.23. The BootstrapMethods Attribute
                 attr = new AttributeBootstrapMethods(attrNameIndex, type, posDataInputStream);
-                // 4.7.24. The MethodParameters Attribute
+                // 4.7.24. The MethodParameters Attribute -- TODO
             } else {
                 Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
                 System.out.println( "Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist

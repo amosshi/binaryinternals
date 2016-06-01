@@ -40,10 +40,9 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    public static class TypeAnnotation extends FileComponent {
+    public static class TypeAnnotation extends Annotation {
 
-        public transient final u1 target_type;
-
+        public final u1 target_type;
         public final TypeParameterTarget union_type_parameter_target;
         public final SupertypeTarget union_supertype_target;
         public final TypeParameterBoundTarget union_type_parameter_bound_target;
@@ -55,13 +54,10 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final OffsetTarget union_offset_target;
         public final TypeArgumentTarget union_type_argument_target;
         public final TypePath target_path;
-        public final u2 type_index;
-        public final u2 num_element_value_pairs;
-        public final Annotation.ElementValuePair[] element_value_pairs;
 
-        private TypeAnnotation(final PosDataInputStream posDataInputStream)
+        public TypeAnnotation(PosDataInputStream posDataInputStream)
                 throws IOException, FileFormatException {
-            super.startPos = posDataInputStream.getPos();
+            super(posDataInputStream, false);
 
             this.target_type = new u1(posDataInputStream);
             if (this.target_type.value == TargetType.Value00.value
@@ -201,18 +197,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_type_argument_target = null;
             }
             this.target_path = new TypePath(posDataInputStream);
-            this.type_index = new u2(posDataInputStream);
-            this.num_element_value_pairs = new u2(posDataInputStream);
-            if (this.num_element_value_pairs.value > 0) {
-                this.element_value_pairs = new Annotation.ElementValuePair[this.num_element_value_pairs.value];
-                for (int i = 0; i < this.num_element_value_pairs.value; i++) {
-                    this.element_value_pairs[i] = new Annotation.ElementValuePair(posDataInputStream);
-                }
-            } else {
-                this.element_value_pairs = null;
-            }
-
-            super.length = posDataInputStream.getPos() - this.startPos;
+            super.initAnnotation(posDataInputStream);
+            super.length = posDataInputStream.getPos() - super.startPos;
         }
 
         public enum TargetType {

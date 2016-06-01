@@ -30,14 +30,26 @@ import org.freeinternals.format.FileFormatException;
  */
 public class Annotation extends FileComponent {
 
-    public transient final u2 type_index;
-    public transient final u2 num_element_value_pairs;
-    public transient final Annotation.ElementValuePair[] element_value_pairs;
+    public transient u2 type_index;
+    public transient u2 num_element_value_pairs;
+    public transient Annotation.ElementValuePair[] element_value_pairs;
+
+    protected Annotation(final PosDataInputStream posDataInputStream, boolean init)
+            throws IOException, FileFormatException {
+        super.startPos = posDataInputStream.getPos();
+        if (init) {
+            this.initAnnotation(posDataInputStream);
+            super.length = posDataInputStream.getPos() - super.startPos;
+        }
+    }
 
     protected Annotation(final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
-        this.startPos = posDataInputStream.getPos();
+        this(posDataInputStream, true);
+    }
 
+    protected final void initAnnotation(final PosDataInputStream posDataInputStream)
+            throws IOException, FileFormatException {
         this.type_index = new u2(posDataInputStream);
         this.num_element_value_pairs = new u2(posDataInputStream);
         if (this.num_element_value_pairs.value > 0) {
@@ -48,8 +60,6 @@ public class Annotation extends FileComponent {
         } else {
             this.element_value_pairs = null;
         }
-
-        this.length = posDataInputStream.getPos() - this.startPos;
     }
 
     /**

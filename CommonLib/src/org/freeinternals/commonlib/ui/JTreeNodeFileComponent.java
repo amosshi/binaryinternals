@@ -48,15 +48,23 @@ public class JTreeNodeFileComponent {
         this.icon = icon;
     }
 
+    public JTreeNodeFileComponent(final int startPos, final int length, final String text, final String desc) {
+        this(startPos, length, text);
+        this.description = desc;
+    }
+
+    public JTreeNodeFileComponent(final int startPos, final int length, final String text, final String desc, Icon icon) {
+        this(startPos, length, text);
+        this.description = desc;
+        this.icon = icon;
+    }
+
     @Override
     public String toString() {
         int endIndex;
-        if (this.length > 0)
-        {
+        if (this.length > 0) {
             endIndex = this.startPos + this.length - 1;
-        }
-        else
-        {
+        } else {
             endIndex = this.startPos;
         }
         return this.text + " [" + this.startPos + ", " + endIndex + "]";
@@ -101,11 +109,11 @@ public class JTreeNodeFileComponent {
         this.isDetailAvailable = true;
     }
 
-    public boolean isDetailAvailable(){
+    public boolean isDetailAvailable() {
         return this.isDetailAvailable;
     }
 
-    public JPanel getDetailPanel(){
+    public JPanel getDetailPanel() {
         return this.panelDetail;
     }
 
