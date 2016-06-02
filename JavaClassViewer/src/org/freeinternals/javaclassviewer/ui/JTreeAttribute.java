@@ -28,6 +28,7 @@ import org.freeinternals.format.classfile.AttributeSynthetic;
 import org.freeinternals.format.classfile.AttributeExtended;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable.LocalVariableTypeTable;
+import org.freeinternals.format.classfile.AttributeMethodParameters;
 import org.freeinternals.format.classfile.AttributeRuntimeAnnotations;
 import org.freeinternals.format.classfile.AttributeRuntimeParameterAnnotations;
 import org.freeinternals.format.classfile.AttributeRuntimeTypeAnnotations;
@@ -134,8 +135,9 @@ class JTreeAttribute {
         } else if (attribute_info instanceof AttributeBootstrapMethods) {
             // 4.7.23. The BootstrapMethods Attribute
             this.generateTreeNode(rootNode, (AttributeBootstrapMethods) attribute_info);
-
+        } else if (attribute_info instanceof AttributeMethodParameters) {
             // 4.7.24. The MethodParameters Attribute
+            this.generateTreeNode(rootNode, (AttributeMethodParameters) attribute_info);
         } else {
             // This is not a standard attribute type defined in the JVM Spec
             this.generateTreeNode(rootNode, (AttributeExtended) attribute_info);
@@ -1231,7 +1233,7 @@ class JTreeAttribute {
             DefaultMutableTreeNode table = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     lt.table[i].getLength(),
-                    String.format("table[%d]", i + 1)
+                    String.format("table %d", i + 1)
             ));
             tables.add(table);
 
@@ -1392,7 +1394,62 @@ class JTreeAttribute {
         }
     }
 
-    // Other Unknown Attributes
+    // 4.7.24. The MethodParameters Attribute
+    private void generateTreeNode(
+            final DefaultMutableTreeNode rootNode,
+            final AttributeMethodParameters mp)
+            throws InvalidTreeNodeException {
+
+        int startPos = mp.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u1.LENGTH,
+                "parameters_count: " + mp.parameters_count.value
+        )));
+        startPos += u1.LENGTH;
+
+        if (mp.parameters == null || mp.parameters.length < 1) {
+            return;
+        }
+
+        DefaultMutableTreeNode parameters = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                mp.getStartPos() + mp.getLength() - startPos,
+                String.format("parameters[%d]", mp.parameters.length)
+        ));
+        rootNode.add(parameters);
+
+        for (int i = 0; i < mp.parameters.length; i++) {
+            DefaultMutableTreeNode parameter = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    mp.parameters[i].getLength(),
+                    "parameter " + (i + 1)
+            ));
+            parameters.add(parameter);
+
+            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u2.LENGTH,
+                    "name_index: " 
+                            + mp.parameters[i].name_index.value + " - "
+                            + this.classFile.getCPDescription(mp.parameters[i].name_index.value)
+            )));
+            startPos += u2.LENGTH;
+            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u2.LENGTH,
+                    "access_flags: 0x"
+                            + String.format("%04X", mp.parameters[i].access_flags.value) + " - "
+                            + mp.parameters[i].getAccessFlagsText()
+            )));
+            startPos += u2.LENGTH;
+        }
+    }
+
+    /**
+     * Other Unknown Attributes.
+     */
     private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeExtended unknown)
             throws InvalidTreeNodeException {
         if (unknown.attribute_length.value > 0) {

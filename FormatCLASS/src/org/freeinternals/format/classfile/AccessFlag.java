@@ -97,7 +97,7 @@ public enum AccessFlag {
      * code was written (JLS §13.1). (The formal parameter is mandated by a
      * language specification, so all compilers for the language must emit it.)
      */
-    ACC_MANDATED(0x8000, "(ACC_MANDATED)");
+    ACC_MANDATED(0x8000, "ACC_MANDATED");
 
     /**
      * Binary value in the {@link ClassFile}.

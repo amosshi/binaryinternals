@@ -82,7 +82,7 @@ public class AttributeInfo extends FileComponent {
             final PosDataInputStream posDataInputStream,
             final CPInfo[] cp)
             throws IOException, FileFormatException {
-        AttributeInfo attr;
+        AttributeInfo attr = null;
 
         final u2 attrNameIndex = new u2(posDataInputStream);
         if (CPInfo.ConstantType.CONSTANT_Utf8.tag == cp[attrNameIndex.value].tag.value) {
@@ -154,7 +154,9 @@ public class AttributeInfo extends FileComponent {
             } else if (AttributeName.BootstrapMethods.name().equals(type)) {
                 // 4.7.23. The BootstrapMethods Attribute
                 attr = new AttributeBootstrapMethods(attrNameIndex, type, posDataInputStream);
-                // 4.7.24. The MethodParameters Attribute -- TODO
+            } else if (AttributeName.MethodParameters.name().equals(type)) {
+                // 4.7.24. The MethodParameters Attribute
+                attr = new AttributeMethodParameters(attrNameIndex, type, posDataInputStream);
             } else {
                 Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
                 System.out.println( "Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist

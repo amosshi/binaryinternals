@@ -35,7 +35,7 @@ import org.freeinternals.format.FileFormatException;
 public class AttributeLineNumberTable extends AttributeInfo {
 
     public transient final u2 line_number_table_length;
-    private transient LineNumberTable[] lineNumberTable;
+    public final transient LineNumberTable[] lineNumberTable;
 
     AttributeLineNumberTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
