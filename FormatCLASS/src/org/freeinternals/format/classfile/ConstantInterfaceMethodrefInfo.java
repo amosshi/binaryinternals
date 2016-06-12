@@ -27,30 +27,12 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * VM Spec:  The CONSTANT_InterfaceMethodref_info Structure
  * </a>
  */
-public class ConstantInterfaceMethodrefInfo extends CPInfo {
-
-    public static final int LENGTH = 5;
-    public final u2 class_index;
-    public final u2 name_and_type_index;
+public class ConstantInterfaceMethodrefInfo extends ConstantRefInfo {
 
     ConstantInterfaceMethodrefInfo(final PosDataInputStream posDataInputStream)
             throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag);
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
-
-        this.class_index = new u2(posDataInputStream);
-        this.name_and_type_index = new u2(posDataInputStream);
-    }
-
-    @Override
-    public String getName() {
-        return ConstantType.CONSTANT_InterfaceMethodref.name();
-    }
-
-    @Override
-    public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].", 
-                this.getName(), this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
+        super(CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag,
+                posDataInputStream,
+                ConstantType.CONSTANT_InterfaceMethodref.name());
     }
 }

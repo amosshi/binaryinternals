@@ -209,5 +209,23 @@ public abstract class CPInfo extends FileComponent {
         private ConstantType(int s) {
             this.tag = (short) s;
         }
+
+        /**
+         * Get the {@link ConstantType} name based on its internal {@link #tag}
+         * value.
+         *
+         * @param tag Internal {@link #tag} value
+         * @return {@link ConstantType} name
+         */
+        public static String name(int tag) {
+            String result = "Un-recognized";
+            for (ConstantType item : ConstantType.values()) {
+                if (item.tag == tag) {
+                    result = item.name();
+                    break;
+                }
+            }
+            return result;
+        }
     }
 }

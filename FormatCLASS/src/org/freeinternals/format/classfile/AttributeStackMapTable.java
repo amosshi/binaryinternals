@@ -249,6 +249,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             public final short low;
             public final short high;
             public final String unionName;
+            public static final String UNIONNAME_UNRECOGNIZED = "Unrecognized union name";
 
             FrameTypeEnum(int l, int h, String name) {
                 this.low = (short) l;
@@ -275,7 +276,7 @@ public class AttributeStackMapTable extends AttributeInfo {
              * <code>value</code>
              */
             public static String getUnionName(short value) {
-                String result = "unknown";
+                String result = UNIONNAME_UNRECOGNIZED;
                 for (FrameTypeEnum item : FrameTypeEnum.values()) {
                     if (item.inRange(value)) {
                         result = item.unionName;
@@ -345,6 +346,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             ITEM_Uninitialized(8);
 
             public final short value;
+            public static final String TAGNAME_UNRECOGNIZED = "Unrecognized";
 
             TagEnum(int value) {
                 this.value = (short) value;
@@ -357,7 +359,7 @@ public class AttributeStackMapTable extends AttributeInfo {
              * @return The corresponding enum name
              */
             public static String getTagName(short v) {
-                String result = "Unknown";
+                String result = TAGNAME_UNRECOGNIZED;
                 for (TagEnum e : TagEnum.values()) {
                     if (e.value == v) {
                         result = e.name();
