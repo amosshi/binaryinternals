@@ -248,14 +248,27 @@ public final class Opcode {
         goto_w(200),
         jsr_w(201),
         // Reserved opcodes
-        breakpoint(202),
-        impdep1(254),
-        impdep2(255);
+        breakpoint(202, true),
+        impdep1(254, true),
+        impdep2(255, true);
 
+        public static final String OPCODE_NAME_UNKNOWN = "[Unknown opcode]";
+        public static final String OPCODE_NAME_RESERVED_PREFIX = "[Reserved] ";
+        
+        /**
+         * Internal code for an Instruction.
+         */
         public final int code;
+        
+        public final boolean reserved;
 
         Instruction(int i) {
+            this(i, false);
+        }
+
+        Instruction(int i, boolean r) {
             this.code = i;
+            this.reserved = r;
         }
 
         /**
@@ -266,11 +279,16 @@ public final class Opcode {
          * @return The postfix "_" from the name
          */
         String getName() {
-            String n = super.name();
-            if (n.endsWith("_")) {
-                n = n.substring(0, n.length() - 1);
+            String name = super.name();
+
+            if (name.endsWith("_")) {
+                name = name.substring(0, name.length() - 1);
             }
-            return n;
+            if (this.reserved) {
+                name = Instruction.OPCODE_NAME_RESERVED_PREFIX + name;
+            }
+
+            return name;
         }
 
         /**
@@ -278,8 +296,25 @@ public final class Opcode {
          *
          * @return opcode name with "wide " prefix
          */
-        String getWideName() {
-            return "wide " + super.name();
+        static String getWideName(String s) {
+            return Instruction.wide.name() + " " + s;
+        }
+
+        /**
+         * Get Opcode name.
+         * @param opcode Internal value of an opcode.
+         * @return Opcode name
+         */
+        public static String getOpcodeName(int opcode){
+            String name = Instruction.OPCODE_NAME_UNKNOWN;
+            for (Instruction i : Instruction.values()) {
+                if (i.code == opcode) {
+                    name = i.getName();
+                    break;
+                }
+            }
+
+            return name;
         }
     }
 
@@ -1167,13 +1202,13 @@ public final class Opcode {
             opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.jsr_w.name(), intValue);
         } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
-            opcodeText = "[Reserved] - " + Opcode.Instruction.breakpoint.name();
+            opcodeText = Opcode.Instruction.breakpoint.name();
         } else if (Opcode.Instruction.impdep1.code == opcode) {
-            opcodeText = "[Reserved] - " + Opcode.Instruction.impdep1.name();
+            opcodeText = Opcode.Instruction.impdep1.name();
         } else if (Opcode.Instruction.impdep2.code == opcode) {
-            opcodeText = "[Reserved] - " + Opcode.Instruction.impdep2.name();
+            opcodeText = Opcode.Instruction.impdep2.name();
         } else {
-            opcodeText = "[Unknown opcode]";
+            opcodeText = Instruction.OPCODE_NAME_UNKNOWN;
         }
 
         return new InstructionResult(curPos, opcode, opcodeText, cpIndex1);
@@ -1223,7 +1258,6 @@ public final class Opcode {
 
     private static String getText_wide(final PosDataInputStream pdis)
             throws IOException {
-        final String WIDE = Instruction.wide.name() + " ";
         final int opcode = pdis.readUnsignedByte();
         String opcodeText = null;
 
@@ -1232,41 +1266,41 @@ public final class Opcode {
 
         if (opcode == Opcode.Instruction.iload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.iload.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.lload.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.fload.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.dload.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.aload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.aload.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.istore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.istore.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.lstore.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.fstore.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.dstore.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.astore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.astore.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.iinc.code) {
             shortValue = pdis.readUnsignedShort();
             shortValue2 = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local_iinc, WIDE + Opcode.Instruction.iinc.name(), shortValue, shortValue2);
+            opcodeText = String.format(FORMAT_Opcode_Local_iinc, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
         } else if (opcode == Opcode.Instruction.ret.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, WIDE + Opcode.Instruction.ret.name(), shortValue);
+            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
         } else {
             opcodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
         }
