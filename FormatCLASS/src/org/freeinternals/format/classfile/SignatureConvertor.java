@@ -50,7 +50,7 @@ final public class SignatureConvertor {
      *
      * @param signature Method signature in JVM internal format
      * @return Method return type in Java Programming language format
-     * @throws FileFormatException  Invalid signature string found
+     * @throws FileFormatException Invalid signature string found
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
@@ -76,10 +76,10 @@ final public class SignatureConvertor {
         } else {
             returnValue = SignatureConvertor.FieldDescriptorExtractor(returnType);
         }
-        
+
         return returnValue;
     }
-    
+
     /**
      * Get parameters type from method descriptor
      * {@link MethodInfo#descriptor_index}.
@@ -96,7 +96,7 @@ final public class SignatureConvertor {
             throws FileFormatException {
         List<SignatureResult> paramters = MethodParametersSplit(signature);
         StringBuilder result = new StringBuilder();
-        
+
         result.append(METHODDESCRIPTOR_LEFT);
         int size = paramters.size();
         if (size > 0) {
@@ -200,14 +200,18 @@ final public class SignatureConvertor {
             arrayCount++;
             sig = sig.substring(1);
         }
-        
+
         //
         final int sigLength = sig.length();
         String sigJls;
         if (sigLength == 1) {
             sigJls = AttributeSignature.BaseType.extractPrimitiveType(sig.charAt(0));
-        }else {
-            sig = sig.substring(1, sigLength - 1);
+        } else {
+            if (sig.charAt(0) == ReferenceType.ClassTypeSignature.signature
+                    && sig.charAt(sig.length() - 1) == ReferenceType.ClassTypeSignatureSuffix.signature) {
+                sig = sig.substring(1, sigLength - 1);
+            }
+
             sigJls = parseClassSignature(sig);
         }
 
@@ -257,7 +261,7 @@ final public class SignatureConvertor {
 
         /**
          * Get the readable format of signature.
-         * 
+         *
          * @return Readable format of signature
          */
         @Override

@@ -310,6 +310,54 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.value = new Integer(v).shortValue();
             }
 
+            /**
+             * Get union name in <code>type_annotation</code> structure.
+             *
+             * @param v {@link #value} of {@link TargetType}
+             * @return <code>type_annotation</code> structure union name
+             */
+            public static String getTargetUnionName(short v) {
+                String unionName;
+
+                if (v == Value00.value
+                        || v == Value01.value) {
+                    unionName = TypeParameterTarget.UNION_NAME;
+                } else if (v == Value10.value) {
+                    unionName = SupertypeTarget.UNION_NAME;
+                } else if (v == Value11.value
+                        || v == Value12.value) {
+                    unionName = TypeParameterBoundTarget.UNION_NAME;
+                } else if (v == Value13.value
+                        || v == Value14.value
+                        || v == Value15.value) {
+                    unionName = EmptyTarget.UNION_NAME;
+                } else if (v == Value16.value) {
+                    unionName = FormalParameterTarget.UNION_NAME;
+                } else if (v == Value17.value) {
+                    unionName = ThrowsTarget.UNION_NAME;
+                } else if (v == Value40.value
+                        || v == Value41.value) {
+                    unionName = LocalvarTarget.UNION_NAME;
+                } else if (v == Value42.value) {
+                    unionName = CatchTarget.UNION_NAME;
+                } else if (v == Value43.value
+                        || v == Value44.value
+                        || v == Value45.value
+                        || v == Value46.value) {
+                    unionName = OffsetTarget.UNION_NAME;
+                } else if (v == Value47.value
+                        || v == Value48.value
+                        || v == Value49.value
+                        || v == Value4A.value
+                        || v == Value4B.value) {
+                    unionName = TypeArgumentTarget.UNION_NAME;
+                } else {
+                    unionName = "Un-recognized";
+                }
+
+                return unionName;
+            }
+
         }
 
         /**
@@ -323,6 +371,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
          * </a>
          */
         public final static class TypeParameterTarget extends FileComponent {
+
+            public static final String UNION_NAME = "type_parameter_target";
 
             /**
              * The value of the type_parameter_index item specifies which type
@@ -351,6 +401,15 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
          */
         public final static class SupertypeTarget extends FileComponent {
 
+            public static final String UNION_NAME = "supertype_target";
+            
+            /**
+             * A supertype_index value of 65535 specifies that the annotation
+             * appears on the superclass in an extends clause of a class
+             * declaration.
+             */
+            public static final int SUPERTYPE_INDEX_SUERCLASS = 65535;
+
             /**
              * A supertype_index value of 65535 specifies that the annotation
              * appears on the superclass in an extends clause of a class
@@ -372,6 +431,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class TypeParameterBoundTarget extends FileComponent {
 
+            public static final String UNION_NAME = "type_parameter_bound_target";
             public transient final u1 type_parameter_index;
             public transient final u1 bound_index;
 
@@ -386,6 +446,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class EmptyTarget extends FileComponent {
 
+            public static final String UNION_NAME = "empty_target";
+
             protected EmptyTarget(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -395,6 +457,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class FormalParameterTarget extends FileComponent {
 
+            public static final String UNION_NAME = "method_formal_parameter_target";
             public transient final u1 formal_parameter_index;
 
             protected FormalParameterTarget(final PosDataInputStream posDataInputStream)
@@ -407,6 +470,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class ThrowsTarget extends FileComponent {
 
+            public static final String UNION_NAME = "throws_target";
             public transient final u2 throws_type_index;
 
             protected ThrowsTarget(final PosDataInputStream posDataInputStream)
@@ -419,6 +483,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class LocalvarTarget extends FileComponent {
 
+            public static final String UNION_NAME = "localvar_target";
             public transient final u2 table_length;
             public transient final Table[] table;
 
@@ -457,6 +522,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class CatchTarget extends FileComponent {
 
+            public static final String UNION_NAME = "catch_target";
             public transient final u2 exception_table_index;
 
             protected CatchTarget(final PosDataInputStream posDataInputStream)
@@ -469,6 +535,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class OffsetTarget extends FileComponent {
 
+            public static final String UNION_NAME = "offset_target";
             public transient final u2 offset;
 
             protected OffsetTarget(final PosDataInputStream posDataInputStream)
@@ -481,6 +548,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class TypeArgumentTarget extends FileComponent {
 
+            public static final String UNION_NAME = "type_argument_target";
             public transient final u2 offset;
             public transient final u1 type_argument_index;
 
@@ -559,6 +627,16 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 TypePathKind(int v, String d) {
                     this.value = new Integer(v).shortValue();
                     this.description = d;
+                }
+                
+                public static String getDescription(short v) {
+                    for (TypePathKind item : TypePathKind.values()) {
+                        if (item.value == v) {
+                            return item.description;
+                        }
+                    }
+
+                    return "Un-Recognized";
                 }
             }
         }
