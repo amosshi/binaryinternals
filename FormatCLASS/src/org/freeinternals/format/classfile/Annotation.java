@@ -313,9 +313,9 @@ public class Annotation extends FileComponent {
              */
             public final String Type;
 
-            TagEnum(char v, String Type) {
+            TagEnum(char v, String type) {
                 this.value = v;
-                this.Type = Type;
+                this.Type = type;
             }
 
             /**
