@@ -560,7 +560,7 @@ public class ClassFile {
             // The value of the name_index item must be a valid index into the constant_pool table. 
             // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure 
             // representing a valid fully qualified class or interface name encoded in internal form.
-            return SignatureConvertor.parseClassSignature(this.getDescr_Utf8(
+            return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
                     (ConstantUtf8Info) ClassFile.this.constant_pool[info.name_index.value]));
         }
 
@@ -568,7 +568,7 @@ public class ClassFile {
             // The value of the string_index item must be a valid index into the constant_pool table. 
             // The constant_pool entry at that index must be a CONSTANT_Utf8_info (.4.7) structure 
             // representing the sequence of characters to which the String object is to be initialized.
-            return SignatureConvertor.parseClassSignature(this.getDescr_Utf8(
+            return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
                     (ConstantUtf8Info) ClassFile.this.constant_pool[info.string_index.value]));
         }
 

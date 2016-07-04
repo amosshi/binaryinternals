@@ -32,6 +32,15 @@ final public class SignatureConvertor {
     public static final char BINARY_NAME_SEPARATOR = '/';
 
     /**
+     * The ASCII periods (.) that normally separate the identifiers in in JLS (Java Language Specification).
+     * 
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2.1">
+     * VM Spec: Binary Class and Interface Names
+     * </a>
+     */
+    public static final char JLS_NAME_SEPARATOR = '.';
+
+    /**
      * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
@@ -212,7 +221,7 @@ final public class SignatureConvertor {
                 sig = sig.substring(1, sigLength - 1);
             }
 
-            sigJls = parseClassSignature(sig);
+            sigJls = ParseClassSignature(sig);
         }
 
         return new SignatureResult(arrayCount, sig, sigJls);
@@ -229,13 +238,32 @@ final public class SignatureConvertor {
      * @param classSignature JVM internal format of class signature
      * @return Java Language Specification (JLS) format of class signature
      */
-    public static String parseClassSignature(final String classSignature)
+    public static String ParseClassSignature(final String classSignature)
             throws IllegalArgumentException {
         if (classSignature == null) {
             throw new IllegalArgumentException("'ClassSignature' should not be null.");
         }
 
-        return classSignature.replace(SignatureConvertor.BINARY_NAME_SEPARATOR, '.');
+        return classSignature.replace(SignatureConvertor.BINARY_NAME_SEPARATOR, SignatureConvertor.JLS_NAME_SEPARATOR);
+    }
+
+    /**
+     * Set package name of the class signature.
+     * 
+     * @param classSignature JVM internal format of class signature
+     * @return Package name of class signature, or null if the class not in any package
+     */
+    public static String ParsePackage(final String classSignature){
+        if (classSignature == null) {
+            throw new IllegalArgumentException("'ClassSignature' should not be null.");
+        }
+        
+        int lastIndex = classSignature.lastIndexOf(SignatureConvertor.JLS_NAME_SEPARATOR);
+        if (lastIndex == -1) {
+            return null;
+        } else {
+            return SignatureConvertor.ParseClassSignature(classSignature.substring(0, lastIndex));
+        }
     }
 
     public static class SignatureResult {
@@ -252,11 +280,17 @@ final public class SignatureConvertor {
          * Parsed Java Language Specification type name.
          */
         public final String TypeJLSName;
+        
+        /**
+         * Package name of the type. It will be <code>null</code> if the {@link #TypeJLSName} do not in a package.
+         */
+        public final String TypePackage;
 
         SignatureResult(int count, String bin, String jls) {
             this.ArrayDimension = count;
             this.TypeBinaryName = bin;
             this.TypeJLSName = jls;
+            this.TypePackage = ParsePackage(jls);
         }
 
         /**
