@@ -258,7 +258,7 @@ final public class SignatureConvertor {
             throw new IllegalArgumentException("'ClassSignature' should not be null.");
         }
         
-        int lastIndex = classSignature.lastIndexOf(SignatureConvertor.JLS_NAME_SEPARATOR);
+        int lastIndex = classSignature.lastIndexOf(SignatureConvertor.BINARY_NAME_SEPARATOR);
         if (lastIndex == -1) {
             return null;
         } else {
@@ -290,7 +290,7 @@ final public class SignatureConvertor {
             this.ArrayDimension = count;
             this.TypeBinaryName = bin;
             this.TypeJLSName = jls;
-            this.TypePackage = ParsePackage(jls);
+            this.TypePackage = ParsePackage(bin);
         }
 
         /**
