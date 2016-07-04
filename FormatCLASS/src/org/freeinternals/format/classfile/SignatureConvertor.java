@@ -262,7 +262,7 @@ final public class SignatureConvertor {
         if (lastIndex == -1) {
             return null;
         } else {
-            return SignatureConvertor.ParseClassSignature(classSignature.substring(0, lastIndex));
+            return SignatureConvertor.ParseClassSignature(classSignature.substring(0, lastIndex)).toLowerCase();
         }
     }
 
