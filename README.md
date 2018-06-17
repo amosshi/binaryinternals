@@ -10,7 +10,7 @@ Download
 
 Document
  - Programming Logic: http://www.codeproject.com/Articles/35915/Java-Class-Viewer
-
+ - Usage Sample: https://www.codeproject.com/Articles/762980/Inside-the-Hello-World-Application-via-Java-Class
 
 Binary Internals Viewer
 =========================
@@ -20,5 +20,8 @@ An application to show binary file structure in structured way.
  - JPEG file
  - PNG file
  - ZIP file
- - PDF file (in progress)
+ - DEX file (todo)
+ - ELF file (todo)
+ - PDF file (todo)
+ - PE file (TODO)
  

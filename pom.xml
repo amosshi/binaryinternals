@@ -9,6 +9,15 @@
         <module>CommonLib</module>
         <module>FormatCLASS</module>
         <module>JavaClassViewer</module>
+        <module>FormatBMP</module>
+        <module>FormatJPEG</module>
+        <module>FormatZIP</module>
+        <module>FormatPDF</module>
+        <module>FormatDEX</module>
+        <module>FormatELF</module>
+        <module>FormatPE</module>
+        <module>FormatPNG</module>
+        <module>BinaryInternalsViewer</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
