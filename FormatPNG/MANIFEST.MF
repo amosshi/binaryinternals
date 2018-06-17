@@ -1,1 +1,0 @@
-biv-plugin: org.freeinternals.biv.plugin.png.PluginDescriptorPNG
