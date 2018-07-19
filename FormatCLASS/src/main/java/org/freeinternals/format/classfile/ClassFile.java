@@ -425,6 +425,10 @@ public class ClassFile {
                     ClassFile.this.constant_pool[i] = new ConstantMethodTypeInfo(ClassFile.this.posDataInputStream);
                 } else if (tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantInvokeDynamicInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Module.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantModuleInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Package.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantPackageInfo(ClassFile.this.posDataInputStream);
                 } else {
                     throw new FileFormatException(
                             String.format("Unreconizable constant pool type found. Constant pool tag: [%d]; class file offset: [%d].", tag, ClassFile.this.posDataInputStream.getPos() - 1));
@@ -541,6 +545,10 @@ public class ClassFile {
                     } else if (cp_info instanceof ConstantMethodHandleInfo) {
                         sb.append("reference_kind = ").append(ConstantMethodHandleInfo.ReferenceKind.name(((ConstantMethodHandleInfo) cp_info).reference_kind.value));
                         sb.append(", reference_index = ").append(this.getCPDescr(((ConstantMethodHandleInfo) cp_info).reference_index.value));
+                    } else if (cp_info instanceof ConstantModuleInfo) {
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantModuleInfo)cp_info).name_index.value]));
+                    } else if (cp_info instanceof ConstantPackageInfo) {
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantPackageInfo)cp_info).name_index.value]));
                     } else {
                         sb.append("!!! Un-recognized CP type.");
                     }

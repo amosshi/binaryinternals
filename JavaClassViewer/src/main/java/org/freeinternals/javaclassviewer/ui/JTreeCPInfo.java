@@ -21,7 +21,9 @@ import org.freeinternals.format.classfile.ConstantLongInfo;
 import org.freeinternals.format.classfile.ConstantMethodHandleInfo;
 import org.freeinternals.format.classfile.ConstantMethodTypeInfo;
 import org.freeinternals.format.classfile.ConstantMethodrefInfo;
+import org.freeinternals.format.classfile.ConstantModuleInfo;
 import org.freeinternals.format.classfile.ConstantNameAndTypeInfo;
+import org.freeinternals.format.classfile.ConstantPackageInfo;
 import org.freeinternals.format.classfile.ConstantStringInfo;
 import org.freeinternals.format.classfile.ConstantUtf8Info;
 
@@ -78,6 +80,10 @@ final class JTreeCPInfo {
             this.generateTreeNode(rootNode, (ConstantMethodTypeInfo) cp_info);
         } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
             this.generateTreeNode(rootNode, (ConstantInvokeDynamicInfo) cp_info);
+        } else if (cp_info instanceof ConstantModuleInfo) {
+            this.generateTreeNode(rootNode, (ConstantModuleInfo) cp_info);
+        } else if (cp_info instanceof ConstantPackageInfo) {
+            this.generateTreeNode(rootNode, (ConstantPackageInfo) cp_info);
         } else {
             System.out.print("Un-recognized cp_info, tag = " + tag);
             // TODO: Add exception
@@ -297,6 +303,28 @@ final class JTreeCPInfo {
                 startPos + 3,
                 2,
                 "name_and_type_index: " + info.name_and_type_index.value + " - " + this.classFile.getCPDescription(info.name_and_type_index.value)
+        )));
+    }
+    
+    private void generateTreeNode(
+            final DefaultMutableTreeNode rootNode,
+            final ConstantModuleInfo moduleInfo)
+            throws InvalidTreeNodeException {
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                moduleInfo.getStartPos() + 1,
+                2,
+                "name_index: " + moduleInfo.name_index.value + " - " + this.classFile.getCPDescription(moduleInfo.name_index.value)
+        )));
+    }
+    
+    private void generateTreeNode(
+            final DefaultMutableTreeNode rootNode,
+            final ConstantPackageInfo packageInfo)
+            throws InvalidTreeNodeException {
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                packageInfo.getStartPos() + 1,
+                2,
+                "name_index: " + packageInfo.name_index.value + " - " + this.classFile.getCPDescription(packageInfo.name_index.value)
         )));
     }
 }

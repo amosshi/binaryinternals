@@ -199,7 +199,27 @@ public abstract class CPInfo extends FileComponent {
          * VM Spec: The CONSTANT_InvokeDynamic Structure
          * </a>
          */
-        CONSTANT_InvokeDynamic(18);
+        CONSTANT_InvokeDynamic(18),
+        
+        /**
+         * The CONSTANT_Module_info structure is used to represent a module.
+         * 
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.4.11">
+         * VM Spec: The CONSTANT_Module_info Structure
+         * </a>
+         */
+        CONSTANT_Module(19),
+        
+        /**
+         * The CONSTANT_Package_info structure is used to represent a package exported or opened by a module.
+         * 
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.4.12">
+         * VM Spec: The CONSTANT_Package_info Structure
+         * </a>
+         */
+        CONSTANT_Package(20);
 
         /**
          * Value of tag.
