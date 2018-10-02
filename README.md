@@ -22,6 +22,12 @@ An application to show binary file structure in structured way.
  - ZIP file
  - DEX file (todo)
  - ELF file (todo)
- - PDF file (todo)
  - PE file (TODO)
  
+Steps to Build
+=========================
+
+We request the maven command line `mvn` has been instaled.
+
+- `mvn package` Build the source code and create the deploy packages
+- `mvn install` Install the packages to local maven repository
