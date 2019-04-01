@@ -1344,11 +1344,7 @@ public final class Opcode {
 
         @Override
         public String toString() {
-            if (this.cpIndex1 > -1) {
-                return String.format("Offset %04d: opcode [%02X] %s %d", this.offset, this.opCode, this.opCodeText, this.cpIndex1);
-            } else {
-                return String.format("Offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
-            }
+            return String.format("offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
         }
 
         /**
@@ -1361,6 +1357,7 @@ public final class Opcode {
         public String toString(ClassFile cf) {
             if (this.cpIndex1 > -1) {
                 String cpDesc = cf.getCPDescription(this.cpIndex1);
+                // Avoid too long description
                 if (cpDesc.length() > 1000) {
                     cpDesc = cpDesc.substring(1, 1000);
                 }
