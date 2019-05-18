@@ -32,7 +32,7 @@ public class ConstantPackageInfo extends CPInfo {
     public final u2 name_index;
 
     ConstantPackageInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Module.tag);
+        super(CPInfo.ConstantType.CONSTANT_Package.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 
@@ -41,7 +41,7 @@ public class ConstantPackageInfo extends CPInfo {
 
     @Override
     public String getName() {
-        return ConstantType.CONSTANT_Module.name();
+        return ConstantType.CONSTANT_Package.name();
     }
 
     @Override

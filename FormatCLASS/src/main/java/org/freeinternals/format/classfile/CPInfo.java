@@ -191,6 +191,17 @@ public abstract class CPInfo extends FileComponent {
          * </a>
          */
         CONSTANT_MethodType(16),
+
+        /**
+         * The value for constant type {@code CONSTANT_Dynamic}.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.10">
+         * VM Spec: The CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info Structures
+         * </a>
+         */
+        CONSTANT_Dynamic(17),
+
         /**
          * The value for constant type {@code CONSTANT_InvokeDynamic}.
          *

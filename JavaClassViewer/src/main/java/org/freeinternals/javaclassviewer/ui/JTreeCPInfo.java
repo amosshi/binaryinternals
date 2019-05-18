@@ -16,6 +16,7 @@ import org.freeinternals.format.classfile.ConstantFieldrefInfo;
 import org.freeinternals.format.classfile.ConstantFloatInfo;
 import org.freeinternals.format.classfile.ConstantIntegerInfo;
 import org.freeinternals.format.classfile.ConstantInterfaceMethodrefInfo;
+import org.freeinternals.format.classfile.ConstantDynamicInfo;
 import org.freeinternals.format.classfile.ConstantInvokeDynamicInfo;
 import org.freeinternals.format.classfile.ConstantLongInfo;
 import org.freeinternals.format.classfile.ConstantMethodHandleInfo;
@@ -78,6 +79,8 @@ final class JTreeCPInfo {
             this.generateTreeNode(rootNode, (ConstantMethodHandleInfo) cp_info);
         } else if (cp_info instanceof ConstantMethodTypeInfo) {
             this.generateTreeNode(rootNode, (ConstantMethodTypeInfo) cp_info);
+        } else if (cp_info instanceof ConstantDynamicInfo) {
+            this.generateTreeNode(rootNode, (ConstantDynamicInfo) cp_info);
         } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
             this.generateTreeNode(rootNode, (ConstantInvokeDynamicInfo) cp_info);
         } else if (cp_info instanceof ConstantModuleInfo) {
@@ -288,6 +291,25 @@ final class JTreeCPInfo {
         )));
     }
 
+    private void generateTreeNode(
+            final DefaultMutableTreeNode rootNode,
+            final ConstantDynamicInfo info)
+            throws InvalidTreeNodeException {
+        final int startPos = info.getStartPos();
+
+        // TODO - Find a test case to verify this chagne is working or not
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 1,
+                2,
+                "bootstrap_method_attr_index: " + info.bootstrap_method_attr_index.value
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 3,
+                2,
+                "name_and_type_index: " + info.name_and_type_index.value + " - " + this.classFile.getCPDescription(info.name_and_type_index.value)
+        )));
+    }
+    
     private void generateTreeNode(
             final DefaultMutableTreeNode rootNode,
             final ConstantInvokeDynamicInfo info)

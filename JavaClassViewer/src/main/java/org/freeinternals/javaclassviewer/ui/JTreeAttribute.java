@@ -29,6 +29,7 @@ import org.freeinternals.format.classfile.AttributeExtended;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable.LocalVariableTypeTable;
 import org.freeinternals.format.classfile.AttributeMethodParameters;
+import org.freeinternals.format.classfile.AttributeModule;
 import org.freeinternals.format.classfile.AttributeRuntimeAnnotations;
 import org.freeinternals.format.classfile.AttributeRuntimeParameterAnnotations;
 import org.freeinternals.format.classfile.AttributeRuntimeTypeAnnotations;
@@ -138,6 +139,9 @@ class JTreeAttribute {
         } else if (attribute_info instanceof AttributeMethodParameters) {
             // 4.7.24. The MethodParameters Attribute
             this.generateTreeNode(rootNode, (AttributeMethodParameters) attribute_info);
+        } else if (attribute_info instanceof AttributeModule) {
+            // 4.7.25. The Module Attribute
+            this.generateTreeNode(rootNode, (AttributeModule) attribute_info);
         } else {
             // This is not a standard attribute type defined in the JVM Spec
             this.generateTreeNode(rootNode, (AttributeExtended) attribute_info);
@@ -1431,7 +1435,7 @@ class JTreeAttribute {
             parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     u2.LENGTH,
-                    "name_index: " 
+                    "name_index: "
                             + mp.parameters[i].name_index.value + " - "
                             + this.classFile.getCPDescription(mp.parameters[i].name_index.value)
             )));
@@ -1445,6 +1449,45 @@ class JTreeAttribute {
             )));
             startPos += u2.LENGTH;
         }
+    }
+
+
+    // 4.7.25. The Module Attribute
+    private void generateTreeNode(
+            final DefaultMutableTreeNode rootNode,
+            final AttributeModule module)
+            throws InvalidTreeNodeException {
+
+        int startPos = module.getStartPos() + 6;
+
+        // module_name_index
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "module_name_index: " + module.module_name_index.value + " - " + this.classFile.getCPDescription(module.module_name_index.value)
+        )));
+        startPos += u2.LENGTH;
+        
+        // module_flags
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "module_flags: " + module.module_flags.value + " - TODO Parse Flag Values"
+        )));
+        startPos += u2.LENGTH;
+
+        // module_version_index
+        String module_version = (module.module_version_index.value == 0) 
+                ? "no version information" 
+                : this.classFile.getCPDescription(module.module_version_index.value);
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "module_version_index: " + module.module_version_index.value + " - " + module_version
+        )));
+        startPos += u2.LENGTH;
+        
+        
     }
 
     /**
@@ -1575,4 +1618,5 @@ class JTreeAttribute {
                 2,
                 "index: " + lvt.index.value)));
     }
+
 }

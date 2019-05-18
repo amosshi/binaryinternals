@@ -22,13 +22,21 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  * @since JDK 10.0
- * @see <a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.4.11">
+ * @see
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.4.11">
  * VM Spec: The CONSTANT_Module_info Structure
  * </a>
  */
 public class ConstantModuleInfo extends CPInfo {
 
     public static final int LENGTH = 3;
+
+    /**
+     * The value of the {@link name_index} item must be a valid index into the
+     * {@code constant_pool} table. The constant_pool entry at that index must
+     * be a {@link CONSTANT_Utf8_info} structure representing a valid module
+     * name.
+     */
     public final u2 name_index;
 
     ConstantModuleInfo(final PosDataInputStream posDataInputStream) throws IOException {

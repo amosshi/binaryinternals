@@ -403,9 +403,11 @@ public class ClassFile {
                     ClassFile.this.constant_pool[i] = new ConstantFloatInfo(ClassFile.this.posDataInputStream);
                 } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantLongInfo(ClassFile.this.posDataInputStream);
+                    // Long type occupy two Constant Pool index
                     i++;
                 } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantDoubleInfo(ClassFile.this.posDataInputStream);
+                    // Long type occupy two Constant Pool index
                     i++;
                 } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantClassInfo(ClassFile.this.posDataInputStream);
@@ -423,6 +425,8 @@ public class ClassFile {
                     ClassFile.this.constant_pool[i] = new ConstantMethodHandleInfo(ClassFile.this.posDataInputStream);
                 } else if (tag == CPInfo.ConstantType.CONSTANT_MethodType.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantMethodTypeInfo(ClassFile.this.posDataInputStream);
+                } else if (tag == CPInfo.ConstantType.CONSTANT_Dynamic.tag) {
+                    ClassFile.this.constant_pool[i] = new ConstantDynamicInfo(ClassFile.this.posDataInputStream);
                 } else if (tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
                     ClassFile.this.constant_pool[i] = new ConstantInvokeDynamicInfo(ClassFile.this.posDataInputStream);
                 } else if (tag == CPInfo.ConstantType.CONSTANT_Module.tag) {
@@ -539,6 +543,9 @@ public class ClassFile {
                     } else if (cp_info instanceof ConstantMethodTypeInfo) {
                         ConstantMethodTypeInfo mti = (ConstantMethodTypeInfo)cp_info;
                         sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[mti.descriptor_index.value]));
+                    } else if (cp_info instanceof ConstantDynamicInfo) {
+                        sb.append("bootstrap_method_attr_index = ").append(((ConstantDynamicInfo)cp_info).bootstrap_method_attr_index.value);
+                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantDynamicInfo)cp_info).name_and_type_index.value));
                     } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
                         sb.append("bootstrap_method_attr_index = ").append(((ConstantInvokeDynamicInfo)cp_info).bootstrap_method_attr_index.value);
                         sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantInvokeDynamicInfo)cp_info).name_and_type_index.value));

@@ -157,6 +157,9 @@ public class AttributeInfo extends FileComponent {
             } else if (AttributeName.MethodParameters.name().equals(type)) {
                 // 4.7.24. The MethodParameters Attribute
                 attr = new AttributeMethodParameters(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.Module.name().equals(type)) {
+                // 4.7.25. The Module Attribute
+                attr = new AttributeModule(attrNameIndex, type, posDataInputStream);
             } else {
                 Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
                 System.out.println( "Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist
@@ -410,6 +413,7 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         BootstrapMethods,
+
         /**
          * The name for {@code MethodParameters} attribute type.
          *
@@ -418,6 +422,57 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The MethodParameters Attribute
          * </a>
          */
-        MethodParameters;
+        MethodParameters,
+        
+        /**
+         * The name for {@code Module} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.25">
+         * VM Spec: The Module Attribute
+         * </a>
+         */
+        Module,
+
+        /**
+         * The name for {@code ModulePackages} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.26">
+         * VM Spec: The ModuModulePackages Attribute
+         * </a>
+         */
+        ModulePackages,
+        
+        /**
+         * The name for {@code ModuleMainClass} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.27">
+         * VM Spec: The ModuleMainClass Attribute
+         * </a>
+         */
+        ModuleMainClass,
+
+        /**
+         * The name for {@code NestHost} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.28">
+         * VM Spec: The NestHost Attribute
+         * </a>
+         */
+        NestHost,
+
+        /**
+         * The name for {@code NestMembers} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.29">
+         * VM Spec: The NestMembers Attribute
+         * </a>
+         */
+        NestMembers;
+        
     }
 }
