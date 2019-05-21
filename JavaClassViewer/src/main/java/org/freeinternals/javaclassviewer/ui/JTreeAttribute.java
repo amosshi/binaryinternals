@@ -56,10 +56,7 @@ class JTreeAttribute {
         this.classFile = classFile;
     }
 
-    public void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeInfo attribute_info)
-            throws InvalidTreeNodeException {
+    public void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInfo attribute_info) throws InvalidTreeNodeException {
 
         if (attribute_info == null) {
             return;
@@ -149,10 +146,7 @@ class JTreeAttribute {
     }
 
     // 4.7.2. The ConstantValue Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeConstantValue constantValue)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeConstantValue constantValue) throws InvalidTreeNodeException {
         int index = constantValue.constantvalue_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 constantValue.getStartPos() + 6,
@@ -162,10 +156,7 @@ class JTreeAttribute {
     }
 
     // 4.7.3. The Code Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeCode code)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeCode code) throws InvalidTreeNodeException {
         int i;
         final int startPos = code.getStartPos();
         final int codeLength = code.code_length.value;
@@ -178,30 +169,36 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                "max_stack: " + code.max_stack.value)));
+                "max_stack: " + code.max_stack.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 8,
                 2,
-                "max_locals: " + code.max_locals.value)));
+                "max_locals: " + code.max_locals.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 10,
                 4,
-                "code_length: " + code.code_length.value)));
+                "code_length: " + code.code_length.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 14,
                 codeLength,
-                ATTRIBUTE_CODE_NODE)));
+                ATTRIBUTE_CODE_NODE
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 14 + codeLength,
                 2,
-                "exception_table_length: " + code.exception_table_length.value)));
+                "exception_table_length: " + code.exception_table_length.value
+        )));
 
         // Add exception table
         if (code.exception_table_length.value > 0) {
             treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 14 + codeLength + 2,
                     ExceptionTable.LENGTH * code.exception_table_length.value,
-                    "exception_table"));
+                    "exception_table[" + code.exception_table_length.value + "]"
+            ));
 
             AttributeCode.ExceptionTable et;
             for (i = 0; i < code.exception_table_length.value; i++) {
@@ -210,8 +207,9 @@ class JTreeAttribute {
                 treeNodeExceptionTableItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         et.getStartPos(),
                         et.getLength(),
-                        String.format("[%d]", i)));
-                this.generate(treeNodeExceptionTableItem, et);
+                        String.format("exception_table [%d]", i)
+                ));
+                this.generateSubnode(treeNodeExceptionTableItem, et);
                 treeNodeExceptionTable.add(treeNodeExceptionTableItem);
             }
 
@@ -223,23 +221,26 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 attrStartPos,
                 2,
-                "attributes_count: " + attrCount)));
+                "attributes_count: " + attrCount
+        )));
         if (attrCount > 0) {
             int attrLength = 0;
             for (AttributeInfo codeAttr : code.attributes) {
                 attrLength += codeAttr.getLength();
             }
+
             treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrStartPos + 2,
                     attrLength,
-                    "attributes"));
+                    "attributes[" + attrCount + "]"
+            ));
 
             for (i = 0; i < attrCount; i++) {
                 AttributeInfo attr = code.getAttribute(i);
                 treeNodeAttributeItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         attr.getStartPos(),
                         attr.getLength(),
-                        i + ". " + attr.getName()
+                        (i + 1) + ". " + attr.getName()
                 ));
                 this.generateTreeNode(treeNodeAttributeItem, attr);
                 treeNodeAttribute.add(treeNodeAttributeItem);
@@ -251,10 +252,7 @@ class JTreeAttribute {
     }
 
     // 4.7.4. The StackMapTable Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeStackMapTable smt)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeStackMapTable smt) throws InvalidTreeNodeException {
 
         final int startPos = smt.getStartPos();
 
@@ -265,11 +263,10 @@ class JTreeAttribute {
         )));
 
         if (smt.number_of_entries.value > 0) {
-
             DefaultMutableTreeNode entries = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     smt.getLength() - 8,
-                    "entries"
+                    "entries[" + smt.number_of_entries.value + "]"
             ));
             rootNode.add(entries);
 
@@ -277,19 +274,17 @@ class JTreeAttribute {
                 DefaultMutableTreeNode entry = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         smt.entries[i].getStartPos(),
                         smt.entries[i].getLength(),
-                        "entry " + i
+                        String.format("%s.entry [%d]", smt.getName(), i)
                 ));
+
                 entries.add(entry);
-                this.generate(entry, smt.entries[i]);
+                this.generateSubnode(entry, smt.entries[i]);
             }
         }
     }
 
     // 4.7.4 - StackMapFrame
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final StackMapFrame smf)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final StackMapFrame smf) throws InvalidTreeNodeException {
 
         int startPos = smf.getStartPos();
 
@@ -315,7 +310,7 @@ class JTreeAttribute {
                     "stack 0"
             ));
             stacks.add(stack);
-            this.generate(stack, smf.union_same_locals_1_stack_item_frame.stack[0]);
+            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame.stack[0]);
 
         } else if (smf.union_same_locals_1_stack_item_frame_extended != null) {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -338,7 +333,7 @@ class JTreeAttribute {
                     "stack 0"
             ));
             stacks.add(stack);
-            this.generate(stack, smf.union_same_locals_1_stack_item_frame_extended.stack[0]);
+            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame_extended.stack[0]);
 
         } else if (smf.union_chop_frame != null) {
 
@@ -387,7 +382,7 @@ class JTreeAttribute {
                             "local " + (i + 1)
                     ));
                     locals.add(local);
-                    this.generate(local, smf.union_append_frame.locals[i]);
+                    this.generateSubnode(local, smf.union_append_frame.locals[i]);
                 }
             }
 
@@ -395,17 +390,17 @@ class JTreeAttribute {
 
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
-                    2,
+                    u2.LENGTH,
                     "offset_delta: " + smf.union_full_frame.offset_delta.value
             )));
-            startPos += 2;
+            startPos += u2.LENGTH;
 
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     2,
                     "number_of_locals: " + smf.union_full_frame.number_of_locals.value
             )));
-            startPos += 2;
+            startPos += u2.LENGTH;
 
             int size_locals = 0;
             if (smf.union_full_frame.number_of_locals.value > 0) {
@@ -427,7 +422,7 @@ class JTreeAttribute {
                             "local " + (i + 1)
                     ));
                     locals.add(local);
-                    this.generate(local, smf.union_full_frame.locals[i]);
+                    this.generateSubnode(local, smf.union_full_frame.locals[i]);
                 }
             }
 
@@ -458,17 +453,14 @@ class JTreeAttribute {
                             "stack " + (i + 1)
                     ));
                     stacks.add(stack);
-                    this.generate(stack, smf.union_full_frame.stack[i]);
+                    this.generateSubnode(stack, smf.union_full_frame.stack[i]);
                 }
             }
         } // End union_full_frame
     }
 
     // 4.7.4 - VerificationTypeInfo
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final VerificationTypeInfo vti)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final VerificationTypeInfo vti) throws InvalidTreeNodeException {
 
         int startPos = vti.getStartPos();
 
@@ -495,10 +487,7 @@ class JTreeAttribute {
     }
 
     // 4.7.5. The Exceptions Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeExceptions exceptions)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeExceptions exceptions) throws InvalidTreeNodeException {
         int i;
         final int startPos = exceptions.getStartPos();
         final int numOfExceptions = exceptions.number_of_exceptions.value;
@@ -529,10 +518,7 @@ class JTreeAttribute {
     }
 
     // 4.7.6. The InnerClasses Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeInnerClasses innerClasses)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses innerClasses) throws InvalidTreeNodeException {
         int i;
         final int startPos = innerClasses.getStartPos();
         final int numOfClasses = innerClasses.number_of_classes.value;
@@ -547,7 +533,8 @@ class JTreeAttribute {
             treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     innerClasses.getClass(numOfClasses - 1).getStartPos() + innerClasses.getClass(numOfClasses - 1).getLength() - (startPos + 8),
-                    "inner classes"));
+                    "inner classes"
+            ));
 
             AttributeInnerClasses.Class cls;
             for (i = 0; i < numOfClasses; i++) {
@@ -556,8 +543,9 @@ class JTreeAttribute {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("inner class %d", i + 1)));
-                this.generate(treeNodeInnerClassItem, cls);
+                        String.format("inner class %d", i + 1)
+                ));
+                this.generateSubnode(treeNodeInnerClassItem, cls);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
             }
 
@@ -566,10 +554,7 @@ class JTreeAttribute {
     }
 
     // 4.7.7. The EnclosingMethod Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeEnclosingMethod em)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeEnclosingMethod em) throws InvalidTreeNodeException {
 
         int startPos = em.getStartPos() + 6;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -587,18 +572,12 @@ class JTreeAttribute {
     }
 
     // 4.7.8. The Synthetic Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeSynthetic synthetic)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSynthetic synthetic) throws InvalidTreeNodeException {
         // Nothing to add
     }
 
     // 4.7.9. The Signature Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeSignature signature)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSignature signature) throws InvalidTreeNodeException {
 
         final int startPos = signature.getStartPos();
         final int sigIndex = signature.signature_index.value;
@@ -611,22 +590,17 @@ class JTreeAttribute {
     }
 
     // 4.7.10. The SourceFile Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeSourceFile sourceFile)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSourceFile sourceFile) throws InvalidTreeNodeException {
         int cp_index = sourceFile.sourcefile_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 sourceFile.getStartPos() + 6,
                 2,
-                String.format("sourcefile_index: %d [%s]", cp_index, this.classFile.getCPDescription(cp_index)))));
+                String.format("sourcefile_index: %d [%s]", cp_index, this.classFile.getCPDescription(cp_index))
+        )));
     }
 
     // 4.7.11. The SourceDebugExtension Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeSourceDebugExtension sde)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSourceDebugExtension sde) throws InvalidTreeNodeException {
 
         if (sde.debug_extension != null && sde.debug_extension.length > 0) {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -638,10 +612,7 @@ class JTreeAttribute {
     }
 
     // 4.7.12. The LineNumberTable Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeLineNumberTable lineNumberTable)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable lineNumberTable) throws InvalidTreeNodeException {
         final int startPos = lineNumberTable.getStartPos();
         final int length = lineNumberTable.line_number_table_length.value;
 
@@ -654,7 +625,8 @@ class JTreeAttribute {
             final DefaultMutableTreeNode treeNodeLnt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     length * 4,
-                    "line_number_table"));
+                    "line_number_table[" + length + "]"
+            ));
 
             DefaultMutableTreeNode treeNodeLntItem;
             AttributeLineNumberTable.LineNumberTable lnt;
@@ -664,8 +636,9 @@ class JTreeAttribute {
                 treeNodeLntItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         lnt.getStartPos(),
                         lnt.getLength(),
-                        String.format("[row %d]", i)));
-                this.generate(treeNodeLntItem, lnt);
+                        String.format("line_number_table [%d]", i)
+                ));
+                this.generateSubnode(treeNodeLntItem, lnt);
                 treeNodeLnt.add(treeNodeLntItem);
             }
 
@@ -674,23 +647,22 @@ class JTreeAttribute {
     }
 
     // 4.7.13. The LocalVariableTable Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeLocalVariableTable localVariableTable)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTable localVariableTable) throws InvalidTreeNodeException {
         final int startPos = localVariableTable.getStartPos();
         final int length = localVariableTable.local_variable_table_length.value;
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                "local_variable_table_length: " + length)));
+                "local_variable_table_length: " + length
+        )));
 
         if (length > 0) {
             final DefaultMutableTreeNode treeNodeLvt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     length * AttributeLocalVariableTable.LocalVariableTable.LENGTH,
-                    "local_variable_table"));
+                    "local_variable_table[" + length + "]"
+            ));
 
             DefaultMutableTreeNode treeNodeLvtItem;
             AttributeLocalVariableTable.LocalVariableTable lvt;
@@ -700,8 +672,9 @@ class JTreeAttribute {
                 treeNodeLvtItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         lvt.getStartPos(),
                         lvt.getLength(),
-                        String.format("[%05d]", i)));
-                this.generate(treeNodeLvtItem, lvt);
+                        String.format("local_variable_table [%05d]", i)
+                ));
+                this.generateSubnode(treeNodeLvtItem, lvt);
                 treeNodeLvt.add(treeNodeLvtItem);
             }
 
@@ -710,18 +683,12 @@ class JTreeAttribute {
     }
 
     // 4.7.15. The Deprecated Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeDeprecated deprecated)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeDeprecated deprecated) throws InvalidTreeNodeException {
         // Nothing to add
     }
 
     // 4.7.14. The LocalVariableTypeTable Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeLocalVariableTypeTable lvtt)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTypeTable lvtt) throws InvalidTreeNodeException {
 
         final int startPos = lvtt.getStartPos();
 
@@ -780,10 +747,7 @@ class JTreeAttribute {
 
     // 4.7.16. The RuntimeVisibleAnnotations Attribute
     // 4.7.17. The RuntimeInvisibleAnnotations Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeAnnotations ra)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeAnnotations ra) throws InvalidTreeNodeException {
 
         final int startPos = ra.getStartPos();
 
@@ -796,7 +760,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode annotations = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     ra.getLength() - 8,
-                    "annotations"));
+                    "annotations"
+            ));
             rootNode.add(annotations);
 
             for (int i = 0; i < ra.num_annotations.value; i++) {
@@ -804,27 +769,21 @@ class JTreeAttribute {
                 DefaultMutableTreeNode annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         a.getStartPos(),
                         a.getLength(),
-                        String.format("annotation %d", i + 1)));
+                        String.format("annotation %d", i + 1)
+                ));
                 annotations.add(annotation);
-                generate(annotation, a);
+                JTreeAttribute.this.generateSubnode(annotation, a);
             }
         }
     }
 
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final Annotation a)
-            throws InvalidTreeNodeException {
-        this.generate(rootNode, a, a.getStartPos());
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation a) throws InvalidTreeNodeException {
+        this.generateSubnode(rootNode, a, a.getStartPos());
     }
 
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final Annotation a,
-            int currentPos)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation a, int currentPos) throws InvalidTreeNodeException {
 
         // int currentPos = a.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -844,7 +803,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode element_value_pairs = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     currentPos,
                     a.getStartPos() + a.getLength() - currentPos,
-                    "element_value_pairs"));
+                    "element_value_pairs"
+            ));
             rootNode.add(element_value_pairs);
 
             for (int i = 0; i < a.num_element_value_pairs.value; i++) {
@@ -852,18 +812,16 @@ class JTreeAttribute {
                 DefaultMutableTreeNode element_value_pair = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pair.getStartPos(),
                         pair.getLength(),
-                        String.format("element_value_pair %d", i + 1)));
+                        String.format("element_value_pair %d", i + 1)
+                ));
                 element_value_pairs.add(element_value_pair);
-                generate(element_value_pair, pair);
+                JTreeAttribute.this.generateSubnode(element_value_pair, pair);
             }
         }
     }
 
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final Annotation.ElementValuePair pair)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation.ElementValuePair pair) throws InvalidTreeNodeException {
 
         int startPos = pair.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -874,18 +832,16 @@ class JTreeAttribute {
         DefaultMutableTreeNode value = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 pair.getLength() - 2,
-                "value"));
+                "value"
+        ));
         rootNode.add(value);
 
-        generate(value, pair.value);
+        JTreeAttribute.this.generateSubnode(value, pair.value);
 
     }
 
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final Annotation.ElementValue elementValue)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation.ElementValue elementValue) throws InvalidTreeNodeException {
 
         int startPos = elementValue.getStartPos();
         char tag = elementValue.tag;
@@ -926,7 +882,7 @@ class JTreeAttribute {
                     "class_info_index: " + classInfoIndex + " - " + classFile.getCPDescription(classInfoIndex)
             )));
         } else if (elementValue.union_annotation_value != null) {
-            this.generate(rootNode, elementValue.union_annotation_value);
+            this.generateSubnode(rootNode, elementValue.union_annotation_value);
         } else if (elementValue.union_array_value != null) {
             int num_values = elementValue.union_array_value.num_values.value;
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -952,7 +908,7 @@ class JTreeAttribute {
                             "value " + (i + 1)
                     ));
                     values.add(value);
-                    this.generate(value, elementValue.union_array_value.values[i]);
+                    this.generateSubnode(value, elementValue.union_array_value.values[i]);
                 }
             }
         }
@@ -960,40 +916,37 @@ class JTreeAttribute {
 
     // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
     // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeParameterAnnotations rpa)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeParameterAnnotations rpa) throws InvalidTreeNodeException {
 
         int startPos = rpa.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 1,
-                "num_parameters: " + rpa.num_parameters.value)));
+                "num_parameters: " + rpa.num_parameters.value
+        )));
 
         if (rpa.parameter_annotations != null && rpa.parameter_annotations.length > 0) {
             DefaultMutableTreeNode parameter_annotations = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 7,
                     rpa.getLength() - 7,
-                    "parameter_annotations"));
+                    "parameter_annotations"
+            ));
             rootNode.add(parameter_annotations);
 
             for (int i = 0; i < rpa.parameter_annotations.length; i++) {
                 DefaultMutableTreeNode parameter_annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         rpa.parameter_annotations[i].getStartPos(),
                         rpa.parameter_annotations[i].getLength(),
-                        String.format("parameter_annotation %d", i + 1)));
+                        String.format("parameter_annotation %d", i + 1)
+                ));
                 parameter_annotations.add(parameter_annotation);
-                this.generate(parameter_annotation, rpa.parameter_annotations[i]);
+                this.generateSubnode(parameter_annotation, rpa.parameter_annotations[i]);
             }
         }
     }
 
     // 4.7.18, 4.7.19:  The RuntimeParameterAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeParameterAnnotations.ParameterAnnotation pa)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeParameterAnnotations.ParameterAnnotation pa) throws InvalidTreeNodeException {
 
         int startPos = pa.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -1006,7 +959,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode annotations = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 2,
                     pa.getLength() - 2,
-                    "annotations"));
+                    "annotations[" + pa.annotations.length + "]"
+            ));
             rootNode.add(annotations);
 
             for (int i = 0; i < pa.annotations.length; i++) {
@@ -1016,47 +970,44 @@ class JTreeAttribute {
                         String.format("annotation %d", i + 1)
                 ));
                 annotations.add(annotation);
-                generate(annotation, pa.annotations[i]);
+                JTreeAttribute.this.generateSubnode(annotation, pa.annotations[i]);
             }
         }
     }
 
     // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
     // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeTypeAnnotations rta)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations rta) throws InvalidTreeNodeException {
 
         int startPos = rta.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 u2.LENGTH,
-                "num_annotations: " + rta.num_annotations.value)));
+                "num_annotations: " + rta.num_annotations.value
+        )));
 
         if (rta.annotations != null && rta.annotations.length > 0) {
             DefaultMutableTreeNode annotations = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     rta.getLength() - 8,
-                    "annotations"));
+                    "annotations"
+            ));
             rootNode.add(annotations);
 
             for (int i = 0; i < rta.annotations.length; i++) {
                 DefaultMutableTreeNode annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         rta.annotations[i].getStartPos(),
                         rta.annotations[i].getLength(),
-                        String.format("type_annotation %d", i + 1)));
+                        String.format("type_annotation %d", i + 1)
+                ));
                 annotations.add(annotation);
-                this.generate(annotation, rta.annotations[i]);
+                this.generateSubnode(annotation, rta.annotations[i]);
             }
         }
     }
 
     // 4.7.20, 4.7.21:  The RuntimeTypeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeTypeAnnotations.TypeAnnotation ta)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation ta) throws InvalidTreeNodeException {
 
         int startPos = ta.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -1084,7 +1035,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode supertype_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_supertype_target.getLength(),
-                    "supertype_target"));
+                    "supertype_target"
+            ));
             rootNode.add(supertype_target);
             supertype_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1097,7 +1049,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode type_parameter_bound_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_type_parameter_bound_target.getLength(),
-                    "type_parameter_bound_target"));
+                    "type_parameter_bound_target"
+            ));
             rootNode.add(type_parameter_bound_target);
             type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1118,7 +1071,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode formal_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_method_formal_parameter_target.getLength(),
-                    "formal_parameter_target"));
+                    "formal_parameter_target"
+            ));
             rootNode.add(formal_parameter_target);
             formal_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1131,7 +1085,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode throws_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_throws_target.getLength(),
-                    "throws_target"));
+                    "throws_target"
+            ));
             rootNode.add(throws_target);
             throws_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1144,16 +1099,18 @@ class JTreeAttribute {
             DefaultMutableTreeNode localvar_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_localvar_target.getLength(),
-                    "localvar_target"));
+                    "localvar_target"
+            ));
             startPos += ta.union_localvar_target.getLength();
             rootNode.add(localvar_target);
-            this.generate(localvar_target, ta.union_localvar_target);
+            this.generateSubnode(localvar_target, ta.union_localvar_target);
 
         } else if (ta.union_catch_target != null) {
             DefaultMutableTreeNode catch_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_catch_target.getLength(),
-                    "catch_target"));
+                    "catch_target"
+            ));
             rootNode.add(catch_target);
             catch_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1166,7 +1123,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode offset_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_offset_target.getLength(),
-                    "offset_target"));
+                    "offset_target"
+            ));
             rootNode.add(offset_target);
             offset_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1179,7 +1137,8 @@ class JTreeAttribute {
             DefaultMutableTreeNode type_argument_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     ta.union_type_argument_target.getLength(),
-                    "type_argument_target"));
+                    "type_argument_target"
+            ));
             rootNode.add(type_argument_target);
             type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
@@ -1199,20 +1158,18 @@ class JTreeAttribute {
         DefaultMutableTreeNode target_path = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 ta.target_path.getLength(),
-                "target_path"));
+                "target_path"
+        ));
         startPos += ta.target_path.getLength();
         rootNode.add(target_path);
-        this.generate(target_path, ta.target_path);
+        this.generateSubnode(target_path, ta.target_path);
 
         // Annotation
-        this.generate(rootNode, ta, startPos);
+        this.generateSubnode(rootNode, ta, startPos);
     }
 
     // 4.7.20. localvar_target
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeTypeAnnotations.TypeAnnotation.LocalvarTarget lt)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation.LocalvarTarget lt) throws InvalidTreeNodeException {
 
         int startPos = lt.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -1263,10 +1220,7 @@ class JTreeAttribute {
     }
 
     // 4.7.20, 4.7.21:  The RuntimeTypeAnnotations Attribute
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeRuntimeTypeAnnotations.TypeAnnotation.TypePath tp)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation.TypePath tp) throws InvalidTreeNodeException {
 
         int startPos = tp.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -1310,10 +1264,7 @@ class JTreeAttribute {
     }
 
     // 4.7.22. The AnnotationDefault Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeAnnotationDefault ad)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeAnnotationDefault ad) throws InvalidTreeNodeException {
 
         DefaultMutableTreeNode default_value = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 ad.getStartPos() + 6,
@@ -1321,14 +1272,11 @@ class JTreeAttribute {
                 "default_value"
         ));
         rootNode.add(default_value);
-        this.generate(default_value, ad.default_value);
+        this.generateSubnode(default_value, ad.default_value);
     }
 
     // 4.7.23. The BootstrapMethods Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeBootstrapMethods abm)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeBootstrapMethods abm) throws InvalidTreeNodeException {
 
         int startPos = abm.getStartPos();
 
@@ -1350,18 +1298,16 @@ class JTreeAttribute {
                 DefaultMutableTreeNode bootstrap_method = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         m.getStartPos(),
                         m.getLength(),
-                        String.format("bootstrap_method %d", i + 1)));
+                        String.format("bootstrap_method %d", i + 1)
+                ));
                 bootstrap_methods.add(bootstrap_method);
-                this.generate(bootstrap_method, m);
+                this.generateSubnode(bootstrap_method, m);
             }
         }
     }
 
     // 4.7.23 BootstrapMethods
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final BootstrapMethod m)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final BootstrapMethod m) throws InvalidTreeNodeException {
 
         int startPos = m.getStartPos();
 
@@ -1399,10 +1345,7 @@ class JTreeAttribute {
     }
 
     // 4.7.24. The MethodParameters Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeMethodParameters mp)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeMethodParameters mp) throws InvalidTreeNodeException {
 
         int startPos = mp.getStartPos() + 6;
 
@@ -1436,27 +1379,23 @@ class JTreeAttribute {
                     startPos,
                     u2.LENGTH,
                     "name_index: "
-                            + mp.parameters[i].name_index.value + " - "
-                            + this.classFile.getCPDescription(mp.parameters[i].name_index.value)
+                    + mp.parameters[i].name_index.value + " - "
+                    + this.classFile.getCPDescription(mp.parameters[i].name_index.value)
             )));
             startPos += u2.LENGTH;
             parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     u2.LENGTH,
                     "access_flags: 0x"
-                            + String.format("%04X", mp.parameters[i].access_flags.value) + " - "
-                            + mp.parameters[i].getAccessFlagsText()
+                    + String.format("%04X", mp.parameters[i].access_flags.value) + " - "
+                    + mp.parameters[i].getAccessFlagsText()
             )));
             startPos += u2.LENGTH;
         }
     }
 
-
     // 4.7.25. The Module Attribute
-    private void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeModule module)
-            throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeModule module) throws InvalidTreeNodeException {
 
         int startPos = module.getStartPos() + 6;
 
@@ -1467,7 +1406,7 @@ class JTreeAttribute {
                 "module_name_index: " + module.module_name_index.value + " - " + this.classFile.getCPDescription(module.module_name_index.value)
         )));
         startPos += u2.LENGTH;
-        
+
         // module_flags
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
@@ -1477,17 +1416,90 @@ class JTreeAttribute {
         startPos += u2.LENGTH;
 
         // module_version_index
-        String module_version = (module.module_version_index.value == 0) 
-                ? "no version information" 
+        String module_version = (module.module_version_index.value == 0)
+                ? "no version information"
                 : this.classFile.getCPDescription(module.module_version_index.value);
+
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 u2.LENGTH,
                 "module_version_index: " + module.module_version_index.value + " - " + module_version
         )));
         startPos += u2.LENGTH;
-        
-        
+
+        // requires_count
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "requires_count: " + module.requires_count.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (module.requires_count.value > 0) {
+            final DefaultMutableTreeNode requiresNode = new DefaultMutableTreeNode(
+                    new JTreeNodeFileComponent(
+                            startPos,
+                            AttributeModule.Requires.LENGTH * module.requires_count.value,
+                            "requires[" + module.requires_count.value + "]"
+                    ));
+            rootNode.add(requiresNode);
+
+            DefaultMutableTreeNode requireNode;
+            for (int i = 0; i < module.requires.length; i++) {
+                requireNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        module.requires[i].getStartPos(),
+                        module.requires[i].getLength(),
+                        "require [" + i + "]"
+                ));
+                this.generateSubnode(requireNode, module.requires[i]);
+                requiresNode.add(requireNode);
+            }
+
+            // Update the new startPos
+            AttributeModule.Requires requireLastItem = module.requires[module.requires.length - 1];
+            startPos = requireLastItem.getStartPos() + requireLastItem.getLength();
+        }
+
+        // exports_count
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "exports_count: " + module.exports_count.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (module.exports_count.value > 0) {
+            AttributeModule.Exports exporstLastItem = module.exports[module.exports_count.value - 1];
+            final DefaultMutableTreeNode exportsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    exporstLastItem.getStartPos() + exporstLastItem.getLength() - startPos,
+                    "exports[" + module.exports_count.value + "]"
+            ));
+            rootNode.add(exportsNode);
+
+            DefaultMutableTreeNode exportNode;
+            for (int i = 0; i < module.exports.length; i++) {
+                exportNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        module.exports[i].getStartPos(),
+                        module.exports[i].getLength(),
+                        "export [" + i + "]"
+                ));
+                this.generateSubnode(exportNode, module.exports[i]);
+                exportsNode.add(exportNode);
+            }
+
+            // Update the new startPos
+            startPos = exporstLastItem.getStartPos() + exporstLastItem.getLength();
+        }
+
+        // opens_count
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "opens_count: " + module.opens_count.value
+        )));
+        startPos += u2.LENGTH;
+
     }
 
     /**
@@ -1504,10 +1516,78 @@ class JTreeAttribute {
         }
     }
 
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeCode.ExceptionTable et)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Exports export) throws InvalidTreeNodeException {
+        int startPos = export.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "exports_index: " + export.exports_index.value + " - " + this.classFile.getCPDescription(export.exports_index.value)
+        )));
+        startPos += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "exports_flags: " + export.exports_flags.value + " - TODO Parse exports_flags"
+        )));
+        startPos += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "exports_to_count: " + export.exports_to_count.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (export.exports_to_count.value > 0) {
+            final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u2.LENGTH * export.exports_to_count.value,
+                    "exports_to_index[" + export.exports_to_count.value + "]"
+            ));
+            rootNode.add(exportsToIndexNode);
+
+            for (int i = 0; i < export.exports_to_index.length; i++) {
+                exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPos + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "exports_to_index[" + i + "]: " + export.exports_to_index[i].value + " - " + this.classFile.getCPDescription(export.exports_to_index[i].value)
+                )));
+            }
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Requires require) throws InvalidTreeNodeException {
+        int startPos = require.getStartPos();
+
+        // requires_version_index
+        String requires_version_index = (require.requires_version_index.value == 0)
+                ? "no version information"
+                : this.classFile.getCPDescription(require.requires_version_index.value);
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "requires_index: " + require.requires_index.value + " - " + this.classFile.getCPDescription(require.requires_index.value)
+        )));
+        startPos += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "requires_flags: " + require.requires_flags.value + ", TODO Parse requires_flags"
+        )));
+        startPos += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "requires_version_index: " + require.requires_version_index.value + " - " + requires_version_index
+        )));
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeCode.ExceptionTable et) throws InvalidTreeNodeException {
         if (et == null) {
             return;
         }
@@ -1517,15 +1597,18 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "start_pc: " + et.start_pc.value)));
+                "start_pc: " + et.start_pc.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
-                "end_pc: " + et.end_pc.value)));
+                "end_pc: " + et.end_pc.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 4,
                 2,
-                "handler_pc: " + et.handler_pc.value)));
+                "handler_pc: " + et.handler_pc.value
+        )));
         int catch_type = et.catch_type.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
@@ -1534,7 +1617,7 @@ class JTreeAttribute {
         )));
     }
 
-    private void generate(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses.Class innerClass)
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses.Class innerClass)
             throws InvalidTreeNodeException {
         final int startPos = innerClass.getStartPos();
 
@@ -1566,7 +1649,7 @@ class JTreeAttribute {
         )));
     }
 
-    private void generate(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable.LineNumberTable lnt)
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable.LineNumberTable lnt)
             throws InvalidTreeNodeException {
         if (lnt == null) {
             return;
@@ -1577,17 +1660,16 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "start_pc: " + lnt.start_pc.value)));
+                "start_pc: " + lnt.start_pc.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
-                "line_number: " + lnt.line_number.value)));
+                "line_number: " + lnt.line_number.value
+        )));
     }
 
-    private void generate(
-            final DefaultMutableTreeNode rootNode,
-            final AttributeLocalVariableTable.LocalVariableTable lvt)
-            throws InvalidTreeNodeException {
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTable.LocalVariableTable lvt) throws InvalidTreeNodeException {
         if (lvt == null) {
             return;
         }
@@ -1598,25 +1680,30 @@ class JTreeAttribute {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "start_pc: " + lvt.start_pc.value)));
+                "start_pc: " + lvt.start_pc.value
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
-                "length: " + lvt.length.value)));
+                "length: " + lvt.length.value
+        )));
         cp_index = lvt.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 4,
                 2,
-                String.format("name_index: %d - %s", cp_index, this.classFile.getCPDescription(cp_index)))));
+                String.format("name_index: %d - %s", cp_index, this.classFile.getCPDescription(cp_index))
+        )));
         cp_index = lvt.descriptor_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                String.format("descriptor_index: %d - %s", cp_index, this.classFile.getCPDescription(cp_index)))));
+                String.format("descriptor_index: %d - %s", cp_index, this.classFile.getCPDescription(cp_index))
+        )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 8,
                 2,
-                "index: " + lvt.index.value)));
+                "index: " + lvt.index.value
+        )));
     }
 
 }

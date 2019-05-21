@@ -88,9 +88,7 @@ public class AttributeModule extends AttributeInfo {
     public transient final u2 provides_count;
     public final transient Provides[] provides;
 
-
-    AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream)
-            throws IOException, FileFormatException {
+    AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
         this.module_name_index = new u2(posDataInputStream);
@@ -118,7 +116,7 @@ public class AttributeModule extends AttributeInfo {
         } else {
             this.exports = null;
         }
-        
+
         // Opens
         this.opens_count = new u2(posDataInputStream);
         if (this.opens_count.value > 0) {
@@ -129,7 +127,7 @@ public class AttributeModule extends AttributeInfo {
         } else {
             this.opens = null;
         }
-        
+
         // Uses
         this.uses_count = new u2(posDataInputStream);
         if (this.uses_count.value > 0) {
@@ -140,7 +138,7 @@ public class AttributeModule extends AttributeInfo {
         } else {
             this.uses_index = null;
         }
-        
+
         // Provides
         this.provides_count = new u2(posDataInputStream);
         if (this.provides_count.value > 0) {

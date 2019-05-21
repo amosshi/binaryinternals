@@ -22,11 +22,7 @@ final class JTreeField {
     private JTreeField() {
     }
 
-    public static void generateTreeNode(
-            final DefaultMutableTreeNode rootNode,
-            final FieldInfo field_info,
-            final ClassFile classFile)
-            throws InvalidTreeNodeException {
+    public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final FieldInfo field_info, final ClassFile classFile) throws InvalidTreeNodeException {
         if (field_info == null) {
             return;
         }
@@ -37,7 +33,8 @@ final class JTreeField {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "access_flags: " + field_info.access_flags.value + ", " + field_info.getModifiers())));
+                "access_flags: " + field_info.access_flags.value + ", " + field_info.getModifiers()
+        )));
         int name_index = field_info.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
@@ -53,14 +50,16 @@ final class JTreeField {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                "attributes_count: " + attributesCount)));
+                "attributes_count: " + attributesCount
+        )));
 
         if (attributesCount > 0) {
             final AttributeInfo lastAttr = field_info.getAttribute(attributesCount - 1);
             final DefaultMutableTreeNode treeNodeAttr = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - startPos - 8,
-                    "attributes"));
+                    "attributes"
+            ));
 
             DefaultMutableTreeNode treeNodeAttrItem;
             AttributeInfo attr;
@@ -70,7 +69,8 @@ final class JTreeField {
                 treeNodeAttrItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         attr.getStartPos(),
                         attr.getLength(),
-                        String.format("%d. %s", i + 1, attr.getName())));
+                        String.format("%d. %s", i + 1, attr.getName()
+                        )));
                 new JTreeAttribute(classFile).generateTreeNode(treeNodeAttrItem, attr);
                 treeNodeAttr.add(treeNodeAttrItem);
             }
