@@ -68,7 +68,7 @@ public class AttributeInfo extends FileComponent {
             final u2 nameIndex,
             final String name,
             final PosDataInputStream posDataInputStream)
-            throws IOException, FileFormatException {
+            throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
         this.name = name;
@@ -83,6 +83,8 @@ public class AttributeInfo extends FileComponent {
             final CPInfo[] cp)
             throws IOException, FileFormatException {
         AttributeInfo attr = null;
+        
+        // TODO - Eliminate the if...elseif... chain bellow
 
         final u2 attrNameIndex = new u2(posDataInputStream);
         if (CPInfo.ConstantType.CONSTANT_Utf8.tag == cp[attrNameIndex.value].tag.value) {
@@ -160,9 +162,18 @@ public class AttributeInfo extends FileComponent {
             } else if (AttributeName.Module.name().equals(type)) {
                 // 4.7.25. The Module Attribute
                 attr = new AttributeModule(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.ModulePackages.name().equals(type)) {
+                // 4.7.26. The ModulePackages Attribute
+                attr = new AttributeModulePackages(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.ModuleHashes.name().equals(type)) {
+                // 4.7.26. OpenJDK JVM9. The ModuleHashes Attribute
+                attr = new AttributeModuleHashes(attrNameIndex, type, posDataInputStream);
+            } else if (AttributeName.ModuleTarget.name().equals(type)) {
+                // 4.7.26. OpenJDK JVM9. The ModuleTarget Attribute
+                attr = new AttributeModuleTarget(attrNameIndex, type, posDataInputStream);
             } else {
                 Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
-                System.out.println( "Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist
+                System.out.println("Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist
                 attr = new AttributeExtended(attrNameIndex, Extended + type, posDataInputStream);
             }
         } else {
@@ -179,8 +190,7 @@ public class AttributeInfo extends FileComponent {
      * @throws org.freeinternals.format.FileFormatException Invalid class file
      * format
      */
-    protected void checkSize(final int endPos)
-            throws FileFormatException {
+    protected void checkSize(final int endPos) throws FileFormatException {
         if (this.startPos + this.length != endPos) {
             throw new FileFormatException(String.format("Attribute analysis failed. type='%s', startPos=%d, length=%d, endPos=%d", this.getName(), this.startPos, this.length, endPos));
         }
@@ -413,7 +423,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         BootstrapMethods,
-
         /**
          * The name for {@code MethodParameters} attribute type.
          *
@@ -423,7 +432,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         MethodParameters,
-        
         /**
          * The name for {@code Module} attribute type.
          *
@@ -433,7 +441,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         Module,
-
         /**
          * The name for {@code ModulePackages} attribute type.
          *
@@ -443,7 +450,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         ModulePackages,
-        
         /**
          * The name for {@code ModuleMainClass} attribute type.
          *
@@ -453,7 +459,24 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         ModuleMainClass,
-
+        /**
+         * The name for {@code ModuleHashes} attribute type. This is a OpenJDK
+         * specific attribute and do not exist in Oracle JDK.
+         *
+         * @see
+         * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">OpenJDK
+         * specific attribute specifications</a>
+         */
+        ModuleHashes,
+        /**
+         * The name for {@code ModuleTarget} attribute type. This is a OpenJDK
+         * specific attribute and do not exist in Oracle JDK.
+         *
+         * @see
+         * <a href="https://openjdk.java.net/jeps/261"> JEP 261: Module
+         * System</a>
+         */
+        ModuleTarget,
         /**
          * The name for {@code NestHost} attribute type.
          *
@@ -463,7 +486,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         NestHost,
-
         /**
          * The name for {@code NestMembers} attribute type.
          *
@@ -473,6 +495,6 @@ public class AttributeInfo extends FileComponent {
          * </a>
          */
         NestMembers;
-        
+
     }
 }

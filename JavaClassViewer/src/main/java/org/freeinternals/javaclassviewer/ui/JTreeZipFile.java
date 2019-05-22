@@ -103,9 +103,8 @@ public class JTreeZipFile extends JTree {
             parent.add(child);
         } else {
             final int childCount = parent.getChildCount();
-            TreeNode childTreeNode = null;
             for (int i = 0; i < childCount; i++) {
-                childTreeNode = parent.getChildAt(i);
+                TreeNode childTreeNode = parent.getChildAt(i);
 
                 if (childText.equals(childTreeNode.toString()) && childTreeNode instanceof DefaultMutableTreeNode) {
                     child = (DefaultMutableTreeNode) childTreeNode;

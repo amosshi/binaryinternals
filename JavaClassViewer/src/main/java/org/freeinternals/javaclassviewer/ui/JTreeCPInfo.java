@@ -41,8 +41,7 @@ final class JTreeCPInfo {
         this.classFile = classFile;
     }
 
-    public void generateTreeNode(final DefaultMutableTreeNode rootNode, final CPInfo cp_info)
-            throws InvalidTreeNodeException {
+    public void generateTreeNode(final DefaultMutableTreeNode rootNode, final CPInfo cp_info) {
         if (cp_info == null) {
             return;
         }
@@ -93,7 +92,7 @@ final class JTreeCPInfo {
         }
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantUtf8Info utf8Info) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantUtf8Info utf8Info) {
         final int startPos = utf8Info.getStartPos();
         final int bytesLength = utf8Info.length_utf8.value;
 
@@ -109,7 +108,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantIntegerInfo integerInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantIntegerInfo integerInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 integerInfo.getStartPos() + 1,
                 4,
@@ -117,7 +116,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantFloatInfo floatInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantFloatInfo floatInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatInfo.getStartPos() + 1,
                 4,
@@ -125,7 +124,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantLongInfo longInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantLongInfo longInfo) {
         final int startPos = longInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -140,7 +139,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantDoubleInfo doubleInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantDoubleInfo doubleInfo) {
         final int startPos = doubleInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -155,7 +154,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantClassInfo classInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantClassInfo classInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 classInfo.getStartPos() + 1,
                 2,
@@ -163,7 +162,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantStringInfo stringInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantStringInfo stringInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 stringInfo.getStartPos() + 1,
                 2,
@@ -171,7 +170,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantFieldrefInfo fieldrefInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantFieldrefInfo fieldrefInfo) {
         final int startPos = fieldrefInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -186,7 +185,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodrefInfo methodrefInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodrefInfo methodrefInfo) {
         final int startPos = methodrefInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -201,7 +200,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantInterfaceMethodrefInfo interfaceMethodrefInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantInterfaceMethodrefInfo interfaceMethodrefInfo) {
         final int startPos = interfaceMethodrefInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -216,7 +215,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantNameAndTypeInfo nameAndTypeInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantNameAndTypeInfo nameAndTypeInfo) {
         final int startPos = nameAndTypeInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -231,7 +230,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodHandleInfo info) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodHandleInfo info) {
         final int startPos = info.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -246,7 +245,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodTypeInfo info) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantMethodTypeInfo info) {
         final int startPos = info.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -256,7 +255,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantDynamicInfo info) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantDynamicInfo info) {
         final int startPos = info.getStartPos();
 
         // TODO - Find a test case to verify this chagne is working or not
@@ -272,7 +271,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantInvokeDynamicInfo info) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantInvokeDynamicInfo info) {
         final int startPos = info.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -287,7 +286,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantModuleInfo moduleInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantModuleInfo moduleInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 moduleInfo.getStartPos() + 1,
                 2,
@@ -295,7 +294,7 @@ final class JTreeCPInfo {
         )));
     }
 
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantPackageInfo packageInfo) throws InvalidTreeNodeException {
+    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final ConstantPackageInfo packageInfo) {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 packageInfo.getStartPos() + 1,
                 2,
