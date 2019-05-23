@@ -52,6 +52,7 @@ final class JTreeCPInfo {
                 1,
                 "tag: " + tag)));
 
+        // TODO Refactor - delete the if..elseif... chain bellow
         if (cp_info instanceof ConstantUtf8Info) {
             this.generateTreeNode(rootNode, (ConstantUtf8Info) cp_info);
         } else if (cp_info instanceof ConstantIntegerInfo) {
@@ -259,6 +260,7 @@ final class JTreeCPInfo {
         final int startPos = info.getStartPos();
 
         // TODO - Find a test case to verify this chagne is working or not
+        System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,

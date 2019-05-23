@@ -25,7 +25,7 @@ import org.freeinternals.format.classfile.AttributeLineNumberTable;
 import org.freeinternals.format.classfile.AttributeLocalVariableTable;
 import org.freeinternals.format.classfile.AttributeSourceFile;
 import org.freeinternals.format.classfile.AttributeSynthetic;
-import org.freeinternals.format.classfile.AttributeExtended;
+import org.freeinternals.format.classfile.AttributeUnrecognized;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable;
 import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable.LocalVariableTypeTable;
 import org.freeinternals.format.classfile.AttributeMethodParameters;
@@ -44,6 +44,7 @@ import org.freeinternals.format.classfile.AttributeStackMapTable.VerificationTyp
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
+import org.freeinternals.format.classfile.u4;
 
 /**
  *
@@ -65,101 +66,112 @@ class JTreeAttribute {
             return;
         }
 
-        final int startPos = attribute_info.getStartPos();
+        int startPos = attribute_info.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                2,
+                u2.LENGTH,
                 "attribute_name_index: " + attribute_info.attribute_name_index.value + ", name=" + attribute_info.getName())));
+        startPos += u2.LENGTH;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 2,
-                4,
+                startPos,
+                u4.LENGTH,
                 "attribute_length: " + attribute_info.attribute_length.value)));
+        startPos += u4.LENGTH;
 
         // TODO - Eliminate the if..elseif... chain bellow
         if (attribute_info instanceof AttributeConstantValue) {
             // 4.7.2. The ConstantValue Attribute
-            this.generateTreeNode(rootNode, (AttributeConstantValue) attribute_info);
+            this.generateAttribute(rootNode, (AttributeConstantValue) attribute_info);
         } else if (attribute_info instanceof AttributeCode) {
             // 4.7.3. The Code Attribute
-            this.generateTreeNode(rootNode, (AttributeCode) attribute_info);
+            this.generateAttribute(rootNode, (AttributeCode) attribute_info);
         } else if (attribute_info instanceof AttributeStackMapTable) {
             // 4.7.4. The StackMapTable Attribute
-            this.generateTreeNode(rootNode, (AttributeStackMapTable) attribute_info);
+            this.generateAttribute(rootNode, (AttributeStackMapTable) attribute_info);
         } else if (attribute_info instanceof AttributeExceptions) {
             // 4.7.5. The Exceptions Attribute
-            this.generateTreeNode(rootNode, (AttributeExceptions) attribute_info);
+            this.generateAttribute(rootNode, (AttributeExceptions) attribute_info);
         } else if (attribute_info instanceof AttributeInnerClasses) {
             // 4.7.6. The InnerClasses Attribute
-            this.generateTreeNode(rootNode, (AttributeInnerClasses) attribute_info);
+            this.generateAttribute(rootNode, (AttributeInnerClasses) attribute_info);
         } else if (attribute_info instanceof AttributeEnclosingMethod) {
             // 4.7.7. The EnclosingMethod Attribute
-            this.generateTreeNode(rootNode, (AttributeEnclosingMethod) attribute_info);
+            this.generateAttribute(rootNode, (AttributeEnclosingMethod) attribute_info);
         } else if (attribute_info instanceof AttributeSynthetic) {
             // 4.7.8. The Synthetic Attribute
-            this.generateTreeNode(rootNode, (AttributeSynthetic) attribute_info);
+            this.generateAttribute(rootNode, (AttributeSynthetic) attribute_info);
         } else if (attribute_info instanceof AttributeSignature) {
             // 4.7.9. The Signature Attribute
-            this.generateTreeNode(rootNode, (AttributeSignature) attribute_info);
+            this.generateAttribute(rootNode, (AttributeSignature) attribute_info);
         } else if (attribute_info instanceof AttributeSourceFile) {
             // 4.7.10. The SourceFile Attribute
-            this.generateTreeNode(rootNode, (AttributeSourceFile) attribute_info);
+            this.generateAttribute(rootNode, (AttributeSourceFile) attribute_info);
         } else if (attribute_info instanceof AttributeSourceDebugExtension) {
             // 4.7.11. The SourceDebugExtension Attribute
-            this.generateTreeNode(rootNode, (AttributeSourceDebugExtension) attribute_info);
+            this.generateAttribute(rootNode, (AttributeSourceDebugExtension) attribute_info);
         } else if (attribute_info instanceof AttributeLineNumberTable) {
             // 4.7.12. The LineNumberTable Attribute
-            this.generateTreeNode(rootNode, (AttributeLineNumberTable) attribute_info);
+            this.generateAttribute(rootNode, (AttributeLineNumberTable) attribute_info);
         } else if (attribute_info instanceof AttributeLocalVariableTable) {
             // 4.7.13. The LocalVariableTable Attribute
-            this.generateTreeNode(rootNode, (AttributeLocalVariableTable) attribute_info);
+            this.generateAttribute(rootNode, (AttributeLocalVariableTable) attribute_info);
         } else if (attribute_info instanceof AttributeLocalVariableTypeTable) {
             // 4.7.14. The LocalVariableTypeTable Attribute
-            this.generateTreeNode(rootNode, (AttributeLocalVariableTypeTable) attribute_info);
+            this.generateAttribute(rootNode, (AttributeLocalVariableTypeTable) attribute_info);
         } else if (attribute_info instanceof AttributeDeprecated) {
             // 4.7.15. The Deprecated Attribute
-            this.generateTreeNode(rootNode, (AttributeDeprecated) attribute_info);
+            this.generateAttribute(rootNode, (AttributeDeprecated) attribute_info);
         } else if (attribute_info instanceof AttributeRuntimeAnnotations) {
             // 4.7.16. The RuntimeVisibleAnnotations Attribute
             // 4.7.17. The RuntimeInvisibleAnnotations Attribute
-            this.generateTreeNode(rootNode, (AttributeRuntimeAnnotations) attribute_info);
+            this.generateAttribute(rootNode, (AttributeRuntimeAnnotations) attribute_info);
         } else if (attribute_info instanceof AttributeRuntimeParameterAnnotations) {
             // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
             // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
-            this.generateTreeNode(rootNode, (AttributeRuntimeParameterAnnotations) attribute_info);
+            this.generateAttribute(rootNode, (AttributeRuntimeParameterAnnotations) attribute_info);
         } else if (attribute_info instanceof AttributeRuntimeTypeAnnotations) {
             // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
             // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
-            this.generateTreeNode(rootNode, (AttributeRuntimeTypeAnnotations) attribute_info);
+            this.generateAttribute(rootNode, (AttributeRuntimeTypeAnnotations) attribute_info);
         } else if (attribute_info instanceof AttributeAnnotationDefault) {
             // 4.7.22. The AnnotationDefault Attribute
-            this.generateTreeNode(rootNode, (AttributeAnnotationDefault) attribute_info);
+            this.generateAttribute(rootNode, (AttributeAnnotationDefault) attribute_info);
         } else if (attribute_info instanceof AttributeBootstrapMethods) {
             // 4.7.23. The BootstrapMethods Attribute
-            this.generateTreeNode(rootNode, (AttributeBootstrapMethods) attribute_info);
+            this.generateAttribute(rootNode, (AttributeBootstrapMethods) attribute_info);
         } else if (attribute_info instanceof AttributeMethodParameters) {
             // 4.7.24. The MethodParameters Attribute
-            this.generateTreeNode(rootNode, (AttributeMethodParameters) attribute_info);
+            this.generateAttribute(rootNode, (AttributeMethodParameters) attribute_info);
         } else if (attribute_info instanceof AttributeModule) {
             // 4.7.25. The Module Attribute
-            this.generateTreeNode(rootNode, (AttributeModule) attribute_info);
+            this.generateAttribute(rootNode, (AttributeModule) attribute_info);
         } else if (attribute_info instanceof AttributeModulePackages) {
             // 4.7.26. The ModulePackages Attribute
-            this.generateTreeNode(rootNode, (AttributeModulePackages) attribute_info);
+            this.generateAttribute(rootNode, (AttributeModulePackages) attribute_info);
         } else if (attribute_info instanceof AttributeModuleHashes) {
             // OpenJDK JVM9. The ModuleHashes Attribute
-            this.generateTreeNode(rootNode, (AttributeModuleHashes) attribute_info);
+            this.generateAttribute(rootNode, (AttributeModuleHashes) attribute_info);
         } else if (attribute_info instanceof AttributeModuleTarget) {
             // OpenJDK JVM9. The ModuleTarget Attribute
-            this.generateTreeNode(rootNode, (AttributeModuleTarget) attribute_info);
+            this.generateAttribute(rootNode, (AttributeModuleTarget) attribute_info);
+        } else if (attribute_info instanceof AttributeUnrecognized) {
+            // This is to handle unrecognized JVM attribute
+            this.generateAttribute(rootNode, (AttributeUnrecognized) attribute_info);
         } else {
-            // This is not a standard attribute type defined in the JVM Spec
-            this.generateTreeNode(rootNode, (AttributeExtended) attribute_info);
+            String msg = "TODO: Un-Implemented the UI Logic";
+            System.out.println(msg);
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    attribute_info.attribute_length.value,
+                    msg
+            )));
         }
+
     }
 
     // 4.7.2. The ConstantValue Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeConstantValue constantValue) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeConstantValue constantValue) {
         int index = constantValue.constantvalue_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 constantValue.getStartPos() + 6,
@@ -169,7 +181,7 @@ class JTreeAttribute {
     }
 
     // 4.7.3. The Code Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeCode code) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeCode code) {
         int i;
         final int startPos = code.getStartPos();
         final int codeLength = code.code_length.value;
@@ -265,7 +277,7 @@ class JTreeAttribute {
     }
 
     // 4.7.4. The StackMapTable Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeStackMapTable smt) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeStackMapTable smt) {
 
         final int startPos = smt.getStartPos();
 
@@ -500,7 +512,7 @@ class JTreeAttribute {
     }
 
     // 4.7.5. The Exceptions Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeExceptions exceptions) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeExceptions exceptions) {
         int i;
         final int startPos = exceptions.getStartPos();
         final int numOfExceptions = exceptions.number_of_exceptions.value;
@@ -531,7 +543,7 @@ class JTreeAttribute {
     }
 
     // 4.7.6. The InnerClasses Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses innerClasses) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses innerClasses) {
         int i;
         final int startPos = innerClasses.getStartPos();
         final int numOfClasses = innerClasses.number_of_classes.value;
@@ -546,7 +558,7 @@ class JTreeAttribute {
             treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     innerClasses.getClass(numOfClasses - 1).getStartPos() + innerClasses.getClass(numOfClasses - 1).getLength() - (startPos + 8),
-                    "inner classes"
+                    "classes[" + numOfClasses + "]"
             ));
 
             AttributeInnerClasses.Class cls;
@@ -556,7 +568,7 @@ class JTreeAttribute {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("inner class %d", i + 1)
+                        String.format("class [%d]", i + 1)
                 ));
                 this.generateSubnode(treeNodeInnerClassItem, cls);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
@@ -567,7 +579,7 @@ class JTreeAttribute {
     }
 
     // 4.7.7. The EnclosingMethod Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeEnclosingMethod em) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeEnclosingMethod em) {
 
         int startPos = em.getStartPos() + 6;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -585,12 +597,12 @@ class JTreeAttribute {
     }
 
     // 4.7.8. The Synthetic Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSynthetic synthetic) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeSynthetic synthetic) {
         // Nothing to add
     }
 
     // 4.7.9. The Signature Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSignature signature) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeSignature signature) {
 
         final int startPos = signature.getStartPos();
         final int sigIndex = signature.signature_index.value;
@@ -603,7 +615,7 @@ class JTreeAttribute {
     }
 
     // 4.7.10. The SourceFile Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSourceFile sourceFile) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeSourceFile sourceFile) {
         int cp_index = sourceFile.sourcefile_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 sourceFile.getStartPos() + 6,
@@ -613,7 +625,7 @@ class JTreeAttribute {
     }
 
     // 4.7.11. The SourceDebugExtension Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeSourceDebugExtension sde) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeSourceDebugExtension sde) {
 
         if (sde.debug_extension != null && sde.debug_extension.length > 0) {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -625,7 +637,7 @@ class JTreeAttribute {
     }
 
     // 4.7.12. The LineNumberTable Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable lineNumberTable) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable lineNumberTable) {
         final int startPos = lineNumberTable.getStartPos();
         final int length = lineNumberTable.line_number_table_length.value;
 
@@ -660,7 +672,7 @@ class JTreeAttribute {
     }
 
     // 4.7.13. The LocalVariableTable Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTable localVariableTable) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTable localVariableTable) {
         final int startPos = localVariableTable.getStartPos();
         final int length = localVariableTable.local_variable_table_length.value;
 
@@ -696,12 +708,12 @@ class JTreeAttribute {
     }
 
     // 4.7.15. The Deprecated Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeDeprecated deprecated) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeDeprecated deprecated) {
         // Nothing to add
     }
 
     // 4.7.14. The LocalVariableTypeTable Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTypeTable lvtt) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTypeTable lvtt) {
 
         final int startPos = lvtt.getStartPos();
 
@@ -760,7 +772,7 @@ class JTreeAttribute {
 
     // 4.7.16. The RuntimeVisibleAnnotations Attribute
     // 4.7.17. The RuntimeInvisibleAnnotations Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeAnnotations ra) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeRuntimeAnnotations ra) {
 
         final int startPos = ra.getStartPos();
 
@@ -929,7 +941,7 @@ class JTreeAttribute {
 
     // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
     // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeParameterAnnotations rpa) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeRuntimeParameterAnnotations rpa) {
 
         int startPos = rpa.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -990,7 +1002,7 @@ class JTreeAttribute {
 
     // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
     // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations rta) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations rta) {
 
         int startPos = rta.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -1277,7 +1289,7 @@ class JTreeAttribute {
     }
 
     // 4.7.22. The AnnotationDefault Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeAnnotationDefault ad) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeAnnotationDefault ad) {
 
         DefaultMutableTreeNode default_value = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 ad.getStartPos() + 6,
@@ -1289,7 +1301,7 @@ class JTreeAttribute {
     }
 
     // 4.7.23. The BootstrapMethods Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeBootstrapMethods abm) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeBootstrapMethods abm) {
 
         int startPos = abm.getStartPos();
 
@@ -1358,7 +1370,7 @@ class JTreeAttribute {
     }
 
     // 4.7.24. The MethodParameters Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeMethodParameters mp) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeMethodParameters mp) {
 
         int startPos = mp.getStartPos() + 6;
 
@@ -1408,7 +1420,7 @@ class JTreeAttribute {
     }
 
     // 4.7.25. The Module Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeModule module) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModule module) {
 
         int startPos = module.getStartPos() + 6;
 
@@ -1603,21 +1615,21 @@ class JTreeAttribute {
     }
 
     // 4.7.26. The ModulePackages Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeModulePackages mp) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModulePackages mp) {
     }
 
     // 4.7.26. OpenJDK JVM9. The ModuleHashes Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes mh) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes mh) {
     }
 
     // 4.7.26. OpenJDK JVM9. The ModuleTarget Attribute
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeModuleTarget mt) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleTarget mt) {
     }
 
     /**
      * Other Unknown Attributes.
      */
-    private void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeExtended unknown) {
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeUnrecognized unknown) {
         if (unknown.attribute_length.value > 0) {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     unknown.getStartPos() + 6,

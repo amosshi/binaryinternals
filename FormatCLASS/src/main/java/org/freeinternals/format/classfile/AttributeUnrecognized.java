@@ -11,7 +11,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 
 /**
- * The class for the Extended attribute. Non-standard attribute, all of the
+ * The class for the Unrecognized attribute. Non-standard attribute, all of the
  * attributes which are not defined in the VM Spec will be represented by this
  * class.
  *
@@ -29,11 +29,11 @@ import org.freeinternals.format.FileFormatException;
  * @author Amos Shi
  * @since JDK 6.0
  */
-public class AttributeExtended extends AttributeInfo {
+public class AttributeUnrecognized extends AttributeInfo {
 
     transient private byte[] rawData;
 
-    AttributeExtended(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream)
+    AttributeUnrecognized(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 

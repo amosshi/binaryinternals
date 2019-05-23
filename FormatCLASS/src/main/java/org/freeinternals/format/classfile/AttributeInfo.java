@@ -7,6 +7,8 @@
 package org.freeinternals.format.classfile;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
@@ -30,7 +32,7 @@ import org.freeinternals.format.FileFormatException;
  * @author Amos Shi
  * @since JDK 6.0
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
  * VM Spec: Attributes
  * </a>
  */
@@ -42,10 +44,10 @@ public class AttributeInfo extends FileComponent {
      * Non-standard attributes. All of the attributes which are not defined in
      * the VM Spec.
      */
-    public static final String Extended = "[Extended Attr.] ";
+    public static final String UNRECOGNIZED = "[Un-Recognized] ";
     /**
      * Name of the attribute. It is one of the enum names in
-     * {@link AttributeName}.
+     * {@link AttributeTypes}.
      */
     public transient final String name;
     /**
@@ -75,106 +77,53 @@ public class AttributeInfo extends FileComponent {
         this.attribute_name_index = nameIndex;
         this.attribute_length = new u4(posDataInputStream);
 
-        super.length = this.attribute_length.value + 6;
+        super.length = this.attribute_length.value + u2.LENGTH + u4.LENGTH;
     }
 
+    /**
+     * Parse one JVM attribute.
+     *
+     * This method is not 'public' since it is supposed to be called inside this
+     * library only.
+     */
     static AttributeInfo parse(
             final PosDataInputStream posDataInputStream,
             final CPInfo[] cp)
             throws IOException, FileFormatException {
         AttributeInfo attr = null;
-        
-        // TODO - Eliminate the if...elseif... chain bellow
 
         final u2 attrNameIndex = new u2(posDataInputStream);
         if (CPInfo.ConstantType.CONSTANT_Utf8.tag == cp[attrNameIndex.value].tag.value) {
             final String type = ((ConstantUtf8Info) cp[attrNameIndex.value]).getValue();
 
-            if (AttributeName.ConstantValue.name().equals(type)) {
-                // 4.7.2. The ConstantValue Attribute
-                attr = new AttributeConstantValue(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Code.name().equals(type)) {
-                // 4.7.3. The Code Attribute 
-                attr = new AttributeCode(attrNameIndex, type, posDataInputStream, cp);
-            } else if (AttributeName.StackMapTable.name().equals(type)) {
-                // 4.7.4. The StackMapTable Attribute
-                attr = new AttributeStackMapTable(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Exceptions.name().equals(type)) {
-                // 4.7.5. The Exceptions Attribute 
-                attr = new AttributeExceptions(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.InnerClasses.name().equals(type)) {
-                // 4.7.6. The InnerClasses Attribute 
-                attr = new AttributeInnerClasses(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.EnclosingMethod.name().equals(type)) {
-                // 4.7.7. The EnclosingMethod Attribute
-                attr = new AttributeEnclosingMethod(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Synthetic.name().equals(type)) {
-                // 4.7.8. The Synthetic Attribute 
-                attr = new AttributeSynthetic(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Signature.name().equals(type)) {
-                // 4.7.9. The Signature Attribute 
-                attr = new AttributeSignature(attrNameIndex, type, posDataInputStream, cp);
-            } else if (AttributeName.SourceFile.name().equals(type)) {
-                // 4.7.10. The SourceFile Attribute 
-                attr = new AttributeSourceFile(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.SourceDebugExtension.name().equals(type)) {
-                // 4.7.11. The SourceDebugExtension Attribute
-                attr = new AttributeSourceDebugExtension(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.LineNumberTable.name().equals(type)) {
-                // 4.7.12. The LineNumberTable Attribute 
-                attr = new AttributeLineNumberTable(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.LocalVariableTable.name().equals(type)) {
-                // 4.7.13. The LocalVariableTable Attribute
-                attr = new AttributeLocalVariableTable(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.LocalVariableTypeTable.name().equals(type)) {
-                // 4.7.14. The LocalVariableTypeTable Attribute 
-                attr = new AttributeLocalVariableTypeTable(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Deprecated.name().equals(type)) {
-                // 4.7.15. The Deprecated Attribute
-                attr = new AttributeDeprecated(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeVisibleAnnotations.name().equals(type)) {
-                // 4.7.16. The RuntimeVisibleAnnotations Attribute 
-                attr = new AttributeRuntimeVisibleAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeInvisibleAnnotations.name().equals(type)) {
-                // 4.7.17. The RuntimeInvisibleAnnotations Attribute 
-                attr = new AttributeRuntimeInvisibleAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeVisibleParameterAnnotations.name().equals(type)) {
-                // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute 
-                attr = new AttributeRuntimeVisibleParameterAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeInvisibleParameterAnnotations.name().equals(type)) {
-                // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute 
-                attr = new AttributeRuntimeInvisibleParameterAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeVisibleTypeAnnotations.name().equals(type)) {
-                // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
-                attr = new AttributeRuntimeVisibleTypeAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.RuntimeInvisibleTypeAnnotations.name().equals(type)) {
-                // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
-                attr = new AttributeRuntimeInvisibleTypeAnnotations(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.AnnotationDefault.name().equals(type)) {
-                // 4.7.22. The AnnotationDefault Attribute
-                attr = new AttributeAnnotationDefault(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.BootstrapMethods.name().equals(type)) {
-                // 4.7.23. The BootstrapMethods Attribute
-                attr = new AttributeBootstrapMethods(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.MethodParameters.name().equals(type)) {
-                // 4.7.24. The MethodParameters Attribute
-                attr = new AttributeMethodParameters(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.Module.name().equals(type)) {
-                // 4.7.25. The Module Attribute
-                attr = new AttributeModule(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.ModulePackages.name().equals(type)) {
-                // 4.7.26. The ModulePackages Attribute
-                attr = new AttributeModulePackages(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.ModuleHashes.name().equals(type)) {
-                // 4.7.26. OpenJDK JVM9. The ModuleHashes Attribute
-                attr = new AttributeModuleHashes(attrNameIndex, type, posDataInputStream);
-            } else if (AttributeName.ModuleTarget.name().equals(type)) {
-                // 4.7.26. OpenJDK JVM9. The ModuleTarget Attribute
-                attr = new AttributeModuleTarget(attrNameIndex, type, posDataInputStream);
-            } else {
-                Log.log(Level.INFO, "Un-recognized Attribute Found !!! Type = {0}", type);
-                System.out.println("Un-recognized Attribute Found !!! Type = " + type);    // We keep this in case no logger settings exist
-                attr = new AttributeExtended(attrNameIndex, Extended + type, posDataInputStream);
+            boolean matched = false;
+            for (AttributeTypes attrType : AttributeTypes.values()) {
+                if (attrType.name().equals(type) && attrType.clazz != null) {
+                    // There is only 1 constructor in the JVM Attributes
+                    Constructor cons = attrType.clazz.getDeclaredConstructors()[0];
+
+                    try {
+                        switch (cons.getParameterCount()) {
+                            case 3:
+                                matched = true;
+                                attr = (AttributeInfo) cons.newInstance(attrNameIndex, type, posDataInputStream);
+                                break;
+                            case 4:
+                                matched = true;
+                                attr = (AttributeInfo) cons.newInstance(attrNameIndex, type, posDataInputStream, cp);
+                                break;
+                            default:
+                                Log.log(Level.SEVERE, "Coding Problem: unrecognized contructor paramter count found = {0} / {1}", new Object[]{attrType.clazz.getName(), cons.getParameterCount()});
+                                break;
+                        }
+                    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                        Log.log(Level.SEVERE, "Failed to parse the JVM Attribute. = {0}", attrType.clazz.getName());
+                    }
+                }
+            }
+            if (matched == false) {
+                Log.log(Level.WARNING, "Un-recognized Attribute Found !!! Type = {0}", type);
+                attr = new AttributeUnrecognized(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
             }
         } else {
             throw new FileFormatException(String.format("Attribute name_index is not CONSTANT_Utf8. Constant index = %d, type = %d.", attrNameIndex.value, cp[attrNameIndex.value].tag.value));
@@ -215,223 +164,228 @@ public class AttributeInfo extends FileComponent {
         return (this.name != null) ? this.name : "";
     }
 
-    public enum AttributeName {
+    /**
+     * Attributes in Java <code>classfile</code>.
+     *
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: Attributes </a>
+     */
+    public enum AttributeTypes {
 
         /**
          * The name for {@code ConstantValue} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.2">
          * VM Spec: The ConstantValue Attribute
          * </a>
          */
-        ConstantValue,
+        ConstantValue(AttributeConstantValue.class),
         /**
          * The name for {@code Code} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.3">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.3">
          * VM Spec: The Code Attribute
          * </a>
          */
-        Code,
+        Code(AttributeCode.class),
         /**
          * The name for {@code StackMapTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.4">
          * VM Spec: The StackMapTable Attribute
          * </a>
          */
-        StackMapTable,
+        StackMapTable(AttributeStackMapTable.class),
         /**
          * The name for {@code Exceptions} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.5">
          * VM Spec: The Exceptions Attribute
          * </a>
          */
-        Exceptions,
+        Exceptions(AttributeExceptions.class),
         /**
          * The name for {@code InnerClasses} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.6">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.6">
          * VM Spec: The InnerClasses Attribute
          * </a>
          */
-        InnerClasses,
+        InnerClasses(AttributeInnerClasses.class),
         /**
          * The name for {@code EnclosingMethod} attribute type.
          *
          * TO DO
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.7">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.7">
          * VM Spec: The EnclosingMethod Attribute
          * </a>
          */
-        EnclosingMethod,
+        EnclosingMethod(AttributeEnclosingMethod.class),
         /**
          * The name for {@code Synthetic} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.8">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.8">
          * VM Spec: The Synthetic Attribute
          * </a>
          */
-        Synthetic,
+        Synthetic(AttributeSynthetic.class),
         /**
          * The name for {@code Signature} attribute type.
          *
-         * TO DO
-         *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.9">
          * VM Spec: The Signature Attribute
          * </a>
          */
-        Signature,
+        Signature(AttributeSignature.class),
         /**
          * The name for {@code SourceFile} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.10">
          * VM Spec: The SourceFile Attribute
          * </a>
          */
-        SourceFile,
+        SourceFile(AttributeSourceFile.class),
         /**
          * The name for {@code SourceDebugExtension} attribute type.
          *
          * TO DO
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.11">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.11">
          * VM Spec: The SourceDebugExtension Attribute
          * </a>
          */
-        SourceDebugExtension,
+        SourceDebugExtension(AttributeSourceDebugExtension.class),
         /**
          * The name for {@code LineNumberTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.12">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.12">
          * VM Spec: The LineNumberTable Attribute
          * </a>
          */
-        LineNumberTable,
+        LineNumberTable(AttributeLineNumberTable.class),
         /**
          * The name for {@code LocalVariableTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.13">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.13">
          * VM Spec: The LocalVariableTable Attribute
          * </a>
          */
-        LocalVariableTable,
+        LocalVariableTable(AttributeLocalVariableTable.class),
         /**
          * The name for {@code LocalVariableTypeTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.14">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.14">
          * VM Spec: The LocalVariableTypeTable Attribute
          * </a>
          */
-        LocalVariableTypeTable,
+        LocalVariableTypeTable(AttributeLocalVariableTypeTable.class),
         /**
          * The name for {@code Deprecated} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.15">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.15">
          * VM Spec: The Deprecated Attribute
          * </a>
          */
-        Deprecated,
+        Deprecated(AttributeDeprecated.class),
         /**
          * The name for {@code RuntimeVisibleAnnotations } attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.16">
          * VM Spec: The RuntimeVisibleAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleAnnotations,
+        RuntimeVisibleAnnotations(AttributeRuntimeVisibleAnnotations.class),
         /**
          * The name for {@code RuntimeInvisibleAnnotations } attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.17">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.17">
          * VM Spec: The RuntimeInvisibleAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleAnnotations,
+        RuntimeInvisibleAnnotations(AttributeRuntimeInvisibleAnnotations.class),
         /**
          * The name for {@code RuntimeVisibleParameterAnnotations } attribute
          * type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.18">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.18">
          * VM Spec: The RuntimeVisibleParameterAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleParameterAnnotations,
+        RuntimeVisibleParameterAnnotations(AttributeRuntimeVisibleParameterAnnotations.class),
         /**
          * The name for {@code RuntimeInvisibleParameterAnnotations} attribute
          * type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.19">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.19">
          * VM Spec: The RuntimeInvisibleParameterAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleParameterAnnotations,
+        RuntimeInvisibleParameterAnnotations(AttributeRuntimeInvisibleParameterAnnotations.class),
         /**
          * The name for {@code RuntimeVisibleTypeAnnotations} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.20">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.20">
          * VM Spec: The RuntimeVisibleTypeAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleTypeAnnotations,
+        RuntimeVisibleTypeAnnotations(AttributeRuntimeVisibleTypeAnnotations.class),
         /**
          * The name for {@code RuntimeInvisibleTypeAnnotations} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.21">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.21">
          * VM Spec: The RuntimeInvisibleTypeAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleTypeAnnotations,
+        RuntimeInvisibleTypeAnnotations(AttributeRuntimeInvisibleTypeAnnotations.class),
         /**
          * The name for {@code AnnotationDefault} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.22">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.22">
          * VM Spec: The AnnotationDefault Attribute
          * </a>
          */
-        AnnotationDefault,
+        AnnotationDefault(AttributeAnnotationDefault.class),
         /**
          * The name for {@code BootstrapMethods} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.23">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.23">
          * VM Spec: The BootstrapMethods Attribute
          * </a>
          */
-        BootstrapMethods,
+        BootstrapMethods(AttributeBootstrapMethods.class),
         /**
          * The name for {@code MethodParameters} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.24">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.24">
          * VM Spec: The MethodParameters Attribute
          * </a>
          */
-        MethodParameters,
+        MethodParameters(AttributeMethodParameters.class),
         /**
          * The name for {@code Module} attribute type.
          *
@@ -440,7 +394,7 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The Module Attribute
          * </a>
          */
-        Module,
+        Module(AttributeModule.class),
         /**
          * The name for {@code ModulePackages} attribute type.
          *
@@ -449,7 +403,7 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The ModuModulePackages Attribute
          * </a>
          */
-        ModulePackages,
+        ModulePackages(AttributeModulePackages.class),
         /**
          * The name for {@code ModuleMainClass} attribute type.
          *
@@ -458,7 +412,7 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The ModuleMainClass Attribute
          * </a>
          */
-        ModuleMainClass,
+        ModuleMainClass(null),
         /**
          * The name for {@code ModuleHashes} attribute type. This is a OpenJDK
          * specific attribute and do not exist in Oracle JDK.
@@ -467,7 +421,7 @@ public class AttributeInfo extends FileComponent {
          * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">OpenJDK
          * specific attribute specifications</a>
          */
-        ModuleHashes,
+        ModuleHashes(AttributeModuleHashes.class),
         /**
          * The name for {@code ModuleTarget} attribute type. This is a OpenJDK
          * specific attribute and do not exist in Oracle JDK.
@@ -476,7 +430,7 @@ public class AttributeInfo extends FileComponent {
          * <a href="https://openjdk.java.net/jeps/261"> JEP 261: Module
          * System</a>
          */
-        ModuleTarget,
+        ModuleTarget(AttributeModuleTarget.class),
         /**
          * The name for {@code NestHost} attribute type.
          *
@@ -485,7 +439,7 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The NestHost Attribute
          * </a>
          */
-        NestHost,
+        NestHost(null),
         /**
          * The name for {@code NestMembers} attribute type.
          *
@@ -494,7 +448,26 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The NestMembers Attribute
          * </a>
          */
-        NestMembers;
+        NestMembers(null);
 
+        /**
+         * The Java class representing to the attributes.
+         *
+         * If {@link #clazz} is null, which means it is not implemented yet.
+         */
+        final Class<?> clazz;
+
+        AttributeTypes(Class clazz) {
+            this.clazz = clazz;
+        }
+
+        /**
+         * Getter for {@link #clazz}.
+         *
+         * @return Value of {@link #clazz}
+         */
+        public Class<?> getClassType() {
+            return this.clazz;
+        }
     }
 }
