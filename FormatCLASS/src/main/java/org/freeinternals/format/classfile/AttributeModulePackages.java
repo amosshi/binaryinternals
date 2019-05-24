@@ -46,7 +46,7 @@ public class AttributeModulePackages extends AttributeInfo {
      * {@link ConstantPackageInfo} structure representing a package in the
      * current module.
      */
-    private transient final u2[] package_index;
+    public transient final u2[] package_index;
 
     AttributeModulePackages(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream)
             throws IOException, FileFormatException {

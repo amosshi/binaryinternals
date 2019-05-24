@@ -80,6 +80,16 @@ class JTreeAttribute {
         startPos += u4.LENGTH;
 
         // TODO - Eliminate the if..elseif... chain bellow
+        /*
+        for (AttributeInfo.AttributeTypes attrType : AttributeInfo.AttributeTypes.values()) {
+            Class<?> classType = attrType.getClassType();
+            if (classType != null && classType.isInstance(attribute_info)) {
+                System.out.println("The type of [" + attribute_info.getName() + "] is " + classType.getName());
+                this.generateAttribute(rootNode, attribute_info);
+            }
+        }
+        */
+
         if (attribute_info instanceof AttributeConstantValue) {
             // 4.7.2. The ConstantValue Attribute
             this.generateAttribute(rootNode, (AttributeConstantValue) attribute_info);
@@ -1616,14 +1626,110 @@ class JTreeAttribute {
 
     // 4.7.26. The ModulePackages Attribute
     private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModulePackages mp) {
+        int startPos = mp.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "package_count: " + mp.package_count.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (mp.package_count.value > 0) {
+            final DefaultMutableTreeNode packageIndexesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u2.LENGTH * mp.package_count.value,
+                    "package_index[" + mp.package_count.value + "]"
+            ));
+            rootNode.add(packageIndexesNode);
+
+            for (int i = 0; i < mp.package_index.length; i++) {
+                int packageIndex = mp.package_index[i].value;
+                packageIndexesNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPos + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "package_index [" + i + "]: " + packageIndex + " - " + this.classFile.getCPDescription(packageIndex)
+                )));
+            }
+        }
     }
 
     // 4.7.26. OpenJDK JVM9. The ModuleHashes Attribute
     private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes mh) {
+        int startPos = mh.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "algorithm_index: " + mh.algorithm_index.value + " - " + this.classFile.getCPDescription(mh.algorithm_index.value)
+        )));
+        startPos += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "hashes_count: " + mh.hashes_count.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (mh.hashes_count.value > 0) {
+            AttributeModuleHashes.Hashes hashLastItem = mh.hashes[mh.hashes_count.value - 1];
+            final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    hashLastItem.getStartPos() + hashLastItem.getLength() - startPos,
+                    "hashes[" + mh.hashes_count.value + "]"
+            ));
+            rootNode.add(providesNode);
+
+            for (int i = 0; i < mh.hashes.length; i++) {
+                DefaultMutableTreeNode hashNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        mh.hashes[i].getStartPos(),
+                        mh.hashes[i].getLength(),
+                        "hash [" + i + "]"
+                ));
+                this.generateSubnode(hashNode, mh.hashes[i]);
+                providesNode.add(hashNode);
+            }
+        }
     }
+    
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes.Hashes hash) {
+        int startPos = hash.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "module_name_index: " + hash.module_name_index.value + " - " + this.classFile.getCPDescription(hash.module_name_index.value)
+        )));
+        startPos += u2.LENGTH;
+
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "hash_length: " + hash.hash_length.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (hash.hash_length.value > 0) {
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u1.LENGTH * hash.hash_length.value,
+                    "hash"
+            )));
+        }
+    }
+    
 
     // 4.7.26. OpenJDK JVM9. The ModuleTarget Attribute
     private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleTarget mt) {
+        int startPos = mt.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "os_arch_index: " + mt.os_arch_index.value + " - " + this.classFile.getCPDescription(mt.os_arch_index.value)
+        )));
     }
 
     /**
