@@ -82,7 +82,7 @@ final public class SignatureConvertor {
         SignatureResult returnValue;
         final String returnType = signature.substring(bracketEnd + 1);
         if ("V".equals(returnType)) {
-            returnValue = new SignatureResult(0, returnType, JavaLangSpec.Keyword.kw_void);
+            returnValue = new SignatureResult(0, returnType, JavaLangSpec.Keyword.VOID);
         } else {
             returnValue = SignatureConvertor.FieldDescriptorExtractor(returnType);
         }

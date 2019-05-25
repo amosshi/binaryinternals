@@ -523,6 +523,7 @@ public class ClassFile {
         }
     }
 
+    // TODO - Refactor this method into each Constant type
     private class CPDescr {
 
         public String getCPDescr(final int index) {

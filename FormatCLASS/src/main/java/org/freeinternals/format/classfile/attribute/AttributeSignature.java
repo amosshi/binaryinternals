@@ -45,36 +45,36 @@ public class AttributeSignature extends AttributeInfo {
         /**
          * signed byte.
          */
-        B('B', JavaLangSpec.Keyword.kw_byte),
+        B('B', JavaLangSpec.Keyword.BYTE),
         /**
          * Unicode character code point in the Basic Multilingual Plane, encoded
          * with UTF-16.
          */
-        C('C', JavaLangSpec.Keyword.kw_char),
+        C('C', JavaLangSpec.Keyword.CHAR),
         /**
          * double-precision floating-point value.
          */
-        D('D', JavaLangSpec.Keyword.kw_double),
+        D('D', JavaLangSpec.Keyword.DOUBLE),
         /**
          * single-precision floating-point value.
          */
-        F('F', JavaLangSpec.Keyword.kw_float),
+        F('F', JavaLangSpec.Keyword.FLOAT),
         /**
          * integer.
          */
-        I('I', JavaLangSpec.Keyword.kw_int),
+        I('I', JavaLangSpec.Keyword.INT),
         /**
          * long integer.
          */
-        J('J', JavaLangSpec.Keyword.kw_long),
+        J('J', JavaLangSpec.Keyword.LONG),
         /**
          * signed short.
          */
-        S('S', JavaLangSpec.Keyword.kw_short),
+        S('S', JavaLangSpec.Keyword.SHORT),
         /**
          * true or false.
          */
-        Z('Z', JavaLangSpec.Keyword.kw_boolean);
+        Z('Z', JavaLangSpec.Keyword.BOOLEAN);
 
         public final char signature;
         public final String JavaKeyWord;

@@ -43,7 +43,7 @@ import org.freeinternals.format.classfile.u4;
  */
 public class AttributeInfo extends FileComponent {
 
-    private static final Logger Log = Logger.getLogger(AttributeInfo.class.getName());
+    private static final Logger LOG = Logger.getLogger(AttributeInfo.class.getName());
 
     /**
      * Non-standard attributes. All of the attributes which are not defined in
@@ -111,16 +111,16 @@ public class AttributeInfo extends FileComponent {
                                 attr = (AttributeInfo) cons.newInstance(attrNameIndex, type, posDataInputStream, cp);
                                 break;
                             default:
-                                Log.log(Level.SEVERE, "Coding Problem: unrecognized contructor paramter count found = {0} / {1}", new Object[]{attrType.clazz.getName(), cons.getParameterCount()});
+                                LOG.log(Level.SEVERE, "Coding Problem: unrecognized contructor paramter count found = {0} / {1}", new Object[]{attrType.clazz.getName(), cons.getParameterCount()});
                                 break;
                         }
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                        Log.log(Level.SEVERE, "Failed to parse the JVM Attribute {0}, {1}", new Object[]{attrType.clazz.getName(), ex.toString()});
+                        LOG.log(Level.SEVERE, "Failed to parse the JVM Attribute {0}, {1}", new Object[]{attrType.clazz.getName(), ex.toString()});
                     }
                 }
             }
             if (matched == false) {
-                Log.log(Level.WARNING, "Un-recognized Attribute Found !!! Type = {0}", type);
+                LOG.log(Level.WARNING, "Un-recognized Attribute Found !!! Type = {0}", type);
                 attr = new AttributeUnrecognized(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
             }
         } else {
@@ -410,7 +410,7 @@ public class AttributeInfo extends FileComponent {
          * VM Spec: The ModuleMainClass Attribute
          * </a>
          */
-        ModuleMainClass(null),
+        ModuleMainClass(AttributeModuleMainClass.class),
         /**
          * The name for {@code ModuleHashes} attribute type. This is a OpenJDK
          * specific attribute and do not exist in Oracle JDK.

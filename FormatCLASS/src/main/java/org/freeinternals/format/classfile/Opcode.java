@@ -27,15 +27,15 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  */
 public final class Opcode {
 
-    private static final Logger Log = Logger.getLogger(Opcode.class.getName());
+    private static final Logger LOG = Logger.getLogger(Opcode.class.getName());
 
     /**
      * Opcode and non {@link ClassFile#constant_pool} index value. Example:
      * <code>bipush + immediate vlaue</code>,
      * <code>lload + local frame vlaue</code>
      */
-    private static final String FORMAT_Opcode_Local = "%s %d";
-    private static final String FORMAT_Opcode_Local_iinc = "%s index = %d const = %d";
+    private static final String FORMAT_OPCODE_LOCAL = "%s %d";
+    private static final String FORMAT_OPCODE_LOCAL_IINC = "%s index = %d const = %d";
 
     /**
      * @see
@@ -376,8 +376,8 @@ public final class Opcode {
             try {
                 codeResult.add(parseInstruction(pdis));
             } catch (IOException ioe) {
-                Log.log(Level.SEVERE, "parseCode() with code length - {0}", code.length);
-                Log.log(Level.SEVERE, ioe.toString(), ioe);
+                LOG.log(Level.SEVERE, "parseCode() with code length - {0}", code.length);
+                LOG.log(Level.SEVERE, ioe.toString(), ioe);
                 // We keep the System.err here, in case there is no logger settings exist
                 System.err.println("parseCode() with code length - " + code.length);
                 System.err.println(ioe.toString());
@@ -450,7 +450,7 @@ public final class Opcode {
             // The immediate byte is sign-extended to an int value.
             // That value is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.bipush.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.bipush.name(), byteValue);
         } else if (Opcode.Instruction.sipush.code == opcode) {
             // Push the immediate short value
             // --
@@ -459,7 +459,7 @@ public final class Opcode {
             // The intermediate value is then sign-extended to an int value.
             // That value is pushed onto the operand stack.
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.sipush.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.sipush.name(), shortValue);
         } else if (Opcode.Instruction.ldc.code == opcode) {
             // Push item from runtime constant pool
             // --
@@ -504,7 +504,7 @@ public final class Opcode {
             // The local variable at index must contain an int.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.iload.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iload.name(), byteValue);
         } else if (Opcode.Instruction.lload.code == opcode) {
             // Load long from local variable
             // --
@@ -513,7 +513,7 @@ public final class Opcode {
             // The local variable at index must contain a long.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.lload.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lload.name(), byteValue);
         } else if (Opcode.Instruction.fload.code == opcode) {
             // Load float from local variable
             // -
@@ -521,7 +521,7 @@ public final class Opcode {
             // The local variable at index must contain a float.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.fload.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fload.name(), byteValue);
         } else if (Opcode.Instruction.dload.code == opcode) {
             // Load double from local variable
             // -
@@ -530,7 +530,7 @@ public final class Opcode {
             // The local variable at index must contain a double.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.dload.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dload.name(), byteValue);
         } else if (Opcode.Instruction.aload.code == opcode) {
             // Load reference from local variable
             // --
@@ -538,7 +538,7 @@ public final class Opcode {
             // The local variable at index must contain a reference.
             // The objectref in the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.aload.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.aload.name(), byteValue);
         } else if (Opcode.Instruction.iload_0.code == opcode) {
             // Load int from local variable
             // The <n> must be an index into the local variable array of the current frame (2.6).
@@ -635,7 +635,7 @@ public final class Opcode {
             // The value on the top of the operand stack must be of type int.
             // It is popped from the operand stack, and the value of the local variable at index is set to value.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.istore.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.istore.name(), byteValue);
         } else if (Opcode.Instruction.lstore.code == opcode) {
             // Store long into local variable
             // --
@@ -644,7 +644,7 @@ public final class Opcode {
             // The value on the top of the operand stack must be of type long.
             // It is popped from the operand stack, and the local variables at index and index + 1 are set to value.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.lstore.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lstore.name(), byteValue);
         } else if (Opcode.Instruction.fstore.code == opcode) {
             // Store float into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6).
@@ -652,7 +652,7 @@ public final class Opcode {
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The value of the local variable at index is set to value'.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.fstore.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fstore.name(), byteValue);
         } else if (Opcode.Instruction.dstore.code == opcode) {
             // Store double into local variable
             // The index is an unsigned byte. Both index and index + 1 must be indices into the local variable array of the current frame (2.6).
@@ -660,14 +660,14 @@ public final class Opcode {
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The local variables at index and index + 1 are set to value'.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.dstore.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dstore.name(), byteValue);
         } else if (Opcode.Instruction.astore.code == opcode) {
             // Store reference into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6).
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference.
             // It is popped from the operand stack, and the value of the local variable at index is set to objectref.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.astore.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.astore.name(), byteValue);
         } else if (Opcode.Instruction.istore_0.code == opcode) {
             // Store int into local variable
             // The <n> must be an index into the local variable array of the current frame (?.6).
@@ -891,7 +891,7 @@ public final class Opcode {
             // The const is an immediate signed byte.
             // The value const is first sign-extended to an int, and then the local variable at index is incremented by that amount.
             byteValue2 = pdis.readByte();
-            opcodeText = String.format(FORMAT_Opcode_Local_iinc, Opcode.Instruction.iinc.name(), byteValue, byteValue2);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Opcode.Instruction.iinc.name(), byteValue, byteValue2);
         } else if (Opcode.Instruction.i2l.code == opcode) {
             opcodeText = Opcode.Instruction.i2l.name();
         } else if (Opcode.Instruction.i2f.code == opcode) {
@@ -941,42 +941,42 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if<cond> instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifeq.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), shortValue);
         } else if (Opcode.Instruction.ifne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifne.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), shortValue);
         } else if (Opcode.Instruction.iflt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.iflt.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), shortValue);
         } else if (Opcode.Instruction.ifge.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifge.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), shortValue);
         } else if (Opcode.Instruction.ifgt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifgt.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), shortValue);
         } else if (Opcode.Instruction.ifle.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifle.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpeq.code == opcode) {
             // if_icmp<cond>: if_icmpeq = 159 (0x9f) if_icmpne = 160 (0xa0) if_icmplt = 161 (0xa1) if_icmpge = 162 (0xa2) if_icmpgt = 163 (0xa3) if_icmple = 164 (0xa4)
             // Branch if int comparison succeeds
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_icmpeq.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_icmpne.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), shortValue);
         } else if (Opcode.Instruction.if_icmplt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_icmplt.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpge.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, opcodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, opcodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpgt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_icmpgt.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), shortValue);
         } else if (Opcode.Instruction.if_icmple.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_icmple.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), shortValue);
         } else if (Opcode.Instruction.if_acmpeq.code == opcode) {
             // if_acmp<cond>: if_acmpeq = 165 (0xa5) if_acmpne = 166 (0xa6)
             // Branch if reference comparison succeeds
@@ -988,10 +988,10 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if_acmp<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if_acmp<cond> instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_acmpeq.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), shortValue);
         } else if (Opcode.Instruction.if_acmpne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.if_acmpne.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), shortValue);
         } else if (Opcode.Instruction.goto_.code == opcode) {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset,
@@ -999,7 +999,7 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of the opCode of this goto instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this goto instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.goto_.getName(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), shortValue);
         } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
             // The address of the opCode of the instruction immediately following this jsr instruction
@@ -1009,14 +1009,14 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of this jsr instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this jsr instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.jsr.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), shortValue);
         } else if (Opcode.Instruction.ret.code == opcode) {
             // Return from subroutine
             // The index is an unsigned byte between 0 and 255, inclusive.
             // The local variable at index in the current frame (?.6) must contain a value of type returnAddress.
             // The contents of the local variable are written into the Java virtual machine's pc register, and execution continues there.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ret.name(), byteValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ret.name(), byteValue);
         } else if (Opcode.Instruction.tableswitch.code == opcode) {
             // Access jump table by index and jump
             int skip = pdis.getPos() % 4;
@@ -1183,15 +1183,15 @@ public final class Opcode {
         } else if (Opcode.Instruction.ifnull.code == opcode) {
             // Branch if reference is null
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifnull.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), shortValue);
         } else if (Opcode.Instruction.ifnonnull.code == opcode) {
             // Branch if reference not null
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.ifnonnull.name(), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), shortValue);
         } else if (Opcode.Instruction.goto_w.code == opcode) {
             // Branch always (wide index)
             intValue = pdis.readInt();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.goto_w.name(), intValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), intValue);
         } else if (Opcode.Instruction.jsr_w.code == opcode) {
             // Jump subroutine (wide index)
             // --
@@ -1199,7 +1199,7 @@ public final class Opcode {
             // construct a signed 32-bit offset, where the offset is
             // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4.
             intValue = pdis.readInt();
-            opcodeText = String.format(FORMAT_Opcode_Local, Opcode.Instruction.jsr_w.name(), intValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), intValue);
         } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
             opcodeText = Opcode.Instruction.breakpoint.name();
@@ -1266,41 +1266,41 @@ public final class Opcode {
 
         if (opcode == Opcode.Instruction.iload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.aload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.istore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.astore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.iinc.code) {
             shortValue = pdis.readUnsignedShort();
             shortValue2 = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local_iinc, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
         } else if (opcode == Opcode.Instruction.ret.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_Opcode_Local, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
+            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
         } else {
             opcodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
         }
