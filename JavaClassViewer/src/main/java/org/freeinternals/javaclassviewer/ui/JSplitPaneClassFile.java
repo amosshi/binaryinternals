@@ -80,7 +80,7 @@ public class JSplitPaneClassFile extends JSplitPane {
 
         // Construct binary viewer
         this.binaryViewer = new JBinaryViewer();
-        this.binaryViewer.setData(this.classFile.getClassByteArray());
+        this.binaryViewer.setData(this.classFile.classByteArray);
         this.binaryViewerView = new JScrollPane(this.binaryViewer);
         this.binaryViewerView.getVerticalScrollBar().setValue(0);
         tabbedPane.add("Class File", this.binaryViewerView);
@@ -181,7 +181,7 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append(String.format("Constant Pool Count: %d", count));
         sb.append(HTMLKit.NewLine());
         if (count > 0) {
-            CPInfo[] CPInfoList = this.classFile.getConstantPool();
+            CPInfo[] CPInfoList = this.classFile.constant_pool;
 
             // Constant Pool - by Type
             sb.append("Constant Pool - Class");
@@ -206,9 +206,8 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append(String.format("Field Count: %d", count));
         sb.append(HTMLKit.NewLine());
         if (count > 0) {
-            FieldInfo[] fields = this.classFile.getFields();
             sb.append("<ol>");
-            for (FieldInfo field : fields) {
+            for (FieldInfo field : this.classFile.fields) {
                 sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(field.getDeclaration())));
             }
             sb.append("</ol>");
@@ -220,9 +219,8 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append(String.format("Method Count: %d", count));
         sb.append(HTMLKit.NewLine());
         if (count > 0) {
-            MethodInfo[] methods = this.classFile.getMethods();
             sb.append("<ol>");
-            for (MethodInfo method : methods) {
+            for (MethodInfo method : this.classFile.methods) {
                 sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(method.getDeclaration())));
             }
             sb.append("</ol>");

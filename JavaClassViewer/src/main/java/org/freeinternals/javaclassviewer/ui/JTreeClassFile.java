@@ -14,9 +14,10 @@ import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
-import org.freeinternals.format.classfile.Interface;
 import org.freeinternals.format.classfile.MethodInfo;
+import org.freeinternals.format.classfile.U2ClassComponent;
 import org.freeinternals.format.classfile.u2;
+import org.freeinternals.format.classfile.u4;
 
 /**
  * A tree for {@link ClassFile} displaying all compoents in the class file.
@@ -43,8 +44,8 @@ public class JTreeClassFile extends JTree {
     }
 
     private void generateTreeNodes() {
-        this.root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, this.classFile.getByteArraySize(), "Class File"));
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 4, "magic")));
+        this.root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, this.classFile.classByteArray.length, "Class File"));
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, u4.LENGTH, "magic")));
 
         this.generateTreeNodeClsssFileVersion();
         this.generateConstantPool();
@@ -83,7 +84,7 @@ public class JTreeClassFile extends JTree {
         )));
         startPos += u2.LENGTH;
 
-        final CPInfo[] cp = this.classFile.getConstantPool();
+        final CPInfo[] cp = this.classFile.constant_pool;
         final DefaultMutableTreeNode constant_pool = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - startPos,
@@ -143,8 +144,8 @@ public class JTreeClassFile extends JTree {
         ));
         this.root.add(interfaces_count);
 
-        if (interfaceCount > 0) {
-            final Interface[] interfaces = this.classFile.getInterfaces();
+        if (this.classFile.interfaces_count.getValue() > 0) {
+            final U2ClassComponent[] interfaces = this.classFile.interfaces;
 
             final DefaultMutableTreeNode interfacesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     interfaces[0].getStartPos(),
@@ -181,7 +182,7 @@ public class JTreeClassFile extends JTree {
         this.root.add(fields_count);
 
         if (fieldCount > 0) {
-            final FieldInfo[] fields = this.classFile.getFields();
+            final FieldInfo[] fields = this.classFile.fields;
             final DefaultMutableTreeNode fieldsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     fields[0].getStartPos(),
                     fields[fieldCount - 1].getStartPos() + fields[fieldCount - 1].getLength() - fields[0].getStartPos(),
@@ -268,7 +269,7 @@ public class JTreeClassFile extends JTree {
         this.root.add(methods_count);
 
         if (methodCount > 0) {
-            final MethodInfo[] methods = this.classFile.getMethods();
+            final MethodInfo[] methods = this.classFile.methods;
             final DefaultMutableTreeNode methodsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     methods[0].getStartPos(),
                     methods[methodCount - 1].getStartPos() + methods[methodCount - 1].getLength() - methods[0].getStartPos(),
@@ -354,7 +355,7 @@ public class JTreeClassFile extends JTree {
         this.root.add(attrs_count);
 
         if (attrCount > 0) {
-            final AttributeInfo[] attrs = this.classFile.getAttributes();
+            final AttributeInfo[] attrs = this.classFile.attributes;
             final DefaultMutableTreeNode attrsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrs[0].getStartPos(),
                     attrs[attrCount - 1].getStartPos() + attrs[attrCount - 1].getLength() - attrs[0].getStartPos(),

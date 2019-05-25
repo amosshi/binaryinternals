@@ -68,7 +68,7 @@ import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
  */
 public class ClassFile {
 
-    private final byte[] classByteArray;
+    public final byte[] classByteArray;
 
     /**
      * Magic number of {@code class} file.
@@ -129,7 +129,7 @@ public class ClassFile {
      * </a>
      */
     public final u2 constant_pool_count;
-    private CPInfo[] constant_pool;
+    public final CPInfo[] constant_pool;
 
     //
     // Class Declaration
@@ -176,7 +176,7 @@ public class ClassFile {
      * </a>
      */
     public final U2ClassComponent interfaces_count;
-    private Interface[] interfaces;
+    public final U2ClassComponent[] interfaces;
 
     //
     // Field
@@ -194,7 +194,7 @@ public class ClassFile {
      * </a>
      */
     public final U2ClassComponent fields_count;
-    private FieldInfo[] fields;
+    public final FieldInfo[] fields;
 
     //
     // Method
@@ -211,7 +211,7 @@ public class ClassFile {
      * </a>
      */
     public final U2ClassComponent methods_count;
-    private MethodInfo[] methods;
+    public final MethodInfo[] methods;
 
     //
     // Attribute
@@ -228,7 +228,7 @@ public class ClassFile {
      * </a>
      */
     public final U2ClassComponent attributes_count;
-    private AttributeInfo[] attributes;
+    public final AttributeInfo[] attributes;
 
     /**
      * Creates a new instance of ClassFile from byte array.
@@ -240,7 +240,7 @@ public class ClassFile {
      */
     public ClassFile(final byte[] classByteArray) throws IOException, FileFormatException {
         this.classByteArray = classByteArray.clone();
-        
+
         //
         // Parse the Classfile byte by byte
         //
@@ -275,10 +275,12 @@ public class ClassFile {
         this.super_class = new U2ClassComponent(posDataInputStream);
         this.interfaces_count = new U2ClassComponent(posDataInputStream);
         if (this.interfaces_count.getValue() > 0) {
-            this.interfaces = new Interface[this.interfaces_count.getValue()];
+            this.interfaces = new U2ClassComponent[this.interfaces_count.getValue()];
             for (int i = 0; i < this.interfaces_count.getValue(); i++) {
-                this.interfaces[i] = new Interface(posDataInputStream);
+                this.interfaces[i] = new U2ClassComponent(posDataInputStream);
             }
+        } else {
+            this.interfaces = null;
         }
 
         // Fields
@@ -289,6 +291,8 @@ public class ClassFile {
             for (int i = 0; i < fieldCount; i++) {
                 this.fields[i] = new FieldInfo(posDataInputStream, this.constant_pool);
             }
+        } else {
+            this.fields = null;
         }
 
         // Methods
@@ -300,6 +304,8 @@ public class ClassFile {
             for (int i = 0; i < methodCount; i++) {
                 this.methods[i] = new MethodInfo(posDataInputStream, this.constant_pool);
             }
+        } else {
+            this.methods = null;
         }
 
         // Attributes
@@ -310,6 +316,8 @@ public class ClassFile {
             for (int i = 0; i < attributeCount; i++) {
                 this.attributes[i] = AttributeInfo.parse(posDataInputStream, this.constant_pool);
             }
+        } else {
+            this.attributes = null;
         }
 
         // Set the Declarations
@@ -405,8 +413,7 @@ public class ClassFile {
             ConstantClassInfo clsInfo = (ConstantClassInfo) this.constant_pool[cpIndex];
             name = this.getConstantUtf8Value(clsInfo.name_index.value);
         } else {
-            throw new FileFormatException(String.format("Constant Pool index (value = %d) is out of range, or it is not a CONSTANT_Class_info. ",
-                    cpIndex));
+            throw new FileFormatException(String.format("Constant Pool index (value = %d) is out of range, or it is not a CONSTANT_Class_info. ", cpIndex));
         }
 
         return name;
@@ -449,15 +456,6 @@ public class ClassFile {
     ///////////////////////////////////////////////////////////////////////////
     // Get raw data
     /**
-     * Get the byte array of current class.
-     *
-     * @return Byte array of the class
-     */
-    public byte[] getClassByteArray() {
-        return this.classByteArray;
-    }
-
-    /**
      * Get part of the class byte array. The array begins at the specified
      * {@code startIndex} and extends to the byte at
      * {@code startIndex}+{@code length}.
@@ -477,38 +475,6 @@ public class ClassFile {
         byte[] data = new byte[length];
         System.arraycopy(this.classByteArray, startIndex, data, 0, length);
         return data;
-    }
-
-    /**
-     * Get the length of the class byte array.
-     *
-     * @return Length of class byte array
-     */
-    public int getByteArraySize() {
-        return this.classByteArray.length;
-    }
-
-    /**
-     * Get the {@code constant_pool[]} of the {@code ClassFile} structure.
-     *
-     * @return The {@code constant_pool[]}
-     */
-    public CPInfo[] getConstantPool() {
-        return this.constant_pool;
-    }
-
-    /**
-     * Get the constant pool item at index <code>i</code>.
-     *
-     * @param i Constant pool index
-     * @return Constant pool item or <code>null</code> if index is out of range
-     */
-    public CPInfo getConstantPool(int i) {
-        if (i < 0 || i > this.constant_pool.length) {
-            return null;
-        } else {
-            return this.constant_pool[i];
-        }
     }
 
     /**
@@ -532,43 +498,6 @@ public class ClassFile {
         return new CPDescr().getCPDescr(index);
     }
 
-    /**
-     * Get the {@code interfaces}[] of the {@code ClassFile} structure.
-     *
-     * @return The {@code interfaces}[]
-     */
-    public Interface[] getInterfaces() {
-        return this.interfaces;
-    }
-
-    /**
-     * Get the {@code fields}[] of the {@code ClassFile} structure.
-     *
-     * @return The {@code fields}[]
-     */
-    public FieldInfo[] getFields() {
-        return this.fields;
-    }
-
-    /**
-     * Get the {@code methods}[] of the {@code ClassFile} structure.
-     *
-     * @return The {@code methods}[]
-     */
-    public MethodInfo[] getMethods() {
-        return this.methods;
-    }
-
-    /**
-     * Get the {@link #attributes} of the {@code ClassFile} structure.
-     *
-     * @return The {@link #attributes}, it could be <code>null</code> or an
-     * array of attributes
-     */
-    public AttributeInfo[] getAttributes() {
-        return this.attributes;
-    }
-
     @Override
     public String toString() {
         return "Class contains "
@@ -580,7 +509,6 @@ public class ClassFile {
     // Get extracted data
     ///////////////////////////////////////////////////////////////////////////
     // Internal Classes
-
     private static enum Descr_NameAndType {
 
         RAW(1), FIELD(2), METHOD(3);
