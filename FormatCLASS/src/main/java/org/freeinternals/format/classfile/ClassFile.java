@@ -69,12 +69,12 @@ import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
 public class ClassFile {
 
     private final byte[] classByteArray;
-    private PosDataInputStream posDataInputStream;
+
     /**
      * Magic number of {@code class} file.
      */
     public static final int MAGIC = 0xCAFEBABE;
-    private u4 magic;
+    public final u4 magic;
 
     //
     // Class file Version
@@ -88,10 +88,10 @@ public class ClassFile {
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
      * VM Spec: The ClassFile Structure
      * </a>
-     * 
+     *
      * TODO - Make it final
      */
-    public u2 minor_version;
+    public final u2 minor_version;
 
     /**
      * Major version of a {@code class} file. It is the {@code major_version} in
@@ -113,10 +113,8 @@ public class ClassFile {
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
      * VM Spec: The ClassFile Structure
      * </a>
-     *
-     * TODO - Make it final
      */
-    public u2 major_version;
+    public final u2 major_version;
 
     // Constant pool
     /**
@@ -129,26 +127,107 @@ public class ClassFile {
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
      * VM Spec: The ClassFile Structure
      * </a>
-     *
-     * TODO - Make it final
      */
-    public u2 constant_pool_count;
+    public final u2 constant_pool_count;
     private CPInfo[] constant_pool;
 
+    //
     // Class Declaration
-    public AccessFlags access_flags;
-    public ThisClass this_class;
-    public SuperClass super_class;
-    public InterfaceCount interfaces_count;
+    //
+    public final AccessFlags access_flags;
+
+    /**
+     * {@code This} class of a {@code class} or {@code interface}. It is the
+     * {@code this_class} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @see ClassFile#this_class
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent this_class;
+
+    /**
+     * Super class of a {@code class} or {@code interface}. It is the
+     * {@code super_class} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @since JDK 6.0
+     * @see ClassFile#super_class
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent super_class;
+
+    /**
+     * Interfaces count of a {@code class} or {@code interface}. It is the
+     * {@code interfaces_count} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @since JDK 6.0
+     * @see ClassFile#interfaces_count
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent interfaces_count;
     private Interface[] interfaces;
+
+    //
     // Field
-    public FieldCount fields_count;
+    //
+    /**
+     * Fields Count of a {@code class} or {@code interface}. It is the
+     * {@code fields_count} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @since JDK 6.0
+     * @see ClassFile#fields_count
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent fields_count;
     private FieldInfo[] fields;
+
+    //
     // Method
-    public MethodCount methods_count;
+    //
+    /**
+     * Methods Count of a {@code class} or {@code interface}. It is the
+     * {@code methods_count} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @see ClassFile#methods_count
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent methods_count;
     private MethodInfo[] methods;
+
+    //
     // Attribute
-    public AttributeCount attributes_count;
+    //
+    /**
+     * Attributes count of a {@code class} or {@code interface}. It is the
+     * {@code attributes_count} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @see ClassFile#attributes_count
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     */
+    public final U2ClassComponent attributes_count;
     private AttributeInfo[] attributes;
 
     /**
@@ -159,11 +238,82 @@ public class ClassFile {
      * @throws org.freeinternals.format.FileFormatException Invalid class file
      * format
      */
-    public ClassFile(final byte[] classByteArray)
-            throws java.io.IOException, FileFormatException {
+    public ClassFile(final byte[] classByteArray) throws IOException, FileFormatException {
         this.classByteArray = classByteArray.clone();
-        final ClassFile.Parser parser = new Parser();
-        parser.parse();
+        
+        //
+        // Parse the Classfile byte by byte
+        //
+        PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(classByteArray));
+
+        // magic number
+        this.magic = new u4(posDataInputStream);
+        if (this.magic.value != ClassFile.MAGIC) {
+            throw new FileFormatException("The magic number of the byte array is not 0xCAFEBABE");
+        }
+
+        // Classfile version
+        this.minor_version = new u2(posDataInputStream);
+        this.major_version = new u2(posDataInputStream);
+
+        // Constant Pool
+        this.constant_pool_count = new u2(posDataInputStream);
+        this.constant_pool = new CPInfo[this.constant_pool_count.value];
+        for (int i = 1; i < this.constant_pool_count.value; i++) {
+            short tag = (short) posDataInputStream.readUnsignedByte();
+
+            this.constant_pool[i] = ConstantType.parse(tag, posDataInputStream);
+            if (tag == CPInfo.ConstantType.CONSTANT_Long.tag || tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
+                // Long/Double type occupies two Constant Pool index
+                i++;
+            }
+        }
+
+        // Class Declaration
+        this.access_flags = new AccessFlags(posDataInputStream);
+        this.this_class = new U2ClassComponent(posDataInputStream);
+        this.super_class = new U2ClassComponent(posDataInputStream);
+        this.interfaces_count = new U2ClassComponent(posDataInputStream);
+        if (this.interfaces_count.getValue() > 0) {
+            this.interfaces = new Interface[this.interfaces_count.getValue()];
+            for (int i = 0; i < this.interfaces_count.getValue(); i++) {
+                this.interfaces[i] = new Interface(posDataInputStream);
+            }
+        }
+
+        // Fields
+        this.fields_count = new U2ClassComponent(posDataInputStream);
+        final int fieldCount = this.fields_count.getValue();
+        if (fieldCount > 0) {
+            this.fields = new FieldInfo[fieldCount];
+            for (int i = 0; i < fieldCount; i++) {
+                this.fields[i] = new FieldInfo(posDataInputStream, this.constant_pool);
+            }
+        }
+
+        // Methods
+        this.methods_count = new U2ClassComponent(posDataInputStream);
+        final int methodCount = this.methods_count.getValue();
+
+        if (methodCount > 0) {
+            this.methods = new MethodInfo[methodCount];
+            for (int i = 0; i < methodCount; i++) {
+                this.methods[i] = new MethodInfo(posDataInputStream, this.constant_pool);
+            }
+        }
+
+        // Attributes
+        this.attributes_count = new U2ClassComponent(posDataInputStream);
+        final int attributeCount = this.attributes_count.getValue();
+        if (attributeCount > 0) {
+            this.attributes = new AttributeInfo[attributeCount];
+            for (int i = 0; i < attributeCount; i++) {
+                this.attributes[i] = AttributeInfo.parse(posDataInputStream, this.constant_pool);
+            }
+        }
+
+        // Set the Declarations
+        // TODO - Refactor - Delete this method
         this.analysisDeclarations();
     }
 
@@ -250,7 +400,7 @@ public class ClassFile {
      */
     public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
         String name = null;
-        if ((cpIndex >= 0 && cpIndex < ClassFile.this.constant_pool.length)
+        if ((cpIndex >= 0 && cpIndex < this.constant_pool.length)
                 && (this.constant_pool[cpIndex] instanceof ConstantClassInfo)) {
             ConstantClassInfo clsInfo = (ConstantClassInfo) this.constant_pool[cpIndex];
             name = this.getConstantUtf8Value(clsInfo.name_index.value);
@@ -430,103 +580,6 @@ public class ClassFile {
     // Get extracted data
     ///////////////////////////////////////////////////////////////////////////
     // Internal Classes
-    private class Parser {
-
-        Parser() {
-        }
-
-        public void parse()
-                throws FileFormatException, IOException {
-            final PosByteArrayInputStream posByteArrayInputStream = new PosByteArrayInputStream(classByteArray);
-            ClassFile.this.posDataInputStream = new PosDataInputStream(posByteArrayInputStream);
-
-            ClassFile.this.magic = new u4(ClassFile.this.posDataInputStream);
-            if (ClassFile.this.magic.value != ClassFile.MAGIC) {
-                throw new FileFormatException("The magic number of the byte array is not 0xCAFEBABE");
-            }
-
-            this.parseClassFileVersion();
-            this.parseConstantPool();
-            this.parseClassDeclaration();
-            this.parseFields();
-            this.parseMethods();
-            this.parseAttributes();
-        }
-
-        private void parseClassFileVersion() throws java.io.IOException, FileFormatException {
-            ClassFile.this.minor_version = new u2(ClassFile.this.posDataInputStream);
-            ClassFile.this.major_version = new u2(ClassFile.this.posDataInputStream);
-        }
-
-        private void parseConstantPool() throws IOException, FileFormatException {
-            ClassFile.this.constant_pool_count = new u2(ClassFile.this.posDataInputStream);
-            final int cp_count = ClassFile.this.constant_pool_count.value;
-
-            ClassFile.this.constant_pool = new CPInfo[cp_count];
-            short tag;
-            for (int i = 1; i < cp_count; i++) {
-                tag = (short) ClassFile.this.posDataInputStream.readUnsignedByte();
-
-                ClassFile.this.constant_pool[i] = ConstantType.parse(tag, posDataInputStream);
-                if (tag == CPInfo.ConstantType.CONSTANT_Long.tag || tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
-                    // Long/Double type occupy two Constant Pool index
-                    i++;
-                }
-            }
-        }
-
-        private void parseClassDeclaration()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.access_flags = new AccessFlags(ClassFile.this.posDataInputStream);
-            ClassFile.this.this_class = new ThisClass(ClassFile.this.posDataInputStream);
-            ClassFile.this.super_class = new SuperClass(ClassFile.this.posDataInputStream);
-
-            ClassFile.this.interfaces_count = new InterfaceCount(ClassFile.this.posDataInputStream);
-            if (ClassFile.this.interfaces_count.getValue() > 0) {
-                ClassFile.this.interfaces = new Interface[ClassFile.this.interfaces_count.getValue()];
-                for (int i = 0; i < ClassFile.this.interfaces_count.getValue(); i++) {
-                    ClassFile.this.interfaces[i] = new Interface(ClassFile.this.posDataInputStream);
-                }
-            }
-        }
-
-        private void parseFields()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.fields_count = new FieldCount(ClassFile.this.posDataInputStream);
-            final int fieldCount = ClassFile.this.fields_count.getValue();
-            if (fieldCount > 0) {
-                ClassFile.this.fields = new FieldInfo[fieldCount];
-                for (int i = 0; i < fieldCount; i++) {
-                    ClassFile.this.fields[i] = new FieldInfo(ClassFile.this.posDataInputStream, ClassFile.this.constant_pool);
-                }
-            }
-        }
-
-        private void parseMethods()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.methods_count = new MethodCount(ClassFile.this.posDataInputStream);
-            final int methodCount = ClassFile.this.methods_count.getValue();
-
-            if (methodCount > 0) {
-                ClassFile.this.methods = new MethodInfo[methodCount];
-                for (int i = 0; i < methodCount; i++) {
-                    ClassFile.this.methods[i] = new MethodInfo(ClassFile.this.posDataInputStream, ClassFile.this.constant_pool);
-                }
-            }
-        }
-
-        private void parseAttributes()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.attributes_count = new AttributeCount(ClassFile.this.posDataInputStream);
-            final int attributeCount = ClassFile.this.attributes_count.getValue();
-            if (attributeCount > 0) {
-                ClassFile.this.attributes = new AttributeInfo[attributeCount];
-                for (int i = 0; i < attributeCount; i++) {
-                    ClassFile.this.attributes[i] = AttributeInfo.parse(ClassFile.this.posDataInputStream, ClassFile.this.constant_pool);
-                }
-            }
-        }
-    }
 
     private static enum Descr_NameAndType {
 

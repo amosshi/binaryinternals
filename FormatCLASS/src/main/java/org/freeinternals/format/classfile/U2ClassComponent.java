@@ -15,18 +15,14 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * field in a {@code class} file.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class U2ClassComponent extends FileComponent {
 
     public final u2 value;
 
-    U2ClassComponent(final PosDataInputStream posDataInputStream)
-            throws IOException {
-
+    U2ClassComponent(final PosDataInputStream posDataInputStream) throws IOException {
         this.startPos = posDataInputStream.getPos();
-        this.length = 2;
-
+        this.length = u2.LENGTH;
         this.value = new u2(posDataInputStream);
     }
 
