@@ -25,7 +25,7 @@ import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.format.FileFormatException;
-import org.freeinternals.format.classfile.CPInfo;
+import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.MethodInfo;
@@ -177,7 +177,7 @@ public class JSplitPaneClassFile extends JSplitPane {
         int count;
 
         // Constant Pool
-        count = this.classFile.constant_pool_count.getValue();
+        count = this.classFile.constant_pool_count.value;
         sb.append(String.format("Constant Pool Count: %d", count));
         sb.append(HTMLKit.NewLine());
         if (count > 0) {

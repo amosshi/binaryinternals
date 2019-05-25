@@ -26,15 +26,15 @@ public class u1 {
      */
     public final short value;
 
-    u1(short value) {
+    public u1(short value) {
         this.value = value;
     }
 
-    u1(final PosDataInputStream posDataInputStream) throws IOException {
+    public u1(final PosDataInputStream posDataInputStream) throws IOException {
         this.value = posDataInputStream.readByte();
     }
 
-    u1(final PosDataInputStream posDataInputStream, boolean unsigned) throws IOException {
+    public u1(final PosDataInputStream posDataInputStream, boolean unsigned) throws IOException {
         if (unsigned) {
             this.value = (short) posDataInputStream.readUnsignedByte();
         } else {

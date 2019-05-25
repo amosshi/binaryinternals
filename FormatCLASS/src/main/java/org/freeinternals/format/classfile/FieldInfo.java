@@ -6,6 +6,8 @@
  */
 package org.freeinternals.format.classfile;
 
+import org.freeinternals.format.classfile.constant.CPInfo;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;

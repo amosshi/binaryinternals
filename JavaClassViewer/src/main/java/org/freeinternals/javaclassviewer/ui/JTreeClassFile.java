@@ -6,18 +6,17 @@
  */
 package org.freeinternals.javaclassviewer.ui;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.AttributeInfo;
-import org.freeinternals.format.classfile.CPInfo;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
+import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.Interface;
 import org.freeinternals.format.classfile.MethodInfo;
+import org.freeinternals.format.classfile.u2;
 
 /**
  * A tree for {@link ClassFile} displaying all compoents in the class file.
@@ -29,7 +28,6 @@ import org.freeinternals.format.classfile.MethodInfo;
 public class JTreeClassFile extends JTree {
 
     private static final long serialVersionUID = 4876543219876500000L;
-    private static final int STARTPOS_CONSTANT_POOL = 10;
     private final ClassFile classFile;
     DefaultMutableTreeNode root = null;
 
@@ -57,34 +55,38 @@ public class JTreeClassFile extends JTree {
     }
 
     private void generateTreeNodeClsssFileVersion() {
-        final DefaultMutableTreeNode minor_version = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                this.classFile.minor_version.getStartPos(),
-                this.classFile.minor_version.getLength(),
-                "minor_version: " + this.classFile.minor_version.value.value
-        ));
-        this.root.add(minor_version);
+        int startPos = 4;
 
-        final DefaultMutableTreeNode major_version = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                this.classFile.major_version.getStartPos(),
-                this.classFile.major_version.getLength(),
-                "major_version: " + this.classFile.major_version.getValue()
-        ));
-        this.root.add(major_version);
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "minor_version: " + this.classFile.minor_version.value
+        )));
+        startPos += u2.LENGTH;
+
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "major_version: " + this.classFile.major_version.value
+        )));
     }
 
     private void generateConstantPool() {
-        final int cpCount = this.classFile.constant_pool_count.getValue();
-        final DefaultMutableTreeNode constant_pool_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                this.classFile.constant_pool_count.getStartPos(),
-                this.classFile.constant_pool_count.getLength(),
+        // MAGIC(4) + Minor Version + Major Version
+        int startPos = 4 + u2.LENGTH + u2.LENGTH;
+
+        final int cpCount = this.classFile.constant_pool_count.value;
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
                 "constant_pool_count: " + cpCount
-        ));
-        this.root.add(constant_pool_count);
+        )));
+        startPos += u2.LENGTH;
 
         final CPInfo[] cp = this.classFile.getConstantPool();
         final DefaultMutableTreeNode constant_pool = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                STARTPOS_CONSTANT_POOL,
-                cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - STARTPOS_CONSTANT_POOL,
+                startPos,
+                cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - startPos,
                 "constant_pool[" + cpCount + "]"
         ));
         this.root.add(constant_pool);

@@ -8,39 +8,42 @@ package org.freeinternals.javaclassviewer.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.Annotation;
-import org.freeinternals.format.classfile.Annotation.ElementValue.TagEnum;
-import org.freeinternals.format.classfile.AttributeAnnotationDefault;
-import org.freeinternals.format.classfile.AttributeBootstrapMethods;
-import org.freeinternals.format.classfile.AttributeBootstrapMethods.BootstrapMethod;
-import org.freeinternals.format.classfile.AttributeCode;
-import org.freeinternals.format.classfile.AttributeCode.ExceptionTable;
-import org.freeinternals.format.classfile.AttributeConstantValue;
-import org.freeinternals.format.classfile.AttributeDeprecated;
-import org.freeinternals.format.classfile.AttributeEnclosingMethod;
-import org.freeinternals.format.classfile.AttributeExceptions;
-import org.freeinternals.format.classfile.AttributeInfo;
-import org.freeinternals.format.classfile.AttributeInnerClasses;
-import org.freeinternals.format.classfile.AttributeLineNumberTable;
-import org.freeinternals.format.classfile.AttributeLocalVariableTable;
-import org.freeinternals.format.classfile.AttributeSourceFile;
-import org.freeinternals.format.classfile.AttributeSynthetic;
-import org.freeinternals.format.classfile.AttributeUnrecognized;
-import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable;
-import org.freeinternals.format.classfile.AttributeLocalVariableTypeTable.LocalVariableTypeTable;
-import org.freeinternals.format.classfile.AttributeMethodParameters;
-import org.freeinternals.format.classfile.AttributeModule;
-import org.freeinternals.format.classfile.AttributeModuleHashes;
-import org.freeinternals.format.classfile.AttributeModulePackages;
-import org.freeinternals.format.classfile.AttributeModuleTarget;
-import org.freeinternals.format.classfile.AttributeRuntimeAnnotations;
-import org.freeinternals.format.classfile.AttributeRuntimeParameterAnnotations;
-import org.freeinternals.format.classfile.AttributeRuntimeTypeAnnotations;
-import org.freeinternals.format.classfile.AttributeSignature;
-import org.freeinternals.format.classfile.AttributeSourceDebugExtension;
-import org.freeinternals.format.classfile.AttributeStackMapTable;
-import org.freeinternals.format.classfile.AttributeStackMapTable.StackMapFrame;
-import org.freeinternals.format.classfile.AttributeStackMapTable.VerificationTypeInfo;
+import org.freeinternals.format.classfile.attribute.Annotation;
+import org.freeinternals.format.classfile.attribute.Annotation.ElementValue.TagEnum;
+import org.freeinternals.format.classfile.attribute.AttributeAnnotationDefault;
+import org.freeinternals.format.classfile.attribute.AttributeBootstrapMethods;
+import org.freeinternals.format.classfile.attribute.AttributeBootstrapMethods.BootstrapMethod;
+import org.freeinternals.format.classfile.attribute.AttributeCode;
+import org.freeinternals.format.classfile.attribute.AttributeCode.ExceptionTable;
+import org.freeinternals.format.classfile.attribute.AttributeConstantValue;
+import org.freeinternals.format.classfile.attribute.AttributeDeprecated;
+import org.freeinternals.format.classfile.attribute.AttributeEnclosingMethod;
+import org.freeinternals.format.classfile.attribute.AttributeExceptions;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
+import org.freeinternals.format.classfile.attribute.AttributeInnerClasses;
+import org.freeinternals.format.classfile.attribute.AttributeLineNumberTable;
+import org.freeinternals.format.classfile.attribute.AttributeLocalVariableTable;
+import org.freeinternals.format.classfile.attribute.AttributeSourceFile;
+import org.freeinternals.format.classfile.attribute.AttributeSynthetic;
+import org.freeinternals.format.classfile.attribute.AttributeUnrecognized;
+import org.freeinternals.format.classfile.attribute.AttributeLocalVariableTypeTable;
+import org.freeinternals.format.classfile.attribute.AttributeLocalVariableTypeTable.LocalVariableTypeTable;
+import org.freeinternals.format.classfile.attribute.AttributeMethodParameters;
+import org.freeinternals.format.classfile.attribute.AttributeModule;
+import org.freeinternals.format.classfile.attribute.AttributeModuleHashes;
+import org.freeinternals.format.classfile.attribute.AttributeModuleMainClass;
+import org.freeinternals.format.classfile.attribute.AttributeModulePackages;
+import org.freeinternals.format.classfile.attribute.AttributeModuleTarget;
+import org.freeinternals.format.classfile.attribute.AttributeNestHost;
+import org.freeinternals.format.classfile.attribute.AttributeNestMembers;
+import org.freeinternals.format.classfile.attribute.AttributeRuntimeAnnotations;
+import org.freeinternals.format.classfile.attribute.AttributeRuntimeParameterAnnotations;
+import org.freeinternals.format.classfile.attribute.AttributeRuntimeTypeAnnotations;
+import org.freeinternals.format.classfile.attribute.AttributeSignature;
+import org.freeinternals.format.classfile.attribute.AttributeSourceDebugExtension;
+import org.freeinternals.format.classfile.attribute.AttributeStackMapTable;
+import org.freeinternals.format.classfile.attribute.AttributeStackMapTable.StackMapFrame;
+import org.freeinternals.format.classfile.attribute.AttributeStackMapTable.VerificationTypeInfo;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
@@ -88,8 +91,7 @@ class JTreeAttribute {
                 this.generateAttribute(rootNode, attribute_info);
             }
         }
-        */
-
+         */
         if (attribute_info instanceof AttributeConstantValue) {
             // 4.7.2. The ConstantValue Attribute
             this.generateAttribute(rootNode, (AttributeConstantValue) attribute_info);
@@ -165,6 +167,15 @@ class JTreeAttribute {
         } else if (attribute_info instanceof AttributeModuleTarget) {
             // OpenJDK JVM9. The ModuleTarget Attribute
             this.generateAttribute(rootNode, (AttributeModuleTarget) attribute_info);
+        } else if (attribute_info instanceof AttributeModuleMainClass) {
+            // 4.7.27. The ModuleMainClass Attribute
+            this.generateAttribute(rootNode, (AttributeModuleMainClass) attribute_info);
+        } else if (attribute_info instanceof AttributeNestHost) {
+            // 4.7.28. The NestHost Attribute
+            this.generateAttribute(rootNode, (AttributeNestHost) attribute_info);
+        } else if (attribute_info instanceof AttributeNestMembers) {
+            // 4.7.29. The ModulePackages Attribute
+            this.generateAttribute(rootNode, (AttributeNestMembers) attribute_info);
         } else if (attribute_info instanceof AttributeUnrecognized) {
             // This is to handle unrecognized JVM attribute
             this.generateAttribute(rootNode, (AttributeUnrecognized) attribute_info);
@@ -1654,7 +1665,7 @@ class JTreeAttribute {
         }
     }
 
-    // 4.7.26. OpenJDK JVM9. The ModuleHashes Attribute
+    // 4.7.26.OpenJDK9. The ModuleHashes Attribute
     private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes mh) {
         int startPos = mh.getStartPos() + 6;
 
@@ -1692,7 +1703,7 @@ class JTreeAttribute {
             }
         }
     }
-    
+
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes.Hashes hash) {
         int startPos = hash.getStartPos();
 
@@ -1702,7 +1713,6 @@ class JTreeAttribute {
                 "module_name_index: " + hash.module_name_index.value + " - " + this.classFile.getCPDescription(hash.module_name_index.value)
         )));
         startPos += u2.LENGTH;
-
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
@@ -1719,9 +1729,8 @@ class JTreeAttribute {
             )));
         }
     }
-    
 
-    // 4.7.26. OpenJDK JVM9. The ModuleTarget Attribute
+    // 4.7.26.OpenJDK9. The ModuleTarget Attribute
     private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleTarget mt) {
         int startPos = mt.getStartPos() + 6;
 
@@ -1730,6 +1739,60 @@ class JTreeAttribute {
                 u2.LENGTH,
                 "os_arch_index: " + mt.os_arch_index.value + " - " + this.classFile.getCPDescription(mt.os_arch_index.value)
         )));
+    }
+
+    // 4.7.27. The ModuleMainClass Attribute
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeModuleMainClass moduleMainClass) {
+        int startPos = moduleMainClass.getStartPos() + 6;
+
+        // TODO - Find a test case to verify this attribute type is working or not
+        System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "main_class_index: " + moduleMainClass.main_class_index.value + " - " + this.classFile.getCPDescription(moduleMainClass.main_class_index.value)
+        )));
+    }
+
+    // 4.7.28. The NestHost Attribute
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeNestHost nestHost) {
+        int startPos = nestHost.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "host_class_index: " + nestHost.host_class_index.value + " - " + this.classFile.getCPDescription(nestHost.host_class_index.value)
+        )));
+    }
+
+    // 4.7.29. The NestMembers Attribute
+    private void generateAttribute(final DefaultMutableTreeNode rootNode, final AttributeNestMembers nestMembers) {
+        int startPos = nestMembers.getStartPos() + 6;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                u2.LENGTH,
+                "number_of_classes: " + nestMembers.number_of_classes.value
+        )));
+        startPos += u2.LENGTH;
+
+        if (nestMembers.number_of_classes.value > 0) {
+            final DefaultMutableTreeNode numbersNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos,
+                    u2.LENGTH * nestMembers.number_of_classes.value,
+                    "classes[" + nestMembers.number_of_classes.value + "]"
+            ));
+            rootNode.add(numbersNode);
+
+            for (int i = 0; i < nestMembers.classes.length; i++) {
+                int classIndex = nestMembers.classes[i].value;
+                numbersNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPos + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "class [" + i + "]: " + classIndex + " - " + this.classFile.getCPDescription(classIndex)
+                )));
+            }
+        }
     }
 
     /**

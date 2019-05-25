@@ -24,9 +24,9 @@ public class u4 {
     /**
      * Value of the {@link u4} component.
      */
-    public int value;
+    public final int value;
 
-    u4(final PosDataInputStream posDataInputStream) throws IOException {
+    public u4(final PosDataInputStream posDataInputStream) throws IOException {
         value = posDataInputStream.readInt();
     }
 }

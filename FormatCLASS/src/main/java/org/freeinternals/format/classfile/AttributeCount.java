@@ -6,11 +6,13 @@
  */
 package org.freeinternals.format.classfile;
 
+import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.classfile.U2ClassComponent;
 
 /**
- * Attributes count of a {@code class} or {@code interface}.
- * It is the {@code attributes_count} in {@code ClassFile} structure.
+ * Attributes count of a {@code class} or {@code interface}. It is the
+ * {@code attributes_count} in {@code ClassFile} structure.
  *
  * @author Amos Shi
  * @since JDK 6.0
@@ -21,8 +23,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  */
 public class AttributeCount extends U2ClassComponent {
 
-    AttributeCount(final PosDataInputStream posDataInputStream)
-            throws java.io.IOException {
+    AttributeCount(final PosDataInputStream posDataInputStream) throws IOException {
         super(posDataInputStream);
     }
 }

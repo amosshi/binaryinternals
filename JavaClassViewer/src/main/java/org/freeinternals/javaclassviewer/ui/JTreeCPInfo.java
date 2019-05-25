@@ -8,25 +8,25 @@ package org.freeinternals.javaclassviewer.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.CPInfo;
+import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.ConstantClassInfo;
-import org.freeinternals.format.classfile.ConstantDoubleInfo;
-import org.freeinternals.format.classfile.ConstantFieldrefInfo;
-import org.freeinternals.format.classfile.ConstantFloatInfo;
-import org.freeinternals.format.classfile.ConstantIntegerInfo;
-import org.freeinternals.format.classfile.ConstantInterfaceMethodrefInfo;
-import org.freeinternals.format.classfile.ConstantDynamicInfo;
-import org.freeinternals.format.classfile.ConstantInvokeDynamicInfo;
-import org.freeinternals.format.classfile.ConstantLongInfo;
-import org.freeinternals.format.classfile.ConstantMethodHandleInfo;
-import org.freeinternals.format.classfile.ConstantMethodTypeInfo;
-import org.freeinternals.format.classfile.ConstantMethodrefInfo;
-import org.freeinternals.format.classfile.ConstantModuleInfo;
-import org.freeinternals.format.classfile.ConstantNameAndTypeInfo;
-import org.freeinternals.format.classfile.ConstantPackageInfo;
-import org.freeinternals.format.classfile.ConstantStringInfo;
-import org.freeinternals.format.classfile.ConstantUtf8Info;
+import org.freeinternals.format.classfile.constant.ConstantClassInfo;
+import org.freeinternals.format.classfile.constant.ConstantDoubleInfo;
+import org.freeinternals.format.classfile.constant.ConstantFieldrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantFloatInfo;
+import org.freeinternals.format.classfile.constant.ConstantIntegerInfo;
+import org.freeinternals.format.classfile.constant.ConstantInterfaceMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantInvokeDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantLongInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantModuleInfo;
+import org.freeinternals.format.classfile.constant.ConstantNameAndTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantPackageInfo;
+import org.freeinternals.format.classfile.constant.ConstantStringInfo;
+import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
 
 /**
  *

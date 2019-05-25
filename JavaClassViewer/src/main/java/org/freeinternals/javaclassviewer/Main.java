@@ -111,11 +111,8 @@ public final class Main extends JFrame {
         menuItem_FileExit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_X,
                 ActionEvent.ALT_MASK));
-        menuItem_FileExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                System.exit(0);
-            }
+        menuItem_FileExit.addActionListener((final ActionEvent e) -> {
+            System.exit(0);
         });
         menuFile.add(menuItem_FileExit);
 

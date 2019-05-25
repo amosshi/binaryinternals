@@ -24,9 +24,9 @@ public class u2 {
     /**
      * Value of the {@link u2} component.
      */
-    public int value;
+    public final int value;
 
-    u2(final PosDataInputStream posDataInputStream) throws IOException {
+    public u2(final PosDataInputStream posDataInputStream) throws IOException {
         this.value = posDataInputStream.readUnsignedShort();
     }
 }

@@ -6,12 +6,32 @@
  */
 package org.freeinternals.format.classfile;
 
+import org.freeinternals.format.classfile.constant.CPInfo;
+import org.freeinternals.format.classfile.constant.ConstantStringInfo;
+import org.freeinternals.format.classfile.constant.ConstantClassInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo;
+import org.freeinternals.format.classfile.constant.ConstantInterfaceMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantInvokeDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantNameAndTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantDoubleInfo;
+import org.freeinternals.format.classfile.constant.ConstantModuleInfo;
+import org.freeinternals.format.classfile.constant.ConstantFloatInfo;
+import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
+import org.freeinternals.format.classfile.constant.ConstantFieldrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantLongInfo;
+import org.freeinternals.format.classfile.constant.ConstantPackageInfo;
+import org.freeinternals.format.classfile.constant.ConstantDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantIntegerInfo;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
 
 /**
  * Represents a {@code class} file. A {@code class} file structure has the
@@ -43,7 +63,7 @@ import org.freeinternals.format.FileFormatException;
  * @author Amos Shi
  * @since JDK 6.0
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/">
  * VM Spec: The ClassFile Structure </a>
  */
 public class ClassFile {
@@ -55,12 +75,66 @@ public class ClassFile {
      */
     public static final int MAGIC = 0xCAFEBABE;
     private u4 magic;
+
+    //
     // Class file Version
-    public MinorVersion minor_version;
-    public MajorVersion major_version;
+    //
+    /**
+     * Minor version of a {@code class} file. It is the {@code minor_version} in
+     * {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @see ClassFile#minor_version
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     * 
+     * TODO - Make it final
+     */
+    public u2 minor_version;
+
+    /**
+     * Major version of a {@code class} file. It is the {@code major_version} in
+     * {@code ClassFile} structure.
+     *
+     * <pre>
+     * The Java virtual machine implementation of Sun's JDK release 1.0.2 supports
+     * class file format versions 45.0 through 45.3 inclusive. Sun's JDK releases
+     * 1.1.X can support class file formats of versions in the range 45.0 through
+     * 45.65535 inclusive. Implementations of version 1.2 of the Java 2 platform
+     * can support class file formats of versions in the range 45.0 through 46.0
+     * inclusive.
+     * </pre>
+     *
+     * @author Amos Shi
+     * @since JDK 6.0
+     * @see ClassFile#major_version
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     *
+     * TODO - Make it final
+     */
+    public u2 major_version;
+
     // Constant pool
-    public CPCount constant_pool_count;
+    /**
+     * Constant Pool Count of a {@code class} or {@code interface}. It is the
+     * {@code constant_pool_count} in {@code ClassFile} structure.
+     *
+     * @author Amos Shi
+     * @see ClassFile#constant_pool_count
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * VM Spec: The ClassFile Structure
+     * </a>
+     *
+     * TODO - Make it final
+     */
+    public u2 constant_pool_count;
     private CPInfo[] constant_pool;
+
     // Class Declaration
     public AccessFlags access_flags;
     public ThisClass this_class;
@@ -202,10 +276,10 @@ public class ClassFile {
             throws FileFormatException {
         String returnValue = null;
 
-        if ((cpIndex == 0) || (cpIndex >= this.constant_pool_count.value.value)) {
+        if ((cpIndex == 0) || (cpIndex >= this.constant_pool_count.value)) {
             throw new FileFormatException(String.format(
                     "Constant Pool index is out of range. CP index cannot be zero, and should be less than CP count (=%d). CP index = %d.",
-                    this.constant_pool_count.value.value,
+                    this.constant_pool_count.value,
                     cpIndex));
         }
 
@@ -296,7 +370,7 @@ public class ClassFile {
      */
     public String getCPDescription(final int index) {
         // Invalid index
-        if (index >= this.constant_pool_count.getValue()) {
+        if (index >= this.constant_pool_count.value) {
             return null;
         }
 
@@ -379,63 +453,24 @@ public class ClassFile {
             this.parseAttributes();
         }
 
-        private void parseClassFileVersion()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.minor_version = new MinorVersion(ClassFile.this.posDataInputStream);
-            ClassFile.this.major_version = new MajorVersion(ClassFile.this.posDataInputStream);
+        private void parseClassFileVersion() throws java.io.IOException, FileFormatException {
+            ClassFile.this.minor_version = new u2(ClassFile.this.posDataInputStream);
+            ClassFile.this.major_version = new u2(ClassFile.this.posDataInputStream);
         }
 
-        private void parseConstantPool()
-                throws java.io.IOException, FileFormatException {
-            ClassFile.this.constant_pool_count = new CPCount(ClassFile.this.posDataInputStream);
-            final int cp_count = ClassFile.this.constant_pool_count.getValue();
+        private void parseConstantPool() throws IOException, FileFormatException {
+            ClassFile.this.constant_pool_count = new u2(ClassFile.this.posDataInputStream);
+            final int cp_count = ClassFile.this.constant_pool_count.value;
 
             ClassFile.this.constant_pool = new CPInfo[cp_count];
             short tag;
             for (int i = 1; i < cp_count; i++) {
                 tag = (short) ClassFile.this.posDataInputStream.readUnsignedByte();
 
-                if (tag == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantUtf8Info(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Integer.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantIntegerInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Float.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantFloatInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Long.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantLongInfo(ClassFile.this.posDataInputStream);
-                    // Long type occupy two Constant Pool index
+                ClassFile.this.constant_pool[i] = ConstantType.parse(tag, posDataInputStream);
+                if (tag == CPInfo.ConstantType.CONSTANT_Long.tag || tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
+                    // Long/Double type occupy two Constant Pool index
                     i++;
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantDoubleInfo(ClassFile.this.posDataInputStream);
-                    // Long type occupy two Constant Pool index
-                    i++;
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Class.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantClassInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_String.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantStringInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Fieldref.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantFieldrefInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Methodref.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantMethodrefInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantInterfaceMethodrefInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_NameAndType.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantNameAndTypeInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_MethodHandle.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantMethodHandleInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_MethodType.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantMethodTypeInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Dynamic.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantDynamicInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantInvokeDynamicInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Module.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantModuleInfo(ClassFile.this.posDataInputStream);
-                } else if (tag == CPInfo.ConstantType.CONSTANT_Package.tag) {
-                    ClassFile.this.constant_pool[i] = new ConstantPackageInfo(ClassFile.this.posDataInputStream);
-                } else {
-                    throw new FileFormatException(
-                            String.format("Unreconizable constant pool type found. Constant pool tag: [%d]; class file offset: [%d].", tag, ClassFile.this.posDataInputStream.getPos() - 1));
                 }
             }
         }
@@ -541,21 +576,21 @@ public class ClassFile {
                                 (ConstantNameAndTypeInfo) cp_info,
                                 ClassFile.Descr_NameAndType.RAW));
                     } else if (cp_info instanceof ConstantMethodTypeInfo) {
-                        ConstantMethodTypeInfo mti = (ConstantMethodTypeInfo)cp_info;
+                        ConstantMethodTypeInfo mti = (ConstantMethodTypeInfo) cp_info;
                         sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[mti.descriptor_index.value]));
                     } else if (cp_info instanceof ConstantDynamicInfo) {
-                        sb.append("bootstrap_method_attr_index = ").append(((ConstantDynamicInfo)cp_info).bootstrap_method_attr_index.value);
-                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantDynamicInfo)cp_info).name_and_type_index.value));
+                        sb.append("bootstrap_method_attr_index = ").append(((ConstantDynamicInfo) cp_info).bootstrap_method_attr_index.value);
+                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantDynamicInfo) cp_info).name_and_type_index.value));
                     } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
-                        sb.append("bootstrap_method_attr_index = ").append(((ConstantInvokeDynamicInfo)cp_info).bootstrap_method_attr_index.value);
-                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantInvokeDynamicInfo)cp_info).name_and_type_index.value));
+                        sb.append("bootstrap_method_attr_index = ").append(((ConstantInvokeDynamicInfo) cp_info).bootstrap_method_attr_index.value);
+                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantInvokeDynamicInfo) cp_info).name_and_type_index.value));
                     } else if (cp_info instanceof ConstantMethodHandleInfo) {
                         sb.append("reference_kind = ").append(ConstantMethodHandleInfo.ReferenceKind.name(((ConstantMethodHandleInfo) cp_info).reference_kind.value));
                         sb.append(", reference_index = ").append(this.getCPDescr(((ConstantMethodHandleInfo) cp_info).reference_index.value));
                     } else if (cp_info instanceof ConstantModuleInfo) {
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantModuleInfo)cp_info).name_index.value]));
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantModuleInfo) cp_info).name_index.value]));
                     } else if (cp_info instanceof ConstantPackageInfo) {
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantPackageInfo)cp_info).name_index.value]));
+                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantPackageInfo) cp_info).name_index.value]));
                     } else {
                         sb.append("!!! Un-recognized CP type.");
                     }
@@ -572,16 +607,16 @@ public class ClassFile {
         }
 
         private String getDescr_Class(final ConstantClassInfo info) {
-            // The value of the name_index item must be a valid index into the constant_pool table. 
-            // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure 
+            // The value of the name_index item must be a valid index into the constant_pool table.
+            // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
             // representing a valid fully qualified class or interface name encoded in internal form.
             return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
                     (ConstantUtf8Info) ClassFile.this.constant_pool[info.name_index.value]));
         }
 
         private String getDescr_String(final ConstantStringInfo info) {
-            // The value of the string_index item must be a valid index into the constant_pool table. 
-            // The constant_pool entry at that index must be a CONSTANT_Utf8_info (.4.7) structure 
+            // The value of the string_index item must be a valid index into the constant_pool table.
+            // The constant_pool entry at that index must be a CONSTANT_Utf8_info (.4.7) structure
             // representing the sequence of characters to which the String object is to be initialized.
             return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
                     (ConstantUtf8Info) ClassFile.this.constant_pool[info.string_index.value]));
