@@ -23,7 +23,6 @@ import org.freeinternals.format.classfile.u4;
  * A tree for {@link ClassFile} displaying all compoents in the class file.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see ClassFile
  */
 public class JTreeClassFile extends JTree {

@@ -19,8 +19,9 @@ import org.freeinternals.format.classfile.u2;
  * {@code ClassFile}, {@code field_info}, or {@code method_info} structure.
  *
  * @author Amos Shi
+ * @since Java 5
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.9">
  * VM Spec: The Signature Attribute
  * </a>
  */

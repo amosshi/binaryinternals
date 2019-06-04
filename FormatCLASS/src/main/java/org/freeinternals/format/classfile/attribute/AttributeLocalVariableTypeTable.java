@@ -38,8 +38,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
+ * @since Java 5
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.14">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.14">
  * VM Spec: The LocalVariableTypeTable Attribute
  * </a>
  */

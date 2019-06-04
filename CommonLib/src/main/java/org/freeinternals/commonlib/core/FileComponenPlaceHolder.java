@@ -12,7 +12,6 @@ import java.io.IOException;
  * Super class for all simple components which have only one 16-bit (@link FileComponentU2) field in a {@code class} file.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class FileComponenPlaceHolder extends FileComponent {
 

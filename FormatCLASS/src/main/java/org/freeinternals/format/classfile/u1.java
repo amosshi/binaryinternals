@@ -12,7 +12,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class u1 {
 

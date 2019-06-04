@@ -30,8 +30,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
+ * @since Java 5
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.20">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.22">
  * VM Spec: The AnnotationDefault attribute
  * </a>
  */

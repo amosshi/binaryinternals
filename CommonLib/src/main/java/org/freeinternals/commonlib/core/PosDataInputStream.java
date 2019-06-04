@@ -15,7 +15,6 @@ import org.freeinternals.commonlib.util.Tool;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 

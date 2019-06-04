@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class PosByteArrayInputStream extends ByteArrayInputStream {
 

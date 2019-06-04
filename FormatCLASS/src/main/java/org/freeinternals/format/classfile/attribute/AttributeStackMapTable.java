@@ -20,8 +20,9 @@ import org.freeinternals.format.classfile.u2;
  * attribute.
  *
  * @author Amos Shi
+ * @since Java 6
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.4">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.4">
  * VM Spec: The StackMapTable Attribute
  * </a>
  */

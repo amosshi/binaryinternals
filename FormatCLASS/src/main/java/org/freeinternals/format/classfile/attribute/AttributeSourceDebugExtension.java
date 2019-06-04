@@ -29,8 +29,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
+ * @since Java 5
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.9">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.11">
  * VM Spec: The Signature Attribute
  * </a>
  */

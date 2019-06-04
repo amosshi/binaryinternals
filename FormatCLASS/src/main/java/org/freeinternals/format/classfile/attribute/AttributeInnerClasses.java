@@ -34,9 +34,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
+ * @since Java 1.1
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#79996">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.6">
  * VM Spec: The InnerClasses Attribute
  * </a>
  */
@@ -80,7 +80,6 @@ public class AttributeInnerClasses extends AttributeInfo {
      * The {@code classes} structure in {@code InnerClasses} attribute.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      */
     public final class Class extends FileComponent {
 

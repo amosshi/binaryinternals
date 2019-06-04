@@ -18,15 +18,15 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  * <pre>
  *    CONSTANT_Long_info {
  *        u1 tag;
+ * 
  *        u4 high_bytes;
  *        u4 low_bytes;
  *    }
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1348">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.5">
  * VM Spec: The CONSTANT_Long_info Structure
  * </a>
  */

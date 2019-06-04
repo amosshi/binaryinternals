@@ -26,7 +26,6 @@ import org.freeinternals.commonlib.ui.binviewer.JRowViewer;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JBinaryViewer extends JPanel {
 

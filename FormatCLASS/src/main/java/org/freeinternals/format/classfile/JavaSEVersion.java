@@ -9,6 +9,9 @@ package org.freeinternals.format.classfile;
 /**
  * Java SE platform version.
  *
+ * @see
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">The
+ * ClassFile Structure</a>
  * @author Amos Shi
  */
 public enum JavaSEVersion {

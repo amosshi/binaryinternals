@@ -36,7 +36,6 @@ import org.freeinternals.format.classfile.Opcode.InstructionResult;
  * A split panel created from a class file byte array.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see ClassFile
  */
 public class JSplitPaneClassFile extends JSplitPane {

@@ -23,7 +23,6 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  * Utility Class.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public final class Tool {
 

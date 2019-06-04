@@ -13,7 +13,6 @@ import org.freeinternals.javaclassviewer.ui.JSplitPaneClassFile;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JFrameClassFile extends JFrame {
 

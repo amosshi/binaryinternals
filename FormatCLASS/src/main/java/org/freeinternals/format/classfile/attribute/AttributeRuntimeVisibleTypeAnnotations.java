@@ -34,9 +34,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 8.0
+ * @since Java 8
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.20">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.20">
  * VM Spec: The RuntimeVisibleTypeAnnotations Attribute
  * </a>
  */

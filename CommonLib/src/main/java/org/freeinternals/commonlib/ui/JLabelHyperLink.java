@@ -19,7 +19,6 @@ import javax.swing.JLabel;
  * Hyper Link enabled JLabel.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JLabelHyperLink extends JLabel {
 

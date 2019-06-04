@@ -23,6 +23,7 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_InvokeDynamic_info {
  *      u1 tag;
+ * 
  *      u2 bootstrap_method_attr_index;
  *      u2 name_and_type_index;
  *    }
@@ -30,7 +31,7 @@ import org.freeinternals.format.classfile.u2;
  *
  * @author Amos Shi
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.10">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.10">
  * VM Spec: The CONSTANT_InvokeDynamic_info Structure
  * </a>
  */

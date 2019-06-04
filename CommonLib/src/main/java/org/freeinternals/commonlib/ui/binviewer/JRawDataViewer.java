@@ -13,7 +13,6 @@ import org.freeinternals.commonlib.ui.JBinaryViewer;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JRawDataViewer extends JTextPane {
 

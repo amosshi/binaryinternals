@@ -44,7 +44,6 @@ import org.freeinternals.javaclassviewer.ui.JTreeZipFile;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public final class Main extends JFrame {
 

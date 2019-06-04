@@ -611,7 +611,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 public final String description;
 
                 TypePathKind(int v, String d) {
-                    this.value = new Integer(v).shortValue();
+                    this.value = Integer.valueOf(v).shortValue();
                     this.description = d;
                 }
 

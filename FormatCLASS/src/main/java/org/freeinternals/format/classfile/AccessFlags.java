@@ -10,8 +10,8 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
 /**
- * Access Flag of a {@code class} or {@code interface}.
- * It is the {@code access_flags} in {@code ClassFile} structure.
+ * Access Flag of a {@code class} or {@code interface}. It is the
+ * {@code access_flags} in {@code ClassFile} structure.
  * <p>
  * The access flag is a mask combination of the following flags:
  *
@@ -28,21 +28,21 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see ClassFile#access_flags
- * @see <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#74353">
+ * @see
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
  * VM Spec: The ClassFile Structure
  * </a>
  */
 public class AccessFlags extends U2ClassComponent {
 
-    AccessFlags(final PosDataInputStream posDis)
-            throws IOException {
+    AccessFlags(final PosDataInputStream posDis) throws IOException {
         super(posDis);
     }
 
     /**
-     * Generate the modifier of a {@code class} or {@code interface} from the access flag value.
+     * Generate the modifier of a {@code class} or {@code interface} from the
+     * access flag value.
      *
      * @return A string for modifier
      */
@@ -51,34 +51,13 @@ public class AccessFlags extends U2ClassComponent {
     }
 
     /**
-     * Display a string for the raw format of the internal values of this access flag object.
+     * Display a string for the raw format of the internal values of this access
+     * flag object.
      *
      * @return A string representing this object
      */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder(25);
-
-        sb.append(String.format("%04X  (", super.value.value));
-
-        if ((this.value.value & AccessFlag.ACC_PUBLIC.value) > 0) {
-            sb.append("public ");
-        }
-        if ((this.value.value & AccessFlag.ACC_FINAL.value) > 0) {
-            sb.append("final ");
-        }
-        if ((this.value.value & AccessFlag.ACC_SUPER.value) > 0) {
-            sb.append("super ");
-        }
-        if ((this.value.value & AccessFlag.ACC_INTERFACE.value) > 0) {
-            sb.append("interface ");
-        }
-        if ((this.value.value & AccessFlag.ACC_ABSTRACT.value) > 0) {
-            sb.append("abstract ");
-        }
-
-        sb.append(")");
-
-        return sb.toString();
+        return AccessFlag.getClassModifier(this.value.value);
     }
 }

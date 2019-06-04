@@ -33,7 +33,6 @@ import org.freeinternals.biv.plugin.PluginManager;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 class JDialogPlugins extends JDialog {
 

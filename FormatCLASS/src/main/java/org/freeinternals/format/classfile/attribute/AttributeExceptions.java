@@ -28,9 +28,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
+ * @since Java 1.0.2
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.5">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.5">
  * VM Spec: The Exceptions Attribute
  * </a>
  */

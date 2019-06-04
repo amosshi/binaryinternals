@@ -6,12 +6,12 @@
  */
 package org.freeinternals.format.classfile;
 
-import org.freeinternals.format.classfile.constant.CPInfo;
-import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
+import org.freeinternals.format.classfile.constant.CPInfo;
 
 /**
  * {@code Field} of a class or interface. The {@code Field} structure has the
@@ -28,9 +28,8 @@ import org.freeinternals.format.FileFormatException;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#2877">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.5">
  * VM Spec: Fields
  * </a>
  */
@@ -43,8 +42,7 @@ public class FieldInfo extends FileComponent {
     public transient final AttributeInfo[] attributes;
     private String declaration;
 
-    FieldInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp)
-            throws IOException, FileFormatException {
+    FieldInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;
 
@@ -76,7 +74,6 @@ public class FieldInfo extends FileComponent {
 
     ///////////////////////////////////////////////////////////////////////////
     // Get raw data
-
     /**
      * Get the value of {@code attributes}[{@code index}].
      *
@@ -104,7 +101,7 @@ public class FieldInfo extends FileComponent {
 
     /**
      * Set the declaration string.
-     * 
+     *
      * @param declaration Human readable declaration string
      */
     final void setDeclaration(final String declaration) {

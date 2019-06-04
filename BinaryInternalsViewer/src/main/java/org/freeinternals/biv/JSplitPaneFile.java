@@ -33,7 +33,6 @@ import org.freeinternals.format.FileFormatException;
  * A split panel created from a class file byte array.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see JPEGFile
  */
 public class JSplitPaneFile extends JSplitPane {

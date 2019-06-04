@@ -19,14 +19,15 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_Module_info {
  *        u1 tag;
+ *
  *        u2 name_index;
  *    }
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 10.0
+ * @since Java 9
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se10/html/jvms-4.html#jvms-4.4.11">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.11">
  * VM Spec: The CONSTANT_Module_info Structure
  * </a>
  */

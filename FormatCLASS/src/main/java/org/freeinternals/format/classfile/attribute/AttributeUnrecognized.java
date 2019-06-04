@@ -31,7 +31,7 @@ import org.freeinternals.format.classfile.u2;
  *
  *
  * @author Amos Shi
- * @since JDK 6.0
+ * @since Java 1.0.2
  */
 public class AttributeUnrecognized extends AttributeInfo {
 

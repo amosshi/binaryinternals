@@ -27,7 +27,6 @@ import org.freeinternals.commonlib.ui.JLabelHyperLink;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 class JDialogAbout extends JDialog {
 

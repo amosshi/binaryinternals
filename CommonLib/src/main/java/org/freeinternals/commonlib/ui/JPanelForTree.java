@@ -29,7 +29,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * A panel containing a {@code JTree} object.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JPanelForTree extends JPanel {
 

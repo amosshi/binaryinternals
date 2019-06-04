@@ -46,9 +46,9 @@ import org.freeinternals.format.classfile.u4;
  *
  *
  * @author Amos Shi
- * @since JDK 6.0
+ * @since Java 1.0.2
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1546">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.3">
  * VM Spec: The Code Attribute
  * </a>
  */
@@ -145,7 +145,6 @@ public class AttributeCode extends AttributeInfo {
      * The {@code exception_table} structure in {@code Code} attribute.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      */
     public final class ExceptionTable extends FileComponent {
 

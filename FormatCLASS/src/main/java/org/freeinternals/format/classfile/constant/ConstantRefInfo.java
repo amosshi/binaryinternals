@@ -22,8 +22,8 @@ public class ConstantRefInfo extends CPInfo {
     public final u2 name_and_type_index;
     private final String name;
 
-    protected ConstantRefInfo(short tag, final PosDataInputStream posDataInputStream, String name) throws IOException {
-        super(tag, false, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+    protected ConstantRefInfo(short tag, final PosDataInputStream posDataInputStream, String name, ClassFile.Version version, JavaSEVersion javaSE) throws IOException {
+        super(tag, false, version, javaSE);
 
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;

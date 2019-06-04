@@ -82,7 +82,7 @@ public class AttributeModuleHashes extends AttributeInfo {
      * The {@code hashes} structure in {@code ModuleHashes} attribute.
      *
      * @author Amos Shi
-     * @since Java 9
+     * @since OpenJDK 9
      * @see Module
      */
     public final class Hashes extends FileComponent {

@@ -17,7 +17,6 @@ import javax.swing.JPanel;
  * Utility class for {@code JFrame}.
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JFrameTool {
 

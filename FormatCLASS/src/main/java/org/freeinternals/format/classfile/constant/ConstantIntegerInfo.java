@@ -23,9 +23,8 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#21942">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.4">
  * VM Spec: The CONSTANT_Integer_info Structure
  * </a>
  */

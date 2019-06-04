@@ -12,7 +12,6 @@ import java.util.zip.ZipEntry;
  * Tree node for a zip entry in the tree {@link JTreeZipFile}.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see JTreeZipFile
  */
 public class JTreeNodeZipFile {

@@ -31,7 +31,6 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 final class JTreeCPInfo {
 

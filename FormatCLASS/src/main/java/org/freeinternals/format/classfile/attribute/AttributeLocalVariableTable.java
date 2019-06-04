@@ -34,9 +34,9 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
+ * @since Java 1.0.2
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#5956">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.13">
  * VM Spec: The LocalVariableTable Attribute
  * </a>
  */
@@ -81,7 +81,6 @@ public class AttributeLocalVariableTable extends AttributeInfo {
      * attribute.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      * @see AttributeLocalVariableTable
      */
     public final class LocalVariableTable extends FileComponent {

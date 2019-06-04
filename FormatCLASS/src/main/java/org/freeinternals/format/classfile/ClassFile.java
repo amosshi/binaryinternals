@@ -61,9 +61,8 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
  * The {@code ClassFile} object is constructed from the class byte array.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se12/html/">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
  * VM Spec: The ClassFile Structure </a>
  */
 public class ClassFile {
@@ -85,11 +84,9 @@ public class ClassFile {
      *
      * @author Amos Shi
      * @see ClassFile#minor_version
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
-     *
-     * TODO - Make it final
      */
     public final u2 minor_version;
 
@@ -107,16 +104,17 @@ public class ClassFile {
      * </pre>
      *
      * @author Amos Shi
-     * @since JDK 6.0
      * @see ClassFile#major_version
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
     public final u2 major_version;
 
+    //
     // Constant pool
+    //
     /**
      * Constant Pool Count of a {@code class} or {@code interface}. It is the
      * {@code constant_pool_count} in {@code ClassFile} structure.
@@ -124,7 +122,7 @@ public class ClassFile {
      * @author Amos Shi
      * @see ClassFile#constant_pool_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -143,7 +141,7 @@ public class ClassFile {
      * @author Amos Shi
      * @see ClassFile#this_class
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -154,10 +152,9 @@ public class ClassFile {
      * {@code super_class} in {@code ClassFile} structure.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      * @see ClassFile#super_class
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -168,10 +165,9 @@ public class ClassFile {
      * {@code interfaces_count} in {@code ClassFile} structure.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      * @see ClassFile#interfaces_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -186,10 +182,9 @@ public class ClassFile {
      * {@code fields_count} in {@code ClassFile} structure.
      *
      * @author Amos Shi
-     * @since JDK 6.0
      * @see ClassFile#fields_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -206,7 +201,7 @@ public class ClassFile {
      * @author Amos Shi
      * @see ClassFile#methods_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -223,7 +218,7 @@ public class ClassFile {
      * @author Amos Shi
      * @see ClassFile#attributes_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -234,9 +229,8 @@ public class ClassFile {
      * Creates a new instance of ClassFile from byte array.
      *
      * @param classByteArray Byte array of a class file
-     * @throws java.io.IOException Error happened when reading the byte array
-     * @throws org.freeinternals.format.FileFormatException Invalid class file
-     * format
+     * @throws IOException Error happened when reading the byte array
+     * @throws FileFormatException Invalid class file format
      */
     public ClassFile(final byte[] classByteArray) throws IOException, FileFormatException {
         this.classByteArray = classByteArray.clone();
@@ -429,8 +423,7 @@ public class ClassFile {
      * @throws org.freeinternals.format.FileFormatException Invalid class file
      * format
      */
-    public String getConstantUtf8Value(final int cpIndex)
-            throws FileFormatException {
+    public String getConstantUtf8Value(final int cpIndex) throws FileFormatException {
         String returnValue = null;
 
         if ((cpIndex == 0) || (cpIndex >= this.constant_pool_count.value)) {

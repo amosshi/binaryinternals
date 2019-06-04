@@ -52,7 +52,6 @@ import org.freeinternals.format.classfile.u4;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 class JTreeAttribute {
 

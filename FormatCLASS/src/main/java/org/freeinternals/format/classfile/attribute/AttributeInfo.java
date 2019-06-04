@@ -37,7 +37,6 @@ import org.freeinternals.format.classfile.u4;
  * The contents in {@code info} is determined by {@code attribute_name_index}.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
  * VM Spec: Attributes
@@ -72,8 +71,7 @@ public class AttributeInfo extends FileComponent {
      * {@link #attribute_length} items.
      */
     public transient final u4 attribute_length;
-    
-    
+
     /**
      * Class file format.
      */
@@ -169,7 +167,7 @@ public class AttributeInfo extends FileComponent {
      *
      * @return A string of the attribute name
      * @see
-     * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#43817">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes
      * </a>
      */
@@ -181,7 +179,7 @@ public class AttributeInfo extends FileComponent {
      * Attributes in Java <code>classfile</code>.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes </a>
      */
     public enum AttributeTypes {
@@ -431,8 +429,8 @@ public class AttributeInfo extends FileComponent {
          * specific attribute and do not exist in Oracle JDK.
          *
          * @see
-         * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">OpenJDK
-         * specific attribute specifications</a>
+         * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">
+         * OpenJDK specific attribute specifications</a>
          */
         ModuleHashes(AttributeModuleHashes.class),
         /**

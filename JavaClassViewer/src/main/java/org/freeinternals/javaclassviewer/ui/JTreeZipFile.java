@@ -19,7 +19,6 @@ import javax.swing.tree.TreeNode;
  * Java {@code class} file(s).
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JTreeZipFile extends JTree {
 

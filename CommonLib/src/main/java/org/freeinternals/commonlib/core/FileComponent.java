@@ -13,7 +13,6 @@ package org.freeinternals.commonlib.core;
  *
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class FileComponent {
 

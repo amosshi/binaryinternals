@@ -1,8 +1,8 @@
 /**
  * PDFFile.java May 17, 2011, 09:29
  *
- * Copyright 2011, FreeInternals.org. All rights reserved. Use is subject to
- * license terms.
+ * Copyright 2011, FreeInternals.org. All rights reserved. 
+ * Use is subject to license terms.
  */
 package org.freeinternals.format.pdf;
 

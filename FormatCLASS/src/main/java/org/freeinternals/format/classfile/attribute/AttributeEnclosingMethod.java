@@ -20,8 +20,9 @@ import org.freeinternals.format.classfile.u2;
  * {@code EnclosingMethod} attribute.
  *
  * @author Amos Shi
+ * @since Java 5
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.7">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.7">
  * VM Spec: The EnclosingMethod Attribute
  * </a>
  */

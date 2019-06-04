@@ -20,15 +20,15 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_NameAndType_info {
  *        u1 tag;
+ * 
  *        u2 name_index;
  *        u2 descriptor_index;
  *    }
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1327">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.6">
  * VM Spec: The CONSTANT_NameAndType_info Structure
  * </a>
  */

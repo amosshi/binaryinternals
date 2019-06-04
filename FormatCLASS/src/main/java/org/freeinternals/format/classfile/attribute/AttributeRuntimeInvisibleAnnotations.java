@@ -33,10 +33,10 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 8.0
+ * @since Java 5
  * @see <a
- * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.7.17">
- * VM Spec: The Signature Attribute
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.17">
+ * VM Spec: The RuntimeInvisibleAnnotations Attribute
  * </a>
  */
 public class AttributeRuntimeInvisibleAnnotations extends AttributeRuntimeAnnotations {

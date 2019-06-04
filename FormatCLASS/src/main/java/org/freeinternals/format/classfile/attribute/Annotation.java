@@ -23,11 +23,11 @@ import org.freeinternals.format.classfile.u2;
  * }
  * </pre>
  *
+ * @author Amos Shi
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16">
+ * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.16">
  * VM Spec: annotation structure
  * </a>
- * @author Amos Shi
  */
 public class Annotation extends FileComponent {
 
@@ -35,8 +35,7 @@ public class Annotation extends FileComponent {
     public transient u2 num_element_value_pairs;
     public transient Annotation.ElementValuePair[] element_value_pairs;
 
-    protected Annotation(final PosDataInputStream posDataInputStream, boolean init)
-            throws IOException, FileFormatException {
+    protected Annotation(final PosDataInputStream posDataInputStream, boolean init) throws IOException, FileFormatException {
         super.startPos = posDataInputStream.getPos();
         if (init) {
             this.initAnnotation(posDataInputStream);
@@ -44,13 +43,11 @@ public class Annotation extends FileComponent {
         }
     }
 
-    protected Annotation(final PosDataInputStream posDataInputStream)
-            throws IOException, FileFormatException {
+    protected Annotation(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         this(posDataInputStream, true);
     }
 
-    protected final void initAnnotation(final PosDataInputStream posDataInputStream)
-            throws IOException, FileFormatException {
+    protected final void initAnnotation(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         this.type_index = new u2(posDataInputStream);
         this.num_element_value_pairs = new u2(posDataInputStream);
         if (this.num_element_value_pairs.value > 0) {
@@ -100,8 +97,7 @@ public class Annotation extends FileComponent {
          */
         public transient final ElementValue value;
 
-        protected ElementValuePair(final PosDataInputStream posDataInputStream)
-                throws IOException, FileFormatException {
+        protected ElementValuePair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
             this.element_name_index = new u2(posDataInputStream);
@@ -179,8 +175,7 @@ public class Annotation extends FileComponent {
          */
         public final ArrayValue union_array_value;
 
-        protected ElementValue(final PosDataInputStream posDataInputStream)
-                throws IOException, FileFormatException {
+        protected ElementValue(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
             this.tag = (char) posDataInputStream.read(); // Read 1 byte only
@@ -345,8 +340,7 @@ public class Annotation extends FileComponent {
             public final u2 type_name_index;
             public final u2 const_name_index;
 
-            protected EnumConstValue(final PosDataInputStream posDataInputStream)
-                    throws IOException {
+            protected EnumConstValue(final PosDataInputStream posDataInputStream) throws IOException {
                 this.startPos = posDataInputStream.getPos();
                 this.length = LENGTH;
 

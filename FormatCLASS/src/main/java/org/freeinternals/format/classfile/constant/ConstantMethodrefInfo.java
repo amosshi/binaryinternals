@@ -8,6 +8,8 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 
 /**
  * The class for the {@code CONSTANT_Methodref_info} structure in constant pool.
@@ -16,21 +18,21 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * <pre>
  *    CONSTANT_Methodref_info {
  *        u1 tag;
+ * 
  *        u2 class_index;
  *        u2 name_and_type_index;
  *    }
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#42041">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
  * VM Spec: The CONSTANT_Methodref_info Structure
  * </a>
  */
 public class ConstantMethodrefInfo extends ConstantRefInfo {
 
     ConstantMethodrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ConstantType.CONSTANT_Methodref.name());
+        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ConstantType.CONSTANT_Methodref.name(), ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
     }
 }

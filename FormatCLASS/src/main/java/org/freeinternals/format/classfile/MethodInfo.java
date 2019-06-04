@@ -14,7 +14,8 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 
 /**
- * {@code Method} of a class or interface. The {@code Method} structure has the following format:
+ * {@code Method} of a class or interface. The {@code Method} structure has the
+ * following format:
  *
  * <pre>
  *    method_info {
@@ -27,9 +28,9 @@ import org.freeinternals.format.FileFormatException;
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
- * @see <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#1513">
- * VM Spec:  Methods
+ * @see
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.6">
+ * VM Spec: Methods
  * </a>
  */
 public class MethodInfo extends FileComponent {
@@ -41,8 +42,7 @@ public class MethodInfo extends FileComponent {
     public transient final AttributeInfo[] attributes;
     private String declaration;
 
-    MethodInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp)
-            throws IOException, FileFormatException {
+    MethodInfo(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;
 
@@ -74,7 +74,6 @@ public class MethodInfo extends FileComponent {
 
     ///////////////////////////////////////////////////////////////////////////
     // Get raw data
-
     /**
      * Get the value of {@code attributes}[{@code index}].
      *
@@ -92,7 +91,8 @@ public class MethodInfo extends FileComponent {
     ///////////////////////////////////////////////////////////////////////////
     // Get extracted data
     /**
-     * Generate the modifier of a {@code Method} from the {@code access_flags} value.
+     * Generate the modifier of a {@code Method} from the {@code access_flags}
+     * value.
      *
      * @return A string for modifier
      */
@@ -102,7 +102,7 @@ public class MethodInfo extends FileComponent {
 
     /**
      * Set the declaration string.
-     * 
+     *
      * @param declaration Human readable declaration string
      */
     final void setDeclaration(final String declaration) {

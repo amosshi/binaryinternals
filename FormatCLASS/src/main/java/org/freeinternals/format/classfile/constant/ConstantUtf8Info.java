@@ -20,15 +20,15 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_Utf8_info {
  *        u1 tag;
+ * 
  *        u2 length;
  *        u1 bytes[length];
  *    }
  * </pre>
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#7963">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.7">
  * VM Spec: The CONSTANT_Utf8_info Structure
  * </a>
  */

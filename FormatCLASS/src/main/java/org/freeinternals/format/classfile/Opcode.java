@@ -19,9 +19,8 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * readable text.
  *
  * @author Amos Shi
- * @since JDK 6.0
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html">
  * VM Spec: The Java Virtual Machine Instruction Set
  * </a>
  */
@@ -39,7 +38,7 @@ public final class Opcode {
 
     /**
      * @see
-     * <a href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5">
      * VM Spec: Instructions
      * </a>
      */
@@ -254,12 +253,12 @@ public final class Opcode {
 
         public static final String OPCODE_NAME_UNKNOWN = "[Unknown opcode]";
         public static final String OPCODE_NAME_RESERVED_PREFIX = "[Reserved] ";
-        
+
         /**
          * Internal code for an Instruction.
          */
         public final int code;
-        
+
         public final boolean reserved;
 
         Instruction(int i) {
@@ -302,10 +301,11 @@ public final class Opcode {
 
         /**
          * Get Opcode name.
+         *
          * @param opcode Internal value of an opcode.
          * @return Opcode name
          */
-        public static String getOpcodeName(int opcode){
+        public static String getOpcodeName(int opcode) {
             String name = Instruction.OPCODE_NAME_UNKNOWN;
             for (Instruction i : Instruction.values()) {
                 if (i.code == opcode) {
@@ -320,7 +320,7 @@ public final class Opcode {
 
     /**
      * @see
-     * <a href="http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html#jvms-6.5.newarray">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.newarray">
      * VM Spec: Table 6.5.newarray-A. Array type codes
      * </a>
      */
@@ -388,8 +388,7 @@ public final class Opcode {
         return codeResult;
     }
 
-    private static InstructionResult parseInstruction(final PosDataInputStream pdis)
-            throws IOException {
+    private static InstructionResult parseInstruction(final PosDataInputStream pdis) throws IOException {
         final int curPos = pdis.getPos();
         final int opcode = pdis.read();
 

@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 /**
  *
  * @author Amos Shi
- * @since JDK 6.0
  */
 public class JTreeNodeFileComponent {
 
