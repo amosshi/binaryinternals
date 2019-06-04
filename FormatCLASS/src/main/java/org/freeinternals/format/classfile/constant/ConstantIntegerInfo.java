@@ -8,6 +8,8 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 
 /**
  * The class for the {@code CONSTANT_Integer_info} structure in constant pool.
@@ -22,7 +24,8 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  * @since JDK 6.0
- * @see <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#21942">
+ * @see
+ * <a href="http://www.freeinternals.org/mirror/java.sun.com/vmspec.2nded/ClassFile.doc.html#21942">
  * VM Spec: The CONSTANT_Integer_info Structure
  * </a>
  */
@@ -31,9 +34,8 @@ public class ConstantIntegerInfo extends CPInfo {
     public static final int LENGTH = 5;
     public final int integerValue;
 
-    ConstantIntegerInfo(final PosDataInputStream posDataInputStream)
-            throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Integer.tag);
+    ConstantIntegerInfo(final PosDataInputStream posDataInputStream) throws IOException {
+        super(CPInfo.ConstantType.CONSTANT_Integer.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

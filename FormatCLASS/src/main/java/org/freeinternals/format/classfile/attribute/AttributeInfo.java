@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
 import org.freeinternals.format.classfile.u2;
@@ -70,9 +72,22 @@ public class AttributeInfo extends FileComponent {
      * {@link #attribute_length} items.
      */
     public transient final u4 attribute_length;
+    
+    
+    /**
+     * Class file format.
+     */
+    public final ClassFile.Version format;
 
-    AttributeInfo(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
+    /**
+     * Java SE platform version.
+     */
+    public final JavaSEVersion javaSE;
+
+    AttributeInfo(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
+        this.format = format;
+        this.javaSE = javaSE;
 
         this.name = name;
         this.attribute_name_index = nameIndex;

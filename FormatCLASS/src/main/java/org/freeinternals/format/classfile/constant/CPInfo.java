@@ -14,6 +14,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 
 /**
@@ -51,8 +52,34 @@ public abstract class CPInfo extends FileComponent {
      */
     public final transient u1 tag;
 
-    CPInfo(short tag) {
+    /**
+     * Some entries in the constant_pool table are loadable because they
+     * represent entities that can be pushed onto the stack at run time to
+     * enable further computation.
+     *
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4-310">
+     * VM Spec: Table 4.4-C. Loadable constant pool tags
+     * </a>
+     */
+    public final boolean loadable;
+
+    /**
+     * Class file format.
+     */
+    public final ClassFile.Version format;
+
+    /**
+     * Java SE platform version.
+     */
+    public final JavaSEVersion javaSE;
+
+    CPInfo(short tag, boolean loadable, ClassFile.Version format, JavaSEVersion javaSE) {
         this.tag = new u1(tag);
+
+        this.loadable = loadable;
+        this.format = format;
+        this.javaSE = javaSE;
     }
 
     /**

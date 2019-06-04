@@ -9,6 +9,8 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -56,9 +58,8 @@ public class ConstantDynamicInfo extends CPInfo {
      */
     public final u2 name_and_type_index;
 
-    ConstantDynamicInfo(final PosDataInputStream posDataInputStream)
-            throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_Dynamic.tag);
+    ConstantDynamicInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        super(CPInfo.ConstantType.CONSTANT_Dynamic.tag, true, ClassFile.Version.Format_55_0, JavaSEVersion.Version_11);
         super.startPos = posDataInputStream.getPos() - 1;
         this.bootstrap_method_attr_index = new u2(posDataInputStream);
         this.name_and_type_index = new u2(posDataInputStream);

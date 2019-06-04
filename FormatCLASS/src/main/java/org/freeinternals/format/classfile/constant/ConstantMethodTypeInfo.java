@@ -9,6 +9,8 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -40,7 +42,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
     public final u2 descriptor_index;
 
     ConstantMethodTypeInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodType.tag);
+        super(CPInfo.ConstantType.CONSTANT_MethodType.tag, true, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream);
         super.length = LENGTH;

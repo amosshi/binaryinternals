@@ -8,6 +8,8 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -34,7 +36,7 @@ public class ConstantClassInfo extends CPInfo {
     public final u2 name_index;
 
     ConstantClassInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Class.tag);
+        super(CPInfo.ConstantType.CONSTANT_Class.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
 
         this.startPos = posDataInputStream.getPos() - 1;
         this.length = LENGTH;

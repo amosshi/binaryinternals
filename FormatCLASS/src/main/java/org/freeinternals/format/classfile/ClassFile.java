@@ -6,32 +6,32 @@
  */
 package org.freeinternals.format.classfile;
 
-import org.freeinternals.format.classfile.constant.CPInfo;
-import org.freeinternals.format.classfile.constant.ConstantStringInfo;
-import org.freeinternals.format.classfile.constant.ConstantClassInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo;
-import org.freeinternals.format.classfile.constant.ConstantInterfaceMethodrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo;
-import org.freeinternals.format.classfile.constant.ConstantInvokeDynamicInfo;
-import org.freeinternals.format.classfile.constant.ConstantNameAndTypeInfo;
-import org.freeinternals.format.classfile.constant.ConstantDoubleInfo;
-import org.freeinternals.format.classfile.constant.ConstantModuleInfo;
-import org.freeinternals.format.classfile.constant.ConstantFloatInfo;
-import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
-import org.freeinternals.format.classfile.constant.ConstantFieldrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantLongInfo;
-import org.freeinternals.format.classfile.constant.ConstantPackageInfo;
-import org.freeinternals.format.classfile.constant.ConstantDynamicInfo;
-import org.freeinternals.format.classfile.constant.ConstantIntegerInfo;
-import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.attribute.AttributeInfo;
+import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
+import org.freeinternals.format.classfile.constant.ConstantClassInfo;
+import org.freeinternals.format.classfile.constant.ConstantDoubleInfo;
+import org.freeinternals.format.classfile.constant.ConstantDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantFieldrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantFloatInfo;
+import org.freeinternals.format.classfile.constant.ConstantIntegerInfo;
+import org.freeinternals.format.classfile.constant.ConstantInterfaceMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantInvokeDynamicInfo;
+import org.freeinternals.format.classfile.constant.ConstantLongInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantMethodrefInfo;
+import org.freeinternals.format.classfile.constant.ConstantModuleInfo;
+import org.freeinternals.format.classfile.constant.ConstantNameAndTypeInfo;
+import org.freeinternals.format.classfile.constant.ConstantPackageInfo;
+import org.freeinternals.format.classfile.constant.ConstantStringInfo;
+import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
 
 /**
  * Represents a {@code class} file. A {@code class} file structure has the
@@ -498,6 +498,15 @@ public class ClassFile {
         return new CPDescr().getCPDescr(index);
     }
 
+    /**
+     * Get the Java Class file version.
+     *
+     * @return The Java class file version.
+     */
+    public Version getVersion() {
+        return Version.valueOf(this.major_version.value, this.minor_version.value);
+    }
+
     @Override
     public String toString() {
         return "Class contains "
@@ -682,4 +691,58 @@ public class ClassFile {
             return sb.toString();
         }
     }
+
+    /**
+     * Version numbers of a class file. Together, a major and a minor version
+     * number determine the version of the class file format. If a class file
+     * has major version number M and minor version number m, we denote the
+     * version of its class file format as M.m.
+     *
+     * @author Amos Shi
+     */
+    public enum Version {
+
+        /**
+         * For 45.3, it could be both {@link JavaSEVersion.Version_1_1} or
+         * {@link JavaSEVersion.Version_1_0_2}. We simply use the
+         * {@link JavaSEVersion.version_1_1} which is the newer one.
+         */
+        Format_45_3(45, 3, JavaSEVersion.Version_1_1),
+        Format_49_0(49, 0, JavaSEVersion.Version_5_0),
+        Format_50_0(50, 0, JavaSEVersion.Version_6),
+        Format_51_0(51, 0, JavaSEVersion.Version_7),
+        Format_52_0(52, 0, JavaSEVersion.Version_8),
+        Format_53_0(53, 0, JavaSEVersion.Version_9),
+        Format_55_0(55, 0, JavaSEVersion.Version_11);
+
+        public final int major_version;
+        public final int minor_version;
+        public final JavaSEVersion java_se;
+
+        private Version(int major, int minor, JavaSEVersion javaSE) {
+            this.major_version = major;
+            this.minor_version = minor;
+            this.java_se = javaSE;
+        }
+
+        public static Version valueOf(int major, int minor) {
+            for (Version v : Version.values()) {
+                if (v.major_version == major && v.minor_version == minor) {
+                    return v;
+                }
+            }
+
+            throw new IllegalArgumentException("The provided version number is not recognized");
+        }
+
+        /**
+         * Get the class file version as a string.
+         *
+         * @return Version as String.
+         */
+        public String getVersion() {
+            return String.format("%d.%d", this.major_version, this.minor_version);
+        }
+    }
+
 }

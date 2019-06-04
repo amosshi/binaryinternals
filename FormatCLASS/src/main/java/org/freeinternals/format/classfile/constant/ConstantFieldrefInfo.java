@@ -30,8 +30,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  */
 public class ConstantFieldrefInfo extends ConstantRefInfo {
 
-    ConstantFieldrefInfo(final PosDataInputStream posDataInputStream)
-            throws IOException {
+    ConstantFieldrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
         super(CPInfo.ConstantType.CONSTANT_Fieldref.tag,
                 posDataInputStream,
                 ConstantType.CONSTANT_Fieldref.name());

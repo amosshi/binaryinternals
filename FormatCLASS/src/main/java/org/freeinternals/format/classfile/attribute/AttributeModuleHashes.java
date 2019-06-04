@@ -10,6 +10,8 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -60,7 +62,7 @@ public class AttributeModuleHashes extends AttributeInfo {
     public transient final Hashes[] hashes;
 
     AttributeModuleHashes(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
 
         this.algorithm_index = new u2(posDataInputStream);
         this.hashes_count = new u2(posDataInputStream);

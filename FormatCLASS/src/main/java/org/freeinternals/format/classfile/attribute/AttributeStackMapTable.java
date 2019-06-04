@@ -10,6 +10,8 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -38,7 +40,7 @@ public class AttributeStackMapTable extends AttributeInfo {
     public transient final StackMapFrame[] entries;
 
     AttributeStackMapTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_50_0, JavaSEVersion.Version_6);
 
         this.number_of_entries = new u2(posDataInputStream);
         if (this.number_of_entries.value > 0) {

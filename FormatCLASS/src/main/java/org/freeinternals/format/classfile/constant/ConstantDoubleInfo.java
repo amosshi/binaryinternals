@@ -8,6 +8,8 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 
 /**
  * The class for the {@code CONSTANT_Double_info} structure in constant pool.
@@ -35,9 +37,8 @@ public class ConstantDoubleInfo extends CPInfo {
     //private u4 low_bytes;
     public final double doubleValue;
 
-    ConstantDoubleInfo(final PosDataInputStream posDataInputStream)
-            throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Double.tag);
+    ConstantDoubleInfo(final PosDataInputStream posDataInputStream) throws IOException {
+        super(CPInfo.ConstantType.CONSTANT_Double.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

@@ -9,6 +9,8 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -22,8 +24,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
     public transient final u2 num_annotations;
     public transient final TypeAnnotation[] annotations;
 
-    public AttributeRuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, name, posDataInputStream);
+    public AttributeRuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException, FileFormatException {
+        super(nameIndex, name, posDataInputStream, format, javaSE);
 
         this.num_annotations = new u2(posDataInputStream);
         if (this.num_annotations.value > 0) {

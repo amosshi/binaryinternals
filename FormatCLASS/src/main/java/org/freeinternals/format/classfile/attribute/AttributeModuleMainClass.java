@@ -9,6 +9,8 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
+import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -42,7 +44,7 @@ public class AttributeModuleMainClass extends AttributeInfo {
     public transient final u2 main_class_index;
 
     AttributeModuleMainClass(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
         this.main_class_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }
