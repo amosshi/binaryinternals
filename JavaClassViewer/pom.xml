@@ -6,14 +6,16 @@
         <artifactId>freeinternals</artifactId>
         <version>1.0</version>
     </parent>
+
     <artifactId>JavaClassViewer</artifactId>
-    <version>8.0</version>
+    <name>freeinternals :: JavaClassViewer</name>
     <packaging>jar</packaging>
+    <version>12.0</version>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <name>freeinternals :: JavaClassViewer</name>
 
     <dependencies>
         <dependency>

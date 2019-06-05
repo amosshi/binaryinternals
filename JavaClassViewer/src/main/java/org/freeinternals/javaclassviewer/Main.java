@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -73,9 +72,7 @@ public final class Main extends JFrame {
         // File --> Open
         final JMenuItem menuItem_FileOpen = new JMenuItem("Open...", UIManager.getIcon("FileView.directoryIcon"));
         menuItem_FileOpen.setMnemonic(KeyEvent.VK_O);
-        menuItem_FileOpen.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_O,
-                ActionEvent.CTRL_MASK));
+        menuItem_FileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         menuItem_FileOpen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -107,9 +104,7 @@ public final class Main extends JFrame {
         // File --> Exit
         final JMenuItem menuItem_FileExit = new JMenuItem("Exit", UIManager.getIcon("Table.ascendingSortIcon"));
         menuItem_FileExit.setMnemonic(KeyEvent.VK_X);
-        menuItem_FileExit.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_X,
-                ActionEvent.ALT_MASK));
+        menuItem_FileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
         menuItem_FileExit.addActionListener((final ActionEvent e) -> {
             System.exit(0);
         });
@@ -330,13 +325,6 @@ public final class Main extends JFrame {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

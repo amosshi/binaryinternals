@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.JFrameTool;
 import org.freeinternals.format.FileFormatException;
@@ -63,12 +62,6 @@ public class Main extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override

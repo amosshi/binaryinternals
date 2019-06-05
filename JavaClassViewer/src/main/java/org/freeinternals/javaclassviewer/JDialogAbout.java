@@ -69,7 +69,7 @@ public class JDialogAbout extends JDialog {
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
         listPane.add(new JLabelHyperLink(
                 "for Java Virtual Machine Specification 12",
-                "https://docs.oracle.com/javase/specs/jvms/se12/html/"));
+                "https://docs.oracle.com/javase/specs/"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
         listPane.add(new JLabel("Author: Amos Shi"));
         listPane.add(Box.createRigidArea(new Dimension(0, 20)));

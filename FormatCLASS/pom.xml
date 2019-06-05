@@ -11,7 +11,7 @@
     <artifactId>FormatCLASS</artifactId>
     <name>freeinternals :: FormatCLASS</name>
     <packaging>jar</packaging>
-    <version>8.0</version>
+    <version>12.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
