@@ -5,4 +5,4 @@
 export JAVA_HOME=/usr/lib/jvm/default-java
 
 mvn clean && mvn package && mvn install
-
+mvn javadoc:aggregate

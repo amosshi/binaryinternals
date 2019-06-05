@@ -15,7 +15,7 @@ import org.freeinternals.format.FileFormatException;
  *
  * @author Amos Shi
  * @see IFD_0213_YCbCrPositioning
- * @see PhotometricInterpretation
+ * @see org.freeinternals.format.jpeg.ps.PhotoshopImageResource
  */
 public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
 

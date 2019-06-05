@@ -35,7 +35,9 @@ import org.freeinternals.format.classfile.u2;
 public class AttributeModuleTarget extends AttributeInfo {
 
     /**
-     * Index to a {@link ConstantUtf8Info} structure.
+     * Index to a
+     * {@link org.freeinternals.format.classfile.constant.ConstantUtf8Info}
+     * structure.
      */
     public transient final u2 os_arch_index;
 

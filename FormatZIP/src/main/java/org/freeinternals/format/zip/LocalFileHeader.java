@@ -124,7 +124,7 @@ public class LocalFileHeader extends FileComponent {
         this.length = 30 + this.FileNameLength + this.ExtraFieldLength;
     }
 
-    /** Get the size of the local file header & the compressed data. */
+    /** Get the size of the local file header and the compressed data. */
     public long getSizeWithFileData() {
         return this.length + this.CompressedSize;
     }

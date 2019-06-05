@@ -15,7 +15,7 @@ import org.freeinternals.format.FileFormatException;
  *
  * @author Amos Shi
  * @see IFD_A20E_FocalPlaneXResolution
- * @see IFD_A20E_FocalPlaneYResolution
+ * @see IFD_A20F_FocalPlaneYResolution
  * @see IFD_8769_Exif#Category_G
  */
 public class IFD_A210_FocalPlaneResolutionUnit extends IFD_SHORT_COUNT1 {

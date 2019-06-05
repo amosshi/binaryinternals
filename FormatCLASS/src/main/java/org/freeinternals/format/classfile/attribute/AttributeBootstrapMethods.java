@@ -37,9 +37,9 @@ public class AttributeBootstrapMethods extends AttributeInfo {
 
     /**
      * Each entry in the {@link #bootstrap_methods} table contains an index to a
-     * {@link ConstantMethodHandleInfo} structure which specifies a bootstrap
-     * method, and a sequence (perhaps empty) of indexes to static arguments for
-     * the bootstrap method.
+     * {@link org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo}
+     * structure which specifies a bootstrap method, and a sequence (perhaps
+     * empty) of indexes to static arguments for the bootstrap method.
      */
     public transient final BootstrapMethod[] bootstrap_methods;
 
@@ -65,7 +65,8 @@ public class AttributeBootstrapMethods extends AttributeInfo {
          * The value of the {@link #bootstrap_method_ref} item must be a valid
          * index into the {@link ClassFile#constant_pool} table, the
          * <code>constant_pool</code> entry at that index must be a
-         * {@link ConstantMethodHandleInfo} structure
+         * {@link org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo}
+         * structure
          */
         public transient final u2 bootstrap_method_ref;
 
@@ -77,10 +78,12 @@ public class AttributeBootstrapMethods extends AttributeInfo {
         /**
          * Each entry in the {@link #bootstrap_arguments} array must be a valid
          * index into the {@link ClassFile#constant_pool} table, the
-         * <code>constant_pool</code> entry at that index must be a {@link ConstantStringInfo}, {@link ConstantClassInfo},
-         * {@link ConstantIntegerInfo}, {@link ConstantLongInfo},
-         * {@link ConstantFloatInfo}, {@link ConstantDoubleInfo},
-         * {@link ConstantMethodHandleInfo}, or {@link ConstantMethodTypeInfo}
+         * <code>constant_pool</code> entry at that index must be a {@link org.freeinternals.format.classfile.constant.ConstantStringInfo}, {@link org.freeinternals.format.classfile.constant.ConstantClassInfo},
+         * {@link org.freeinternals.format.classfile.constant.ConstantIntegerInfo}, {@link org.freeinternals.format.classfile.constant.ConstantLongInfo},
+         * {@link org.freeinternals.format.classfile.constant.ConstantFloatInfo}, {@link org.freeinternals.format.classfile.constant.ConstantDoubleInfo},
+         * {@link org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo},
+         * or
+         * {@link org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo}
          * structure.
          */
         public transient final u2[] bootstrap_arguments;

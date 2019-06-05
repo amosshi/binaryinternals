@@ -45,8 +45,9 @@ public class AttributeExceptions extends AttributeInfo {
      * Each value in the {@link #exception_index_table} array must be a valid
      * index into the {@link ClassFile#constant_pool} table. The
      * {@link ClassFile#constant_pool} entry at that <code>index</code> must be
-     * a CONSTANT_Class_info structure ({@link ConstantClassInfo}) representing
-     * a class type that this method is declared to throw.
+     * a CONSTANT_Class_info structure
+     * ({@link org.freeinternals.format.classfile.constant.ConstantClassInfo})
+     * representing a class type that this method is declared to throw.
      */
     private transient final u2[] exception_index_table;
 

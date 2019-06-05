@@ -82,7 +82,6 @@ public class ClassFile {
      * Minor version of a {@code class} file. It is the {@code minor_version} in
      * {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#minor_version
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -103,7 +102,6 @@ public class ClassFile {
      * inclusive.
      * </pre>
      *
-     * @author Amos Shi
      * @see ClassFile#major_version
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -119,7 +117,6 @@ public class ClassFile {
      * Constant Pool Count of a {@code class} or {@code interface}. It is the
      * {@code constant_pool_count} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#constant_pool_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -138,7 +135,6 @@ public class ClassFile {
      * {@code This} class of a {@code class} or {@code interface}. It is the
      * {@code this_class} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#this_class
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -151,7 +147,6 @@ public class ClassFile {
      * Super class of a {@code class} or {@code interface}. It is the
      * {@code super_class} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#super_class
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -164,7 +159,6 @@ public class ClassFile {
      * Interfaces count of a {@code class} or {@code interface}. It is the
      * {@code interfaces_count} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#interfaces_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -181,7 +175,6 @@ public class ClassFile {
      * Fields Count of a {@code class} or {@code interface}. It is the
      * {@code fields_count} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#fields_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -198,7 +191,6 @@ public class ClassFile {
      * Methods Count of a {@code class} or {@code interface}. It is the
      * {@code methods_count} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#methods_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -215,7 +207,6 @@ public class ClassFile {
      * Attributes count of a {@code class} or {@code interface}. It is the
      * {@code attributes_count} in {@code ClassFile} structure.
      *
-     * @author Amos Shi
      * @see ClassFile#attributes_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
@@ -696,9 +687,9 @@ public class ClassFile {
     public enum Version {
 
         /**
-         * For 45.3, it could be both {@link JavaSEVersion.Version_1_1} or
-         * {@link JavaSEVersion.Version_1_0_2}. We simply use the
-         * {@link JavaSEVersion.version_1_1} which is the newer one.
+         * For 45.3, it could be both {@link JavaSEVersion#Version_1_1} or
+         * {@link JavaSEVersion#Version_1_0_2}. We simply use the
+         * {@link JavaSEVersion#Version_1_1} which is the newer one.
          */
         Format_45_3(45, 3, JavaSEVersion.Version_1_1),
         Format_49_0(49, 0, JavaSEVersion.Version_5_0),

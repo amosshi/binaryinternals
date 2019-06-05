@@ -24,7 +24,7 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  * For color types 0 and 4 (gray scale, with or without alpha), only the field
  * <code>Gray</code> is valid.
  * For color types 2 and 6 (true color, with or without alpha), only the fields
- * <code>Red</code>, <code>Green</code> & <code>Blue</code> are valid.
+ * <code>Red</code>, <code>Green</code> and <code>Blue</code> are valid.
  * </p>
  * <p>
  * When a field is not valid, the value will be set as <code>-1</code>.

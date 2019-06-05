@@ -31,7 +31,8 @@ import org.freeinternals.format.dex.HeaderItem.Endian;
 public class DexFile extends FileFormat {
 
     /**
-     * The constant array/string {@link #DEX_FILE_MAGIC} is the list of bytes
+     * The constant array/string
+     * {@link #DEX_FILE_MAGIC1}|{@link #DEX_FILE_MAGIC2} is the list of bytes
      * that must appear at the beginning of a <code>.dex</code> file in order
      * for it to be recognized as such.
      * <p>
@@ -86,7 +87,8 @@ public class DexFile extends FileFormat {
      * Get the underlying String value for a {@link #string_ids} item.
      *
      * @param index Index in the {@link #string_ids} array
-     * @return String value for the {@link #string_ids} item, or <code>null</code> for invalid index
+     * @return String value for the {@link #string_ids} item, or
+     * <code>null</code> for invalid index
      */
     public String getString(int index) {
         if (index < -1 || this.string_ids == null || index >= this.string_ids.length) {
@@ -95,17 +97,17 @@ public class DexFile extends FileFormat {
 
         FileComponent fc = this.data.get(this.string_ids[index].string_data_off.value);
         if (fc instanceof StringDataItem) {
-            return ((StringDataItem)fc).getString();
+            return ((StringDataItem) fc).getString();
         } else {
             return null;
         }
     }
-    
-    public String getTypeDescriptor(int index){
+
+    public String getTypeDescriptor(int index) {
         if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {
             return null;
         }
-        
+
         return this.getString(this.type_ids[index].descriptor_idx.intValue());
     }
 

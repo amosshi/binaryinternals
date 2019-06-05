@@ -41,7 +41,7 @@ public class AttributeSourceDebugExtension extends AttributeInfo {
     /**
      * The {@link #debug_extension} array holds extended debugging information
      * which has no semantic effect on the Java Virtual Machine. The information
-     * is represented using a modified UTF-8 string ({@link ConstantUtf8Info})
+     * is represented using a modified UTF-8 string ({@link org.freeinternals.format.classfile.constant.ConstantUtf8Info})
      * with no terminating zero byte.
      */
     public transient final byte[] debug_extension;

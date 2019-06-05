@@ -47,7 +47,7 @@ public class AttributeNestMembers extends AttributeInfo {
      * Each value in the classes array must be a valid index into the
      * {@link ClassFile#constant_pool} table. The
      * {@link ClassFile#constant_pool} entry at that index must be a
-     * {@link ConstantClassInfo} structure representing a class or interface
+     * {@link org.freeinternals.format.classfile.constant.ConstantClassInfo} structure representing a class or interface
      * which is a member of the nest hosted by the current class or interface.
      */
     public transient final u2[] classes;

@@ -38,8 +38,8 @@ public class ConstantModuleInfo extends CPInfo {
     /**
      * The value of the {@link name_index} item must be a valid index into the
      * {@code constant_pool} table. The constant_pool entry at that index must
-     * be a {@link CONSTANT_Utf8_info} structure representing a valid module
-     * name.
+     * be a {@link org.freeinternals.format.classfile.constant.ConstantUtf8Info}
+     * structure representing a valid module name.
      */
     public final u2 name_index;
 

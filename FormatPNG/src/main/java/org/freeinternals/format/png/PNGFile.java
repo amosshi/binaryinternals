@@ -36,8 +36,9 @@ public class PNGFile extends FileFormat {
     /**
      * The minimal <code>PNG</code> file length is 20.
      * <p>
-     * In which: 8 bytes for magic number; 12 bytes (4 bytes <code>Length</code>,
-     * 4 bytes <code>Chunk Type</code>, 4 bytes <code>CRC</code>) for the fist chunk.
+     * In which: 8 bytes for magic number; 12 bytes (4 bytes
+     * <code>Length</code>, 4 bytes <code>Chunk Type</code>, 4 bytes
+     * <code>CRC</code>) for the fist chunk.
      * </p>
      */
     public static final int PNGFILE_MIN_LENGTH = 20;
@@ -49,13 +50,13 @@ public class PNGFile extends FileFormat {
      * </p>
      */
     public static final byte[] MAGIC = {(byte) 137, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10, (byte) 26, (byte) 10};
-    /** 
+    /**
      * Chunk type classes.
      */
     private static List<Class> ChunkTypes;
 
     private static void LoadChunkTypes() {
-        ChunkTypes = Collections.synchronizedList(new ArrayList<Class>(100));
+        ChunkTypes = Collections.synchronizedList(new ArrayList<>(100));
 
         ChunkTypes.add(Chunk_IDAT.class);
         ChunkTypes.add(Chunk_IHDR.class);
@@ -96,8 +97,7 @@ public class PNGFile extends FileFormat {
         }
 
         // Parse Chunks
-        PosDataInputStream stream = new PosDataInputStream(
-                new PosByteArrayInputStream(this.fileByteArray));
+        PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         stream.skip(PNGFile.MAGIC.length);
 
         while (stream.getPos() < this.fileByteArray.length) {
@@ -121,11 +121,10 @@ public class PNGFile extends FileFormat {
         Method mtd;
         byte[] type;
 
-        PosDataInputStream streamChunk = new PosDataInputStream(
-                new PosByteArrayInputStream(this.fileByteArray));
+        PosDataInputStream streamChunk = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         streamChunk.skip(stream.getPos() - length - 12);
 
-        for (Class cls : ChunkTypes) {
+        for (Class<?> cls : ChunkTypes) {
             try {
                 mtd = cls.getDeclaredMethod("GetChunkType");
                 type = (byte[]) mtd.invoke(null);
@@ -150,7 +149,7 @@ public class PNGFile extends FileFormat {
     public String getContentTabName() {
         return "PNG File";
     }
-    
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode root) {
 
@@ -161,7 +160,7 @@ public class PNGFile extends FileFormat {
 
         DefaultMutableTreeNode node;
         for (FileComponent chunk : super.components.values()) {
-            Chunk ck = (Chunk)chunk;
+            Chunk ck = (Chunk) chunk;
             root.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     ck.getStartPos(),
                     ck.getLength(),

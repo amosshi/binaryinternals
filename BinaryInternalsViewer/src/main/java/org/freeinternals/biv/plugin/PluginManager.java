@@ -34,7 +34,7 @@ public class PluginManager {
             + System.getProperty("file.separator")
             + "libs";
     /**
-     * Jar file name & the plug-in descriptor.
+     * Jar file name and the plug-in descriptor.
      */
     protected static final Map<String, PluginDescriptor> PLUGINS = new HashMap<>(10);
 

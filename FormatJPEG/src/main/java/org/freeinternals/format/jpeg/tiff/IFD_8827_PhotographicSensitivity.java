@@ -14,7 +14,6 @@ import org.freeinternals.format.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8830_SensitivityType
  */
 public class IFD_8827_PhotographicSensitivity extends IFD_SHORT_COUNT1 {
 

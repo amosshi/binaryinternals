@@ -58,10 +58,13 @@ public class AttributeInfo extends FileComponent {
     public transient final String name;
     /**
      * The {@link #attribute_name_index} must be a valid unsigned 16-bit index
-     * into the {@link ClassFile#constant_pool} of the {@link ClassFile}, the
-     * {@link ClassFile#constant_pool} entry at {@link #attribute_name_index}
-     * must be a <code>CONSTANT_Utf8_info structure</code>
-     * ({@link ConstantUtf8Info}) representing the name of the attribute.
+     * into the
+     * {@link org.freeinternals.format.classfile.ClassFile#constant_pool} of the
+     * {@link ClassFile}, the {@link ClassFile#constant_pool} entry at
+     * {@link #attribute_name_index} must be a
+     * <code>CONSTANT_Utf8_info structure</code>
+     * ({@link org.freeinternals.format.classfile.constant.ConstantUtf8Info})
+     * representing the name of the attribute.
      */
     public transient final u2 attribute_name_index;
     /**
@@ -161,9 +164,10 @@ public class AttributeInfo extends FileComponent {
      * <code>null</code>, it will return an empty string.
      *
      * Attributes are used in the {@code ClassFile}
-     * ({@link ClassFile}), {@code field_info} ({@link FieldInfo}),
-     * {@code method_info} ({@link MethodInfo}), and {@code Code_attribute}
-     * structures of the class file format.
+     * ({@link org.freeinternals.format.classfile.ClassFile}), {@code field_info} ({@link org.freeinternals.format.classfile.FieldInfo}),
+     * {@code method_info}
+     * ({@link org.freeinternals.format.classfile.MethodInfo}), and
+     * {@code Code_attribute} structures of the class file format.
      *
      * @return A string of the attribute name
      * @see

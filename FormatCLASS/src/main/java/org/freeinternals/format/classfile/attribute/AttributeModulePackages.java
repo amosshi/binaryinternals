@@ -47,8 +47,8 @@ public class AttributeModulePackages extends AttributeInfo {
      * The value of each entry in the {@link #package_index} table must be a
      * valid index into the {@link ClassFile#constant_pool} table. The
      * {@link ClassFile#constant_pool} entry at that index must be a
-     * {@link ConstantPackageInfo} structure representing a package in the
-     * current module.
+     * {@link org.freeinternals.format.classfile.constant.ConstantPackageInfo}
+     * structure representing a package in the current module.
      */
     public transient final u2[] package_index;
 

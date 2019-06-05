@@ -403,7 +403,7 @@ public class FileDrop {
             catch (Exception e) {
                 support = false;
             }   // end catch
-            supportsDnD = new Boolean(support);
+            supportsDnD = Boolean.valueOf(support);
         }   // end if: first time through
         return supportsDnD;
     }   // end supportsDnD
@@ -599,8 +599,8 @@ public class FileDrop {
     /* ********  I N N E R   C L A S S  ******** */
     /**
      * This is the event that is passed to the
-     * {@link FileDropListener#filesDropped filesDropped(...)} method in
-     * your {@link FileDropListener} when files are dropped onto
+     * {@link Listener#filesDropped filesDropped(...)} method in
+     * your {@link Listener} when files are dropped onto
      * a registered drop target.
      *
      * <p>I'm releasing this code into the Public Domain. Enjoy.</p>
@@ -773,7 +773,7 @@ public class FileDrop {
          * the custom data flavor, if one was created in the constructors,
          * second the default {@link #DATA_FLAVOR} associated with
          * {@link TransferableObject}, and third the
-         * {@link java.awt.datatransfer.DataFlavor.stringFlavor}.
+         * {@link java.awt.datatransfer.DataFlavor#stringFlavor}.
          *
          * @return An array of supported data flavors
          * @since 1.1

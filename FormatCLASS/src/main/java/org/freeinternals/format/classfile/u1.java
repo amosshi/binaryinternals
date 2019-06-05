@@ -47,6 +47,6 @@ public class u1 {
      * @return The {@link #value} as <code>int</code>
      */
     public int IntValue() {
-        return new Short(value).intValue();
+        return Short.valueOf(this.value).intValue();
     }
 }

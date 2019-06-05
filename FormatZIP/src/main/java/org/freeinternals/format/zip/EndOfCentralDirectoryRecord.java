@@ -47,7 +47,7 @@ public class EndOfCentralDirectoryRecord extends FileComponent {
     public final long CentralDirectoryOffset;
     /** ZIP file comment length. */
     public final int ZipFileCommentLength;
-    /** ZIP file comment. <code>null</code> of <@link #ZipFileCommentLength> is zero. */
+    /** ZIP file comment. <code>null</code> of {@link #ZipFileCommentLength} is zero. */
     public final byte[] ZipFileComment;
 
     EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException, FileFormatException {

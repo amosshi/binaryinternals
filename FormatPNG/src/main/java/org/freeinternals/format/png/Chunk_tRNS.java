@@ -28,7 +28,7 @@ public class Chunk_tRNS extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "tRNS";
     /**
-     * A copy of {@link Chunk_IHDR:ColorType}.
+     * A copy of {@link Chunk_IHDR#ColorType}.
      * 
      * @see Chunk_IHDR#ColorType
      */

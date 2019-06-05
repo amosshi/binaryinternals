@@ -5,6 +5,52 @@
     <artifactId>freeinternals</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+
+            <!-- Java Compiler Show Deprecation and Warnings -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                </configuration>
+            </plugin>
+            
+            <!-- https://maven.apache.org/plugins/maven-javadoc-plugin/index.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <additionalJOption>-J-Xmx4g </additionalJOption>
+                    <additionalOptions>-html5</additionalOptions>
+                    <aggregate>true</aggregate>
+                    <detectJavaApiLink>true</detectJavaApiLink>
+                    <detectLinks>true</detectLinks>
+                    <footer>Free Internals</footer>
+                    <header>Free Internals &lt;br&gt; Free Tools to View Internals of Binary File</header>
+                    <show>private</show>
+                    <links>
+                        <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
+                    </links>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
     <modules>
         <module>CommonLib</module>
         <module>FormatCLASS</module>
@@ -19,7 +65,4 @@
         <module>FormatPNG</module>
         <module>BinaryInternalsViewer</module>
     </modules>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

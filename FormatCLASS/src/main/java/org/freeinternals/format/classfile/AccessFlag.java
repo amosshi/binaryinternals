@@ -123,11 +123,11 @@ public enum AccessFlag {
      */
     public static List<AccessFlag> ForMethod = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for {@link AttributeInnerClasses}.
+     * Modifiers for {@link org.freeinternals.format.classfile.attribute.AttributeInnerClasses}.
      */
     public static List<AccessFlag> ForInnerClass = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for {@link AttributeMethodParameters}.
+     * Modifiers for {@link org.freeinternals.format.classfile.attribute.AttributeMethodParameters}.
      */
     public static List<AccessFlag> ForMethodParameters = Collections.synchronizedList(new ArrayList<AccessFlag>());
 
@@ -236,7 +236,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a {@link AttributeInnerClasses}.
+     * Get the modifiers text for a {@link org.freeinternals.format.classfile.attribute.AttributeInnerClasses}.
      *
      * @param value Value in the Class file
      * @return Modifier text
@@ -246,7 +246,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a {@link AttributeMethodParameters}.
+     * Get the modifiers text for a {@link org.freeinternals.format.classfile.attribute.AttributeMethodParameters}.
      *
      * @param value Value in the Class file
      * @return Modifier text

@@ -306,7 +306,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             public final short value;
 
             TargetType(int v) {
-                this.value = new Integer(v).shortValue();
+                this.value = Integer.valueOf(v).shortValue();
             }
 
             /**

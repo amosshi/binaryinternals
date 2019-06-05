@@ -7,10 +7,17 @@
         <version>1.0</version>
     </parent>
     <artifactId>CommonLib</artifactId>
+    <name>freeinternals :: CommonLib</name>
     <packaging>jar</packaging>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <name>freeinternals :: CommonLib</name>
+    
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+    
 </project>
