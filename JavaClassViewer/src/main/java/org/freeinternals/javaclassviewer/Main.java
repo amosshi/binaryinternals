@@ -82,7 +82,7 @@ public final class Main extends JFrame {
         menuFile.add(menuItem_FileOpen);
 
         // File --> Close
-        final JMenuItem menuItem_FileClose = new JMenuItem("Close");
+        final JMenuItem menuItem_FileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
         menuItem_FileClose.setMnemonic(KeyEvent.VK_C);
         menuItem_FileClose.addActionListener(new ActionListener() {
             @Override
@@ -91,14 +91,6 @@ public final class Main extends JFrame {
             }
         });
         menuFile.add(menuItem_FileClose);
-
-        //
-        //menuFile.addSeparator();
-        // File --> Recent Files
-        //JMenu menu_FileRecentFile = new JMenu("Recent Files");
-        //menu_FileRecentFile.setMnemonic(KeyEvent.VK_R);
-        //menuFile.add(menu_FileRecentFile);
-        //
         menuFile.addSeparator();
 
         // File --> Exit
@@ -116,7 +108,7 @@ public final class Main extends JFrame {
         menuBar.add(menuHelp);
 
         // Help --> Homepage
-        final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage");
+        final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileChooser.homeFolderIcon"));
         menuItem_HelpHomepage.setMnemonic(KeyEvent.VK_P);
         menuItem_HelpHomepage.addActionListener(new ActionListener() {
             @Override
@@ -127,7 +119,7 @@ public final class Main extends JFrame {
         menuHelp.add(menuItem_HelpHomepage);
 
         // Help --> About
-        final JMenuItem menuItem_HelpAbout = new JMenuItem("About");
+        final JMenuItem menuItem_HelpAbout = new JMenuItem("About...");
         menuItem_HelpAbout.setMnemonic(KeyEvent.VK_A);
         menuItem_HelpAbout.addActionListener(new ActionListener() {
             @Override
