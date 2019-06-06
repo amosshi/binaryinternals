@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -29,7 +29,7 @@ public class IFD_UNDEFINED extends IFD {
      * @param startPosTiff
      * @param byteArrayTiff
      * @throws IOException
-     * @throws JPEGFileFormatException
+     * @throws FileFormatException
      */
     public IFD_UNDEFINED(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
@@ -106,7 +106,7 @@ public class IFD_UNDEFINED extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     node,
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

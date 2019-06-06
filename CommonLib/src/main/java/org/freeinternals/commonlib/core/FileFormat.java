@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -44,7 +43,7 @@ public abstract class FileFormat {
             throw new FileFormatException(
                     String.format("The file content is empty.\nname = %s", file.getPath()));
         }
-        this.fileByteArray = Tool.readFileAsBytes(file);
+        this.fileByteArray = BytesTool.readFileAsBytes(file);
     }
     
     /**

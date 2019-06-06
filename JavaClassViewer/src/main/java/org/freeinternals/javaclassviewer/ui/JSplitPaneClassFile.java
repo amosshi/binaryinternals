@@ -23,7 +23,7 @@ import org.freeinternals.commonlib.ui.HTMLKit;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
@@ -140,7 +140,7 @@ public class JSplitPaneClassFile extends JSplitPane {
 
         // The Extracted Code
         sb.append("<pre>");
-        sb.append(Tool.getByteDataHexView(opcodeData));
+        sb.append(BytesTool.getByteDataHexView(opcodeData));
         sb.append('\n');
         List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData);
         for (InstructionResult iResult : codeResult) {

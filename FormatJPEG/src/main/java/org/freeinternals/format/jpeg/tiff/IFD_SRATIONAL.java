@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -84,7 +84,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     8,
                     String.format(ShortText.getString(ShortText.KEY_srational_n), i),
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(description);
             node = new DefaultMutableTreeNode(comp);
             parentNode.add(node);
@@ -93,7 +93,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_numerator_n), this.value[0].numerator),
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(ShortText.getString(ShortText.KEY_Numerator));
             node.add(new DefaultMutableTreeNode(comp));
 
@@ -101,7 +101,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8 + 4,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_denominator_n), this.value[0].denominator),
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(ShortText.getString(ShortText.KEY_Denominator));
             node.add(new DefaultMutableTreeNode(comp));
         }

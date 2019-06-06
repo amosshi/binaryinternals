@@ -163,7 +163,7 @@ public class JPanelForTree extends JPanel {
     }
 
     private void toolbar_ShowDetails() {
-        JFrameTool.showPopup(this.topLevelFrame, this.details_panel, this.details_title);
+        UITool.showPopup(this.topLevelFrame, this.details_panel, this.details_title);
     }
 
     private void tree_SelectionChanged(final TreeSelectionEvent e) {

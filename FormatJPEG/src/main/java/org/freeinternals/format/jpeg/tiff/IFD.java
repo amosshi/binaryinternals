@@ -12,8 +12,8 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
 
 public class IFD extends FileComponent {
 
@@ -201,7 +201,7 @@ public class IFD extends FileComponent {
                     this.tiff_StartPos + this.ifd_value_offset,
                     this.ifd_count * IFDType.getTypeLength(this.ifd_type),
                     "data",
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

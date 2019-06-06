@@ -12,16 +12,16 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.util.Tool;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 public class TIFF extends FileComponent {
 
     public static final String IFD_Number_Description = "A 2-byte count of the number of directory entries (i.e., the number of fields)";
-    private byte[] tiffByteArray;
+    private final byte[] tiffByteArray;
     private final TIFFHeader tiffHeader;
-    ArrayList<IFDGroup> exifGroup = new ArrayList<IFDGroup>();
+    ArrayList<IFDGroup> exifGroup = new ArrayList<>();
 
     public TIFF(final PosDataInputStream pDisTiff)
             throws IOException, FileFormatException {
@@ -70,7 +70,7 @@ public class TIFF extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (this.startPos + ref.offset) - lastEnd;
             if (diff > 0) {
-                Tool.generateTreeNode_Diff(
+                UITool.generateTreeNode_Diff(
                         parentNode, lastEnd, diff,
                         this.tiffByteArray, this.startPos);
             }
@@ -82,10 +82,10 @@ public class TIFF extends FileComponent {
                         this.tiffHeader.getStartPos() + ref.offset,
                         ref.length,
                         String.format("Reference of tag [%s] %04X.H (%d, %s)",
-                        ref.ifd.getTagSpace().toString(),
-                        ref.ifd.ifd_tag,
-                        ref.ifd.ifd_tag,
-                        ref.ifd.getTagName()))));
+                                ref.ifd.getTagSpace().toString(),
+                                ref.ifd.ifd_tag,
+                                ref.ifd.ifd_tag,
+                                ref.ifd.getTagName()))));
             }
 
             lastEnd = this.startPos + ref.offset + ref.length;
@@ -94,7 +94,7 @@ public class TIFF extends FileComponent {
         // In case, there is some extra space in the end
         diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
         if (diff > 0) {
-            Tool.generateTreeNode_Diff(
+            UITool.generateTreeNode_Diff(
                     parentNode, lastEnd, diff,
                     this.tiffByteArray, this.startPos);
         }

@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -52,7 +52,7 @@ public class IFD_0110_Model extends IFD_ASCII {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     String.format("Model: %s", this.value),
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0110_Description));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

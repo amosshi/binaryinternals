@@ -33,9 +33,9 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-import org.freeinternals.commonlib.ui.JFrameTool;
 import org.freeinternals.commonlib.ui.JPanelForTree;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.javaclassviewer.ui.JSplitPaneClassFile;
 import org.freeinternals.javaclassviewer.ui.JTreeNodeZipFile;
 import org.freeinternals.javaclassviewer.ui.JTreeZipFile;
@@ -55,7 +55,7 @@ public final class Main extends JFrame {
         this.setTitle("Java Class Viewer");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JFrameTool.centerJFrame(this);
+        UITool.centerJFrame(this);
         this.createMenu();
         this.setVisible(true);
     }
@@ -193,7 +193,7 @@ public final class Main extends JFrame {
     }
 
     private void open_ClassFile(final File file) {
-        this.cfPane = new JSplitPaneClassFile(Tool.readFileAsBytes(file), this);
+        this.cfPane = new JSplitPaneClassFile(BytesTool.readFileAsBytes(file), this);
         this.add(this.cfPane, BorderLayout.CENTER);
 
         this.resizeForContent();
@@ -286,7 +286,7 @@ public final class Main extends JFrame {
 
         final byte b[];
         try {
-            b = Tool.readZipEntryAsBytes(zftree.getZipFile(), ze);
+            b = BytesTool.readZipEntryAsBytes(zftree.getZipFile(), ze);
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(

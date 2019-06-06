@@ -12,7 +12,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
+import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -82,7 +83,7 @@ public class ICCProfile extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (int) ((this.startPos + ref.tag.Offset) - lastPos);
             if (diff > 0) {
-                Tool.generateTreeNode_Diff(
+                UITool.generateTreeNode_Diff(
                         parentNode, lastPos, diff,
                         this.rawData, this.startPos);
             }
@@ -96,7 +97,7 @@ public class ICCProfile extends FileComponent {
 
         diff = (this.startPos + this.rawData.length) - lastPos;
         if (diff > 0) {
-            Tool.generateTreeNode_Diff(
+            UITool.generateTreeNode_Diff(
                     parentNode, lastPos, diff,
                     this.rawData, this.startPos);
         }

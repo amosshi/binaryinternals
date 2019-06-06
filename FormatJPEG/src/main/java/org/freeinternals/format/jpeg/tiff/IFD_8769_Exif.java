@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -74,7 +74,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
                 super.tiff_StartPos + (int) this.value[0],
                 2 + this.ifd_number * IFD.SIZE,
                 "Exif Sub IFD",
-                ImageLoader.getShortcutIcon());
+                UITool.getShortcutIcon());
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
         node = new DefaultMutableTreeNode(comp);
         parentNode.add(node);

@@ -23,7 +23,7 @@ import javax.swing.tree.TreePath;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
-import org.freeinternals.commonlib.ui.JFrameTool;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.JTreeCellRenderer;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -123,6 +123,6 @@ public class JSplitPaneFile extends JSplitPane {
     }
 
     private void treeDoubleClickPopup(JPanel panel, String title) {
-        JFrameTool.showPopup(this.topLevelFrame, panel, title);
+        UITool.showPopup(this.topLevelFrame, panel, title);
     }
 }

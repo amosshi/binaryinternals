@@ -10,7 +10,6 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigInteger;
-import org.freeinternals.commonlib.util.Tool;
 
 /**
  *
@@ -478,7 +477,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
             PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
             byte[] buf = posIn.getBuf();
             for (int i = posIn.getPos() - b.length; i > -1; i--) {
-                if (Tool.isByteArraySame(b, buf, i)) {
+                if (BytesTool.isByteArraySame(b, buf, i)) {
                     result = i;
                     break;
                 }

@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.freeinternals.biv.plugin.PluginManager;
-import org.freeinternals.commonlib.ui.JFrameTool;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -48,7 +48,7 @@ public class Main extends JFrame {
         this.setTitle("Binary Internals Viewer " + PluginManager.getPlugedExtensions());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JFrameTool.centerJFrame(this);
+        UITool.centerJFrame(this);
         this.createMenu();
         this.filedropPanel.setBackground(Color.WHITE);
         this.filedropPanel.setLayout(new BorderLayout());
@@ -96,7 +96,7 @@ public class Main extends JFrame {
         menuFile.add(menuItem_FileOpen);
 
         // File --> Close
-        final JMenuItem menuItem_FileClose = new JMenuItem("Close");
+        final JMenuItem menuItem_FileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
         menuItem_FileClose.setMnemonic(KeyEvent.VK_C);
         menuItem_FileClose.addActionListener(new ActionListener() {
 
@@ -173,12 +173,10 @@ public class Main extends JFrame {
             }
         });
         menuHelp.add(menuItem_HelpAbout);
-
     }
 
     private void enalbeFileDrop(){
         // only the 1st file are handled
-        //new FileDrop(System.out, this.dropPanel, new FileDrop.Listener() {
         new FileDrop(this.filedropPanel, new FileDrop.Listener() {
 
             public void filesDropped(java.io.File[] files) {

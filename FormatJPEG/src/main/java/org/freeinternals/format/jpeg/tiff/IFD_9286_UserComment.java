@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -65,7 +65,7 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
                 super.tiff_StartPos + super.ifd_value_offset,
                 super.data_size,
                 this.getTagName(),
-                ImageLoader.getShortcutIcon());
+                UITool.getShortcutIcon());
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9286_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D));
         parentNode.add(node = new DefaultMutableTreeNode(comp));

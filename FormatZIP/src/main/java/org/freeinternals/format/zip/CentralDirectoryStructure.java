@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -115,7 +115,7 @@ public class CentralDirectoryStructure extends FileComponent {
 
         FileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
             stream.read(this.Signature);
-            if (Tool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
+            if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
                 throw new FileFormatException("Signature does not match for 'central file header signature'.");
             }
             this.VersionMadeBy = stream.readUnsignedShort_LittleEndian();

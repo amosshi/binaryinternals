@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.biv.jpeg.ui.resource.ImageLoader;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -67,7 +67,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     super.getTagName(),
-                    ImageLoader.getShortcutIcon());
+                    UITool.getShortcutIcon());
             comp.setDescription(description);
             parentNode.add(node = new DefaultMutableTreeNode(comp));
 

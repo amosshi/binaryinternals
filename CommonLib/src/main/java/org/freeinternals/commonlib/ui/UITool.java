@@ -9,18 +9,22 @@ package org.freeinternals.commonlib.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 
 /**
- * Utility class for {@code JFrame}.
+ * Utility class for UI.
  *
  * @author Amos Shi
  */
-public class JFrameTool {
+public class UITool {
 
-    private JFrameTool() {
+    private UITool() {
     }
 
     /**
@@ -38,6 +42,39 @@ public class JFrameTool {
         // Center the main window
         f.setLocationRelativeTo(null);
     }
+    
+
+    /**
+     *
+     * @param parentNode
+     * @param lastEnd
+     * @param diff
+     * @param buff
+     * @param buffStartPos
+     */
+    public static void generateTreeNode_Diff(
+            DefaultMutableTreeNode parentNode,
+            int lastEnd,
+            int diff,
+            byte[] buff, int buffStartPos) {
+        String diffStr;
+
+        if (BytesTool.isByteArrayEmpty(buff, lastEnd - buffStartPos, diff - 1)) {
+            diffStr = String.format("Empty [0x%04X, 0x%04X] length = %d", lastEnd, lastEnd + diff - 1, diff);
+        } else {
+            diffStr = String.format("Unknown [0x%04X, 0x%04X] length = %d", lastEnd, lastEnd + diff - 1, diff);
+        }
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                lastEnd,
+                diff,
+                diffStr)));
+    }
+    
+    
+    public static Icon getShortcutIcon() {
+        return UIManager.getIcon("InternalFrame.maximizeIcon");
+    }
+    
 
     public static void showPopup(JFrame frame, JPanel panel, String title) {
         if (frame == null || panel == null) {

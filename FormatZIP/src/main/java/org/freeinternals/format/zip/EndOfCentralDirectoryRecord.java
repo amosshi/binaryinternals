@@ -9,7 +9,7 @@ package org.freeinternals.format.zip;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -53,7 +53,7 @@ public class EndOfCentralDirectoryRecord extends FileComponent {
     EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException, FileFormatException {
         this.startPos = stream.getPos();
         stream.read(this.Signature);
-        if (Tool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_END) == false) {
+        if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_END) == false) {
             throw new FileFormatException("Signature does not match for 'end of central directory signature'.");
         }
         this.DiskNumber = stream.readUnsignedShort_LittleEndian();

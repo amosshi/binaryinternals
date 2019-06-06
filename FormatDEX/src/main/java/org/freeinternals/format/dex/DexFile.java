@@ -17,7 +17,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.dex.HeaderItem.Endian;
 
@@ -75,7 +75,7 @@ public class DexFile extends FileFormat {
         byte[] magic2 = new byte[DEX_FILE_MAGIC2.length];
         System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.length);
         System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.length);
-        if (Tool.isByteArraySame(DEX_FILE_MAGIC1, magic1) == false
+        if (BytesTool.isByteArraySame(DEX_FILE_MAGIC1, magic1) == false
                 || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }

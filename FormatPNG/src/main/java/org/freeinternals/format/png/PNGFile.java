@@ -23,7 +23,7 @@ import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.util.Tool;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.FileFormatException;
 
 /**
@@ -92,7 +92,7 @@ public class PNGFile extends FileFormat {
         // Check the file signature
         byte[] magic = new byte[MAGIC.length];
         System.arraycopy(this.fileByteArray, 0, magic, 0, MAGIC.length);
-        if (Tool.isByteArraySame(MAGIC, magic) == false) {
+        if (BytesTool.isByteArraySame(MAGIC, magic) == false) {
             throw new FileFormatException("This is not a valid PNG file, because the PNG file signature does not exist at the beginning of this file.");
         }
 
@@ -128,7 +128,7 @@ public class PNGFile extends FileFormat {
             try {
                 mtd = cls.getDeclaredMethod("GetChunkType");
                 type = (byte[]) mtd.invoke(null);
-                if (Tool.isByteArraySame(chunkType, type) == true) {
+                if (BytesTool.isByteArraySame(chunkType, type) == true) {
                     Constructor c = cls.getConstructor(PosDataInputStream.class, PNGFile.class);
                     chunk = (Chunk) c.newInstance(streamChunk, this);
                     break;   // End the loop
