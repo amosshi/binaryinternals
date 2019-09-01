@@ -280,6 +280,11 @@ public final class Opcode {
          * {@link #instanceof_}.
          *
          * @return The postfix "_" from the name
+         * 
+         * @see #goto_
+         * @see #return_
+         * @see #new_
+         * @see #instanceof_
          */
         String getName() {
             String name = super.name();
@@ -938,42 +943,42 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if<cond> instruction.
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifeq.name();
         } else if (Opcode.Instruction.ifne.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifne.name();
         } else if (Opcode.Instruction.iflt.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.iflt.name();
         } else if (Opcode.Instruction.ifge.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifge.name();
         } else if (Opcode.Instruction.ifgt.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifgt.name();
         } else if (Opcode.Instruction.ifle.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifle.name();
         } else if (Opcode.Instruction.if_icmpeq.code == opcode) {
             // if_icmp<cond>: if_icmpeq = 159 (0x9f) if_icmpne = 160 (0xa0) if_icmplt = 161 (0xa1) if_icmpge = 162 (0xa2) if_icmpgt = 163 (0xa3) if_icmple = 164 (0xa4)
             // Branch if int comparison succeeds
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmpeq.name();
         } else if (Opcode.Instruction.if_icmpne.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmpne.name();
         } else if (Opcode.Instruction.if_icmplt.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmplt.name();
         } else if (Opcode.Instruction.if_icmpge.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, result.opCodeText = Opcode.Instruction.if_icmpge.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmpge.name();
         } else if (Opcode.Instruction.if_icmpgt.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmpgt.name();
         } else if (Opcode.Instruction.if_icmple.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_icmple.name();
         } else if (Opcode.Instruction.if_acmpeq.code == opcode) {
             // if_acmp<cond>: if_acmpeq = 165 (0xa5) if_acmpne = 166 (0xa6)
             // Branch if reference comparison succeeds
@@ -985,10 +990,10 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if_acmp<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if_acmp<cond> instruction.
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_acmpeq.name();
         } else if (Opcode.Instruction.if_acmpne.code == opcode) {
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.if_acmpne.name();
         } else if (Opcode.Instruction.goto_.code == opcode) {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset,
@@ -996,7 +1001,7 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of the opCode of this goto instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this goto instruction.
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.goto_.getName();
         } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
             // The address of the opCode of the instruction immediately following this jsr instruction
@@ -1006,7 +1011,7 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of this jsr instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this jsr instruction.
             result.branchbyte = Integer.valueOf(pdis.readShort());
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.jsr.name();
         } else if (Opcode.Instruction.ret.code == opcode) {
             // Return from subroutine
             // The index is an unsigned byte between 0 and 255, inclusive.
@@ -1166,15 +1171,15 @@ public final class Opcode {
         } else if (Opcode.Instruction.ifnull.code == opcode) {
             // Branch if reference is null
             result.branchbyte = pdis.readUnsignedShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifnull.name();
         } else if (Opcode.Instruction.ifnonnull.code == opcode) {
             // Branch if reference not null
             result.branchbyte = pdis.readUnsignedShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.ifnonnull.name();
         } else if (Opcode.Instruction.goto_w.code == opcode) {
             // Branch always (wide index)
             result.branchbyte = pdis.readInt();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.goto_w.name();
         } else if (Opcode.Instruction.jsr_w.code == opcode) {
             // Jump subroutine (wide index)
             // --
@@ -1182,7 +1187,7 @@ public final class Opcode {
             // construct a signed 32-bit offset, where the offset is
             // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4.
             result.branchbyte = pdis.readInt();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), result.branchbyte);
+            result.opCodeText = Opcode.Instruction.jsr_w.name();
         } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
             result.opCodeText = Opcode.Instruction.breakpoint.name();
@@ -1373,6 +1378,16 @@ public final class Opcode {
         }
 
         /**
+         * Get the absolute value of the branch byte, if {@link #branchbyte} is not null.
+         * 
+         * @return Absolute value of the {@link #branchbyte}; return <code>null</code> in case {@link #branchbyte} is null
+         * @see #branchbyte
+         */
+        public Integer getAbsoluteBranchByte(){
+            return (this.branchbyte != null) ? this.offset + this.branchbyte : null;
+        }
+
+        /**
          * Getter for {@link #opCodeText}.
          * 
          * @return {@link #opCodeText} value
@@ -1392,7 +1407,14 @@ public final class Opcode {
 
         @Override
         public String toString() {
-            return String.format("offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
+            String s = String.format("offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
+
+            if (this.branchbyte != null) {
+                String branch = String.format(" %d (branch byte offset = %d)", this.getAbsoluteBranchByte(), this.branchbyte);
+                s += branch;
+            }
+
+            return s;
         }
 
         /**
@@ -1403,16 +1425,18 @@ public final class Opcode {
          * @return {@link Instruction} analysis result
          */
         public String toString(ClassFile cf) {
+            String s = this.toString();
+            
             if (this.cpIndex != null) {
                 String cpDesc = cf.getCPDescription(this.cpIndex);
                 // Avoid too long description
                 if (cpDesc.length() > 1000) {
                     cpDesc = cpDesc.substring(1, 1000);
                 }
-                return this.toString() + " - " + cpDesc;
-            } else {
-                return this.toString();
+                s = s + " - " + cpDesc;
             }
+
+            return s;
         }
     }
 }
