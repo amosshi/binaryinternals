@@ -33,7 +33,7 @@ Supported Formats
 Build the Source Code
 =========================
 
-We request the maven command line `mvn` has been instaled.
+We require the maven command line `mvn` has been installed.
 
 - `./build.sh` Build the source code and create the deploy packages
 

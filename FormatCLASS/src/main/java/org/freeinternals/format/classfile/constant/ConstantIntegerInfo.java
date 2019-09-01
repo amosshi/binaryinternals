@@ -30,7 +30,9 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  */
 public class ConstantIntegerInfo extends CPInfo {
 
+    public static final int RAW_DATA_SIZE = 4;
     public static final int LENGTH = 5;
+    public final byte[] rawData;
     public final int integerValue;
 
     ConstantIntegerInfo(final PosDataInputStream posDataInputStream) throws IOException {
@@ -38,6 +40,7 @@ public class ConstantIntegerInfo extends CPInfo {
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 
+        this.rawData = posDataInputStream.getBuf(posDataInputStream.getPos(), RAW_DATA_SIZE);
         this.integerValue = posDataInputStream.readInt();
     }
 

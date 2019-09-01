@@ -32,10 +32,12 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  */
 public class ConstantLongInfo extends CPInfo {
 
+    public static final int RAW_DATA_SIZE = 8;
     public static final int LENGTH = 9;
 
     //private u4 high_bytes;
     //private u4 low_bytes;
+    public final byte[] rawData;
     public final long longValue;
 
     ConstantLongInfo(final PosDataInputStream posDataInputStream) throws IOException {
@@ -43,6 +45,7 @@ public class ConstantLongInfo extends CPInfo {
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 
+        this.rawData = posDataInputStream.getBuf(posDataInputStream.getPos(), RAW_DATA_SIZE);
         this.longValue = posDataInputStream.readLong();
     }
 

@@ -7,6 +7,7 @@
 package org.freeinternals.javaclassviewer.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.ClassFile;
@@ -112,7 +113,7 @@ final class JTreeCPInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 integerInfo.getStartPos() + 1,
                 4,
-                "bytes: " + integerInfo.integerValue
+                "bytes: " + integerInfo.integerValue + " - " + BytesTool.getByteDataHexView(integerInfo.rawData)
         )));
     }
 
@@ -120,7 +121,7 @@ final class JTreeCPInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatInfo.getStartPos() + 1,
                 4,
-                "bytes: " + floatInfo.floatValue
+                "bytes: " + floatInfo.floatValue + " - " + BytesTool.getByteDataHexView(floatInfo.rawData)
         )));
     }
 
@@ -130,7 +131,7 @@ final class JTreeCPInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 4,
-                "high_bytes - value: " + longInfo.longValue
+                "high_bytes - value: " + longInfo.longValue + " - " + BytesTool.getByteDataHexView(longInfo.rawData)
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 5,
@@ -145,7 +146,7 @@ final class JTreeCPInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 4,
-                "high_bytes - value: " + doubleInfo.doubleValue
+                "high_bytes - value: " + doubleInfo.doubleValue + " - " + BytesTool.getByteDataHexView(doubleInfo.rawData)
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 5,

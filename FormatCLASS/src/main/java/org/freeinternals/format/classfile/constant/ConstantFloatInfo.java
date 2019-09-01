@@ -31,7 +31,9 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  */
 public class ConstantFloatInfo extends CPInfo {
 
+    public static final int RAW_DATA_SIZE = 4;
     public static final int LENGTH = 5;
+    public final byte[] rawData;
     public final Float floatValue;
 
     ConstantFloatInfo(final PosDataInputStream posDataInputStream) throws IOException {
@@ -39,6 +41,7 @@ public class ConstantFloatInfo extends CPInfo {
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 
+        this.rawData = posDataInputStream.getBuf(posDataInputStream.getPos(), RAW_DATA_SIZE);
         this.floatValue = posDataInputStream.readFloat();
     }
 
