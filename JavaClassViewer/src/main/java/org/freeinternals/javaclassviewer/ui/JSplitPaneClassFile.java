@@ -30,7 +30,7 @@ import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.MethodInfo;
 import org.freeinternals.format.classfile.Opcode;
-import org.freeinternals.format.classfile.Opcode.InstructionResult;
+import org.freeinternals.format.classfile.Opcode.InstructionParsed;
 
 /**
  * A split panel created from a class file byte array.
@@ -142,11 +142,11 @@ public class JSplitPaneClassFile extends JSplitPane {
         sb.append("<pre>");
         sb.append(BytesTool.getByteDataHexView(opcodeData));
         sb.append('\n');
-        List<Opcode.InstructionResult> codeResult = Opcode.parseCode(opcodeData);
-        for (InstructionResult iResult : codeResult) {
+        List<Opcode.InstructionParsed> codeResult = Opcode.parseCode(opcodeData);
+        for (InstructionParsed iResult : codeResult) {
             sb.append(iResult.toString(this.classFile));
             sb.append('\n');
-            if (iResult.getCpindex() > -1) {
+            if (iResult.getCpindex() != null) {
                 cpindexCounter++;
             }
         }
@@ -155,7 +155,7 @@ public class JSplitPaneClassFile extends JSplitPane {
         // The Reference Object
         if (cpindexCounter > 0) {
             sb.append("<ol>");
-            codeResult.stream().filter((iResult) -> (iResult.getCpindex() > -1)).forEachOrdered((InstructionResult iResult) -> {
+            codeResult.stream().filter((iResult) -> (iResult.getCpindex() != null)).forEachOrdered((InstructionParsed iResult) -> {
                 sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(
                         this.classFile.getCPDescription(iResult.getCpindex() ))));
             });

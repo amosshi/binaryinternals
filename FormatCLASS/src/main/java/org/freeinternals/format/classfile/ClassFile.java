@@ -82,7 +82,7 @@ public class ClassFile {
      * Minor version of a {@code class} file. It is the {@code minor_version} in
      * {@code ClassFile} structure.
      *
-     * @see ClassFile#minor_version
+     * @see ClassFile#getVersion()
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
@@ -102,7 +102,7 @@ public class ClassFile {
      * inclusive.
      * </pre>
      *
-     * @see ClassFile#major_version
+     * @see ClassFile#getVersion()
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -117,7 +117,6 @@ public class ClassFile {
      * Constant Pool Count of a {@code class} or {@code interface}. It is the
      * {@code constant_pool_count} in {@code ClassFile} structure.
      *
-     * @see ClassFile#constant_pool_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -129,13 +128,27 @@ public class ClassFile {
     //
     // Class Declaration
     //
+
+    /**
+     * A mask of flags used to denote access permissions to and properties of this class or interface.
+     * 
+     * @see AccessFlag#ACC_PUBLIC
+     * @see AccessFlag#ACC_FINAL
+     * @see AccessFlag#ACC_SUPER
+     * @see AccessFlag#ACC_INTERFACE
+     * @see AccessFlag#ACC_ABSTRACT
+     * @see AccessFlag#ACC_SYNTHETIC
+     * @see AccessFlag#ACC_ANNOTATION
+     * @see AccessFlag#ACC_ENUM
+     * @see AccessFlag#ACC_MODULE
+     */
     public final AccessFlags access_flags;
 
     /**
      * {@code This} class of a {@code class} or {@code interface}. It is the
      * {@code this_class} in {@code ClassFile} structure.
      *
-     * @see ClassFile#this_class
+     * @see ClassFile#getThisClassName()
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -147,7 +160,7 @@ public class ClassFile {
      * Super class of a {@code class} or {@code interface}. It is the
      * {@code super_class} in {@code ClassFile} structure.
      *
-     * @see ClassFile#super_class
+     * @see ClassFile#getSuperClassName()
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -159,7 +172,6 @@ public class ClassFile {
      * Interfaces count of a {@code class} or {@code interface}. It is the
      * {@code interfaces_count} in {@code ClassFile} structure.
      *
-     * @see ClassFile#interfaces_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
@@ -175,7 +187,6 @@ public class ClassFile {
      * Fields Count of a {@code class} or {@code interface}. It is the
      * {@code fields_count} in {@code ClassFile} structure.
      *
-     * @see ClassFile#fields_count
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure

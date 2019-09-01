@@ -109,7 +109,7 @@ public class AttributeCode extends AttributeInfo {
      *
      * @return Parsed {@link Opcode} list
      */
-    public List<Opcode.InstructionResult> parseCode() {
+    public List<Opcode.InstructionParsed> parseCode() {
         if (this.code != null && this.code.length > 0) {
             return Opcode.parseCode(this.code);
         } else {

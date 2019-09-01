@@ -211,7 +211,8 @@ public final class Opcode {
         if_icmple(164),
         if_acmpeq(165),
         if_acmpne(166),
-        goto_(167), // Remove the '_' from the name
+        /** Note: Add '_' suffix to avoid compile error since 'goto' is a Java keyword, remove the '_' from the name when showing. */
+        goto_(167),     
         jsr(168),
         ret(169),
         tableswitch(170),
@@ -221,7 +222,8 @@ public final class Opcode {
         freturn(174),
         dreturn(175),
         areturn(176),
-        return_(177), // Remove the '_' from the name
+        /** Note: Add '_' suffix to avoid compile error since 'goto' is a Java keyword, remove the '_' from the name when showing. */
+        return_(177),
         getstatic(178),
         putstatic(179),
         getfield(180),
@@ -231,12 +233,14 @@ public final class Opcode {
         invokestatic(184),
         invokeinterface(185),
         invokedynamic(186),
+        /** Note: Add '_' suffix to avoid compile error since 'goto' is a Java keyword, remove the '_' from the name when showing. */
         new_(187),
         newarray(188),
         anewarray(189),
         arraylength(190),
         athrow(191),
         checkcast(192),
+        /** Note: Add '_' suffix to avoid compile error since 'goto' is a Java keyword, remove the '_' from the name when showing. */
         instanceof_(193),
         monitorenter(194),
         monitorexit(195),
@@ -365,12 +369,12 @@ public final class Opcode {
      * @param code Byte array of method source code
      * @return Readable string of the method source code
      */
-    public static List<InstructionResult> parseCode(final byte[] code) {
+    public static List<InstructionParsed> parseCode(final byte[] code) {
         if ((code == null) || (code.length < 1)) {
             return new ArrayList<>();
         }
 
-        List<InstructionResult> codeResult = new ArrayList<>();
+        List<InstructionParsed> codeResult = new ArrayList<>();
         final PosDataInputStream pdis = new PosDataInputStream(new PosByteArrayInputStream(code));
         while (pdis.getPos() < code.length) {
             try {
@@ -388,15 +392,14 @@ public final class Opcode {
         return codeResult;
     }
 
-    private static InstructionResult parseInstruction(final PosDataInputStream pdis) throws IOException {
+    private static InstructionParsed parseInstruction(final PosDataInputStream pdis) throws IOException {
         final int curPos = pdis.getPos();
         final int opcode = pdis.read();
-        InstructionResult result = new InstructionResult(curPos, opcode);
+        InstructionParsed result = new InstructionParsed(curPos, opcode);
 
         int byteValue;
-        int byteValue2;
-        int shortValue;
-        int intValue;
+        int immediateSignedByteValue;
+        int intermediateShortValue;
 
         if (Opcode.Instruction.nop.code == opcode) {
             // Do nothing
@@ -406,12 +409,12 @@ public final class Opcode {
             // Push the null object reference onto the operand stack.
             result.opCodeText = Opcode.Instruction.aconst_null.name();
         } else if (Opcode.Instruction.iconst_m1.code == opcode) {
+            // An iconst_m1 instruction is type safe if one can validly push the type int onto the incoming operand stack yielding the outgoing type state. 
             // Push int constant -1
             result.opCodeText = Opcode.Instruction.iconst_m1.name();
         } else if (Opcode.Instruction.iconst_0.code == opcode) {
             // Push int constant
             // Push the int constant <i> (-1, 0, 1, 2, 3, 4 or 5) onto the operand stack.
-            // ???: -1, is iconst_m1 is a new one?
             result.opCodeText = Opcode.Instruction.iconst_0.name();
         } else if (Opcode.Instruction.iconst_1.code == opcode) {
             result.opCodeText = Opcode.Instruction.iconst_1.name();
@@ -455,8 +458,8 @@ public final class Opcode {
             // where the value of the short is (byte1 << 8) | byte2.
             // The intermediate value is then sign-extended to an int value.
             // That value is pushed onto the operand stack.
-            shortValue = pdis.readUnsignedShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.sipush.name(), shortValue);
+            intermediateShortValue = pdis.readUnsignedShort();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.sipush.name(), intermediateShortValue);
         } else if (Opcode.Instruction.ldc.code == opcode) {
             // Push item from runtime constant pool
             // --
@@ -884,8 +887,8 @@ public final class Opcode {
             byteValue = pdis.readUnsignedByte();
             // The const is an immediate signed byte.
             // The value const is first sign-extended to an int, and then the local variable at index is incremented by that amount.
-            byteValue2 = pdis.readByte();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Opcode.Instruction.iinc.name(), byteValue, byteValue2);
+            immediateSignedByteValue = pdis.readByte();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Opcode.Instruction.iinc.name(), byteValue, immediateSignedByteValue);
         } else if (Opcode.Instruction.i2l.code == opcode) {
             result.opCodeText = Opcode.Instruction.i2l.name();
         } else if (Opcode.Instruction.i2f.code == opcode) {
@@ -934,43 +937,43 @@ public final class Opcode {
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2.
             // Execution then proceeds at that offset from the address of the opCode of this if<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if<cond> instruction.
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), result.branchbyte);
         } else if (Opcode.Instruction.ifne.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), result.branchbyte);
         } else if (Opcode.Instruction.iflt.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), result.branchbyte);
         } else if (Opcode.Instruction.ifge.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), result.branchbyte);
         } else if (Opcode.Instruction.ifgt.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), result.branchbyte);
         } else if (Opcode.Instruction.ifle.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmpeq.code == opcode) {
             // if_icmp<cond>: if_icmpeq = 159 (0x9f) if_icmpne = 160 (0xa0) if_icmplt = 161 (0xa1) if_icmpge = 162 (0xa2) if_icmpgt = 163 (0xa3) if_icmple = 164 (0xa4)
             // Branch if int comparison succeeds
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmpne.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmplt.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmpge.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, result.opCodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, result.opCodeText = Opcode.Instruction.if_icmpge.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmpgt.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_icmple.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_acmpeq.code == opcode) {
             // if_acmp<cond>: if_acmpeq = 165 (0xa5) if_acmpne = 166 (0xa6)
             // Branch if reference comparison succeeds
@@ -981,19 +984,19 @@ public final class Opcode {
             // where the offset is calculated to be (branchbyte1 << 8) | branchbyte2.
             // Execution then proceeds at that offset from the address of the opCode of this if_acmp<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if_acmp<cond> instruction.
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), result.branchbyte);
         } else if (Opcode.Instruction.if_acmpne.code == opcode) {
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), result.branchbyte);
         } else if (Opcode.Instruction.goto_.code == opcode) {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset,
             // where branchoffset is (branchbyte1 << 8) | branchbyte2.
             // Execution proceeds at that offset from the address of the opCode of this goto instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this goto instruction.
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), result.branchbyte);
         } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
             // The address of the opCode of the instruction immediately following this jsr instruction
@@ -1002,8 +1005,8 @@ public final class Opcode {
             // where the offset is (branchbyte1 << 8) | branchbyte2.
             // Execution proceeds at that offset from the address of this jsr instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this jsr instruction.
-            shortValue = pdis.readShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), shortValue);
+            result.branchbyte = Integer.valueOf(pdis.readShort());
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), result.branchbyte);
         } else if (Opcode.Instruction.ret.code == opcode) {
             // Return from subroutine
             // The index is an unsigned byte between 0 and 255, inclusive.
@@ -1162,24 +1165,24 @@ public final class Opcode {
                     byteValue);
         } else if (Opcode.Instruction.ifnull.code == opcode) {
             // Branch if reference is null
-            shortValue = pdis.readUnsignedShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), shortValue);
+            result.branchbyte = pdis.readUnsignedShort();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), result.branchbyte);
         } else if (Opcode.Instruction.ifnonnull.code == opcode) {
             // Branch if reference not null
-            shortValue = pdis.readUnsignedShort();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), shortValue);
+            result.branchbyte = pdis.readUnsignedShort();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), result.branchbyte);
         } else if (Opcode.Instruction.goto_w.code == opcode) {
             // Branch always (wide index)
-            intValue = pdis.readInt();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), intValue);
+            result.branchbyte = pdis.readInt();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), result.branchbyte);
         } else if (Opcode.Instruction.jsr_w.code == opcode) {
             // Jump subroutine (wide index)
             // --
             // The unsigned branchbyte1, branchbyte2, branchbyte3, and branchbyte4 are used to
             // construct a signed 32-bit offset, where the offset is
             // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4.
-            intValue = pdis.readInt();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), intValue);
+            result.branchbyte = pdis.readInt();
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), result.branchbyte);
         } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
             result.opCodeText = Opcode.Instruction.breakpoint.name();
@@ -1291,18 +1294,20 @@ public final class Opcode {
     /**
      * Parsed result for each opcode instruction.
      */
-    public static class InstructionResult {
+    public static class InstructionParsed {
 
         /**
          * Current offset of the opCode in the class file <code>Code</code>
          * attribute byte array.
          */
-        protected int offset;
+        public final int offset;
 
         /**
          * JVM Opcode value.
+         * 
+         * @see Instruction#code
          */
-        protected int opCode;
+        public final int opCode;
 
         /**
          * Text of the {@link #opCode}. In case {@link #opCode} is
@@ -1313,39 +1318,65 @@ public final class Opcode {
 
         /**
          * Referenced {@link ClassFile#constant_pool} object index if exist. It
-         * will be <code>-1</code> if the {@link Instruction} did not reference
+         * will be <code>null</code> if the {@link Instruction} did not reference
          * to any {@link ClassFile#constant_pool} object.
+         * 
+         * @see Instruction#ldc
+         * @see Instruction#ldc_w
+         * @see Instruction#ldc2_w
+         * @see Instruction#getstatic
+         * @see Instruction#putstatic
+         * @see Instruction#getfield
+         * @see Instruction#putfield
+         * @see Instruction#invokevirtual
+         * @see Instruction#invokespecial
+         * @see Instruction#invokestatic
+         * @see Instruction#invokeinterface
+         * @see Instruction#invokedynamic
+         * @see Instruction#new_
+         * @see Instruction#anewarray
+         * @see Instruction#checkcast
+         * @see Instruction#instanceof_
+         * @see Instruction#multianewarray
          */
-        protected int cpIndex = -1;
+        protected Integer cpIndex = null;
 
-        InstructionResult(int curPos, int opcode) {
+        /**
+         * Execution proceeds at that offset from the address of the opcode of current instruction.
+         * 
+         * @see Instruction#goto_
+         * @see Instruction#goto_w
+         * @see Instruction#if_acmpeq
+         * @see Instruction#if_acmpne
+         * @see Instruction#if_icmpeq
+         * @see Instruction#if_icmpge
+         * @see Instruction#if_icmpgt
+         * @see Instruction#if_icmple
+         * @see Instruction#if_icmplt
+         * @see Instruction#if_icmpne
+         * @see Instruction#ifeq
+         * @see Instruction#ifne
+         * @see Instruction#iflt
+         * @see Instruction#ifge
+         * @see Instruction#ifgt
+         * @see Instruction#ifle
+         * @see Instruction#ifnonnull
+         * @see Instruction#ifnull
+         * @see Instruction#jsr
+         * @see Instruction#jsr_w
+         */
+        protected Integer branchbyte = null;
+
+        InstructionParsed(int curPos, int opcode) {
             this.offset = curPos;
             this.opCode = opcode;
-        }
-
-        /**
-         * Getter for {@link #offset}.
-         * 
-         * @return {@link #offset} value
-         */        
-        public int getOffset(){
-            return this.offset;
-        }
-        
-        /**
-         * Getter for {@link #opCode}.
-         * 
-         * @return {@link #opCode} value
-         */        
-        public int getOpcode() {
-            return this.opCode;
         }
 
         /**
          * Getter for {@link #opCodeText}.
          * 
          * @return {@link #opCodeText} value
-         */        
+         */
         public String getOpcodeText() {
             return this.opCodeText;
         }
@@ -1353,9 +1384,9 @@ public final class Opcode {
         /**
          * Getter for {@link #cpIndex}.
          * 
-         * @return {@link #cpIndex} value
-         */        
-        public int getCpindex() {
+         * @return {@link #cpIndex} value. <code>null</code> if no constant pool index.
+         */
+        public Integer getCpindex() {
             return this.cpIndex;
         }
 
@@ -1372,7 +1403,7 @@ public final class Opcode {
          * @return {@link Instruction} analysis result
          */
         public String toString(ClassFile cf) {
-            if (this.cpIndex > -1) {
+            if (this.cpIndex != null) {
                 String cpDesc = cf.getCPDescription(this.cpIndex);
                 // Avoid too long description
                 if (cpDesc.length() > 1000) {
