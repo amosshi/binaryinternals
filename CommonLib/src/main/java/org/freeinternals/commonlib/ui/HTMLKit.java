@@ -49,6 +49,8 @@ public class HTMLKit {
     /**
      * Get HTML marks for the byte.
      *
+     * @param b Byte value
+     * @return  HTML mark for the byte value
      * @see <a href="http://ascii.cl/htmlcodes.htm">HTML Codes - Characters and
      * symbols</a>
      */

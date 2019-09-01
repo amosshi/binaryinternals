@@ -146,7 +146,7 @@ public class JSplitPaneClassFile extends JSplitPane {
         for (InstructionResult iResult : codeResult) {
             sb.append(iResult.toString(this.classFile));
             sb.append('\n');
-            if (iResult.cpIndex1 > -1) {
+            if (iResult.getCpindex() > -1) {
                 cpindexCounter++;
             }
         }
@@ -155,12 +155,10 @@ public class JSplitPaneClassFile extends JSplitPane {
         // The Reference Object
         if (cpindexCounter > 0) {
             sb.append("<ol>");
-            for (InstructionResult iResult : codeResult) {
-                if (iResult.cpIndex1 > -1) {
-                    sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(
-                            this.classFile.getCPDescription(iResult.cpIndex1 ))));
-                }
-            }
+            codeResult.stream().filter((iResult) -> (iResult.getCpindex() > -1)).forEachOrdered((InstructionResult iResult) -> {
+                sb.append(String.format("<li>%s</li>", HTMLKit.EscapeFilter(
+                        this.classFile.getCPDescription(iResult.getCpindex() ))));
+            });
             sb.append("</ol>");
         }
 

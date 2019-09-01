@@ -391,65 +391,63 @@ public final class Opcode {
     private static InstructionResult parseInstruction(final PosDataInputStream pdis) throws IOException {
         final int curPos = pdis.getPos();
         final int opcode = pdis.read();
+        InstructionResult result = new InstructionResult(curPos, opcode);
 
         int byteValue;
         int byteValue2;
         int shortValue;
         int intValue;
 
-        int cpIndex1 = -1;
-        String opcodeText;
-
         if (Opcode.Instruction.nop.code == opcode) {
             // Do nothing
-            opcodeText = Opcode.Instruction.nop.name();
+            result.opCodeText = Opcode.Instruction.nop.name();
         } else if (Opcode.Instruction.aconst_null.code == opcode) {
             // Push null
             // Push the null object reference onto the operand stack.
-            opcodeText = Opcode.Instruction.aconst_null.name();
+            result.opCodeText = Opcode.Instruction.aconst_null.name();
         } else if (Opcode.Instruction.iconst_m1.code == opcode) {
             // Push int constant -1
-            opcodeText = Opcode.Instruction.iconst_m1.name();
+            result.opCodeText = Opcode.Instruction.iconst_m1.name();
         } else if (Opcode.Instruction.iconst_0.code == opcode) {
             // Push int constant
             // Push the int constant <i> (-1, 0, 1, 2, 3, 4 or 5) onto the operand stack.
             // ???: -1, is iconst_m1 is a new one?
-            opcodeText = Opcode.Instruction.iconst_0.name();
+            result.opCodeText = Opcode.Instruction.iconst_0.name();
         } else if (Opcode.Instruction.iconst_1.code == opcode) {
-            opcodeText = Opcode.Instruction.iconst_1.name();
+            result.opCodeText = Opcode.Instruction.iconst_1.name();
         } else if (Opcode.Instruction.iconst_2.code == opcode) {
-            opcodeText = Opcode.Instruction.iconst_2.name();
+            result.opCodeText = Opcode.Instruction.iconst_2.name();
         } else if (Opcode.Instruction.iconst_3.code == opcode) {
-            opcodeText = Opcode.Instruction.iconst_3.name();
+            result.opCodeText = Opcode.Instruction.iconst_3.name();
         } else if (Opcode.Instruction.iconst_4.code == opcode) {
-            opcodeText = Opcode.Instruction.iconst_4.name();
+            result.opCodeText = Opcode.Instruction.iconst_4.name();
         } else if (Opcode.Instruction.iconst_5.code == opcode) {
-            opcodeText = Opcode.Instruction.iconst_5.name();
+            result.opCodeText = Opcode.Instruction.iconst_5.name();
         } else if (Opcode.Instruction.lconst_0.code == opcode) {
             // Push long constant
             // Push the long constant <l> (0 or 1) onto the operand stack.
-            opcodeText = Opcode.Instruction.lconst_0.name();
+            result.opCodeText = Opcode.Instruction.lconst_0.name();
         } else if (Opcode.Instruction.lconst_1.code == opcode) {
-            opcodeText = Opcode.Instruction.lconst_1.name();
+            result.opCodeText = Opcode.Instruction.lconst_1.name();
         } else if (Opcode.Instruction.fconst_0.code == opcode) {
             // Push float
             // Push the float constant <f> (0.0, 1.0, or 2.0) onto the operand stack.
-            opcodeText = Opcode.Instruction.fconst_0.name();
+            result.opCodeText = Opcode.Instruction.fconst_0.name();
         } else if (Opcode.Instruction.fconst_1.code == opcode) {
-            opcodeText = Opcode.Instruction.fconst_1.name();
+            result.opCodeText = Opcode.Instruction.fconst_1.name();
         } else if (Opcode.Instruction.fconst_2.code == opcode) {
-            opcodeText = Opcode.Instruction.fconst_2.name();
+            result.opCodeText = Opcode.Instruction.fconst_2.name();
         } else if (Opcode.Instruction.dconst_0.code == opcode) {
             // Push double
             // Push the double constant <d> (0.0 or 1.0) onto the operand stack.
-            opcodeText = Opcode.Instruction.dconst_0.name();
+            result.opCodeText = Opcode.Instruction.dconst_0.name();
         } else if (Opcode.Instruction.bipush.code == opcode) {
             // Push the immediate byte value
             // --
             // The immediate byte is sign-extended to an int value.
             // That value is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.bipush.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.bipush.name(), byteValue);
         } else if (Opcode.Instruction.sipush.code == opcode) {
             // Push the immediate short value
             // --
@@ -458,7 +456,7 @@ public final class Opcode {
             // The intermediate value is then sign-extended to an int value.
             // That value is pushed onto the operand stack.
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.sipush.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.sipush.name(), shortValue);
         } else if (Opcode.Instruction.ldc.code == opcode) {
             // Push item from runtime constant pool
             // --
@@ -466,9 +464,8 @@ public final class Opcode {
             // The runtime constant pool entry at index
             //   either must be a runtime constant of type int or float,
             //   or must be a symbolic reference to a string literal (?.1).
-            byteValue = pdis.readUnsignedByte();
-            cpIndex1 = byteValue;
-            opcodeText = Opcode.Instruction.ldc.name();
+            result.cpIndex = pdis.readUnsignedByte();
+            result.opCodeText = Opcode.Instruction.ldc.name();
         } else if (Opcode.Instruction.ldc_w.code == opcode) {
             // Push item from runtime constant pool (wide index)
             // --
@@ -480,9 +477,8 @@ public final class Opcode {
             //   either must be a runtime constant of type int or float,
             //   or must be a symbolic reference to a string literal (?.1).
 
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.ldc_w.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.ldc_w.name();
 
         } else if (Opcode.Instruction.ldc2_w.code == opcode) {
             // Push long or double from runtime constant pool (wide index)
@@ -493,9 +489,8 @@ public final class Opcode {
             // The index must be a valid index into the runtime constant pool of the current class.
             // The runtime constant pool entry at the index must be a runtime constant of type long or double (?.1).
             // The numeric value of that runtime constant is pushed onto the operand stack as a long or double, respectively.
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.ldc2_w.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.ldc2_w.name();
         } else if (Opcode.Instruction.iload.code == opcode) {
             // Load int from local variable
             // --
@@ -503,7 +498,7 @@ public final class Opcode {
             // The local variable at index must contain an int.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iload.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iload.name(), byteValue);
         } else if (Opcode.Instruction.lload.code == opcode) {
             // Load long from local variable
             // --
@@ -512,7 +507,7 @@ public final class Opcode {
             // The local variable at index must contain a long.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lload.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lload.name(), byteValue);
         } else if (Opcode.Instruction.fload.code == opcode) {
             // Load float from local variable
             // -
@@ -520,7 +515,7 @@ public final class Opcode {
             // The local variable at index must contain a float.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fload.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fload.name(), byteValue);
         } else if (Opcode.Instruction.dload.code == opcode) {
             // Load double from local variable
             // -
@@ -529,7 +524,7 @@ public final class Opcode {
             // The local variable at index must contain a double.
             // The value of the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dload.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dload.name(), byteValue);
         } else if (Opcode.Instruction.aload.code == opcode) {
             // Load reference from local variable
             // --
@@ -537,67 +532,67 @@ public final class Opcode {
             // The local variable at index must contain a reference.
             // The objectref in the local variable at index is pushed onto the operand stack.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.aload.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.aload.name(), byteValue);
         } else if (Opcode.Instruction.iload_0.code == opcode) {
             // Load int from local variable
             // The <n> must be an index into the local variable array of the current frame (2.6).
             // The local variable at <n> must contain an int.
             // The value of the local variable at <n> is pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.iload_0.name();
+            result.opCodeText = Opcode.Instruction.iload_0.name();
         } else if (Opcode.Instruction.iload_1.code == opcode) {
-            opcodeText = Opcode.Instruction.iload_1.name();
+            result.opCodeText = Opcode.Instruction.iload_1.name();
         } else if (Opcode.Instruction.iload_2.code == opcode) {
-            opcodeText = Opcode.Instruction.iload_2.name();
+            result.opCodeText = Opcode.Instruction.iload_2.name();
         } else if (Opcode.Instruction.iload_3.code == opcode) {
-            opcodeText = Opcode.Instruction.iload_3.name();
+            result.opCodeText = Opcode.Instruction.iload_3.name();
         } else if (Opcode.Instruction.lload_0.code == opcode) {
             // Load long from local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (2.6).
             // The local variable at <n> must contain a long.
             // The value of the local variable at <n> is pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.lload_0.name();
+            result.opCodeText = Opcode.Instruction.lload_0.name();
         } else if (Opcode.Instruction.lload_1.code == opcode) {
-            opcodeText = Opcode.Instruction.lload_1.name();
+            result.opCodeText = Opcode.Instruction.lload_1.name();
         } else if (Opcode.Instruction.lload_2.code == opcode) {
-            opcodeText = Opcode.Instruction.lload_2.name();
+            result.opCodeText = Opcode.Instruction.lload_2.name();
         } else if (Opcode.Instruction.lload_3.code == opcode) {
-            opcodeText = Opcode.Instruction.lload_3.name();
+            result.opCodeText = Opcode.Instruction.lload_3.name();
         } else if (Opcode.Instruction.fload_0.code == opcode) {
             // Load float from local variable
             // The <n> must be an index into the local variable array of the current frame (2.6).
             // The local variable at <n> must contain a float.
             // The value of the local variable at <n> is pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.fload_0.name();
+            result.opCodeText = Opcode.Instruction.fload_0.name();
         } else if (Opcode.Instruction.fload_1.code == opcode) {
-            opcodeText = Opcode.Instruction.fload_1.name();
+            result.opCodeText = Opcode.Instruction.fload_1.name();
         } else if (Opcode.Instruction.fload_2.code == opcode) {
-            opcodeText = Opcode.Instruction.fload_2.name();
+            result.opCodeText = Opcode.Instruction.fload_2.name();
         } else if (Opcode.Instruction.fload_3.code == opcode) {
-            opcodeText = Opcode.Instruction.fload_3.name();
+            result.opCodeText = Opcode.Instruction.fload_3.name();
         } else if (Opcode.Instruction.dload_0.code == opcode) {
             // Load double from local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (2.6).
             // The local variable at <n> must contain a double.
             // The value of the local variable at <n> is pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.dload_0.name();
+            result.opCodeText = Opcode.Instruction.dload_0.name();
         } else if (Opcode.Instruction.dload_1.code == opcode) {
-            opcodeText = Opcode.Instruction.dload_1.name();
+            result.opCodeText = Opcode.Instruction.dload_1.name();
         } else if (Opcode.Instruction.dload_2.code == opcode) {
-            opcodeText = Opcode.Instruction.dload_2.name();
+            result.opCodeText = Opcode.Instruction.dload_2.name();
         } else if (Opcode.Instruction.dload_3.code == opcode) {
-            opcodeText = Opcode.Instruction.dload_3.name();
+            result.opCodeText = Opcode.Instruction.dload_3.name();
         } else if (Opcode.Instruction.aload_0.code == opcode) {
             // Load reference from local variable
             // The <n> must be an index into the local variable array of the current frame (2.6).
             // The local variable at <n> must contain a reference.
             // The objectref in the local variable at index is pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.aload_0.name();
+            result.opCodeText = Opcode.Instruction.aload_0.name();
         } else if (Opcode.Instruction.aload_1.code == opcode) {
-            opcodeText = Opcode.Instruction.aload_1.name();
+            result.opCodeText = Opcode.Instruction.aload_1.name();
         } else if (Opcode.Instruction.aload_2.code == opcode) {
-            opcodeText = Opcode.Instruction.aload_2.name();
+            result.opCodeText = Opcode.Instruction.aload_2.name();
         } else if (Opcode.Instruction.aload_3.code == opcode) {
-            opcodeText = Opcode.Instruction.aload_3.name();
+            result.opCodeText = Opcode.Instruction.aload_3.name();
         } else if (Opcode.Instruction.iaload.code == opcode) {
             // Load int from array
             // The arrayref must be of type reference and must refer to an array
@@ -605,28 +600,28 @@ public final class Opcode {
             // The index must be of type int.
             // Both arrayref and index are popped from the operand stack.
             // The int value in the component of the array at index is retrieved and pushed onto the operand stack.
-            opcodeText = Opcode.Instruction.iaload.name();
+            result.opCodeText = Opcode.Instruction.iaload.name();
         } else if (Opcode.Instruction.laload.code == opcode) {
             // Load long from array
-            opcodeText = Opcode.Instruction.laload.name();
+            result.opCodeText = Opcode.Instruction.laload.name();
         } else if (Opcode.Instruction.faload.code == opcode) {
             // Load float from array
-            opcodeText = Opcode.Instruction.faload.name();
+            result.opCodeText = Opcode.Instruction.faload.name();
         } else if (Opcode.Instruction.daload.code == opcode) {
             // Load double from array
-            opcodeText = Opcode.Instruction.daload.name();
+            result.opCodeText = Opcode.Instruction.daload.name();
         } else if (Opcode.Instruction.aaload.code == opcode) {
             // Load reference from array
-            opcodeText = Opcode.Instruction.aaload.name();
+            result.opCodeText = Opcode.Instruction.aaload.name();
         } else if (Opcode.Instruction.baload.code == opcode) {
             // Load byte or boolean from array
-            opcodeText = Opcode.Instruction.baload.name();
+            result.opCodeText = Opcode.Instruction.baload.name();
         } else if (Opcode.Instruction.caload.code == opcode) {
             // Load char from array
-            opcodeText = Opcode.Instruction.caload.name();
+            result.opCodeText = Opcode.Instruction.caload.name();
         } else if (Opcode.Instruction.saload.code == opcode) {
             // Load short from array
-            opcodeText = Opcode.Instruction.saload.name();
+            result.opCodeText = Opcode.Instruction.saload.name();
         } else if (Opcode.Instruction.istore.code == opcode) {
             // Store int into local variable
             // --
@@ -634,7 +629,7 @@ public final class Opcode {
             // The value on the top of the operand stack must be of type int.
             // It is popped from the operand stack, and the value of the local variable at index is set to value.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.istore.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.istore.name(), byteValue);
         } else if (Opcode.Instruction.lstore.code == opcode) {
             // Store long into local variable
             // --
@@ -643,7 +638,7 @@ public final class Opcode {
             // The value on the top of the operand stack must be of type long.
             // It is popped from the operand stack, and the local variables at index and index + 1 are set to value.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lstore.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.lstore.name(), byteValue);
         } else if (Opcode.Instruction.fstore.code == opcode) {
             // Store float into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6).
@@ -651,7 +646,7 @@ public final class Opcode {
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The value of the local variable at index is set to value'.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fstore.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.fstore.name(), byteValue);
         } else if (Opcode.Instruction.dstore.code == opcode) {
             // Store double into local variable
             // The index is an unsigned byte. Both index and index + 1 must be indices into the local variable array of the current frame (2.6).
@@ -659,76 +654,76 @@ public final class Opcode {
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The local variables at index and index + 1 are set to value'.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dstore.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.dstore.name(), byteValue);
         } else if (Opcode.Instruction.astore.code == opcode) {
             // Store reference into local variable
             // The index is an unsigned byte that must be an index into the local variable array of the current frame (2.6).
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference.
             // It is popped from the operand stack, and the value of the local variable at index is set to objectref.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.astore.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.astore.name(), byteValue);
         } else if (Opcode.Instruction.istore_0.code == opcode) {
             // Store int into local variable
             // The <n> must be an index into the local variable array of the current frame (?.6).
             // The value on the top of the operand stack must be of type int.
             // It is popped from the operand stack, and the value of the local variable at <n> is set to value.
-            opcodeText = Opcode.Instruction.istore_0.name();
+            result.opCodeText = Opcode.Instruction.istore_0.name();
         } else if (Opcode.Instruction.istore_1.code == opcode) {
-            opcodeText = Opcode.Instruction.istore_1.name();
+            result.opCodeText = Opcode.Instruction.istore_1.name();
         } else if (Opcode.Instruction.istore_2.code == opcode) {
-            opcodeText = Opcode.Instruction.istore_2.name();
+            result.opCodeText = Opcode.Instruction.istore_2.name();
         } else if (Opcode.Instruction.istore_3.code == opcode) {
-            opcodeText = Opcode.Instruction.istore_3.name();
+            result.opCodeText = Opcode.Instruction.istore_3.name();
         } else if (Opcode.Instruction.lstore_0.code == opcode) {
             // Store long into local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6).
             // The value on the top of the operand stack must be of type long.
             // It is popped from the operand stack, and the local variables at <n> and <n> + 1 are set to value.
-            opcodeText = Opcode.Instruction.lstore_0.name();
+            result.opCodeText = Opcode.Instruction.lstore_0.name();
         } else if (Opcode.Instruction.lstore_1.code == opcode) {
-            opcodeText = Opcode.Instruction.lstore_1.name();
+            result.opCodeText = Opcode.Instruction.lstore_1.name();
         } else if (Opcode.Instruction.lstore_2.code == opcode) {
-            opcodeText = Opcode.Instruction.lstore_2.name();
+            result.opCodeText = Opcode.Instruction.lstore_2.name();
         } else if (Opcode.Instruction.lstore_3.code == opcode) {
-            opcodeText = Opcode.Instruction.lstore_3.name();
+            result.opCodeText = Opcode.Instruction.lstore_3.name();
         } else if (Opcode.Instruction.fstore_0.code == opcode) {
             // Store float into local variable
             // The <n> must be an index into the local variable array of the current frame (?.6).
             // The value on the top of the operand stack must be of type float.
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The value of the local variable at <n> is set to value'.
-            opcodeText = Opcode.Instruction.fstore_0.name();
+            result.opCodeText = Opcode.Instruction.fstore_0.name();
         } else if (Opcode.Instruction.fstore_1.code == opcode) {
-            opcodeText = Opcode.Instruction.fstore_1.name();
+            result.opCodeText = Opcode.Instruction.fstore_1.name();
         } else if (Opcode.Instruction.fstore_2.code == opcode) {
-            opcodeText = Opcode.Instruction.fstore_2.name();
+            result.opCodeText = Opcode.Instruction.fstore_2.name();
         } else if (Opcode.Instruction.fstore_3.code == opcode) {
-            opcodeText = Opcode.Instruction.fstore_3.name();
+            result.opCodeText = Opcode.Instruction.fstore_3.name();
         } else if (Opcode.Instruction.dstore_0.code == opcode) {
             // Store double into local variable
             // Both <n> and <n> + 1 must be indices into the local variable array of the current frame (?.6).
             // The value on the top of the operand stack must be of type double.
             // It is popped from the operand stack and undergoes value set conversion (?.8.3), resulting in value'.
             // The local variables at <n> and <n> + 1 are set to value'.
-            opcodeText = Opcode.Instruction.dstore_0.name();
+            result.opCodeText = Opcode.Instruction.dstore_0.name();
         } else if (Opcode.Instruction.dstore_1.code == opcode) {
-            opcodeText = Opcode.Instruction.dstore_1.name();
+            result.opCodeText = Opcode.Instruction.dstore_1.name();
         } else if (Opcode.Instruction.dstore_2.code == opcode) {
-            opcodeText = Opcode.Instruction.dstore_2.name();
+            result.opCodeText = Opcode.Instruction.dstore_2.name();
         } else if (Opcode.Instruction.dstore_3.code == opcode) {
-            opcodeText = Opcode.Instruction.dstore_3.name();
+            result.opCodeText = Opcode.Instruction.dstore_3.name();
         } else if (Opcode.Instruction.astore_0.code == opcode) {
             // Store reference into local variable
             // The <n> must be an index into the local variable array of the current frame (?.6).
             // The objectref on the top of the operand stack must be of type returnAddress or of type reference.
             // It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
-            opcodeText = Opcode.Instruction.astore_0.name();
+            result.opCodeText = Opcode.Instruction.astore_0.name();
         } else if (Opcode.Instruction.astore_1.code == opcode) {
-            opcodeText = Opcode.Instruction.astore_1.name();
+            result.opCodeText = Opcode.Instruction.astore_1.name();
         } else if (Opcode.Instruction.astore_2.code == opcode) {
-            opcodeText = Opcode.Instruction.astore_2.name();
+            result.opCodeText = Opcode.Instruction.astore_2.name();
         } else if (Opcode.Instruction.astore_3.code == opcode) {
-            opcodeText = Opcode.Instruction.astore_3.name();
+            result.opCodeText = Opcode.Instruction.astore_3.name();
         } else if (Opcode.Instruction.iastore.code == opcode) {
             // Store into int array
             // ..., arrayref, index, value
@@ -736,151 +731,151 @@ public final class Opcode {
             // Both index and value must be of type int.
             // The arrayref, index, and value are popped from the operand stack.
             // The int value is stored as the component of the array indexed by index.
-            opcodeText = Opcode.Instruction.iastore.name();
+            result.opCodeText = Opcode.Instruction.iastore.name();
         } else if (Opcode.Instruction.lastore.code == opcode) {
             // Store into long array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.lastore.name();
+            result.opCodeText = Opcode.Instruction.lastore.name();
         } else if (Opcode.Instruction.fastore.code == opcode) {
             // Store into float array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.fastore.name();
+            result.opCodeText = Opcode.Instruction.fastore.name();
         } else if (Opcode.Instruction.dastore.code == opcode) {
             // Store into double array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.dastore.name();
+            result.opCodeText = Opcode.Instruction.dastore.name();
         } else if (Opcode.Instruction.aastore.code == opcode) {
             // Store into reference array
             // ..., arrayref, index, value
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.aastore.name();
+            result.opCodeText = Opcode.Instruction.aastore.name();
         } else if (Opcode.Instruction.bastore.code == opcode) {
             // Store into byte or boolean array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.bastore.name();
+            result.opCodeText = Opcode.Instruction.bastore.name();
         } else if (Opcode.Instruction.castore.code == opcode) {
             // Store into char array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.castore.name();
+            result.opCodeText = Opcode.Instruction.castore.name();
         } else if (Opcode.Instruction.sastore.code == opcode) {
             // Store into short array
             // ..., arrayref, index, value
-            opcodeText = Opcode.Instruction.sastore.name();
+            result.opCodeText = Opcode.Instruction.sastore.name();
         } else if (Opcode.Instruction.pop.code == opcode) {
             // Pop the top operand stack value
             // The pop instruction must not be used unless value is a value of a category 1 computational type (?.11.1).
-            opcodeText = Opcode.Instruction.pop.name();
+            result.opCodeText = Opcode.Instruction.pop.name();
         } else if (Opcode.Instruction.pop2.code == opcode) {
             // Pop the top one or two operand stack values
             // Form 1: ..., value2, value1
             //   where each of value1 and value2 is a value of a category 1 computational type (?.11.1).
             // Form 2: ..., value
             //   where value is a value of a category 2 computational type (?.11.1).
-            opcodeText = Opcode.Instruction.pop2.name();
+            result.opCodeText = Opcode.Instruction.pop2.name();
         } else if (Opcode.Instruction.dup.code == opcode) {
             // Duplicate the top operand stack value
             // ..., value --> ..., value, value
-            opcodeText = Opcode.Instruction.dup.name();
+            result.opCodeText = Opcode.Instruction.dup.name();
         } else if (Opcode.Instruction.dup_x1.code == opcode) {
             // Duplicate the top operand stack value and insert two values down
             // ..., value2, value1 --> ..., value1, value2, value1
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.dup_x1.name();
+            result.opCodeText = Opcode.Instruction.dup_x1.name();
         } else if (Opcode.Instruction.dup_x2.code == opcode) {
             // Duplicate the top operand stack value and insert two or three values down
             // Form 1: ..., value3, value2, value1 -->  ..., value1, value3, value2, value1
             // Form 2: ..., value2, value1 --> ..., value1, value2, value1
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.dup_x2.name();
+            result.opCodeText = Opcode.Instruction.dup_x2.name();
         } else if (Opcode.Instruction.dup2.code == opcode) {
             // Duplicate the top one or two operand stack values
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.dup2.name();
+            result.opCodeText = Opcode.Instruction.dup2.name();
         } else if (Opcode.Instruction.dup2_x1.code == opcode) {
             // Duplicate the top one or two operand stack values and insert two or three values down
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.dup2_x1.name();
+            result.opCodeText = Opcode.Instruction.dup2_x1.name();
         } else if (Opcode.Instruction.dup2_x2.code == opcode) {
             // Duplicate the top one or two operand stack values and insert two, three, or four values down
             // ** Very complex, see the <VM Spec> for detail
-            opcodeText = Opcode.Instruction.dup2_x2.name();
+            result.opCodeText = Opcode.Instruction.dup2_x2.name();
         } else if (Opcode.Instruction.swap.code == opcode) {
             // Swap the top two operand stack values
             // ..., value2, value1 --> ..., value1, value2
             // The swap instruction must not be used unless value1 and value2 are both values of a category 1 computational type (?.11.1).
-            opcodeText = Opcode.Instruction.swap.name();
+            result.opCodeText = Opcode.Instruction.swap.name();
         } else if (Opcode.Instruction.iadd.code == opcode) {
-            opcodeText = Opcode.Instruction.iadd.name();
+            result.opCodeText = Opcode.Instruction.iadd.name();
         } else if (Opcode.Instruction.ladd.code == opcode) {
-            opcodeText = Opcode.Instruction.ladd.name();
+            result.opCodeText = Opcode.Instruction.ladd.name();
         } else if (Opcode.Instruction.fadd.code == opcode) {
-            opcodeText = Opcode.Instruction.fadd.name();
+            result.opCodeText = Opcode.Instruction.fadd.name();
         } else if (Opcode.Instruction.dadd.code == opcode) {
-            opcodeText = Opcode.Instruction.dadd.name();
+            result.opCodeText = Opcode.Instruction.dadd.name();
         } else if (Opcode.Instruction.isub.code == opcode) {
-            opcodeText = Opcode.Instruction.isub.name();
+            result.opCodeText = Opcode.Instruction.isub.name();
         } else if (Opcode.Instruction.lsub.code == opcode) {
-            opcodeText = Opcode.Instruction.lsub.name();
+            result.opCodeText = Opcode.Instruction.lsub.name();
         } else if (Opcode.Instruction.fsub.code == opcode) {
-            opcodeText = Opcode.Instruction.fsub.name();
+            result.opCodeText = Opcode.Instruction.fsub.name();
         } else if (Opcode.Instruction.dsub.code == opcode) {
-            opcodeText = Opcode.Instruction.dsub.name();
+            result.opCodeText = Opcode.Instruction.dsub.name();
         } else if (Opcode.Instruction.imul.code == opcode) {
-            opcodeText = Opcode.Instruction.imul.name();
+            result.opCodeText = Opcode.Instruction.imul.name();
         } else if (Opcode.Instruction.lmul.code == opcode) {
-            opcodeText = Opcode.Instruction.lmul.name();
+            result.opCodeText = Opcode.Instruction.lmul.name();
         } else if (Opcode.Instruction.fmul.code == opcode) {
-            opcodeText = Opcode.Instruction.fmul.name();
+            result.opCodeText = Opcode.Instruction.fmul.name();
         } else if (Opcode.Instruction.dmul.code == opcode) {
-            opcodeText = Opcode.Instruction.dmul.name();
+            result.opCodeText = Opcode.Instruction.dmul.name();
         } else if (Opcode.Instruction.idiv.code == opcode) {
-            opcodeText = Opcode.Instruction.idiv.name();
+            result.opCodeText = Opcode.Instruction.idiv.name();
         } else if (Opcode.Instruction.ldiv.code == opcode) {
-            opcodeText = Opcode.Instruction.ldiv.name();
+            result.opCodeText = Opcode.Instruction.ldiv.name();
         } else if (Opcode.Instruction.fdiv.code == opcode) {
-            opcodeText = Opcode.Instruction.fdiv.name();
+            result.opCodeText = Opcode.Instruction.fdiv.name();
         } else if (Opcode.Instruction.ddiv.code == opcode) {
-            opcodeText = Opcode.Instruction.ddiv.name();
+            result.opCodeText = Opcode.Instruction.ddiv.name();
         } else if (Opcode.Instruction.irem.code == opcode) {
-            opcodeText = Opcode.Instruction.irem.name();
+            result.opCodeText = Opcode.Instruction.irem.name();
         } else if (Opcode.Instruction.lrem.code == opcode) {
-            opcodeText = Opcode.Instruction.lrem.name();
+            result.opCodeText = Opcode.Instruction.lrem.name();
         } else if (Opcode.Instruction.frem.code == opcode) {
-            opcodeText = Opcode.Instruction.frem.name();
+            result.opCodeText = Opcode.Instruction.frem.name();
         } else if (Opcode.Instruction.drem.code == opcode) {
-            opcodeText = Opcode.Instruction.drem.name();
+            result.opCodeText = Opcode.Instruction.drem.name();
         } else if (Opcode.Instruction.ineg.code == opcode) {
-            opcodeText = Opcode.Instruction.ineg.name();
+            result.opCodeText = Opcode.Instruction.ineg.name();
         } else if (Opcode.Instruction.lneg.code == opcode) {
-            opcodeText = Opcode.Instruction.lneg.name();
+            result.opCodeText = Opcode.Instruction.lneg.name();
         } else if (Opcode.Instruction.fneg.code == opcode) {
-            opcodeText = Opcode.Instruction.fneg.name();
+            result.opCodeText = Opcode.Instruction.fneg.name();
         } else if (Opcode.Instruction.dneg.code == opcode) {
-            opcodeText = Opcode.Instruction.dneg.name();
+            result.opCodeText = Opcode.Instruction.dneg.name();
         } else if (Opcode.Instruction.ishl.code == opcode) {
-            opcodeText = Opcode.Instruction.ishl.name();
+            result.opCodeText = Opcode.Instruction.ishl.name();
         } else if (Opcode.Instruction.lshl.code == opcode) {
-            opcodeText = Opcode.Instruction.lshl.name();
+            result.opCodeText = Opcode.Instruction.lshl.name();
         } else if (Opcode.Instruction.ishr.code == opcode) {
-            opcodeText = Opcode.Instruction.ishr.name();
+            result.opCodeText = Opcode.Instruction.ishr.name();
         } else if (Opcode.Instruction.lshr.code == opcode) {
-            opcodeText = Opcode.Instruction.lshr.name();
+            result.opCodeText = Opcode.Instruction.lshr.name();
         } else if (Opcode.Instruction.iushr.code == opcode) {
-            opcodeText = Opcode.Instruction.iushr.name();
+            result.opCodeText = Opcode.Instruction.iushr.name();
         } else if (Opcode.Instruction.lushr.code == opcode) {
-            opcodeText = Opcode.Instruction.lushr.name();
+            result.opCodeText = Opcode.Instruction.lushr.name();
         } else if (Opcode.Instruction.iand.code == opcode) {
-            opcodeText = Opcode.Instruction.iand.name();
+            result.opCodeText = Opcode.Instruction.iand.name();
         } else if (Opcode.Instruction.land.code == opcode) {
-            opcodeText = Opcode.Instruction.land.name();
+            result.opCodeText = Opcode.Instruction.land.name();
         } else if (Opcode.Instruction.ior.code == opcode) {
-            opcodeText = Opcode.Instruction.ior.name();
+            result.opCodeText = Opcode.Instruction.ior.name();
         } else if (Opcode.Instruction.lor.code == opcode) {
-            opcodeText = Opcode.Instruction.lor.name();
+            result.opCodeText = Opcode.Instruction.lor.name();
         } else if (Opcode.Instruction.ixor.code == opcode) {
-            opcodeText = Opcode.Instruction.ixor.name();
+            result.opCodeText = Opcode.Instruction.ixor.name();
         } else if (Opcode.Instruction.lxor.code == opcode) {
-            opcodeText = Opcode.Instruction.lxor.name();
+            result.opCodeText = Opcode.Instruction.lxor.name();
         } else if (Opcode.Instruction.iinc.code == opcode) {
             // Increment local variable by constant
             // --
@@ -890,47 +885,47 @@ public final class Opcode {
             // The const is an immediate signed byte.
             // The value const is first sign-extended to an int, and then the local variable at index is incremented by that amount.
             byteValue2 = pdis.readByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Opcode.Instruction.iinc.name(), byteValue, byteValue2);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Opcode.Instruction.iinc.name(), byteValue, byteValue2);
         } else if (Opcode.Instruction.i2l.code == opcode) {
-            opcodeText = Opcode.Instruction.i2l.name();
+            result.opCodeText = Opcode.Instruction.i2l.name();
         } else if (Opcode.Instruction.i2f.code == opcode) {
-            opcodeText = Opcode.Instruction.i2f.name();
+            result.opCodeText = Opcode.Instruction.i2f.name();
         } else if (Opcode.Instruction.i2d.code == opcode) {
-            opcodeText = Opcode.Instruction.i2d.name();
+            result.opCodeText = Opcode.Instruction.i2d.name();
         } else if (Opcode.Instruction.l2i.code == opcode) {
-            opcodeText = Opcode.Instruction.l2i.name();
+            result.opCodeText = Opcode.Instruction.l2i.name();
         } else if (Opcode.Instruction.l2f.code == opcode) {
-            opcodeText = Opcode.Instruction.l2f.name();
+            result.opCodeText = Opcode.Instruction.l2f.name();
         } else if (Opcode.Instruction.l2d.code == opcode) {
-            opcodeText = Opcode.Instruction.l2d.name();
+            result.opCodeText = Opcode.Instruction.l2d.name();
         } else if (Opcode.Instruction.f2i.code == opcode) {
-            opcodeText = Opcode.Instruction.f2i.name();
+            result.opCodeText = Opcode.Instruction.f2i.name();
         } else if (Opcode.Instruction.f2l.code == opcode) {
-            opcodeText = Opcode.Instruction.f2l.name();
+            result.opCodeText = Opcode.Instruction.f2l.name();
         } else if (Opcode.Instruction.f2d.code == opcode) {
-            opcodeText = Opcode.Instruction.f2d.name();
+            result.opCodeText = Opcode.Instruction.f2d.name();
         } else if (Opcode.Instruction.d2i.code == opcode) {
-            opcodeText = Opcode.Instruction.d2i.name();
+            result.opCodeText = Opcode.Instruction.d2i.name();
         } else if (Opcode.Instruction.d2l.code == opcode) {
-            opcodeText = Opcode.Instruction.d2l.name();
+            result.opCodeText = Opcode.Instruction.d2l.name();
         } else if (Opcode.Instruction.d2f.code == opcode) {
-            opcodeText = Opcode.Instruction.d2f.name();
+            result.opCodeText = Opcode.Instruction.d2f.name();
         } else if (Opcode.Instruction.i2b.code == opcode) {
-            opcodeText = Opcode.Instruction.i2b.name();
+            result.opCodeText = Opcode.Instruction.i2b.name();
         } else if (Opcode.Instruction.i2c.code == opcode) {
-            opcodeText = Opcode.Instruction.i2c.name();
+            result.opCodeText = Opcode.Instruction.i2c.name();
         } else if (Opcode.Instruction.i2s.code == opcode) {
-            opcodeText = Opcode.Instruction.i2s.name();
+            result.opCodeText = Opcode.Instruction.i2s.name();
         } else if (Opcode.Instruction.lcmp.code == opcode) {
-            opcodeText = Opcode.Instruction.lcmp.name();
+            result.opCodeText = Opcode.Instruction.lcmp.name();
         } else if (Opcode.Instruction.fcmpl.code == opcode) {
-            opcodeText = Opcode.Instruction.fcmpl.name();
+            result.opCodeText = Opcode.Instruction.fcmpl.name();
         } else if (Opcode.Instruction.fcmpg.code == opcode) {
-            opcodeText = Opcode.Instruction.fcmpg.name();
+            result.opCodeText = Opcode.Instruction.fcmpg.name();
         } else if (Opcode.Instruction.dcmpl.code == opcode) {
-            opcodeText = Opcode.Instruction.dcmpl.name();
+            result.opCodeText = Opcode.Instruction.dcmpl.name();
         } else if (Opcode.Instruction.dcmpg.code == opcode) {
-            opcodeText = Opcode.Instruction.dcmpg.name();
+            result.opCodeText = Opcode.Instruction.dcmpg.name();
         } else if (Opcode.Instruction.ifeq.code == opcode) {
             // if<cond>: ifeq = 153 (0x99) ifne = 154 (0x9a) iflt = 155 (0x9b) ifge = 156 (0x9c) ifgt = 157 (0x9d) ifle = 158 (0x9e)
             // Branch if int comparison with zero succeeds
@@ -940,42 +935,42 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if<cond> instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifeq.name(), shortValue);
         } else if (Opcode.Instruction.ifne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifne.name(), shortValue);
         } else if (Opcode.Instruction.iflt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.iflt.name(), shortValue);
         } else if (Opcode.Instruction.ifge.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifge.name(), shortValue);
         } else if (Opcode.Instruction.ifgt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifgt.name(), shortValue);
         } else if (Opcode.Instruction.ifle.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifle.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpeq.code == opcode) {
             // if_icmp<cond>: if_icmpeq = 159 (0x9f) if_icmpne = 160 (0xa0) if_icmplt = 161 (0xa1) if_icmpge = 162 (0xa2) if_icmpgt = 163 (0xa3) if_icmple = 164 (0xa4)
             // Branch if int comparison succeeds
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpeq.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpne.name(), shortValue);
         } else if (Opcode.Instruction.if_icmplt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmplt.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpge.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, opcodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, result.opCodeText = Opcode.Instruction.if_icmpge.name(), shortValue);
         } else if (Opcode.Instruction.if_icmpgt.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmpgt.name(), shortValue);
         } else if (Opcode.Instruction.if_icmple.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_icmple.name(), shortValue);
         } else if (Opcode.Instruction.if_acmpeq.code == opcode) {
             // if_acmp<cond>: if_acmpeq = 165 (0xa5) if_acmpne = 166 (0xa6)
             // Branch if reference comparison succeeds
@@ -987,10 +982,10 @@ public final class Opcode {
             // Execution then proceeds at that offset from the address of the opCode of this if_acmp<cond> instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this if_acmp<cond> instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpeq.name(), shortValue);
         } else if (Opcode.Instruction.if_acmpne.code == opcode) {
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.if_acmpne.name(), shortValue);
         } else if (Opcode.Instruction.goto_.code == opcode) {
             // Branch always
             // The unsigned bytes branchbyte1 and branchbyte2 are used to construct a signed 16-bit branchoffset,
@@ -998,7 +993,7 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of the opCode of this goto instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this goto instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_.getName(), shortValue);
         } else if (Opcode.Instruction.jsr.code == opcode) {
             // Jump subroutine
             // The address of the opCode of the instruction immediately following this jsr instruction
@@ -1008,14 +1003,14 @@ public final class Opcode {
             // Execution proceeds at that offset from the address of this jsr instruction.
             // The target address must be that of an opCode of an instruction within the method that contains this jsr instruction.
             shortValue = pdis.readShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr.name(), shortValue);
         } else if (Opcode.Instruction.ret.code == opcode) {
             // Return from subroutine
             // The index is an unsigned byte between 0 and 255, inclusive.
             // The local variable at index in the current frame (?.6) must contain a value of type returnAddress.
             // The contents of the local variable are written into the Java virtual machine's pc register, and execution continues there.
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ret.name(), byteValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ret.name(), byteValue);
         } else if (Opcode.Instruction.tableswitch.code == opcode) {
             // Access jump table by index and jump
             int skip = pdis.getPos() % 4;
@@ -1023,7 +1018,7 @@ public final class Opcode {
             if (skip > 0) {
                 pdis.skipBytes(skip);
             }
-            opcodeText = Opcode.getText_tableswitch(pdis);
+            result.opCodeText = Opcode.getText_tableswitch(pdis);
         } else if (Opcode.Instruction.lookupswitch.code == opcode) {
             // Access jump table by key match and jump
             int skip = pdis.getPos() % 4;
@@ -1031,20 +1026,20 @@ public final class Opcode {
             if (skip > 0) {
                 pdis.skipBytes(skip);
             }
-            opcodeText = Opcode.getText_lookupswitch(pdis);
+            result.opCodeText = Opcode.getText_lookupswitch(pdis);
             // opCodeText = Opcode.Instruction.lookupswitch.name();
         } else if (Opcode.Instruction.ireturn.code == opcode) {
-            opcodeText = Opcode.Instruction.ireturn.name();
+            result.opCodeText = Opcode.Instruction.ireturn.name();
         } else if (Opcode.Instruction.lreturn.code == opcode) {
-            opcodeText = Opcode.Instruction.lreturn.name();
+            result.opCodeText = Opcode.Instruction.lreturn.name();
         } else if (Opcode.Instruction.freturn.code == opcode) {
-            opcodeText = Opcode.Instruction.freturn.name();
+            result.opCodeText = Opcode.Instruction.freturn.name();
         } else if (Opcode.Instruction.dreturn.code == opcode) {
-            opcodeText = Opcode.Instruction.dreturn.name();
+            result.opCodeText = Opcode.Instruction.dreturn.name();
         } else if (Opcode.Instruction.areturn.code == opcode) {
-            opcodeText = Opcode.Instruction.areturn.name();
+            result.opCodeText = Opcode.Instruction.areturn.name();
         } else if (Opcode.Instruction.return_.code == opcode) {
-            opcodeText = Opcode.Instruction.return_.getName();
+            result.opCodeText = Opcode.Instruction.return_.getName();
         } else if (Opcode.Instruction.getstatic.code == opcode) {
             // Get static field from class
             // --
@@ -1054,9 +1049,8 @@ public final class Opcode {
             // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface
             // in which the field is to be found.
             // The referenced field is resolved (?.4.3.2).
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.getstatic.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.getstatic.name();
         } else if (Opcode.Instruction.putstatic.code == opcode) {
             // Set static field in class
             // --
@@ -1065,9 +1059,8 @@ public final class Opcode {
             // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
             // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface
             // in which the field is to be found. The referenced field is resolved (?.4.3.2).
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.putstatic.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.putstatic.name();
         } else if (Opcode.Instruction.getfield.code == opcode) {
             // Fetch field from object
             // --
@@ -1076,9 +1069,8 @@ public final class Opcode {
             // where the value of the index is (indexbyte1 << 8) | indexbyte2.
             // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
             // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.getfield.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.getfield.name();
         } else if (Opcode.Instruction.putfield.code == opcode) {
             // Set field in object
             // --
@@ -1086,9 +1078,8 @@ public final class Opcode {
             // where the value of the index is (indexbyte1 << 8) | indexbyte2.
             // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
             // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.putfield.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.putfield.name();
         } else if (Opcode.Instruction.invokevirtual.code == opcode) {
             // Invoke instance method; dispatch based on class
             // --
@@ -1103,94 +1094,84 @@ public final class Opcode {
             //   either a member of the current class
             //   or a member of a superclass of the current class,
             // then the class of objectref must be either the current class or a subclass of the current class.
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.invokevirtual.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.invokevirtual.name();
         } else if (Opcode.Instruction.invokespecial.code == opcode) {
             // Invoke instance method;
             // special handling for superclass, private, and instance initialization method invocations
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.invokespecial.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.invokespecial.name();
         } else if (Opcode.Instruction.invokestatic.code == opcode) {
             // Invoke a class (static) method
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.invokestatic.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.invokestatic.name();
         } else if (Opcode.Instruction.invokeinterface.code == opcode) {
             // Invoke interface method
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
+            result.cpIndex = pdis.readUnsignedShort();
             byteValue = pdis.readUnsignedByte();
             pdis.skipBytes(1);
-            opcodeText = String.format("%s interface=%d, nargs=%d",
+            result.opCodeText = String.format("%s interface=%d, nargs=%d",
                     Opcode.Instruction.invokeinterface.name(),
-                    shortValue,
+                    result.cpIndex,
                     byteValue);
         } else if (Opcode.Instruction.invokedynamic.code == opcode) {
             // Invoke dynamic method
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
+            result.cpIndex = pdis.readUnsignedShort();
             pdis.skipBytes(2);  // Skip 2 zero bytes
-            opcodeText = Opcode.Instruction.invokedynamic.name();
+            result.opCodeText = Opcode.Instruction.invokedynamic.name();
         } else if (Opcode.Instruction.new_.code == opcode) {
             // Create new object
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.new_.getName();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.new_.getName();
         } else if (Opcode.Instruction.newarray.code == opcode) {
             // Create new array
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format("%s %s",
+            result.opCodeText = String.format("%s %s",
                     Opcode.Instruction.newarray.name(),
                     InstructionNewarrayType.getName(byteValue));
         } else if (Opcode.Instruction.anewarray.code == opcode) {
             // Create new array of reference
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.anewarray.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.anewarray.name();
         } else if (Opcode.Instruction.arraylength.code == opcode) {
-            opcodeText = Opcode.Instruction.arraylength.name();
+            result.opCodeText = Opcode.Instruction.arraylength.name();
         } else if (Opcode.Instruction.athrow.code == opcode) {
-            opcodeText = Opcode.Instruction.athrow.name();
+            result.opCodeText = Opcode.Instruction.athrow.name();
         } else if (Opcode.Instruction.checkcast.code == opcode) {
             // Check whether object is of given type
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.checkcast.name();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.checkcast.name();
         } else if (Opcode.Instruction.instanceof_.code == opcode) {
             // Determine if object is of given type
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
-            opcodeText = Opcode.Instruction.instanceof_.getName();
+            result.cpIndex = pdis.readUnsignedShort();
+            result.opCodeText = Opcode.Instruction.instanceof_.getName();
         } else if (Opcode.Instruction.monitorenter.code == opcode) {
-            opcodeText = Opcode.Instruction.monitorenter.name();
+            result.opCodeText = Opcode.Instruction.monitorenter.name();
         } else if (Opcode.Instruction.monitorexit.code == opcode) {
-            opcodeText = Opcode.Instruction.monitorexit.name();
+            result.opCodeText = Opcode.Instruction.monitorexit.name();
         } else if (Opcode.Instruction.wide.code == opcode) {
             // Extend local variable index by additional bytes
-            opcodeText = Opcode.getText_wide(pdis);
+            result.opCodeText = Opcode.getText_wide(pdis);
         } else if (Opcode.Instruction.multianewarray.code == opcode) {
             // Create new multidimensional array
-            shortValue = pdis.readUnsignedShort();
-            cpIndex1 = shortValue;
+            result.cpIndex = pdis.readUnsignedShort();
             byteValue = pdis.readUnsignedByte();
-            opcodeText = String.format("%s type=%d dimensions=%d",
+            result.opCodeText = String.format("%s type=%d dimensions=%d",
                     Opcode.Instruction.multianewarray.name(),
-                    shortValue,
+                    result.cpIndex,
                     byteValue);
         } else if (Opcode.Instruction.ifnull.code == opcode) {
             // Branch if reference is null
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnull.name(), shortValue);
         } else if (Opcode.Instruction.ifnonnull.code == opcode) {
             // Branch if reference not null
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), shortValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ifnonnull.name(), shortValue);
         } else if (Opcode.Instruction.goto_w.code == opcode) {
             // Branch always (wide index)
             intValue = pdis.readInt();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), intValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.goto_w.name(), intValue);
         } else if (Opcode.Instruction.jsr_w.code == opcode) {
             // Jump subroutine (wide index)
             // --
@@ -1198,19 +1179,19 @@ public final class Opcode {
             // construct a signed 32-bit offset, where the offset is
             // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4.
             intValue = pdis.readInt();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), intValue);
+            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.jsr_w.name(), intValue);
         } else if (Opcode.Instruction.breakpoint.code == opcode) {
             // Reserved opcodes
-            opcodeText = Opcode.Instruction.breakpoint.name();
+            result.opCodeText = Opcode.Instruction.breakpoint.name();
         } else if (Opcode.Instruction.impdep1.code == opcode) {
-            opcodeText = Opcode.Instruction.impdep1.name();
+            result.opCodeText = Opcode.Instruction.impdep1.name();
         } else if (Opcode.Instruction.impdep2.code == opcode) {
-            opcodeText = Opcode.Instruction.impdep2.name();
+            result.opCodeText = Opcode.Instruction.impdep2.name();
         } else {
-            opcodeText = Instruction.OPCODE_NAME_UNKNOWN;
+            result.opCodeText = Instruction.OPCODE_NAME_UNKNOWN;
         }
 
-        return new InstructionResult(curPos, opcode, opcodeText, cpIndex1);
+        return result;
     }
 
     private static String getText_lookupswitch(final PosDataInputStream pdis)
@@ -1258,87 +1239,124 @@ public final class Opcode {
     private static String getText_wide(final PosDataInputStream pdis)
             throws IOException {
         final int opcode = pdis.readUnsignedByte();
-        String opcodeText = null;
+        String opCodeText = null;
 
         int shortValue;
         int shortValue2;
 
         if (opcode == Opcode.Instruction.iload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.aload.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
         } else if (opcode == Opcode.Instruction.istore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.lstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.fstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.dstore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.astore.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
         } else if (opcode == Opcode.Instruction.iinc.code) {
             shortValue = pdis.readUnsignedShort();
             shortValue2 = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
         } else if (opcode == Opcode.Instruction.ret.code) {
             shortValue = pdis.readUnsignedShort();
-            opcodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
+            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
         } else {
-            opcodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
+            opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
         }
 
-        return opcodeText;
+        return opCodeText;
     }
 
+    /**
+     * Parsed result for each opcode instruction.
+     */
     public static class InstructionResult {
 
         /**
          * Current offset of the opCode in the class file <code>Code</code>
          * attribute byte array.
          */
-        public final int offset;
+        protected int offset;
 
         /**
          * JVM Opcode value.
          */
-        public final int opCode;
+        protected int opCode;
 
         /**
          * Text of the {@link #opCode}. In case {@link #opCode} is
          * {@link Instruction#wide}, the {@link #opCodeText} contains the
          * following opCode after <code>wide</code> also.
          */
-        public final String opCodeText;
+        protected String opCodeText;
 
         /**
          * Referenced {@link ClassFile#constant_pool} object index if exist. It
          * will be <code>-1</code> if the {@link Instruction} did not reference
          * to any {@link ClassFile#constant_pool} object.
          */
-        public final int cpIndex1;
+        protected int cpIndex = -1;
 
-        InstructionResult(int curPos, int opcode, String opcodeText, int cpIdx1) {
+        InstructionResult(int curPos, int opcode) {
             this.offset = curPos;
             this.opCode = opcode;
-            this.opCodeText = opcodeText;
-            this.cpIndex1 = cpIdx1;
+        }
+
+        /**
+         * Getter for {@link #offset}.
+         * 
+         * @return {@link #offset} value
+         */        
+        public int getOffset(){
+            return this.offset;
+        }
+        
+        /**
+         * Getter for {@link #opCode}.
+         * 
+         * @return {@link #opCode} value
+         */        
+        public int getOpcode() {
+            return this.opCode;
+        }
+
+        /**
+         * Getter for {@link #opCodeText}.
+         * 
+         * @return {@link #opCodeText} value
+         */        
+        public String getOpcodeText() {
+            return this.opCodeText;
+        }
+
+        /**
+         * Getter for {@link #cpIndex}.
+         * 
+         * @return {@link #cpIndex} value
+         */        
+        public int getCpindex() {
+            return this.cpIndex;
         }
 
         @Override
@@ -1354,8 +1372,8 @@ public final class Opcode {
          * @return {@link Instruction} analysis result
          */
         public String toString(ClassFile cf) {
-            if (this.cpIndex1 > -1) {
-                String cpDesc = cf.getCPDescription(this.cpIndex1);
+            if (this.cpIndex > -1) {
+                String cpDesc = cf.getCPDescription(this.cpIndex);
                 // Avoid too long description
                 if (cpDesc.length() > 1000) {
                     cpDesc = cpDesc.substring(1, 1000);
