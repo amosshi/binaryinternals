@@ -1210,19 +1210,99 @@ public final class Opcode {
          * stack.
          */
         l2d(138),
+        /**
+         * Convert float to int, in current Operand Stack
+         * <code>..., value</code>.
+         */
         f2i(139),
+        /**
+         * Convert float to long, in current Operand Stack
+         * <code>..., value</code>.
+         */
         f2l(140),
+        /**
+         * Convert float to double, in current Operand Stack
+         * <code>..., value</code>.
+         */
         f2d(141),
+        /**
+         * Convert double to int, in current Operand Stack
+         * <code>..., value</code>.
+         */
         d2i(142),
+        /**
+         * Convert double to long, in current Operand Stack
+         * <code>..., value</code>.
+         */
         d2l(143),
+        /**
+         * Convert double to float, in current Operand Stack
+         * <code>..., value</code>.
+         */
         d2f(144),
+        /**
+         * Convert int to byte.
+         */
         i2b(145),
+        /**
+         * Convert int to char.
+         */
         i2c(146),
+        /**
+         * Convert int to short.
+         */
         i2s(147),
+        /**
+         * Compare long, in current Operand Stack
+         * <code>..., value1, value2</code>.
+         *
+         * Compare results are 1, 0, or -1.
+         *
+         * Both value1 and value2 must be of type long. They are both popped
+         * from the operand stack, and a signed integer comparison is performed.
+         * If value1 is greater than value2, the int value 1 is pushed onto the
+         * operand stack. If value1 is equal to value2, the int value 0 is
+         * pushed onto the operand stack. If value1 is less than value2, the int
+         * value -1 is pushed onto the operand stack.
+         */
         lcmp(148),
+        /**
+         * Compare float, in current Operand Stack
+         * <code>..., value1, value2</code>.
+         *
+         * @see #lcmp
+         * @see #fcmpg
+         */
         fcmpl(149),
+        /**
+         * Compare float, in current Operand Stack
+         * <code>..., value1, value2</code>.
+         *
+         * The {@link #fcmpg} and {@link #fcmpl} instructions differ only in
+         * their treatment of a comparison involving NaN.
+         *
+         * @see #lcmp
+         * @see #fcmpl
+         */
         fcmpg(150),
+        /**
+         * Compare double, in current Operand Stack
+         * <code>..., value1, value2</code>.
+         *
+         * @see #lcmp
+         * @see #dcmpg
+         */
         dcmpl(151),
+        /**
+         * Compare double, in current Operand Stack
+         * <code>..., value1, value2</code>.
+         *
+         * The {@link #dcmpg} and {@link #dcmpl} instructions differ only in
+         * their treatment of a comparison involving NaN.
+         *
+         * @see #lcmp
+         * @see #dcmpl
+         */
         dcmpg(152),
         /**
          * Branch if int comparison with zero succeeds.
@@ -1315,11 +1395,11 @@ public final class Opcode {
         },
         /**
          * Branch always.
-         * 
+         *
          * Note: Add '_' suffix to avoid compile error since 'goto' is a Java
          * keyword, remove the '_' from the name when showing.
-         * 
-         * @see #getName() 
+         *
+         * @see #getName()
          */
         goto_(167) {
             @Override
@@ -1333,63 +1413,506 @@ public final class Opcode {
         /**
          * Jump subroutine.
          */
-        jsr(168){
+        jsr(168) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parse_Branchbyte_Short(curPos, pdis);
             }
         },
-        ret(169),
-        tableswitch(170),
-        lookupswitch(171),
+        /**
+         * Return from subroutine.
+         *
+         * The index is an unsigned byte between 0 and 255, inclusive. The local
+         * variable at index in the current frame must contain a value of type
+         * returnAddress. The contents of the local variable are written into
+         * the Java Virtual Machine's pc register, and execution continues
+         * there.
+         */
+        ret(169) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+            }
+        },
+        tableswitch(170) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                // 0-3 byte pad, when needed
+                super.skipPad(pdis);
+
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.opCodeText = this.getText_tableswitch(pdis);
+                return parsed;
+            }
+
+            /**
+             * <code>tableswitch</code> instruction.
+             *
+             * @see
+             * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.tableswitch">VM
+             * Spec: The Java Virtual Machine Instruction Set</a>
+             */
+            private String getText_tableswitch(final PosDataInputStream pdis) throws IOException {
+                String space = "    ";
+                final int defaultJump = pdis.readInt();
+                final int valueLow = pdis.readInt();
+                final int valueHigh = pdis.readInt();
+                final int tableLength = valueHigh - valueLow + 1;
+                int offsetValue;
+
+                final StringBuilder sb = new StringBuilder(200);
+                sb.append(Opcode.Instruction.tableswitch.name());
+                sb.append(String.format(" %d to %d: default=%d", valueLow, valueHigh, defaultJump));
+                for (int i = 0; i < tableLength; i++) {
+                    offsetValue = pdis.readInt();
+                    sb.append(String.format("\n%s%d", space, offsetValue));
+                }
+
+                return sb.toString();
+            }
+        },
+        lookupswitch(171) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                // 0-3 byte pad, when needed
+                super.skipPad(pdis);
+
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.opCodeText = this.getText_lookupswitch(pdis);
+                return parsed;
+            }
+
+            private String getText_lookupswitch(final PosDataInputStream pdis) throws IOException {
+                String space = "    ";
+                final int defaultJump = pdis.readInt();
+
+                final StringBuilder sb = new StringBuilder(200);
+                sb.append(Opcode.Instruction.lookupswitch.name());
+                sb.append(String.format(": default=%d", defaultJump));
+
+                final int pairCount = pdis.readInt();
+                for (int i = 0; i < pairCount; i++) {
+                    int caseValue = pdis.readInt();
+                    int offsetValue = pdis.readInt();
+
+                    sb.append(String.format("\n%scase %d: %d", space, caseValue, offsetValue));
+                }
+
+                return sb.toString();
+            }
+        },
+        /**
+         * Return int from method.
+         *
+         * The current method must have return type boolean, byte, char, short,
+         * or int. The value must be of type int.
+         *
+         * If the current method is a synchronized method, the monitor entered
+         * or reentered on invocation of the method is updated and possibly
+         * exited as if by execution of a {@link #monitorexit} instruction in
+         * the current thread.
+         */
         ireturn(172),
+        /**
+         * Return long from method.
+         *
+         * The current method must have return type long. The value must be of
+         * type long.
+         *
+         * @see #ireturn
+         */
         lreturn(173),
+        /**
+         * Return float from method.
+         *
+         * The current method must have return type float. The value must be of
+         * type float.
+         *
+         * @see #ireturn
+         */
         freturn(174),
+        /**
+         * Return double from method.
+         *
+         * The current method must have return type double. The value must be of
+         * type double.
+         *
+         * @see #ireturn
+         */
         dreturn(175),
+        /**
+         * Return reference from method.
+         *
+         * The objectref must be of type reference and must refer to an object
+         * of a type that is assignment compatible with the type represented by
+         * the return descriptor of the current method.
+         *
+         * @see #ireturn
+         * @see org.freeinternals.format.classfile.MethodInfo#getDeclaration()
+         */
         areturn(176),
         /**
-         * Note: Add '_' suffix to avoid compile error since 'goto' is a Java
+         * Return void from method.
+         *
+         * The current method must have return type void.
+         *
+         * Note: Add '_' suffix to avoid compile error since 'return' is a Java
          * keyword, remove the '_' from the name when showing.
+         *
+         * @see #ireturn
+         * @see #getName()
          */
-        return_(177),
-        getstatic(178),
-        putstatic(179),
-        getfield(180),
-        putfield(181),
-        invokevirtual(182),
-        invokespecial(183),
-        invokestatic(184),
-        invokeinterface(185),
-        invokedynamic(186),
+        return_(177) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.opCodeText = this.getName();
+                return parsed;
+            }
+        },
         /**
-         * Note: Add '_' suffix to avoid compile error since 'goto' is a Java
-         * keyword, remove the '_' from the name when showing.
+         * Get static field from class.
+         *
+         * The value of the class or interface field is fetched and pushed onto
+         * the operand stack.
          */
-        new_(187),
-        newarray(188),
-        anewarray(189),
-        arraylength(190),
-        athrow(191),
-        checkcast(192),
+        getstatic(178) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
         /**
-         * Note: Add '_' suffix to avoid compile error since 'goto' is a Java
-         * keyword, remove the '_' from the name when showing.
+         * Set static field in class.
+         *
+         * On successful resolution of the field, the class or interface that
+         * declared the resolved field is initialized if that class or interface
+         * has not already been initialized.
          */
-        instanceof_(193),
-        monitorenter(194),
-        monitorexit(195),
-        wide(196),
-        multianewarray(197),
-        ifnull(198),
-        ifnonnull(199),
-        goto_w(200),
-        jsr_w(201),
-        // Reserved opcodes
-        breakpoint(202, true),
-        impdep1(254, true),
-        impdep2(255, true);
+        putstatic(179) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Fetch field from object.
+         */
+        getfield(180) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Set field in object.
+         */
+        putfield(181) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Invoke instance method; dispatch based on class.
+         */
+        invokevirtual(182) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Invoke instance method; direct invocation of instance initialization
+         * methods and methods of the current class and its super types.
+         */
+        invokespecial(183) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Invoke a class (static) method.
+         */
+        invokestatic(184) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Invoke interface method.
+         */
+        invokeinterface(185) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.cpIndex = pdis.readUnsignedShort();
+                int nArgs = pdis.readUnsignedByte();
+                pdis.skipBytes(1);
 
-        public static final String OPCODE_NAME_UNKNOWN = "[Unknown opcode]";
+                parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, nArgs);
+                return parsed;
+            }
+        },
+        /**
+         * Invoke a dynamically-computed call site.
+         */
+        invokedynamic(186) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.cpIndex = pdis.readUnsignedShort();
+                pdis.skipBytes(2);  // Skip 2 zero bytes
+                parsed.opCodeText = this.name();
+                return parsed;
+            }
+        },
+        /**
+         * Create new object.
+         *
+         * Note: Add '_' suffix to avoid compile error since 'new' is a Java
+         * keyword, remove the '_' from the name when showing.
+         *
+         * @see #getName()
+         */
+        new_(187) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.cpIndex = pdis.readUnsignedShort();
+                parsed.opCodeText = this.getName();
+                return parsed;
+            }
+        },
+        /**
+         * Create new array.
+         *
+         * The atype is a code that indicates the type of array to create. It
+         * must take one of the following values in {@link NewarrayType}.
+         *
+         */
+        newarray(188) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+
+                int arrayType = pdis.readUnsignedByte();
+                parsed.opCodeText = String.format("%s %s", Opcode.Instruction.newarray.name(), NewarrayType.getName(arrayType));
+                return parsed;
+            }
+        },
+        /**
+         * Create new array of reference.
+         *
+         * The {@link #anewarray} instruction is used to create a single
+         * dimension of an array of object references or part of a
+         * multidimensional array.
+         */
+        anewarray(189) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Get length of array.
+         */
+        arraylength(190),
+        /**
+         * Throw exception or error.
+         */
+        athrow(191),
+        /**
+         * Check whether object is of given type.
+         */
+        checkcast(192) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+            }
+        },
+        /**
+         * Determine if object is of given type.
+         *
+         * Note: Add '_' suffix to avoid compile error since 'instanceof' is a
+         * Java keyword, remove the '_' from the name when showing.
+         *
+         * @see #getName()
+         */
+        instanceof_(193) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.cpIndex = pdis.readUnsignedShort();
+                parsed.opCodeText = this.getName();
+                return parsed;
+            }
+        },
+        /**
+         * Enter monitor for object.
+         *
+         * The objectref must be of type reference.
+         *
+         * Each object is associated with a monitor. A monitor is locked if and
+         * only if it has an owner. The thread that executes
+         * {@link #monitorenter} attempts to gain ownership of the monitor
+         * associated with objectref,
+         */
+        monitorenter(194),
+        /**
+         * Exit monitor for object.
+         *
+         * The objectref must be of type reference.
+         *
+         * The thread that executes {@link #monitorexit} must be the owner of
+         * the monitor associated with the instance referenced by objectref.
+         */
+        monitorexit(195),
+        /**
+         * Extend local variable index by additional bytes.
+         *
+         * TODO - Refactor this method
+         */
+        wide(196) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.opCodeText = this.getText_wide(pdis);
+                return parsed;
+            }
+
+            private String getText_wide(final PosDataInputStream pdis) throws IOException {
+                final int opcode = pdis.readUnsignedByte();
+                String opCodeText;
+
+                int shortValue;
+                int shortValue2;
+
+                if (opcode == Opcode.Instruction.iload.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.lload.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.fload.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.dload.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.aload.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.istore.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.lstore.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.fstore.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.dstore.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.astore.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
+                } else if (opcode == Opcode.Instruction.iinc.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    shortValue2 = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
+                } else if (opcode == Opcode.Instruction.ret.code) {
+                    shortValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
+                } else {
+                    opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
+                }
+
+                return opCodeText;
+            }
+
+        },
+        /**
+         * Create new multidimensional array.
+         */
+        multianewarray(197) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.cpIndex = pdis.readUnsignedShort();
+                int dimensions = pdis.readUnsignedByte();
+                parsed.opCodeText = String.format("%s type=%d dimensions=%d", this.name(), parsed.cpIndex, dimensions);
+                return parsed;
+            }
+        },
+        /**
+         * Branch if reference is null.
+         */
+        ifnull(198) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.branchbyte = pdis.readUnsignedShort();
+                parsed.opCodeText = this.name();
+                return parsed;
+            }
+        },
+        /**
+         * Branch if reference not null.
+         */
+        ifnonnull(199) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.branchbyte = pdis.readUnsignedShort();
+                parsed.opCodeText = this.name();
+                return parsed;
+            }
+        },
+        /**
+         * Branch always (wide index).
+         */
+        goto_w(200) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.branchbyte = pdis.readInt();
+                parsed.opCodeText = this.name();
+                return parsed;
+            }
+        },
+        /**
+         * Jump subroutine (wide index).
+         */
+        jsr_w(201) {
+            @Override
+            protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
+                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+                parsed.branchbyte = pdis.readInt();
+                parsed.opCodeText = this.name();
+                return parsed;
+            }
+        },
+        /**
+         * Reserved opcode <code>breakpoint</code>.
+         */
+        breakpoint(202, true),
+        /**
+         * Reserved opcode <code>impdep1</code>.
+         */
+        impdep1(254, true),
+        /**
+         * Reserved opcode <code>impdep2</code>.
+         */
+        impdep2(255, true),
+        /**
+         * Unknown Opcode. This should never happen.
+         */
+        UNKNOWN(-1, true);
+
         public static final String OPCODE_NAME_RESERVED_PREFIX = "[Reserved] ";
 
         /**
@@ -1449,16 +1972,16 @@ public final class Opcode {
          * @param opcode Internal value of an opcode.
          * @return Opcode name
          */
-        public static String getOpcodeName(int opcode) {
-            String name = Instruction.OPCODE_NAME_UNKNOWN;
+        public static Instruction valueOf(int opcode) {
+            Instruction result = Instruction.UNKNOWN;
             for (Instruction i : Instruction.values()) {
                 if (i.code == opcode) {
-                    name = i.getName();
+                    result = i;
                     break;
                 }
             }
 
-            return name;
+            return result;
         }
 
         protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -1468,6 +1991,20 @@ public final class Opcode {
 
         }
 
+        private InstructionParsed parse_Branchbyte_Short(final int curPos, final PosDataInputStream pdis) throws IOException {
+            InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+            parsed.branchbyte = Integer.valueOf(pdis.readShort());
+            parsed.opCodeText = this.name();
+            return parsed;
+        }
+
+        private InstructionParsed parse_Cpindex_UnsignedShort(final int curPos, final PosDataInputStream pdis) throws IOException {
+            InstructionParsed parsed = new InstructionParsed(curPos, this.code);
+            parsed.cpIndex = pdis.readUnsignedShort();
+            parsed.opCodeText = this.name();
+            return parsed;
+        }
+
         private InstructionParsed parse_Lvindex_UnsignedByte(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.lvIndex = pdis.readUnsignedByte();
@@ -1475,11 +2012,19 @@ public final class Opcode {
             return parsed;
         }
 
-        private InstructionParsed parse_Branchbyte_Short(final int curPos, final PosDataInputStream pdis) throws IOException {
-            InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-            parsed.branchbyte = Integer.valueOf(pdis.readShort());
-            parsed.opCodeText = this.name();
-            return parsed;
+        /**
+         * Skip 0-3 byte pad when needed, for {@link #tableswitch} and
+         * {@link #lookupswitch}.
+         *
+         * @see #tableswitch
+         * @see #lookupswitch
+         */
+        private void skipPad(final PosDataInputStream pdis) throws IOException {
+            int skip = pdis.getPos() % 4;
+            skip = (skip > 0) ? 4 - skip : skip;
+            if (skip > 0) {
+                pdis.skipBytes(skip);
+            }
         }
 
     }
@@ -1490,7 +2035,7 @@ public final class Opcode {
      * VM Spec: Table 6.5.newarray-A. Array type codes
      * </a>
      */
-    public static enum InstructionNewarrayType {
+    public static enum NewarrayType {
 
         T_BOOLEAN(4),
         T_CHAR(5),
@@ -1503,7 +2048,7 @@ public final class Opcode {
 
         public final int atype;
 
-        InstructionNewarrayType(int i) {
+        NewarrayType(int i) {
             this.atype = i;
         }
 
@@ -1515,7 +2060,7 @@ public final class Opcode {
          */
         public static String getName(int value) {
             String n = "[ERROR: Unknown type]";
-            for (InstructionNewarrayType type : InstructionNewarrayType.values()) {
+            for (NewarrayType type : NewarrayType.values()) {
                 if (type.atype == value) {
                     n = type.name();
                     break;
@@ -1540,7 +2085,10 @@ public final class Opcode {
         final PosDataInputStream pdis = new PosDataInputStream(new PosByteArrayInputStream(code));
         while (pdis.getPos() < code.length) {
             try {
-                codeResult.add(parseInstruction(pdis));
+                final int curPos = pdis.getPos();
+                final int opcode = pdis.read();
+
+                codeResult.add(Instruction.valueOf(opcode).parse(curPos, pdis));
             } catch (IOException ioe) {
                 LOG.log(Level.SEVERE, "parseCode() with code length - {0}", code.length);
                 LOG.log(Level.SEVERE, ioe.toString(), ioe);
@@ -1552,306 +2100,6 @@ public final class Opcode {
         }
 
         return codeResult;
-    }
-
-    private static InstructionParsed parseInstruction(final PosDataInputStream pdis) throws IOException {
-        final int curPos = pdis.getPos();
-        final int opcode = pdis.read();
-        InstructionParsed result = new InstructionParsed(curPos, opcode);
-
-        int byteValue;
-        int immediateSignedByteValue;
-
-        if (Opcode.Instruction.nop.code == opcode) {
-        } else if (Opcode.Instruction.ret.code == opcode) {
-            // Return from subroutine
-            // The index is an unsigned byte between 0 and 255, inclusive.
-            // The local variable at index in the current frame (?.6) must contain a value of type returnAddress.
-            // The contents of the local variable are written into the Java virtual machine's pc register, and execution continues there.
-            byteValue = pdis.readUnsignedByte();
-            result.opCodeText = String.format(FORMAT_OPCODE_LOCAL, Opcode.Instruction.ret.name(), byteValue);
-        } else if (Opcode.Instruction.tableswitch.code == opcode) {
-            // Access jump table by index and jump
-            int skip = pdis.getPos() % 4;
-            skip = (skip > 0) ? 4 - skip : skip;
-            if (skip > 0) {
-                pdis.skipBytes(skip);
-            }
-            result.opCodeText = Opcode.getText_tableswitch(pdis);
-        } else if (Opcode.Instruction.lookupswitch.code == opcode) {
-            // Access jump table by key match and jump
-            int skip = pdis.getPos() % 4;
-            skip = (skip > 0) ? 4 - skip : skip;
-            if (skip > 0) {
-                pdis.skipBytes(skip);
-            }
-            result.opCodeText = Opcode.getText_lookupswitch(pdis);
-            // opCodeText = Opcode.Instruction.lookupswitch.name();
-        } else if (Opcode.Instruction.ireturn.code == opcode) {
-            result.opCodeText = Opcode.Instruction.ireturn.name();
-        } else if (Opcode.Instruction.lreturn.code == opcode) {
-            result.opCodeText = Opcode.Instruction.lreturn.name();
-        } else if (Opcode.Instruction.freturn.code == opcode) {
-            result.opCodeText = Opcode.Instruction.freturn.name();
-        } else if (Opcode.Instruction.dreturn.code == opcode) {
-            result.opCodeText = Opcode.Instruction.dreturn.name();
-        } else if (Opcode.Instruction.areturn.code == opcode) {
-            result.opCodeText = Opcode.Instruction.areturn.name();
-        } else if (Opcode.Instruction.return_.code == opcode) {
-            result.opCodeText = Opcode.Instruction.return_.getName();
-        } else if (Opcode.Instruction.getstatic.code == opcode) {
-            // Get static field from class
-            // --
-            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6),
-            // where the value of the index is (indexbyte1 << 8) | indexbyte2.
-            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
-            // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface
-            // in which the field is to be found.
-            // The referenced field is resolved (?.4.3.2).
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.getstatic.name();
-        } else if (Opcode.Instruction.putstatic.code == opcode) {
-            // Set static field in class
-            // --
-            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6),
-            // where the value of the index is (indexbyte1 << 8) | indexbyte2.
-            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
-            // which gives the name and descriptor of the field as well as a symbolic reference to the class or interface
-            // in which the field is to be found. The referenced field is resolved (?.4.3.2).
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.putstatic.name();
-        } else if (Opcode.Instruction.getfield.code == opcode) {
-            // Fetch field from object
-            // --
-            // The objectref, which must be of type reference, is popped from the operand stack.
-            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6),
-            // where the value of the index is (indexbyte1 << 8) | indexbyte2.
-            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
-            // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.getfield.name();
-        } else if (Opcode.Instruction.putfield.code == opcode) {
-            // Set field in object
-            // --
-            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6),
-            // where the value of the index is (indexbyte1 << 8) | indexbyte2.
-            // The runtime constant pool item at that index must be a symbolic reference to a field (?.1),
-            // which gives the name and descriptor of the field as well as a symbolic reference to the class in which the field is to be found.
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.putfield.name();
-        } else if (Opcode.Instruction.invokevirtual.code == opcode) {
-            // Invoke instance method; dispatch based on class
-            // --
-            // The unsigned indexbyte1 and indexbyte2 are used to construct an index into the runtime constant pool of the current class (?.6),
-            // where the value of the index is (indexbyte1 << 8) | indexbyte2.
-            // The runtime constant pool item at that index must be a symbolic reference to a method (?.1),
-            // which gives the name and descriptor (?.3.3) of the method as well as a symbolic reference to the class
-            // in which the method is to be found.
-            // The named method is resolved (?.4.3.3).
-            // The method must not be an instance initialization method (?.9) or the class or interface initialization method (?.9).
-            // Finally, if the resolved method is protected (?.6), and it is
-            //   either a member of the current class
-            //   or a member of a superclass of the current class,
-            // then the class of objectref must be either the current class or a subclass of the current class.
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.invokevirtual.name();
-        } else if (Opcode.Instruction.invokespecial.code == opcode) {
-            // Invoke instance method;
-            // special handling for superclass, private, and instance initialization method invocations
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.invokespecial.name();
-        } else if (Opcode.Instruction.invokestatic.code == opcode) {
-            // Invoke a class (static) method
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.invokestatic.name();
-        } else if (Opcode.Instruction.invokeinterface.code == opcode) {
-            // Invoke interface method
-            result.cpIndex = pdis.readUnsignedShort();
-            byteValue = pdis.readUnsignedByte();
-            pdis.skipBytes(1);
-            result.opCodeText = String.format("%s interface=%d, nargs=%d",
-                    Opcode.Instruction.invokeinterface.name(),
-                    result.cpIndex,
-                    byteValue);
-        } else if (Opcode.Instruction.invokedynamic.code == opcode) {
-            // Invoke dynamic method
-            result.cpIndex = pdis.readUnsignedShort();
-            pdis.skipBytes(2);  // Skip 2 zero bytes
-            result.opCodeText = Opcode.Instruction.invokedynamic.name();
-        } else if (Opcode.Instruction.new_.code == opcode) {
-            // Create new object
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.new_.getName();
-        } else if (Opcode.Instruction.newarray.code == opcode) {
-            // Create new array
-            byteValue = pdis.readUnsignedByte();
-            result.opCodeText = String.format("%s %s",
-                    Opcode.Instruction.newarray.name(),
-                    InstructionNewarrayType.getName(byteValue));
-        } else if (Opcode.Instruction.anewarray.code == opcode) {
-            // Create new array of reference
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.anewarray.name();
-        } else if (Opcode.Instruction.arraylength.code == opcode) {
-            result.opCodeText = Opcode.Instruction.arraylength.name();
-        } else if (Opcode.Instruction.athrow.code == opcode) {
-            result.opCodeText = Opcode.Instruction.athrow.name();
-        } else if (Opcode.Instruction.checkcast.code == opcode) {
-            // Check whether object is of given type
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.checkcast.name();
-        } else if (Opcode.Instruction.instanceof_.code == opcode) {
-            // Determine if object is of given type
-            result.cpIndex = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.instanceof_.getName();
-        } else if (Opcode.Instruction.monitorenter.code == opcode) {
-            result.opCodeText = Opcode.Instruction.monitorenter.name();
-        } else if (Opcode.Instruction.monitorexit.code == opcode) {
-            result.opCodeText = Opcode.Instruction.monitorexit.name();
-        } else if (Opcode.Instruction.wide.code == opcode) {
-            // Extend local variable index by additional bytes
-            result.opCodeText = Opcode.getText_wide(pdis);
-        } else if (Opcode.Instruction.multianewarray.code == opcode) {
-            // Create new multidimensional array
-            result.cpIndex = pdis.readUnsignedShort();
-            byteValue = pdis.readUnsignedByte();
-            result.opCodeText = String.format("%s type=%d dimensions=%d",
-                    Opcode.Instruction.multianewarray.name(),
-                    result.cpIndex,
-                    byteValue);
-        } else if (Opcode.Instruction.ifnull.code == opcode) {
-            // Branch if reference is null
-            result.branchbyte = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.ifnull.name();
-        } else if (Opcode.Instruction.ifnonnull.code == opcode) {
-            // Branch if reference not null
-            result.branchbyte = pdis.readUnsignedShort();
-            result.opCodeText = Opcode.Instruction.ifnonnull.name();
-        } else if (Opcode.Instruction.goto_w.code == opcode) {
-            // Branch always (wide index)
-            result.branchbyte = pdis.readInt();
-            result.opCodeText = Opcode.Instruction.goto_w.name();
-        } else if (Opcode.Instruction.jsr_w.code == opcode) {
-            // Jump subroutine (wide index)
-            // --
-            // The unsigned branchbyte1, branchbyte2, branchbyte3, and branchbyte4 are used to
-            // construct a signed 32-bit offset, where the offset is
-            // (branchbyte1 << 24) | (branchbyte2 << 16) | (branchbyte3 << 8) | branchbyte4.
-            result.branchbyte = pdis.readInt();
-            result.opCodeText = Opcode.Instruction.jsr_w.name();
-        } else if (Opcode.Instruction.breakpoint.code == opcode) {
-            // Reserved opcodes
-            result.opCodeText = Opcode.Instruction.breakpoint.name();
-        } else if (Opcode.Instruction.impdep1.code == opcode) {
-            result.opCodeText = Opcode.Instruction.impdep1.name();
-        } else if (Opcode.Instruction.impdep2.code == opcode) {
-            result.opCodeText = Opcode.Instruction.impdep2.name();
-        } else {
-            result.opCodeText = Instruction.OPCODE_NAME_UNKNOWN;
-        }
-
-        return result;
-    }
-
-    private static String getText_lookupswitch(final PosDataInputStream pdis)
-            throws IOException {
-        String space = "    ";
-        final int defaultJump = pdis.readInt();
-
-        final StringBuilder sb = new StringBuilder(200);
-        sb.append(Opcode.Instruction.lookupswitch.name());
-        sb.append(String.format(": default=%d", defaultJump));
-
-        final int pairCount = pdis.readInt();
-        int caseValue = 0;
-        int offsetValue = 0;
-        for (int i = 0; i < pairCount; i++) {
-            caseValue = pdis.readInt();
-            offsetValue = pdis.readInt();
-
-            sb.append(String.format("\n%scase %d: %d", space, caseValue, offsetValue));
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * <code>tableswitch</code> instruction.
-     *
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.tableswitch">VM
-     * Spec: The Java Virtual Machine Instruction Set</a>
-     */
-    private static String getText_tableswitch(final PosDataInputStream pdis)
-            throws IOException {
-        String space = "    ";
-        final int defaultJump = pdis.readInt();
-        final int valueLow = pdis.readInt();
-        final int valueHigh = pdis.readInt();
-        final int tableLength = valueHigh - valueLow + 1;
-        int offsetValue;
-
-        final StringBuilder sb = new StringBuilder(200);
-        sb.append(Opcode.Instruction.tableswitch.name());
-        sb.append(String.format(" %d to %d: default=%d", valueLow, valueHigh, defaultJump));
-        for (int i = 0; i < tableLength; i++) {
-            offsetValue = pdis.readInt();
-            sb.append(String.format("\n%s%d", space, offsetValue));
-        }
-
-        return sb.toString();
-    }
-
-    private static String getText_wide(final PosDataInputStream pdis)
-            throws IOException {
-        final int opcode = pdis.readUnsignedByte();
-        String opCodeText;
-
-        int shortValue;
-        int shortValue2;
-
-        if (opcode == Opcode.Instruction.iload.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.lload.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.fload.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.dload.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.aload.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.istore.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.lstore.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.fstore.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.dstore.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.astore.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
-        } else if (opcode == Opcode.Instruction.iinc.code) {
-            shortValue = pdis.readUnsignedShort();
-            shortValue2 = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
-        } else if (opcode == Opcode.Instruction.ret.code) {
-            shortValue = pdis.readUnsignedShort();
-            opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
-        } else {
-            opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
-        }
-
-        return opCodeText;
     }
 
     /**
