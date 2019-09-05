@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ public final class Opcode {
      * <code>bipush + immediate vlaue</code>,
      * <code>lload + local frame vlaue</code>
      */
-    private static final String FORMAT_OPCODE_LOCAL = "%s %d";
+    private static final String FORMAT_OPCODE_NUMBER = "%s %d";
     private static final String FORMAT_OPCODE_LOCAL_IINC = "%s index = %d const = %d";
 
     /**
@@ -137,7 +138,7 @@ public final class Opcode {
                 int intermediateByteValue = pdis.readUnsignedByte();
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = String.format(FORMAT_OPCODE_LOCAL, this.name(), intermediateByteValue);
+                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), intermediateByteValue);
                 return parsed;
             }
         },
@@ -156,7 +157,7 @@ public final class Opcode {
                 int intermediateShortValue = pdis.readUnsignedShort();
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = String.format(FORMAT_OPCODE_LOCAL, this.name(), intermediateShortValue);
+                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), intermediateShortValue);
                 return parsed;
             }
         },
@@ -1434,6 +1435,9 @@ public final class Opcode {
                 return super.parse_Lvindex_UnsignedByte(curPos, pdis);
             }
         },
+        /**
+         * Access jump table by index and jump.
+         */
         tableswitch(170) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -1441,36 +1445,19 @@ public final class Opcode {
                 super.skipPad(pdis);
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = this.getText_tableswitch(pdis);
-                return parsed;
-            }
 
-            /**
-             * <code>tableswitch</code> instruction.
-             *
-             * @see
-             * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.tableswitch">VM
-             * Spec: The Java Virtual Machine Instruction Set</a>
-             */
-            private String getText_tableswitch(final PosDataInputStream pdis) throws IOException {
-                String space = "    ";
-                final int defaultJump = pdis.readInt();
-                final int valueLow = pdis.readInt();
-                final int valueHigh = pdis.readInt();
-                final int tableLength = valueHigh - valueLow + 1;
-                int offsetValue;
-
-                final StringBuilder sb = new StringBuilder(200);
-                sb.append(Opcode.Instruction.tableswitch.name());
-                sb.append(String.format(" %d to %d: default=%d", valueLow, valueHigh, defaultJump));
-                for (int i = 0; i < tableLength; i++) {
-                    offsetValue = pdis.readInt();
-                    sb.append(String.format("\n%s%d", space, offsetValue));
+                parsed.tableSwitch = new TableSwitch(pdis.readInt(), pdis.readInt(), pdis.readInt());
+                for (int i = parsed.tableSwitch.lowbyte; i <= parsed.tableSwitch.highbyte; i++) {
+                    parsed.tableSwitch.jumpoffsets.put(i, pdis.readInt());
                 }
 
-                return sb.toString();
+                parsed.opCodeText = String.format("%s %s", this.name(), parsed.tableSwitch.toString(curPos));
+                return parsed;
             }
         },
+        /**
+         * Access jump table by key match and jump.
+         */
         lookupswitch(171) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -1478,27 +1465,14 @@ public final class Opcode {
                 super.skipPad(pdis);
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = this.getText_lookupswitch(pdis);
-                return parsed;
-            }
-
-            private String getText_lookupswitch(final PosDataInputStream pdis) throws IOException {
-                String space = "    ";
-                final int defaultJump = pdis.readInt();
-
-                final StringBuilder sb = new StringBuilder(200);
-                sb.append(Opcode.Instruction.lookupswitch.name());
-                sb.append(String.format(": default=%d", defaultJump));
-
-                final int pairCount = pdis.readInt();
-                for (int i = 0; i < pairCount; i++) {
-                    int caseValue = pdis.readInt();
-                    int offsetValue = pdis.readInt();
-
-                    sb.append(String.format("\n%scase %d: %d", space, caseValue, offsetValue));
+                
+                parsed.lookupSwitch = new LookupSwitch(pdis.readInt(), pdis.readInt());
+                for (int i = 0; i < parsed.lookupSwitch.npairs; i++) {
+                    parsed.lookupSwitch.mapoffsets.put(pdis.readInt(), pdis.readInt());
                 }
-
-                return sb.toString();
+                
+                parsed.opCodeText = String.format("%s  %s", this.name(), parsed.lookupSwitch.toString(curPos));
+                return parsed;
             }
         },
         /**
@@ -1792,41 +1766,41 @@ public final class Opcode {
 
                 if (opcode == Opcode.Instruction.iload.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.lload.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.fload.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.dload.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.aload.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.istore.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.lstore.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.fstore.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.dstore.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.astore.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
                 } else if (opcode == Opcode.Instruction.iinc.code) {
                     shortValue = pdis.readUnsignedShort();
                     shortValue2 = pdis.readUnsignedShort();
                     opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
                 } else if (opcode == Opcode.Instruction.ret.code) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
                 } else {
                     opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
                 }
@@ -2008,7 +1982,7 @@ public final class Opcode {
         private InstructionParsed parse_Lvindex_UnsignedByte(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.lvIndex = pdis.readUnsignedByte();
-            parsed.opCodeText = String.format(FORMAT_OPCODE_LOCAL, this.name(), parsed.lvIndex);
+            parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), parsed.lvIndex);
             return parsed;
         }
 
@@ -2030,6 +2004,8 @@ public final class Opcode {
     }
 
     /**
+     * Data types used by {@link Instruction#newarray}.
+     *
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.newarray">
      * VM Spec: Table 6.5.newarray-A. Array type codes
@@ -2100,6 +2076,70 @@ public final class Opcode {
         }
 
         return codeResult;
+    }
+
+    /**
+     * Instruction structure used by {@link Instruction#lookupswitch}.
+     *
+     * @see Instruction#lookupswitch
+     */
+    public static class LookupSwitch {
+
+        public final int defaultbyte;
+        public final int npairs;
+        public final LinkedHashMap<Integer, Integer> mapoffsets = new LinkedHashMap<>();
+
+        LookupSwitch(int defaultByte, int nPairs) {
+            this.defaultbyte = defaultByte;
+            this.npairs = nPairs;
+        }
+
+        public String toString(int currentOffset) {
+            final StringBuilder sb = new StringBuilder(256);
+            sb.append("- ").append(this.npairs).append(" Pairs");
+            this.mapoffsets.keySet().forEach((key) -> {
+                Integer value = this.mapoffsets.get(key);
+                sb.append(String.format("\n    case %d. jump to %d (relative offset = %d)", key, value + currentOffset, value));
+            });
+            sb.append(String.format("\n    default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
+
+            return sb.toString();
+        }
+    }
+
+    /**
+     * Instruction structure used by {@link Instruction#tableswitch}.
+     *
+     * @see Instruction#tableswitch
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.tableswitch">VM
+     * Spec: The Java Virtual Machine Instruction Set</a>
+     */
+    public static class TableSwitch {
+
+        public final int defaultbyte;
+        public final int lowbyte;
+        public final int highbyte;
+        public final LinkedHashMap<Integer, Integer> jumpoffsets = new LinkedHashMap<>();
+
+        TableSwitch(int defaultByte, int lowByte, int highByte) {
+            this.defaultbyte = defaultByte;
+            this.lowbyte = lowByte;
+            this.highbyte = highByte;
+        }
+
+        public String toString(int currentOffset) {
+            final StringBuilder sb = new StringBuilder(256);
+            sb.append("- from ").append(this.lowbyte).append(" to ").append(this.highbyte);
+            this.jumpoffsets.keySet().forEach((key) -> {
+                Integer value = this.jumpoffsets.get(key);
+                sb.append(String.format("\n    case %d. jump to %d (relative offset = %d) ", key, value + currentOffset, value));
+            });
+            sb.append(String.format("\n   default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
+
+            return sb.toString();
+        }
+
     }
 
     /**
@@ -2187,6 +2227,20 @@ public final class Opcode {
          */
         protected Integer branchbyte = null;
 
+        /**
+         * Parsed data for {@link Instruction#lookupswitch}.
+         *
+         * @see Instruction#lookupswitch
+         */
+        protected LookupSwitch lookupSwitch = null;
+
+        /**
+         * Parsed data for {@link Instruction#tableswitch}.
+         *
+         * @see Instruction#tableswitch
+         */
+        protected TableSwitch tableSwitch = null;
+
         InstructionParsed(int curPos, int opcode) {
             this.offset = curPos;
             this.opCode = opcode;
@@ -2221,6 +2275,26 @@ public final class Opcode {
          */
         public Integer getCpindex() {
             return this.cpIndex;
+        }
+
+        /**
+         * Getter for {@link #lookupSwitch}.
+         *
+         * @return {@link #lookupSwitch} value. <code>null</code> if current
+         * instruction is not {@link Instruction#lookupswitch}
+         */
+        public LookupSwitch getLookupSwitch() {
+            return this.lookupSwitch;
+        }
+
+        /**
+         * Getter for {@link #tableSwitch}.
+         *
+         * @return {@link #tableSwitch} value. <code>null</code> if current
+         * instruction is not {@link Instruction#tableswitch}
+         */
+        public TableSwitch getTableSwitch() {
+            return this.tableSwitch;
         }
 
         @Override
