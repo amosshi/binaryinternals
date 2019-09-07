@@ -68,6 +68,11 @@ public class ConstantMethodHandleInfo extends CPInfo {
                 + "], reference_kind: [" + this.reference_kind.value
                 + "], reference_index = [" + this.reference_index.value + "]";
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return null;
+    }
 
     /**
      * The value denotes the {@code kind} of this method handle, which

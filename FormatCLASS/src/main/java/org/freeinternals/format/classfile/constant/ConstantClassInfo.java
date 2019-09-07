@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
+import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -53,4 +54,12 @@ public class ConstantClassInfo extends CPInfo {
                 this.getName(), this.startPos, this.length, this.name_index.value);
     }
 
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        // The value of the name_index item must be a valid index into the constant_pool table.
+        // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
+        // representing a valid fully qualified class or interface name encoded in internal form.
+        final String classtype = SignatureConvertor.ParseClassSignature(((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue());
+        return this.getName() + ". " + classtype;
+    }
 }

@@ -54,4 +54,9 @@ public class ConstantPackageInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d].",
                 this.getName(), this.startPos, this.length, this.name_index.value);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return null;
+    }
 }

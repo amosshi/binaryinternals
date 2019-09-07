@@ -55,4 +55,9 @@ public class ConstantFloatInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%f].",
                 this.getName(), this.startPos, this.length, this.floatValue);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return this.getName() + ". " + this.floatValue;
+    }
 }

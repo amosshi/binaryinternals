@@ -550,6 +550,7 @@ public class ClassFile {
                     } else if (cp_info instanceof ConstantClassInfo) {
                         sb.append(this.getDescr_Class((ConstantClassInfo) cp_info));
                     } else if (cp_info instanceof ConstantStringInfo) {
+                        // done here
                         sb.append(this.getDescr_String((ConstantStringInfo) cp_info));
                     } else if (cp_info instanceof ConstantFieldrefInfo) {
                         sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) cp_info));
@@ -602,7 +603,7 @@ public class ClassFile {
 
         private String getDescr_String(final ConstantStringInfo info) {
             // The value of the string_index item must be a valid index into the constant_pool table.
-            // The constant_pool entry at that index must be a CONSTANT_Utf8_info (.4.7) structure
+            // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
             // representing the sequence of characters to which the String object is to be initialized.
             return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
                     (ConstantUtf8Info) ClassFile.this.constant_pool[info.string_index.value]));

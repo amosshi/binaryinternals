@@ -91,6 +91,14 @@ public abstract class CPInfo extends FileComponent {
     public abstract String getDescription();
 
     /**
+     * Get a human reader friendly of current constant pool item.
+     * 
+     * @param constant_pool Constant Pool items needed
+     * @return Reader friendly string
+     */
+    public abstract String toString(CPInfo[] constant_pool);
+    
+    /**
      * Constant pool tags.
      *
      * @see
@@ -277,25 +285,30 @@ public abstract class CPInfo extends FileComponent {
         }
 
         /**
-         * Get the {@link ConstantType} name based on its internal {@link #tag}
+         * Get the {@link ConstantType} based on its internal {@link #tag}
          * value.
          *
          * @param tag Internal {@link #tag} value
-         * @return {@link ConstantType} name
+         * @return Corresponding {@link ConstantType}
          */
-        public static String name(int tag) {
-            String result = "Un-recognized";
+        public static ConstantType valueOf(int tag) {
             for (ConstantType item : ConstantType.values()) {
                 if (item.tag == tag) {
-                    result = item.name();
-                    break;
+                    return item;
                 }
             }
-            return result;
+
+            throw new IllegalArgumentException("Invalid tag value: " + tag);
         }
 
         /**
          * Parse a constant pool item.
+         *
+         * @param tag Constant pool item tag, indicating the type of the item
+         * @param posDataInputStream Class file byte stream
+         * @return Parsed constant pool info
+         * @throws org.freeinternals.format.FileFormatException An invalid class
+         * file format encountered
          */
         public static CPInfo parse(int tag, final PosDataInputStream posDataInputStream) throws FileFormatException {
             CPInfo cpInfo = null;

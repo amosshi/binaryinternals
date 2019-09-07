@@ -75,4 +75,9 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
                 this.bootstrap_method_attr_index.value,
                 this.name_and_type_index.value);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return null;
+    }
 }

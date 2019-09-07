@@ -2299,7 +2299,7 @@ public final class Opcode {
 
         @Override
         public String toString() {
-            String s = String.format("offset %04d: opcode [%02X] %s", this.offset, this.opCode, this.opCodeText);
+            String s = String.format("%04d: %02X|%s", this.offset, this.opCode, this.opCodeText);
 
             if (this.branchbyte != null) {
                 String branch = String.format(" %d (branch byte offset = %d)", this.getAbsoluteBranchByte(), this.branchbyte);
@@ -2325,7 +2325,7 @@ public final class Opcode {
                 if (cpDesc.length() > 1000) {
                     cpDesc = cpDesc.substring(1, 1000);
                 }
-                s = s + " - " + cpDesc;
+                s = s + "  " + cpDesc;
             }
 
             return s;

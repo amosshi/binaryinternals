@@ -43,5 +43,10 @@ public class ConstantRefInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].",
                 this.getName(), this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return null;
+    }
 
 }

@@ -19,7 +19,7 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_String_info {
  *        u1 tag;
- * 
+ *
  *        u2 string_index;
  *    }
  * </pre>
@@ -51,5 +51,14 @@ public class ConstantStringInfo extends CPInfo {
     @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], value: string_index=[%d].", this.getName(), this.startPos, this.length, this.string_index.value);
+    }
+
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        // The value of the string_index item must be a valid index into the constant_pool table.
+        // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
+        // representing the sequence of characters to which the String object is to be initialized.
+        final String strValue = ((ConstantUtf8Info) constant_pool[this.string_index.value]).getValue();
+        return this.getName() + ". " + strValue;
     }
 }

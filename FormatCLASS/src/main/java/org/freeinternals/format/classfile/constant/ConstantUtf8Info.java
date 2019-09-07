@@ -70,4 +70,9 @@ public class ConstantUtf8Info extends CPInfo {
     public String getValue() {
         return new String(this.bytes);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return null;
+    }
 }

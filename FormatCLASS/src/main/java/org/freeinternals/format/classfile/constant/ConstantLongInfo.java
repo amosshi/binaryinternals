@@ -59,4 +59,9 @@ public class ConstantLongInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
                 this.getName(), this.startPos, this.length, this.longValue);
     }
+    
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return this.getName() + ". " + this.longValue;
+    }
 }
