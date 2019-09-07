@@ -34,6 +34,16 @@ import org.freeinternals.format.classfile.JavaSEVersion;
 public class ConstantInterfaceMethodrefInfo extends ConstantRefInfo {
 
     ConstantInterfaceMethodrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag, posDataInputStream, ConstantType.CONSTANT_InterfaceMethodref.name(), ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_InterfaceMethodref.tag, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+    }
+    
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_InterfaceMethodref.name();
+    }
+
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return super.toString4Method(constant_pool);
     }
 }

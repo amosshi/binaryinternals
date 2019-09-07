@@ -60,6 +60,9 @@ public class ConstantNameAndTypeInfo extends CPInfo {
     
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        String nameStr = constant_pool[this.name_index.value].toString(constant_pool);
+        String typeStr = constant_pool[this.descriptor_index.value].toString(constant_pool);
+
+        return String.format("name=%s, type=%s", nameStr, typeStr);
     }
 }

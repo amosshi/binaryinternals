@@ -38,8 +38,7 @@ public class ConstantModuleInfo extends CPInfo {
     /**
      * The value of the {@link name_index} item must be a valid index into the
      * {@code constant_pool} table. The constant_pool entry at that index must
-     * be a {@link org.freeinternals.format.classfile.constant.ConstantUtf8Info}
-     * structure representing a valid module name.
+     * be a {@link ConstantUtf8Info} structure representing a valid module name.
      */
     public final u2 name_index;
 
@@ -61,9 +60,9 @@ public class ConstantModuleInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d].",
                 this.getName(), this.startPos, this.length, this.name_index.value);
     }
-    
+
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        return ((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue();
     }
 }

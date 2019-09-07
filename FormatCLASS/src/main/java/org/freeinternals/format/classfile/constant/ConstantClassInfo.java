@@ -59,7 +59,6 @@ public class ConstantClassInfo extends CPInfo {
         // The value of the name_index item must be a valid index into the constant_pool table.
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing a valid fully qualified class or interface name encoded in internal form.
-        final String classtype = SignatureConvertor.ParseClassSignature(((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue());
-        return this.getName() + ". " + classtype;
+        return SignatureConvertor.ParseClassSignature(((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue());
     }
 }

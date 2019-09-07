@@ -62,6 +62,6 @@ public class ConstantDoubleInfo extends CPInfo {
 
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return this.getName() + ". " + this.doubleValue;
+        return String.valueOf(this.doubleValue);
     }
 }

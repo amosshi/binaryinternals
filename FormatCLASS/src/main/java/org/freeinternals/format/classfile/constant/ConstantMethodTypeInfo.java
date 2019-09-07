@@ -7,10 +7,13 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
+import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -62,6 +65,23 @@ public class ConstantMethodTypeInfo extends CPInfo {
     
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        String descriptor = constant_pool[this.descriptor_index.value].toString(constant_pool);
+        String parameters, returnType;
+
+        try {
+            parameters = SignatureConvertor.MethodParameters2Readable(descriptor);
+        } catch (FileFormatException ex) {
+            parameters = descriptor + UNRECOGNIZED_TYPE;
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method parameters: " + descriptor, ex);
+        }
+
+        try {
+            returnType = SignatureConvertor.MethodReturnTypeExtractor(descriptor).toString();
+        } catch (FileFormatException ex) {
+            returnType = descriptor + UNRECOGNIZED_TYPE;
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + descriptor, ex);
+        }
+
+        return String.format("%s : %s", parameters, returnType);
     }
 }

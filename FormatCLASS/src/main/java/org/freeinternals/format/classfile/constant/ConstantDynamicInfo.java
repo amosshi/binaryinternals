@@ -84,6 +84,10 @@ public class ConstantDynamicInfo extends CPInfo {
 
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        // TODO Improve this logic with test case
+        final StringBuilder sb = new StringBuilder(64);
+        sb.append("bootstrap_method_attr_index = ").append(this.bootstrap_method_attr_index.value);
+        sb.append(", name_and_type_index = ").append(constant_pool[this.name_and_type_index.value].toString(constant_pool));
+        return sb.toString();
     }
 }

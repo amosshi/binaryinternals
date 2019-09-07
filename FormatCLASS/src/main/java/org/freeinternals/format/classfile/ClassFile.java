@@ -482,15 +482,21 @@ public class ClassFile {
     public String getCPDescription(final int index) {
         // Invalid index
         if (index >= this.constant_pool_count.value) {
-            return null;
+            throw new IllegalArgumentException(String.format("Index is bigger than constant pool size. size=%d, index=%d", this.constant_pool_count.value, index));
         }
 
         // Special index: empty
         if (index == 0) {
-            return null;
+            throw new IllegalArgumentException("Constant Pool Index cannot be zero. index=" + index);
+        }
+        
+        CPInfo cp = this.constant_pool[index];
+        if (cp == null) {
+            // For Double, Long type, each item take two indexs, so there could be some index contains nothing.
+            throw new IllegalArgumentException("Nothing exist at the Constant Pool Index. index=" + index);
         }
 
-        return new CPDescr().getCPDescr(index);
+        return cp.toString(this.constant_pool) + ", " + cp.getName();
     }
 
     /**
@@ -507,185 +513,6 @@ public class ClassFile {
         return "Class contains "
                 + this.fields_count.value.value + " field(s) and "
                 + this.methods_count.value.value + " method(s)";
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Get extracted data
-    ///////////////////////////////////////////////////////////////////////////
-    // Internal Classes
-    private static enum Descr_NameAndType {
-
-        RAW(1), FIELD(2), METHOD(3);
-        private final int enum_value;
-
-        Descr_NameAndType(final int value) {
-            this.enum_value = value;
-        }
-
-        public int value() {
-            return this.enum_value;
-        }
-    }
-
-    // TODO - Refactor this method into each Constant type
-    private class CPDescr {
-
-        public String getCPDescr(final int index) {
-            final StringBuilder sb = new StringBuilder(40);
-
-            if (index >= 0 && index < ClassFile.this.constant_pool.length) {
-                CPInfo cp_info = ClassFile.this.constant_pool[index];
-                if (cp_info != null) {
-                    sb.append(cp_info.getName()).append(": ");
-                    if (cp_info instanceof ConstantUtf8Info) {
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) cp_info));
-                    } else if (cp_info instanceof ConstantIntegerInfo) {
-                        sb.append(String.valueOf(((ConstantIntegerInfo) cp_info).integerValue));
-                    } else if (cp_info instanceof ConstantFloatInfo) {
-                        sb.append(String.valueOf(((ConstantFloatInfo) cp_info).floatValue));
-                    } else if (cp_info instanceof ConstantLongInfo) {
-                        sb.append(String.valueOf(((ConstantLongInfo) cp_info).longValue));
-                    } else if (cp_info instanceof ConstantDoubleInfo) {
-                        sb.append(String.valueOf(((ConstantDoubleInfo) cp_info).doubleValue));
-                    } else if (cp_info instanceof ConstantClassInfo) {
-                        sb.append(this.getDescr_Class((ConstantClassInfo) cp_info));
-                    } else if (cp_info instanceof ConstantStringInfo) {
-                        // done here
-                        sb.append(this.getDescr_String((ConstantStringInfo) cp_info));
-                    } else if (cp_info instanceof ConstantFieldrefInfo) {
-                        sb.append(this.getDescr_Fieldref((ConstantFieldrefInfo) cp_info));
-                    } else if (cp_info instanceof ConstantMethodrefInfo) {
-                        sb.append(this.getDescr_Methodref((ConstantMethodrefInfo) cp_info));
-                    } else if (cp_info instanceof ConstantInterfaceMethodrefInfo) {
-                        sb.append(this.getDescr_InterfaceMethodref((ConstantInterfaceMethodrefInfo) cp_info));
-                    } else if (cp_info instanceof ConstantNameAndTypeInfo) {
-                        sb.append(this.getDescr_NameAndType(
-                                (ConstantNameAndTypeInfo) cp_info,
-                                ClassFile.Descr_NameAndType.RAW));
-                    } else if (cp_info instanceof ConstantMethodTypeInfo) {
-                        ConstantMethodTypeInfo mti = (ConstantMethodTypeInfo) cp_info;
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[mti.descriptor_index.value]));
-                    } else if (cp_info instanceof ConstantDynamicInfo) {
-                        sb.append("bootstrap_method_attr_index = ").append(((ConstantDynamicInfo) cp_info).bootstrap_method_attr_index.value);
-                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantDynamicInfo) cp_info).name_and_type_index.value));
-                    } else if (cp_info instanceof ConstantInvokeDynamicInfo) {
-                        sb.append("bootstrap_method_attr_index = ").append(((ConstantInvokeDynamicInfo) cp_info).bootstrap_method_attr_index.value);
-                        sb.append(", name_and_type_index = ").append(this.getCPDescr(((ConstantInvokeDynamicInfo) cp_info).name_and_type_index.value));
-                    } else if (cp_info instanceof ConstantMethodHandleInfo) {
-                        sb.append("reference_kind = ").append(ConstantMethodHandleInfo.ReferenceKind.name(((ConstantMethodHandleInfo) cp_info).reference_kind.value));
-                        sb.append(", reference_index = ").append(this.getCPDescr(((ConstantMethodHandleInfo) cp_info).reference_index.value));
-                    } else if (cp_info instanceof ConstantModuleInfo) {
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantModuleInfo) cp_info).name_index.value]));
-                    } else if (cp_info instanceof ConstantPackageInfo) {
-                        sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[((ConstantPackageInfo) cp_info).name_index.value]));
-                    } else {
-                        sb.append("!!! Un-recognized CP type.");
-                    }
-                } // End if
-            } else {
-                sb.append("ERROR - Index (" + index + ") out of bound of constant_pool (" + ClassFile.this.constant_pool.length + ")");
-            }
-
-            return sb.toString();
-        }
-
-        private String getDescr_Utf8(final ConstantUtf8Info info) {
-            return info.getValue();
-        }
-
-        private String getDescr_Class(final ConstantClassInfo info) {
-            // The value of the name_index item must be a valid index into the constant_pool table.
-            // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
-            // representing a valid fully qualified class or interface name encoded in internal form.
-            return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
-                    (ConstantUtf8Info) ClassFile.this.constant_pool[info.name_index.value]));
-        }
-
-        private String getDescr_String(final ConstantStringInfo info) {
-            // The value of the string_index item must be a valid index into the constant_pool table.
-            // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
-            // representing the sequence of characters to which the String object is to be initialized.
-            return SignatureConvertor.ParseClassSignature(this.getDescr_Utf8(
-                    (ConstantUtf8Info) ClassFile.this.constant_pool[info.string_index.value]));
-        }
-
-        private String getDescr_Fieldref(final ConstantFieldrefInfo info) {
-            return this.getDescr_ref(
-                    info.class_index.value,
-                    info.name_and_type_index.value,
-                    ClassFile.Descr_NameAndType.FIELD);
-        }
-
-        private String getDescr_Methodref(final ConstantMethodrefInfo info) {
-            return this.getDescr_ref(
-                    info.class_index.value,
-                    info.name_and_type_index.value,
-                    ClassFile.Descr_NameAndType.METHOD);
-        }
-
-        private String getDescr_InterfaceMethodref(final ConstantInterfaceMethodrefInfo info) {
-            return this.getDescr_ref(
-                    info.class_index.value,
-                    info.name_and_type_index.value,
-                    ClassFile.Descr_NameAndType.METHOD);
-        }
-
-        private String getDescr_ref(final int classindex, final int natindex, final ClassFile.Descr_NameAndType type) {
-            final StringBuilder sb = new StringBuilder();
-            sb.append(this.getDescr_Class((ConstantClassInfo) ClassFile.this.constant_pool[classindex]));
-            sb.append(".");
-            sb.append(this.getDescr_NameAndType((ConstantNameAndTypeInfo) ClassFile.this.constant_pool[natindex], type));
-
-            return sb.toString();
-        }
-
-        private String getDescr_NameAndType(final ConstantNameAndTypeInfo info, final ClassFile.Descr_NameAndType format) {
-            final StringBuilder sb = new StringBuilder();
-            String type;
-
-            sb.append(this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[info.name_index.value]));
-            sb.append(", ");
-            type = this.getDescr_Utf8((ConstantUtf8Info) ClassFile.this.constant_pool[info.descriptor_index.value]);
-
-            switch (format) {
-                case RAW:
-                    sb.append(type);
-                    break;
-
-                case FIELD:
-                    try {
-                        sb.append("type = ");
-                        sb.append(SignatureConvertor.FieldDescriptorExtractor(type).toString());
-                    } catch (FileFormatException ex) {
-                        Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
-
-                        sb.append(type);
-                        sb.append(" !!! Un-recognized type");
-                    }
-                    break;
-
-                case METHOD:
-                    final StringBuilder sb_mtd = new StringBuilder();
-                    try {
-                        sb_mtd.append("parameter = ");
-                        sb_mtd.append(SignatureConvertor.MethodParameters2Readable(type));
-                        sb_mtd.append(", returns = ");
-                        sb_mtd.append(SignatureConvertor.MethodReturnTypeExtractor(type).toString());
-
-                        sb.append(sb_mtd);
-                    } catch (FileFormatException ex) {
-                        Logger.getLogger(ClassFile.class.getName()).log(Level.SEVERE, null, ex);
-
-                        sb.append(type);
-                        sb.append(" !!! Un-recognized type");
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            return sb.toString();
-        }
     }
 
     /**

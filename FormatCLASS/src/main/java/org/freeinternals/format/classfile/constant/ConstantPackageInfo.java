@@ -34,6 +34,13 @@ import org.freeinternals.format.classfile.u2;
 public class ConstantPackageInfo extends CPInfo {
 
     public static final int LENGTH = 3;
+
+    /**
+     * The value of the {@link name_index} item must be a valid index into the
+     * {@code constant_pool} table. The constant_pool entry at that index must
+     * be a {@link ConstantUtf8Info} structure representing a valid package name
+     * encoded in internal form.
+     */
     public final u2 name_index;
 
     ConstantPackageInfo(final PosDataInputStream posDataInputStream) throws IOException {
@@ -54,9 +61,9 @@ public class ConstantPackageInfo extends CPInfo {
         return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d].",
                 this.getName(), this.startPos, this.length, this.name_index.value);
     }
-    
+
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        return ((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue();
     }
 }

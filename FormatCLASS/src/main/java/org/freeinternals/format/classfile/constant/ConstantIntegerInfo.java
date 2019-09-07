@@ -57,6 +57,6 @@ public class ConstantIntegerInfo extends CPInfo {
     
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return String.format("%s. %d", this.getName(), this.integerValue);
+        return String.valueOf(this.integerValue);
     }
 }

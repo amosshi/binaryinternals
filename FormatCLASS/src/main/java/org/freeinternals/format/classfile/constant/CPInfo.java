@@ -39,6 +39,11 @@ import org.freeinternals.format.classfile.u1;
 public abstract class CPInfo extends FileComponent {
 
     /**
+     * Warning message for un-recognized type.
+     */
+    protected static final String UNRECOGNIZED_TYPE = " !!! Un-recognized type";
+
+    /**
      * Each item in the {@link ClassFile#constant_pool} table must begin with a
      * 1-byte {@link #tag} indicating the kind of <code>cp_info</code> entry.
      *

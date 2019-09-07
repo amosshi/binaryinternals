@@ -62,6 +62,6 @@ public class ConstantLongInfo extends CPInfo {
     
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return this.getName() + ". " + this.longValue;
+        return String.valueOf(this.longValue);
     }
 }

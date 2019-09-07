@@ -21,7 +21,7 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  *    CONSTANT_MethodHandle_info {
  *        u1 tag;
- * 
+ *
  *        u1 reference_kind;
  *        u2 reference_index;
  *    }
@@ -68,10 +68,14 @@ public class ConstantMethodHandleInfo extends CPInfo {
                 + "], reference_kind: [" + this.reference_kind.value
                 + "], reference_index = [" + this.reference_index.value + "]";
     }
-    
+
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        // TODO Improve this logic with test case
+        final StringBuilder sb = new StringBuilder(64);
+        sb.append("reference_kind = ").append(ReferenceKind.name(this.reference_kind.value));
+        sb.append(", reference_index = ").append(constant_pool[this.reference_index.value].toString(constant_pool));
+        return sb.toString();
     }
 
     /**

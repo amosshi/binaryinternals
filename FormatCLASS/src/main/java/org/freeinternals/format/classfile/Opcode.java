@@ -1471,7 +1471,7 @@ public final class Opcode {
                     parsed.lookupSwitch.mapoffsets.put(pdis.readInt(), pdis.readInt());
                 }
                 
-                parsed.opCodeText = String.format("%s  %s", this.name(), parsed.lookupSwitch.toString(curPos));
+                parsed.opCodeText = String.format("%s %s", this.name(), parsed.lookupSwitch.toString(curPos));
                 return parsed;
             }
         },
@@ -2096,7 +2096,7 @@ public final class Opcode {
 
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
-            sb.append("- ").append(this.npairs).append(" Pairs");
+            sb.append('(').append(this.npairs).append(" Pairs)");
             this.mapoffsets.keySet().forEach((key) -> {
                 Integer value = this.mapoffsets.get(key);
                 sb.append(String.format("\n    case %d. jump to %d (relative offset = %d)", key, value + currentOffset, value));
@@ -2130,7 +2130,7 @@ public final class Opcode {
 
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
-            sb.append("- from ").append(this.lowbyte).append(" to ").append(this.highbyte);
+            sb.append(" (from ").append(this.lowbyte).append(" to ").append(this.highbyte).append(')');
             this.jumpoffsets.keySet().forEach((key) -> {
                 Integer value = this.jumpoffsets.get(key);
                 sb.append(String.format("\n    case %d. jump to %d (relative offset = %d) ", key, value + currentOffset, value));

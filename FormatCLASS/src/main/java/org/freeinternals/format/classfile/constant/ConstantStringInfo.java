@@ -58,7 +58,6 @@ public class ConstantStringInfo extends CPInfo {
         // The value of the string_index item must be a valid index into the constant_pool table.
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing the sequence of characters to which the String object is to be initialized.
-        final String strValue = ((ConstantUtf8Info) constant_pool[this.string_index.value]).getValue();
-        return this.getName() + ". " + strValue;
+        return ((ConstantUtf8Info) constant_pool[this.string_index.value]).getValue();
     }
 }

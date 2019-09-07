@@ -73,6 +73,6 @@ public class ConstantUtf8Info extends CPInfo {
     
     @Override
     public String toString(CPInfo[] constant_pool) {
-        return null;
+        return this.getValue();
     }
 }

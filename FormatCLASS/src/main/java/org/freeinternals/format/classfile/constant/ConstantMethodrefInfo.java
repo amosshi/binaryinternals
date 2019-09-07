@@ -18,7 +18,7 @@ import org.freeinternals.format.classfile.JavaSEVersion;
  * <pre>
  *    CONSTANT_Methodref_info {
  *        u1 tag;
- * 
+ *
  *        u2 class_index;
  *        u2 name_and_type_index;
  *    }
@@ -33,6 +33,16 @@ import org.freeinternals.format.classfile.JavaSEVersion;
 public class ConstantMethodrefInfo extends ConstantRefInfo {
 
     ConstantMethodrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ConstantType.CONSTANT_Methodref.name(), ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Methodref.name();
+    }
+
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        return super.toString4Method(constant_pool);
     }
 }

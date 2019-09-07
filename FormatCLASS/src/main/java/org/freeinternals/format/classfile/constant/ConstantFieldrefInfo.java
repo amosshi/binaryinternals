@@ -7,9 +7,13 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
+import org.freeinternals.format.classfile.SignatureConvertor;
 
 /**
  * The class for the {@code CONSTANT_Fieldref_info} structure in constant pool.
@@ -32,6 +36,32 @@ import org.freeinternals.format.classfile.JavaSEVersion;
 public class ConstantFieldrefInfo extends ConstantRefInfo {
 
     ConstantFieldrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Fieldref.tag, posDataInputStream, ConstantType.CONSTANT_Fieldref.name(), ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Fieldref.tag, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+    }
+    
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Fieldref.name();
+    }
+
+    @Override
+    public String toString(CPInfo[] constant_pool) {
+        // Class
+        String clazz = constant_pool[this.class_index.value].toString(constant_pool);
+
+        // Name and Type
+        ConstantNameAndTypeInfo nameType = (ConstantNameAndTypeInfo) constant_pool[this.name_and_type_index.value];
+        String name = constant_pool[nameType.name_index.value].toString(constant_pool);
+        String type = constant_pool[nameType.descriptor_index.value].toString(constant_pool);
+        String typeDesc;
+
+        try {
+            typeDesc = SignatureConvertor.FieldDescriptorExtractor(type).toString();
+        } catch (FileFormatException ex) {
+            typeDesc = type + UNRECOGNIZED_TYPE;
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the field type: " + type, ex);
+        }
+
+        return String.format("%s.%s : %s", clazz, name, typeDesc);
     }
 }
