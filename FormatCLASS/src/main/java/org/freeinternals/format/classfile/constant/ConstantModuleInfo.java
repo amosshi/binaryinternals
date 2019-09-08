@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
@@ -58,11 +60,20 @@ public class ConstantModuleInfo extends CPInfo {
     @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d].",
-                this.getName(), this.startPos, this.length, this.name_index.value);
+                this.getName(), super.startPos, this.length, this.name_index.value);
     }
 
     @Override
     public String toString(CPInfo[] constant_pool) {
         return ((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue();
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 1,
+                2,
+                "name_index: " + this.name_index.value + " - " + classFile.getCPDescription(this.name_index.value)
+        )));
     }
 }

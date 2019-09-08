@@ -9,7 +9,9 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -63,5 +65,19 @@ public class ConstantFieldrefInfo extends ConstantRefInfo {
         }
 
         return String.format("%s.%s : %s", clazz, name, typeDesc);
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 1,
+                2,
+                "class_index: " + this.class_index.value + " - " + classFile.getCPDescription(this.class_index.value)
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 3,
+                2,
+                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value)
+        )));
     }
 }

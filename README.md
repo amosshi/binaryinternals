@@ -27,7 +27,7 @@ Supported Formats
  - ZIP file
  - DEX file (todo)
  - ELF file (todo)
- - PE file (TODO)
+ - PE file (todo)
 
  
 Build the Source Code

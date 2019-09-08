@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -36,6 +38,11 @@ public class ConstantUtf8Info extends CPInfo {
 
     public final u2 length_utf8;
     public final byte[] bytes;
+    
+    /**
+     * Buffer for {@link #getValue()}.
+     */
+    private String value = null;
 
     ConstantUtf8Info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(CPInfo.ConstantType.CONSTANT_Utf8.tag, false, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
@@ -65,14 +72,32 @@ public class ConstantUtf8Info extends CPInfo {
      * Get the {@link #bytes} value as a String, using platform's default
      * charset.
      *
-     * @return String for the content
+     * @return The content as String
      */
     public String getValue() {
-        return new String(this.bytes);
+        if (this.value == null) {
+            this.value = new String(this.bytes);
+        }
+        
+        return this.value;
     }
     
     @Override
     public String toString(CPInfo[] constant_pool) {
         return this.getValue();
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 1,
+                2,
+                "length: " + this.length_utf8.value
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 3,
+                this.length_utf8.value,
+                "bytes: " + this.getValue()
+        )));
     }
 }

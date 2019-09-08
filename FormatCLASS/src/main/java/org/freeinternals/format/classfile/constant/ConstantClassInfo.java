@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.SignatureConvertor;
@@ -60,5 +62,14 @@ public class ConstantClassInfo extends CPInfo {
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing a valid fully qualified class or interface name encoded in internal form.
         return SignatureConvertor.ParseClassSignature(((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 1,
+                2,
+                "name_index: " + this.name_index.value + " - " + classFile.getCPDescription(this.name_index.value)
+        )));
     }
 }

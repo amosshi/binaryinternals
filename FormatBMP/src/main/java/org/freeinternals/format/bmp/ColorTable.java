@@ -50,6 +50,7 @@ public class ColorTable extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         if (this.palette == null) {
             return;

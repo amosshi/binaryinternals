@@ -91,16 +91,21 @@ public class JTreeClassFile extends JTree {
         ));
         this.root.add(constant_pool);
 
-        DefaultMutableTreeNode cp_info;
+        DefaultMutableTreeNode cp_info_node;
         for (int i = 1; i < cpCount; i++) {
             if (cp[i] != null) {
-                cp_info = new DefaultMutableTreeNode(new JTreeNodeFileComponent(cp[i].getStartPos(), cp[i].getLength(), i + ". " + cp[i].getName()));
-                new JTreeCPInfo(this.classFile).generateTreeNode(cp_info, cp[i]);
+                cp_info_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(cp[i].getStartPos(), cp[i].getLength(), i + ". " + cp[i].getName()));
+                cp_info_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        cp[i].getStartPos(),
+                        1,
+                        "tag: " + cp[i].tag.value)));
+                cp[i].generateTreeNode(cp_info_node, this.classFile);
+                //new JTreeCPInfo(this.classFile).generateTreeNode(cp_info_node, cp[i]);
             } else {
-                cp_info = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]"));
+                cp_info_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]"));
             }
 
-            constant_pool.add(cp_info);
+            constant_pool.add(cp_info_node);
         }
     }
 

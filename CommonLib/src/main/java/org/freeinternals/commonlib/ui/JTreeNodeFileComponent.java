@@ -60,13 +60,6 @@ public class JTreeNodeFileComponent {
 
     @Override
     public String toString() {
-//        int endIndex;
-//        if (this.length > 0) {
-//            endIndex = this.startPos + this.length - 1;
-//        } else {
-//            endIndex = this.startPos;
-//        }
-//        return this.text + " [" + this.startPos + ", " + endIndex + "]";
         return this.text;
     }
 

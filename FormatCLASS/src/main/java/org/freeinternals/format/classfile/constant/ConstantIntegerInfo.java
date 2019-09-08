@@ -7,7 +7,10 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 
@@ -52,11 +55,20 @@ public class ConstantIntegerInfo extends CPInfo {
     @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
-                this.getName(), this.startPos, this.length, this.integerValue);
+                this.getName(), super.startPos, super.length, this.integerValue);
     }
     
     @Override
     public String toString(CPInfo[] constant_pool) {
         return String.valueOf(this.integerValue);
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 1,
+                4,
+                "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData)
+        )));
     }
 }

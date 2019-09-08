@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -76,6 +78,20 @@ public class ConstantMethodHandleInfo extends CPInfo {
         sb.append("reference_kind = ").append(ReferenceKind.name(this.reference_kind.value));
         sb.append(", reference_index = ").append(constant_pool[this.reference_index.value].toString(constant_pool));
         return sb.toString();
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 1,
+                1,
+                "reference_kind: " + this.reference_kind.value + " - " + ConstantMethodHandleInfo.ReferenceKind.name(this.reference_kind.value)
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 2,
+                2,
+                "reference_index: " + this.reference_index.value + " - " + classFile.getCPDescription(this.reference_index.value)
+        )));
     }
 
     /**

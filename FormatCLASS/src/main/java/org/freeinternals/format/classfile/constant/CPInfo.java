@@ -14,6 +14,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 
@@ -36,7 +37,7 @@ import org.freeinternals.format.classfile.u1;
  * VM Spec: The Constant Pool
  * </a>
  */
-public abstract class CPInfo extends FileComponent {
+public abstract class CPInfo extends FileComponent implements GenerateClassfileTreeNode {
 
     /**
      * Warning message for un-recognized type.
@@ -97,12 +98,12 @@ public abstract class CPInfo extends FileComponent {
 
     /**
      * Get a human reader friendly of current constant pool item.
-     * 
+     *
      * @param constant_pool Constant Pool items needed
      * @return Reader friendly string
      */
     public abstract String toString(CPInfo[] constant_pool);
-    
+
     /**
      * Constant pool tags.
      *
@@ -338,3 +339,4 @@ public abstract class CPInfo extends FileComponent {
         }
     }
 }
+

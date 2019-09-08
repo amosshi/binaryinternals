@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -89,5 +91,22 @@ public class ConstantDynamicInfo extends CPInfo {
         sb.append("bootstrap_method_attr_index = ").append(this.bootstrap_method_attr_index.value);
         sb.append(", name_and_type_index = ").append(constant_pool[this.name_and_type_index.value].toString(constant_pool));
         return sb.toString();
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        // TODO - Find a test case to verify this chagne is working or not
+        System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 1,
+                2,
+                "bootstrap_method_attr_index: " + this.bootstrap_method_attr_index.value
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 3,
+                2,
+                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value)
+        )));
     }
 }
