@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -46,5 +48,14 @@ public class AttributeModuleTarget extends AttributeInfo {
         this.os_arch_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                u2.LENGTH,
+                "os_arch_index: " + this.os_arch_index.value + " - " + classFile.getCPDescription(this.os_arch_index.value)
+        )));
     }
 }

@@ -4,7 +4,7 @@
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.javaclassviewer.ui;
+package org.freeinternals.javaclassviewer;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -100,7 +100,6 @@ public class JTreeClassFile extends JTree {
                         1,
                         "tag: " + cp[i].tag.value)));
                 cp[i].generateTreeNode(cp_info_node, this.classFile);
-                //new JTreeCPInfo(this.classFile).generateTreeNode(cp_info_node, cp[i]);
             } else {
                 cp_info_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]"));
             }
@@ -256,7 +255,8 @@ public class JTreeClassFile extends JTree {
                         attr.getLength(),
                         String.format("%d. %s", i + 1, attr.getName()
                         )));
-                new JTreeAttribute(classFile).generateTreeNode(treeNodeAttrItem, attr);
+                AttributeInfo.generateTreeNode(treeNodeAttrItem, attr, this.classFile);
+                
                 treeNodeAttr.add(treeNodeAttrItem);
             }
             rootNode.add(treeNodeAttr);
@@ -342,7 +342,8 @@ public class JTreeClassFile extends JTree {
                         attr.getLength(),
                         String.format("%d. %s", i + 1, attr.getName())
                 ));
-                new JTreeAttribute(classFile).generateTreeNode(treeNodeAttrItem, attr);
+                AttributeInfo.generateTreeNode(treeNodeAttrItem, attr, this.classFile);
+
                 treeNodeAttr.add(treeNodeAttrItem);
             }
             rootNode.add(treeNodeAttr);
@@ -374,7 +375,8 @@ public class JTreeClassFile extends JTree {
                         attrs[i].getLength(),
                         (i + 1) + ". " + attrs[i].getName()
                 ));
-                new JTreeAttribute(this.classFile).generateTreeNode(attrNode, attrs[i]);
+                AttributeInfo.generateTreeNode(attrNode, attrs[i], this.classFile);
+
                 attrsNode.add(attrNode);
             }
         }

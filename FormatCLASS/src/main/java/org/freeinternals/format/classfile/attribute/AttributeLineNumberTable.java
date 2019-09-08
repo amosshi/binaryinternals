@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -71,6 +73,60 @@ public class AttributeLineNumberTable extends AttributeInfo {
         }
 
         return lnt;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        final int lnt_length = this.line_number_table_length.value;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "line_number_table_length: " + lnt_length)));
+
+        if (lnt_length > 0) {
+            final DefaultMutableTreeNode treeNodeLnt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 8,
+                    lnt_length * 4,
+                    "line_number_table[" + lnt_length + "]"
+            ));
+
+            DefaultMutableTreeNode treeNodeLntItem;
+            AttributeLineNumberTable.LineNumberTable lnt;
+            for (int i = 0; i < lnt_length; i++) {
+                lnt = this.getLineNumberTable(i);
+
+                treeNodeLntItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        lnt.getStartPos(),
+                        lnt.getLength(),
+                        String.format("line_number_table [%d]", i)
+                ));
+                this.generateSubnode(treeNodeLntItem, lnt);
+                treeNodeLnt.add(treeNodeLntItem);
+            }
+
+            parentNode.add(treeNodeLnt);
+        }
+    }
+
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeLineNumberTable.LineNumberTable lnt) {
+        if (lnt == null) {
+            return;
+        }
+
+        final int startPosMoving = lnt.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                2,
+                "start_pc: " + lnt.start_pc.value
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 2,
+                2,
+                "line_number: " + lnt.line_number.value
+        )));
     }
 
     /**

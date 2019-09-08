@@ -6,7 +6,9 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CPInfo;
@@ -33,6 +35,17 @@ public class AttributeSignature extends AttributeInfo {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        final int sigIndex = this.signature_index.value;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "signature_index: " + sigIndex + " - " + classFile.getCPDescription(sigIndex)
+        )));
     }
 
     /**

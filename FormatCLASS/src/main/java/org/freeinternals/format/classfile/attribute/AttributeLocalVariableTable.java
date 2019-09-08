@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -75,6 +77,79 @@ public class AttributeLocalVariableTable extends AttributeInfo {
 
         return lvt;
     }
+    
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+        final int lvt_length = this.local_variable_table_length.value;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "local_variable_table_length: " + lvt_length
+        )));
+
+        if (lvt_length > 0) {
+            final DefaultMutableTreeNode treeNodeLvt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 8,
+                    lvt_length * AttributeLocalVariableTable.LocalVariableTable.LENGTH,
+                    "local_variable_table[" + lvt_length + "]"
+            ));
+
+            DefaultMutableTreeNode treeNodeLvtItem;
+            AttributeLocalVariableTable.LocalVariableTable lvt;
+            for (int i = 0; i < lvt_length; i++) {
+                lvt = this.getLocalVariableTable(i);
+
+                treeNodeLvtItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        lvt.getStartPos(),
+                        lvt.getLength(),
+                        String.format("local_variable_table [%05d]", i)
+                ));
+                this.generateSubnode(treeNodeLvtItem, lvt, classFile);
+                treeNodeLvt.add(treeNodeLvtItem);
+            }
+
+            parentNode.add(treeNodeLvt);
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeLocalVariableTable.LocalVariableTable lvt, final ClassFile classFile) {
+        if (lvt == null) {
+            return;
+        }
+
+        final int startPos = lvt.getStartPos();
+        int cp_index;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos,
+                2,
+                "start_pc: " + lvt.start_pc.value
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 2,
+                2,
+                "length: " + lvt.length.value
+        )));
+        cp_index = lvt.name_index.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 4,
+                2,
+                String.format("name_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+        )));
+        cp_index = lvt.descriptor_index.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 6,
+                2,
+                String.format("descriptor_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 8,
+                2,
+                "index: " + lvt.index.value
+        )));
+    }
+
 
     /**
      * The {@code local_variable_table} structure in {@code LocalVariableTable}

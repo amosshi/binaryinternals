@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -47,6 +49,16 @@ public class AttributeSourceFile extends AttributeInfo {
         this.sourcefile_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int cp_index = this.sourcefile_index.value;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                String.format("sourcefile_index: %d [%s]", cp_index, classFile.getCPDescription(cp_index))
+        )));
     }
 
 }

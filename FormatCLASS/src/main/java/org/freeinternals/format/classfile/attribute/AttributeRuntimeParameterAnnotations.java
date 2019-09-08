@@ -1,8 +1,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -34,6 +36,69 @@ public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
 
         super.checkSize(posDataInputStream.getPos());
     }
+
+    // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
+    // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int startPosMoving = super.startPos;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 6,
+                1,
+                "num_parameters: " + this.num_parameters.value
+        )));
+
+        if (this.parameter_annotations != null && this.parameter_annotations.length > 0) {
+            DefaultMutableTreeNode parameter_annotations_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 7,
+                    this.getLength() - 7,
+                    "parameter_annotations"
+            ));
+            parentNode.add(parameter_annotations_node);
+
+            for (int i = 0; i < this.parameter_annotations.length; i++) {
+                DefaultMutableTreeNode parameter_annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.parameter_annotations[i].getStartPos(),
+                        this.parameter_annotations[i].getLength(),
+                        String.format("parameter_annotation %d", i + 1)
+                ));
+                parameter_annotations_node.add(parameter_annotation);
+                this.generateSubnode(parameter_annotation, this.parameter_annotations[i], classFile);
+            }
+        }
+    }
+    
+
+    // 4.7.18, 4.7.19:  The RuntimeParameterAnnotations Attribute
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeParameterAnnotations.ParameterAnnotation pa, ClassFile classFile) {
+
+        int startPosMoving = pa.getStartPos();
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                2,
+                "num_annotations: " + pa.num_annotations.value
+        )));
+
+        if (pa.annotations != null && pa.annotations.length > 0) {
+            DefaultMutableTreeNode annotations = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 2,
+                    pa.getLength() - 2,
+                    "annotations[" + pa.annotations.length + "]"
+            ));
+            rootNode.add(annotations);
+
+            for (int i = 0; i < pa.annotations.length; i++) {
+                DefaultMutableTreeNode annotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        pa.annotations[i].getStartPos(),
+                        pa.annotations[i].getLength(),
+                        String.format("annotation %d", i + 1)
+                ));
+                annotations.add(annotationNode);
+                Annotation.generateSubnode(annotationNode, pa.annotations[i], classFile);
+            }
+        }
+    }
+    
 
     public static class ParameterAnnotation extends FileComponent {
 

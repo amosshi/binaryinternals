@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -66,5 +68,35 @@ public class AttributeNestMembers extends AttributeInfo {
         }
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int startPosMoving = super.startPos + 6;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "number_of_classes: " + this.number_of_classes.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.number_of_classes.value > 0) {
+            final DefaultMutableTreeNode numbersNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH * this.number_of_classes.value,
+                    "classes[" + this.number_of_classes.value + "]"
+            ));
+            parentNode.add(numbersNode);
+
+            for (int i = 0; i < this.classes.length; i++) {
+                int classIndex = this.classes[i].value;
+                numbersNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "class [" + i + "]: " + classIndex + " - " + classFile.getCPDescription(classIndex)
+                )));
+            }
+        }
     }
 }

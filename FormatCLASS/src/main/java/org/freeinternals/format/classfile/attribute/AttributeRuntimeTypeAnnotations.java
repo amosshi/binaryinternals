@@ -6,8 +6,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -40,6 +42,296 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         super.checkSize(posDataInputStream.getPos());
     }
 
+    // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
+    // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+        int startPosMoving = super.startPos;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 6,
+                u2.LENGTH,
+                "num_annotations: " + this.num_annotations.value
+        )));
+
+        if (this.annotations != null && this.annotations.length > 0) {
+            DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 8,
+                    this.getLength() - 8,
+                    "annotations"
+            ));
+            parentNode.add(annotationsNode);
+
+            for (int i = 0; i < this.annotations.length; i++) {
+                DefaultMutableTreeNode annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.annotations[i].getStartPos(),
+                        this.annotations[i].getLength(),
+                        String.format("type_annotation %d", i + 1)
+                ));
+                annotationsNode.add(annotation);
+                this.generateSubnode(annotation, this.annotations[i], classFile);
+            }
+        }
+    }
+    
+    // 4.7.20, 4.7.21:  The RuntimeTypeAnnotations Attribute
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation ta, final ClassFile classFile) {
+
+        int startPosMoving = ta.getStartPos();
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u1.LENGTH,
+                "target_type: 0x" + String.format("%02X", ta.target_type.value)
+        )));
+        startPosMoving += u1.LENGTH;
+        // TODO - Refactor as JTreeNodeFileComponent to set description
+
+        if (ta.union_type_parameter_target != null) {
+            DefaultMutableTreeNode type_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_type_parameter_target.getLength(),
+                    "type_parameter_target"));
+            rootNode.add(type_parameter_target);
+            type_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "type_parameter_index: " + ta.union_type_parameter_target.type_parameter_index.value
+            )));
+            startPosMoving += u1.LENGTH;
+
+        } else if (ta.union_supertype_target != null) {
+            DefaultMutableTreeNode supertype_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_supertype_target.getLength(),
+                    "supertype_target"
+            ));
+            rootNode.add(supertype_target);
+            supertype_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "supertype_index: " + ta.union_supertype_target.supertype_index.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+        } else if (ta.union_type_parameter_bound_target != null) {
+            DefaultMutableTreeNode type_parameter_bound_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_type_parameter_bound_target.getLength(),
+                    "type_parameter_bound_target"
+            ));
+            rootNode.add(type_parameter_bound_target);
+            type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "type_parameter_index: " + ta.union_type_parameter_bound_target.type_parameter_index.value
+            )));
+            startPosMoving += u1.LENGTH;
+            type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "bound_index: " + ta.union_type_parameter_bound_target.bound_index.value
+            )));
+            startPosMoving += u1.LENGTH;
+
+        } else if (ta.union_empty_target != null) {
+            // Do nothing since it is empty
+        } else if (ta.union_method_formal_parameter_target != null) {
+            DefaultMutableTreeNode formal_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_method_formal_parameter_target.getLength(),
+                    "formal_parameter_target"
+            ));
+            rootNode.add(formal_parameter_target);
+            formal_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "formal_parameter_index: " + ta.union_method_formal_parameter_target.formal_parameter_index.value
+            )));
+            startPosMoving += u1.LENGTH;
+
+        } else if (ta.union_throws_target != null) {
+            DefaultMutableTreeNode throws_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_throws_target.getLength(),
+                    "throws_target"
+            ));
+            rootNode.add(throws_target);
+            throws_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "throws_type_index: " + ta.union_throws_target.throws_type_index.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+        } else if (ta.union_localvar_target != null) {
+            DefaultMutableTreeNode localvar_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_localvar_target.getLength(),
+                    "localvar_target"
+            ));
+            startPosMoving += ta.union_localvar_target.getLength();
+            rootNode.add(localvar_target);
+            this.generateSubnode(localvar_target, ta.union_localvar_target);
+
+        } else if (ta.union_catch_target != null) {
+            DefaultMutableTreeNode catch_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_catch_target.getLength(),
+                    "catch_target"
+            ));
+            rootNode.add(catch_target);
+            catch_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "exception_table_index: " + ta.union_catch_target.exception_table_index.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+        } else if (ta.union_offset_target != null) {
+            DefaultMutableTreeNode offset_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_offset_target.getLength(),
+                    "offset_target"
+            ));
+            rootNode.add(offset_target);
+            offset_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "offset: " + ta.union_offset_target.offset.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+        } else if (ta.union_type_argument_target != null) {
+            DefaultMutableTreeNode type_argument_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    ta.union_type_argument_target.getLength(),
+                    "type_argument_target"
+            ));
+            rootNode.add(type_argument_target);
+            type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "offset: " + ta.union_type_argument_target.offset.value
+            )));
+            startPosMoving += u2.LENGTH;
+            type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "type_argument_index: " + ta.union_type_argument_target.type_argument_index.value
+            )));
+            startPosMoving += u1.LENGTH;
+        }
+
+        // target_path
+        DefaultMutableTreeNode target_path = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                ta.target_path.getLength(),
+                "target_path"
+        ));
+        startPosMoving += ta.target_path.getLength();
+        rootNode.add(target_path);
+        this.generateSubnode(target_path, ta.target_path);
+
+        // Annotation
+        Annotation.generateSubnode(rootNode, ta, startPosMoving, classFile);
+    }
+    
+
+    // 4.7.20. localvar_target
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation.LocalvarTarget lt) {
+
+        int startPosMoving = lt.getStartPos();
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "table_length: " + lt.table_length.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (lt.table == null || lt.table.length < 1) {
+            return;
+        }
+
+        DefaultMutableTreeNode tables = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                lt.getLength() - u2.LENGTH,
+                String.format("table[%d]", lt.table.length)
+        ));
+        rootNode.add(tables);
+        for (int i = 0; i < lt.table.length; i++) {
+            startPosMoving = lt.table[i].getStartPos();
+            DefaultMutableTreeNode table = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    lt.table[i].getLength(),
+                    String.format("table %d", i + 1)
+            ));
+            tables.add(table);
+
+            table.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "start_pc: " + lt.table[i].start_pc.value
+            )));
+            startPosMoving += u2.LENGTH;
+            table.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "length: " + lt.table[i].length.value
+            )));
+            startPosMoving += u2.LENGTH;
+            table.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "index: " + lt.table[i].index.value
+            )));
+        }
+
+    }
+
+    // 4.7.20, 4.7.21:  The RuntimeTypeAnnotations Attribute
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation.TypePath tp) {
+
+        int startPosMoving = tp.getStartPos();
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u1.LENGTH,
+                "path_length: " + tp.path_length.value
+        )));
+        startPosMoving += u1.LENGTH;
+
+        if (tp.path == null || tp.path.length < 1) {
+            return;
+        }
+
+        DefaultMutableTreeNode paths = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                tp.getLength() - u1.LENGTH,
+                String.format("path[%d]", tp.path.length)
+        ));
+        rootNode.add(paths);
+        for (int i = 0; i < tp.path.length; i++) {
+            startPosMoving = tp.path[i].getStartPos();
+            DefaultMutableTreeNode path = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    tp.path[i].getLength(),
+                    String.format("path[%d]", i + 1)
+            ));
+            paths.add(path);
+
+            path.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "type_path_kind: " + tp.path[i].type_path_kind.value
+            )));
+            startPosMoving += u1.LENGTH;
+            path.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH,
+                    "type_argument_index: " + tp.path[i].type_argument_index.value
+            )));
+        }
+    }
+    
+    
     public static class TypeAnnotation extends Annotation {
 
         public final u1 target_type;

@@ -6,7 +6,9 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -69,5 +71,16 @@ public class AttributeSourceDebugExtension extends AttributeInfo {
      */
     public String getDebugExtesionString() {
         return new String(this.debug_extension);
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        if (this.debug_extension != null && this.debug_extension.length > 0) {
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 6,
+                    this.debug_extension.length,
+                    String.format("debug_extension: %s", this.getDebugExtesionString())
+            )));
+        }
     }
 }

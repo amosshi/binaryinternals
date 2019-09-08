@@ -11,10 +11,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
@@ -42,7 +45,7 @@ import org.freeinternals.format.classfile.u4;
  * VM Spec: Attributes
  * </a>
  */
-public class AttributeInfo extends FileComponent {
+public abstract class AttributeInfo extends FileComponent implements GenerateClassfileTreeNode {
 
     private static final Logger LOG = Logger.getLogger(AttributeInfo.class.getName());
 
@@ -98,10 +101,15 @@ public class AttributeInfo extends FileComponent {
     }
 
     /**
-     * Parse one JVM attribute.
+     * Parse one JVM attribute.This method is not 'public' since it is supposed
+     * to be called inside this library only.
      *
-     * This method is not 'public' since it is supposed to be called inside this
-     * library only.
+     * @param posDataInputStream Input Stream for the class file
+     * @param cp Constant Pool item
+     * @return Parsed result
+     * @throws java.io.IOException Input Stream read fail
+     * @throws org.freeinternals.format.FileFormatException Class file format
+     * error
      */
     public static AttributeInfo parse(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         AttributeInfo attr = null;
@@ -178,6 +186,28 @@ public class AttributeInfo extends FileComponent {
     public String getName() {
         return (this.name != null) ? this.name : "";
     }
+    
+    public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInfo attribute_info, final ClassFile classFile) {
+        if (attribute_info == null) {
+            return;
+        }
+
+        int startPosMoving = attribute_info.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "attribute_name_index: " + attribute_info.attribute_name_index.value + ", name=" + attribute_info.getName())));
+        startPosMoving += u2.LENGTH;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u4.LENGTH,
+                "attribute_length: " + attribute_info.attribute_length.value)));
+        // startPosMoving += u4.LENGTH;
+
+        attribute_info.generateTreeNode(rootNode, classFile);
+    }
+    
 
     /**
      * Attributes in Java <code>classfile</code>.

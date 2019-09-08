@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -153,8 +155,351 @@ public class AttributeModule extends AttributeInfo {
             this.provides = null;
         }
 
-        // Check Length        
+        // Check Length
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+
+        int startPosMoving = super.startPos + 6;
+
+        // module_name_index
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "module_name_index: " + this.module_name_index.value + " - " + classFile.getCPDescription(this.module_name_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        // module_flags
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "module_flags: " + this.module_flags.value + " - TODO Parse Flag Values"
+        )));
+        startPosMoving += u2.LENGTH;
+
+        // module_version_index
+        String module_version = (this.module_version_index.value == 0)
+                ? "no version information"
+                : classFile.getCPDescription(this.module_version_index.value);
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "module_version_index: " + this.module_version_index.value + " - " + module_version
+        )));
+        startPosMoving += u2.LENGTH;
+
+        //
+        // requires
+        //
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "requires_count: " + this.requires_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.requires_count.value > 0) {
+            final DefaultMutableTreeNode requiresNode = new DefaultMutableTreeNode(
+                    new JTreeNodeFileComponent(
+                            startPosMoving,
+                            AttributeModule.Requires.LENGTH * this.requires_count.value,
+                            "requires[" + this.requires_count.value + "]"
+                    ));
+            parentNode.add(requiresNode);
+
+            DefaultMutableTreeNode requireNode;
+            for (int i = 0; i < this.requires.length; i++) {
+                requireNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.requires[i].getStartPos(),
+                        this.requires[i].getLength(),
+                        "require [" + i + "]"
+                ));
+                this.generateSubnode(requireNode, this.requires[i], classFile);
+                requiresNode.add(requireNode);
+            }
+
+            // Update the new startPos
+            AttributeModule.Requires requireLastItem = this.requires[this.requires.length - 1];
+            startPosMoving = requireLastItem.getStartPos() + requireLastItem.getLength();
+        }
+
+        //
+        // exports
+        //
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "exports_count: " + this.exports_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.exports_count.value > 0) {
+            AttributeModule.Exports exporstLastItem = this.exports[this.exports_count.value - 1];
+            final DefaultMutableTreeNode exportsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    exporstLastItem.getStartPos() + exporstLastItem.getLength() - startPosMoving,
+                    "exports[" + this.exports_count.value + "]"
+            ));
+            parentNode.add(exportsNode);
+
+            for (int i = 0; i < this.exports.length; i++) {
+                DefaultMutableTreeNode exportNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.exports[i].getStartPos(),
+                        this.exports[i].getLength(),
+                        "export [" + i + "]"
+                ));
+                this.generateSubnode(exportNode, this.exports[i], classFile);
+                exportsNode.add(exportNode);
+            }
+
+            // Update the new startPos
+            startPosMoving = exporstLastItem.getStartPos() + exporstLastItem.getLength();
+        }
+
+        //
+        // opens
+        //
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "opens_count: " + this.opens_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.opens_count.value > 0) {
+            AttributeModule.Opens opensLastItem = this.opens[this.opens_count.value - 1];
+            final DefaultMutableTreeNode opensNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    opensLastItem.getStartPos() + opensLastItem.getLength() - startPosMoving,
+                    "opens[" + this.opens_count.value + "]"
+            ));
+            parentNode.add(opensNode);
+
+            for (int i = 0; i < this.opens.length; i++) {
+                DefaultMutableTreeNode openNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.opens[i].getStartPos(),
+                        this.opens[i].getLength(),
+                        "open [" + i + "]"
+                ));
+                this.generateSubnode(openNode, this.opens[i], classFile);
+                opensNode.add(openNode);
+            }
+
+            // Update the new startPos
+            startPosMoving = opensLastItem.getStartPos() + opensLastItem.getLength();
+        }
+
+        //
+        // uses
+        //
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "uses_count: " + this.uses_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.uses_count.value > 0) {
+            final int uses_count_length = u2.LENGTH * this.uses_count.value;
+            final DefaultMutableTreeNode usesCountNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    uses_count_length,
+                    "uses_index[" + this.uses_count.value + "]"
+            ));
+            parentNode.add(usesCountNode);
+
+            for (int i = 0; i < this.uses_index.length; i++) {
+                usesCountNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "uses_index [" + i + "]: " + this.uses_index[i].value + " - " + classFile.getCPDescription(this.uses_index[i].value)
+                )));
+            }
+
+            startPosMoving += uses_count_length;
+        }
+
+        //
+        // provides
+        //
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "provides_count: " + this.provides_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.provides_count.value > 0) {
+            AttributeModule.Provides provideLastItem = this.provides[this.provides_count.value - 1];
+            final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    provideLastItem.getStartPos() + provideLastItem.getLength() - startPosMoving,
+                    "provides[" + this.provides_count.value + "]"
+            ));
+            parentNode.add(providesNode);
+
+            for (int i = 0; i < this.provides.length; i++) {
+                DefaultMutableTreeNode provideNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.provides[i].getStartPos(),
+                        this.provides[i].getLength(),
+                        "provide [" + i + "]"
+                ));
+                this.generateSubnode(provideNode, this.provides[i], classFile);
+                providesNode.add(provideNode);
+            }
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Provides provide, final ClassFile classFile) {
+        int startPosMoving = provide.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "provides_index: " + provide.provides_index.value + " - " + classFile.getCPDescription(provide.provides_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "provides_with_count: " + provide.provides_with_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (provide.provides_with_count.value > 0) {
+            final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH * provide.provides_with_count.value,
+                    "exports_to_index[" + provide.provides_with_count.value + "]"
+            ));
+            rootNode.add(exportsToIndexNode);
+
+            for (int i = 0; i < provide.provides_with_index.length; i++) {
+                exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "exports_to_index[" + i + "]: " + provide.provides_with_index[i].value + " - " + classFile.getCPDescription(provide.provides_with_index[i].value)
+                )));
+            }
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Opens open, final ClassFile classFile) {
+        int startPosMoving = open.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "opens_index: " + open.opens_index.value + " - " + classFile.getCPDescription(open.opens_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "opens_flags: " + open.opens_flags.value + " - TODO Parse opens_flags"
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "opens_to_count: " + open.opens_to_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (open.opens_to_count.value > 0) {
+            final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH * open.opens_to_count.value,
+                    "exports_to_index[" + open.opens_to_count.value + "]"
+            ));
+            rootNode.add(exportsToIndexNode);
+
+            for (int i = 0; i < open.opens_to_index.length; i++) {
+                exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "exports_to_index[" + i + "]: " + open.opens_to_index[i].value + " - " + classFile.getCPDescription(open.opens_to_index[i].value)
+                )));
+            }
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Exports export, final ClassFile classFile) {
+        int startPosMoving = export.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "exports_index: " + export.exports_index.value + " - " + classFile.getCPDescription(export.exports_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "exports_flags: " + export.exports_flags.value + " - TODO Parse exports_flags"
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "exports_to_count: " + export.exports_to_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (export.exports_to_count.value > 0) {
+            final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH * export.exports_to_count.value,
+                    "exports_to_index[" + export.exports_to_count.value + "]"
+            ));
+            rootNode.add(exportsToIndexNode);
+
+            for (int i = 0; i < export.exports_to_index.length; i++) {
+                exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving + i * u2.LENGTH,
+                        u2.LENGTH,
+                        "exports_to_index[" + i + "]: " + export.exports_to_index[i].value + " - " + classFile.getCPDescription(export.exports_to_index[i].value)
+                )));
+            }
+        }
+    }
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModule.Requires require, final ClassFile classFile) {
+        int startPosMoving = require.getStartPos();
+
+        // requires_version_index
+        String requires_version_index = (require.requires_version_index.value == 0)
+                ? "no version information"
+                : classFile.getCPDescription(require.requires_version_index.value);
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "requires_index: " + require.requires_index.value + " - " + classFile.getCPDescription(require.requires_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "requires_flags: " + require.requires_flags.value + ", TODO Parse requires_flags"
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "requires_version_index: " + require.requires_version_index.value + " - " + requires_version_index
+        )));
     }
 
     /**

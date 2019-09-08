@@ -92,6 +92,10 @@ public enum AccessFlag {
      */
     ACC_ENUM(0x4000, "enum"),
     /**
+     * Is a module, not a class or interface.
+     */
+    ACC_MODULE(0x8000, "module"),
+    /**
      * Indicates that the formal parameter was implicitly declared in source
      * code, according to the specification of the language in which the source
      * code was written (JLS §13.1). (The formal parameter is mandated by a
@@ -141,6 +145,7 @@ public enum AccessFlag {
         AccessFlag.ForClass.add(AccessFlag.ACC_SYNTHETIC);
         AccessFlag.ForClass.add(AccessFlag.ACC_ANNOTATION);
         AccessFlag.ForClass.add(AccessFlag.ACC_ENUM);
+        AccessFlag.ForClass.add(AccessFlag.ACC_MODULE);
 
         // Access flags for a Field
         AccessFlag.ForField.add(AccessFlag.ACC_PUBLIC);

@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -55,5 +57,16 @@ public class AttributeUnrecognized extends AttributeInfo {
      */
     public byte[] getRawData() {
         return this.rawData;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        if (this.attribute_length.value > 0) {
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    this.getStartPos() + 6,
+                    this.attribute_length.value,
+                    "raw data"
+            )));
+        }
     }
 }

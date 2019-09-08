@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
@@ -70,6 +72,55 @@ public class AttributeMethodParameters extends AttributeInfo {
         }
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int startPosMoving = super.startPos + 6;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u1.LENGTH,
+                "parameters_count: " + this.parameters_count.value
+        )));
+        startPosMoving += u1.LENGTH;
+
+        if (this.parameters == null || this.parameters.length < 1) {
+            return;
+        }
+
+        DefaultMutableTreeNode parametersNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                this.getStartPos() + this.getLength() - startPosMoving,
+                String.format("parameters[%d]", this.parameters.length)
+        ));
+        parentNode.add(parametersNode);
+
+        for (int i = 0; i < this.parameters.length; i++) {
+            DefaultMutableTreeNode parameter = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    this.parameters[i].getLength(),
+                    "parameter " + (i + 1)
+            ));
+            parametersNode.add(parameter);
+
+            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "name_index: "
+                    + this.parameters[i].name_index.value + " - "
+                    + classFile.getCPDescription(this.parameters[i].name_index.value)
+            )));
+            startPosMoving += u2.LENGTH;
+            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "access_flags: 0x"
+                    + String.format("%04X", this.parameters[i].access_flags.value) + " - "
+                    + this.parameters[i].getAccessFlagsText()
+            )));
+            startPosMoving += u2.LENGTH;
+        }
     }
 
     public final class Parameter extends FileComponent {

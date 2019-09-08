@@ -1,6 +1,8 @@
 package org.freeinternals.format.classfile.attribute;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -43,5 +45,38 @@ public class AttributeRuntimeAnnotations extends AttributeInfo {
             a = this.annotations[index];
         }
         return a;
+    }
+
+    // 4.7.16. The RuntimeVisibleAnnotations Attribute
+    // 4.7.17. The RuntimeInvisibleAnnotations Attribute
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        final int startPosMoving = super.startPos;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 6,
+                2,
+                "num_annotations: " + this.num_annotations.value)));
+
+        if (this.num_annotations.value > 0) {
+            DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 8,
+                    this.getLength() - 8,
+                    "annotations"
+            ));
+            parentNode.add(annotationsNode);
+
+            for (int i = 0; i < this.num_annotations.value; i++) {
+                Annotation a = this.getAnnotation(i);
+                DefaultMutableTreeNode annotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        a.getStartPos(),
+                        a.getLength(),
+                        String.format("annotation %d", i + 1)
+                ));
+                annotationsNode.add(annotationNode);
+
+                Annotation.generateSubnode(annotationNode, a, classFile);
+            }
+        }
     }
 }

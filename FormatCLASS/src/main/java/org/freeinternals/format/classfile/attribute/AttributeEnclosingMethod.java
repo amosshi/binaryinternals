@@ -6,7 +6,9 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -46,5 +48,22 @@ public class AttributeEnclosingMethod extends AttributeInfo {
         this.method_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int startPosMoving = super.startPos + 6;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "class_index: " + this.class_index.value + " - " + classFile.getCPDescription(this.class_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "method_index: " + this.method_index.value + " - " + classFile.getCPDescription(this.method_index.value)
+        )));
     }
 }

@@ -8,7 +8,6 @@ package org.freeinternals.javaclassviewer;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import org.freeinternals.javaclassviewer.ui.JSplitPaneClassFile;
 
 /**
  *

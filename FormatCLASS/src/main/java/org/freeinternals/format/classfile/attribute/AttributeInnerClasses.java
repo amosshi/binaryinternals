@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
@@ -75,6 +77,73 @@ public class AttributeInnerClasses extends AttributeInfo {
 
         return cls;
     }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+        int i;
+        final int numOfClasses = this.number_of_classes.value;
+        DefaultMutableTreeNode treeNodeInnerClass;
+        DefaultMutableTreeNode treeNodeInnerClassItem;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "number_of_classes: " + numOfClasses)));
+        if (numOfClasses > 0) {
+            treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 8,
+                    this.getClass(numOfClasses - 1).getStartPos() + this.getClass(numOfClasses - 1).getLength() - (startPos + 8),
+                    "classes[" + numOfClasses + "]"
+            ));
+
+            AttributeInnerClasses.Class cls;
+            for (i = 0; i < numOfClasses; i++) {
+                cls = this.getClass(i);
+
+                treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        cls.getStartPos(),
+                        cls.getLength(),
+                        String.format("class [%d]", i + 1)
+                ));
+                this.generateSubnode(treeNodeInnerClassItem, cls, classFile);
+                treeNodeInnerClass.add(treeNodeInnerClassItem);
+            }
+
+            parentNode.add(treeNodeInnerClass);
+        }
+    }
+    
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses.Class innerClass, final ClassFile classFile) {
+        final int startPosMoving = innerClass.getStartPos();
+
+        int cp_index = innerClass.inner_class_info_index.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                2,
+                "inner_class_info_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+        )));
+
+        cp_index = innerClass.outer_class_info_index.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 2,
+                2,
+                "outer_class_info_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+        )));
+
+        cp_index = innerClass.inner_name_index.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 4,
+                2,
+                "inner_name_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+        )));
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 6,
+                2,
+                "inner_class_access_flags: " + innerClass.inner_class_access_flags.value + " - " + innerClass.getModifiers()
+        )));
+    }
+    
 
     /**
      * The {@code classes} structure in {@code InnerClasses} attribute.

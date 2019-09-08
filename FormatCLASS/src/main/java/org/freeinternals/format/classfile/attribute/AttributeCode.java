@@ -9,8 +9,10 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -53,6 +55,7 @@ import org.freeinternals.format.classfile.u4;
  * </a>
  */
 public class AttributeCode extends AttributeInfo {
+    public static final String ATTRIBUTE_CODE_NODE = "code";
 
     public transient final u2 max_stack;
     public transient final u2 max_locals;
@@ -140,6 +143,133 @@ public class AttributeCode extends AttributeInfo {
     public AttributeInfo getAttribute(final int index) {
         return this.attributes[index];
     }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+        int i;
+        final int codeLength = this.code_length.value;
+        DefaultMutableTreeNode treeNodeExceptionTable;
+        DefaultMutableTreeNode treeNodeExceptionTableItem;
+        final int attrCount = this.attributes_count.value;
+        DefaultMutableTreeNode treeNodeAttribute;
+        DefaultMutableTreeNode treeNodeAttributeItem;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "max_stack: " + this.max_stack.value
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 8,
+                2,
+                "max_locals: " + this.max_locals.value
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 10,
+                4,
+                "code_length: " + this.code_length.value
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 14,
+                codeLength,
+                ATTRIBUTE_CODE_NODE
+        )));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 14 + codeLength,
+                2,
+                "exception_table_length: " + this.exception_table_length.value
+        )));
+
+        // Add exception table
+        if (this.exception_table_length.value > 0) {
+            treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 14 + codeLength + 2,
+                    ExceptionTable.LENGTH * this.exception_table_length.value,
+                    "exception_table[" + this.exception_table_length.value + "]"
+            ));
+
+            AttributeCode.ExceptionTable et;
+            for (i = 0; i < this.exception_table_length.value; i++) {
+                et = this.getExceptionTable(i);
+
+                treeNodeExceptionTableItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        et.getStartPos(),
+                        et.getLength(),
+                        String.format("exception_table [%d]", i)
+                ));
+                this.generateSubnode(treeNodeExceptionTableItem, et, classFile);
+                treeNodeExceptionTable.add(treeNodeExceptionTableItem);
+            }
+
+            parentNode.add(treeNodeExceptionTable);
+        }
+
+        // Add attributes
+        final int attrStartPos = super.startPos + 14 + codeLength + 2 + this.exception_table_length.value * ExceptionTable.LENGTH;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                attrStartPos,
+                2,
+                "attributes_count: " + attrCount
+        )));
+        if (attrCount > 0) {
+            int attrLength = 0;
+            for (AttributeInfo codeAttr : this.attributes) {
+                attrLength += codeAttr.getLength();
+            }
+
+            treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    attrStartPos + 2,
+                    attrLength,
+                    "attributes[" + attrCount + "]"
+            ));
+
+            for (i = 0; i < attrCount; i++) {
+                AttributeInfo attr = this.getAttribute(i);
+                treeNodeAttributeItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        attr.getStartPos(),
+                        attr.getLength(),
+                        (i + 1) + ". " + attr.getName()
+                ));
+                AttributeInfo.generateTreeNode(treeNodeAttributeItem, attr, classFile);
+                
+                treeNodeAttribute.add(treeNodeAttributeItem);
+            }
+
+            parentNode.add(treeNodeAttribute);
+        }
+    }
+    
+
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeCode.ExceptionTable et, final ClassFile classFile) {
+        if (et == null) {
+            return;
+        }
+
+        final int startPosMoving = et.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                2,
+                "start_pc: " + et.start_pc.value
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 2,
+                2,
+                "end_pc: " + et.end_pc.value
+        )));
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 4,
+                2,
+                "handler_pc: " + et.handler_pc.value
+        )));
+        int catch_type = et.catch_type.value;
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving + 6,
+                2,
+                "catch_type: " + catch_type + " - " + classFile.getCPDescription(catch_type)
+        )));
+    }
+    
 
     /**
      * The {@code exception_table} structure in {@code Code} attribute.

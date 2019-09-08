@@ -4,7 +4,7 @@
  * Copyright  2009, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.javaclassviewer.ui;
+package org.freeinternals.javaclassviewer;
 
 import java.awt.Component;
 import java.io.IOException;
@@ -31,6 +31,7 @@ import org.freeinternals.format.classfile.FieldInfo;
 import org.freeinternals.format.classfile.MethodInfo;
 import org.freeinternals.format.classfile.Opcode;
 import org.freeinternals.format.classfile.Opcode.InstructionParsed;
+import org.freeinternals.format.classfile.attribute.AttributeCode;
 
 /**
  * A split panel created from a class file byte array.
@@ -124,7 +125,7 @@ public class JSplitPaneClassFile extends JSplitPane {
                 // clear opcode values;
                 this.opcode.setText(null);
                 // Get the code bytes
-                if (JTreeAttribute.ATTRIBUTE_CODE_NODE.equals(objTncc.getText())) {
+                if (AttributeCode.ATTRIBUTE_CODE_NODE.equals(objTncc.getText())) {
                     final byte[] data = this.classFile.getClassByteArray(objTncc.getStartPos(), objTncc.getLength());
                     this.generateOpcodeParseResult(data);
                 }

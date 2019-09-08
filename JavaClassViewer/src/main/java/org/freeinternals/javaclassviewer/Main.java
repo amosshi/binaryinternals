@@ -36,9 +36,6 @@ import javax.swing.tree.TreePath;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.core.BytesTool;
-import org.freeinternals.javaclassviewer.ui.JSplitPaneClassFile;
-import org.freeinternals.javaclassviewer.ui.JTreeNodeZipFile;
-import org.freeinternals.javaclassviewer.ui.JTreeZipFile;
 
 /**
  *

@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -54,6 +56,241 @@ public class AttributeStackMapTable extends AttributeInfo {
         }
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                2,
+                "number_of_entries: " + this.number_of_entries.value
+        )));
+
+        if (this.number_of_entries.value > 0) {
+            DefaultMutableTreeNode entries = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + 8,
+                    this.getLength() - 8,
+                    "entries[" + this.number_of_entries.value + "]"
+            ));
+            parentNode.add(entries);
+
+            for (int i = 0; i < this.number_of_entries.value; i++) {
+                DefaultMutableTreeNode entry = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.entries[i].getStartPos(),
+                        this.entries[i].getLength(),
+                        String.format("%s.entry [%d]", this.getName(), i)
+                ));
+
+                entries.add(entry);
+                this.generateSubnode(entry, this.entries[i], classFile);
+            }
+        }
+    }
+    
+    /**
+     * Generate Tree Node for {@link StackMapFrame}.
+     */
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final StackMapFrame smf, final ClassFile classFile) {
+        int startPosMoving = smf.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                1,
+                "frame_type: " + smf.frame_type.value + " - " + StackMapFrame.FrameTypeEnum.getUnionName(smf.frame_type.value)
+        )));
+        startPosMoving += 1;
+
+        if (smf.union_same_locals_1_stack_item_frame != null) {
+
+            DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    smf.union_same_locals_1_stack_item_frame.stack[0].getLength(),
+                    "stack[1]"
+            ));
+            rootNode.add(stacks);
+
+            DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    smf.union_same_locals_1_stack_item_frame.stack[0].getStartPos(),
+                    smf.union_same_locals_1_stack_item_frame.stack[0].getLength(),
+                    "stack 0"
+            ));
+            stacks.add(stack);
+            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame.stack[0], classFile);
+
+        } else if (smf.union_same_locals_1_stack_item_frame_extended != null) {
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "offset_delta: " + smf.union_same_locals_1_stack_item_frame_extended.offset_delta.value
+            )));
+            startPosMoving += 2;
+
+            DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getLength(),
+                    "stack[1]"
+            ));
+            rootNode.add(stacks);
+
+            DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getStartPos(),
+                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getLength(),
+                    "stack 0"
+            ));
+            stacks.add(stack);
+            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame_extended.stack[0], classFile);
+
+        } else if (smf.union_chop_frame != null) {
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "offset_delta: " + smf.union_chop_frame.offset_delta.value
+            )));
+            // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
+
+        } else if (smf.union_same_frame_extended != null) {
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "offset_delta: " + smf.union_same_frame_extended.offset_delta.value
+            )));
+            // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
+
+        } else if (smf.union_append_frame != null) {
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "offset_delta: " + smf.union_append_frame.offset_delta.value
+            )));
+            startPosMoving += 2;
+
+            int size_locals = 0;
+            if (smf.union_append_frame.locals.length > 0) {
+                for (VerificationTypeInfo local : smf.union_append_frame.locals) {
+                    size_locals += local.getLength();
+                }
+                DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        size_locals,
+                        "locals[" + smf.union_append_frame.locals.length + "]"
+                ));
+                // startPosMoving += size_locals;  // Not needed for now, keep here in case the StackMapTable struture could be extended later
+                rootNode.add(locals);
+
+                for (int i = 0; i < smf.union_append_frame.locals.length; i++) {
+                    DefaultMutableTreeNode local = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            smf.union_append_frame.locals[i].getStartPos(),
+                            smf.union_append_frame.locals[i].getLength(),
+                            "local " + (i + 1)
+                    ));
+                    locals.add(local);
+                    this.generateSubnode(local, smf.union_append_frame.locals[i], classFile);
+                }
+            }
+
+        } else if (smf.union_full_frame != null) {
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "offset_delta: " + smf.union_full_frame.offset_delta.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "number_of_locals: " + smf.union_full_frame.number_of_locals.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+            int size_locals = 0;
+            if (smf.union_full_frame.number_of_locals.value > 0) {
+                for (int i = 0; i < smf.union_full_frame.number_of_locals.value; i++) {
+                    size_locals += smf.union_full_frame.locals[i].getLength();
+                }
+                DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        size_locals,
+                        "locals[" + smf.union_full_frame.number_of_locals.value + "]"
+                ));
+                startPosMoving += size_locals;
+                rootNode.add(locals);
+
+                for (int i = 0; i < smf.union_full_frame.locals.length; i++) {
+                    DefaultMutableTreeNode local = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            smf.union_full_frame.locals[i].getStartPos(),
+                            smf.union_full_frame.locals[i].getLength(),
+                            "local " + (i + 1)
+                    ));
+                    locals.add(local);
+                    this.generateSubnode(local, smf.union_full_frame.locals[i], classFile);
+                }
+            }
+
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "number_of_stack_items: " + smf.union_full_frame.number_of_stack_items.value
+            )));
+            startPosMoving += 2;
+
+            int size_stack = 0;
+            if (smf.union_full_frame.number_of_stack_items.value > 0) {
+                for (int i = 0; i < smf.union_full_frame.number_of_stack_items.value; i++) {
+                    size_stack += smf.union_full_frame.stack[i].getLength();
+                }
+
+                DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        size_stack,
+                        "stack[" + smf.union_full_frame.number_of_stack_items.value + "]"
+                ));
+                rootNode.add(stacks);
+
+                for (int i = 0; i < smf.union_full_frame.stack.length; i++) {
+                    DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            smf.union_full_frame.stack[i].getStartPos(),
+                            smf.union_full_frame.stack[i].getLength(),
+                            "stack " + (i + 1)
+                    ));
+                    stacks.add(stack);
+                    this.generateSubnode(stack, smf.union_full_frame.stack[i], classFile);
+                }
+            }
+        } // End union_full_frame
+    }
+
+    /**
+     * Generate Tree Node for {@link VerificationTypeInfo}.
+     */
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final VerificationTypeInfo vti, final ClassFile classFile) {
+
+        int startPosMoving = vti.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                1,
+                "tag: " + vti.tag.value + " - " + VerificationTypeInfo.TagEnum.getTagName(vti.tag.value)
+        )));
+        startPosMoving += 1;
+
+        if (vti.union_Object_variable_info != null) {
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "cpool_index: " + vti.union_Object_variable_info.cpool_index.value + " - " + classFile.getCPDescription(vti.union_Object_variable_info.cpool_index.value)
+            )));
+        } else if (vti.union_Uninitialized_variable_info != null) {
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "offset: " + vti.union_Uninitialized_variable_info.offset.value
+            )));
+        }
     }
 
     public final static class StackMapFrame extends FileComponent {

@@ -4,7 +4,7 @@
  * Copyright 2009, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.javaclassviewer.ui;
+package org.freeinternals.javaclassviewer;
 
 import java.util.zip.ZipEntry;
 

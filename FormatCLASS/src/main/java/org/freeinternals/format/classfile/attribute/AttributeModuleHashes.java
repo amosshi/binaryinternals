@@ -7,8 +7,10 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -76,6 +78,71 @@ public class AttributeModuleHashes extends AttributeInfo {
         }
 
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+        int startPosMoving = super.startPos + 6;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "algorithm_index: " + this.algorithm_index.value + " - " + classFile.getCPDescription(this.algorithm_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "hashes_count: " + this.hashes_count.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (this.hashes_count.value > 0) {
+            AttributeModuleHashes.Hashes hashLastItem = this.hashes[this.hashes_count.value - 1];
+            final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    hashLastItem.getStartPos() + hashLastItem.getLength() - startPosMoving,
+                    "hashes[" + this.hashes_count.value + "]"
+            ));
+            parentNode.add(providesNode);
+
+            for (int i = 0; i < this.hashes.length; i++) {
+                DefaultMutableTreeNode hashNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        this.hashes[i].getStartPos(),
+                        this.hashes[i].getLength(),
+                        "hash [" + i + "]"
+                ));
+                this.generateSubnode(hashNode, this.hashes[i], classFile);
+                providesNode.add(hashNode);
+            }
+        }
+    }
+    
+    private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeModuleHashes.Hashes hash, final ClassFile classFile) {
+        int startPosMoving = hash.getStartPos();
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "module_name_index: " + hash.module_name_index.value + " - " + classFile.getCPDescription(hash.module_name_index.value)
+        )));
+        startPosMoving += u2.LENGTH;
+
+        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPosMoving,
+                u2.LENGTH,
+                "hash_length: " + hash.hash_length.value
+        )));
+        startPosMoving += u2.LENGTH;
+
+        if (hash.hash_length.value > 0) {
+            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u1.LENGTH * hash.hash_length.value,
+                    "hash"
+            )));
+        }
     }
 
     /**

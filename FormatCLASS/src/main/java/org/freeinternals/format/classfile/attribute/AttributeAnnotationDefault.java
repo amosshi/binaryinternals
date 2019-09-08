@@ -6,7 +6,9 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -49,5 +51,17 @@ public class AttributeAnnotationDefault extends AttributeInfo {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
         this.default_value = new Annotation.ElementValue(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        DefaultMutableTreeNode default_value_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos + 6,
+                this.getLength() - 6,
+                "default_value"
+        ));
+        parentNode.add(default_value_node);
+        
+        Annotation.generateSubnode(default_value_node, this.default_value, classFile);
     }
 }

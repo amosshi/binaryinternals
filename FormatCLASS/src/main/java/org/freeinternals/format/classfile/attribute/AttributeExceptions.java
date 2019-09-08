@@ -7,7 +7,9 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -81,5 +83,35 @@ public class AttributeExceptions extends AttributeInfo {
         }
 
         return i;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        int i;
+        final int numOfExceptions = this.number_of_exceptions.value;
+        DefaultMutableTreeNode treeNodeExceptions;
+
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                startPos + 6,
+                2,
+                "number_of_exceptions: " + numOfExceptions
+        )));
+        if (numOfExceptions > 0) {
+            treeNodeExceptions = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPos + 8,
+                    numOfExceptions * 2,
+                    "exceptions"));
+
+            for (i = 0; i < numOfExceptions; i++) {
+                int cp_index = this.getExceptionIndexTableItem(i);
+                treeNodeExceptions.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPos + 10 + i * 2,
+                        2,
+                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cp_index, classFile.getCPDescription(cp_index))
+                )));
+            }
+
+            parentNode.add(treeNodeExceptions);
+        }
     }
 }
