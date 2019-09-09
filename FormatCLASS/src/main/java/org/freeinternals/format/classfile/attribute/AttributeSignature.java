@@ -9,7 +9,7 @@ package org.freeinternals.format.classfile.attribute;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.JavaLangSpec;

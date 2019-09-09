@@ -15,7 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -108,7 +108,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * @param cp Constant Pool item
      * @return Parsed result
      * @throws java.io.IOException Input Stream read fail
-     * @throws org.freeinternals.format.FileFormatException Class file format
+     * @throws org.freeinternals.commonlib.core.FileFormatException Class file format
      * error
      */
     public static AttributeInfo parse(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
@@ -158,7 +158,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * Verify the current class file input stream position is correct.
      *
      * @param endPos Current position
-     * @throws org.freeinternals.format.FileFormatException Invalid class file
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
      * format
      */
     protected void checkSize(final int endPos) throws FileFormatException {

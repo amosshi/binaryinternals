@@ -7,7 +7,7 @@
 package org.freeinternals.format.classfile.attribute;
 
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;

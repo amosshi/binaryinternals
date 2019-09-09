@@ -9,7 +9,7 @@ package org.freeinternals.format.classfile;
 import org.freeinternals.format.classfile.attribute.AttributeSignature;
 import java.util.ArrayList;
 import java.util.List;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.attribute.AttributeSignature.ReferenceType;
 
 /**

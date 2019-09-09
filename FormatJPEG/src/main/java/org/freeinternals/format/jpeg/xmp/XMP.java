@@ -8,7 +8,7 @@ package org.freeinternals.format.jpeg.xmp;
 
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 
 /**

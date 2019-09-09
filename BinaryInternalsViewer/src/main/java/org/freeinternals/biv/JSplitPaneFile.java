@@ -27,7 +27,7 @@ import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.JTreeCellRenderer;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  * A split panel created from a class file byte array.

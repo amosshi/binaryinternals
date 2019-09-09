@@ -9,7 +9,7 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.dex.HeaderItem.Endian;
 
 /**
@@ -143,7 +143,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Dex_sleb128} from the input stream.
      *
      * @throws java.io.IOException I/O Error
-     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid LEB128
      * format
      * @return a {@link Dex_sleb128}
      * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>
@@ -177,7 +177,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Dex_uleb128} from the input stream.
      *
      * @throws java.io.IOException I/O Error
-     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid LEB128
      * format
      * @return a {@link Dex_uleb128}
      * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>
@@ -205,7 +205,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Dex_uleb128p1} from the input stream.
      *
      * @throws java.io.IOException I/O Error
-     * @throws org.freeinternals.format.FileFormatException Invalid LEB128
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid LEB128
      * format
      * @return a {@link Dex_uleb128p1}
      * @see <a href="http://dwarfstd.org/Dwarf3Std.php"> DWARF 3.0 Standard</a>

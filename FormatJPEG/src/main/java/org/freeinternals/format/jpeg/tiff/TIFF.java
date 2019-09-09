@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 public class TIFF extends FileComponent {
 
@@ -70,7 +70,7 @@ public class TIFF extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (this.startPos + ref.offset) - lastEnd;
             if (diff > 0) {
-                UITool.generateTreeNode_Diff(
+                UITool.generateTreeNodeDiff(
                         parentNode, lastEnd, diff,
                         this.tiffByteArray, this.startPos);
             }
@@ -94,7 +94,7 @@ public class TIFF extends FileComponent {
         // In case, there is some extra space in the end
         diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
         if (diff > 0) {
-            UITool.generateTreeNode_Diff(
+            UITool.generateTreeNodeDiff(
                     parentNode, lastEnd, diff,
                     this.tiffByteArray, this.startPos);
         }

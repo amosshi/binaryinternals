@@ -11,7 +11,7 @@ import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  * {@code Method} of a class or interface. The {@code Method} structure has the

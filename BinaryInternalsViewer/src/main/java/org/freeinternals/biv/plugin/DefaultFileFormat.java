@@ -10,7 +10,7 @@ import org.freeinternals.commonlib.core.FileFormat;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  *

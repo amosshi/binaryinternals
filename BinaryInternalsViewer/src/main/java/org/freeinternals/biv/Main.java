@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  * 

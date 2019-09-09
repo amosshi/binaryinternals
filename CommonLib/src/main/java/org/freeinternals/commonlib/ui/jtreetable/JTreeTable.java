@@ -1,22 +1,22 @@
 /*
  * Copyright 1997-2000 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or
  * without modification, are permitted provided that the following
  * conditions are met:
- * 
+ *
  * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer. 
- *   
+ *   notice, this list of conditions and the following disclaimer.
+ *
  * - Redistribution in binary form must reproduce the above
  *   copyright notice, this list of conditions and the following
  *   disclaimer in the documentation and/or other materials
- *   provided with the distribution. 
- *   
+ *   provided with the distribution.
+ *
  * Neither the name of Sun Microsystems, Inc. or the names of
  * contributors may be used to endorse or promote products derived
- * from this software without specific prior written permission.  
- * 
+ * from this software without specific prior written permission.
+ *
  * This software is provided "AS IS," without a warranty of any
  * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
@@ -24,47 +24,68 @@
  * EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY
  * DAMAGES OR LIABILITIES SUFFERED BY LICENSEE AS A RESULT OF OR
  * RELATING TO USE, MODIFICATION OR DISTRIBUTION OF THIS SOFTWARE OR
- * ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE 
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT,   
- * SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER  
- * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF 
- * THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS 
+ * ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE
+ * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT,
+ * SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF
+ * THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS
  * BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- * 
+ *
  * You acknowledge that this software is not designed, licensed or
  * intended for use in the design, construction, operation or
  * maintenance of any nuclear facility.
  */
 package org.freeinternals.commonlib.ui.jtreetable;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.util.EventObject;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 /**
- * This example shows how to create a simple JTreeTable component, 
- * by using a JTree as a renderer (and editor) for the cells in a 
- * particular column in the JTable.
+ * This example shows how to create a simple JTreeTable component, by using a
+ * JTree as a renderer (and editor) for the cells in a particular column in the
+ * JTable.
  *
  * <p>
- * A little change may be done on formatting, annotation, java doc, etc.
+ * Created by <code>Philip Milne | Scott Violet</code>. Miner change may be done
+ * on formatting, annotation, java doc, etc, for check style.
  * </p>
  *
  * @version 1.2 10/27/98
  *
  * @author Philip Milne
  * @author Scott Violet
- * @see <a href="http://java.sun.com/products/jfc/tsc/articles/bookmarks/">The Swing HTML Parser</a>
+ * @see <a href="http://java.sun.com/products/jfc/tsc/articles/bookmarks/">The
+ * Swing HTML Parser</a>
  */
 public class JTreeTable extends JTable {
 
     private static final long serialVersionUID = 4876543219876500005L;
-    /** A subclass of JTree. */
+    /**
+     * A subclass of JTree.
+     */
     @SuppressWarnings("ProtectedField")
     protected TreeTableCellRenderer tree;
 
@@ -101,9 +122,9 @@ public class JTreeTable extends JTable {
     }
 
     /**
-     * Overridden to message super and forward the method to the tree.
-     * Since the tree is not actually in the component hierarchy it will
-     * never receive this unless we forward it in this manner.
+     * Overridden to message super and forward the method to the tree. Since the
+     * tree is not actually in the component hierarchy it will never receive
+     * this unless we forward it in this manner.
      */
     @Override
     public void updateUI() {
@@ -122,11 +143,13 @@ public class JTreeTable extends JTable {
     }
 
     /**
-     * Workaround for BasicTableUI anomaly. Make sure the UI never tries to 
-     * resize the editor. The UI currently uses different techniques to 
-     * paint the renderers and editors; overriding setBounds() below 
-     * is not the right thing to do for an editor. Returning -1 for the 
-     * editing row in this case, ensures the editor is never painted. 
+     * Workaround for BasicTableUI anomaly.Make sure the UI never tries to
+     * resize the editor. The UI currently uses different techniques to paint
+     * the renderers and editors; overriding setBounds() below is not the right
+     * thing to do for an editor. Returning -1 for the editing row in this case,
+     * ensures the editor is never painted.
+     *
+     * @return Get editing row
      */
     @Override
     public int getEditingRow() {
@@ -135,22 +158,24 @@ public class JTreeTable extends JTable {
     }
 
     /**
-     * Returns the actual row that is editing as <code>getEditingRow</code>
-     * will always return -1.
+     * Returns the actual row that is editing as <code>getEditingRow</code> will
+     * always return -1.
      */
     private int realEditingRow() {
         return editingRow;
     }
 
     /**
-     * This is overridden to invoke super's implementation, and then,
-     * if the receiver is editing a Tree column, the editor's bounds is
-     * reset. The reason we have to do this is because JTable doesn't
-     * think the table is being edited, as <code>getEditingRow</code> returns
-     * -1, and therefore doesn't automatically resize the editor for us.
+     * This is overridden to invoke super's implementation, and then, if the
+     * receiver is editing a Tree column, the editor's bounds is reset.The
+     * reason we have to do this is because JTable doesn't think the table is
+     * being edited, as <code>getEditingRow</code> returns -1, and therefore
+     * doesn't automatically resize the editor for us.
+     *
+     * @param resizingColumn Resizing column
      */
     @Override
-    public void sizeColumnsToFit(int resizingColumn) {
+    public void sizeColumnsToFit(final int resizingColumn) {
         super.sizeColumnsToFit(resizingColumn);
         if (getEditingColumn() != -1 && getColumnClass(editingColumn)
                 == TreeTableModel.class) {
@@ -164,9 +189,11 @@ public class JTreeTable extends JTable {
 
     /**
      * Overridden to pass the new rowHeight to the tree.
+     *
+     * @param rowHeight Table row height
      */
     @Override
-    public final void setRowHeight(int rowHeight) {
+    public final void setRowHeight(final int rowHeight) {
         super.setRowHeight(rowHeight);
         if (tree != null && tree.getRowHeight() != rowHeight) {
             tree.setRowHeight(getRowHeight());
@@ -175,6 +202,7 @@ public class JTreeTable extends JTable {
 
     /**
      * Returns the tree that is being shared between the model.
+     *
      * @return the shared tree
      */
     public JTree getTree() {
@@ -182,13 +210,18 @@ public class JTreeTable extends JTable {
     }
 
     /**
-     * Overridden to invoke repaint for the particular location if
-     * the column contains the tree. This is done as the tree editor does
-     * not fill the bounds of the cell, we need the renderer to paint
-     * the tree in the background, and then draw the editor over it.
+     * Overridden to invoke repaint for the particular location if the column
+     * contains the tree.This is done as the tree editor does not fill the
+     * bounds of the cell, we need the renderer to paint the tree in the
+     * background, and then draw the editor over it.
+     *
+     * @param row Table row
+     * @param column Table column
+     * @param e Event object
+     * @return Cell is editable or not
      */
     @Override
-    public boolean editCellAt(int row, int column, EventObject e) {
+    public boolean editCellAt(final int row, final int column, final EventObject e) {
         boolean retValue = super.editCellAt(row, column, e);
         if (retValue && getColumnClass(column) == TreeTableModel.class) {
             repaint(getCellRect(row, column, false));
@@ -204,21 +237,25 @@ public class JTreeTable extends JTable {
             TableCellRenderer {
 
         private static final long serialVersionUID = 4876543219876500005L;
-        /** Last table/tree row asked to renderer. */
+        /**
+         * Last table/tree row asked to renderer.
+         */
         @SuppressWarnings("ProtectedField")
         protected int visibleRow;
-        /** Border to draw around the tree, if this is non-null, it will
-         * be painted. */
+        /**
+         * Border to draw around the tree, if this is non-null, it will be
+         * painted.
+         */
         @SuppressWarnings("ProtectedField")
         protected Border highlightBorder;
 
-        public TreeTableCellRenderer(TreeModel model) {
+        public TreeTableCellRenderer(final TreeModel model) {
             super(model);
         }
 
         /**
-         * updateUI is overridden to set the colors of the Tree's renderer
-         * to match that of the table.
+         * updateUI is overridden to set the colors of the Tree's renderer to
+         * match that of the table.
          */
         @Override
         public void updateUI() {
@@ -238,11 +275,13 @@ public class JTreeTable extends JTable {
         }
 
         /**
-         * Sets the row height of the tree, and forwards the row height to
-         * the table.
+         * Sets the row height of the tree, and forwards the row height to the
+         * table.
+         *
+         * @param rowHeight Table row height
          */
         @Override
-        public void setRowHeight(int rowHeight) {
+        public void setRowHeight(final int rowHeight) {
             if (rowHeight > 0) {
                 super.setRowHeight(rowHeight);
                 if (JTreeTable.this != null
@@ -254,22 +293,25 @@ public class JTreeTable extends JTable {
 
         /**
          * This is overridden to set the height to match that of the JTable.
+         *
          * @param x x position
          * @param y x position
          * @param w width
          * @param h height
          */
         @Override
-        public void setBounds(int x, int y, int w, int h) {
+        public void setBounds(final int x, final int y, final int w, final int h) {
             super.setBounds(x, 0, w, JTreeTable.this.getHeight());
         }
 
         /**
-         * Sub-classed to translate the graphics such that the last visible
-         * row will be drawn at 0,0.
+         * Sub-classed to translate the graphics such that the last visible row
+         * will be drawn at 0,0.
+         *
+         * @param g UI painter
          */
         @Override
-        public void paint(Graphics g) {
+        public void paint(final Graphics g) {
             g.translate(0, -visibleRow * getRowHeight());
             super.paint(g);
             // Draw the Table border if we have focus.
@@ -281,16 +323,22 @@ public class JTreeTable extends JTable {
         }
 
         /**
-         * TreeCellRenderer method.
-         * Overridden to update the visible row.
-         * 
-         * @return  the cell render
+         * TreeCellRenderer method.Overridden to update the visible row.
+         *
+         * @param table Table control
+         * @param value Cell value
+         * @param isSelected Cell is selected or not
+         * @param hasFocus Cell has focus or not
+         * @param row Table row
+         * @param column Table column
+         * @return the cell render
          */
-        public Component getTableCellRendererComponent(JTable table,
-                Object value,
-                boolean isSelected,
-                boolean hasFocus,
-                int row, int column) {
+        @Override
+        public Component getTableCellRendererComponent(final JTable table,
+                final Object value,
+                final boolean isSelected,
+                final boolean hasFocus,
+                final int row, final int column) {
             Color background;
             Color foreground;
 
@@ -333,39 +381,39 @@ public class JTreeTable extends JTable {
 
     /**
      * An editor that can be used to edit the tree column. This extends
-     * DefaultCellEditor and uses a JTextField (actually, TreeTableTextField)
-     * to perform the actual editing.
-     * <p>To support editing of the tree column we can not make the tree
-     * editable. The reason this doesn't work is that you can not use
-     * the same component for editing and renderering. The table may have
-     * the need to paint cells, while a cell is being edited. If the same
-     * component were used for the rendering and editing the component would
-     * be moved around, and the contents would change. When editing, this
-     * is undesirable, the contents of the text field must stay the same,
-     * including the caret blinking, and selections persisting. For this
-     * reason the editing is done via a TableCellEditor.
-     * <p>Another interesting thing to be aware of is how tree positions
-     * its render and editor. The render/editor is responsible for drawing the
-     * icon indicating the type of node (leaf, branch...). The tree is
-     * responsible for drawing any other indicators, perhaps an additional
-     * +/- sign, or lines connecting the various nodes. So, the renderer
-     * is positioned based on depth. On the other hand, table always makes
-     * its editor fill the contents of the cell. To get the allusion
-     * that the table cell editor is part of the tree, we don't want the
-     * table cell editor to fill the cell bounds. We want it to be placed
-     * in the same manner as tree places it editor, and have table message
-     * the tree to paint any decorations the tree wants. Then, we would
-     * only have to worry about the editing part. The approach taken
-     * here is to determine where tree would place the editor, and to override
-     * the <code>reshape</code> method in the JTextField component to
-     * nudge the text field to the location tree would place it. Since
-     * JTreeTable will paint the tree behind the editor everything should
-     * just work. So, that is what we are doing here. Determining of
-     * the icon position will only work if the TreeCellRenderer is
-     * an instance of DefaultTreeCellRenderer. If you need custom
-     * TreeCellRenderers, that don't descend from DefaultTreeCellRenderer, 
-     * and you want to support editing in JTreeTable, you will have
-     * to do something similar.
+     * DefaultCellEditor and uses a JTextField (actually, TreeTableTextField) to
+     * perform the actual editing.
+     * <p>
+     * To support editing of the tree column we can not make the tree editable.
+     * The reason this doesn't work is that you can not use the same component
+     * for editing and renderering. The table may have the need to paint cells,
+     * while a cell is being edited. If the same component were used for the
+     * rendering and editing the component would be moved around, and the
+     * contents would change. When editing, this is undesirable, the contents of
+     * the text field must stay the same, including the caret blinking, and
+     * selections persisting. For this reason the editing is done via a
+     * TableCellEditor.
+     * <p>
+     * Another interesting thing to be aware of is how tree positions its render
+     * and editor. The render/editor is responsible for drawing the icon
+     * indicating the type of node (leaf, branch...). The tree is responsible
+     * for drawing any other indicators, perhaps an additional +/- sign, or
+     * lines connecting the various nodes. So, the renderer is positioned based
+     * on depth. On the other hand, table always makes its editor fill the
+     * contents of the cell. To get the allusion that the table cell editor is
+     * part of the tree, we don't want the table cell editor to fill the cell
+     * bounds. We want it to be placed in the same manner as tree places it
+     * editor, and have table message the tree to paint any decorations the tree
+     * wants. Then, we would only have to worry about the editing part. The
+     * approach taken here is to determine where tree would place the editor,
+     * and to override the <code>reshape</code> method in the JTextField
+     * component to nudge the text field to the location tree would place it.
+     * Since JTreeTable will paint the tree behind the editor everything should
+     * just work. So, that is what we are doing here. Determining of the icon
+     * position will only work if the TreeCellRenderer is an instance of
+     * DefaultTreeCellRenderer. If you need custom TreeCellRenderers, that don't
+     * descend from DefaultTreeCellRenderer, and you want to support editing in
+     * JTreeTable, you will have to do something similar.
      */
     @SuppressWarnings("PublicInnerClass")
     public class TreeTableCellEditor extends DefaultCellEditor {
@@ -377,21 +425,25 @@ public class JTreeTable extends JTable {
         }
 
         /**
-         * Overridden to determine an offset that tree would place the
-         * editor at. The offset is determined from the
-         * <code>getRowBounds</code> JTree method, and additionally
-         * from the icon DefaultTreeCellRenderer will use.
-         * <p>The offset is then set on the TreeTableTextField component
-         * created in the constructor, and returned.
-         * 
-         * @param r
-         * @param c
+         * Overridden to determine an offset that tree would place the editor
+         * at.The offset is determined from the <code>getRowBounds</code> JTree
+         * method, and additionally from the icon DefaultTreeCellRenderer will
+         * use.<p>
+         * The offset is then set on the TreeTableTextField component created in
+         * the constructor, and returned.
+         *
+         * @param table Table control
+         * @param value Cell value
+         * @param isSelected Is selected
+         * @param r Row
+         * @param c Column
+         * @return Table cell editor
          */
         @Override
-        public Component getTableCellEditorComponent(JTable table,
-                Object value,
-                boolean isSelected,
-                int r, int c) {
+        public Component getTableCellEditorComponent(final JTable table,
+                final Object value,
+                final boolean isSelected,
+                final int r, int c) {
             Component component = super.getTableCellEditorComponent(table, value, isSelected, r, c);
             JTree t = getTree();
             boolean rv = t.isRootVisible();
@@ -420,13 +472,14 @@ public class JTreeTable extends JTable {
         }
 
         /**
-         * This is overridden to forward the event to the tree. This will
-         * return true if the click count Greater Equals 3, or the event is null.
-         * 
-         * @param e
+         * This is overridden to forward the event to the tree. This will return
+         * true if the click count Greater Equals 3, or the event is null.
+         *
+         * @param e Event object
+         * @return If cell is editable or not
          */
         @Override
-        public boolean isCellEditable(EventObject e) {
+        public boolean isCellEditable(final EventObject e) {
             if (e instanceof MouseEvent) {
                 MouseEvent me = (MouseEvent) e;
                 // If the modifiers are not 0 (or the left mouse button),
@@ -463,45 +516,45 @@ public class JTreeTable extends JTable {
     }
 
     /**
-     * Component used by TreeTableCellEditor. The only thing this does
-     * is to override the <code>reshape</code> method, and to ALWAYS
-     * make the x location be <code>offset</code>.
+     * Component used by TreeTableCellEditor. The only thing this does is to
+     * override the <code>reshape</code> method, and to ALWAYS make the x
+     * location be <code>offset</code>.
      */
     @SuppressWarnings("PackageVisibleInnerClass")
     static class TreeTableTextField extends JTextField {
 
         private static final long serialVersionUID = 4876543219876500005L;
-        @SuppressWarnings("PublicField")
-        public int offset;
+        private int offset;
 
         @Override
         @SuppressWarnings("deprecation")
-        public void reshape(int x, int y, int w, int h) {
+        public void reshape(final int x, final int y, final int w, final int h) {
             int newX = Math.max(x, offset);
             //super.reshape(newX, y, w - (newX - x), h);
             super.setBounds(newX, y, w - (newX - x), h);
         }
 
         @Override
-        public void setBounds(int x, int y, int width, int height) {
+        public void setBounds(final int x, final int y, final int width, final int height) {
             int newX = Math.max(x, offset);
             super.setBounds(newX, y, width - (newX - x), height);
         }
     }
 
     /**
-     * ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel
-     * to listen for changes in the ListSelectionModel it maintains. Once
-     * a change in the ListSelectionModel happens, the paths are updated
-     * in the DefaultTreeSelectionModel.
+     * ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel to
+     * listen for changes in the ListSelectionModel it maintains. Once a change
+     * in the ListSelectionModel happens, the paths are updated in the
+     * DefaultTreeSelectionModel.
      */
     @SuppressWarnings("PackageVisibleInnerClass")
     class ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel {
 
         private static final long serialVersionUID = 4876543219876500005L;
-        /** Set to true when we are updating the ListSelectionModel. */
-        @SuppressWarnings("ProtectedField")
-        protected boolean updatingListSelectionModel;
+        /**
+         * Set to true when we are updating the ListSelectionModel.
+         */
+        private boolean updatingListSelectionModel;
 
         ListToTreeSelectionModelWrapper() {
             super();
@@ -512,14 +565,16 @@ public class JTreeTable extends JTable {
          * Returns the list selection model. ListToTreeSelectionModelWrapper
          * listens for changes to this model and updates the selected paths
          * accordingly.
+         *
+         * @return {@link ListSelectionModel}
          */
         final ListSelectionModel getListSelectionModel() {
             return listSelectionModel;
         }
 
         /**
-         * This is overridden to set <code>updatingListSelectionModel</code>
-         * and message super. This is the only place DefaultTreeSelectionModel
+         * This is overridden to set <code>updatingListSelectionModel</code> and
+         * message super. This is the only place DefaultTreeSelectionModel
          * alters the ListSelectionModel.
          */
         @Override
@@ -541,15 +596,17 @@ public class JTreeTable extends JTable {
 
         /**
          * Creates and returns an instance of ListSelectionHandler.
+         *
+         * @return {@link #ListSelectionHandler}
          */
         protected final ListSelectionListener createListSelectionListener() {
             return new ListSelectionHandler();
         }
 
         /**
-         * If <code>updatingListSelectionModel</code> is false, this will
-         * reset the selected paths from the selected rows in the list
-         * selection model.
+         * If <code>updatingListSelectionModel</code> is false, this will reset
+         * the selected paths from the selected rows in the list selection
+         * model.
          */
         protected void updateSelectedPathsFromSelectedRows() {
             if (!updatingListSelectionModel) {
@@ -584,7 +641,8 @@ public class JTreeTable extends JTable {
          */
         class ListSelectionHandler implements ListSelectionListener {
 
-            public void valueChanged(ListSelectionEvent e) {
+            @Override
+            public void valueChanged(final ListSelectionEvent e) {
                 updateSelectedPathsFromSelectedRows();
             }
         }

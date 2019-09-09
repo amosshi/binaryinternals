@@ -83,7 +83,7 @@ public class ICCProfile extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (int) ((this.startPos + ref.tag.Offset) - lastPos);
             if (diff > 0) {
-                UITool.generateTreeNode_Diff(
+                UITool.generateTreeNodeDiff(
                         parentNode, lastPos, diff,
                         this.rawData, this.startPos);
             }
@@ -97,7 +97,7 @@ public class ICCProfile extends FileComponent {
 
         diff = (this.startPos + this.rawData.length) - lastPos;
         if (diff > 0) {
-            UITool.generateTreeNode_Diff(
+            UITool.generateTreeNodeDiff(
                     parentNode, lastPos, diff,
                     this.rawData, this.startPos);
         }

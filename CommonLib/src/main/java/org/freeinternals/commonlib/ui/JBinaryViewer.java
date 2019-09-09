@@ -24,26 +24,92 @@ import org.freeinternals.commonlib.ui.binviewer.JRawDataViewer;
 import org.freeinternals.commonlib.ui.binviewer.JRowViewer;
 
 /**
+ * Viewer for binary data. It contains three columns: row numbers, data in HEX,
+ * data in ASCII.
  *
  * @author Amos Shi
  */
-public class JBinaryViewer extends JPanel {
+public final class JBinaryViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
+
+    /**
+     * Default font.
+     */
     public static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 14);
-    public static final int ITEM_HEIGHT = 22; // 20;
+
+    /**
+     * Height for each row.
+     */
+    public static final int ITEM_HEIGHT = 22;
+
+    /**
+     * Number of bytes to be shown in one row.
+     */
     public static final int ROW_ITEM_MAX = 16;
+
+    /**
+     * 0-based row item index.
+     */
     public static final int ROW_ITEM_MAX_INDEX = ROW_ITEM_MAX - 1;
-    private final JRowViewer rowViewer;
-    private final JRawDataViewer rawViewer;
-    private final JAsciiDataViewer asciiViewer;
-    private byte[] data = null;
+
+    /**
+     * Spare space in bottom.
+     */
     private static final int ROW_EMPTYROW_COUNT = 10;
-    private JScrollBar vBar;
+
+    /**
+     * Constant value for <code>-4</code>.
+     */
+    private static final int MINUS_4 = -4;
+
+    /**
+     * Column 1: row viewer.
+     */
+    private final JRowViewer rowViewer;
+
+    /**
+     * Column 2: Data viewer in HEX format.
+     */
+    private final JRawDataViewer rawViewer;
+
+    /**
+     * Column 3: Data viewer in ASCII format.
+     */
+    private final JAsciiDataViewer asciiViewer;
+
+    /**
+     * Binary data to be shown.
+     */
+    private byte[] data = null;
+
+    /**
+     * Vertical scroll bar for paging.
+     */
+    private final JScrollBar vBar;
+
+    /**
+     * Max number of rows will be shown, due to the {@link #data} size.
+     */
     private int rowMax;
+
+    /**
+     * Start index to be high-lighted.
+     *
+     * @see org.freeinternals.commonlib.ui.binviewer.DataViewer#selectedStartIndex
+     */
     private int selectedStartIndex = 0;
+
+    /**
+     * Length to be high-lighted.
+     *
+     * @see org.freeinternals.commonlib.ui.binviewer.DataViewer#selectedLength
+     */
     private int selectedLength = 0;
 
+    /**
+     * Constructor.
+     */
     public JBinaryViewer() {
         this.setLayout(new BorderLayout());
         // this.setFont(JBinaryViewer.FONT);
@@ -54,7 +120,8 @@ public class JBinaryViewer extends JPanel {
         this.vBar = new JScrollBar();
         this.vBar.addAdjustmentListener(new AdjustmentListener() {
 
-            public void adjustmentValueChanged(AdjustmentEvent e) {
+            @Override
+            public void adjustmentValueChanged(final AdjustmentEvent e) {
                 updateViewContent();
             }
         });
@@ -65,7 +132,8 @@ public class JBinaryViewer extends JPanel {
         // Content Panel
         final JPanel panel = new JPanel();
         final SpringLayout panelLayout = new SpringLayout();
-        int left, right;
+        int left;
+        int right;
 
         panel.setLayout(panelLayout);
 
@@ -81,32 +149,37 @@ public class JBinaryViewer extends JPanel {
 
         panelLayout.putConstraint(SpringLayout.WEST, this.rowViewer, 2, SpringLayout.WEST, panel);
         panelLayout.putConstraint(SpringLayout.NORTH, this.rowViewer, 2, SpringLayout.NORTH, panel);
-        panelLayout.putConstraint(SpringLayout.SOUTH, this.rowViewer, -4, SpringLayout.SOUTH, panel);
+        panelLayout.putConstraint(SpringLayout.SOUTH, this.rowViewer, MINUS_4, SpringLayout.SOUTH, panel);
         panelLayout.putConstraint(SpringLayout.EAST, this.rowViewer, JRowViewer.WIDTH_VALUE, SpringLayout.WEST, panel);
 
         left = 2 + JRowViewer.WIDTH_VALUE + 2;
         right = left + JRawDataViewer.WIDTH_VALUE;
         panelLayout.putConstraint(SpringLayout.WEST, this.rawViewer, left, SpringLayout.WEST, panel);
         panelLayout.putConstraint(SpringLayout.NORTH, this.rawViewer, 2, SpringLayout.NORTH, panel);
-        panelLayout.putConstraint(SpringLayout.SOUTH, this.rawViewer, -4, SpringLayout.SOUTH, panel);
+        panelLayout.putConstraint(SpringLayout.SOUTH, this.rawViewer, MINUS_4, SpringLayout.SOUTH, panel);
         panelLayout.putConstraint(SpringLayout.EAST, this.rawViewer, right, SpringLayout.WEST, panel);
 
         left = right + 2;
         right = left + JAsciiDataViewer.WIDTH_VALUE;
         panelLayout.putConstraint(SpringLayout.WEST, this.asciiViewer, left, SpringLayout.WEST, panel);
         panelLayout.putConstraint(SpringLayout.NORTH, this.asciiViewer, 2, SpringLayout.NORTH, panel);
-        panelLayout.putConstraint(SpringLayout.SOUTH, this.asciiViewer, -4, SpringLayout.SOUTH, panel);
+        panelLayout.putConstraint(SpringLayout.SOUTH, this.asciiViewer, MINUS_4, SpringLayout.SOUTH, panel);
         panelLayout.putConstraint(SpringLayout.EAST, this.asciiViewer, right, SpringLayout.WEST, panel);
 
         this.add(panel, BorderLayout.CENTER);
     }
 
-    public void setData(final byte[] data) {
-        if (data == null) {
+    /**
+     * Set the binary data to be displayed.
+     *
+     * @param bytes Binary data to be displayed
+     */
+    public void setData(final byte[] bytes) {
+        if (bytes == null) {
             return;
         }
 
-        this.data = data.clone();
+        this.data = bytes.clone();
 
         // Calc the max row count
         this.rowMax = this.getRowMax();
@@ -124,12 +197,16 @@ public class JBinaryViewer extends JPanel {
 
     /**
      * Return 1-based row count number.
+     *
+     * @param number to explain
+     * @return 1-based row number
      */
-    private int getRowCount(int number) {
+    private int getRowCount(final int number) {
         int count = 0;
-        while (number > 0) {
+        int max = number;
+        while (max > 0) {
             count++;
-            number -= ROW_ITEM_MAX;
+            max -= ROW_ITEM_MAX;
         }
         return count;
     }
@@ -186,7 +263,7 @@ public class JBinaryViewer extends JPanel {
      * Selects the bytes between the specified start position and length.
      *
      * @param selectionStart the start position of the bytes
-     * @param length         the length of the bytes
+     * @param length the length of the bytes
      */
     public void setSelection(final int selectionStart, final int length) {
         if ((this.data == null) || (selectionStart < 0)) {
@@ -209,11 +286,11 @@ public class JBinaryViewer extends JPanel {
         int length;
 
         if (startPos > 0) {
-            length =  Math.min(this.selectedLength, lengtgMax);                 // Improve Performance
+            length = Math.min(this.selectedLength, lengtgMax);                  // Improve Performance
             this.rawViewer.setSelection(startPos, length);
             this.asciiViewer.setSelection(startPos, length);
-        } else if ((length = startPos + this.selectedLength) > 0) {
-            length =  Math.min(length, lengtgMax);                              // Improve Performance
+        } else if ((startPos + this.selectedLength) > 0) {
+            length = Math.min(startPos + this.selectedLength, lengtgMax);       // Improve Performance
             this.rawViewer.setSelection(0, length);
             this.asciiViewer.setSelection(0, length);
         } else {
@@ -244,7 +321,7 @@ public class JBinaryViewer extends JPanel {
     class ComponentResizedAdapter extends ComponentAdapter {
 
         @Override
-        public void componentResized(ComponentEvent e) {
+        public void componentResized(final ComponentEvent e) {
             super.componentResized(e);
             updateViewContent();
         }
@@ -253,8 +330,9 @@ public class JBinaryViewer extends JPanel {
     @SuppressWarnings("PackageVisibleInnerClass")
     class MouseWheelAdapter implements MouseWheelListener {
 
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            switch(e.getScrollType()){
+        @Override
+        public void mouseWheelMoved(final MouseWheelEvent e) {
+            switch (e.getScrollType()) {
                 case MouseWheelEvent.WHEEL_UNIT_SCROLL:
                     JBinaryViewer.this.vBar.setValue(
                             JBinaryViewer.this.vBar.getValue()
@@ -271,12 +349,14 @@ public class JBinaryViewer extends JPanel {
     @SuppressWarnings("PackageVisibleInnerClass")
     class KeyboardAdapter implements KeyListener {
 
-        public void keyTyped(KeyEvent e) {
+        @Override
+        public void keyTyped(final KeyEvent e) {
         }
 
-        public void keyPressed(KeyEvent e) {
+        @Override
+        public void keyPressed(final KeyEvent e) {
 
-            switch(e.getKeyCode()){
+            switch (e.getKeyCode()) {
                 case KeyEvent.VK_HOME:
                     JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getMinimum());
                     break;
@@ -307,7 +387,7 @@ public class JBinaryViewer extends JPanel {
             }
         }
 
-        public void keyReleased(KeyEvent e) {
+        public void keyReleased(final KeyEvent e) {
         }
     }
 }

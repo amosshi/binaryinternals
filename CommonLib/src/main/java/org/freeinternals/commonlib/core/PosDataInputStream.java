@@ -15,7 +15,7 @@ import java.math.BigInteger;
  *
  * @author Amos Shi
  */
-public class PosDataInputStream extends DataInputStream implements DataInputEx {
+public final class PosDataInputStream extends DataInputStream implements DataInputEx {
 
     /**
      * Offset of the 1st byte
@@ -235,7 +235,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     @Override
-    public String readASCII(int length) throws IOException {
+    public String readASCII(final int length) throws IOException {
         if (length <= 0) {
             throw new IllegalArgumentException(
                     String.format("Parameter length should be greater than 0. (length = %d)", length));
@@ -261,7 +261,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @throws java.io.IOException
      */
     @Override
-    public String readASCIIUntil(byte end) throws IOException {
+    public String readASCIIUntil(final byte end) throws IOException {
         byte b;
         StringBuilder sb = new StringBuilder(100);
 
@@ -333,7 +333,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return new ASCIILine(line, nlLen);
     }
 
-    private boolean _contains(byte v, byte[] list) {
+    private boolean _contains(final byte v, final byte[] list) {
         boolean result = false;
         for (int i = 0; i < list.length; i++) {
             if (list[i] == v) {
@@ -382,7 +382,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @see PosByteArrayInputStream
      */
     @Override
-    public int backward(int i) {
+    public int backward(final int i) {
         int result = -1;
 
         if (this.in instanceof PosByteArrayInputStream) {
@@ -405,7 +405,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @return the new position, or -1 if <code>b</code> not found
      */
     @Override
-    public int backwardTo(byte b) {
+    public int backwardTo(final byte b) {
         int result = -1;
 
         if (this.in instanceof PosByteArrayInputStream) {
@@ -436,7 +436,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @see PosByteArrayInputStream
      * @return the new position, or -1 if <code>b</code> not found
      */
-    public int forwardTo(byte b) {
+    public int forwardTo(final byte b) {
         int result = -1;
 
         if (this.in instanceof PosByteArrayInputStream) {
@@ -466,7 +466,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @see PosByteArrayInputStream
      */
     @Override
-    public int backwardTo(byte[] b) {
+    public int backwardTo(final byte[] b) {
         int result = -1;
 
         if ((b == null) || (b.length == 0)) {
@@ -508,14 +508,14 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
     /**
      * Fly to the specific <code>position</code>.
-     * 
+     *
      * This method supports {@link PosByteArrayInputStream} only, nothing will
      * do for other input stream types.
      *
      * @see PosByteArrayInputStream
      */
     @Override
-    public void flyTo(int position) {
+    public void flyTo(final int position) {
         if (this.in instanceof PosByteArrayInputStream) {
             ((PosByteArrayInputStream) this.in).setPos(position);
         }

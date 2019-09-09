@@ -8,7 +8,7 @@ package org.freeinternals.format.dex;
 
 import java.io.IOException;
 import org.freeinternals.commonlib.core.FileComponent;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  *

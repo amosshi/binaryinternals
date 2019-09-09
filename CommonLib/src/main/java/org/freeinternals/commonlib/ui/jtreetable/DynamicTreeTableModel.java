@@ -1,22 +1,22 @@
 /*
  * Copyright 1997-1999 Sun Microsystems, Inc. All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or
  * without modification, are permitted provided that the following
  * conditions are met:
- * 
+ *
  * - Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer. 
- *   
+ *   notice, this list of conditions and the following disclaimer.
+ *
  * - Redistribution in binary form must reproduce the above
  *   copyright notice, this list of conditions and the following
  *   disclaimer in the documentation and/or other materials
- *   provided with the distribution. 
- *   
+ *   provided with the distribution.
+ *
  * Neither the name of Sun Microsystems, Inc. or the names of
  * contributors may be used to endorse or promote products derived
- * from this software without specific prior written permission.  
- * 
+ * from this software without specific prior written permission.
+ *
  * This software is provided "AS IS," without a warranty of any
  * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
@@ -24,21 +24,24 @@
  * EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY
  * DAMAGES OR LIABILITIES SUFFERED BY LICENSEE AS A RESULT OF OR
  * RELATING TO USE, MODIFICATION OR DISTRIBUTION OF THIS SOFTWARE OR
- * ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE 
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT,   
- * SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER  
- * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF 
- * THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS 
+ * ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE
+ * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT,
+ * SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF
+ * THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS
  * BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- * 
+ *
  * You acknowledge that this software is not designed, licensed or
  * intended for use in the design, construction, operation or
  * maintenance of any nuclear facility.
  */
 package org.freeinternals.commonlib.ui.jtreetable;
 
-import java.lang.reflect.*;
-import javax.swing.tree.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import javax.swing.tree.TreeNode;
+
 
 /**
  * An implementation of TreeTableModel that uses reflection to answer
@@ -54,7 +57,8 @@ import javax.swing.tree.*;
  * constructor.
  *
  * <p>
- * A little change may be done on formatting, annotation, java doc, etc.
+ * Created by <code>Scott Violet</code>. Miner change may be done on formatting,
+ * annotation, java doc, etc, for check style.
  * </p>
  *
  * @author Scott Violet
@@ -77,17 +81,17 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
 
     /**
      * Constructor for creating a DynamicTreeTableModel.
-     * 
+     *
      * @param root
      * @param columnNames
      * @param getterMethodNames
      * @param setterMethodNames
-     * @param cTypes 
+     * @param cTypes
      */
-    public DynamicTreeTableModel(TreeNode root, String[] columnNames,
-            String[] getterMethodNames,
-            String[] setterMethodNames,
-            Class[] cTypes) {
+    public DynamicTreeTableModel(final TreeNode root, final String[] columnNames,
+            final String[] getterMethodNames,
+            final String[] setterMethodNames,
+            final Class[] cTypes) {
         super(root);
         this.columnNames = columnNames;
         this.methodNames = getterMethodNames;
@@ -102,12 +106,12 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * TreeModel method to return the number of children of a particular
      * node. Since <code>node</code> is a TreeNode, this can be answered
      * via the TreeNode method <code>getChildCount</code>.
-     * 
-     * @param node 
-     * @return  
+     *
+     * @param node
+     * @return
      */
     @Override
-    public int getChildCount(Object node) {
+    public int getChildCount(final Object node) {
         return ((TreeNode) node).getChildCount();
     }
 
@@ -115,36 +119,36 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * TreeModel method to locate a particular child of the specified
      * node. Since <code>node</code> is a TreeNode, this can be answered
      * via the TreeNode method <code>getChild</code>.
-     * 
-     * @param node 
+     *
+     * @param node
      * @param i
-     * @return 
+     * @return
      */
     @Override
-    public Object getChild(Object node, int i) {
+    public Object getChild(final Object node, final int i) {
         return ((TreeNode) node).getChildAt(i);
     }
 
     /**
-     * TreeModel method to determine if a node is a leaf. 
+     * TreeModel method to determine if a node is a leaf.
      * Since <code>node</code> is a TreeNode, this can be answered
      * via the TreeNode method <code>isLeaf</code>.
-     * 
+     *
      * @param node
-     * @return 
+     * @return
      */
     @Override
-    public boolean isLeaf(Object node) {
+    public boolean isLeaf(final Object node) {
         return ((TreeNode) node).isLeaf();
     }
 
     //
-    //  The TreeTable interface. 
+    //  The TreeTable interface.
     //
     /**
      * Returns the number of column names passed into the constructor.
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getColumnCount() {
@@ -153,9 +157,9 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
 
     /**
      * Returns the column name passed into the constructor.
-     * 
+     *
      * @param column
-     * @return 
+     * @return
      */
     @Override
     public String getColumnName(int column) {
@@ -168,12 +172,12 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
     /**
      * Returns the column class for column <code>column</code>. This
      * is set in the constructor.
-     * 
+     *
      * @param column
-     * @return 
+     * @return
      */
     @Override
-    public Class getColumnClass(int column) {
+    public Class getColumnClass(final int column) {
         if (cTypes == null || column < 0 || column >= cTypes.length) {
             return null;
         }
@@ -186,10 +190,10 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * the method specified in constructor for the passed in column.
      * @param node
      * @param column
-     * @return 
+     * @return
      */
     @Override
-    public Object getValueAt(Object node, int column) {
+    public Object getValueAt(final Object node, final int column) {
         try {
             Method method = node.getClass().getMethod(methodNames[column], (Class<?>[]) null);
             if (method != null) {
@@ -204,13 +208,13 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
     /**
      * Returns true if there is a setter method name for column
      * <code>column</code>. This is set in the constructor.
-     * 
+     *
      * @param node
      * @param column
-     * @return 
+     * @return
      */
     @Override
-    public boolean isCellEditable(Object node, int column) {
+    public boolean isCellEditable(final Object node, final int column) {
         return (setterMethodNames != null
                 && setterMethodNames[column] != null);
     }
@@ -220,7 +224,7 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * <code>node</code> in column <code>column</code>. This is done
      * by using the setter method name, and coercing the passed in
      * value to the specified type.
-     * 
+     *
      * @param aValue
      * @param node
      * @param column
@@ -229,7 +233,7 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
     // it should really be changed to cache matching methods/constructors
     // based on <code>node</code>'s class, and <code>aValue</code>'s class.
     @Override
-    public void setValueAt(Object aValue, Object node, int column) {
+    public void setValueAt(Object aValue, final Object node, final int column) {
         boolean found = false;
         try {
             // We have to search through all the methods since the
@@ -286,11 +290,11 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * where the original node is the last element in the returned array.
      * The length of the returned array gives the node's depth in the
      * tree.
-     * 
+     *
      * @param aNode the TreeNode to get the path for
-     * @return 
+     * @return
      */
-    public TreeNode[] getPathToRoot(TreeNode aNode) {
+    public TreeNode[] getPathToRoot(final TreeNode aNode) {
         return getPathToRoot(aNode, 0);
     }
 
@@ -299,14 +303,14 @@ public class DynamicTreeTableModel extends AbstractTreeTableModel {
      * where the original node is the last element in the returned array.
      * The length of the returned array gives the node's depth in the
      * tree.
-     * 
+     *
      * @param aNode  the TreeNode to get the path for
      * @param depth  an int giving the number of steps already taken towards
      *        the root (on recursive calls), used to size the returned array
      * @return an array of TreeNodes giving the path from the root to the
-     *         specified node 
+     *         specified node
      */
-    private TreeNode[] getPathToRoot(TreeNode aNode, int depth) {
+    private TreeNode[] getPathToRoot(final TreeNode aNode, int depth) {
         TreeNode[] retNodes;
         // This method recurses, traversing towards the root in order
         // size the array. On the way back, it fills in the nodes,

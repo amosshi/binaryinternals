@@ -22,7 +22,12 @@ import org.freeinternals.commonlib.core.BytesTool;
  *
  * @author Amos Shi
  */
-public class UITool {
+public final class UITool {
+
+    /**
+     * Size ratio of the pop-up window and its parent.
+     */
+    private static final float POPUP_RATIO = 0.8f;
 
     private UITool() {
     }
@@ -36,27 +41,27 @@ public class UITool {
         // Set main window size
         final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         f.setSize(
-                (int) (d.getWidth() * 0.7),
-                (int) (d.getHeight() * 0.7));
+                (int) (d.getWidth() * POPUP_RATIO),
+                (int) (d.getHeight() * POPUP_RATIO));
 
         // Center the main window
         f.setLocationRelativeTo(null);
     }
-    
 
     /**
+     * Generate tree node for difference.
      *
-     * @param parentNode
-     * @param lastEnd
-     * @param diff
-     * @param buff
-     * @param buffStartPos
+     * @param parentNode Parent tree node
+     * @param lastEnd Last end
+     * @param diff Difference
+     * @param buff Byte array data
+     * @param buffStartPos Buffer start position
      */
-    public static void generateTreeNode_Diff(
-            DefaultMutableTreeNode parentNode,
-            int lastEnd,
-            int diff,
-            byte[] buff, int buffStartPos) {
+    public static void generateTreeNodeDiff(
+            final DefaultMutableTreeNode parentNode,
+            final int lastEnd,
+            final int diff,
+            final byte[] buff, final int buffStartPos) {
         String diffStr;
 
         if (BytesTool.isByteArrayEmpty(buff, lastEnd - buffStartPos, diff - 1)) {
@@ -69,13 +74,23 @@ public class UITool {
                 diff,
                 diffStr)));
     }
-    
-    
+
+    /**
+     * Get Java system default icon for shortcut.
+     *
+     * @return Shortcut icon in Java
+     */
     public static Icon getShortcutIcon() {
         return UIManager.getIcon("InternalFrame.maximizeIcon");
     }
-    
 
+    /**
+     * Show a popup window with given message.
+     *
+     * @param frame Parent window
+     * @param panel Content in panel
+     * @param title Popup window title
+     */
     public static void showPopup(final JFrame frame, final JPanel panel, final String title) {
         if (frame == null || panel == null) {
             return;
@@ -83,8 +98,8 @@ public class UITool {
 
         final JDialog popup = new JDialog(frame, title);
         popup.setSize(
-                (int) Math.floor(frame.getWidth() * 0.8),
-                (int) Math.floor(frame.getHeight() * 0.8));
+                (int) Math.floor(frame.getWidth() * POPUP_RATIO),
+                (int) Math.floor(frame.getHeight() * POPUP_RATIO));
         popup.setLayout(new BorderLayout());
         popup.add(panel, BorderLayout.CENTER);
         popup.setLocationRelativeTo(frame);

@@ -54,18 +54,18 @@ public class JRowViewer extends JTextPane {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.Start());
+        sb.append(HTMLKit.start());
 
         int rowValue = rowStart * JBinaryViewer.ROW_ITEM_MAX;
         for (int i = 0; i < rowCount; i++) {
             if ((rowStart + i) < rowMax) {
-                sb.append(HTMLKit.Span(String.format("%08Xh\n", rowValue)));
-                sb.append(HTMLKit.NewLine());
+                sb.append(HTMLKit.span(String.format("%08Xh\n", rowValue)));
+                sb.append(HTMLKit.newLine());
                 rowValue += JBinaryViewer.ROW_ITEM_MAX;
             }
         }
 
-        sb.append(HTMLKit.End());
+        sb.append(HTMLKit.end());
         this.setText(sb.toString());
     }
 }

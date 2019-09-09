@@ -18,13 +18,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * Utility Class.
+ * Utility Class for bytes array (binary data).
  *
  * @author Amos Shi
  */
 public final class BytesTool {
 
-    public static boolean isByteArrayEmpty(byte[] buff, int startPos, int length) {
+    public static boolean isByteArrayEmpty(final byte[] buff, final int startPos, final int length) {
         boolean result = false;
 
         if (buff[startPos] == 0x00 || buff[startPos] == ((byte) 0xFF)) {
@@ -52,7 +52,7 @@ public final class BytesTool {
      * @param bin2 The second byte array
      * @return  <code>true</code> if the content are the same, else false
      */
-    public static boolean isByteArraySame(byte[] bin1, byte[] bin2) {
+    public static boolean isByteArraySame(final byte[] bin1, final byte[] bin2) {
         if (bin1 == null || bin2 == null) {
             return false;
         }
@@ -83,7 +83,7 @@ public final class BytesTool {
      * @param start The start position for compare
      * @return  <code>true</code> if the content are the same, else false
      */
-    public static boolean isByteArraySame(byte[] bin1, byte[] bin2, int start) {
+    public static boolean isByteArraySame(final byte[] bin1, final byte[] bin2, final int start) {
         if (bin1 == null || bin2 == null) {
             return false;
         }

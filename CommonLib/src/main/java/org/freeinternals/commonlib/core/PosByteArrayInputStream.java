@@ -12,7 +12,7 @@ import java.io.ByteArrayInputStream;
  *
  * @author Amos Shi
  */
-public class PosByteArrayInputStream extends ByteArrayInputStream {
+public final class PosByteArrayInputStream extends ByteArrayInputStream {
 
     /**
      * Creates a new instance of PosByteArrayInputStream

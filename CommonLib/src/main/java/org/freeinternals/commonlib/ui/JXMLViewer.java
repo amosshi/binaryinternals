@@ -27,15 +27,28 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
+ * Panel based XML data viewer.
  *
  * @author Amos Shi
  */
 public class JXMLViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
-    public final JTabbedPane tabbedPane;
+    /**
+     * Default font size.
+     */
+    private static final int FONT_SIZE = 16;
+    /**
+     * Tabbed Pane for "XML View" and "XML Plain Text".
+     */
+    private final JTabbedPane tabbedPane;
 
-    public JXMLViewer(InputStream xml){
+    /**
+     * Constructor.
+     *
+     * @param xml XML data to be displayed
+     */
+    public JXMLViewer(final InputStream xml) {
         this.tabbedPane = new JTabbedPane();
 
         try {
@@ -47,12 +60,12 @@ public class JXMLViewer extends JPanel {
 
             // The title
             JLabel label = new JLabel("Exception occured when parsing the XML data.");
-            label.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
+            label.setFont(new Font(Font.DIALOG, Font.BOLD, FONT_SIZE));
             label.setForeground(Color.red);
             panel.add(label, BorderLayout.NORTH);
 
             // The exception
-            ByteArrayOutputStream output = new ByteArrayOutputStream(2096);
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
             ex.printStackTrace(new PrintStream(output));
 
             JTextArea textException = new JTextArea();

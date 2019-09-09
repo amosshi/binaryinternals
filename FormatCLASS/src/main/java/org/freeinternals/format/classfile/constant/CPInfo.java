@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
@@ -313,7 +313,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * @param tag Constant pool item tag, indicating the type of the item
          * @param posDataInputStream Class file byte stream
          * @return Parsed constant pool info
-         * @throws org.freeinternals.format.FileFormatException An invalid class
+         * @throws org.freeinternals.commonlib.core.FileFormatException An invalid class
          * file format encountered
          */
         public static CPInfo parse(int tag, final PosDataInputStream posDataInputStream) throws FileFormatException {

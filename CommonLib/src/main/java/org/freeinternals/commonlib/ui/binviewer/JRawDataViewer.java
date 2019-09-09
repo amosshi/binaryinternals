@@ -32,28 +32,28 @@ public final class JRawDataViewer extends DataViewer {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.Start());
+        sb.append(HTMLKit.start());
 
         final int dataLength = data.length;
         int breakCounter = 0;
         for (int i = 0; i < dataLength; i++) {
-            sb.append(HTMLKit.Space());
+            sb.append(HTMLKit.space());
             if (this.getSelectedLength() > 0
                     && i >= this.getSelectedStartIndex()
                     && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
-                sb.append(HTMLKit.Span(String.format("%02X", data[i]), HTMLKit.FONT_COLOR_ORANGE));
+                sb.append(HTMLKit.span(String.format("%02X", data[i]), HTMLKit.FONT_COLOR_ORANGE));
             } else {
-                sb.append(HTMLKit.Span(String.format("%02X", data[i])));
+                sb.append(HTMLKit.span(String.format("%02X", data[i])));
             }
             breakCounter++;
 
             if (breakCounter > JBinaryViewer.ROW_ITEM_MAX_INDEX) {
-                sb.append(HTMLKit.NewLine());
+                sb.append(HTMLKit.newLine());
                 breakCounter = 0;
             }
         }
 
-        sb.append(HTMLKit.End());
+        sb.append(HTMLKit.end());
         this.setText(sb.toString());
     }
 }

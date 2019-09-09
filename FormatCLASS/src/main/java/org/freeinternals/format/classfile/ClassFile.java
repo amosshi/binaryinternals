@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.format.FileFormatException;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
@@ -369,7 +369,7 @@ public class ClassFile {
      * Get the text of {@link #this_class}, which is the class name.
      *
      * @return Corresponding text of {@link #this_class}
-     * @throws org.freeinternals.format.FileFormatException Invalid
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
      * {@link #constant_pool} item found
      */
     public String getThisClassName() throws FileFormatException {
@@ -380,7 +380,7 @@ public class ClassFile {
      * Get the text of {@link #super_class}, which is the super class name.
      *
      * @return Corresponding text of {@link #super_class}
-     * @throws org.freeinternals.format.FileFormatException Invalid
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
      * {@link #constant_pool} item found
      */
     public String getSuperClassName() throws FileFormatException {
@@ -399,7 +399,7 @@ public class ClassFile {
      *
      * @param cpIndex {@link #constant_pool} item index
      * @return Get <code>CONSTANT_Class_info</code> name at <code>cpIndex</code>
-     * @throws org.freeinternals.format.FileFormatException Invalid
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
      * {@link #constant_pool} item found
      */
     public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
@@ -422,7 +422,7 @@ public class ClassFile {
      * @param cpIndex Constant Pool object Index for
      * <code>CONSTANT_Utf8_info</code>
      * @return The UTF-8 text
-     * @throws org.freeinternals.format.FileFormatException Invalid class file
+     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
      * format
      */
     public String getConstantUtf8Value(final int cpIndex) throws FileFormatException {

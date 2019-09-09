@@ -31,7 +31,7 @@ public final class JAsciiDataViewer extends DataViewer {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.Start());
+        sb.append(HTMLKit.start());
 
         final int dataLength = data.length;
         int breakCounter = 0;
@@ -39,19 +39,19 @@ public final class JAsciiDataViewer extends DataViewer {
             if (this.getSelectedLength() > 0
                     && i >= this.getSelectedStartIndex()
                     && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
-                sb.append(HTMLKit.Span(HTMLKit.getByteText(data[i]), HTMLKit.FONT_COLOR_YELLOW));
+                sb.append(HTMLKit.span(HTMLKit.getByteText(data[i]), HTMLKit.FONT_COLOR_YELLOW));
             } else {
-                sb.append(HTMLKit.Span(HTMLKit.getByteText(data[i])));
+                sb.append(HTMLKit.span(HTMLKit.getByteText(data[i])));
             }
             breakCounter++;
 
             if (breakCounter > JBinaryViewer.ROW_ITEM_MAX_INDEX) {
-                sb.append(HTMLKit.NewLine());
+                sb.append(HTMLKit.newLine());
                 breakCounter = 0;
             }
         }
 
-        sb.append(HTMLKit.End());
+        sb.append(HTMLKit.end());
         this.setText(sb.toString());
     }
 }

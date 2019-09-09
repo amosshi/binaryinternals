@@ -4,7 +4,7 @@
  * Copyright 2011, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.format;
+package org.freeinternals.commonlib.core;
 
 /**
  *
@@ -26,7 +26,7 @@ public class FileFormatException extends Exception {
      * specified detail message.
      * @param msg the detail message.
      */
-    public FileFormatException(String msg) {
+    public FileFormatException(final String msg) {
         super(msg);
     }
 }
