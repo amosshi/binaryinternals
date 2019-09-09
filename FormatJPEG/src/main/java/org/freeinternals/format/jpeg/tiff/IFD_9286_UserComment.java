@@ -65,7 +65,7 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
                 super.tiff_StartPos + super.ifd_value_offset,
                 super.data_size,
                 this.getTagName(),
-                UITool.getShortcutIcon());
+                UITool.getShortcutIcon(), null);
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9286_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D));
         parentNode.add(node = new DefaultMutableTreeNode(comp));

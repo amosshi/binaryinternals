@@ -7,57 +7,41 @@
 package org.freeinternals.commonlib.ui.binviewer;
 
 import org.freeinternals.commonlib.ui.HTMLKit;
-import javax.swing.JTextPane;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 
 /**
+ * Display binary data as ASCII text.
  *
  * @author Amos Shi
  */
-public class JAsciiDataViewer extends JTextPane {
+public final class JAsciiDataViewer extends DataViewer {
 
     private static final long serialVersionUID = 4876543219876500004L;
+    /**
+     * Width of the ASCII data viewer section.
+     */
     public static final int WIDTH_VALUE = 231;
-    private byte[] Data = null;
-    private int selectedStartIndex = 0;
-    private int selectedLength = 0;
 
-    public JAsciiDataViewer() {
-        super();
-        this.setEditable(false);
-        this.setBorder(null);
-        this.setContentType("text/html");
-    }
-
-    public void setData(final byte[] data) {
-        this.Data = data;
-        this.updateContent();
-    }
-
-    public void setSelection(final int startIndex, final int length) {
-        this.selectedStartIndex = startIndex;
-        this.selectedLength = length;
-        this.updateContent();
-    }
-
-    private void updateContent() {
+    @Override
+    protected void updateContent() {
         this.setText(null);
-        if (this.Data == null) {
+        byte[] data = super.getData();
+        if (data == null) {
             return;
         }
 
-        StringBuilder sb = new StringBuilder(4096);
+        StringBuilder sb = new StringBuilder();
         sb.append(HTMLKit.Start());
 
-        final int dataLength = this.Data.length;
+        final int dataLength = data.length;
         int breakCounter = 0;
         for (int i = 0; i < dataLength; i++) {
-            if (this.selectedLength > 0
-                    && i >= this.selectedStartIndex
-                    && i < this.selectedStartIndex + this.selectedLength) {
-                sb.append(HTMLKit.Span(HTMLKit.getByteText(this.Data[i]), HTMLKit.FONT_COLOR_YELLOW));
+            if (this.getSelectedLength() > 0
+                    && i >= this.getSelectedStartIndex()
+                    && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
+                sb.append(HTMLKit.Span(HTMLKit.getByteText(data[i]), HTMLKit.FONT_COLOR_YELLOW));
             } else {
-                sb.append(HTMLKit.Span(HTMLKit.getByteText(this.Data[i])));
+                sb.append(HTMLKit.Span(HTMLKit.getByteText(data[i])));
             }
             breakCounter++;
 

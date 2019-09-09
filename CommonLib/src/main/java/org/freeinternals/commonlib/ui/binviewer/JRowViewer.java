@@ -12,14 +12,21 @@ import javax.swing.JTextPane;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 
 /**
+ * Display rows of binary data.
  *
  * @author Amos Shi
  */
 public class JRowViewer extends JTextPane {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    /**
+     * Width of the row viewer.
+     */
     public static final int WIDTH_VALUE = 110;
 
+    /**
+     * Constructor.
+     */
     public JRowViewer() {
         super();
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -28,6 +35,13 @@ public class JRowViewer extends JTextPane {
         this.setContentType("text/html");
     }
 
+    /**
+     * Set revised Binary data.
+     *
+     * @param rowStart  Start row to be displayed
+     * @param rowCount  Number of rows to be displayed
+     * @param rowMax    Max row
+     */
     public void setData(final int rowStart, final int rowCount, final int rowMax) {
 
         // Update contents
@@ -39,7 +53,7 @@ public class JRowViewer extends JTextPane {
             return;
         }
 
-        StringBuilder sb = new StringBuilder(1024);
+        StringBuilder sb = new StringBuilder();
         sb.append(HTMLKit.Start());
 
         int rowValue = rowStart * JBinaryViewer.ROW_ITEM_MAX;

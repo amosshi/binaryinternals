@@ -11,6 +11,9 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -24,19 +27,28 @@ public class JLabelHyperLink extends JLabel {
 
     private static final long serialVersionUID = 4876543219876500000L;
 
+    /**
+     * Text of the label.
+     */
     private final String text;
+    /**
+     * Target URL of the label.
+     */
     private final String url;
+    /**
+     * Flag indicates whether current JVM support browser or not.
+     */
     private boolean isSupported;
 
     /**
      * Create a new Hyper Link enabled JLabel.
      *
-     * @param text Text of the label
-     * @param url Target URL
+     * @param txt Text of the label
+     * @param link Target Link URL
      */
-    public JLabelHyperLink(final String text, final String url) {
-        this.text = text;
-        this.url = url;
+    public JLabelHyperLink(final String txt, final String link) {
+        this.text = txt;
+        this.url = link;
 
         try {
             this.isSupported = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
@@ -63,9 +75,8 @@ public class JLabelHyperLink extends JLabel {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(
-                            new java.net.URI(JLabelHyperLink.this.url));
-                } catch (Exception ex) {
+                    Desktop.getDesktop().browse(new URI(JLabelHyperLink.this.url));
+                } catch (IOException | URISyntaxException ex) {
                     Logger.getLogger(JLabelHyperLink.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

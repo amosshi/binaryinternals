@@ -76,7 +76,7 @@ public class UITool {
     }
     
 
-    public static void showPopup(JFrame frame, JPanel panel, String title) {
+    public static void showPopup(final JFrame frame, final JPanel panel, final String title) {
         if (frame == null || panel == null) {
             return;
         }

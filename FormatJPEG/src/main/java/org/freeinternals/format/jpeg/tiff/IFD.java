@@ -201,7 +201,7 @@ public class IFD extends FileComponent {
                     this.tiff_StartPos + this.ifd_value_offset,
                     this.ifd_count * IFDType.getTypeLength(this.ifd_type),
                     "data",
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null);
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

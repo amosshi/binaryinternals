@@ -84,7 +84,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     8,
                     String.format(ShortText.getString(ShortText.KEY_srational_n), i),
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null);
             comp.setDescription(description);
             node = new DefaultMutableTreeNode(comp);
             parentNode.add(node);
@@ -93,7 +93,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_numerator_n), this.value[0].numerator),
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Numerator));
             node.add(new DefaultMutableTreeNode(comp));
 
@@ -101,7 +101,7 @@ public class IFD_SRATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8 + 4,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_denominator_n), this.value[0].denominator),
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Denominator));
             node.add(new DefaultMutableTreeNode(comp));
         }

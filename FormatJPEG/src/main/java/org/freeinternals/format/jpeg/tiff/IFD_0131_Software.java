@@ -52,7 +52,7 @@ public class IFD_0131_Software extends IFD_ASCII {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     String.format("Software: %s", this.value),
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null;
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0131_Description));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

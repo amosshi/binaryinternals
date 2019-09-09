@@ -10,52 +10,76 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 
 /**
+ * Tree node for a file component.
  *
  * @author Amos Shi
  */
-public class JTreeNodeFileComponent {
+public final class JTreeNodeFileComponent {
 
+    /**
+     * Binary data start position for current tree node.
+     */
     private final int startPos;
+    /**
+     * Binary data length for current tree node.
+     */
     private final int length;
+    /**
+     * Tree node text.
+     */
     private final String text;
 
+    /**
+     * Icon for current tree node.
+     */
     private Icon icon;
+    /**
+     * Description text for current tree node.
+     */
     private String description;
+    /**
+     * Detailed panel for current tree node.
+     */
     private JPanel panelDetail = null;
-    private boolean isDetailAvailable = false;
 
-    public JTreeNodeFileComponent(final int startPos, final int length, final String text) {
-        if (startPos < 0) {
-            throw new IllegalArgumentException("Start position cannot be less than zero; it is '" + startPos + "'.");
+    /**
+     * Constructor.
+     *
+     * @param nodeStartPos Value for {@link #startPos}
+     * @param nodeLength Value for {@link #length}
+     * @param nodeText Value for {@link #text}
+     */
+    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText) {
+        if (nodeStartPos < 0) {
+            throw new IllegalArgumentException("Start position cannot be less than zero; it is '" + nodeStartPos + "'.");
         }
 
-        if (length < 0) {
-            throw new IllegalArgumentException("Length cannot be less than zero; it is '" + length + "'.");
+        if (nodeLength < 0) {
+            throw new IllegalArgumentException("Length cannot be less than zero; it is '" + nodeLength + "'.");
         }
 
-        if ((text == null) || (text.length() == 0)) {
+        if ((nodeText == null) || (nodeText.length() == 0)) {
             throw new IllegalArgumentException("Text cannot be null or empty.");
         }
 
-        this.startPos = startPos;
-        this.length = length;
-        this.text = text;
+        this.startPos = nodeStartPos;
+        this.length = nodeLength;
+        this.text = nodeText;
     }
 
-    public JTreeNodeFileComponent(final int startPos, final int length, final String text, Icon icon) {
-        this(startPos, length, text);
-        this.icon = icon;
-    }
-
-    public JTreeNodeFileComponent(final int startPos, final int length, final String text, final String desc) {
-        this(startPos, length, text);
+    /**
+     * Constructor.
+     *
+     * @param nodeStartPos Value for {@link #startPos}
+     * @param nodeLength Value for {@link #length}
+     * @param nodeText Value for {@link #text}
+     * @param nodeIcon Value for {@link #icon}, could be null
+     * @param desc Value for {@link #description}, could be null
+     */
+    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icon nodeIcon, final String desc) {
+        this(nodeStartPos, nodeLength, nodeText);
         this.description = desc;
-    }
-
-    public JTreeNodeFileComponent(final int startPos, final int length, final String text, final String desc, Icon icon) {
-        this(startPos, length, text);
-        this.description = desc;
-        this.icon = icon;
+        this.icon = nodeIcon;
     }
 
     @Override
@@ -63,49 +87,94 @@ public class JTreeNodeFileComponent {
         return this.text;
     }
 
+    /**
+     * Getter for {@link #startPos}.
+     *
+     * @return {@link #startPos} value
+     */
     public int getStartPos() {
         return this.startPos;
     }
 
+    /**
+     * Getter for {@link #length}.
+     *
+     * @return {@link #length} value
+     */
     public int getLength() {
         return this.length;
     }
-    
+
     /**
-     * Get the last position of current node plus 1, which equals to the first position of the next node.
-     * The value is ({@link #startPos} + {@link #length}).
-     * 
+     * Get the last position of current node plus 1, which equals to the first
+     * position of the next node. The value is
+     * ({@link #startPos} + {@link #length}).
+     *
      * @return Last position plus 1
      */
-    public int getLastPosPlus1(){
+    public int getLastPosPlus1() {
         return this.startPos + this.length;
     }
 
+    /**
+     * Getter for {@link #text}.
+     *
+     * @return {@link #text} value
+     */
     public String getText() {
         return this.text;
     }
 
+    /**
+     * Getter for {@link #icon}.
+     *
+     * @return {@link #icon} value
+     */
     public Icon getIcon() {
         return this.icon;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    /**
+     * Setter for {@link #description}.
+     *
+     * @param d Value for {@link #description}
+     */
+    public void setDescription(final String d) {
+        this.description = d;
     }
 
+    /**
+     * Getter for {@link #description}.
+     *
+     * @return {@link #description} value
+     */
     public String getDescription() {
         return this.description;
     }
 
-    public void setDetailPanel(JPanel p) {
+    /**
+     * Setter for {@link #panelDetail}.
+     *
+     * @param p Value for {@link #panelDetail}
+     */
+    public void setDetailPanel(final JPanel p) {
         this.panelDetail = p;
-        this.isDetailAvailable = true;
     }
 
+    /**
+     * Indicates whether we have a detailed panel {@link #panelDetail}.
+     *
+     * @return true if {@link #panelDetail} is not null, else false
+     */
     public boolean isDetailAvailable() {
-        return this.isDetailAvailable;
+        return this.panelDetail != null;
     }
 
+    /**
+     * Getter for {@link #panelDetail}.
+     *
+     * @return {@link #panelDetail} value
+     */
     public JPanel getDetailPanel() {
         return this.panelDetail;
     }

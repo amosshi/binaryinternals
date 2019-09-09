@@ -103,7 +103,7 @@ public class IFD_SHORT extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     super.getTagName(),
-                    UITool.getShortcutIcon());
+                    UITool.getShortcutIcon(), null);
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         }
