@@ -18,10 +18,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.xmltree.XMLTreeTable;
 import org.freeinternals.commonlib.ui.xmltree.XMLTreeTableModel;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -38,9 +41,7 @@ public class JXMLViewer extends JPanel {
         try {
             XMLTreeTable treeTable = new XMLTreeTable(new XMLTreeTableModel(new InputSource(xml)));
             this.tabbedPane.addTab("XML View", new JScrollPaneTreeTable(treeTable));
-        } catch (Exception ex) {
-            //Logger.getLogger(JXMLViewer.class.getName()).log(Level.SEVERE, null, ex);
-
+        } catch (ParserConfigurationException | SAXException | TransformerException ex) {
             JPanel panel = new JPanel();
             panel.setLayout(new BorderLayout());
 
@@ -83,16 +84,16 @@ public class JXMLViewer extends JPanel {
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")
-    class JScrollPaneTreeTable extends JScrollPane {
+    final class JScrollPaneTreeTable extends JScrollPane {
 
         private static final long serialVersionUID = 4876543219876500005L;
 
-        private JScrollPaneTreeTable(Component component) {
+        private JScrollPaneTreeTable(final Component component) {
             super(component);
         }
 
         @Override
-        public void setColumnHeaderView(Component view) {
+        public void setColumnHeaderView(final Component view) {
         }
     }
 }

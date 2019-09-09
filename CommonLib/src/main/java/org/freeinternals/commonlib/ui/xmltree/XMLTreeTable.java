@@ -9,33 +9,37 @@ import org.freeinternals.commonlib.ui.jtreetable.JTreeTable;
 import org.freeinternals.commonlib.ui.jtreetable.TreeTableModel;
 
 /**
- * There are some issues in JTreeTable from Sun's Article.
- * To fix them, I sub-classed it.
- * 
- * <p>
- * A little change may be done on formatting, annotation, java doc, etc. 
- * The class name is <code>XMLTreeTable</code> originally in the link bellow.
- * </p>
+ * There are some issues in JTreeTable from Sun's Article. To fix them, I
+ * sub-classed it.
+ *
+ * Created by <code>Santhosh Kumar T</code>. Miner change may be done on
+ * formatting, annotation, java doc, etc, for check style.
  *
  * @author Santhosh Kumar T - santhosh@in.fiorano.com
- * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer for Swing</a>
+ * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer
+ * for Swing</a>
  */
-public class XMLTreeTable extends JTreeTable {
+public final class XMLTreeTable extends JTreeTable {
 
     private static final long serialVersionUID = 4876543219876500005L;
 
+    /**
+     * Constructor.
+     *
+     * @param treeTableModel Tree Table Model
+     */
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public XMLTreeTable(TreeTableModel treeTableModel) {
+    public XMLTreeTable(final TreeTableModel treeTableModel) {
         super(treeTableModel);
         setShowGrid(true);
-        setGridColor(new Color(234, 234, 234));
+        setGridColor(Color.BLUE);
         setIntercellSpacing(new Dimension(1, 1));
         new TableColumnResizer(this);
 
         this.initTree();
     }
 
-    private void initTree(){
+    private void initTree() {
         if (super.tree == null) {
             return;
         }
@@ -56,7 +60,7 @@ public class XMLTreeTable extends JTreeTable {
     }
 
     @Override
-    public boolean editCellAt(int row, int column, EventObject e) {
+    public boolean editCellAt(final int row, final int column, final EventObject e) {
         if (e instanceof MouseEvent) {
             MouseEvent me = (MouseEvent) e;
             // If the modifiers are not 0 (or the left mouse button),
@@ -86,7 +90,9 @@ public class XMLTreeTable extends JTreeTable {
     }
 
     /**
-     * Override to make the height of scroll match viewpost height if smaller.
+     * Override to make the height of scroll match view post height if smaller.
+     *
+     * @return boolean
      */
     @Override
     public boolean getScrollableTracksViewportHeight() {
@@ -95,13 +101,15 @@ public class XMLTreeTable extends JTreeTable {
 
     /**
      * Mouse press intended for resize shouldn't change row/col/cell selection.
-     * @param row
-     * @param column
+     *
+     * @param row row
+     * @param column column
+     * @param toggle toggle
+     * @param extend extend
      */
-    // 
     @Override
-    public void changeSelection(int row, int column, boolean toggle, boolean extend) {
-        if(getCursor()==TableColumnResizer.resizeCursor) {
+    public void changeSelection(final int row, final int column, final boolean toggle, final boolean extend) {
+        if (getCursor() == TableColumnResizer.RESIZE_CURSOR) {
             return;
         }
         super.changeSelection(row, column, toggle, extend);

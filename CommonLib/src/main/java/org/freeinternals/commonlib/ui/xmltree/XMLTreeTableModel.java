@@ -18,26 +18,45 @@ import org.xml.sax.SAXException;
  * </p>
  *
  * @author Santhosh Kumar T - santhosh@in.fiorano.com
- * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer for Swing</a>
+ * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer
+ * for Swing</a>
  */
-public class XMLTreeTableModel implements TreeTableModel {
+public final class XMLTreeTableModel implements TreeTableModel {
 
+    /**
+     * DOM Node.
+     */
     private Node node;
 
-    public XMLTreeTableModel(InputSource is) 
-            throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException {
+    /**
+     * Constructor.
+     *
+     * @param is Input Source
+     * @throws ParserConfigurationException Error
+     * @throws SAXException Error
+     * @throws TransformerConfigurationException Error
+     * @throws TransformerException Error
+     */
+    public XMLTreeTableModel(final InputSource is) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException {
         this(DOMUtil.createDocument(is).getDocumentElement());
     }
 
-    public XMLTreeTableModel(Node node) {
-        this.node = node;
+    /**
+     * Constructor.
+     *
+     * @param n Value for {@link #node}
+     */
+    public XMLTreeTableModel(final Node n) {
+        this.node = n;
     }
 
+    @Override
     public Object getRoot() {
         return node;
     }
 
-    public Object getChild(Object parent, int index) {
+    @Override
+    public Object getChild(final Object parent, final int index) {
         Node n = (Node) parent;
         NamedNodeMap attrs = n.getAttributes();
         int attrCount = attrs != null ? attrs.getLength() : 0;
@@ -48,7 +67,8 @@ public class XMLTreeTableModel implements TreeTableModel {
         return children.item(index - attrCount);
     }
 
-    public int getChildCount(Object parent) {
+    @Override
+    public int getChildCount(final Object parent) {
         Node n = (Node) parent;
         NamedNodeMap attrs = n.getAttributes();
         int attrCount = attrs != null ? attrs.getLength() : 0;
@@ -61,11 +81,13 @@ public class XMLTreeTableModel implements TreeTableModel {
         }
     }
 
-    public boolean isLeaf(Object node) {
-        return getChildCount(node) == 0;
+    @Override
+    public boolean isLeaf(final Object nodeObject) {
+        return getChildCount(nodeObject) == 0;
     }
 
-    public int getIndexOfChild(Object parent, Object child) {
+    @Override
+    public int getIndexOfChild(final Object parent, final Object child) {
         Node n = (Node) parent;
         Node childNode = (Node) child;
 
@@ -89,35 +111,42 @@ public class XMLTreeTableModel implements TreeTableModel {
         throw new RuntimeException("this should never happen!");
     }
 
-    public void addTreeModelListener(TreeModelListener listener) {
+    @Override
+    public void addTreeModelListener(final TreeModelListener listener) {
         // not editable
     }
 
-    public void removeTreeModelListener(TreeModelListener listener) {
+    @Override
+    public void removeTreeModelListener(final TreeModelListener listener) {
         // not editable
     }
 
-    public void valueForPathChanged(TreePath path, Object newValue) {
+    @Override
+    public void valueForPathChanged(final TreePath path, final Object newValue) {
         // not editable
     }
 
+    @Override
     public int getColumnCount() {
         return 2;
     }
 
-    public String getColumnName(int column) {
+    @Override
+    public String getColumnName(final int column) {
         return column == 0 ? "Node" : "Value";
     }
 
-    public Class getColumnClass(int column) {
+    @Override
+    public Class getColumnClass(final int column) {
         return column == 0 ? TreeTableModel.class : String.class;
     }
 
-    public Object getValueAt(Object node, int column) {
+    @Override
+    public Object getValueAt(final Object nodeObject, final int column) {
         if (column == 0) {
-            return node;
+            return nodeObject;
         } else {
-            Node n = (Node) node;
+            Node n = (Node) nodeObject;
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 NodeList children = n.getChildNodes();
                 int childCount = children != null ? children.getLength() : 0;
@@ -129,11 +158,13 @@ public class XMLTreeTableModel implements TreeTableModel {
         }
     }
 
-    public boolean isCellEditable(Object node, int column) {
+    @Override
+    public boolean isCellEditable(final Object nodeObject, final int column) {
         return false;
     }
 
-    public void setValueAt(Object aValue, Object node, int column) {
+    @Override
+    public void setValueAt(final Object aValue, final Object nodeObject, final int column) {
         // not editable
     }
 }

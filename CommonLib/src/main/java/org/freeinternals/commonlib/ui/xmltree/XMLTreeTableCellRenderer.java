@@ -8,7 +8,7 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 
 /**
- * 
+ *
  * <p>
  * A little change may be done on formatting, annotation, java doc, etc.
  * </p>
@@ -17,12 +17,17 @@ import org.w3c.dom.Node;
  * @see javax.swing.plaf.basic.BasicTableHeaderUI.MouseInputHandler
  * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer for Swing</a>
  */
-public class XMLTreeTableCellRenderer extends DefaultTreeCellRenderer {
+public final class XMLTreeTableCellRenderer extends DefaultTreeCellRenderer {
 
     private static final long serialVersionUID = 4876543219876500005L;
-    Color elementColor = new Color(0, 0, 128);
-    Color attributeColor = new Color(0, 128, 0);
+    /** Color for element. */
+    private final Color elementColor = Color.BLUE;
+    /** Color for attribute. */
+    private final Color attributeColor = Color.GREEN;
 
+    /**
+     * Constructor.
+     */
     public XMLTreeTableCellRenderer() {
         this.setOpenIcon(null);
         this.setClosedIcon(null);
@@ -30,29 +35,30 @@ public class XMLTreeTableCellRenderer extends DefaultTreeCellRenderer {
     }
 
     @Override
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel, final boolean expanded, final boolean leaf, final int row, final boolean hasFocus) {
+        Object newValue;
         Node node = (Node) value;
         switch (node.getNodeType()) {
             case Node.ELEMENT_NODE:
-                value = '<' + node.getNodeName() + '>';
+                newValue = '<' + node.getNodeName() + '>';
                 break;
             case Node.ATTRIBUTE_NODE:
-                value = '@' + node.getNodeName();
+                newValue = '@' + node.getNodeName();
                 break;
             case Node.TEXT_NODE:
-                value = "# text";
+                newValue = "# text";
                 break;
             case Node.COMMENT_NODE:
-                value = "# comment";
+                newValue = "# comment";
                 break;
             case Node.DOCUMENT_TYPE_NODE:
                 DocumentType dtype = (DocumentType) node;
-                value = "# doctype";
+                newValue = "# doctype";
                 break;
             default:
-                value = node.getNodeName();
+                newValue = node.getNodeName();
         }
-        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+        super.getTreeCellRendererComponent(tree, newValue, sel, expanded, leaf, row, hasFocus);
         if (!selected) {
             switch (node.getNodeType()) {
                 case Node.ELEMENT_NODE:
@@ -60,6 +66,8 @@ public class XMLTreeTableCellRenderer extends DefaultTreeCellRenderer {
                     break;
                 case Node.ATTRIBUTE_NODE:
                     setForeground(attributeColor);
+                    break;
+                default:
                     break;
             }
         }

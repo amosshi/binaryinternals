@@ -7,9 +7,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * <p>
- * A little change may be done on formatting, annotation, java doc, etc.
- * </p>
+ * Created by <code>Santhosh Kumar T</code>. Miner change may be done on
+ * formatting, annotation, java doc, etc, for check style.
  *
  * @author Santhosh Kumar T - santhosh@in.fiorano.com
  * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer

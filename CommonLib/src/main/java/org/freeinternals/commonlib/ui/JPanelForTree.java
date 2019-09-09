@@ -30,40 +30,65 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * @author Amos Shi
  */
-public class JPanelForTree extends JPanel {
+public final class JPanelForTree extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    /**
+     * Default editor size.
+     */
+    private static final Dimension EDITOR_DEFAULT_SIZE = new Dimension(100, 120);
+    /**
+     * Top level window.
+     */
     private final JFrame topLevelFrame;
-    private JPanel details_panel;
-    private String details_title;
-    public final JTree tree;
-    public final JToolBar toolbar;
-    public final JButton toolbarbtn_Details;
+    /**
+     * Details panel.
+     */
+    private JPanel detailsPanel;
+    /**
+     * Title for details pane.
+     */
+    private String detailsTitle;
+    /**
+     * Tree component for the file components.
+     */
+    private final JTree tree;
+    /**
+     * Toolbar on the tree.
+     */
+    private final JToolBar toolbar;
+    /**
+     * Toolbar button for details.
+     */
+    private final JButton toolbarbtnDetails;
+    /**
+     * Editor pane at the right.
+     */
     private JEditorPane editorPaneDescription;
 
     /**
      * Create a panel tool bar to contain a {@code JTree} object.
      *
-     * @param tree The tree to be contained
-     * @param frame 
+     * @param jTree The tree to be contained
+     * @param frame The parent window
      */
-    public JPanelForTree(final JTree tree, final JFrame frame) {
-        if (tree == null) {
+    public JPanelForTree(final JTree jTree, final JFrame frame) {
+        if (jTree == null) {
             throw new IllegalArgumentException("[tree] cannot be null.");
         }
 
-        this.tree = tree;
+        this.tree = jTree;
         this.topLevelFrame = frame;
         this.tree.addTreeSelectionListener(new TreeSelectionListener() {
 
             @Override
             public void valueChanged(final javax.swing.event.TreeSelectionEvent evt) {
-                tree_SelectionChanged(evt);
+                treeSelectionChanged(evt);
             }
         });
 
         this.toolbar = new JToolBar();
-        this.toolbarbtn_Details = new JButton("Details");
+        this.toolbarbtnDetails = new JButton("Details");
         this.initToolbar();
 
         this.layoutComponents();
@@ -72,26 +97,26 @@ public class JPanelForTree extends JPanel {
     private void layoutComponents() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        final JPanel panel_Toolbar = new JPanel();
-        panel_Toolbar.setLayout(new BoxLayout(panel_Toolbar, BoxLayout.X_AXIS));
-        panel_Toolbar.add(this.toolbar);
+        final JPanel panelToolbar = new JPanel();
+        panelToolbar.setLayout(new BoxLayout(panelToolbar, BoxLayout.X_AXIS));
+        panelToolbar.add(this.toolbar);
 
         final Component glue = Box.createGlue();
         glue.setMaximumSize(new Dimension(Short.MAX_VALUE, this.toolbar.getHeight()));
-        panel_Toolbar.add(glue);
+        panelToolbar.add(glue);
 
-        final JPanel panel_toolbar_tree = new JPanel();
-        panel_toolbar_tree.setLayout(new BoxLayout(panel_toolbar_tree, BoxLayout.Y_AXIS));
-        panel_toolbar_tree.add(panel_Toolbar);
-        panel_toolbar_tree.add(new JScrollPane(this.tree));
+        final JPanel panelToolbarTree = new JPanel();
+        panelToolbarTree.setLayout(new BoxLayout(panelToolbarTree, BoxLayout.Y_AXIS));
+        panelToolbarTree.add(panelToolbar);
+        panelToolbarTree.add(new JScrollPane(this.tree));
 
         this.editorPaneDescription = new JEditorPane();
         this.editorPaneDescription.setContentType("text/html");
         this.editorPaneDescription.setEditable(false);
-        this.editorPaneDescription.setPreferredSize(new Dimension(100, 120));
+        this.editorPaneDescription.setPreferredSize(EDITOR_DEFAULT_SIZE);
 
         final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setTopComponent(panel_toolbar_tree);
+        splitPane.setTopComponent(panelToolbarTree);
         splitPane.setBottomComponent(new JScrollPane(this.editorPaneDescription));
         splitPane.setResizeWeight(1.0);
         this.add(splitPane, BorderLayout.CENTER);
@@ -107,7 +132,7 @@ public class JPanelForTree extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                toolbar_ExpandAll();
+                toolbarExpandAll();
             }
         });
         this.toolbar.add(buttonExpandAll);
@@ -118,27 +143,27 @@ public class JPanelForTree extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                toolbar_CollapseAll();
+                toolbarCollapseAll();
             }
         });
         this.toolbar.add(buttonCollapseAll);
 
         // Button: Details
-        this.toolbarbtn_Details.setVisible(false);
-        this.toolbarbtn_Details.addActionListener(new ActionListener() {
+        this.toolbarbtnDetails.setVisible(false);
+        this.toolbarbtnDetails.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                toolbar_ShowDetails();
+            public void actionPerformed(final ActionEvent e) {
+                toolbarShowDetails();
             }
         });
         //this.toolbar.addSeparator();
-        this.toolbar.add(this.toolbarbtn_Details);
+        this.toolbar.add(this.toolbarbtnDetails);
 
         // Button: Find
         //this.toolbar.add(new JButton("Find"));
     }
 
-    private void toolbar_ExpandAll() {
+    private void toolbarExpandAll() {
         if (this.tree == null) {
             return;
         }
@@ -154,7 +179,7 @@ public class JPanelForTree extends JPanel {
         } while (now > old);
     }
 
-    private void toolbar_CollapseAll() {
+    private void toolbarCollapseAll() {
         if (this.tree == null) {
             return;
         }
@@ -162,16 +187,16 @@ public class JPanelForTree extends JPanel {
         this.tree.collapseRow(0);
     }
 
-    private void toolbar_ShowDetails() {
-        UITool.showPopup(this.topLevelFrame, this.details_panel, this.details_title);
+    private void toolbarShowDetails() {
+        UITool.showPopup(this.topLevelFrame, this.detailsPanel, this.detailsTitle);
     }
 
-    private void tree_SelectionChanged(final TreeSelectionEvent e) {
+    private void treeSelectionChanged(final TreeSelectionEvent e) {
 
         this.editorPaneDescription.setText("");
-        this.toolbarbtn_Details.setVisible(false);
-        this.details_panel = null;
-        this.details_title = null;
+        this.toolbarbtnDetails.setVisible(false);
+        this.detailsPanel = null;
+        this.detailsTitle = null;
 
         Object obj = e.getPath().getLastPathComponent();
         if (obj instanceof DefaultMutableTreeNode) {
@@ -184,9 +209,9 @@ public class JPanelForTree extends JPanel {
                     this.editorPaneDescription.setText(s);
                 }
                 if (fileComp.isDetailAvailable()) {
-                    this.toolbarbtn_Details.setVisible(true);
-                    this.details_panel = fileComp.getDetailPanel();
-                    this.details_title = fileComp.getText();
+                    this.toolbarbtnDetails.setVisible(true);
+                    this.detailsPanel = fileComp.getDetailPanel();
+                    this.detailsTitle = fileComp.getText();
                 }
             }
         }

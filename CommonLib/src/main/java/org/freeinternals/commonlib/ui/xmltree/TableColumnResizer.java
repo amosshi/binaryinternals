@@ -16,38 +16,59 @@ import javax.swing.table.TableColumn;
  * Allows table columns to be resized not only using the header but from any
  * rows. Based on the BasicTableHeaderUI.MouseInputHandler code.
  *
- * <p>
- * A little change may be done on formatting, annotation, java doc, etc.
- * </p>
- * 
+ * Created by <code>Santhosh Kumar T</code>. Miner change may be done on
+ * formatting, annotation, java doc, etc, for check style.
+ *
  * @author Santhosh Kumar T - santhosh@in.fiorano.com
  * @see javax.swing.plaf.basic.BasicTableHeaderUI.MouseInputHandler
- * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer for Swing</a>
+ * @see <a href="http://www.javalobby.org/java/forums/t19666.html">XML Viewer
+ * for Swing</a>
  */
-public class TableColumnResizer extends MouseInputAdapter {
+public final class TableColumnResizer extends MouseInputAdapter {
 
-    public static final Cursor resizeCursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+    /**
+     * Mouse cursor for resize.
+     */
+    public static final Cursor RESIZE_CURSOR = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+    /**
+     * Constant value -3.
+     */
+    private static final int MINUS_3 = -3;
+    /**
+     * Mouse X offset.
+     */
     private int mouseXOffset;
-    private Cursor otherCursor = resizeCursor;
-    private JTable table;
+    /**
+     * Mouse cursor for others.
+     */
+    private Cursor otherCursor = RESIZE_CURSOR;
+    /**
+     * Swing table.
+     */
+    private final JTable table;
 
-    public TableColumnResizer(JTable table) {
-        this.table = table;
+    /**
+     * Constructor.
+     *
+     * @param t Swing table
+     */
+    public TableColumnResizer(final JTable t) {
+        this.table = t;
         table.addMouseListener(this);
         table.addMouseMotionListener(this);
     }
 
-    private boolean canResize(TableColumn column) {
+    private boolean canResize(final TableColumn column) {
         return column != null
                 && table.getTableHeader().getResizingAllowed()
                 && column.getResizable();
     }
 
-    private TableColumn getResizingColumn(Point p) {
+    private TableColumn getResizingColumn(final Point p) {
         return getResizingColumn(p, table.columnAtPoint(p));
     }
 
-    private TableColumn getResizingColumn(Point p, int column) {
+    private TableColumn getResizingColumn(final Point p, final int column) {
         if (column == -1) {
             return null;
         }
@@ -56,7 +77,7 @@ public class TableColumnResizer extends MouseInputAdapter {
             return null;
         }
         Rectangle r = table.getCellRect(row, column, true);
-        r.grow(-3, 0);
+        r.grow(MINUS_3, 0);
         if (r.contains(p)) {
             return null;
         }
@@ -76,7 +97,7 @@ public class TableColumnResizer extends MouseInputAdapter {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
         table.getTableHeader().setDraggedColumn(null);
         table.getTableHeader().setResizingColumn(null);
         table.getTableHeader().setDraggedDistance(0);
@@ -110,21 +131,21 @@ public class TableColumnResizer extends MouseInputAdapter {
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
         if (canResize(getResizingColumn(e.getPoint()))
-                != (table.getCursor() == resizeCursor)) {
+                != (table.getCursor() == RESIZE_CURSOR)) {
             swapCursor();
         }
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
         int mouseX = e.getX();
 
         TableColumn resizingColumn = table.getTableHeader().getResizingColumn();
 
-        boolean headerLeftToRight =
-                table.getTableHeader().getComponentOrientation().isLeftToRight();
+        boolean headerLeftToRight
+                = table.getTableHeader().getComponentOrientation().isLeftToRight();
 
         if (resizingColumn != null) {
             int oldWidth = resizingColumn.getWidth();
@@ -136,9 +157,9 @@ public class TableColumnResizer extends MouseInputAdapter {
             }
             resizingColumn.setWidth(newWidth);
 
-            Container container;
+            Container container = table.getTableHeader().getParent().getParent();
             if ((table.getTableHeader().getParent() == null)
-                    || ((container = table.getTableHeader().getParent().getParent()) == null)
+                    || (container == null)
                     || !(container instanceof JScrollPane)) {
                 return;
             }
@@ -163,8 +184,8 @@ public class TableColumnResizer extends MouseInputAdapter {
                     if ((newHeaderWidth >= viewportWidth)
                             && (table.getAutoResizeMode() == JTable.AUTO_RESIZE_OFF)) {
                         Point p = viewport.getViewPosition();
-                        p.x =
-                                Math.max(0, Math.min(newHeaderWidth - viewportWidth, p.x + diff));
+                        p.x
+                                = Math.max(0, Math.min(newHeaderWidth - viewportWidth, p.x + diff));
                         viewport.setViewPosition(p);
 
                         /* Update the original X offset value. */
@@ -176,7 +197,7 @@ public class TableColumnResizer extends MouseInputAdapter {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
         table.getTableHeader().setResizingColumn(null);
         table.getTableHeader().setDraggedColumn(null);
     }
