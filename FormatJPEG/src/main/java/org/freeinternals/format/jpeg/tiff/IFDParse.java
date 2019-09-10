@@ -226,7 +226,7 @@ public class IFDParse {
         if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
             return pDIS.readUnsignedShort();
         } else {
-            return pDIS.readUnsignedShort_LittleEndian();
+            return pDIS.readUnsignedShortInLittleEndian();
         }
     }
 
@@ -234,7 +234,7 @@ public class IFDParse {
         if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
             return pDIS.readInt();
         } else {
-            return pDIS.readInt_LittleEndian();
+            return pDIS.readIntInLittleEndian();
         }
     }
 }

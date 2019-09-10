@@ -50,10 +50,10 @@ public class BitmapFileHeader extends FileComponent implements GenerateTreeNode 
         this.length = LENGTH;
 
         this.magic = input.readASCII(2);
-        this.fileSize = input.readUnsignedInt_LittleEndian();
+        this.fileSize = input.readUnsignedIntInLittleEndian();
         input.readFully(this.creator1);
         input.readFully(this.creator2);
-        this.offset = input.readUnsignedInt_LittleEndian();
+        this.offset = input.readUnsignedIntInLittleEndian();
 
         if (this.fileSize != input.getBuf().length) {
             // File size exception

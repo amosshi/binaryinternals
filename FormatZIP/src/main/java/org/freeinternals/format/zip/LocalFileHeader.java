@@ -88,18 +88,18 @@ public class LocalFileHeader extends FileComponent {
         if (BytesTool.isByteArraySame(this.Signature, ZIPFile.LOCAL_FILE_HEADER) == false) {
             throw new FileFormatException("Signature does not match for 'local file header signature'.");
         }
-        this.VersionNeededToExtract = stream.readUnsignedShort_LittleEndian();
+        this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
         stream.read(this.GeneralPurposeBitFlag);
-        this.CompressionMethod = stream.readUnsignedShort_LittleEndian();
-        this.LastModFileTime = stream.readUnsignedShort_LittleEndian();
+        this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
+        this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
         this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
-        this.LastModFileDate = stream.readUnsignedShort_LittleEndian();
+        this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
         this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
         stream.read(this.CRC32);
-        this.CompressedSize = stream.readUnsignedInt_LittleEndian();
-        this.UncompressedSize = stream.readUnsignedInt_LittleEndian();
-        this.FileNameLength = stream.readUnsignedShort_LittleEndian();
-        this.ExtraFieldLength = stream.readUnsignedShort_LittleEndian();
+        this.CompressedSize = stream.readUnsignedIntInLittleEndian();
+        this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
+        this.FileNameLength = stream.readUnsignedShortInLittleEndian();
+        this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
         if (this.FileNameLength > 0) {
             this.FileName = new byte[this.FileNameLength];
             stream.read(this.FileName);

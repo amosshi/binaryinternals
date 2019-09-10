@@ -42,7 +42,7 @@ public interface DataInputEx {
      * @return the signed 16-bit value read.
      * @throws IOException I/O Error
      */
-    short readShort_LittleEndian() throws IOException;
+    short readShortInLittleEndian() throws IOException;
 
     /**
      * Reads two input bytes and returns an <code>int</code> value in the range
@@ -56,7 +56,7 @@ public interface DataInputEx {
      * @return the unsigned 16-bit value read.
      * @throws IOException I/O Error
      */
-    int readUnsignedShort_LittleEndian() throws IOException;
+    int readUnsignedShortInLittleEndian() throws IOException;
 
     /**
      * Reads four input bytes and returns an <code>int</code> value. Let
@@ -72,7 +72,7 @@ public interface DataInputEx {
      * @return the <code>int</code> value read.
      * @exception IOException if an I/O error occurs.
      */
-    int readInt_LittleEndian() throws IOException;
+    int readIntInLittleEndian() throws IOException;
 
     /**
      * Reads four input bytes as unsigned integer and returns a
@@ -90,7 +90,7 @@ public interface DataInputEx {
      * @return the <code>long</code> value read.
      * @throws java.io.IOException I/O Error
      */
-    long readUnsignedInt_LittleEndian() throws IOException;
+    long readUnsignedIntInLittleEndian() throws IOException;
 
     /**
      * Reads eight input bytes and returns a {@code long} value.
@@ -98,7 +98,7 @@ public interface DataInputEx {
      * @return the <code>long</code> value read.
      * @throws java.io.IOException I/O Error
      */
-    long readLong_LittleEndian() throws IOException;
+    long readLongInLittleEndian() throws IOException;
 
     /**
      * Reads eight input bytes and returns a {@code unsigned long} value.
@@ -114,7 +114,7 @@ public interface DataInputEx {
      * @return the <code>unsigned long</code> value read
      * @throws java.io.IOException I/O Error
      */
-    BigInteger readUnsignedLong_LittleEndian() throws IOException;
+    BigInteger readUnsignedLongInLittleEndian() throws IOException;
 
     /**
      * Reads length input bytes as an ASCII string.

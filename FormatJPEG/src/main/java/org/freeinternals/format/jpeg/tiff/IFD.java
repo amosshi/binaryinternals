@@ -145,7 +145,7 @@ public class IFD extends FileComponent {
         if (this.byte_order == TIFFHeader.BYTEORDER_BIGENDIAN) {
             return pDIS.readUnsignedInt();
         } else {
-            return pDIS.readUnsignedInt_LittleEndian();
+            return pDIS.readUnsignedIntInLittleEndian();
         }
     }
 

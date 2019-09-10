@@ -55,9 +55,6 @@ public class PluginManager {
             if (plguinFile.isFile() & plguinFile.getName().toLowerCase().endsWith(".jar")) {
                 try {
                     JarFile jar = new JarFile(plguinFile);
-                    if (jar == null) {
-                        continue;
-                    }
 
                     Manifest mf = jar.getManifest();
                     if (mf == null) {
@@ -86,20 +83,19 @@ public class PluginManager {
         if (cls == null) {
             return;
         }
-        PLUGINS.put(pluginFile.getName(), (PluginDescriptor) cls.newInstance());
+        PLUGINS.put(pluginFile.getName(), (PluginDescriptor) cls.getDeclaredConstructor().newInstance());
     }
 
     public static String getPlugedExtensions(){
         StringBuilder builder = new StringBuilder(16);
         if (!PLUGINS.isEmpty()) {
             builder.append(" - ");
-            for (PluginDescriptor plugin : PLUGINS.values()) {
-                String[] exts = plugin.getExtensions();
+            PLUGINS.values().stream().map((plugin) -> plugin.getExtensions()).forEachOrdered((exts) -> {
                 for (String ext : exts) {
                     builder.append(ext);
                     builder.append(", ");
                 }
-            }
+            });
             builder.append(" ...");
         }
     

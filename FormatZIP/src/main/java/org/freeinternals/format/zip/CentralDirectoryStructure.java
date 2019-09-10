@@ -118,24 +118,24 @@ public class CentralDirectoryStructure extends FileComponent {
             if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
                 throw new FileFormatException("Signature does not match for 'central file header signature'.");
             }
-            this.VersionMadeBy = stream.readUnsignedShort_LittleEndian();
-            this.VersionNeededToExtract = stream.readUnsignedShort_LittleEndian();
+            this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();
+            this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
             stream.read(this.GeneralPurposeBitFlag);
-            this.CompressionMethod = stream.readUnsignedShort_LittleEndian();
-            this.LastModFileTime = stream.readUnsignedShort_LittleEndian();
+            this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
+            this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
             this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
-            this.LastModFileDate = stream.readUnsignedShort_LittleEndian();
+            this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
             this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
             stream.read(this.CRC32);
-            this.CompressedSize = stream.readUnsignedInt_LittleEndian();
-            this.UncompressedSize = stream.readUnsignedInt_LittleEndian();
-            this.FileNameLength = stream.readUnsignedShort_LittleEndian();
-            this.ExtraFieldLength = stream.readUnsignedShort_LittleEndian();
-            this.FileCommentLength = stream.readUnsignedShort_LittleEndian();
-            this.DiskNumberStart = stream.readUnsignedShort_LittleEndian();
+            this.CompressedSize = stream.readUnsignedIntInLittleEndian();
+            this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
+            this.FileNameLength = stream.readUnsignedShortInLittleEndian();
+            this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
+            this.FileCommentLength = stream.readUnsignedShortInLittleEndian();
+            this.DiskNumberStart = stream.readUnsignedShortInLittleEndian();
             stream.read(this.InternalFileAttributes);
             stream.read(this.ExternalFileAttributes);
-            this.RelativeOffsetOfLocalHeader = stream.readUnsignedInt_LittleEndian();
+            this.RelativeOffsetOfLocalHeader = stream.readUnsignedIntInLittleEndian();
             if (this.FileNameLength > 0) {
                 this.FileName = new byte[this.FileNameLength];
                 stream.read(this.FileName);

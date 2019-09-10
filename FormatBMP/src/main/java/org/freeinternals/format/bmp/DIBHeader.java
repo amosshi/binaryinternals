@@ -26,7 +26,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
     DIBHeader(final PosDataInputStream input) throws IOException {
         this.startPos = input.getPos();
 
-        this.size = input.readInt_LittleEndian();
+        this.size = input.readIntInLittleEndian();
         this.length = this.size;
         switch (this.size) {
             case 12:
@@ -169,10 +169,10 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
             this.startPos = input.getPos() - 4;
             this.length = SIZE;
 
-            this.Width = input.readUnsignedShort_LittleEndian();
-            this.Height = input.readUnsignedShort_LittleEndian();
-            this.Planes = input.readUnsignedShort_LittleEndian();
-            this.BitCount = input.readUnsignedShort_LittleEndian();
+            this.Width = input.readUnsignedShortInLittleEndian();
+            this.Height = input.readUnsignedShortInLittleEndian();
+            this.Planes = input.readUnsignedShortInLittleEndian();
+            this.BitCount = input.readUnsignedShortInLittleEndian();
         }
 
         public void generateTreeNode(DefaultMutableTreeNode node) {
@@ -248,16 +248,16 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
             this.startPos = input.getPos() - 4;
             this.length = SIZE;
 
-            this.Width = input.readInt_LittleEndian();
-            this.Height = input.readInt_LittleEndian();
-            this.Planes = input.readUnsignedShort_LittleEndian();
-            this.BitCount = input.readUnsignedShort_LittleEndian();
-            this.Compression = input.readInt_LittleEndian();
-            this.SizeImage = input.readUnsignedInt_LittleEndian();
-            this.XPelsPerMeter = input.readInt_LittleEndian();
-            this.YPelsPerMeter = input.readInt_LittleEndian();
-            this.ColorsUsed = input.readUnsignedInt_LittleEndian();
-            this.ColorsImportant = input.readUnsignedInt_LittleEndian();
+            this.Width = input.readIntInLittleEndian();
+            this.Height = input.readIntInLittleEndian();
+            this.Planes = input.readUnsignedShortInLittleEndian();
+            this.BitCount = input.readUnsignedShortInLittleEndian();
+            this.Compression = input.readIntInLittleEndian();
+            this.SizeImage = input.readUnsignedIntInLittleEndian();
+            this.XPelsPerMeter = input.readIntInLittleEndian();
+            this.YPelsPerMeter = input.readIntInLittleEndian();
+            this.ColorsUsed = input.readUnsignedIntInLittleEndian();
+            this.ColorsImportant = input.readUnsignedIntInLittleEndian();
         }
 
         public void generateTreeNode(DefaultMutableTreeNode node) {
@@ -415,14 +415,14 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
             super(input);
             this.length = BITMAPCOREHEADER2.SIZE;
 
-            this.ResUnit = input.readUnsignedShort_LittleEndian();
-            this.Reserved = input.readUnsignedShort_LittleEndian();
-            this.Orientation = input.readUnsignedShort_LittleEndian();
-            this.Halftoning = input.readUnsignedShort_LittleEndian();
-            this.HalftoneSize1 = input.readUnsignedInt_LittleEndian();
-            this.HalftoneSize2 = input.readUnsignedInt_LittleEndian();
-            this.ColorSpace = input.readUnsignedInt_LittleEndian();
-            this.AppData = input.readUnsignedInt_LittleEndian();
+            this.ResUnit = input.readUnsignedShortInLittleEndian();
+            this.Reserved = input.readUnsignedShortInLittleEndian();
+            this.Orientation = input.readUnsignedShortInLittleEndian();
+            this.Halftoning = input.readUnsignedShortInLittleEndian();
+            this.HalftoneSize1 = input.readUnsignedIntInLittleEndian();
+            this.HalftoneSize2 = input.readUnsignedIntInLittleEndian();
+            this.ColorSpace = input.readUnsignedIntInLittleEndian();
+            this.AppData = input.readUnsignedIntInLittleEndian();
         }
 
         @Override
@@ -520,15 +520,15 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
             super(input);
             this.length = BITMAPV4HEADER.SIZE;
 
-            this.RedMask = input.readUnsignedInt_LittleEndian();
-            this.GreenMask = input.readUnsignedInt_LittleEndian();
-            this.BlueMask = input.readUnsignedInt_LittleEndian();
-            this.AlphaMask = input.readUnsignedInt_LittleEndian();
-            this.ColorSpaceType = input.readInt_LittleEndian();
+            this.RedMask = input.readUnsignedIntInLittleEndian();
+            this.GreenMask = input.readUnsignedIntInLittleEndian();
+            this.BlueMask = input.readUnsignedIntInLittleEndian();
+            this.AlphaMask = input.readUnsignedIntInLittleEndian();
+            this.ColorSpaceType = input.readIntInLittleEndian();
             this.Endpoints = new CIEXYZTRIPLE(input);
-            this.GammaRed = input.readUnsignedInt_LittleEndian();
-            this.GammaGreen = input.readUnsignedInt_LittleEndian();
-            this.GammaBlue = input.readUnsignedInt_LittleEndian();
+            this.GammaRed = input.readUnsignedIntInLittleEndian();
+            this.GammaGreen = input.readUnsignedIntInLittleEndian();
+            this.GammaBlue = input.readUnsignedIntInLittleEndian();
         }
 
         /**
@@ -627,10 +627,10 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
             super(input);
             this.length = SIZE;
 
-            this.Intent = input.readUnsignedInt_LittleEndian();
-            this.ICCProfileData = input.readUnsignedInt_LittleEndian();
-            this.ICCProfileSize = input.readUnsignedInt_LittleEndian();
-            this.Reserved = input.readUnsignedInt_LittleEndian();
+            this.Intent = input.readUnsignedIntInLittleEndian();
+            this.ICCProfileData = input.readUnsignedIntInLittleEndian();
+            this.ICCProfileSize = input.readUnsignedIntInLittleEndian();
+            this.Reserved = input.readUnsignedIntInLittleEndian();
         }
 
         @Override
@@ -683,9 +683,9 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
         public final long z;
 
         CIEXYZ(final PosDataInputStream input) throws IOException {
-            this.x = input.readUnsignedInt_LittleEndian();
-            this.y = input.readUnsignedInt_LittleEndian();
-            this.z = input.readUnsignedInt_LittleEndian();
+            this.x = input.readUnsignedIntInLittleEndian();
+            this.y = input.readUnsignedIntInLittleEndian();
+            this.z = input.readUnsignedIntInLittleEndian();
         }
     }
 

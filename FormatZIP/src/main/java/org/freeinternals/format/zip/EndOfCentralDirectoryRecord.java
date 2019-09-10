@@ -56,13 +56,13 @@ public class EndOfCentralDirectoryRecord extends FileComponent {
         if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_END) == false) {
             throw new FileFormatException("Signature does not match for 'end of central directory signature'.");
         }
-        this.DiskNumber = stream.readUnsignedShort_LittleEndian();
-        this.DiskNumberWithSCD = stream.readUnsignedShort_LittleEndian();
-        this.EntryTotalNumberDisk = stream.readUnsignedShort_LittleEndian();
-        this.EntryTotalNumber = stream.readUnsignedShort_LittleEndian();
-        this.CentralDirectorySize = stream.readUnsignedInt_LittleEndian();
-        this.CentralDirectoryOffset = stream.readUnsignedInt_LittleEndian();
-        this.ZipFileCommentLength = stream.readUnsignedShort_LittleEndian();
+        this.DiskNumber = stream.readUnsignedShortInLittleEndian();
+        this.DiskNumberWithSCD = stream.readUnsignedShortInLittleEndian();
+        this.EntryTotalNumberDisk = stream.readUnsignedShortInLittleEndian();
+        this.EntryTotalNumber = stream.readUnsignedShortInLittleEndian();
+        this.CentralDirectorySize = stream.readUnsignedIntInLittleEndian();
+        this.CentralDirectoryOffset = stream.readUnsignedIntInLittleEndian();
+        this.ZipFileCommentLength = stream.readUnsignedShortInLittleEndian();
         if (this.ZipFileCommentLength > 0) {
             this.ZipFileComment = new byte[this.ZipFileCommentLength];
             stream.read(this.ZipFileComment);

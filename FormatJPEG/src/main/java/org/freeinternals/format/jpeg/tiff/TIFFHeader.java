@@ -41,8 +41,8 @@ public class TIFFHeader extends FileComponent {
             this.arbitray_number = pDisMarker.readUnsignedShort();
             this.offset_0ifd = pDisMarker.readInt();
         } else if (this.byte_order == TIFFHeader.BYTEORDER_LITTLEENDIAN) {
-            this.arbitray_number = pDisMarker.readUnsignedShort_LittleEndian();
-            this.offset_0ifd = pDisMarker.readInt_LittleEndian();
+            this.arbitray_number = pDisMarker.readUnsignedShortInLittleEndian();
+            this.offset_0ifd = pDisMarker.readIntInLittleEndian();
         } else {
             throw new FileFormatException(String.format("Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.", TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
         }

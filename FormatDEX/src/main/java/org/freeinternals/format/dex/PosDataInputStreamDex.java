@@ -65,7 +65,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
             return new Dex_short(this.readShort());
         } else {
-            return new Dex_short(this.readShort_LittleEndian());
+            return new Dex_short(this.readShortInLittleEndian());
         }
     }
 
@@ -79,7 +79,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
             return new Dex_ushort(this.readUnsignedShort());
         } else {
-            return new Dex_ushort(this.readUnsignedShort_LittleEndian());
+            return new Dex_ushort(this.readUnsignedShortInLittleEndian());
         }
     }
 
@@ -93,7 +93,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
             return new Dex_int(this.readInt());
         } else {
-            return new Dex_int(this.readInt_LittleEndian());
+            return new Dex_int(this.readIntInLittleEndian());
         }
     }
 
@@ -107,7 +107,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian.value == HeaderItem.Endian.ENDIAN_CONSTANT.value) {
             return new Dex_uint(this.readUnsignedInt());
         } else {
-            return new Dex_uint(this.readUnsignedInt_LittleEndian());
+            return new Dex_uint(this.readUnsignedIntInLittleEndian());
         }
     }
 
@@ -121,7 +121,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
             return new Dex_long(this.readLong());
         } else {
-            return new Dex_long(this.readLong_LittleEndian());
+            return new Dex_long(this.readLongInLittleEndian());
         }
     }
 
@@ -135,7 +135,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
             return new Dex_ulong(this.readUnsignedLong());
         } else {
-            return new Dex_ulong(this.readUnsignedLong_LittleEndian());
+            return new Dex_ulong(this.readUnsignedLongInLittleEndian());
         }
     }
 

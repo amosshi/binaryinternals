@@ -15,17 +15,76 @@ import java.math.BigInteger;
  *
  * @author Amos Shi
  */
-public final class PosDataInputStream extends DataInputStream implements DataInputEx {
-
+public class PosDataInputStream extends DataInputStream implements DataInputEx {
+    
     /**
-     * Offset of the 1st byte
+     * Shift Operators, offset with 8.
+     */
+    private static final int SHIFT_8 = 8;
+    /**
+     * Shift Operators, offset with 16.
+     */
+    private static final int SHIFT_16 = 16;
+    /**
+     * Shift Operators, offset with 24.
+     */
+    private static final int SHIFT_24 = 24;
+    /**
+     * Shift Operators, offset with 32.
+     */
+    private static final int SHIFT_32 = 32;
+    /**
+     * Shift Operators, offset with 40.
+     */
+    private static final int SHIFT_40 = 40;
+    /**
+     * Shift Operators, offset with 48.
+     */
+    private static final int SHIFT_48 = 48;
+    /**
+     * Shift Operators, offset with 56.
+     */
+    private static final int SHIFT_56 = 56;
+    /**
+     * Half Byte length: 4.
+     */
+    private static final int BYTE_LENGTH_4 = 4;
+    /**
+     * Full Byte length: 8.
+     */
+    private static final int BYTE_LENGTH_8 = 8;
+
+    /** Byte offset 0. */
+    private static final int BYTE_OFFSET_0 = 0;
+    /** Byte offset 1. */
+    private static final int BYTE_OFFSET_1 = 1;
+    /** Byte offset 2. */
+    private static final int BYTE_OFFSET_2 = 2;
+    /** Byte offset 3. */
+    private static final int BYTE_OFFSET_3 = 3;
+    /** Byte offset 4. */
+    private static final int BYTE_OFFSET_4 = 4;
+    /** Byte offset 5. */
+    private static final int BYTE_OFFSET_5 = 5;
+    /** Byte offset 6. */
+    private static final int BYTE_OFFSET_6 = 6;
+    /** Byte offset 7. */
+    private static final int BYTE_OFFSET_7 = 7;
+    /**
+     * Byte max value: 255.
+     */
+    private static final int BYTE_MAX_255 = 255;
+    
+    
+    /**
+     * Offset of the 1st byte.
      */
     protected int offset = 0;
 
     /**
-     * Creates a new instance of PosDataInputStream
+     * Creates a new instance of PosDataInputStream.
      *
-     * @param in
+     * @param in Binary data input stream
      */
     public PosDataInputStream(final PosByteArrayInputStream in) {
         super(in);
@@ -35,8 +94,8 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      * Create a sub {@link PosDataInputStream}, which starts from
      * <code>offset</code>.
      *
-     * @param in
-     * @param offset
+     * @param in Binary data input stream
+     * @param offset Offset of the stream
      */
     public PosDataInputStream(final PosByteArrayInputStream in, int offset) {
         super(in);
@@ -48,11 +107,11 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      * <code>startPos</code> of original stream, with length
      * <code>length</code>.
      *
-     * @param startPos
-     * @param length
+     * @param startPos Start position 
+     * @param length Length
      * @return A partial {@link PosDataInputStream} object
      */
-    public PosDataInputStream getPartialStream(int startPos, int length) {
+    public PosDataInputStream getPartialStream(final int startPos, final int length) {
         return new PosDataInputStream(
                 new PosByteArrayInputStream(this.getBuf(startPos, length)),
                 startPos);
@@ -103,7 +162,7 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      * @param length Length of data to be read
      * @return the partial byte array
      */
-    public byte[] getBuf(int startPos, int length) {
+    public byte[] getBuf(final int startPos, final int length) {
         if ((startPos < 0) || (length < 1)) {
             throw new IllegalArgumentException("startIndex or length is not valid. startIndex = " + startPos + ", length = " + length);
         }
@@ -121,27 +180,27 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
     ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
-    public short readShort_LittleEndian() throws IOException {
+    public short readShortInLittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
         if ((ch1 | ch2) < 0) {
             throw new EOFException();
         }
-        return (short) ((ch2 << 8) + (ch1));
+        return (short) ((ch2 << SHIFT_8) + (ch1));
     }
 
     @Override
-    public int readUnsignedShort_LittleEndian() throws IOException {
+    public int readUnsignedShortInLittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
         if ((ch1 | ch2) < 0) {
             throw new EOFException();
         }
-        return (ch2 << 8) + (ch1);
+        return (ch2 << SHIFT_8) + (ch1);
     }
 
     @Override
-    public int readInt_LittleEndian() throws IOException {
+    public int readIntInLittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
         int ch3 = this.in.read();
@@ -149,65 +208,65 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
         if ((ch1 | ch2 | ch3 | ch4) < 0) {
             throw new EOFException();
         }
-        return (int) (((ch4 << 24) + (ch3 << 16) + (ch2 << 8) + (ch1)));
+        return (int) (((ch4 << SHIFT_24) + (ch3 << SHIFT_16) + (ch2 << SHIFT_8) + (ch1)));
     }
 
     @Override
     public long readUnsignedInt() throws IOException {
-        final byte readBuffer[] = new byte[8];
+        final byte readBuffer[] = new byte[BYTE_LENGTH_8];
 
-        super.readFully(readBuffer, 4, 4);
-        readBuffer[0] = 0;
-        readBuffer[1] = 0;
-        readBuffer[2] = 0;
-        readBuffer[3] = 0;
+        super.readFully(readBuffer, BYTE_LENGTH_4, BYTE_LENGTH_4);
+        readBuffer[BYTE_OFFSET_0] = 0;
+        readBuffer[BYTE_OFFSET_1] = 0;
+        readBuffer[BYTE_OFFSET_2] = 0;
+        readBuffer[BYTE_OFFSET_3] = 0;
 
-        return (((long) readBuffer[0] << 56)
-                + ((long) (readBuffer[1] & 255) << 48)
-                + ((long) (readBuffer[2] & 255) << 40)
-                + ((long) (readBuffer[3] & 255) << 32)
-                + ((long) (readBuffer[4] & 255) << 24)
-                + ((readBuffer[5] & 255) << 16)
-                + ((readBuffer[6] & 255) << 8)
-                + ((readBuffer[7] & 255)));
+        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
+                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
+                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
+                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
+                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
+                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 
     @Override
-    public long readUnsignedInt_LittleEndian() throws IOException {
-        final byte readBuffer[] = new byte[8];
+    public long readUnsignedIntInLittleEndian() throws IOException {
+        final byte readBuffer[] = new byte[BYTE_LENGTH_8];
 
-        super.readFully(readBuffer, 0, 4);
-        readBuffer[7] = readBuffer[0];
-        readBuffer[6] = readBuffer[1];
-        readBuffer[5] = readBuffer[2];
-        readBuffer[4] = readBuffer[3];
-        readBuffer[0] = 0;
-        readBuffer[1] = 0;
-        readBuffer[2] = 0;
-        readBuffer[3] = 0;
+        super.readFully(readBuffer, 0, BYTE_LENGTH_4);
+        readBuffer[BYTE_OFFSET_7] = readBuffer[BYTE_OFFSET_0];
+        readBuffer[BYTE_OFFSET_6] = readBuffer[BYTE_OFFSET_1];
+        readBuffer[BYTE_OFFSET_5] = readBuffer[BYTE_OFFSET_2];
+        readBuffer[BYTE_OFFSET_4] = readBuffer[BYTE_OFFSET_3];
+        readBuffer[BYTE_OFFSET_0] = 0;
+        readBuffer[BYTE_OFFSET_1] = 0;
+        readBuffer[BYTE_OFFSET_2] = 0;
+        readBuffer[BYTE_OFFSET_3] = 0;
 
-        return (((long) readBuffer[0] << 56)
-                + ((long) (readBuffer[1] & 255) << 48)
-                + ((long) (readBuffer[2] & 255) << 40)
-                + ((long) (readBuffer[3] & 255) << 32)
-                + ((long) (readBuffer[4] & 255) << 24)
-                + ((readBuffer[5] & 255) << 16)
-                + ((readBuffer[6] & 255) << 8)
-                + ((readBuffer[7] & 255)));
+        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
+                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
+                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
+                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
+                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
+                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 
     @Override
-    public long readLong_LittleEndian() throws IOException {
-        final byte readBuffer[] = new byte[8];
+    public long readLongInLittleEndian() throws IOException {
+        final byte readBuffer[] = new byte[BYTE_LENGTH_8];
         super.readFully(readBuffer, 0, 8);
-        return (((long) readBuffer[7] << 56)
-                + ((long) (readBuffer[6] & 255) << 48)
-                + ((long) (readBuffer[5] & 255) << 40)
-                + ((long) (readBuffer[4] & 255) << 32)
-                + ((long) (readBuffer[3] & 255) << 24)
-                + ((readBuffer[2] & 255) << 16)
-                + ((readBuffer[1] & 255) << 8)
-                + ((readBuffer[0] & 255)));
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                + ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                + ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                + ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                + ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                + ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
     }
 
     /**
@@ -217,18 +276,18 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      */
     @Override
     public BigInteger readUnsignedLong() throws IOException {
-        final byte readBuffer[] = new byte[8];
-        super.readFully(readBuffer, 0, 8);
+        final byte readBuffer[] = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 0, BYTE_LENGTH_8);
         return new BigInteger(1, readBuffer);
     }
 
     @Override
-    public BigInteger readUnsignedLong_LittleEndian() throws IOException {
-        final byte readBuffer[] = new byte[8];
-        final byte readBufferLE[] = new byte[8];
-        super.readFully(readBuffer, 0, 8);
-        for (int i = 0; i < 8; i++) {
-            readBufferLE[i] = readBuffer[7 - i];
+    public BigInteger readUnsignedLongInLittleEndian() throws IOException {
+        final byte readBuffer[] = new byte[BYTE_LENGTH_8];
+        final byte readBufferLE[] = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 0, BYTE_LENGTH_8);
+        for (int i = 0; i < BYTE_LENGTH_8; i++) {
+            readBufferLE[i] = readBuffer[BYTE_LENGTH_8 - 1 - i];
         }
 
         return new BigInteger(1, readBufferLE);
@@ -263,7 +322,7 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
     @Override
     public String readASCIIUntil(final byte end) throws IOException {
         byte b;
-        StringBuilder sb = new StringBuilder(100);
+        StringBuilder sb = new StringBuilder();
 
         do {
             try {
@@ -284,9 +343,9 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      * Read current byte array as ASCII string until any <code>byte</code> in
      * array <code>end</code>.
      *
-     * @param end
-     * @return
-     * @throws java.io.IOException
+     * @param end End value for the ASCII string
+     * @return ASCII as string
+     * @throws java.io.IOException Read failed
      */
     public String readASCIIUntil(byte... end) throws IOException {
         if (end == null || end.length < 1) {
@@ -315,7 +374,7 @@ public final class PosDataInputStream extends DataInputStream implements DataInp
      * Read current byte array as ASCII string until a {@link NEWLINE} flag
      * found.
      *
-     * @return
+     * @return 
      * @throws java.io.IOException
      */
     public ASCIILine readASCIILine() throws IOException {
