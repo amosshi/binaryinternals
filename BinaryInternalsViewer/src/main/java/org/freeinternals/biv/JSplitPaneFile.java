@@ -6,9 +6,11 @@
  */
 package org.freeinternals.biv;
 
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,8 +18,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.freeinternals.commonlib.core.FileFormat;
@@ -25,7 +27,6 @@ import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.ui.JPanelForTree;
-import org.freeinternals.commonlib.ui.JTreeCellRenderer;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 
@@ -47,9 +48,9 @@ public class JSplitPaneFile extends JSplitPane {
      *
      * @param file
      * @param frame
-     * @throws FileFormatException 
+     * @throws FileFormatException
      */
-    public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, Throwable{
+    public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, Throwable {
         this.file = PluginManager.getFile(file);
         this.topLevelFrame = frame;
         this.createAndShowGUI();
@@ -63,14 +64,39 @@ public class JSplitPaneFile extends JSplitPane {
                 this.file.fileName));
         this.file.generateTreeNode(root);
         final JTree tree = new JTree(new DefaultTreeModel(root));
-        tree.setCellRenderer(new JTreeCellRenderer());
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+        tree.setCellRenderer(new DefaultTreeCellRenderer() {
 
             @Override
-            public void valueChanged(final javax.swing.event.TreeSelectionEvent evt) {
-                treeSelectionChanged(evt);
+            public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+                    final boolean sel, final boolean expanded, final boolean leaf, final int row,
+                    final boolean hasFocus) {
+
+                super.getTreeCellRendererComponent(tree, value,
+                        sel, expanded, leaf, row,
+                        hasFocus);
+
+                if (value instanceof DefaultMutableTreeNode) {
+                    if (((DefaultMutableTreeNode) value).getUserObject() instanceof JTreeNodeFileComponent) {
+                        JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) ((DefaultMutableTreeNode) value).getUserObject();
+                        final Icon icon = fileComp.getIcon();
+                        if (icon != null) {
+                            this.setIcon(icon);
+                        }
+
+                        if (fileComp.isDetailAvailable()) {
+                            this.setText("<html><font color=blue><u>" + fileComp.getText());
+                        } else {
+                            this.setText(fileComp.getText());
+                        }
+                    }
+                }
+
+                return this;
             }
         });
+
+        tree.addTreeSelectionListener(this::treeSelectionChanged);
         tree.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -90,7 +116,6 @@ public class JSplitPaneFile extends JSplitPane {
                 }
             }
         });
-
 
         final JPanelForTree panel = new JPanelForTree(tree, this.topLevelFrame);
 

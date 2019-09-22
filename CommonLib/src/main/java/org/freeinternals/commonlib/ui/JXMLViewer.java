@@ -7,7 +7,6 @@
 package org.freeinternals.commonlib.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.io.InputStream;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
