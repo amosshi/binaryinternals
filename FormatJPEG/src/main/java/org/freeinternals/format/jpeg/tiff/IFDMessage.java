@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.jpeg.tiff;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -17,7 +18,7 @@ public class IFDMessage{
     private static final ResourceBundle res;
 
     static{
-        res = ResourceBundle.getBundle(IFDMessage.class.getName().replace('.', '/'));
+        res = ResourceBundle.getBundle(IFDMessage.class.getName().replace('.', '/'), Locale.ROOT);
     }
 
     public static final String KEY_IFD = "IFD";

@@ -179,6 +179,7 @@ public class Main extends JFrame {
         // only the 1st file are handled
         new FileDrop(this.filedropPanel, new FileDrop.Listener() {
 
+            @Override
             public void filesDropped(java.io.File[] files) {
                 openFile(files[0]);
             }
@@ -186,6 +187,7 @@ public class Main extends JFrame {
         //new FileDrop(System.out, this.getJMenuBar(), new FileDrop.Listener() {
         new FileDrop(this.getJMenuBar(), new FileDrop.Listener() {
 
+            @Override
             public void filesDropped(java.io.File[] files) {
                 openFile(files[0]);
             }
@@ -208,22 +210,14 @@ public class Main extends JFrame {
 
         try {
             this.contentPane = new JSplitPaneFile(file, this);
-        } catch (FileFormatException ex) {
+        } catch (Throwable ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                     this,
                     ex.getMessage(),
                     this.getTitle(),
                     JOptionPane.ERROR_MESSAGE);
-        } catch (Throwable t){
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, t);
-            JOptionPane.showMessageDialog(
-                    this,
-                    t.getMessage(),
-                    this.getTitle(),
-                    JOptionPane.ERROR_MESSAGE);
         }
-        //this.add(this.contentPane, BorderLayout.CENTER);
         this.filedropPanel.add(this.contentPane, BorderLayout.CENTER);
 
         // Resize after adding new content
