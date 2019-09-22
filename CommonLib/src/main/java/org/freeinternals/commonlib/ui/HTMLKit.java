@@ -123,7 +123,7 @@ public final class HTMLKit {
     }
 
     /**
-     * Escape HTML special character &gt and &lt.
+     * Escape HTML special character &lt; and &gt;.
      *
      * @param text Input text to process
      * @return Escaped result

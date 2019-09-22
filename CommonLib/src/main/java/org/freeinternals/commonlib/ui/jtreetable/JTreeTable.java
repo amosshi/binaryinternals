@@ -597,7 +597,7 @@ public class JTreeTable extends JTable {
         /**
          * Creates and returns an instance of ListSelectionHandler.
          *
-         * @return {@link #ListSelectionHandler}
+         * @return {@link ListSelectionHandler}
          */
         protected final ListSelectionListener createListSelectionListener() {
             return new ListSelectionHandler();
