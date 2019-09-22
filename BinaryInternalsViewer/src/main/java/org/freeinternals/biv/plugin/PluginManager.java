@@ -79,7 +79,7 @@ public class PluginManager {
     private static void loadPlugin(File pluginFile, String pluginDescClassName) throws Exception {
         URL url = pluginFile.toURI().toURL();
         ClassLoader loader = new URLClassLoader(new URL[]{url});
-        Class cls = loader.loadClass(pluginDescClassName);
+        Class<?> cls = loader.loadClass(pluginDescClassName);
         if (cls == null) {
             return;
         }
@@ -113,8 +113,8 @@ public class PluginManager {
     }
 
     public static FileFormat getFile(final File file) throws FileFormatException, Throwable {
-        Class fileFormatClass = null;
-        Constructor<FileFormat> c = null;
+        Class<? extends FileFormat> fileFormatClass = null;
+        Constructor<? extends FileFormat> c = null;
         FileFormat ff = null;
         String ext = file.getName().substring(file.getName().lastIndexOf('.') + 1);
 

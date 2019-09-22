@@ -8,6 +8,7 @@
 package org.freeinternals.biv.plugin.dex;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.dex.DexFile;
 
 
@@ -22,11 +23,13 @@ public class PluginDescriptorDEX implements PluginDescriptor{
         return "Android DEX File (*.dex)";
     }
 
+    @Override
     public String[] getExtensions() {
         return new String[]{"dex"};
     }
 
-    public Class getFileFormatClass() {
+    @Override
+    public Class<? extends FileFormat> getFileFormatClass() {
         return DexFile.class;
     }
 

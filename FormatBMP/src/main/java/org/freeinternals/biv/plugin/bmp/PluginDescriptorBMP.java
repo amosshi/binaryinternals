@@ -8,6 +8,7 @@
 package org.freeinternals.biv.plugin.bmp;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.bmp.BMPFile;
 
 /**
@@ -16,15 +17,18 @@ import org.freeinternals.format.bmp.BMPFile;
  */
 public class PluginDescriptorBMP implements PluginDescriptor{
 
+    @Override
     public String getExtensionDescription() {
         return "Bitmap Images (*.bmp)";
     }
 
+    @Override
     public String[] getExtensions() {
         return new String[]{"bmp"};
     }
 
-    public Class getFileFormatClass() {
+    @Override
+    public Class<? extends FileFormat> getFileFormatClass() {
         return BMPFile.class;
     }
 

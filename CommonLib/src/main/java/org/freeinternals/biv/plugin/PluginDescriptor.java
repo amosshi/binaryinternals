@@ -6,6 +6,8 @@
  */
 package org.freeinternals.biv.plugin;
 
+import org.freeinternals.commonlib.core.FileFormat;
+
 /**
  *
  * @author Amos Shi
@@ -16,5 +18,5 @@ public interface PluginDescriptor {
 
     String[] getExtensions();
 
-    Class getFileFormatClass();
+    Class<? extends FileFormat> getFileFormatClass();
 }

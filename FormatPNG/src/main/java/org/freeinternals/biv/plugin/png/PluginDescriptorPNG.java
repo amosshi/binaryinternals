@@ -8,6 +8,7 @@
 package org.freeinternals.biv.plugin.png;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.png.PNGFile;
 
 /**
@@ -27,7 +28,7 @@ public class PluginDescriptorPNG implements PluginDescriptor{
     }
 
     @Override
-    public Class getFileFormatClass() {
+    public Class<? extends FileFormat> getFileFormatClass() {
         return PNGFile.class;
     }
 

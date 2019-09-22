@@ -7,6 +7,7 @@
 package org.freeinternals.biv.plugin.elf;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.elf.ElfFile;
 
 /**
@@ -26,7 +27,7 @@ public class PluginDescriptorELF implements PluginDescriptor {
     }
 
     @Override
-    public Class getFileFormatClass() {
+    public Class<? extends FileFormat> getFileFormatClass() {
         return ElfFile.class;
     }
 

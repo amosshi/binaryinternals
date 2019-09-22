@@ -8,6 +8,7 @@
 package org.freeinternals.biv.plugin.zip;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.zip.ZIPFile;
 
 /**
@@ -16,15 +17,18 @@ import org.freeinternals.format.zip.ZIPFile;
  */
 public class PluginDescriptorZIP implements PluginDescriptor{
 
+    @Override
     public String getExtensionDescription() {
         return "ZIP file (*.zip)";
     }
 
+    @Override
     public String[] getExtensions() {
         return new String[]{"zip"};
     }
 
-    public Class getFileFormatClass() {
+    @Override
+    public Class<? extends FileFormat> getFileFormatClass() {
         return ZIPFile.class;
     }
 

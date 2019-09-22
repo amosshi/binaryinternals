@@ -7,6 +7,7 @@
 package org.freeinternals.biv.plugin.pdf;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.pdf.PDFFile;
 
 /**
@@ -26,7 +27,7 @@ public class PluginDescriptorPDF implements PluginDescriptor {
     }
 
     @Override
-    public Class getFileFormatClass() {
+    public Class<? extends FileFormat> getFileFormatClass() {
         return PDFFile.class;
     }
 }

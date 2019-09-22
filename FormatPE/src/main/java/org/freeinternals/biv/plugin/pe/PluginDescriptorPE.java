@@ -7,6 +7,7 @@
 package org.freeinternals.biv.plugin.pe;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.pe.PeFile;
 
 /**
@@ -26,7 +27,7 @@ public class PluginDescriptorPE implements PluginDescriptor {
     }
 
     @Override
-    public Class getFileFormatClass() {
+    public Class<? extends FileFormat> getFileFormatClass() {
         return PeFile.class;
     }
 

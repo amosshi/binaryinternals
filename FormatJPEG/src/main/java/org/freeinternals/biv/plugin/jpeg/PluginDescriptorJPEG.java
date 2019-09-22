@@ -8,6 +8,7 @@
 package org.freeinternals.biv.plugin.jpeg;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.format.jpeg.JPEGFile;
 
 /**
@@ -16,15 +17,18 @@ import org.freeinternals.format.jpeg.JPEGFile;
  */
 public class PluginDescriptorJPEG implements PluginDescriptor{
 
+    @Override
     public String getExtensionDescription() {
         return "JPEG Image (*.jpg,*jpeg)";
     }
 
+    @Override
     public String[] getExtensions() {
         return new String[]{"jpeg", "jpg"};
     }
 
-    public Class getFileFormatClass() {
+    @Override
+    public Class<? extends FileFormat> getFileFormatClass() {
         return JPEGFile.class;
     }
 
