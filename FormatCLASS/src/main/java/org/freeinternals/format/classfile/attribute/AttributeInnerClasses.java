@@ -112,7 +112,7 @@ public class AttributeInnerClasses extends AttributeInfo {
             parentNode.add(treeNodeInnerClass);
         }
     }
-    
+
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses.Class innerClass, final ClassFile classFile) {
         final int startPosMoving = innerClass.getStartPos();
 
@@ -124,17 +124,19 @@ public class AttributeInnerClasses extends AttributeInfo {
         )));
 
         cp_index = innerClass.outer_class_info_index.value;
+        final String outer_class_info_index_desc = (cp_index == 0) ? "" : " - " + classFile.getCPDescription(cp_index);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 2,
                 2,
-                "outer_class_info_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+                "outer_class_info_index: " + cp_index + outer_class_info_index_desc
         )));
 
         cp_index = innerClass.inner_name_index.value;
+        final String inner_name_index_desc = (cp_index == 0) ? "" : " - " + classFile.getCPDescription(cp_index);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 4,
                 2,
-                "inner_name_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+                "inner_name_index: " + cp_index + inner_name_index_desc
         )));
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -143,7 +145,6 @@ public class AttributeInnerClasses extends AttributeInfo {
                 "inner_class_access_flags: " + innerClass.inner_class_access_flags.value + " - " + innerClass.getModifiers()
         )));
     }
-    
 
     /**
      * The {@code classes} structure in {@code InnerClasses} attribute.
@@ -158,7 +159,29 @@ public class AttributeInnerClasses extends AttributeInfo {
         public static final int LENGTH = 8;
 
         public transient final u2 inner_class_info_index;
+        /**
+         * If C is not a member of a class or an interface - that is, if C is a
+         * top-level class or interface or a local class or an anonymous class -
+         * then the value of the outer_class_info_index item must be zero.
+         *
+         * Otherwise, the value of the outer_class_info_index item must be a
+         * valid index into the constant_pool table, and the entry at that index
+         * must be a CONSTANT_Class_info structure representing the class or
+         * interface of which C is a member. The value of the
+         * outer_class_info_index item must not equal the the value of the
+         * inner_class_info_index item.
+         */
         public transient final u2 outer_class_info_index;
+        /**
+         * If C is anonymous, the value of the inner_name_index item must be
+         * zero.
+         *
+         * Otherwise, the value of the inner_name_index item must be a valid
+         * index into the constant_pool table, and the entry at that index must
+         * be a CONSTANT_Utf8_info structure that represents the original simple
+         * name of C, as given in the source code from which this class file was
+         * compiled.
+         */
         public transient final u2 inner_name_index;
         public transient final u2 inner_class_access_flags;
 

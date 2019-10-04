@@ -55,6 +55,7 @@ import org.freeinternals.format.classfile.u4;
  * </a>
  */
 public class AttributeCode extends AttributeInfo {
+
     public static final String ATTRIBUTE_CODE_NODE = "code";
 
     public transient final u2 max_stack;
@@ -231,14 +232,13 @@ public class AttributeCode extends AttributeInfo {
                         (i + 1) + ". " + attr.getName()
                 ));
                 AttributeInfo.generateTreeNode(treeNodeAttributeItem, attr, classFile);
-                
+
                 treeNodeAttribute.add(treeNodeAttributeItem);
             }
 
             parentNode.add(treeNodeAttribute);
         }
     }
-    
 
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeCode.ExceptionTable et, final ClassFile classFile) {
         if (et == null) {
@@ -262,14 +262,14 @@ public class AttributeCode extends AttributeInfo {
                 2,
                 "handler_pc: " + et.handler_pc.value
         )));
-        int catch_type = et.catch_type.value;
+        final int catch_type = et.catch_type.value;
+        String catch_type_desc = (catch_type == 0) ? "" : " - " + classFile.getCPDescription(catch_type);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 6,
                 2,
-                "catch_type: " + catch_type + " - " + classFile.getCPDescription(catch_type)
+                "catch_type: " + catch_type + catch_type_desc
         )));
     }
-    
 
     /**
      * The {@code exception_table} structure in {@code Code} attribute.
@@ -282,6 +282,18 @@ public class AttributeCode extends AttributeInfo {
         public transient final u2 start_pc;
         public transient final u2 end_pc;
         public transient final u2 handler_pc;
+
+        /**
+         * If the value of the catch_type item is nonzero, it must be a valid
+         * index into the constant_pool table. The constant_pool entry at that
+         * index must be a CONSTANT_Class_info structure representing a class of
+         * exceptions that this exception handler is designated to catch. The
+         * exception handler will be called only if the thrown exception is an
+         * instance of the given class or one of its subclasses.
+         *
+         * If the value of the catch_type item is zero, this exception handler
+         * is called for all exceptions.
+         */
         public transient final u2 catch_type;
 
         private ExceptionTable(final PosDataInputStream posDataInputStream) throws IOException {
