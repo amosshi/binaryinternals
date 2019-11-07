@@ -28,12 +28,12 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
     public final ASCIILine HeaderLine;
 
     CrossReferenceTable(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
-        super.startPos = stream.getPos() - line.Length();
+        super.startPos = stream.getPos() - line.length();
         this.HeaderLine = line;
         this.parse(stream);
 
         // The Length
-        super.length = line.Length();
+        super.length = line.length();
         for (Subsection subsection : Subsections) {
             super.length += subsection.getLength();
         }
@@ -44,7 +44,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
         do {
             line = stream.readASCIILine();
             if (Trailer.SIGNATURE.equalsIgnoreCase(line.Line)) {
-                stream.backward(line.Length());
+                stream.backward(line.length());
                 break;
             }
             this.Subsections.add(new Subsection(stream, line));
@@ -96,7 +96,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
         public final List<Entry> Entries = new ArrayList<Entry>(20);
 
         Subsection(PosDataInputStream stream, ASCIILine line) throws FileFormatException, IOException {
-            super.startPos = stream.getPos() - line.Length();
+            super.startPos = stream.getPos() - line.length();
             this.HeaderLine = line;
 
             String[] subsection_header = line.Line.split(" ");
@@ -113,7 +113,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
                 this.Entries.add(new Entry(stream));
             }
 
-            super.length = line.Length() + this.NumberOfEntries * Entry.LENGTH;
+            super.length = line.length() + this.NumberOfEntries * Entry.LENGTH;
         }
 
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {

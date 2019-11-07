@@ -158,7 +158,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
      * @author Amos Shi
      * @see AttributeLocalVariableTable
      */
-    public final class LocalVariableTable extends FileComponent {
+    public final static class LocalVariableTable extends FileComponent {
 
         public final static int LENGTH = 10;
         /**

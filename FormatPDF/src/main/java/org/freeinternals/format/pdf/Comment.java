@@ -23,8 +23,8 @@ public class Comment extends FileComponent implements GenerateTreeNode {
     public final String Text;
 
     Comment(PosDataInputStream stream, ASCIILine line) throws IOException {
-        super.startPos = stream.getPos() - line.Length();
-        super.length = line.Length();
+        super.startPos = stream.getPos() - line.length();
+        super.length = line.length();
         this.Text = line.Line;
     }
 

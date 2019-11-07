@@ -22,8 +22,8 @@ public class EmptyLine extends FileComponent implements GenerateTreeNode {
     public final ASCIILine Line;
 
     EmptyLine(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
-        super.startPos = stream.getPos() - line.Length();
-        super.length = line.Length();
+        super.startPos = stream.getPos() - line.length();
+        super.length = line.length();
         this.Line = line;
     }
 

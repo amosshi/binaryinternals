@@ -151,7 +151,7 @@ public class AttributeInnerClasses extends AttributeInfo {
      *
      * @author Amos Shi
      */
-    public final class Class extends FileComponent {
+    public final static class Class extends FileComponent {
 
         /**
          * The length of current component.

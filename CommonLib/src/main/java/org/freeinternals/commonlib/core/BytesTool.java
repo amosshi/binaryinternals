@@ -200,7 +200,7 @@ public final class BytesTool {
             return byteBuf.array();
         } else {
             throw new IOException(String.format(
-                    "File read error: expected = %d bytes, result = %d bytes.\nzipFile = %s\nzipEntry = %s",
+                    "File read error: expected = %d bytes, result = %d bytes. zipFile = %s, zipEntry = %s",
                     fileSize,
                     byteBuf.array().length,
                     zipFile.getName(),

@@ -146,7 +146,7 @@ public final class Main extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        String.format("Un-supported file type. Please select a '.jar' or '.class' file. \nFile: %s", file.getPath()),
+                        String.format("Un-supported file type. Please select a '.jar' or '.class' file. file path = %s", file.getPath()),
                         this.getTitle(),
                         JOptionPane.WARNING_MESSAGE);
             }
@@ -288,7 +288,7 @@ public final class Main extends JFrame {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                     this,
-                    String.format("Read the class file failed.\n%s", ex.getMessage()),
+                    String.format("Read the class file failed. %s", ex.getMessage()),
                     this.getTitle(),
                     JOptionPane.ERROR_MESSAGE);
             return;

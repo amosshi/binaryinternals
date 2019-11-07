@@ -1465,12 +1465,12 @@ public final class Opcode {
                 super.skipPad(pdis);
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                
+
                 parsed.lookupSwitch = new LookupSwitch(pdis.readInt(), pdis.readInt());
                 for (int i = 0; i < parsed.lookupSwitch.npairs; i++) {
                     parsed.lookupSwitch.mapoffsets.put(pdis.readInt(), pdis.readInt());
                 }
-                
+
                 parsed.opCodeText = String.format("%s %s", this.name(), parsed.lookupSwitch.toString(curPos));
                 return parsed;
             }
@@ -1624,7 +1624,10 @@ public final class Opcode {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
                 int nArgs = pdis.readUnsignedByte();
-                pdis.skipBytes(1);
+                int skippedBytes = pdis.skipBytes(1);
+                if (skippedBytes != 1) {
+                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", 1, skippedBytes));
+                }
 
                 parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, nArgs);
                 return parsed;
@@ -1638,7 +1641,10 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
-                pdis.skipBytes(2);  // Skip 2 zero bytes
+                int skippedBytes = pdis.skipBytes(2);  // Skip 2 zero bytes
+                if (skippedBytes != 2) {
+                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", 2, skippedBytes));
+                }
                 parsed.opCodeText = this.name();
                 return parsed;
             }
@@ -1997,7 +2003,10 @@ public final class Opcode {
             int skip = pdis.getPos() % 4;
             skip = (skip > 0) ? 4 - skip : skip;
             if (skip > 0) {
-                pdis.skipBytes(skip);
+                int skippedBytes = pdis.skipBytes(skip);
+                if (skippedBytes != skip) {
+                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
+                }
             }
         }
 
@@ -2099,9 +2108,9 @@ public final class Opcode {
             sb.append('(').append(this.npairs).append(" Pairs)");
             this.mapoffsets.keySet().forEach((key) -> {
                 Integer value = this.mapoffsets.get(key);
-                sb.append(String.format("\n    case %d. jump to %d (relative offset = %d)", key, value + currentOffset, value));
+                sb.append(String.format("%n    case %d. jump to %d (relative offset = %d)", key, value + currentOffset, value));
             });
-            sb.append(String.format("\n    default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
+            sb.append(String.format("%n    default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
 
             return sb.toString();
         }
@@ -2133,9 +2142,9 @@ public final class Opcode {
             sb.append(" (from ").append(this.lowbyte).append(" to ").append(this.highbyte).append(')');
             this.jumpoffsets.keySet().forEach((key) -> {
                 Integer value = this.jumpoffsets.get(key);
-                sb.append(String.format("\n    case %d. jump to %d (relative offset = %d) ", key, value + currentOffset, value));
+                sb.append(String.format("%n    case %d. jump to %d (relative offset = %d) ", key, value + currentOffset, value));
             });
-            sb.append(String.format("\n   default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
+            sb.append(String.format("%n   default. jump to %d (relative offset = %d) ", this.defaultbyte + currentOffset, this.defaultbyte));
 
             return sb.toString();
         }
@@ -2299,7 +2308,7 @@ public final class Opcode {
 
         @Override
         public String toString() {
-            String s = String.format("%04d: %02X.%s", this.offset, this.opCode, this.opCodeText);
+            String s = String.format("%04d: %s", this.offset, this.opCodeText);
 
             if (this.branchbyte != null) {
                 String branch = String.format(" %d (branch byte offset = %d)", this.getAbsoluteBranchByte(), this.branchbyte);
@@ -2332,4 +2341,3 @@ public final class Opcode {
         }
     }
 }
-

@@ -623,7 +623,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
          *
          * @return {@link ASCIILine} length
          */
-        public int Length() {
+        public int length() {
             return this.Line.length() + NewLineLength;
         }
 

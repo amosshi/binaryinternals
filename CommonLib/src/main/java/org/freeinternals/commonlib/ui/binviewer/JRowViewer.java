@@ -59,7 +59,7 @@ public class JRowViewer extends JTextPane {
         int rowValue = rowStart * JBinaryViewer.ROW_ITEM_MAX;
         for (int i = 0; i < rowCount; i++) {
             if ((rowStart + i) < rowMax) {
-                sb.append(HTMLKit.span(String.format("%08Xh\n", rowValue)));
+                sb.append(HTMLKit.span(String.format("%08Xh", rowValue)));
                 sb.append(HTMLKit.newLine());
                 rowValue += JBinaryViewer.ROW_ITEM_MAX;
             }

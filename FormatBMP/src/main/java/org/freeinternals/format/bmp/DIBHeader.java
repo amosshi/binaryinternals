@@ -157,7 +157,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd183372%28VS.85%29.aspx">BITMAPCOREHEADER Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPCOREHEADER extends FileComponent implements GenerateTreeNode {
+    public static class BITMAPCOREHEADER extends FileComponent implements GenerateTreeNode {
 
         public static final int SIZE = 12;
         public final int Width;
@@ -219,7 +219,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd183376%28VS.85%29.aspx">BITMAPINFOHEADER Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPINFOHEADER extends FileComponent implements GenerateTreeNode {
+    public static class BITMAPINFOHEADER extends FileComponent implements GenerateTreeNode {
 
         /** The number of bytes required by the structure. */
         public static final int SIZE = 40;
@@ -343,7 +343,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
     }
 
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPV2INFOHEADER extends BITMAPINFOHEADER {
+    public static class BITMAPV2INFOHEADER extends BITMAPINFOHEADER {
 
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 52;
@@ -369,7 +369,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
     };
 
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPV3INFOHEADER extends BITMAPINFOHEADER {
+    public static class BITMAPV3INFOHEADER extends BITMAPINFOHEADER {
 
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 56;
@@ -398,7 +398,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://doxygen.reactos.org/d7/d02/structBITMAPCOREHEADER2.html">BITMAPCOREHEADER2 Structure Reference</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPCOREHEADER2 extends BITMAPINFOHEADER {
+    public static class BITMAPCOREHEADER2 extends BITMAPINFOHEADER {
 
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 64;
@@ -493,7 +493,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd183380%28VS.85%29.aspx">BITMAPV4HEADER Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPV4HEADER extends BITMAPINFOHEADER {
+    public static class BITMAPV4HEADER extends BITMAPINFOHEADER {
 
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 108;
@@ -610,7 +610,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd183381%28VS.85%29.aspx">BITMAPV5HEADER Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class BITMAPV5HEADER extends BITMAPV4HEADER {
+    public static class BITMAPV5HEADER extends BITMAPV4HEADER {
 
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 124;
@@ -673,7 +673,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd371828%28v=VS.85%29.aspx">CIEXYZ Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class CIEXYZ {
+    public static class CIEXYZ {
 
         /** The x coordinate in fix point. */
         public final long x;
@@ -693,7 +693,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
      * @see <a href="http://msdn.microsoft.com/en-us/library/dd371833%28v=VS.85%29.aspx">CIEXYZTRIPLE Structure</a>
      */
     @SuppressWarnings("PublicInnerClass")
-    public class CIEXYZTRIPLE {
+    public static class CIEXYZTRIPLE {
 
         public static final int SIZE = 36;
         /** The xyz coordinates of red endpoint. */

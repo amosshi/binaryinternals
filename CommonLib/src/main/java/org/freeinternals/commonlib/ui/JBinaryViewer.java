@@ -239,20 +239,18 @@ public final class JBinaryViewer extends JPanel {
         this.rowViewer.setData(this.vBar.getValue(), extent, this.rowMax);
         if (this.data != null && this.data.length > 0) {
             // Calc the buffer data
-            byte[] buf = null;
             int startPos = this.vBar.getValue() * JBinaryViewer.ROW_ITEM_MAX;
             int dataSize = extent * JBinaryViewer.ROW_ITEM_MAX;
 
             dataSize = Math.min(dataSize, this.data.length - startPos);
-
             if (dataSize > 0) {
-                buf = new byte[dataSize];
+                byte[] buf = new byte[dataSize];
                 System.arraycopy(this.data, startPos, buf, 0, dataSize);
-            }
 
-            // Set the buffer
-            this.rawViewer.setData(buf);
-            this.asciiViewer.setData(buf);
+                // Set the buffer
+                this.rawViewer.setData(buf);
+                this.asciiViewer.setData(buf);
+            }
         }
 
         // Revise selection

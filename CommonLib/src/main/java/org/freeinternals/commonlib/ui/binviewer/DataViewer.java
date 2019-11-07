@@ -44,7 +44,12 @@ public abstract class DataViewer extends JTextPane {
      * @param bin Binary data.
      */
     public void setData(final byte[] bin) {
-        this.data = bin;
+        if (bin == null) {
+            this.data = null;
+        } else {
+            this.data = bin.clone();
+        }
+
         this.updateContent();
     }
 

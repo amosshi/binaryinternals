@@ -34,7 +34,7 @@ public class StartXRef extends FileComponent implements GenerateTreeNode {
     public final ASCIILine OffsetLine;
 
     StartXRef(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
-        super.startPos = stream.getPos() - line.Length();
+        super.startPos = stream.getPos() - line.length();
         this.HeaderLine = line;
         this.OffsetLine = stream.readASCIILine();
         this.Offset = Integer.valueOf(this.OffsetLine.Line);

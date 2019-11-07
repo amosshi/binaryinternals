@@ -80,8 +80,7 @@ public final class HTMLKit {
      * @return HTML code of span
      */
     public static String span(final String text) {
-        // TODO the "\n" is no needed?
-        return String.format("\n<span style=\"font-size:%dpx; font-family:%s;\">%s</span>",
+        return String.format("<span style=\"font-size:%dpx; font-family:%s;\">%s</span>",
                 JBinaryViewer.FONT.getSize() - 2,
                 JBinaryViewer.FONT.getFamily(),
                 text);
@@ -95,8 +94,7 @@ public final class HTMLKit {
      * @return HTML code of span
      */
     public static String span(final String text, final String color) {
-        // TODO the "\n" is no needed?
-        return String.format("\n<span style=\"background-color:%s; font-size:%dpx; font-family:%s;\">%s</span>",
+        return String.format("<span style=\"background-color:%s; font-size:%dpx; font-family:%s;\">%s</span>",
                 color,
                 JBinaryViewer.FONT.getSize() - 2,
                 JBinaryViewer.FONT.getFamily(),
@@ -114,9 +112,10 @@ public final class HTMLKit {
     public static String getByteText(final byte b) {
         String s = ".";
 
-        if (((b > ASCII_32) && (b < ASCII_127))
-                || ((b > ASCII_160) && (b <= ASCII_255))) {
-            s = String.format("&#%d;", b);
+        int i = (b & 0xFF);
+        if (((i > ASCII_32) && (i < ASCII_127))
+                || ((i > ASCII_160) && (i <= ASCII_255))) {
+            s = String.format("&#%d;", i);
         }
 
         return s;

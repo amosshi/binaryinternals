@@ -76,7 +76,10 @@ public class AttributeCode extends AttributeInfo {
         this.max_locals = new u2(posDataInputStream);
         this.code_length = new u4(posDataInputStream);
         this.code = new byte[this.code_length.value];
-        posDataInputStream.read(this.code);
+        int readBytes = posDataInputStream.read(this.code);
+        if (readBytes != this.code_length.value) {
+            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", this.code_length.value, readBytes));
+        }
 
         this.exception_table_length = new u2(posDataInputStream);
         if (this.exception_table_length.value > 0) {
@@ -104,7 +107,7 @@ public class AttributeCode extends AttributeInfo {
      * @return The value of {@code code}
      */
     public byte[] getCode() {
-        return this.code;
+        return this.code.clone();
     }
 
     /**
@@ -276,7 +279,7 @@ public class AttributeCode extends AttributeInfo {
      *
      * @author Amos Shi
      */
-    public final class ExceptionTable extends FileComponent {
+    public final static class ExceptionTable extends FileComponent {
 
         public static final int LENGTH = 8;
         public transient final u2 start_pc;

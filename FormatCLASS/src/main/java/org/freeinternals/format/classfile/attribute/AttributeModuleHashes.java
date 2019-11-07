@@ -152,7 +152,7 @@ public class AttributeModuleHashes extends AttributeInfo {
      * @since OpenJDK 9
      * @see Module
      */
-    public final class Hashes extends FileComponent {
+    public final static class Hashes extends FileComponent {
 
         /**
          * Index to CONSTANT_Module_info structure.

@@ -131,7 +131,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
         }
     }
     
-    public final class BootstrapMethod extends FileComponent {
+    public final static class BootstrapMethod extends FileComponent {
 
         /**
          * The value of the {@link #bootstrap_method_ref} item must be a valid

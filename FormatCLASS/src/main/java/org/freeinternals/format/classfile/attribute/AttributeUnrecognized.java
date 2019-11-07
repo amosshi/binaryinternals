@@ -44,7 +44,10 @@ public class AttributeUnrecognized extends AttributeInfo {
 
         if (this.attribute_length.value > 0) {
             this.rawData = new byte[this.attribute_length.value];
-            posDataInputStream.read(this.rawData);
+            int readBytes = posDataInputStream.read(this.rawData);
+            if (readBytes != this.attribute_length.value) {
+                throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", this.attribute_length.value, readBytes));
+            }
         }
 
         super.checkSize(posDataInputStream.getPos());
@@ -56,7 +59,7 @@ public class AttributeUnrecognized extends AttributeInfo {
      * @return The value of {@code info}
      */
     public byte[] getRawData() {
-        return this.rawData;
+        return this.rawData.clone();
     }
 
     @Override

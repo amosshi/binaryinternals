@@ -26,7 +26,7 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
 
     Trailer(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
         this.HeaderLine = line;
-        super.startPos = stream.getPos() - line.Length();
+        super.startPos = stream.getPos() - line.length();
         this.parse(stream);
         super.length = stream.getPos() - super.startPos;
     }
@@ -36,7 +36,7 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
         do {
             line = stream.readASCIILine();
             if (StartXRef.SIGNATURE.equalsIgnoreCase(line.Line)) {
-                stream.backward(line.Length());
+                stream.backward(line.length());
                 break;
             }
         } while (stream.hasNext());
@@ -61,7 +61,7 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
                 this.HeaderLine.NewLineLength,
                 Texts.NewLine)));
         pos += this.HeaderLine.NewLineLength;
-        int len = super.length - this.HeaderLine.Length();
+        int len = super.length - this.HeaderLine.length();
         if (len > 0) {
             nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos,

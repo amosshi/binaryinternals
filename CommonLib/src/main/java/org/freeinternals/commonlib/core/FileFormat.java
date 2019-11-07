@@ -40,7 +40,7 @@ public abstract class FileFormat {
 
         if (file.length() == 0) {
             throw new FileFormatException(
-                    String.format("The file content is empty.\nname = %s", file.getPath()));
+                    String.format("The file content is empty. name = %s", file.getPath()));
         }
         this.fileByteArray = BytesTool.readFileAsBytes(file);
     }

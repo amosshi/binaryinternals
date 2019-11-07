@@ -136,7 +136,7 @@ public class AttributeLineNumberTable extends AttributeInfo {
      * @author Amos Shi
      * @see AttributeLineNumberTable
      */
-    public final class LineNumberTable extends FileComponent {
+    public final static class LineNumberTable extends FileComponent {
 
         public static final int LENGTH = 4;
         public transient final u2 start_pc;

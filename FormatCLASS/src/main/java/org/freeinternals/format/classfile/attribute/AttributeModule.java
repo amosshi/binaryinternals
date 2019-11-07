@@ -509,7 +509,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final class Requires extends FileComponent {
+    public final static class Requires extends FileComponent {
 
         public static final int LENGTH = 6;
         public transient final u2 requires_index;
@@ -534,7 +534,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final class Exports extends FileComponent {
+    public final static class Exports extends FileComponent {
 
         public transient final u2 exports_index;
         public transient final u2 exports_flags;
@@ -567,7 +567,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final class Opens extends FileComponent {
+    public final static class Opens extends FileComponent {
 
         public transient final u2 opens_index;
         public transient final u2 opens_flags;
@@ -600,7 +600,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final class Provides extends FileComponent {
+    public final static class Provides extends FileComponent {
 
         public transient final u2 provides_index;
         public transient final u2 provides_with_count;

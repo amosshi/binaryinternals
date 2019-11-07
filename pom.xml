@@ -31,9 +31,6 @@
             </plugin>
             
             <!-- Check Style: https://maven.apache.org/plugins/maven-checkstyle-plugin/index.html -->
-            <!-- https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/sun_checks.xml -->
-            <!-- https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml -->
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -42,11 +39,16 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.24</version>
+                        <version>8.26</version>
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>sun_checks-customized.xml</configLocation>
+                    <!-- https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/sun_checks.xml -->
+                    <!-- https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml -->
+                    <configLocation>google_checks.xml</configLocation>
+                    <!--
+                    <configLocation>sun_checks.xml</configLocation>
+                    -->
                 </configuration>                
                 <executions>
                     <execution>
@@ -61,7 +63,34 @@
                     </execution>
                 </executions>
             </plugin>
-            -->
+
+            <!-- Spotbugs 
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>3.1.11</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>3.1.12</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                            <xmlOutput>true</xmlOutput>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
             
             <!-- https://maven.apache.org/plugins/maven-javadoc-plugin/index.html -->
             <plugin>

@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -70,7 +71,7 @@ public class AttributeSourceDebugExtension extends AttributeInfo {
      * @return The string of {@link #debug_extension}
      */
     public String getDebugExtesionString() {
-        return new String(this.debug_extension);
+        return new String(this.debug_extension, StandardCharsets.UTF_8);
     }
 
     @Override

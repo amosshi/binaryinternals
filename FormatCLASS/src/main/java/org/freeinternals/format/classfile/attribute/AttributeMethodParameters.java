@@ -123,7 +123,7 @@ public class AttributeMethodParameters extends AttributeInfo {
         }
     }
 
-    public final class Parameter extends FileComponent {
+    public final static class Parameter extends FileComponent {
 
         /**
          * The value of the name_index item must either be zero or a valid index

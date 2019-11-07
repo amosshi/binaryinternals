@@ -11,3 +11,7 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 
 mvn clean package install
 mvn javadoc:aggregate
+
+mvn versions:display-dependency-updates
+
+# mvn spotbugs:gui

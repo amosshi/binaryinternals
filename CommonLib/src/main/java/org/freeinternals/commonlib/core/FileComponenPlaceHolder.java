@@ -19,14 +19,16 @@ public class FileComponenPlaceHolder extends FileComponent {
         super();
     }
 
-    public FileComponenPlaceHolder(final PosDataInputStream posDataInputStream, int length)
-            throws IOException {
+    public FileComponenPlaceHolder(final PosDataInputStream posDataInputStream, int length) throws IOException {
         this();
         super.startPos = posDataInputStream.getPos();
 
         if (length > 0) {
             this.length = length;
-            posDataInputStream.skipBytes(length);
+            int skippedBytes = posDataInputStream.skipBytes(length);
+            if (skippedBytes != length) {
+                throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", length, skippedBytes));
+            }
         } else {
             this.length = 0;
         }

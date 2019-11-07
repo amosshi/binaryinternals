@@ -65,7 +65,7 @@ public class Stream extends FileComponent implements GenerateTreeNode {
      * <code>endstream</code>. </p>
      */
     public int getStreamLength() {
-        return this.length - this.SignatureLen - 1 - this.SignatureEnd.Length();
+        return this.length - this.SignatureLen - 1 - this.SignatureEnd.length();
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

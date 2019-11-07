@@ -496,7 +496,7 @@ public class ClassFile {
             throw new IllegalArgumentException("Nothing exist at the Constant Pool Index. index=" + index);
         }
 
-        return cp.toString(this.constant_pool) + ", " + cp.getName();
+        return cp.toString(this.constant_pool);
     }
 
     /**

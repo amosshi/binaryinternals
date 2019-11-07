@@ -7,6 +7,7 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -76,7 +77,7 @@ public class ConstantUtf8Info extends CPInfo {
      */
     public String getValue() {
         if (this.value == null) {
-            this.value = new String(this.bytes);
+            this.value = new String(this.bytes, StandardCharsets.UTF_8);
         }
         
         return this.value;

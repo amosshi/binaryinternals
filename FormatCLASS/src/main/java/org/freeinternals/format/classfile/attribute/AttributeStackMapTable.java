@@ -368,7 +368,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public final class SameLocals1StackItemFrame extends FileComponent {
+        public final static class SameLocals1StackItemFrame extends FileComponent {
 
             public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
 
@@ -380,7 +380,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class SameLocals1StackItemFrameExtended extends FileComponent {
+        public final static class SameLocals1StackItemFrameExtended extends FileComponent {
 
             public final u2 offset_delta;
             public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
@@ -394,7 +394,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class ChopFrame extends FileComponent {
+        public final static class ChopFrame extends FileComponent {
 
             public final u2 offset_delta;
 
@@ -406,7 +406,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class SameFrameExtended extends FileComponent {
+        public final static class SameFrameExtended extends FileComponent {
 
             public final u2 offset_delta;
 
@@ -418,7 +418,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class AppendFrame extends FileComponent {
+        public final static class AppendFrame extends FileComponent {
 
             public final u2 offset_delta;
             public final VerificationTypeInfo[] locals;
@@ -436,7 +436,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class FullFrame extends FileComponent {
+        public final static class FullFrame extends FileComponent {
 
             public final u2 offset_delta;
             public final u2 number_of_locals;
@@ -552,7 +552,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public final class ObjectVariableInfo {
+        public final static class ObjectVariableInfo {
 
             public final u2 cpool_index;
 
@@ -561,7 +561,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final class UninitializedVariableInfo {
+        public final static class UninitializedVariableInfo {
 
             public u2 offset;
 
