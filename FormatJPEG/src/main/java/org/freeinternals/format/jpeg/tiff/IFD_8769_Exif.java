@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -20,13 +21,13 @@ import org.freeinternals.commonlib.core.FileFormatException;
  */
 public class IFD_8769_Exif extends IFD_LONG_Pointer {
 
-    public static final String Category_A = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A);
-    public static final String Category_B = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_B);
-    public static final String Category_C = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C);
-    public static final String Category_D = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D);
-    public static final String Category_E = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_E);
-    public static final String Category_F = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F);
-    public static final String Category_G = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G);
+    public static final String CATEGORY_A = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A);
+    public static final String CATEGORY_B = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_B);
+    public static final String CATEGORY_C = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C);
+    public static final String CATEGORY_D = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D);
+    public static final String CATEGORY_E = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_E);
+    public static final String CATEGORY_F = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F);
+    public static final String CATEGORY_G = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G);
 
     public IFD_8769_Exif(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
@@ -37,7 +38,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
         final PosDataInputStream reader = new PosDataInputStream(
                 new PosByteArrayInputStream(this.tiff_ByteArray),
                 super.tiff_StartPos);
-        reader.skip(this.getExifOffset() + 2);
+        BytesTool.skip(reader, this.getExifOffset() + 2);
         if (this.ifd_number > 0) {
             for (int i = 0; i < this.ifd_number; i++) {
                 this.ifd_sub[i] = IFDParse.parse(reader, byteOrder, startPosTiff, byteArrayTiff);

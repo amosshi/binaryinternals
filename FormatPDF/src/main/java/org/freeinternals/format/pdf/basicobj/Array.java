@@ -43,7 +43,7 @@ public class Array extends FileComponent implements GenerateTreeNode {
 
         byte next1;
         while (stream.hasNext()) {
-            comp = analysis.ParseNextObject(stream, this.components);
+            comp = analysis.parseNextObject(stream, this.components);
             if (comp == null) {
                 next1 = stream.readByte();
                 if (next1 == PDFStatics.DelimiterCharacter.RS) {

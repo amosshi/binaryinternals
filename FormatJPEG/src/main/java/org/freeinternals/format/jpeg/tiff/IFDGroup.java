@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -39,7 +40,7 @@ class IFDGroup {
         final PosDataInputStream pDisTiff = new PosDataInputStream(
                 new PosByteArrayInputStream(byteArrayTiff),
                 tiffHeader.getStartPos());
-        pDisTiff.skip(offset);
+        BytesTool.skip(pDisTiff, offset);
         this.ifd_number = IFDParse.readUnsignedShort(pDisTiff, tiffHeader.byte_order);
         if (this.ifd_number > 0) {                                              // IFD count could be zero
             this.ifd = new IFD[this.ifd_number];

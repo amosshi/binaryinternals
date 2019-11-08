@@ -150,7 +150,7 @@ public class TIFF extends FileComponent {
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")
-    private class RefItem {
+    private static class RefItem {
 
         int offset;
         int length;

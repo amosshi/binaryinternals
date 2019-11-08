@@ -14,10 +14,10 @@ public class MarkerCode {
 
     public static final int MARKER_CODE_BYTES_COUNT = 2;
     public static final int MARKER_LENGTH_BYTES_COUNT = 2;
-    public static final int min = 0xFF00;
+    public static final int MIN = 0xFF00;
     public static final int TEMP = 0xFF01;                      // Standalone, For temporary private use in arithmetic coding
-    public static final int RES_min = 0xFF02;                   // Reserved
-    public static final int RES_max = 0xFFBF;                   // Reserved
+    public static final int RES_MIN = 0xFF02;                   // Reserved
+    public static final int RES_MAX = 0xFFBF;                   // Reserved
     public static final int SOF00 = 0xFFC0;                     // Specified
     public static final int SOF01 = 0xFFC1;                     // Specified
     public static final int SOF02 = 0xFFC2;                     // Specified
@@ -81,7 +81,7 @@ public class MarkerCode {
     public static final int JPG12 = 0xFFFC;                     // Reserved for JPEG extensions
     public static final int JPG13 = 0xFFFD;                     // Reserved for JPEG extensions
     public static final int COM = 0xFFFE;                       // Specified
-    public static final int max = 0xFFFF;
+    public static final int MAX = 0xFFFF;
 
     /**
      * The marker code value is in valid value space or not.
@@ -90,7 +90,7 @@ public class MarkerCode {
      * @return <code>true</code> when in valid value space, else <code>false</code>
      */
     public static boolean isValid(int code) {
-        return (code > min && code != max);
+        return (code > MIN && code != MAX);
     }
 
     /**
@@ -175,7 +175,7 @@ public class MarkerCode {
 
         if (markerCode == MarkerCode.TEMP) {
             name = "TEMP";
-        } else if (markerCode >= MarkerCode.RES_min && markerCode <= MarkerCode.RES_max) {
+        } else if (markerCode >= MarkerCode.RES_MIN && markerCode <= MarkerCode.RES_MAX) {
             name = "RES";
         } else if (markerCode >= MarkerCode.SOF00 && markerCode <= MarkerCode.COM) {
             switch (markerCode) {
@@ -368,6 +368,9 @@ public class MarkerCode {
                 case MarkerCode.COM:
                     name = "COM";
                     break;
+                default:
+                    name = "Un-recognized";
+                    break;
             }
         }
 
@@ -377,11 +380,11 @@ public class MarkerCode {
     public static String getMarkerDescription(int markerCode) {
         String desc = "Error";
 
-        if (markerCode == MarkerCode.min) {
+        if (markerCode == MarkerCode.MIN) {
             desc = "MIN";
         } else if (markerCode == MarkerCode.TEMP) {
             desc = "[<strong>Reserved markers</strong>] For temporary private use in arithmetic coding";
-        } else if (markerCode >= MarkerCode.RES_min && markerCode <= MarkerCode.RES_max) {
+        } else if (markerCode >= MarkerCode.RES_MIN && markerCode <= MarkerCode.RES_MAX) {
             desc = "[<strong>Reserved markers</strong>] Reserved";
         } else if (markerCode >= MarkerCode.SOF00 && markerCode <= MarkerCode.COM) {
             switch (markerCode) {
@@ -574,8 +577,11 @@ public class MarkerCode {
                 case MarkerCode.COM:
                     desc = "[<strong>Other markers</strong>] Comment";
                     break;
+                default:
+                    desc = "Un-recognized markder: " + markerCode;
+                    break;
             }
-        } else if (markerCode == MarkerCode.max) {
+        } else if (markerCode == MarkerCode.MAX) {
             desc = "MAX";
         }
 

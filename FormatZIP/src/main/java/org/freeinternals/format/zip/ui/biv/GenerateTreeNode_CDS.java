@@ -16,7 +16,7 @@ import org.freeinternals.format.zip.CentralDirectoryStructure;
  */
 public class GenerateTreeNode_CDS {
 
-    public static void CentralDirectoryStructure(
+    public static void centralDirectoryStructure(
             CentralDirectoryStructure cds,
             DefaultMutableTreeNode parent) {
 

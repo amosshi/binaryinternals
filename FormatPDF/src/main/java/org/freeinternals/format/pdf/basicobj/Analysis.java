@@ -15,7 +15,7 @@ import org.freeinternals.format.pdf.Texts;
  */
 public class Analysis {
 
-    public FileComponent ParseNextObject(PosDataInputStream stream, List<FileComponent> components) throws IOException {
+    public FileComponent parseNextObject(PosDataInputStream stream, List<FileComponent> components) throws IOException {
         FileComponent comp;
         byte next1 = stream.readByte();
         byte next2;

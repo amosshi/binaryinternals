@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
@@ -1624,10 +1625,7 @@ public final class Opcode {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
                 int nArgs = pdis.readUnsignedByte();
-                int skippedBytes = pdis.skipBytes(1);
-                if (skippedBytes != 1) {
-                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", 1, skippedBytes));
-                }
+                BytesTool.skipBytes(pdis, 1);
 
                 parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, nArgs);
                 return parsed;
@@ -1641,10 +1639,9 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
-                int skippedBytes = pdis.skipBytes(2);  // Skip 2 zero bytes
-                if (skippedBytes != 2) {
-                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", 2, skippedBytes));
-                }
+                
+                // Skip 2 zero bytes
+                BytesTool.skipBytes(pdis, 2);
                 parsed.opCodeText = this.name();
                 return parsed;
             }
@@ -2003,10 +2000,7 @@ public final class Opcode {
             int skip = pdis.getPos() % 4;
             skip = (skip > 0) ? 4 - skip : skip;
             if (skip > 0) {
-                int skippedBytes = pdis.skipBytes(skip);
-                if (skippedBytes != skip) {
-                    throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
-                }
+                BytesTool.skipBytes(pdis, skip);
             }
         }
 

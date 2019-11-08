@@ -37,7 +37,7 @@ public class StartXRef extends FileComponent implements GenerateTreeNode {
         super.startPos = stream.getPos() - line.length();
         this.HeaderLine = line;
         this.OffsetLine = stream.readASCIILine();
-        this.Offset = Integer.valueOf(this.OffsetLine.Line);
+        this.Offset = Integer.parseInt(this.OffsetLine.Line);
         super.length = stream.getPos() - super.startPos;
     }
 

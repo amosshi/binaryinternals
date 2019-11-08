@@ -25,10 +25,7 @@ public class FileComponenPlaceHolder extends FileComponent {
 
         if (length > 0) {
             this.length = length;
-            int skippedBytes = posDataInputStream.skipBytes(length);
-            if (skippedBytes != length) {
-                throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", length, skippedBytes));
-            }
+            BytesTool.skipBytes(posDataInputStream, length);
         } else {
             this.length = 0;
         }

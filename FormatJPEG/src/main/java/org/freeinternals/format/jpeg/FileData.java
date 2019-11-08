@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -27,7 +28,7 @@ public class FileData extends FileComponent implements GenerateTreeNode {
         this.isCompressedData = isCompressedData;
 
         if (length > 0) {
-            pDis.skip(length);
+            BytesTool.skip(pDis, length);
         }
     }
 

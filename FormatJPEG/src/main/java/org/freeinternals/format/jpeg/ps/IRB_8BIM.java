@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.ps;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -47,7 +48,7 @@ public class IRB_8BIM extends FileComponent {
         // skip for name
         this.data_skip1byte = ((this.size & 1) != 0);
         if (this.data_skip1byte) {
-            input.skip(1);
+            BytesTool.skip(input, 1);
         }
 
         // data
@@ -63,7 +64,7 @@ public class IRB_8BIM extends FileComponent {
         // skip for name
         this.name_skip1byte = ((this.size & 1) != 0);  // true for odd value; false for even
         if (this.name_skip1byte) {
-            input.skip(1);
+            BytesTool.skip(input, 1);
         }
 
         // total length

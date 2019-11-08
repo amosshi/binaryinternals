@@ -52,7 +52,12 @@ public class EndOfCentralDirectoryRecord extends FileComponent {
 
     EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException, FileFormatException {
         this.startPos = stream.getPos();
-        stream.read(this.Signature);
+
+        int readBytes = stream.read(this.Signature);
+        if (readBytes != this.Signature.length) {
+            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
+        }
+
         if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_END) == false) {
             throw new FileFormatException("Signature does not match for 'end of central directory signature'.");
         }
@@ -65,7 +70,11 @@ public class EndOfCentralDirectoryRecord extends FileComponent {
         this.ZipFileCommentLength = stream.readUnsignedShortInLittleEndian();
         if (this.ZipFileCommentLength > 0) {
             this.ZipFileComment = new byte[this.ZipFileCommentLength];
-            stream.read(this.ZipFileComment);
+
+            readBytes = stream.read(this.ZipFileComment);
+            if (readBytes != this.ZipFileComment.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ZipFileComment.length, readBytes));
+            }
         } else {
             this.ZipFileComment = null;
         }

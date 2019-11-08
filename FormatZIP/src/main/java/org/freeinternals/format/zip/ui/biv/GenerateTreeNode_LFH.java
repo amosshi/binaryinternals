@@ -21,7 +21,7 @@ public class GenerateTreeNode_LFH {
     /**
      * Generate tree nodes for local file header, as well as file data.
      */
-    public static void LocalFileHeader(
+    public static void localFileHeader(
             LocalFileHeader lfh,
             DefaultMutableTreeNode parent) {
 

@@ -49,7 +49,7 @@ public class LocalFileHeader extends FileComponent {
     public final int LastModFileTime;
     /**
      * Parsed value of {@link #LastModFileTime}.
-     * 
+     *
      * @see #LastModFileTime
      */
     public final MSDosTime LastModFileTimeValue;
@@ -75,7 +75,7 @@ public class LocalFileHeader extends FileComponent {
     public final byte[] FileName;
     /**
      * Parsed value of {@link #FileName}.
-     * 
+     *
      * @see #FileName
      */
     public final String FileNameValue;
@@ -84,26 +84,46 @@ public class LocalFileHeader extends FileComponent {
 
     LocalFileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
         this.startPos = stream.getPos();
-        stream.read(this.Signature);
+
+        int readBytes = stream.read(this.Signature);
+        if (readBytes != this.Signature.length) {
+            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
+        }
+
         if (BytesTool.isByteArraySame(this.Signature, ZIPFile.LOCAL_FILE_HEADER) == false) {
             throw new FileFormatException("Signature does not match for 'local file header signature'.");
         }
+
         this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
-        stream.read(this.GeneralPurposeBitFlag);
+
+        readBytes = stream.read(this.GeneralPurposeBitFlag);
+        if (readBytes != this.GeneralPurposeBitFlag.length) {
+            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.GeneralPurposeBitFlag.length, readBytes));
+        }
+
         this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
         this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
         this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
         this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
         this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
-        stream.read(this.CRC32);
+
+        readBytes = stream.read(this.CRC32);
+        if (readBytes != this.CRC32.length) {
+            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.CRC32.length, readBytes));
+        }
+
         this.CompressedSize = stream.readUnsignedIntInLittleEndian();
         this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
         this.FileNameLength = stream.readUnsignedShortInLittleEndian();
         this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
         if (this.FileNameLength > 0) {
             this.FileName = new byte[this.FileNameLength];
-            stream.read(this.FileName);
-            PosDataInputStream utf8 = new PosDataInputStream(new PosByteArrayInputStream(this.FileName));
+            readBytes = stream.read(this.FileName);
+            if (readBytes != this.FileName.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileName.length, readBytes));
+            }
+
+            // PosDataInputStream utf8 = new PosDataInputStream(new PosByteArrayInputStream(this.FileName));
             // this.FileNameValue = utf8.readUTF();              // Failed: EOFException
             // this.FileNameValue = new String(this.FileName);   // TODO - This logic is not working for Chinese charactor
             // this.FileNameValue = new String(this.FileName, Charset.forName("ISO-8859-1"));// Not working for WinRAR zip Chinese file name
@@ -117,7 +137,10 @@ public class LocalFileHeader extends FileComponent {
         }
         if (this.ExtraFieldLength > 0) {
             this.ExtraField = new byte[this.ExtraFieldLength];
-            stream.read(this.ExtraField);
+            readBytes = stream.read(this.ExtraField);
+            if (readBytes != this.ExtraField.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExtraField.length, readBytes));
+            }
         } else {
             this.ExtraField = null;
         }

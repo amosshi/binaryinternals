@@ -46,7 +46,7 @@ public class AttributeUnrecognized extends AttributeInfo {
             this.rawData = new byte[this.attribute_length.value];
             int readBytes = posDataInputStream.read(this.rawData);
             if (readBytes != this.attribute_length.value) {
-                throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", this.attribute_length.value, readBytes));
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes red %d", this.attribute_length.value, readBytes));
             }
         }
 

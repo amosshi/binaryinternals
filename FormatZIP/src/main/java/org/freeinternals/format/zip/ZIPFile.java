@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
@@ -31,11 +32,11 @@ public class ZIPFile extends FileFormat {
      * Central file header signature of File header in Central directory
      * structure.
      */
-    public static final byte[] CENTRAL_FILE_HEADER = {(byte) 0x50, (byte) 0x4B, (byte) 0x01, (byte) 0x02};
+    static final byte[] CENTRAL_FILE_HEADER = {(byte) 0x50, (byte) 0x4B, (byte) 0x01, (byte) 0x02};
     /**
      * Local file header signature in Local file header.
      */
-    public static final byte[] LOCAL_FILE_HEADER = {(byte) 0x50, (byte) 0x4B, (byte) 0x03, (byte) 0x04};
+    static final byte[] LOCAL_FILE_HEADER = {(byte) 0x50, (byte) 0x4B, (byte) 0x03, (byte) 0x04};
     /**
      * Header signature of Digital signature in Central directory structure.
      */
@@ -43,7 +44,7 @@ public class ZIPFile extends FileFormat {
     /**
      * End of central dir signature in End of central directory record.
      */
-    public static final byte[] CENTRAL_END = {(byte) 0x50, (byte) 0x4B, (byte) 0x05, (byte) 0x06};
+    static final byte[] CENTRAL_END = {(byte) 0x50, (byte) 0x4B, (byte) 0x05, (byte) 0x06};
     /**
      * Signature in Zip64 end of central directory record.
      */
@@ -90,7 +91,7 @@ public class ZIPFile extends FileFormat {
             return;
         }
         stream.reset();
-        stream.skip(this.cde.CentralDirectoryOffset);
+        BytesTool.skip(stream, this.cde.CentralDirectoryOffset);
         this.cds = new CentralDirectoryStructure[this.cde.EntryTotalNumber];
         for (int i = 0; i < this.cds.length; i++) {
             this.cds[i] = new CentralDirectoryStructure(stream);
@@ -100,7 +101,7 @@ public class ZIPFile extends FileFormat {
         this.lfh = new LocalFileHeader[this.cds.length];
         for (int i = 0; i < this.cds.length; i++) {
             stream.reset();
-            stream.skip(this.cds[i].header.RelativeOffsetOfLocalHeader);
+            BytesTool.skip(stream, this.cds[i].header.RelativeOffsetOfLocalHeader);
             this.lfh[i] = new LocalFileHeader(stream);
         }
 
@@ -140,12 +141,12 @@ public class ZIPFile extends FileFormat {
 
             // Generate the tree nodes
             if (value instanceof LocalFileHeader) {
-                GenerateTreeNode_LFH.LocalFileHeader((LocalFileHeader) value, root);
+                GenerateTreeNode_LFH.localFileHeader((LocalFileHeader) value, root);
                 lastPos = (int) (lastPos + ((LocalFileHeader) value).getSizeWithFileData());
             } else if (value instanceof CentralDirectoryStructure) {
-                GenerateTreeNode_CDS.CentralDirectoryStructure((CentralDirectoryStructure) value, root);
+                GenerateTreeNode_CDS.centralDirectoryStructure((CentralDirectoryStructure) value, root);
             } else if (value instanceof EndOfCentralDirectoryRecord) {
-                GenerateTreeNode_CDE.EndOfCentralDirectoryRecord((EndOfCentralDirectoryRecord) value, root);
+                GenerateTreeNode_CDE.endOfCentralDirectoryRecord((EndOfCentralDirectoryRecord) value, root);
             } else {
                 root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         lastPos,

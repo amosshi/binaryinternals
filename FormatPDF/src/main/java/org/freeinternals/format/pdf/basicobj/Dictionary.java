@@ -77,7 +77,7 @@ public class Dictionary extends FileComponent implements GenerateTreeNode {
         byte next2;
         boolean stop = false;
         while (stream.hasNext()) {
-            comp = analysis.ParseNextObject(stream, this.components);
+            comp = analysis.parseNextObject(stream, this.components);
             if (comp == null) {
                 next1 = stream.readByte();
                 switch (next1) {

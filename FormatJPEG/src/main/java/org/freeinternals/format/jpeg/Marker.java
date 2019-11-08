@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -46,7 +47,8 @@ public class Marker extends FileComponent implements GenerateTreeNode {
         if (MarkerCode.isLengthAvailable(markerCode)) {
             this.marker_length = pDIS.readUnsignedShort();
             super.length = this.marker_length + 2;
-            pDIS.skip(this.marker_length - 2);
+            long skip = this.marker_length - 2;
+            BytesTool.skip(pDIS, skip);
         } else {
             this.marker_length = 0;
             super.length = MarkerCode.MARKER_CODE_BYTES_COUNT;
@@ -56,13 +58,13 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     protected void parse(final PosDataInputStream pDisMarker) throws IOException, FileFormatException {
     }
 
-    protected void parseInitSkip(final PosDataInputStream pDisMarker) throws IOException{
+    protected void parseInitSkip(final PosDataInputStream pDisMarker) throws IOException {
         // Skip the marker code and length field
-        pDisMarker.skip(MarkerCode.MARKER_CODE_BYTES_COUNT);
-        pDisMarker.skip(MarkerCode.MARKER_LENGTH_BYTES_COUNT);
+        long skip = MarkerCode.MARKER_CODE_BYTES_COUNT + MarkerCode.MARKER_LENGTH_BYTES_COUNT;
+        BytesTool.skip(pDisMarker, skip);
     }
 
-    protected String parseIdentifier(final PosDataInputStream pDisMarker) throws IOException{
+    protected String parseIdentifier(final PosDataInputStream pDisMarker) throws IOException {
 
         // Parse the Identifier, an '\000' ended ASCII string
         final StringBuffer sb = new StringBuffer(IDENTIFIER_LENGTH_MAX);

@@ -74,8 +74,8 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
     IndirectObject(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
         stream.backward(line.length());
         super.startPos = stream.getPos();
-        this.ObjectNumber = Integer.valueOf(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
-        this.GenerationNumber = Integer.valueOf(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
+        this.ObjectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
+        this.GenerationNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
         this.NumberLen = stream.getPos() - super.startPos;
         stream.skip(SIGNATURE_START.length());
         byte b1 = stream.readByte();
@@ -142,7 +142,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         Analysis analysis = new Analysis();
 
         while (stream.hasNext()) {
-            comp = analysis.ParseNextObject(stream, this.components);
+            comp = analysis.parseNextObject(stream, this.components);
             if (comp == null) {
                 // To Ensure Continue Analysis
                 byte next1 = stream.readByte();

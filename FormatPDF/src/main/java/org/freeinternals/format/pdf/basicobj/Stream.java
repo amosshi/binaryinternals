@@ -24,12 +24,12 @@ public class Stream extends FileComponent implements GenerateTreeNode {
     /**
      * The signature length.
      */
-    public final int SignatureLen;
-    public ASCIILine SignatureEnd = null;
+    public final int signatureLen;
+    public ASCIILine signatureEnd = null;
 
     public Stream(PosDataInputStream stream, PosDataInputStream.ASCIILine line) throws IOException, FileFormatException {
-        this.SignatureLen = SIGNATURE_START.length() + line.NewLineLength;
-        super.startPos = stream.getPos() - this.SignatureLen;
+        this.signatureLen = SIGNATURE_START.length() + line.NewLineLength;
+        super.startPos = stream.getPos() - this.signatureLen;
         this.parse(stream);
         this.length = stream.getPos() - super.startPos;
     }
@@ -39,11 +39,11 @@ public class Stream extends FileComponent implements GenerateTreeNode {
         while (stream.hasNext()) {
             line = stream.readASCIILine();
             if (line.Line.endsWith(Stream.SIGNATURE_END)) {
-                this.SignatureEnd = line;
+                this.signatureEnd = line;
             }
         }
 
-        if (this.SignatureEnd == null) {
+        if (this.signatureEnd == null) {
             throw new FileFormatException(String.format(
                     "The 'endstream' tag is not found for current object. Object Start Offset = %d, Current Offset = %d",
                     super.startPos,
@@ -65,7 +65,7 @@ public class Stream extends FileComponent implements GenerateTreeNode {
      * <code>endstream</code>. </p>
      */
     public int getStreamLength() {
-        return this.length - this.SignatureLen - 1 - this.SignatureEnd.length();
+        return this.length - this.signatureLen - 1 - this.signatureEnd.length();
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
@@ -85,9 +85,9 @@ public class Stream extends FileComponent implements GenerateTreeNode {
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.SignatureLen - SIGNATURE_START.length(),
+                this.signatureLen - SIGNATURE_START.length(),
                 Texts.NewLine)));
-        pos += (this.SignatureLen - SIGNATURE_START.length());
+        pos += (this.signatureLen - SIGNATURE_START.length());
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
@@ -103,13 +103,13 @@ public class Stream extends FileComponent implements GenerateTreeNode {
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.SignatureEnd.Line.length(),
+                this.signatureEnd.Line.length(),
                 Texts.Signature + SIGNATURE_END)));
-        pos += this.SignatureEnd.Line.length();
+        pos += this.signatureEnd.Line.length();
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.SignatureEnd.NewLineLength,
+                this.signatureEnd.NewLineLength,
                 Texts.NewLine)));
 
         parentNode.add(nodeStream);

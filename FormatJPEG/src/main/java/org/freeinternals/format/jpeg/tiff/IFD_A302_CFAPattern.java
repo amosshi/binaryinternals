@@ -17,11 +17,11 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_G
+ * @see IFD_8769_Exif#CATEGORY_G
  */
 public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
 
-    public static final String[] FilterColor = {"RED", "GREEN", "BLUE", "CYAN", "MAGENTA", "YELLOW", "WHITE"};
+    static final String[] FILTER_COLORS = {"RED", "GREEN", "BLUE", "CYAN", "MAGENTA", "YELLOW", "WHITE"};
     /** Horizontal repeat pixel unit. */
     public final int n;
     /** Vertical repeat pixel unit. */
@@ -86,7 +86,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
                 node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         super.tiff_StartPos + super.ifd_value_offset + 4 + i,
                         1,
-                        String.format("CFA value: %d - %s", cfa, FilterColor[cfa]))));
+                        String.format("CFA value: %d - %s", cfa, FILTER_COLORS[cfa]))));
             }
         }
     }

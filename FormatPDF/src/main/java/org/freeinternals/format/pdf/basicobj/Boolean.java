@@ -16,8 +16,8 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  */
 public final class Boolean extends FileComponent implements GenerateTreeNode {
 
-    public static String VALUE_TRUE = "true";
-    public static String VALUE_FALSE = "false";
+    public static final String VALUE_TRUE = "true";
+    public static final String VALUE_FALSE = "false";
     /**
      * Name text in
      * <code>Raw</code> format.

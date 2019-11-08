@@ -108,7 +108,7 @@ public class IFD_RATIONAL extends IFD {
     }
 
     @SuppressWarnings("PublicInnerClass")
-    public class Rational {
+    public static class Rational {
 
         public final long numerator;
         public final long denominator;

@@ -6,6 +6,7 @@
  */
 package org.freeinternals.commonlib.core;
 
+import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,37 @@ import java.util.zip.ZipFile;
  * @author Amos Shi
  */
 public final class BytesTool {
+
+    /**
+     * Get a string for the {@code hex} view of byte array {@code data}.
+     *
+     * @param data Byte array
+     * @return A string representing the {@code hex} version of {@code data}
+     */
+    public static String getByteDataHexView(final byte[] data) {
+        if (data == null) {
+            return "";
+        }
+        if (data.length < 1) {
+            return "";
+        }
+
+        final StringBuilder sb = new StringBuilder(data.length * 5);
+        final int length = data.length;
+        int i;
+        int lineBreakCounter = 0;
+        for (i = 0; i < length; i++) {
+            sb.append(String.format(" %02X", data[i]));
+            lineBreakCounter++;
+            if (lineBreakCounter == 16) {
+                sb.append('\n');
+                lineBreakCounter = 0;
+            }
+        }
+        sb.append('\n');
+
+        return sb.toString();
+    }
 
     public static boolean isByteArrayEmpty(final byte[] buff, final int startPos, final int length) {
         boolean result = false;
@@ -109,37 +141,6 @@ public final class BytesTool {
     }
 
     /**
-     * Get a string for the {@code hex} view of byte array {@code data}.
-     *
-     * @param data Byte array
-     * @return A string representing the {@code hex} version of {@code data}
-     */
-    public static String getByteDataHexView(final byte[] data) {
-        if (data == null) {
-            return "";
-        }
-        if (data.length < 1) {
-            return "";
-        }
-
-        final StringBuilder sb = new StringBuilder(data.length * 5);
-        final int length = data.length;
-        int i;
-        int lineBreakCounter = 0;
-        for (i = 0; i < length; i++) {
-            sb.append(String.format(" %02X", data[i]));
-            lineBreakCounter++;
-            if (lineBreakCounter == 16) {
-                sb.append('\n');
-                lineBreakCounter = 0;
-            }
-        }
-        sb.append('\n');
-
-        return sb.toString();
-    }
-
-    /**
      * Returns byte array from the {@code file}
      *
      * @param file The file
@@ -205,6 +206,20 @@ public final class BytesTool {
                     byteBuf.array().length,
                     zipFile.getName(),
                     zipEntry.getName()));
+        }
+    }
+
+    public static void skip(final InputStream is, final long skip) throws IOException {
+        long skippedBytes = is.skip(skip);
+        if (skippedBytes != skip) {
+            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
+        }
+    }
+    
+    public static void skipBytes(final DataInput di, final int skip) throws IOException {
+        long skippedBytes = di.skipBytes(skip);
+        if (skippedBytes != skip) {
+            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
         }
     }
 

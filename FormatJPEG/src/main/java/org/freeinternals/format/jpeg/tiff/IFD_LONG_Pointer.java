@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -29,11 +30,10 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
 
         // Sub IFD
-
         final PosDataInputStream reader = new PosDataInputStream(
                 new PosByteArrayInputStream(this.tiff_ByteArray),
                 super.tiff_StartPos);
-        reader.skip(super.value[0]);
+        BytesTool.skip(reader, super.value[0]);
         this.ifd_number = super.readUnsignedShort(reader);
         if (this.ifd_number > 0) {
             this.ifd_sub = new IFD[this.ifd_number];

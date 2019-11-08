@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream.ASCIILine;
@@ -107,8 +108,8 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
                         line));
             }
 
-            this.FirstObjectNumber = Integer.valueOf(subsection_header[0]);
-            this.NumberOfEntries = Integer.valueOf(subsection_header[1]);
+            this.FirstObjectNumber = Integer.parseInt(subsection_header[0]);
+            this.NumberOfEntries = Integer.parseInt(subsection_header[1]);
             for (int i = 0; i < this.NumberOfEntries; i++) {
                 this.Entries.add(new Entry(stream));
             }
@@ -155,10 +156,10 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
             super.startPos = stream.getPos();
             super.length = LENGTH;
 
-            this.Offset = Integer.valueOf(stream.readASCII(OFFSET_LENGTH));
-            stream.skip(1);
-            this.GenerationNumber = Integer.valueOf(stream.readASCII(GENERATIONNUMBER_LENGTH));
-            stream.skip(1);
+            this.Offset = Integer.parseInt(stream.readASCII(OFFSET_LENGTH));
+            BytesTool.skip(stream, 1);
+            this.GenerationNumber = Integer.parseInt(stream.readASCII(GENERATIONNUMBER_LENGTH));
+            BytesTool.skip(stream, 1);
             this.Type = (char) stream.readByte();
             stream.skip(2);
         }

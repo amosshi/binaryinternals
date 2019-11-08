@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.icc;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -31,7 +32,9 @@ public class TagData extends FileComponent implements GenerateTreeNode {
         super.length = input.getBuf().length;
 
         this.tagType = input.readInt();
-        input.skip(4);                                    // Reserved
+
+        // Reserved bytes
+        BytesTool.skip(input, 4);
     }
 
     public String getTagType() {

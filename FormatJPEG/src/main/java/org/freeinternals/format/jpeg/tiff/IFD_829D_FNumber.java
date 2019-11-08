@@ -14,12 +14,12 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_G
+ * @see IFD_8769_Exif#CATEGORY_G
  */
 public class IFD_829D_FNumber extends IFD_RATIONAL_COUNT1 {
 
     private final static String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_829D_Description)
-            + IFD_8769_Exif.Category_G;
+            + IFD_8769_Exif.CATEGORY_G;
 
     public IFD_829D_FNumber(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
             throws IOException, FileFormatException {

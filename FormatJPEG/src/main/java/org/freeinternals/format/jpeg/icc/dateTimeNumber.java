@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.jpeg.icc;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
@@ -15,6 +16,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  */
+@SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")
 public class dateTimeNumber {
 
     public final int year;

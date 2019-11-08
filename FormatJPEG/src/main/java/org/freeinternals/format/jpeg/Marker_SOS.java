@@ -18,7 +18,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
  */
 public class Marker_SOS extends Marker {
 
-    private class Parameter {
+    private static class Parameter {
 
         /** Scan component selector */
         @SuppressWarnings("PackageVisibleField")

@@ -16,7 +16,7 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  */
 public final class Null extends FileComponent implements GenerateTreeNode {
 
-    public static String VALUE = "null";
+    public static final String VALUE = "null";
     /**
      * Name text in
      * <code>Raw</code> format.

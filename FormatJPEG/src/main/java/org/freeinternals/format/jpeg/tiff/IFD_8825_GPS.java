@@ -8,6 +8,7 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -31,7 +32,7 @@ public class IFD_8825_GPS extends IFD_LONG_Pointer {
                 new PosByteArrayInputStream(this.tiff_ByteArray),
                 super.tiff_StartPos
                 );
-        reader.skip(this.getGPSOffset() + 2);
+        BytesTool.skip(reader, this.getGPSOffset() + 2);
         if (this.ifd_number > 0) {
             for (int i = 0; i < this.ifd_number; i++) {
                 this.ifd_sub[i] = IFDParse.parseGPS(reader, byteOrder, startPosTiff, byteArrayTiff);

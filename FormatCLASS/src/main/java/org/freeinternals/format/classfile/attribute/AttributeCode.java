@@ -78,7 +78,7 @@ public class AttributeCode extends AttributeInfo {
         this.code = new byte[this.code_length.value];
         int readBytes = posDataInputStream.read(this.code);
         if (readBytes != this.code_length.value) {
-            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", this.code_length.value, readBytes));
+            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.code_length.value, readBytes));
         }
 
         this.exception_table_length = new u2(posDataInputStream);

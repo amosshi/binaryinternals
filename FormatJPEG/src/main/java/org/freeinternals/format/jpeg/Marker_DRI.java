@@ -56,7 +56,7 @@ public class Marker_DRI extends Marker {
 
         // Ri
         comp = new JTreeNodeFileComponent(
-                lastPos = lastPos + 2,
+                lastPos + 2,
                 2,
                 String.format("Ri: %d", this.Ri));
         comp.setDescription("Restart interval – Specifies the number of MCU in the restart interval.");

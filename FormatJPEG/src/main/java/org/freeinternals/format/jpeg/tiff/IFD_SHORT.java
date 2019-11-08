@@ -90,6 +90,9 @@ public class IFD_SHORT extends IFD {
                     comp.setDescription(description);
                     parentNode.add(new DefaultMutableTreeNode(comp));
                     break;
+                default:
+                    // Do nothing
+                    break;
             }
         } else {
             comp = new JTreeNodeFileComponent(

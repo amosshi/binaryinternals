@@ -16,7 +16,7 @@ import org.freeinternals.format.zip.EndOfCentralDirectoryRecord;
  */
 public class GenerateTreeNode_CDE {
 
-    public static void EndOfCentralDirectoryRecord(
+    public static void endOfCentralDirectoryRecord(
             EndOfCentralDirectoryRecord cde,
             DefaultMutableTreeNode parent) {
 

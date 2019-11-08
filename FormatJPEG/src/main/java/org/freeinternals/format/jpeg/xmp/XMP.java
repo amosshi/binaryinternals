@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.jpeg.xmp;
 
+import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -18,7 +19,9 @@ import org.freeinternals.commonlib.core.FileFormatException;
  */
 public class XMP extends FileComponent{
 
+    private static final Logger LOG = Logger.getLogger(XMP.class.getName());
     public final byte[] rawData;
+    private final String xmpmeta;
     //public final XMPMeta xmpMeta;
 
     public XMP(final PosDataInputStream input) throws FileFormatException {
@@ -30,6 +33,8 @@ public class XMP extends FileComponent{
         for (byte b : this.rawData) {
             sb.append((char) b);
         }
+        this.xmpmeta = sb.toString();
+        LOG.info(this.xmpmeta);
 
         // TODO - Analysis the data via XMPMeta
 

@@ -54,7 +54,7 @@ public class CentralDirectoryStructure extends FileComponent {
      *  file comment (variable size)
      * </pre>
      */
-    public class FileHeader {
+    public static class FileHeader {
 
         public final byte[] Signature = new byte[4];
         public final int VersionMadeBy;
@@ -114,45 +114,81 @@ public class CentralDirectoryStructure extends FileComponent {
         public final byte[] FileComment;
 
         FileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
-            stream.read(this.Signature);
+            int readBytes = stream.read(this.Signature);
+            if (readBytes != this.Signature.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
+            }
             if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
                 throw new FileFormatException("Signature does not match for 'central file header signature'.");
             }
+
             this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();
             this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
-            stream.read(this.GeneralPurposeBitFlag);
+
+            readBytes = stream.read(this.GeneralPurposeBitFlag);
+            if (readBytes != this.GeneralPurposeBitFlag.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.GeneralPurposeBitFlag.length, readBytes));
+            }
+
             this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
             this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
             this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
             this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
             this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
-            stream.read(this.CRC32);
+
+            readBytes = stream.read(this.CRC32);
+            if (readBytes != this.CRC32.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.CRC32.length, readBytes));
+            }
+
             this.CompressedSize = stream.readUnsignedIntInLittleEndian();
             this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
             this.FileNameLength = stream.readUnsignedShortInLittleEndian();
             this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
             this.FileCommentLength = stream.readUnsignedShortInLittleEndian();
             this.DiskNumberStart = stream.readUnsignedShortInLittleEndian();
-            stream.read(this.InternalFileAttributes);
-            stream.read(this.ExternalFileAttributes);
+
+            readBytes = stream.read(this.InternalFileAttributes);
+            if (readBytes != this.InternalFileAttributes.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.InternalFileAttributes.length, readBytes));
+            }
+
+            readBytes = stream.read(this.ExternalFileAttributes);
+            if (readBytes != this.ExternalFileAttributes.length) {
+                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExternalFileAttributes.length, readBytes));
+            }
+
             this.RelativeOffsetOfLocalHeader = stream.readUnsignedIntInLittleEndian();
+
             if (this.FileNameLength > 0) {
                 this.FileName = new byte[this.FileNameLength];
-                stream.read(this.FileName);
+                readBytes = stream.read(this.FileName);
+                if (readBytes != this.FileName.length) {
+                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileName.length, readBytes));
+                }
+
                 this.FileNameValue = new String(this.FileName, Charset.forName("UTF-8")); // Not working for WinRAR zip Chinese file name
             } else {
                 this.FileName = null;
-                this.FileNameValue = "";  // We are not using NULL to make smaller dump
+                this.FileNameValue = "";  // We are not using NULL to avoid Exception
             }
+
             if (this.ExtraFieldLength > 0) {
                 this.ExtraField = new byte[this.ExtraFieldLength];
-                stream.read(this.ExtraField);
+                readBytes = stream.read(this.ExtraField);
+                if (readBytes != this.ExtraField.length) {
+                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExtraField.length, readBytes));
+                }
             } else {
                 this.ExtraField = null;
             }
+
             if (this.FileCommentLength > 0) {
                 this.FileComment = new byte[this.FileCommentLength];
-                stream.read(this.FileComment);
+                readBytes = stream.read(this.FileComment);
+                if (readBytes != this.FileComment.length) {
+                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileComment.length, readBytes));
+                }
             } else {
                 this.FileComment = null;
             }

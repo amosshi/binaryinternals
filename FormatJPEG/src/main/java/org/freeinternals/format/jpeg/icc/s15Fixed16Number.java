@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.jpeg.icc;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
@@ -13,6 +14,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  */
+@SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")
 public class s15Fixed16Number {
 
     public final byte[] rawData;
@@ -42,7 +44,7 @@ public class s15Fixed16Number {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("%.4f", this.value);
     }
 }

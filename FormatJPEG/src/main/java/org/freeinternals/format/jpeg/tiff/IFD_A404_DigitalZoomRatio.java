@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_G
+ * @see IFD_8769_Exif#CATEGORY_G
  */
 public class IFD_A404_DigitalZoomRatio extends IFD_RATIONAL_COUNT1 {
 
@@ -28,6 +28,6 @@ public class IFD_A404_DigitalZoomRatio extends IFD_RATIONAL_COUNT1 {
         super.generateTreeNode_RATIONAL(
                 parentNode,
                 IFDMessage.getString(IFDMessage.KEY_IFD_A404_Description)
-                + IFD_8769_Exif.Category_G);
+                + IFD_8769_Exif.CATEGORY_G);
     }
 }

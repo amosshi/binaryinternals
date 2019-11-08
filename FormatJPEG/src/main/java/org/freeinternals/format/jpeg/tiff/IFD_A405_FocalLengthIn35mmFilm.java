@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_G
+ * @see IFD_8769_Exif#CATEGORY_G
  * @see IFD_920A_FocalLength
  */
 public class IFD_A405_FocalLengthIn35mmFilm extends IFD_SHORT_COUNT1 {
@@ -29,6 +29,6 @@ public class IFD_A405_FocalLengthIn35mmFilm extends IFD_SHORT_COUNT1 {
         super.generateTreeNode_SHORT(
                 parentNode,
                 IFDMessage.getString(IFDMessage.KEY_IFD_A405_Description)
-                + IFD_8769_Exif.Category_G);
+                + IFD_8769_Exif.CATEGORY_G);
     }
 }

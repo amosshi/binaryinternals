@@ -104,7 +104,7 @@ public class ICCProfile extends FileComponent {
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")
-    private class RefItem {
+    private static class RefItem {
 
         int i;
         Tag tag;
