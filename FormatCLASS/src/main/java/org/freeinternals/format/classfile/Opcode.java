@@ -2164,6 +2164,14 @@ public final class Opcode {
         public final int opCode;
 
         /**
+         * Name for {@link #opCode}.
+         *
+         * @see Instruction#code
+         * @see Instruction#getName()
+         */
+        public final String opCodeName;
+        
+        /**
          * Text of the {@link #opCode}. In case {@link #opCode} is
          * {@link Instruction#wide}, the {@link #opCodeText} contains the
          * following opCode after <code>wide</code> also.
@@ -2247,6 +2255,7 @@ public final class Opcode {
         InstructionParsed(int curPos, int opcode) {
             this.offset = curPos;
             this.opCode = opcode;
+            this.opCodeName = Instruction.valueOf(opcode).getName();
         }
 
         /**
