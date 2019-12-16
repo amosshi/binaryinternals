@@ -1639,7 +1639,7 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
-                
+
                 // Skip 2 zero bytes
                 BytesTool.skipBytes(pdis, 2);
                 parsed.opCodeText = this.name();
@@ -1753,6 +1753,27 @@ public final class Opcode {
          * TODO - Refactor this method
          */
         wide(196) {
+            private List<Integer> WIDE_SINGLE_OPCODES = new ArrayList<Integer>() {
+                {
+                    add(Opcode.Instruction.iload.code);
+                    add(Opcode.Instruction.lload.code);
+                    add(Opcode.Instruction.fload.code);
+                    add(Opcode.Instruction.dload.code);
+                    add(Opcode.Instruction.aload.code);
+                    add(Opcode.Instruction.istore.code);
+                    add(Opcode.Instruction.lstore.code);
+                    add(Opcode.Instruction.fstore.code);
+                    add(Opcode.Instruction.dstore.code);
+                    add(Opcode.Instruction.astore.code);
+                    add(Opcode.Instruction.ret.code);
+                }
+            };
+
+            /**
+             * The target opcode for the {@link Instruction#wide} instruction.
+             */
+            private int wide_opcode;
+
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1760,50 +1781,34 @@ public final class Opcode {
                 return parsed;
             }
 
+            @Override
+            String getName() {
+                return getWideName(Opcode.Instruction.valueOf(this.wide_opcode).name());
+            }
+
+            /**
+             * Get the name with "wide " prefix. Only applied for {@link #wide}.
+             *
+             * @return opcode name with "wide " prefix
+             */
+            String getWideName(String s) {
+                return Instruction.wide.name() + " " + s;
+            }
+
             private String getText_wide(final PosDataInputStream pdis) throws IOException {
-                final int opcode = pdis.readUnsignedByte();
+                this.wide_opcode = pdis.readUnsignedByte();
                 String opCodeText;
 
                 int shortValue;
                 int shortValue2;
 
-                if (opcode == Opcode.Instruction.iload.code) {
+                if (this.WIDE_SINGLE_OPCODES.contains(this.wide_opcode)) {
                     shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.iload.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.lload.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.lload.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.fload.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.fload.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.dload.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.dload.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.aload.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.aload.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.istore.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.istore.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.lstore.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.lstore.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.fstore.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.fstore.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.dstore.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.dstore.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.astore.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.astore.name()), shortValue);
-                } else if (opcode == Opcode.Instruction.iinc.code) {
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, getWideName(Opcode.Instruction.valueOf(this.wide_opcode).name()), shortValue);
+                } else if (this.wide_opcode == Opcode.Instruction.iinc.code) {
                     shortValue = pdis.readUnsignedShort();
                     shortValue2 = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, Instruction.getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
-                } else if (opcode == Opcode.Instruction.ret.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, Instruction.getWideName(Opcode.Instruction.ret.name()), shortValue);
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
                 } else {
                     opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
                 }
@@ -1920,6 +1925,7 @@ public final class Opcode {
          * @see #new_
          * @see #instanceof_
          * @see #reserved
+         * @see #wide
          */
         String getName() {
             String name = super.name();
@@ -1932,15 +1938,6 @@ public final class Opcode {
             }
 
             return name;
-        }
-
-        /**
-         * Get the name with "wide " prefix. Only applied for {@link #wide}.
-         *
-         * @return opcode name with "wide " prefix
-         */
-        static String getWideName(String s) {
-            return Instruction.wide.name() + " " + s;
         }
 
         /**
@@ -2170,7 +2167,7 @@ public final class Opcode {
          * @see Instruction#getName()
          */
         public final String opCodeName;
-        
+
         /**
          * Text of the {@link #opCode}. In case {@link #opCode} is
          * {@link Instruction#wide}, the {@link #opCodeText} contains the
