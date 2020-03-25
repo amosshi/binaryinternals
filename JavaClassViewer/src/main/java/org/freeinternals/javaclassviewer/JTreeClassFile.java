@@ -128,10 +128,14 @@ public class JTreeClassFile extends JTree {
         ));
         this.root.add(this_class);
 
+        final int superClassValue = this.classFile.super_class.getValue();
         sb.setLength(0);
         sb.append("super_class: ");
-        sb.append(this.classFile.super_class.getValue());
-        sb.append(String.format(" - %s", this.classFile.getCPDescription(this.classFile.super_class.getValue())));
+        sb.append(superClassValue);
+        // Note. for module-info.class, it do NOT have super class.
+        if (superClassValue > 0) {
+            sb.append(String.format(" - %s", this.classFile.getCPDescription(this.classFile.super_class.getValue())));
+        }
         final DefaultMutableTreeNode super_class = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.super_class.getStartPos(),
                 this.classFile.super_class.getLength(),
