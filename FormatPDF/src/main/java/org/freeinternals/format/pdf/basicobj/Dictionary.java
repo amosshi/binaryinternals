@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -68,7 +69,7 @@ public class Dictionary extends FileComponent implements GenerateTreeNode {
 
     private void parse(PosDataInputStream stream) throws IOException {
         // The '<<' sign
-        stream.skip(SIGNATURE_START.length());
+        BytesTool.skip(stream, SIGNATURE_START.length());
 
         FileComponent comp;
         Analysis analysis = new Analysis();

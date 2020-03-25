@@ -8,6 +8,9 @@ package org.freeinternals.format.dex;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -43,8 +46,8 @@ public class DexFile extends FileFormat {
      * monotonically over time as the format evolves.
      * </p>
      */
-    public static final byte[] DEX_FILE_MAGIC1 = {'d', 'e', 'x', '\n'};
-    public static final byte[] DEX_FILE_MAGIC2 = {'0', '3', '5', '\0'};
+    public static final List<Byte> DEX_FILE_MAGIC1 = Collections.unmodifiableList(Arrays.asList(new Byte[] {'d', 'e', 'x', '\n'}));
+    public static final List<Byte> DEX_FILE_MAGIC2 = Collections.unmodifiableList(Arrays.asList(new Byte[] {'0', '3', '5', '\0'}));
 
     /**
      * The file header.
@@ -71,12 +74,14 @@ public class DexFile extends FileFormat {
         super(file);
 
         // Check the file signature
-        byte[] magic1 = new byte[DEX_FILE_MAGIC1.length];
-        byte[] magic2 = new byte[DEX_FILE_MAGIC2.length];
-        System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.length);
-        System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.length);
-        if (BytesTool.isByteArraySame(DEX_FILE_MAGIC1, magic1) == false
-                || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
+        byte[] magic1 = new byte[DEX_FILE_MAGIC1.size()];
+        byte[] magic2 = new byte[DEX_FILE_MAGIC2.size()];
+        System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.size());
+        System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.size());
+        
+        byte[] magic1Const = new byte[]{DEX_FILE_MAGIC1.get(0).byteValue(), DEX_FILE_MAGIC1.get(1).byteValue(), DEX_FILE_MAGIC1.get(2).byteValue(), DEX_FILE_MAGIC1.get(3).byteValue()};
+        if (BytesTool.isByteArraySame(magic1Const, magic1) == false
+                || magic2[DEX_FILE_MAGIC2.size() - 1] != DEX_FILE_MAGIC2.get(DEX_FILE_MAGIC2.size() - 1)) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
 
@@ -114,12 +119,12 @@ public class DexFile extends FileFormat {
     private void parse() throws IOException, FileFormatException {
         PosDataInputStream parseEndian = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
-        parseEndian.skip(DEX_FILE_MAGIC1.length);
-        parseEndian.skip(DEX_FILE_MAGIC2.length);
-        parseEndian.skip(Dex_uint.LENGTH);  // checksum
-        parseEndian.skip(20);               // signature
-        parseEndian.skip(Dex_uint.LENGTH);  // file_size
-        parseEndian.skip(Dex_uint.LENGTH);  // header_size
+        BytesTool.skip(parseEndian, DEX_FILE_MAGIC1.size());
+        BytesTool.skip(parseEndian, DEX_FILE_MAGIC2.size());
+        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // checksum
+        BytesTool.skip(parseEndian, 20);                        // signature
+        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // file_size
+        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // header_size
 
         int i1 = parseEndian.readUnsignedByte();
         int i2 = parseEndian.readUnsignedByte();
@@ -144,8 +149,8 @@ public class DexFile extends FileFormat {
         SortedMap<Long, Class> todoData = new TreeMap<>();
 
         // Header
-        stream.skip(DEX_FILE_MAGIC1.length);
-        stream.skip(DEX_FILE_MAGIC2.length);
+        BytesTool.skip(stream, DEX_FILE_MAGIC1.size());
+        BytesTool.skip(stream, DEX_FILE_MAGIC2.size());
         this.header = new HeaderItem(stream);
 
         // string_ids

@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_G
+ * @see IFD_8769_Exif#CATEGORY_G
  */
 public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
 

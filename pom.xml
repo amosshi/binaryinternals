@@ -13,13 +13,14 @@
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spotbugs.version>4.0.1</spotbugs.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
-            <version>3.1.12</version>
+            <version>${spotbugs.version}</version>
             <type>jar</type>
         </dependency>
     </dependencies>
@@ -48,7 +49,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.29</version>
+                        <version>8.30</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -73,7 +74,7 @@
                 </executions>
             </plugin>
 
-            <!-- Spotbugs 
+            <!-- Spotbugs
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -82,7 +83,7 @@
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>3.1.12</version>
+                        <version>${spotbugs.version}</version>
                     </dependency>
                 </dependencies>
 
@@ -99,7 +100,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin> -->
             
             <!-- https://maven.apache.org/plugins/maven-javadoc-plugin/index.html -->
             <plugin>

@@ -15,7 +15,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
  *
  * @author Amos Shi
  * @see IFD_0132_DateTime
- * @see IFD_8769_Exif#Category_F
+ * @see IFD_8769_Exif#CATEGORY_F
  * @see IFD_9291_SubsecTimeOriginal
  * @see IFD_9292_SubsecTimeDigitized
  */

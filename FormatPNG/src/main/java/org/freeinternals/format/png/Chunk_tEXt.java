@@ -7,6 +7,7 @@
 package org.freeinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -76,7 +77,7 @@ public class Chunk_tEXt extends Chunk {
      * Get Chunk Type in binary format.
      */
     static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes();
+        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
     public Chunk_tEXt(PosDataInputStream stream, PNGFile png) throws IOException {
@@ -112,7 +113,7 @@ public class Chunk_tEXt extends Chunk {
                 "Null separator")));
         if (this.Text.length() > 0) {
             parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    start = start + 1,
+                    start + 1,
                     this.Text.length(),
                     String.format("Text = %s", this.Text))));
         }

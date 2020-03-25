@@ -7,6 +7,7 @@
 package org.freeinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -37,7 +38,7 @@ public class Chunk_pHYs extends Chunk {
      * Get Chunk Type in binary format.
      */
     static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes();
+        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
     public Chunk_pHYs(PosDataInputStream stream, PNGFile png) throws IOException {
@@ -62,7 +63,7 @@ public class Chunk_pHYs extends Chunk {
                 4,
                 String.format("Pixels per unit, Y axis = %d", this.AxisY))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 4,
+                start + 4,
                 1,
                 String.format("Unit specifier = %d", this.Unit))));
     }

@@ -2,6 +2,7 @@ package org.freeinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -35,8 +36,6 @@ class StringLiteral extends FileComponent implements GenerateTreeNode {
         super.startPos = stream.getPos();
         this.parse(stream);
         super.length = stream.getPos() - super.startPos;
-
-        // System.out.println(this.toString());   // Deubg output
     }
 
     private void parse(PosDataInputStream stream) throws IOException {
@@ -55,7 +54,7 @@ class StringLiteral extends FileComponent implements GenerateTreeNode {
                 // Escape 
                 case REVERSE_SOLIDUS:
                     // Skip the charactor after REVERSE SOLIDUS
-                    stream.skip(1);
+                    BytesTool.skip(stream, 1);
                     break;
                 case PDFStatics.DelimiterCharacter.LP:
                     parentheseLevel++;

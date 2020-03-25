@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_C
+ * @see IFD_8769_Exif#CATEGORY_C
  */
 public class IFD_9102_CompressedBitsPerPixel extends IFD_RATIONAL_COUNT1 {
 

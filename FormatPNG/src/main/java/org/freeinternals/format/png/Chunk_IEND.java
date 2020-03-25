@@ -7,6 +7,7 @@
 package org.freeinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
 /**
@@ -27,7 +28,7 @@ public class Chunk_IEND extends Chunk {
      * Get Chunk Type in binary format.
      */
     static byte[] GetChunkType(){
-        return CHUNK_TYPE_NAME.getBytes();
+        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
     public Chunk_IEND(PosDataInputStream stream, PNGFile png) throws IOException {

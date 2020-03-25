@@ -2,6 +2,7 @@ package org.freeinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -26,7 +27,7 @@ public final class Name extends FileComponent implements GenerateTreeNode {
 
     Name(PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        stream.skip(1);
+        BytesTool.skip(stream, 1);
         this.RawName = stream.readASCIIUntil(
                 PDFStatics.WhiteSpace.SP,
                 PDFStatics.WhiteSpace.LF,
@@ -43,8 +44,6 @@ public final class Name extends FileComponent implements GenerateTreeNode {
                 PDFStatics.DelimiterCharacter.PS);
         stream.backward(1);
         this.length = stream.getPos() - super.startPos; // The length includes 3 parts: '/' RawNameText ' '(Space at the End)
-
-        // System.out.println(this.toString());   // Deubg output
     }
 
     public String getName() {

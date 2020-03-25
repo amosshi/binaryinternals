@@ -49,7 +49,12 @@ public class PNGFile extends FileFormat {
      * The signature values are: <code>137 80 78 71 13 10 26 10</code>.
      * </p>
      */
-    public static final byte[] MAGIC = {(byte) 137, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10, (byte) 26, (byte) 10};
+    static final byte[] MAGIC = {(byte) 137, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10, (byte) 26, (byte) 10};
+    
+    /**
+     * Size of chunk type.
+     */
+    static final int CHUNK_TYPE_SIZE = 4;
     /**
      * Chunk type classes.
      */
@@ -98,7 +103,7 @@ public class PNGFile extends FileFormat {
 
         // Parse Chunks
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
-        stream.skip(PNGFile.MAGIC.length);
+        BytesTool.skip(stream, PNGFile.MAGIC.length);
 
         while (stream.getPos() < this.fileByteArray.length) {
             super.addFileComponent(this.parseChunk(stream));
@@ -110,19 +115,30 @@ public class PNGFile extends FileFormat {
         Chunk chunk = null;
 
         int length;
-        byte[] chunkType = new byte[4];
+        byte[] chunkType = new byte[CHUNK_TYPE_SIZE];
 
-        length = stream.readInt();                    // Read Chunk Length
-        stream.read(chunkType);                       // Read chunk Type
-        stream.skip((length > 0) ? length : 0);       // Skip Chunk Data
-        stream.skip(4);                               // Skip CRC
+        // Read Chunk Length
+        length = stream.readInt();
+
+        // Read chunk Type
+        if (stream.read(chunkType) != CHUNK_TYPE_SIZE) {
+            throw new IOException("Read the chunk type field failed near position " + stream.getPos());
+        }
+
+        // Skip Chunk Data
+        if (length > 0) {
+            BytesTool.skip(stream, length);
+        }
+
+        // Skip CRC
+        BytesTool.skip(stream, 4);
 
         // GetChunkType
         Method mtd;
         byte[] type;
 
         PosDataInputStream streamChunk = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
-        streamChunk.skip(stream.getPos() - length - 12);
+        BytesTool.skip(streamChunk, stream.getPos() - length - 12);
 
         for (Class<?> cls : ChunkTypes) {
             try {

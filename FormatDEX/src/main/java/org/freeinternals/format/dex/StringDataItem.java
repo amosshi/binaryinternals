@@ -7,6 +7,8 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 
@@ -52,6 +54,6 @@ public class StringDataItem extends FileComponent {
      * @return String for the content
      */
     public String getString() {
-        return new String(this.data);
+        return new String(this.data, StandardCharsets.UTF_8);
     }
 }

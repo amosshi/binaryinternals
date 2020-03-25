@@ -15,7 +15,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_F
+ * @see IFD_8769_Exif#CATEGORY_F
  */
 public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
 

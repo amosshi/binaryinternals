@@ -40,7 +40,7 @@ public class ProtoIdItem extends FileComponent {
      * the format specified by "type_list" below. Additionally, there should be
      * no reference to the type void in the list.
      */
-    public Dex_uint parameters_off;
+    public final Dex_uint parameters_off;
 
     ProtoIdItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();

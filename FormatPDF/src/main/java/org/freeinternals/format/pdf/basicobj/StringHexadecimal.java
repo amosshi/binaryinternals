@@ -2,6 +2,7 @@ package org.freeinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -26,7 +27,7 @@ public final class StringHexadecimal extends FileComponent implements GenerateTr
 
     StringHexadecimal(PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        stream.skip(1);
+        BytesTool.skip(stream, 1);
         //this.RawText = stream.readASCIIUntil(PDFStatics.DelimiterCharacter.GT);
         this.parse(stream);
         super.length = stream.getPos() - super.startPos;

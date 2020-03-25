@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_A
+ * @see IFD_8769_Exif#CATEGORY_A
  * @see IFD_8769_Exif#FormatVersion
  */
 public class IFD_9000_ExifVersion extends IFD_UNDEFINED {

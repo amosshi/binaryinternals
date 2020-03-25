@@ -26,10 +26,10 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
      * A 4-byte unsigned integer giving the number of bytes in the chunk's data
      * field.
      * <p>
-     * The length counts <strong>only</strong> the data field, 
-     * <strong>not</strong> itself, the chunk type code, or the CRC.  
-     * Zero is a valid length. 
-     * Although encoders and decoders should treat the length as unsigned, 
+     * The length counts <strong>only</strong> the data field,
+     * <strong>not</strong> itself, the chunk type code, or the CRC.
+     * Zero is a valid length.
+     * Although encoders and decoders should treat the length as unsigned,
      * its value must not exceed <code>2<sup>31</sup>-1</code> bytes.
      * </p>
      */
@@ -48,7 +48,7 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
      * section.
      * </p>
      */
-    public final byte[] ChunkType = new byte[4];
+    public final byte[] ChunkType = new byte[PNGFile.CHUNK_TYPE_SIZE];
     /**
      * The data bytes appropriate to the chunk type, if any.
      * <p>
@@ -64,7 +64,12 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
      * The CRC is always present, even for chunks containing no data.
      * </p>
      */
-    public final byte[] CRC = new byte[4];
+    public final byte[] CRC = new byte[CRC_SIZE];
+    
+    /**
+     * Size of {@link #CRC}.
+     */
+    private static final int CRC_SIZE = 4;
 
     Chunk(PosDataInputStream stream, PNGFile png) throws IOException {
         this.startPos = stream.getPos();
@@ -73,18 +78,24 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
         this.length = this.Length + 12;
 
         // Chunk Type
-        stream.read(this.ChunkType);
+        if (stream.read(this.ChunkType) != PNGFile.CHUNK_TYPE_SIZE) {
+            throw new IOException("Read the chunk type field failed near position " + stream.getPos());
+        }
 
         // Chunk Data
         if (this.Length > 0) {
             this.ChunkData = new byte[this.Length];
-            stream.read(this.ChunkData);
+            if (stream.read(this.ChunkData) != this.Length) {
+                throw new IOException("Read the chunk data failed near position " + stream.getPos());
+            }
         } else {
             this.ChunkData = null;
         }
 
         // CRC
-        stream.read(this.CRC);
+        if (stream.read(this.CRC) != CRC_SIZE) {
+            throw new IOException("Read the CRC field failed near position " + stream.getPos());
+        }
     }
 
     public String getChunkTypeName() {

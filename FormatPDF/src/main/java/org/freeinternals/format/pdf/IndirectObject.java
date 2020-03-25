@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream.ASCIILine;
@@ -47,25 +48,25 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
      * sequentially within a PDF file, but this is not required; object numbers
      * may be assigned in any arbitrary order. </p>
      */
-    public final int ObjectNumber;
+    private final int objectNumber;
     /**
      * A non-negative integer generation number. <p> In a newly created file,
      * all indirect objects shall have generation numbers of 0. Nonzero
      * generation numbers may be introduced when the file is later updated. </p>
      */
-    public final int GenerationNumber;
+    private final int generationNumber;
     /**
-     * Length of {@link #ObjectNumber} and {@link #GenerationNumber}.
+     * Length of {@link #objectNumber} and {@link #generationNumber}.
      */
-    public final int NumberLen;
-    /**
-     * The last line of the indirect object.
-     */
-    public final ASCIILine SignatureStart;
+    private final int numberLen;
     /**
      * The last line of the indirect object.
      */
-    public ASCIILine SignatureEnd;
+    private final ASCIILine signatureStart;
+    /**
+     * The last line of the indirect object.
+     */
+    private ASCIILine signatureEnd;
     /**
      * Component of current object.
      */
@@ -74,19 +75,19 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
     IndirectObject(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
         stream.backward(line.length());
         super.startPos = stream.getPos();
-        this.ObjectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
-        this.GenerationNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
-        this.NumberLen = stream.getPos() - super.startPos;
-        stream.skip(SIGNATURE_START.length());
+        this.objectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
+        this.generationNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
+        this.numberLen = stream.getPos() - super.startPos;
+        BytesTool.skip(stream, SIGNATURE_START.length());
         byte b1 = stream.readByte();
         byte b2 = stream.readByte();
         if (b1 == PDFStatics.WhiteSpace.CR && b2 == PDFStatics.WhiteSpace.LF) {
-            this.SignatureStart = new ASCIILine(SIGNATURE_START, 2);
+            this.signatureStart = new ASCIILine(SIGNATURE_START, 2);
         } else if (b1 == PDFStatics.WhiteSpace.CR || b1 == PDFStatics.WhiteSpace.LF) {
-            this.SignatureStart = new ASCIILine(SIGNATURE_START, 1);
+            this.signatureStart = new ASCIILine(SIGNATURE_START, 1);
             stream.backward(1);
         } else {
-            this.SignatureStart = new ASCIILine(SIGNATURE_START, 0);
+            this.signatureStart = new ASCIILine(SIGNATURE_START, 0);
             stream.backward(2);
         }
 
@@ -103,16 +104,15 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
             line = stream.readASCIILine();
             if (line.Line.length() == SIGNATURE_END.length() && SIGNATURE_END.equalsIgnoreCase(line.Line)) {
                 super.length = stream.getPos() - super.startPos;
-                this.SignatureEnd = line;
+                this.signatureEnd = line;
                 break;
             }
         } while (stream.getPos() < (stream.getBuf().length - 1));
     }
 
     private void parseObject(PosDataInputStream root) throws IOException, FileFormatException {
-        PosDataInputStream stream = root.getPartialStream(
-                super.startPos + this.NumberLen + this.SignatureStart.length(),
-                super.length - this.NumberLen - this.SignatureStart.length() - this.SignatureEnd.length());
+        PosDataInputStream stream = root.getPartialStream(super.startPos + this.numberLen + this.signatureStart.length(),
+                super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length());
 
         // Filter Stream Object First
         ASCIILine line;
@@ -126,7 +126,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         }
 
         // -- Calculate the lastIndex
-        int lastIndex = super.startPos + super.length - this.SignatureEnd.length();
+        int lastIndex = super.startPos + super.length - this.signatureEnd.length();
         if (compStreams.size() > 0) {
             for (FileComponent comp : compStreams) {
                 if (comp instanceof Stream) {
@@ -135,7 +135,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
             }
         }
 
-        int pos = super.startPos + this.NumberLen + this.SignatureStart.length();
+        int pos = super.startPos + this.numberLen + this.signatureStart.length();
         int len = lastIndex - pos;
         stream = root.getPartialStream(pos, len);
         FileComponent comp;
@@ -148,8 +148,8 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
                 byte next1 = stream.readByte();
                 // Show error message
                 System.out.println(String.format("ERROR ======== IndirectObject.parseObject() - Object number = %d, Generation number = %d, Location = %d (%X), Value = %s",
-                        this.ObjectNumber,
-                        this.GenerationNumber,
+                        this.objectNumber,
+                        this.generationNumber,
                         stream.getPos(),
                         stream.getPos(),
                         String.valueOf((char) next1)));
@@ -168,32 +168,32 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                String.format("Indirect Object: %d %d", this.ObjectNumber, this.GenerationNumber));
+                String.format("Indirect Object: %d %d", this.objectNumber, this.generationNumber));
         nodeComp.setDescription(Texts.getString(Texts.PDF_INDIRECT_OBJECT));
         DefaultMutableTreeNode nodeIO = new DefaultMutableTreeNode(nodeComp);
 
         int pos = super.startPos;
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.NumberLen,
-                String.format("Object Number = %d, Generation Number = %d", this.ObjectNumber, this.GenerationNumber))));
-        pos += this.NumberLen;
+                this.numberLen,
+                String.format("Object Number = %d, Generation Number = %d", this.objectNumber, this.generationNumber))));
+        pos += this.numberLen;
 
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.SignatureStart.Line.length(),
-                Texts.Signature + this.SignatureStart.Line)));
-        pos += this.SignatureStart.Line.length();
+                this.signatureStart.Line.length(),
+                Texts.Signature + this.signatureStart.Line)));
+        pos += this.signatureStart.Line.length();
 
-        if (this.SignatureStart.NewLineLength > 0) {
+        if (this.signatureStart.NewLineLength > 0) {
             nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos,
-                    this.SignatureStart.NewLineLength,
+                    this.signatureStart.NewLineLength,
                     Texts.NewLine)));
-            pos += this.SignatureStart.NewLineLength;
+            pos += this.signatureStart.NewLineLength;
         }
 
-        int contLen = super.length - this.NumberLen - this.SignatureStart.length() - this.SignatureEnd.length();
+        int contLen = super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length();
         DefaultMutableTreeNode nodeContent;
         nodeIO.add(nodeContent = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
@@ -214,7 +214,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         pos += SIGNATURE_END.length();
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.SignatureEnd.NewLineLength,
+                this.signatureEnd.NewLineLength,
                 Texts.NewLine)));
 
         parentNode.add(nodeIO);

@@ -7,6 +7,7 @@
 package org.freeinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -38,7 +39,7 @@ public class Chunk_PLTE extends Chunk {
      * Get Chunk Type in binary format.
      */
     static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes();
+        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
     public Chunk_PLTE(PosDataInputStream stream, PNGFile png) throws IOException, FileFormatException {
@@ -98,7 +99,7 @@ public class Chunk_PLTE extends Chunk {
         }
     }
 
-    public class PaletteEntry {
+    public static class PaletteEntry {
 
         public final int Red;
         public final int Green;

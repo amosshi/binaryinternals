@@ -7,6 +7,7 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 
 /**
@@ -77,12 +78,12 @@ public class HeaderItem extends FileComponent {
     HeaderItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
 
-        this.checksum = stream.Dex_uint(); //  new Dex_uint(stream.readUnsignedInt());
+        this.checksum = stream.Dex_uint();                                      //  new Dex_uint(stream.readUnsignedInt());
         for (int i = 0; i < this.signature.length; i++) {
-            this.signature[i] = stream.Dex_ubyte(); //  new Dex_ubyte(stream.readUnsignedByte());
+            this.signature[i] = stream.Dex_ubyte();                             //  new Dex_ubyte(stream.readUnsignedByte());
         }
         this.file_size = stream.Dex_uint();                                     // new Dex_uint(stream.readUnsignedInt_LittleEndian());
-        stream.skip(Dex_uint.LENGTH);                                           // header_item-header_size - constant value 0x70
+        BytesTool.skip(stream, Dex_uint.LENGTH);                                // header_item-header_size - constant value 0x70
         this.endian_tag = new Dex_uint(stream.readUnsignedInt());               // Always read from left to right
         this.link_size = stream.Dex_uint();
         this.link_off = stream.Dex_uint();
@@ -102,7 +103,7 @@ public class HeaderItem extends FileComponent {
         this.data_size = stream.Dex_uint();
         this.data_off = stream.Dex_uint();
 
-        super.length = this.header_size.intValue() - DexFile.DEX_FILE_MAGIC1.length - DexFile.DEX_FILE_MAGIC2.length;
+        super.length = this.header_size.intValue() - DexFile.DEX_FILE_MAGIC1.size() - DexFile.DEX_FILE_MAGIC2.size();
     }
 
     /**

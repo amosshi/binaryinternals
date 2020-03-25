@@ -16,7 +16,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
  * @author Amos Shi
  * @see IFD_SHORT
  * @see IFD_LONG
- * @see IFD_8769_Exif#Category_C
+ * @see IFD_8769_Exif#CATEGORY_C
  */
 public class IFD_A003_PixelYDimension extends IFD_LONG_COUNT1 {
 

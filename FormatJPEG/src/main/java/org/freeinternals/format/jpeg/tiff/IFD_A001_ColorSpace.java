@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_B
+ * @see IFD_8769_Exif#CATEGORY_B
  */
 public class IFD_A001_ColorSpace extends IFD_SHORT_COUNT1 {
 

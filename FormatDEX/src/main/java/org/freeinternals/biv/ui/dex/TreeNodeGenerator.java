@@ -69,19 +69,19 @@ public class TreeNodeGenerator {
 
         DefaultMutableTreeNode magicNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC1.length + DexFile.DEX_FILE_MAGIC2.length,
+                DexFile.DEX_FILE_MAGIC1.size() + DexFile.DEX_FILE_MAGIC2.size(),
                 "magic"));
         this.rootNode.add(magicNode);
 
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC1.length,
+                DexFile.DEX_FILE_MAGIC1.size(),
                 "magic 1")));
-        startPos += DexFile.DEX_FILE_MAGIC1.length;
+        startPos += DexFile.DEX_FILE_MAGIC1.size();
 
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC2.length,
+                DexFile.DEX_FILE_MAGIC2.size(),
                 "magic 2")));
     }
 

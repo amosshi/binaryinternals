@@ -14,7 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
- * @see IFD_8769_Exif#Category_D
+ * @see IFD_8769_Exif#CATEGORY_D
  */
 public class IFD_927C_MakerNode extends IFD_UNDEFINED {
 

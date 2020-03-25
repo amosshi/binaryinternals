@@ -161,7 +161,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
             this.GenerationNumber = Integer.parseInt(stream.readASCII(GENERATIONNUMBER_LENGTH));
             BytesTool.skip(stream, 1);
             this.Type = (char) stream.readByte();
-            stream.skip(2);
+            BytesTool.skip(stream, 2);
         }
 
         /**
@@ -175,6 +175,9 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
                     break;
                 case TYPE_FREE:
                     result = "Free (f)";
+                    break;
+                default:
+                    result = "ERROR!!! Un-recgonized";
                     break;
             }
 
