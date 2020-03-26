@@ -12,6 +12,7 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -30,7 +31,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  * 
@@ -128,7 +128,7 @@ public class Main extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.exit(0);
+                Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)));
             }
         });
         menuFile.add(menuItem_FileExit);

@@ -39,7 +39,7 @@
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
             </plugin>
-            
+
             <!-- Check Style: https://maven.apache.org/plugins/maven-checkstyle-plugin/index.html -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -59,7 +59,7 @@
                     <!--
                     <configLocation>sun_checks.xml</configLocation>
                     -->
-                </configuration>                
+                </configuration>
                 <executions>
                     <execution>
                         <id>checkstyle</id>
@@ -74,7 +74,7 @@
                 </executions>
             </plugin>
 
-            <!-- Spotbugs
+            <!-- Spotbugs -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -100,8 +100,8 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin> -->
-            
+            </plugin>
+
             <!-- https://maven.apache.org/plugins/maven-javadoc-plugin/index.html -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

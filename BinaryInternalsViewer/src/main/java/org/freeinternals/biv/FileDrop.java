@@ -268,7 +268,7 @@ public class FileDrop {
                             log(out, "FileDrop: normal border saved.");
                             jc.setBorder(dragBorder);
                             log(out, "FileDrop: drag border set.");
-                        }   // end if: JComponent   
+                        }   // end if: JComponent
 
                         // Acknowledge that it's okay to enter
                         //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
@@ -301,7 +301,6 @@ public class FileDrop {
 
                             // Get a useful list
                             java.util.List fileList = (java.util.List) tr.getTransferData(java.awt.datatransfer.DataFlavor.javaFileListFlavor);
-                            java.util.Iterator iterator = fileList.iterator();
 
                             // Convert list to array
                             java.io.File[] filesTemp = new java.io.File[fileList.size()];
@@ -410,7 +409,7 @@ public class FileDrop {
         if (supportsDnD == null) {
             boolean support = false;
             try {
-                Class arbitraryDndClass = Class.forName("java.awt.dnd.DnDConstants");
+                Class.forName("java.awt.dnd.DnDConstants");
                 support = true;
             } // end try
             catch (Exception e) {
@@ -641,7 +640,7 @@ public class FileDrop {
          */
         public Event(java.io.File[] files, Object source) {
             super(source);
-            this.files = files;
+            this.files = files.clone();
         }   // end constructor
 
         /**
@@ -652,7 +651,7 @@ public class FileDrop {
          * @since 1.1
          */
         public java.io.File[] getFiles() {
-            return files;
+            return files.clone();
         }   // end getFiles
     }   // end inner class Event
 

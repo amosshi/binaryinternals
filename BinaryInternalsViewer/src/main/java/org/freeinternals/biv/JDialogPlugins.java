@@ -106,7 +106,7 @@ class JDialogPlugins extends JDialog {
         }
     }
 
-    public class PluginsModel extends AbstractTableModel {
+    public static class PluginsModel extends AbstractTableModel {
 
         List<String> columnNames = new LinkedList<>();
         List<List<String>> rowData = new LinkedList<>();

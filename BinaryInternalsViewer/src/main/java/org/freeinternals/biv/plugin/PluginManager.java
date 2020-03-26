@@ -36,7 +36,7 @@ public class PluginManager {
     /**
      * Jar file name and the plug-in descriptor.
      */
-    protected static final Map<String, PluginDescriptor> PLUGINS = new HashMap<>(10);
+    static final Map<String, PluginDescriptor> PLUGINS = new HashMap<>(10);
 
     static {
         loadPlugins();
@@ -51,11 +51,14 @@ public class PluginManager {
             return;
         }
 
-        for (File plguinFile : pluginFolder.listFiles()) {
-            if (plguinFile.isFile() & plguinFile.getName().toLowerCase().endsWith(".jar")) {
-                try {
-                    JarFile jar = new JarFile(plguinFile);
+        File[] pluginFiles = pluginFolder.listFiles();
+        if (pluginFiles == null) {
+            return;
+        }
 
+        for (File plguinFile : pluginFiles) {
+            if (plguinFile.isFile() && plguinFile.getName().toLowerCase().endsWith(".jar")) {
+                try (JarFile jar = new JarFile(plguinFile)) {
                     Manifest mf = jar.getManifest();
                     if (mf == null) {
                         continue;
