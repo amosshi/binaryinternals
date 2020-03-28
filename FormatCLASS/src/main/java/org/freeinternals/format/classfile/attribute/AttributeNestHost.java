@@ -45,7 +45,7 @@ public class AttributeNestHost extends AttributeInfo {
      * CONSTANT_Class_info structure representing a class or interface which is
      * the nest host for the current class or interface.
      */
-    public transient final u2 host_class_index;
+    public final u2 host_class_index;
 
     AttributeNestHost(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_55_0, JavaSEVersion.Version_11);

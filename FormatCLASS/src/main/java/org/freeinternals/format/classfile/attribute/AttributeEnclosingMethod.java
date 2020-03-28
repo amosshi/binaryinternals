@@ -34,12 +34,12 @@ public class AttributeEnclosingMethod extends AttributeInfo {
      * Representing the innermost class that encloses the declaration of the
      * current class.
      */
-    public transient final u2 class_index;
+    public final u2 class_index;
     /**
      * Representing the name and type of a method in the class referenced by the
      * {@link #class_index} attribute above.
      */
-    public transient final u2 method_index;
+    public final u2 method_index;
 
     AttributeEnclosingMethod(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);

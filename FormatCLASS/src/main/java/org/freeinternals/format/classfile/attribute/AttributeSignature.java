@@ -29,7 +29,7 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeSignature extends AttributeInfo {
 
-    public transient final u2 signature_index;
+    public final u2 signature_index;
 
     AttributeSignature(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
@@ -61,36 +61,36 @@ public class AttributeSignature extends AttributeInfo {
         /**
          * signed byte.
          */
-        B('B', JavaLangSpec.Keyword.BYTE),
+        B('B', JavaLangSpec.Keyword.BYTE.keyword),
         /**
          * Unicode character code point in the Basic Multilingual Plane, encoded
          * with UTF-16.
          */
-        C('C', JavaLangSpec.Keyword.CHAR),
+        C('C', JavaLangSpec.Keyword.CHAR.keyword),
         /**
          * double-precision floating-point value.
          */
-        D('D', JavaLangSpec.Keyword.DOUBLE),
+        D('D', JavaLangSpec.Keyword.DOUBLE.keyword),
         /**
          * single-precision floating-point value.
          */
-        F('F', JavaLangSpec.Keyword.FLOAT),
+        F('F', JavaLangSpec.Keyword.FLOAT.keyword),
         /**
          * integer.
          */
-        I('I', JavaLangSpec.Keyword.INT),
+        I('I', JavaLangSpec.Keyword.INT.keyword),
         /**
          * long integer.
          */
-        J('J', JavaLangSpec.Keyword.LONG),
+        J('J', JavaLangSpec.Keyword.LONG.keyword),
         /**
          * signed short.
          */
-        S('S', JavaLangSpec.Keyword.SHORT),
+        S('S', JavaLangSpec.Keyword.SHORT.keyword),
         /**
          * true or false.
          */
-        Z('Z', JavaLangSpec.Keyword.BOOLEAN);
+        Z('Z', JavaLangSpec.Keyword.BOOLEAN.keyword);
 
         public final char signature;
         public final String JavaKeyWord;

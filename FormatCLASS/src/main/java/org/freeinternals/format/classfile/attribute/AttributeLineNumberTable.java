@@ -41,8 +41,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeLineNumberTable extends AttributeInfo {
 
-    public transient final u2 line_number_table_length;
-    public final transient LineNumberTable[] lineNumberTable;
+    public final u2 line_number_table_length;
+    public final LineNumberTable[] lineNumberTable;
 
     AttributeLineNumberTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
@@ -139,8 +139,8 @@ public class AttributeLineNumberTable extends AttributeInfo {
     public final static class LineNumberTable extends FileComponent {
 
         public static final int LENGTH = 4;
-        public transient final u2 start_pc;
-        public transient final u2 line_number;
+        public final u2 start_pc;
+        public final u2 line_number;
 
         private LineNumberTable(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();

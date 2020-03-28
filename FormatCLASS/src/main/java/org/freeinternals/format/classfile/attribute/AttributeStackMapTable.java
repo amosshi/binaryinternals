@@ -34,13 +34,13 @@ public class AttributeStackMapTable extends AttributeInfo {
      * Gives the number of {@link StackMapFrame} entries in the {@link #entries}
      * table.
      */
-    public transient final u2 number_of_entries;
+    public final u2 number_of_entries;
     /**
      * Each entry in the {@link #entries} table describes one stack map frame of
      * the method. The order of the stack map frames in the entries table is
      * significant.
      */
-    public transient final StackMapFrame[] entries;
+    public final StackMapFrame[] entries;
 
     AttributeStackMapTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_50_0, JavaSEVersion.Version_6);

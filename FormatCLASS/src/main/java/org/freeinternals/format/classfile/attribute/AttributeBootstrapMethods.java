@@ -35,7 +35,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
      * Determines the number of bootstrap method specifiers in the
      * {@link #bootstrap_methods} array.
      */
-    public transient final u2 num_bootstrap_methods;
+    public final u2 num_bootstrap_methods;
 
     /**
      * Each entry in the {@link #bootstrap_methods} table contains an index to a
@@ -43,7 +43,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
      * structure which specifies a bootstrap method, and a sequence (perhaps
      * empty) of indexes to static arguments for the bootstrap method.
      */
-    public transient final BootstrapMethod[] bootstrap_methods;
+    public final BootstrapMethod[] bootstrap_methods;
 
     AttributeBootstrapMethods(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
@@ -140,12 +140,12 @@ public class AttributeBootstrapMethods extends AttributeInfo {
          * {@link org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo}
          * structure
          */
-        public transient final u2 bootstrap_method_ref;
+        public final u2 bootstrap_method_ref;
 
         /**
          * Gives the number of items in the {@link #bootstrap_arguments} array.
          */
-        public transient final u2 num_bootstrap_arguments;
+        public final u2 num_bootstrap_arguments;
 
         /**
          * Each entry in the {@link #bootstrap_arguments} array must be a valid
@@ -158,7 +158,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
          * {@link org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo}
          * structure.
          */
-        public transient final u2[] bootstrap_arguments;
+        public final u2[] bootstrap_arguments;
 
         private BootstrapMethod(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();

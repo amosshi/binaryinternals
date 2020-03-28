@@ -44,8 +44,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeInnerClasses extends AttributeInfo {
 
-    public transient final u2 number_of_classes;
-    private transient final Class[] classes;
+    public final u2 number_of_classes;
+    private final Class[] classes;
 
     AttributeInnerClasses(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_1);
@@ -158,7 +158,7 @@ public class AttributeInnerClasses extends AttributeInfo {
          */
         public static final int LENGTH = 8;
 
-        public transient final u2 inner_class_info_index;
+        public final u2 inner_class_info_index;
         /**
          * If C is not a member of a class or an interface - that is, if C is a
          * top-level class or interface or a local class or an anonymous class -
@@ -171,7 +171,7 @@ public class AttributeInnerClasses extends AttributeInfo {
          * outer_class_info_index item must not equal the the value of the
          * inner_class_info_index item.
          */
-        public transient final u2 outer_class_info_index;
+        public final u2 outer_class_info_index;
         /**
          * If C is anonymous, the value of the inner_name_index item must be
          * zero.
@@ -182,8 +182,8 @@ public class AttributeInnerClasses extends AttributeInfo {
          * name of C, as given in the source code from which this class file was
          * compiled.
          */
-        public transient final u2 inner_name_index;
-        public transient final u2 inner_class_access_flags;
+        public final u2 inner_name_index;
+        public final u2 inner_class_access_flags;
 
         private Class(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();

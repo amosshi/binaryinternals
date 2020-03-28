@@ -43,7 +43,7 @@ public class AttributeNestMembers extends AttributeInfo {
      * The value of the number_of_classes item indicates the number of entries
      * in the {@link #classes}table.
      */
-    public transient final u2 number_of_classes;
+    public final u2 number_of_classes;
 
     /**
      * Each value in the classes array must be a valid index into the
@@ -52,7 +52,7 @@ public class AttributeNestMembers extends AttributeInfo {
      * {@link org.freeinternals.format.classfile.constant.ConstantClassInfo} structure representing a class or interface
      * which is a member of the nest hosted by the current class or interface.
      */
-    public transient final u2[] classes;
+    public final u2[] classes;
 
     AttributeNestMembers(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_55_0, JavaSEVersion.Version_11);

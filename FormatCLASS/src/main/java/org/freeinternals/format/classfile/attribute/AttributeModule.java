@@ -75,24 +75,24 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeModule extends AttributeInfo {
 
-    public transient final u2 module_name_index;
-    public transient final u2 module_flags;
-    public transient final u2 module_version_index;
+    public final u2 module_name_index;
+    public final u2 module_flags;
+    public final u2 module_version_index;
 
-    public transient final u2 requires_count;
-    public final transient Requires[] requires;
+    public final u2 requires_count;
+    public final Requires[] requires;
 
-    public transient final u2 exports_count;
-    public final transient Exports[] exports;
+    public final u2 exports_count;
+    public final Exports[] exports;
 
-    public transient final u2 opens_count;
-    public final transient Opens[] opens;
+    public final u2 opens_count;
+    public final Opens[] opens;
 
-    public transient final u2 uses_count;
-    public final transient u2[] uses_index;
+    public final u2 uses_count;
+    public final u2[] uses_index;
 
-    public transient final u2 provides_count;
-    public final transient Provides[] provides;
+    public final u2 provides_count;
+    public final Provides[] provides;
 
     AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
@@ -522,9 +522,9 @@ public class AttributeModule extends AttributeInfo {
     public final static class Requires extends FileComponent {
 
         public static final int LENGTH = 6;
-        public transient final u2 requires_index;
-        public transient final u2 requires_flags;
-        public transient final u2 requires_version_index;
+        public final u2 requires_index;
+        public final u2 requires_flags;
+        public final u2 requires_version_index;
 
         private Requires(final PosDataInputStream posDataInputStream)
                 throws IOException {
@@ -555,10 +555,10 @@ public class AttributeModule extends AttributeInfo {
      */
     public final static class Exports extends FileComponent {
 
-        public transient final u2 exports_index;
-        public transient final u2 exports_flags;
-        public transient final u2 exports_to_count;
-        public transient final u2[] exports_to_index;
+        public final u2 exports_index;
+        public final u2 exports_flags;
+        public final u2 exports_to_count;
+        public final u2[] exports_to_index;
 
         private Exports(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
@@ -597,10 +597,10 @@ public class AttributeModule extends AttributeInfo {
      */
     public final static class Opens extends FileComponent {
 
-        public transient final u2 opens_index;
-        public transient final u2 opens_flags;
-        public transient final u2 opens_to_count;
-        public transient final u2[] opens_to_index;
+        public final u2 opens_index;
+        public final u2 opens_flags;
+        public final u2 opens_to_count;
+        public final u2[] opens_to_index;
 
         private Opens(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
@@ -639,9 +639,9 @@ public class AttributeModule extends AttributeInfo {
      */
     public final static class Provides extends FileComponent {
 
-        public transient final u2 provides_index;
-        public transient final u2 provides_with_count;
-        public transient final u2[] provides_with_index;
+        public final u2 provides_index;
+        public final u2 provides_with_count;
+        public final u2[] provides_with_index;
 
         private Provides(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();

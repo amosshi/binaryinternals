@@ -41,7 +41,7 @@ public class AttributeModuleTarget extends AttributeInfo {
      * {@link org.freeinternals.format.classfile.constant.ConstantUtf8Info}
      * structure.
      */
-    public transient final u2 os_arch_index;
+    public final u2 os_arch_index;
 
     AttributeModuleTarget(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);

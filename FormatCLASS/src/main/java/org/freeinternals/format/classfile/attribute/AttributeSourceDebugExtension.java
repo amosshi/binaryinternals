@@ -47,7 +47,7 @@ public class AttributeSourceDebugExtension extends AttributeInfo {
      * is represented using a modified UTF-8 string ({@link org.freeinternals.format.classfile.constant.ConstantUtf8Info})
      * with no terminating zero byte.
      */
-    public transient final byte[] debug_extension;
+    public final byte[] debug_extension;
 
     AttributeSourceDebugExtension(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);

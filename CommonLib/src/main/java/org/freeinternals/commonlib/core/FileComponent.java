@@ -20,12 +20,12 @@ public class FileComponent {
      * Start position in the class file byte array of current component.
      */
     @SuppressWarnings("ProtectedField")
-    transient protected int startPos;
+    protected int startPos;
     /**
      * Length of current component.
      */
     @SuppressWarnings("ProtectedField")
-    transient protected int length;
+    protected int length;
 
     public FileComponent() {
         this.startPos = 0;

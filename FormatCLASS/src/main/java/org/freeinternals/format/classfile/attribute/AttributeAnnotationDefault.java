@@ -45,7 +45,7 @@ public class AttributeAnnotationDefault extends AttributeInfo {
      * annotation type element whose default value is represented by this
      * AnnotationDefault attribute.
      */
-    public transient final Annotation.ElementValue default_value;
+    public final Annotation.ElementValue default_value;
 
     AttributeAnnotationDefault(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);

@@ -42,7 +42,7 @@ public class AttributeExceptions extends AttributeInfo {
      * The value of the {@link #number_of_exceptions} item indicates the number
      * of entries in the {@link #exception_index_table}.
      */
-    public transient final u2 number_of_exceptions;
+    public final u2 number_of_exceptions;
     /**
      * Each value in the {@link #exception_index_table} array must be a valid
      * index into the {@link ClassFile#constant_pool} table. The
@@ -51,7 +51,7 @@ public class AttributeExceptions extends AttributeInfo {
      * ({@link org.freeinternals.format.classfile.constant.ConstantClassInfo})
      * representing a class type that this method is declared to throw.
      */
-    private transient final u2[] exception_index_table;
+    private final u2[] exception_index_table;
 
     AttributeExceptions(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);

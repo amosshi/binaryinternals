@@ -18,8 +18,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
-    public transient final u2 num_annotations;
-    public transient final TypeAnnotation[] annotations;
+    public final u2 num_annotations;
+    public final TypeAnnotation[] annotations;
 
     public AttributeRuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException, FileFormatException {
         super(nameIndex, name, posDataInputStream, format, javaSE);
@@ -665,7 +665,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
              * parameter declaration is annotated. A type_parameter_index value
              * of 0 specifies the first type parameter declaration.
              */
-            public transient final u1 type_parameter_index;
+            public final u1 type_parameter_index;
 
             protected TypeParameterTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -704,7 +704,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
              * either the implements clause of a class declaration or the
              * extends clause of an interface declaration.
              */
-            public transient final u2 supertype_index;
+            public final u2 supertype_index;
 
             protected SupertypeTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -716,8 +716,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class TypeParameterBoundTarget extends FileComponent {
 
             public static final String UNION_NAME = "type_parameter_bound_target";
-            public transient final u1 type_parameter_index;
-            public transient final u1 bound_index;
+            public final u1 type_parameter_index;
+            public final u1 bound_index;
 
             protected TypeParameterBoundTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -740,7 +740,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class FormalParameterTarget extends FileComponent {
 
             public static final String UNION_NAME = "method_formal_parameter_target";
-            public transient final u1 formal_parameter_index;
+            public final u1 formal_parameter_index;
 
             protected FormalParameterTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -752,7 +752,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class ThrowsTarget extends FileComponent {
 
             public static final String UNION_NAME = "throws_target";
-            public transient final u2 throws_type_index;
+            public final u2 throws_type_index;
 
             protected ThrowsTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -764,8 +764,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class LocalvarTarget extends FileComponent {
 
             public static final String UNION_NAME = "localvar_target";
-            public transient final u2 table_length;
-            public transient final Table[] table;
+            public final u2 table_length;
+            public final Table[] table;
 
             protected LocalvarTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -783,9 +783,9 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
             public final static class Table extends FileComponent {
 
-                public transient final u2 start_pc;
-                public transient final u2 length;
-                public transient final u2 index;
+                public final u2 start_pc;
+                public final u2 length;
+                public final u2 index;
 
                 protected Table(final PosDataInputStream posDataInputStream) throws IOException {
                     super.startPos = posDataInputStream.getPos();
@@ -801,7 +801,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class CatchTarget extends FileComponent {
 
             public static final String UNION_NAME = "catch_target";
-            public transient final u2 exception_table_index;
+            public final u2 exception_table_index;
 
             protected CatchTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -813,7 +813,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class OffsetTarget extends FileComponent {
 
             public static final String UNION_NAME = "offset_target";
-            public transient final u2 offset;
+            public final u2 offset;
 
             protected OffsetTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -825,8 +825,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final static class TypeArgumentTarget extends FileComponent {
 
             public static final String UNION_NAME = "type_argument_target";
-            public transient final u2 offset;
-            public transient final u1 type_argument_index;
+            public final u2 offset;
+            public final u1 type_argument_index;
 
             protected TypeArgumentTarget(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
@@ -838,7 +838,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
         public final static class TypePath extends FileComponent {
 
-            public transient final u1 path_length;
+            public final u1 path_length;
             public final Path[] path;
 
             protected TypePath(final PosDataInputStream posDataInputStream) throws IOException {
@@ -857,8 +857,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
             public final static class Path extends FileComponent {
 
-                public transient final u1 type_path_kind;
-                public transient final u1 type_argument_index;
+                public final u1 type_path_kind;
+                public final u1 type_argument_index;
 
                 protected Path(final PosDataInputStream posDataInputStream) throws IOException {
                     super.startPos = posDataInputStream.getPos();

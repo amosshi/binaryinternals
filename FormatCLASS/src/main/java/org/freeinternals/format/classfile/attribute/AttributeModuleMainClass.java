@@ -43,7 +43,7 @@ public class AttributeModuleMainClass extends AttributeInfo {
      * CONSTANT_Class_info structure representing the main class of the
      * current module.
      */
-    public transient final u2 main_class_index;
+    public final u2 main_class_index;
 
     AttributeModuleMainClass(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);

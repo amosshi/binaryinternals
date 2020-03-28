@@ -14,8 +14,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeRuntimeAnnotations extends AttributeInfo {
 
-    public transient final u2 num_annotations;
-    private transient final Annotation[] annotations;
+    public final u2 num_annotations;
+    private final Annotation[] annotations;
 
     AttributeRuntimeAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, format, javaSE);

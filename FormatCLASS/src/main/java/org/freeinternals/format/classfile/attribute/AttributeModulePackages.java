@@ -43,7 +43,7 @@ public class AttributeModulePackages extends AttributeInfo {
      * The value of the package_count item indicates the number of entries in
      * the {@link #package_index}table.
      */
-    public transient final u2 package_count;
+    public final u2 package_count;
 
     /**
      * The value of each entry in the {@link #package_index} table must be a
@@ -52,7 +52,7 @@ public class AttributeModulePackages extends AttributeInfo {
      * {@link org.freeinternals.format.classfile.constant.ConstantPackageInfo}
      * structure representing a package in the current module.
      */
-    public transient final u2[] package_index;
+    public final u2[] package_index;
 
     AttributeModulePackages(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);

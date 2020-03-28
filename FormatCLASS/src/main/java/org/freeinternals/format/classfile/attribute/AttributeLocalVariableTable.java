@@ -44,8 +44,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeLocalVariableTable extends AttributeInfo {
 
-    public transient final u2 local_variable_table_length;
-    private transient final LocalVariableTable[] localVariableTable;
+    public final u2 local_variable_table_length;
+    private final LocalVariableTable[] localVariableTable;
 
     AttributeLocalVariableTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
@@ -168,20 +168,20 @@ public class AttributeLocalVariableTable extends AttributeInfo {
          * <code>start_pc</code> inclusive and <code>start_pc + length</code>
          * exclusive.
          */
-        public transient final u2 start_pc;
+        public final u2 start_pc;
         /**
          * See {@link LocalVariableTable#start_pc}.
          */
-        public transient final u2 length;
+        public final u2 length;
         /**
          * Representing a valid unqualified name denoting a local variable.
          */
-        public transient final u2 name_index;
+        public final u2 name_index;
         /**
          * Representing a field descriptor which encodes the type of a local
          * variable in the source program.
          */
-        public transient final u2 descriptor_index;
+        public final u2 descriptor_index;
         /**
          * The given local variable must be at {@link #index} in the local
          * variable array of the current frame.
@@ -191,7 +191,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
          * <code>index</code> and <code>index + 1</code>.
          * </p>
          */
-        public transient final u2 index;
+        public final u2 index;
 
         private LocalVariableTable(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();

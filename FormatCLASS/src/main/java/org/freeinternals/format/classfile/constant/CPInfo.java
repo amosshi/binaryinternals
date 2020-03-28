@@ -50,7 +50,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
      *
      * The value come from the enum field {@link ConstantType#tag}.
      */
-    public final transient u1 tag;
+    public final u1 tag;
 
     /**
      * Some entries in the constant_pool table are loadable because they

@@ -55,8 +55,8 @@ public class AttributeMethodParameters extends AttributeInfo {
      * descriptors in the method descriptor referenced by the descriptor_index
      * of the attribute's enclosing method_info structure.
      */
-    public transient final u1 parameters_count;
-    public transient final Parameter[] parameters;
+    public final u1 parameters_count;
+    public final Parameter[] parameters;
 
     AttributeMethodParameters(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_52_0, JavaSEVersion.Version_8);
@@ -134,14 +134,14 @@ public class AttributeMethodParameters extends AttributeInfo {
          * structure representing a valid unqualified name denoting a formal
          * parameter.
          */
-        public transient final u2 name_index;
+        public final u2 name_index;
         /**
          * The value of the access_flags item is as follows: 0x0010 (ACC_FINAL),
          * 0x1000 (ACC_SYNTHETIC), 0x8000 (ACC_MANDATED).
          *
          * @see AccessFlag#ForMethodParameters
          */
-        public transient final u2 access_flags;
+        public final u2 access_flags;
 
         private Parameter(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();

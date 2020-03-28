@@ -34,9 +34,9 @@ import org.freeinternals.format.classfile.u2;
  */
 public class Annotation extends FileComponent {
 
-    public transient u2 type_index;
-    public transient u2 num_element_value_pairs;
-    public transient Annotation.ElementValuePair[] element_value_pairs;
+    public u2 type_index;
+    public u2 num_element_value_pairs;
+    public Annotation.ElementValuePair[] element_value_pairs;
 
     protected Annotation(final PosDataInputStream posDataInputStream, boolean init) throws IOException, FileFormatException {
         super.startPos = posDataInputStream.getPos();
@@ -234,12 +234,12 @@ public class Annotation extends FileComponent {
          * The name of the element of the element-value pair represented by this
          * {@link Annotation#element_value_pairs} entry.
          */
-        public transient final u2 element_name_index;
+        public final u2 element_name_index;
         /**
          * Represents the value of the element-value pair represented by this
          * {@link Annotation#element_value_pairs} entry.
          */
-        public transient final ElementValue value;
+        public final ElementValue value;
 
         protected ElementValuePair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
@@ -292,12 +292,12 @@ public class Annotation extends FileComponent {
          *
          * @see TagEnum
          */
-        public transient final char tag;
+        public final char tag;
         /**
          * The value of {@link #union_const_value_index} might be null depending
          * on the {@link #tag} value
          */
-        public transient final u2 union_const_value_index;
+        public final u2 union_const_value_index;
         /**
          * The value of {@link #union_enum_const_value} might be null depending
          * on the {@link #tag} value
@@ -307,7 +307,7 @@ public class Annotation extends FileComponent {
          * The value of {@link #union_class_info_index} might be null depending
          * on the {@link #tag} value
          */
-        public transient final u2 union_class_info_index;
+        public final u2 union_class_info_index;
         /**
          * The value of {@link #union_annotation_value} might be null depending
          * on the {@link #tag} value

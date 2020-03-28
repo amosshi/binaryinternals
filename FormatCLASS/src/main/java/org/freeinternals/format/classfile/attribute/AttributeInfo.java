@@ -58,7 +58,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * Name of the attribute. It is one of the enum names in
      * {@link AttributeTypes}.
      */
-    public transient final String name;
+    public final String name;
     /**
      * The {@link #attribute_name_index} must be a valid unsigned 16-bit index
      * into the
@@ -69,14 +69,14 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * ({@link org.freeinternals.format.classfile.constant.ConstantUtf8Info})
      * representing the name of the attribute.
      */
-    public transient final u2 attribute_name_index;
+    public final u2 attribute_name_index;
     /**
      * The value of the {@link #attribute_length} item indicates the length of
      * the subsequent information in bytes. The length does not include the
      * initial six bytes that contain the {@link #attribute_name_index} and
      * {@link #attribute_length} items.
      */
-    public transient final u4 attribute_length;
+    public final u4 attribute_length;
 
     /**
      * Class file format.

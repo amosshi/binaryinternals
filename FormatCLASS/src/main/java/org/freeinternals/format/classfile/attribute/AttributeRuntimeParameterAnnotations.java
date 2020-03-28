@@ -18,8 +18,8 @@ import org.freeinternals.format.classfile.u2;
  */
 public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
 
-    public transient final u1 num_parameters;
-    public transient final ParameterAnnotation[] parameter_annotations;
+    public final u1 num_parameters;
+    public final ParameterAnnotation[] parameter_annotations;
 
     AttributeRuntimeParameterAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, format, javaSE);
@@ -102,8 +102,8 @@ public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
 
     public static class ParameterAnnotation extends FileComponent {
 
-        public transient final u2 num_annotations;
-        public transient final Annotation[] annotations;
+        public final u2 num_annotations;
+        public final Annotation[] annotations;
 
         private ParameterAnnotation(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();

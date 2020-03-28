@@ -54,14 +54,14 @@ public class AttributeModuleHashes extends AttributeInfo {
     /**
      * Index to CONSTANT_utf8_info structure with algorithm name.
      */
-    public transient final u2 algorithm_index;
+    public final u2 algorithm_index;
 
     /**
      * The value of the {@link #hashes_count} item indicates the number of
      * entries in the {@link #hashes} table.
      */
-    public transient final u2 hashes_count;
-    public transient final Hashes[] hashes;
+    public final u2 hashes_count;
+    public final Hashes[] hashes;
 
     AttributeModuleHashes(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
@@ -157,9 +157,9 @@ public class AttributeModuleHashes extends AttributeInfo {
         /**
          * Index to CONSTANT_Module_info structure.
          */
-        public transient final u2 module_name_index;
-        public transient final u2 hash_length;
-        public transient final u1[] hash;
+        public final u2 module_name_index;
+        public final u2 hash_length;
+        public final u1[] hash;
 
         private Hashes(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();

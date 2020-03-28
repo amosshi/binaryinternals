@@ -42,7 +42,7 @@ public class AttributeConstantValue extends AttributeInfo {
      * {@link #constantvalue_index} gives the constant value represented by this
      * attribute.
      */
-    public transient final u2 constantvalue_index;
+    public final u2 constantvalue_index;
 
     AttributeConstantValue(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);

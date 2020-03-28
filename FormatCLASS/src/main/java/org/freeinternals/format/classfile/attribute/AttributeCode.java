@@ -58,14 +58,14 @@ public class AttributeCode extends AttributeInfo {
 
     public static final String ATTRIBUTE_CODE_NODE = "code";
 
-    public transient final u2 max_stack;
-    public transient final u2 max_locals;
-    public transient final u4 code_length;
-    private transient final byte[] code;
-    public transient final u2 exception_table_length;
-    public transient ExceptionTable[] exceptionTable;
-    public transient final u2 attributes_count;
-    public transient AttributeInfo[] attributes;
+    public final u2 max_stack;
+    public final u2 max_locals;
+    public final u4 code_length;
+    private final byte[] code;
+    public final u2 exception_table_length;
+    public ExceptionTable[] exceptionTable;
+    public final u2 attributes_count;
+    public AttributeInfo[] attributes;
 
     AttributeCode(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
@@ -282,9 +282,9 @@ public class AttributeCode extends AttributeInfo {
     public final static class ExceptionTable extends FileComponent {
 
         public static final int LENGTH = 8;
-        public transient final u2 start_pc;
-        public transient final u2 end_pc;
-        public transient final u2 handler_pc;
+        public final u2 start_pc;
+        public final u2 end_pc;
+        public final u2 handler_pc;
 
         /**
          * If the value of the catch_type item is nonzero, it must be a valid
@@ -297,7 +297,7 @@ public class AttributeCode extends AttributeInfo {
          * If the value of the catch_type item is zero, this exception handler
          * is called for all exceptions.
          */
-        public transient final u2 catch_type;
+        public final u2 catch_type;
 
         private ExceptionTable(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();

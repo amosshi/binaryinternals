@@ -52,12 +52,12 @@ public class AttributeLocalVariableTypeTable extends AttributeInfo {
      * Indicates the number of entries in the {@link #local_variable_type_table}
      * array.
      */
-    public transient final u2 local_variable_type_table_length;
+    public final u2 local_variable_type_table_length;
     /**
      * Indicates a range of code array offsets within which a local variable has
      * a value.
      */
-    public transient final LocalVariableTypeTable[] local_variable_type_table;
+    public final LocalVariableTypeTable[] local_variable_type_table;
 
     AttributeLocalVariableTypeTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
@@ -146,17 +146,17 @@ public class AttributeLocalVariableTypeTable extends AttributeInfo {
         /**
          * Representing a valid unqualified name denoting a local variable.
          */
-        public transient final u2 name_index;
+        public final u2 name_index;
         /**
          * Representing a field signature which encodes the type of a local
          * variable in the source program.
          */
-        public transient final u2 signature_index;
+        public final u2 signature_index;
         /**
          * The given local variable must be at {@link index} in the local
          * variable array of the current frame.
          */
-        public transient final u2 index;
+        public final u2 index;
 
         protected LocalVariableTypeTable(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super.startPos = posDataInputStream.getPos();
