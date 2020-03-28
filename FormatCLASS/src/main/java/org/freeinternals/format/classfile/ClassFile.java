@@ -383,11 +383,12 @@ public class ClassFile {
      *
      * @param cpIndex Constant Pool object Index for
      * <code>CONSTANT_Utf8_info</code>
+     * @param cpInfo Constant pool items
      * @return The UTF-8 text
      * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
      * format
      */
-    static String getConstantUtf8Value(final int cpIndex, final CPInfo[] cpInfo) throws FileFormatException {
+    public static String getConstantUtf8Value(final int cpIndex, final CPInfo[] cpInfo) throws FileFormatException {
         String returnValue = null;
 
         if ((cpIndex == 0) || (cpIndex >= cpInfo.length)) {
