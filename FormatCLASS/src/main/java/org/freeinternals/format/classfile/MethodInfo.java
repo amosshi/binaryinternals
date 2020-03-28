@@ -62,6 +62,7 @@ public class MethodInfo extends FileComponent {
         }
 
         this.calculateLength();
+        this.setDeclaration(cp);
     }
 
     private void calculateLength() {
@@ -102,11 +103,24 @@ public class MethodInfo extends FileComponent {
 
     /**
      * Set the declaration string.
-     *
-     * @param declaration Human readable declaration string
      */
-    final void setDeclaration(final String declaration) {
-        this.declaration = declaration;
+    private void setDeclaration(final CPInfo[] cpInfo) throws FileFormatException {
+        String returnType;
+        String parameters;
+
+        try {
+            returnType = SignatureConvertor.MethodReturnTypeExtractor(ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo)).toString();
+        } catch (FileFormatException se) {
+            returnType = String.format("[Unexpected method return type: %s]", ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo));
+        }
+        try {
+            parameters = SignatureConvertor.MethodParameters2Readable(ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo));
+        } catch (FileFormatException se) {
+            parameters = String.format("[Unexpected method parameters: %s]", ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo));
+        }
+
+        this.declaration = String.format("%s %s %s %s",
+                this.getModifiers(), returnType, ClassFile.getConstantUtf8Value(this.name_index.value, cpInfo), parameters);
     }
 
     /**

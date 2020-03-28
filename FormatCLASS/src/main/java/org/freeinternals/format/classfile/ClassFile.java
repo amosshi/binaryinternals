@@ -142,7 +142,7 @@ public class ClassFile {
      * @see AccessFlag#ACC_ENUM
      * @see AccessFlag#ACC_MODULE
      */
-    public final AccessFlags access_flags;
+    public final U2ClassComponent access_flags;
 
     /**
      * {@code This} class of a {@code class} or {@code interface}. It is the
@@ -266,7 +266,7 @@ public class ClassFile {
         }
 
         // Class Declaration
-        this.access_flags = new AccessFlags(posDataInputStream);
+        this.access_flags = new U2ClassComponent(posDataInputStream);
         this.this_class = new U2ClassComponent(posDataInputStream);
         this.super_class = new U2ClassComponent(posDataInputStream);
         this.interfaces_count = new U2ClassComponent(posDataInputStream);
@@ -315,54 +315,6 @@ public class ClassFile {
         } else {
             this.attributes = null;
         }
-
-        // Set the Declarations
-        // TODO - Refactor - Delete this method
-        this.analysisDeclarations();
-    }
-
-    private void analysisDeclarations()
-            throws FileFormatException {
-
-        // Analysis field declarations
-        if (this.fields_count.getValue() > 0) {
-            String type;
-            for (FieldInfo field : fields) {
-                try {
-                    type = SignatureConvertor.FieldDescriptorExtractor(this.getConstantUtf8Value(field.descriptor_index.value)).toString();
-                } catch (FileFormatException se) {
-                    type = "[Unexpected signature type]: " + this.getConstantUtf8Value(field.descriptor_index.value);
-                }
-                field.setDeclaration(String.format("%s %s %s",
-                        field.getModifiers(),
-                        type,
-                        this.getConstantUtf8Value(field.name_index.value)));
-            }
-        }
-
-        // Analysis method declarations
-        if (this.methods_count.getValue() > 0) {
-            String mtdReturnType;
-            String mtdParameters;
-            for (MethodInfo method : methods) {
-                try {
-                    mtdReturnType = SignatureConvertor.MethodReturnTypeExtractor(this.getConstantUtf8Value(method.descriptor_index.value)).toString();
-                } catch (FileFormatException se) {
-                    mtdReturnType = String.format("[Unexpected method return type: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
-                }
-                try {
-                    mtdParameters = SignatureConvertor.MethodParameters2Readable(this.getConstantUtf8Value(method.descriptor_index.value));
-                } catch (FileFormatException se) {
-                    mtdParameters = String.format("[Unexpected method parameters: %s]", this.getConstantUtf8Value(method.descriptor_index.value));
-                }
-
-                method.setDeclaration(String.format("%s %s %s %s",
-                        method.getModifiers(),
-                        mtdReturnType,
-                        this.getConstantUtf8Value(method.name_index.value),
-                        mtdParameters));
-            }
-        }
     }
 
     /**
@@ -377,6 +329,16 @@ public class ClassFile {
     }
 
     /**
+     * Generate the modifier of a {@code class} or {@code interface} from the
+     * access flag value.
+     *
+     * @return A string for modifier
+     */
+    public String getModifiers() {
+        return AccessFlag.getClassModifier(this.access_flags.value.value);
+    }
+    
+    /**
      * Get the text of {@link #super_class}, which is the super class name.
      *
      * @return Corresponding text of {@link #super_class}
@@ -386,7 +348,7 @@ public class ClassFile {
     public String getSuperClassName() throws FileFormatException {
         int superClass = this.super_class.getValue();
         if (superClass == 0) {
-            // java.lang.Object.class
+            // java.lang.Object.class OR module-info.class
             return "";
         } else {
             return this.getConstantClassInfoName(superClass);
@@ -407,7 +369,7 @@ public class ClassFile {
         if ((cpIndex >= 0 && cpIndex < this.constant_pool.length)
                 && (this.constant_pool[cpIndex] instanceof ConstantClassInfo)) {
             ConstantClassInfo clsInfo = (ConstantClassInfo) this.constant_pool[cpIndex];
-            name = this.getConstantUtf8Value(clsInfo.name_index.value);
+            name = getConstantUtf8Value(clsInfo.name_index.value, this.constant_pool);
         } else {
             throw new FileFormatException(String.format("Constant Pool index (value = %d) is out of range, or it is not a CONSTANT_Class_info. ", cpIndex));
         }
@@ -425,24 +387,24 @@ public class ClassFile {
      * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
      * format
      */
-    public String getConstantUtf8Value(final int cpIndex) throws FileFormatException {
+    static String getConstantUtf8Value(final int cpIndex, final CPInfo[] cpInfo) throws FileFormatException {
         String returnValue = null;
 
-        if ((cpIndex == 0) || (cpIndex >= this.constant_pool_count.value)) {
+        if ((cpIndex == 0) || (cpIndex >= cpInfo.length)) {
             throw new FileFormatException(String.format(
                     "Constant Pool index is out of range. CP index cannot be zero, and should be less than CP count (=%d). CP index = %d.",
-                    this.constant_pool_count.value,
+                    cpInfo.length,
                     cpIndex));
         }
 
-        if (this.constant_pool[cpIndex].tag.value == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
-            final ConstantUtf8Info utf8Info = (ConstantUtf8Info) this.constant_pool[cpIndex];
+        if (cpInfo[cpIndex].tag.value == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
+            final ConstantUtf8Info utf8Info = (ConstantUtf8Info) cpInfo[cpIndex];
             returnValue = utf8Info.getValue();
         } else {
             throw new FileFormatException(String.format(
                     "Unexpected constant pool type: Utf8(%d) expected, but it is '%d'.",
                     CPInfo.ConstantType.CONSTANT_Utf8.tag,
-                    this.constant_pool[cpIndex].tag.value));
+                    cpInfo[cpIndex].tag.value));
         }
 
         return returnValue;

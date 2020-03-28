@@ -114,7 +114,7 @@ public class JTreeClassFile extends JTree {
         final DefaultMutableTreeNode access_flags = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
-                "access_flags: " + this.classFile.access_flags.getModifiers()
+                "access_flags: " + this.classFile.getModifiers()
         ));
         this.root.add(access_flags);
 

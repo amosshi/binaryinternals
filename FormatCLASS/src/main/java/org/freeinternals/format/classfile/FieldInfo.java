@@ -62,6 +62,7 @@ public class FieldInfo extends FileComponent {
         }
 
         this.calculateLength();
+        this.setDeclaration(cp);
     }
 
     private void calculateLength() {
@@ -101,11 +102,16 @@ public class FieldInfo extends FileComponent {
 
     /**
      * Set the declaration string.
-     *
-     * @param declaration Human readable declaration string
      */
-    final void setDeclaration(final String declaration) {
-        this.declaration = declaration;
+    private void setDeclaration(final CPInfo[] cpInfo) throws FileFormatException {
+        String type;
+        try {
+            type = SignatureConvertor.FieldDescriptorExtractor(ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo)).toString();
+        } catch (FileFormatException se) {
+            type = "[Unexpected signature type]: " + ClassFile.getConstantUtf8Value(this.descriptor_index.value, cpInfo);
+        }
+
+        this.declaration = String.format("%s %s %s", this.getModifiers(), type, ClassFile.getConstantUtf8Value(this.name_index.value, cpInfo));
     }
 
     /**

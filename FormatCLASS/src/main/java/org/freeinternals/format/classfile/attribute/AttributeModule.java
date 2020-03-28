@@ -12,6 +12,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
@@ -159,6 +160,15 @@ public class AttributeModule extends AttributeInfo {
         super.checkSize(posDataInputStream.getPos());
     }
 
+    /**
+     * Get extracted {@link #module_flags}.
+     *
+     * @return Extracted {@link #module_flags}
+     */
+    public String getModuleFlags() {
+        return AccessFlag.getModifier(this.module_flags.value, AccessFlag.ForModule);
+    }
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
 
@@ -176,7 +186,7 @@ public class AttributeModule extends AttributeInfo {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "module_flags: " + this.module_flags.value + " - TODO Parse Flag Values"
+                "module_flags: " + this.module_flags.value + " " + this.getModuleFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -402,7 +412,7 @@ public class AttributeModule extends AttributeInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "opens_flags: " + open.opens_flags.value + " - TODO Parse opens_flags"
+                "opens_flags: " + open.opens_flags.value + " " + open.getOpenFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -444,7 +454,7 @@ public class AttributeModule extends AttributeInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "exports_flags: " + export.exports_flags.value + " - TODO Parse exports_flags"
+                "exports_flags: " + export.exports_flags.value + " " + export.getExportFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -491,7 +501,7 @@ public class AttributeModule extends AttributeInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "requires_flags: " + require.requires_flags.value + ", TODO Parse requires_flags"
+                "requires_flags: " + require.requires_flags.value + " " + require.getRequiresFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -524,6 +534,15 @@ public class AttributeModule extends AttributeInfo {
             this.requires_index = new u2(posDataInputStream);
             this.requires_flags = new u2(posDataInputStream);
             this.requires_version_index = new u2(posDataInputStream);
+        }
+
+        /**
+         * Get extracted {@link #requires_flags}.
+         *
+         * @return Extracted {@link #requires_flags}
+         */
+        public String getRequiresFlags() {
+            return AccessFlag.getModifier(this.requires_flags.value, AccessFlag.ForModuleRequires);
         }
     }
 
@@ -558,6 +577,15 @@ public class AttributeModule extends AttributeInfo {
 
             this.length = posDataInputStream.getPos() - this.startPos;
         }
+
+        /**
+         * Get extracted {@link #exports_flags}.
+         *
+         * @return Extracted {@link #exports_flags}
+         */
+        public String getExportFlags() {
+            return AccessFlag.getModifier(this.exports_flags.value, AccessFlag.ForModuleExports);
+        }
     }
 
     /**
@@ -590,6 +618,15 @@ public class AttributeModule extends AttributeInfo {
             }
 
             this.length = posDataInputStream.getPos() - this.startPos;
+        }
+
+        /**
+         * Get extracted {@link #opens_flags}.
+         *
+         * @return Extracted {@link #opens_flags}
+         */
+        public String getOpenFlags() {
+            return AccessFlag.getModifier(this.opens_flags.value, AccessFlag.ForModuleOpens);
         }
     }
 
