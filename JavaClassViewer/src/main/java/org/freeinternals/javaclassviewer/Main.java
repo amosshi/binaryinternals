@@ -44,12 +44,14 @@ import org.freeinternals.commonlib.core.BytesTool;
 public final class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    private static final String TITLE = "Java Class Viewer";
+    private static final String TITLE_EXT = " - " + TITLE;
     private JTreeZipFile zftree;
     private JPanelForTree zftreeContainer;
     private JSplitPaneClassFile cfPane;
 
     private Main() {
-        this.setTitle("Java Class Viewer");
+        this.setTitle(TITLE);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         UITool.centerJFrame(this);
@@ -70,22 +72,16 @@ public final class Main extends JFrame {
         final JMenuItem menuItem_FileOpen = new JMenuItem("Open...", UIManager.getIcon("FileView.directoryIcon"));
         menuItem_FileOpen.setMnemonic(KeyEvent.VK_O);
         menuItem_FileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        menuItem_FileOpen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_FileOpen();
-            }
+        menuItem_FileOpen.addActionListener((final ActionEvent e) -> {
+            menu_FileOpen();
         });
         menuFile.add(menuItem_FileOpen);
 
         // File --> Close
         final JMenuItem menuItem_FileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
         menuItem_FileClose.setMnemonic(KeyEvent.VK_C);
-        menuItem_FileClose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_FileClose();
-            }
+        menuItem_FileClose.addActionListener((final ActionEvent e) -> {
+            menu_FileClose();
         });
         menuFile.add(menuItem_FileClose);
         menuFile.addSeparator();
@@ -107,22 +103,16 @@ public final class Main extends JFrame {
         // Help --> Homepage
         final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileChooser.homeFolderIcon"));
         menuItem_HelpHomepage.setMnemonic(KeyEvent.VK_P);
-        menuItem_HelpHomepage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_HelpHomepage();
-            }
+        menuItem_HelpHomepage.addActionListener((final ActionEvent e) -> {
+            menu_HelpHomepage();
         });
         menuHelp.add(menuItem_HelpHomepage);
 
         // Help --> About
         final JMenuItem menuItem_HelpAbout = new JMenuItem("About...");
         menuItem_HelpAbout.setMnemonic(KeyEvent.VK_A);
-        menuItem_HelpAbout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_HelpAbout();
-            }
+        menuItem_HelpAbout.addActionListener((final ActionEvent e) -> {
+            menu_HelpAbout();
         });
         menuHelp.add(menuItem_HelpAbout);
 
@@ -184,6 +174,7 @@ public final class Main extends JFrame {
         if (this.zftree != null) {
             this.zftreeContainer = new JPanelForTree(this.zftree, this);
             this.add(this.zftreeContainer, BorderLayout.CENTER);
+            this.setTitle(file.getName() + TITLE_EXT);
 
             this.resizeForContent();
         }
@@ -192,6 +183,7 @@ public final class Main extends JFrame {
     private void open_ClassFile(final File file) {
         this.cfPane = new JSplitPaneClassFile(BytesTool.readFileAsBytes(file), this);
         this.add(this.cfPane, BorderLayout.CENTER);
+        this.setTitle(file.getName() + TITLE_EXT);
 
         this.resizeForContent();
     }
@@ -237,6 +229,8 @@ public final class Main extends JFrame {
             this.validate();
         }
         this.cfPane = null;
+
+        this.setTitle(TITLE);
     }
 
     private void zftree_DoubleClick(final TreePath tp) {
@@ -299,14 +293,11 @@ public final class Main extends JFrame {
         sbTitle.append(" - ");
         sbTitle.append(ze.getName());
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new JFrameClassFile(
-                        sbTitle.toString(),
-                        b,
-                        Main.this).setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            new JFrameClassFile(
+                    sbTitle.toString(),
+                    b,
+                    Main.this).setVisible(true);
         });
     }
 
@@ -314,11 +305,8 @@ public final class Main extends JFrame {
      * @param args the command line arguments
      */
     public static void main(final String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            new Main().setVisible(true);
         });
     }
 }

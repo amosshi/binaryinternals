@@ -51,15 +51,11 @@ class JDialogAbout extends JDialog {
         this.setLayout(new FlowLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                buttonOK_Clicked();
-            }
+        buttonClose.addActionListener((final ActionEvent e) -> {
+            buttonOK_Clicked();
         });
 
-//      Lay out the labels from top to bottom.
+        // Lay out the labels from top to bottom.
         final JPanel listPane = new JPanel();
         listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
 
@@ -80,14 +76,14 @@ class JDialogAbout extends JDialog {
         listPane.add(new JLabel("Free Tools to reach the Internals"));
         listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-//      Lay out the buttons from left to right.
+        // Lay out the buttons from left to right.
         final JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
         buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         buttonPane.add(Box.createHorizontalGlue());
         buttonPane.add(buttonClose);
 
-//      Put everything together, using the content pane's BorderLayout.
+        // Put everything together, using the content pane's BorderLayout.
         final Container contentPane = this.getContentPane();
         contentPane.add(listPane, BorderLayout.CENTER);
         contentPane.add(buttonPane, BorderLayout.PAGE_END);

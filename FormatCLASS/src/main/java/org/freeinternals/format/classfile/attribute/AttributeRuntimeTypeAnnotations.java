@@ -67,7 +67,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
     }
-    
+
     // 4.7.20, 4.7.21:  The RuntimeTypeAnnotations Attribute
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation ta, final ClassFile classFile) {
 
@@ -229,7 +229,6 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         // Annotation
         Annotation.generateSubnode(rootNode, ta, startPosMoving, classFile);
     }
-    
 
     // 4.7.20. localvar_target
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeRuntimeTypeAnnotations.TypeAnnotation.LocalvarTarget lt) {
@@ -270,7 +269,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             table.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "length: " + lt.table[i].length.value
+                    "length: " + lt.table[i].length_code.value
             )));
             startPosMoving += u2.LENGTH;
             table.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -325,8 +324,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             )));
         }
     }
-    
-    
+
     public static class TypeAnnotation extends Annotation {
 
         public final u1 target_type;
@@ -761,6 +759,21 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
+        /**
+         * The <code>localvar_target</code> item indicates that an annotation
+         * appears on the type in a local variable declaration, including a
+         * variable declared as a resource in a try-with-resources statement.
+         *
+         * <pre>
+         * localvar_target {
+         *     u2 table_length;
+         *     {   u2 start_pc;
+         *         u2 length;
+         *         u2 index;
+         *     } table[table_length];
+         * }
+         * </pre>
+         */
         public final static class LocalvarTarget extends FileComponent {
 
             public static final String UNION_NAME = "localvar_target";
@@ -784,13 +797,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             public final static class Table extends FileComponent {
 
                 public final u2 start_pc;
-                public final u2 length;
+                public final u2 length_code;
                 public final u2 index;
 
                 protected Table(final PosDataInputStream posDataInputStream) throws IOException {
                     super.startPos = posDataInputStream.getPos();
                     this.start_pc = new u2(posDataInputStream);
-                    this.length = new u2(posDataInputStream);
+                    this.length_code = new u2(posDataInputStream);
                     this.index = new u2(posDataInputStream);
                     super.length = posDataInputStream.getPos() - super.startPos;
                 }

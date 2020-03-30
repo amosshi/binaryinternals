@@ -40,12 +40,14 @@ import org.freeinternals.commonlib.ui.UITool;
 public class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    private static final String TITLE = "Binary Internals Viewer ";
+    private static final String TITLE_EXT = " - " + TITLE;
     private final JPanel filedropPanel = new JPanel();
     private JSplitPaneFile contentPane = null;
 
     @SuppressWarnings("LeakingThisInConstructor")
     private Main() {
-        this.setTitle("Binary Internals Viewer " + PluginManager.getPlugedExtensions());
+        this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         UITool.centerJFrame(this);
@@ -62,12 +64,8 @@ public class Main extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            new Main().setVisible(true);
         });
     }
 
@@ -86,12 +84,8 @@ public class Main extends JFrame {
         menuItem_FileOpen.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O,
                 ActionEvent.CTRL_MASK));
-        menuItem_FileOpen.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_FileOpen();
-            }
+        menuItem_FileOpen.addActionListener((final ActionEvent e) -> {
+            menu_FileOpen();
         });
         menuFile.add(menuItem_FileOpen);
 
@@ -124,12 +118,8 @@ public class Main extends JFrame {
         menuItem_FileExit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_X,
                 ActionEvent.ALT_MASK));
-        menuItem_FileExit.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)));
-            }
+        menuItem_FileExit.addActionListener((final ActionEvent e) -> {
+            Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)));
         });
         menuFile.add(menuItem_FileExit);
 
@@ -141,56 +131,36 @@ public class Main extends JFrame {
         // Help --> Homepage
         final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
         menuItem_HelpHomepage.setMnemonic(KeyEvent.VK_P);
-        menuItem_HelpHomepage.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_HelpHomepage();
-            }
+        menuItem_HelpHomepage.addActionListener((final ActionEvent e) -> {
+            menu_HelpHomepage();
         });
         menuHelp.add(menuItem_HelpHomepage);
 
         // Help --> Plugins
         final JMenuItem menuItem_HelpPlugins = new JMenuItem("Plug-ins");
         menuItem_HelpPlugins.setMnemonic(KeyEvent.VK_A);
-        menuItem_HelpPlugins.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_HelpPlugins();
-            }
+        menuItem_HelpPlugins.addActionListener((final ActionEvent e) -> {
+            menu_HelpPlugins();
         });
         menuHelp.add(menuItem_HelpPlugins);
 
         // Help --> About
         final JMenuItem menuItem_HelpAbout = new JMenuItem("About");
         menuItem_HelpAbout.setMnemonic(KeyEvent.VK_A);
-        menuItem_HelpAbout.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                menu_HelpAbout();
-            }
+        menuItem_HelpAbout.addActionListener((final ActionEvent e) -> {
+            menu_HelpAbout();
         });
         menuHelp.add(menuItem_HelpAbout);
     }
 
     private void enalbeFileDrop(){
         // only the 1st file are handled
-        new FileDrop(this.filedropPanel, new FileDrop.Listener() {
-
-            @Override
-            public void filesDropped(java.io.File[] files) {
-                openFile(files[0]);
-            }
+        new FileDrop(this.filedropPanel, (java.io.File[] files) -> {
+            openFile(files[0]);
         });
         //new FileDrop(System.out, this.getJMenuBar(), new FileDrop.Listener() {
-        new FileDrop(this.getJMenuBar(), new FileDrop.Listener() {
-
-            @Override
-            public void filesDropped(java.io.File[] files) {
-                openFile(files[0]);
-            }
+        new FileDrop(this.getJMenuBar(), (java.io.File[] files) -> {
+            openFile(files[0]);
         });
     }
 
@@ -218,6 +188,8 @@ public class Main extends JFrame {
                     this.getTitle(),
                     JOptionPane.ERROR_MESSAGE);
         }
+
+        this.setTitle(file.getName() + TITLE_EXT);
         this.filedropPanel.add(this.contentPane, BorderLayout.CENTER);
 
         // Resize after adding new content
@@ -226,6 +198,7 @@ public class Main extends JFrame {
     }
 
     private void closeFile() {
+        this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         // Clear Content
         if (this.contentPane != null) {
             //this.remove(this.contentPane);

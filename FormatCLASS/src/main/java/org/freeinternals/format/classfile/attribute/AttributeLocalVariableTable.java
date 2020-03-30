@@ -118,33 +118,33 @@ public class AttributeLocalVariableTable extends AttributeInfo {
             return;
         }
 
-        final int startPos = lvt.getStartPos();
+        final int pos = lvt.getStartPos();
         int cp_index;
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos,
+                pos,
                 2,
                 "start_pc: " + lvt.start_pc.value
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 2,
+                pos + 2,
                 2,
-                "length: " + lvt.length.value
+                "length: " + lvt.length_code.value
         )));
         cp_index = lvt.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 4,
+                pos + 4,
                 2,
                 String.format("name_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
         )));
         cp_index = lvt.descriptor_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 6,
+                pos + 6,
                 2,
                 String.format("descriptor_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 8,
+                pos + 8,
                 2,
                 "index: " + lvt.index.value
         )));
@@ -172,7 +172,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
         /**
          * See {@link LocalVariableTable#start_pc}.
          */
-        public final u2 length;
+        public final u2 length_code;
         /**
          * Representing a valid unqualified name denoting a local variable.
          */
@@ -198,7 +198,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
             super.length = LENGTH;
 
             this.start_pc = new u2(posDataInputStream);
-            this.length = new u2(posDataInputStream);
+            this.length_code = new u2(posDataInputStream);
             this.name_index = new u2(posDataInputStream);
             this.descriptor_index = new u2(posDataInputStream);
             this.index = new u2(posDataInputStream);

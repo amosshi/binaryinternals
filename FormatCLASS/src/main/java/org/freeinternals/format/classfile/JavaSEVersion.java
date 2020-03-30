@@ -23,7 +23,11 @@ public enum JavaSEVersion {
     Version_7("7", 7),
     Version_8("8", 8),
     Version_9("9", 9),
-    Version_11("11", 11);
+    Version_11("11", 11),
+    Version_12("12", 12),
+    Version_13("13", 13),
+    Version_14("14", 14),
+    Version_15("15", 15);
 
     public final String name;
     public final int majorVersion;

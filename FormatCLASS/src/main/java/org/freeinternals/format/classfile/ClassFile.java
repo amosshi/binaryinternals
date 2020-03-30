@@ -7,8 +7,6 @@
 package org.freeinternals.format.classfile;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -16,21 +14,6 @@ import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
 import org.freeinternals.format.classfile.constant.ConstantClassInfo;
-import org.freeinternals.format.classfile.constant.ConstantDoubleInfo;
-import org.freeinternals.format.classfile.constant.ConstantDynamicInfo;
-import org.freeinternals.format.classfile.constant.ConstantFieldrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantFloatInfo;
-import org.freeinternals.format.classfile.constant.ConstantIntegerInfo;
-import org.freeinternals.format.classfile.constant.ConstantInterfaceMethodrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantInvokeDynamicInfo;
-import org.freeinternals.format.classfile.constant.ConstantLongInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodHandleInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodTypeInfo;
-import org.freeinternals.format.classfile.constant.ConstantMethodrefInfo;
-import org.freeinternals.format.classfile.constant.ConstantModuleInfo;
-import org.freeinternals.format.classfile.constant.ConstantNameAndTypeInfo;
-import org.freeinternals.format.classfile.constant.ConstantPackageInfo;
-import org.freeinternals.format.classfile.constant.ConstantStringInfo;
 import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
 
 /**

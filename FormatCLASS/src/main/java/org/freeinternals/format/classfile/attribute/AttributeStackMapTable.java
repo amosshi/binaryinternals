@@ -67,12 +67,12 @@ public class AttributeStackMapTable extends AttributeInfo {
         )));
 
         if (this.number_of_entries.value > 0) {
-            DefaultMutableTreeNode entries = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getLength() - 8,
                     "entries[" + this.number_of_entries.value + "]"
             ));
-            parentNode.add(entries);
+            parentNode.add(entriesNode);
 
             for (int i = 0; i < this.number_of_entries.value; i++) {
                 DefaultMutableTreeNode entry = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -81,7 +81,7 @@ public class AttributeStackMapTable extends AttributeInfo {
                         String.format("%s.entry [%d]", this.getName(), i)
                 ));
 
-                entries.add(entry);
+                entriesNode.add(entry);
                 this.generateSubnode(entry, this.entries[i], classFile);
             }
         }
