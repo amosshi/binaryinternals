@@ -36,8 +36,14 @@ public class AttributeEnclosingMethod extends AttributeInfo {
      */
     public final u2 class_index;
     /**
-     * Representing the name and type of a method in the class referenced by the
-     * {@link #class_index} attribute above.
+     * If the current class is not immediately enclosed by a method or
+     * constructor, then the value of the <code>method_index</code> item must be
+     * zero. Otherwise, the value of the <code>method_index</code> item must be
+     * a valid index into the <code>constant_pool</code> table. The
+     * <code>constant_pool</code> entry at that index must be a
+     * <code>CONSTANT_NameAndType_info</code> structure representing the name
+     * and type of a method in the class referenced by the {@link #class_index}
+     * attribute above.
      */
     public final u2 method_index;
 
@@ -60,10 +66,11 @@ public class AttributeEnclosingMethod extends AttributeInfo {
         )));
         startPosMoving += u2.LENGTH;
 
+        final String methodDesc = (this.method_index.value == 0) ? "" : " - " + classFile.getCPDescription(this.method_index.value);
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "method_index: " + this.method_index.value + " - " + classFile.getCPDescription(this.method_index.value)
+                "method_index: " + this.method_index.value + methodDesc
         )));
     }
 }

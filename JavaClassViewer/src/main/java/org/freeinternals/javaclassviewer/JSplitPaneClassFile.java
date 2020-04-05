@@ -193,8 +193,9 @@ public class JSplitPaneClassFile extends JSplitPane {
             sb.append("Constant Pool Object List");
             sb.append(HTMLKit.newLine());
             sb.append("<ol>");
-            for (int i = 1; i < count; i++) {
-                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(this.classFile.getCPDescription(i))));
+            for (CPInfo cpItem : this.classFile.constant_pool) {
+                String cpitemString = (cpItem == null) ? "(empty)" : cpItem.toString(this.classFile.constant_pool);
+                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(cpitemString)));
             }
             sb.append("</ol>");
         }

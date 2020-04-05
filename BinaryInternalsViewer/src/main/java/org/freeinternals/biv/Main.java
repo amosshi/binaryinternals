@@ -40,10 +40,12 @@ import org.freeinternals.commonlib.ui.UITool;
 public class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String TITLE_EXT = " - " + TITLE;
     private final JPanel filedropPanel = new JPanel();
     private JSplitPaneFile contentPane = null;
+    
 
     @SuppressWarnings("LeakingThisInConstructor")
     private Main() {
@@ -181,7 +183,7 @@ public class Main extends JFrame {
         try {
             this.contentPane = new JSplitPaneFile(file, this);
         } catch (Throwable ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                     this,
                     ex.getMessage(),

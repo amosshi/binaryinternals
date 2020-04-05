@@ -50,12 +50,16 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
  */
 public class ClassFile {
 
-    public final byte[] classByteArray;
+    public static final String EXTENTION_CLASS = ".class";
+    public static final String EXTENTION_JAR = ".jar";
+    public static final String EXTENTION_JMOD = ".jmod";
 
     /**
      * Magic number of {@code class} file.
      */
     public static final int MAGIC = 0xCAFEBABE;
+
+    public final byte[] classByteArray;
     public final u4 magic;
 
     //

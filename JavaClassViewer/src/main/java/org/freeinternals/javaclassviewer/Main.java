@@ -36,6 +36,7 @@ import javax.swing.tree.TreePath;
 import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.core.BytesTool;
+import org.freeinternals.format.classfile.ClassFile;
 
 /**
  *
@@ -44,19 +45,44 @@ import org.freeinternals.commonlib.core.BytesTool;
 public final class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final String MASS_TEST_MODE_PROPERTY = "javaclassviewer.masstestmode";
+    private static final String MASS_TEST_MODE_VALUE = "true";
     private static final String TITLE = "Java Class Viewer";
     private static final String TITLE_EXT = " - " + TITLE;
     private JTreeZipFile zftree;
     private JPanelForTree zftreeContainer;
     private JSplitPaneClassFile cfPane;
 
-    private Main() {
+    private Main(final String[] args) {
         this.setTitle(TITLE);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         UITool.centerJFrame(this);
         this.createMenu();
         this.setVisible(true);
+
+        if (args.length > 0) {
+            final String fileName = args[0];
+            final File file = new File(fileName);
+            if (file.exists()) {
+                try {
+                    if (fileName.endsWith(ClassFile.EXTENTION_CLASS)) {
+                        this.open_ClassFile(file);
+                    } else if (fileName.endsWith(ClassFile.EXTENTION_JAR) || fileName.endsWith(ClassFile.EXTENTION_JMOD)) {
+                        this.open_JarFile(file);
+                    } else {
+                        LOGGER.log(Level.WARNING, "The provided file does not supported: filename={0}", fileName);
+                    }
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Failed to open the file. filename=" + fileName, e);
+                }
+                this.exit4Masstestmode();
+
+            } else {
+                LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
+            }
+        }
     }
 
     private void createMenu() {
@@ -118,6 +144,12 @@ public final class Main extends JFrame {
 
     }
 
+    private void exit4Masstestmode() {
+        if (Main.MASS_TEST_MODE_VALUE.equalsIgnoreCase(System.getProperties().getProperty(Main.MASS_TEST_MODE_PROPERTY))) {
+            System.exit(0);
+        }
+    }
+
     private void menu_FileOpen() {
         final FileNameExtensionFilter filterClass = new FileNameExtensionFilter("Class File", "class");
         final FileNameExtensionFilter filterJar = new FileNameExtensionFilter("Jar File", "jar");
@@ -129,9 +161,9 @@ public final class Main extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             final File file = chooser.getSelectedFile();
             this.clearContent();
-            if (file.getName().endsWith(".jar")) {
+            if (file.getName().endsWith(ClassFile.EXTENTION_JAR) || file.getName().endsWith(ClassFile.EXTENTION_JMOD)) {
                 this.open_JarFile(chooser.getSelectedFile());
-            } else if (file.getName().endsWith(".class")) {
+            } else if (file.getName().endsWith(ClassFile.EXTENTION_CLASS)) {
                 this.open_ClassFile(file);
             } else {
                 JOptionPane.showMessageDialog(
@@ -163,7 +195,7 @@ public final class Main extends JFrame {
                 }
             });
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                     this,
                     ex.toString(),
@@ -247,7 +279,7 @@ public final class Main extends JFrame {
             return;
         }
 
-        if (objLast.toString().endsWith(".class") == false) {
+        if (objLast.toString().endsWith(ClassFile.EXTENTION_CLASS) == false) {
             return;
         }
 
@@ -279,7 +311,7 @@ public final class Main extends JFrame {
         try {
             b = BytesTool.readZipEntryAsBytes(zftree.getZipFile(), ze);
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(
                     this,
                     String.format("Read the class file failed. %s", ex.getMessage()),
@@ -306,7 +338,7 @@ public final class Main extends JFrame {
      */
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new Main().setVisible(true);
+            new Main(args);
         });
     }
 }
