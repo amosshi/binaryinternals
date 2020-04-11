@@ -73,6 +73,19 @@ public final class JTreeNodeFileComponent {
      * @param nodeStartPos Value for {@link #startPos}
      * @param nodeLength Value for {@link #length}
      * @param nodeText Value for {@link #text}
+     * @param desc Value for {@link #description}, could be null
+     */
+    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final String desc) {
+        this(nodeStartPos, nodeLength, nodeText);
+        this.description = desc;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param nodeStartPos Value for {@link #startPos}
+     * @param nodeLength Value for {@link #length}
+     * @param nodeText Value for {@link #text}
      * @param nodeIcon Value for {@link #icon}, could be null
      * @param desc Value for {@link #description}, could be null
      */
