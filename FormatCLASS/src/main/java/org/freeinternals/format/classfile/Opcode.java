@@ -136,10 +136,9 @@ public final class Opcode {
         bipush(16) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                int intermediateByteValue = pdis.readUnsignedByte();
-
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), intermediateByteValue);
+                parsed.immediateValue = pdis.readUnsignedByte();
+                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), parsed.immediateValue);
                 return parsed;
             }
         },
@@ -155,10 +154,9 @@ public final class Opcode {
         sipush(17) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                int intermediateShortValue = pdis.readUnsignedShort();
-
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), intermediateShortValue);
+                parsed.immediateValue = pdis.readUnsignedShort();
+                parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), parsed.immediateValue);
                 return parsed;
             }
         },
@@ -1157,8 +1155,8 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.lvIndex = pdis.readUnsignedByte();
-                int immediateSignedByteValue = pdis.readByte();
-                parsed.opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, this.name(), parsed.lvIndex, immediateSignedByteValue);
+                parsed.immediateValue = Integer.valueOf(pdis.readByte());
+                parsed.opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, this.name(), parsed.lvIndex, parsed.immediateValue);
                 return parsed;
             }
         },
@@ -1624,10 +1622,10 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
-                int nArgs = pdis.readUnsignedByte();
+                parsed.nArgs = pdis.readUnsignedByte();
                 BytesTool.skipBytes(pdis, 1);
 
-                parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, nArgs);
+                parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, parsed.nArgs);
                 return parsed;
             }
         },
@@ -1674,9 +1672,8 @@ public final class Opcode {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-
-                int arrayType = pdis.readUnsignedByte();
-                parsed.opCodeText = String.format("%s %s", Opcode.Instruction.newarray.name(), NewarrayType.getName(arrayType));
+                parsed.arrayType = pdis.readUnsignedByte();
+                parsed.opCodeText = String.format("%s %s", Opcode.Instruction.newarray.name(), NewarrayType.valueOf(parsed.arrayType).name());
                 return parsed;
             }
         },
@@ -1749,8 +1746,6 @@ public final class Opcode {
         monitorexit(195),
         /**
          * Extend local variable index by additional bytes.
-         *
-         * TODO - Refactor this method
          */
         wide(196) {
             private List<Integer> WIDE_SINGLE_OPCODES = new ArrayList<Integer>() {
@@ -1770,14 +1765,29 @@ public final class Opcode {
             };
 
             /**
-             * The target opcode for the {@link Instruction#wide} instruction.
+             * The opcode with wide targets.
              */
             private int wide_opcode;
 
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                InstructionParsed parsed = new InstructionParsed(curPos, this.code);
-                parsed.opCodeText = this.getText_wide(pdis);
+                wide_opcode = pdis.readUnsignedByte();
+                InstructionParsed parsed = new InstructionParsed(curPos, wide_opcode);
+                parsed.isWide = true;
+
+                String opCodeText;
+                if (this.WIDE_SINGLE_OPCODES.contains(wide_opcode)) {
+                    parsed.lvIndex = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, getWideName(Opcode.Instruction.valueOf(wide_opcode).name()), parsed.lvIndex);
+                } else if (wide_opcode == Opcode.Instruction.iinc.code) {
+                    parsed.lvIndex = pdis.readUnsignedShort();
+                    parsed.immediateValue = pdis.readUnsignedShort();
+                    opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, getWideName(Opcode.Instruction.iinc.name()), parsed.lvIndex, parsed.immediateValue);
+                } else {
+                    opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
+                }
+
+                parsed.opCodeText = opCodeText;
                 return parsed;
             }
 
@@ -1794,28 +1804,6 @@ public final class Opcode {
             String getWideName(String s) {
                 return Instruction.wide.name() + " " + s;
             }
-
-            private String getText_wide(final PosDataInputStream pdis) throws IOException {
-                this.wide_opcode = pdis.readUnsignedByte();
-                String opCodeText;
-
-                int shortValue;
-                int shortValue2;
-
-                if (this.WIDE_SINGLE_OPCODES.contains(this.wide_opcode)) {
-                    shortValue = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_NUMBER, getWideName(Opcode.Instruction.valueOf(this.wide_opcode).name()), shortValue);
-                } else if (this.wide_opcode == Opcode.Instruction.iinc.code) {
-                    shortValue = pdis.readUnsignedShort();
-                    shortValue2 = pdis.readUnsignedShort();
-                    opCodeText = String.format(FORMAT_OPCODE_LOCAL_IINC, getWideName(Opcode.Instruction.iinc.name()), shortValue, shortValue2);
-                } else {
-                    opCodeText = String.format("%s [Unknown opcode]", Opcode.Instruction.wide.name());
-                }
-
-                return opCodeText;
-            }
-
         },
         /**
          * Create new multidimensional array.
@@ -2013,6 +2001,7 @@ public final class Opcode {
      */
     public static enum NewarrayType {
 
+        T_UNKNOWN(-1),
         T_BOOLEAN(4),
         T_CHAR(5),
         T_FLOAT(6),
@@ -2034,15 +2023,15 @@ public final class Opcode {
          * @param value Value to match {@link #atype}
          * @return Type name corresponding to <code>value</code>
          */
-        public static String getName(int value) {
-            String n = "[ERROR: Unknown type]";
+        public static NewarrayType valueOf(int value) {
+            NewarrayType v = NewarrayType.T_UNKNOWN;
             for (NewarrayType type : NewarrayType.values()) {
                 if (type.atype == value) {
-                    n = type.name();
+                    v = type;
                     break;
                 }
             }
-            return n;
+            return v;
         }
     }
 
@@ -2154,6 +2143,20 @@ public final class Opcode {
         public final int offset;
 
         /**
+         * Whether current opcode is {@link Instruction#wide} or not.
+         *
+         * @see Instruction#wide
+         */
+        protected boolean isWide = false;
+
+        /**
+         * Array type for {@link Instruction#newarray}.
+         *
+         * @see Instruction#newarray
+         */
+        protected Integer arrayType;
+
+        /**
          * JVM Opcode value.
          *
          * @see Instruction#code
@@ -2207,6 +2210,25 @@ public final class Opcode {
          * @see Instruction#lload
          */
         protected Integer lvIndex = null;
+
+        /**
+         * The immediate numeric value, that value is pushed onto the operand
+         * stack.
+         *
+         * @see Instruction#bipush
+         * @see Instruction#iinc
+         * @see Instruction#sipush
+         *
+         */
+        protected Integer immediateValue = null;
+
+        /**
+         * Number of arguments for {@link Instruction#invokeinterface}
+         * instruction.
+         *
+         * @see Instruction#invokeinterface
+         */
+        protected Integer nArgs = null;
 
         /**
          * Execution proceeds at that offset from the address of the opcode of
@@ -2287,6 +2309,26 @@ public final class Opcode {
         }
 
         /**
+         * Getter for {@link #immediateValue}.
+         *
+         * @return {@link #immediateValue} value. <code>null</code> if not
+         * applicable
+         */
+        public Integer getImmediateValue() {
+            return this.immediateValue;
+        }
+
+        /**
+         * Getter for {@link #lvIndex}.
+         *
+         * @return {@link #lvIndex} value. <code>null</code> if no local
+         * variable index.
+         */
+        public Integer getLvindex() {
+            return this.lvIndex;
+        }
+
+        /**
          * Getter for {@link #lookupSwitch}.
          *
          * @return {@link #lookupSwitch} value. <code>null</code> if current
@@ -2297,6 +2339,15 @@ public final class Opcode {
         }
 
         /**
+         * Getter for {@link #nArgs}.
+         *
+         * @return {@link #nArgs} value. <code>null</code> if not applicable
+         */
+        public Integer getNargs() {
+            return this.nArgs;
+        }
+
+        /**
          * Getter for {@link #tableSwitch}.
          *
          * @return {@link #tableSwitch} value. <code>null</code> if current
@@ -2304,6 +2355,24 @@ public final class Opcode {
          */
         public TableSwitch getTableSwitch() {
             return this.tableSwitch;
+        }
+
+        /**
+         * Getter for {@link #isWide}.
+         *
+         * @return {@link #isWide} value.
+         */
+        public boolean isWide() {
+            return this.isWide;
+        }
+
+        /**
+         * Getter for {@link #arrayType}.
+         *
+         * @return {@link #arrayType} value.
+         */
+        public Integer getArrayType() {
+            return this.arrayType;
         }
 
         @Override
