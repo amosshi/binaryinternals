@@ -9,6 +9,7 @@ package org.freeinternals.format.elf;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
@@ -30,12 +31,17 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 public class ElfFile extends FileFormat {
     
     public final Identification ident;
+    public final Elf64_Ehdr header;
 
     public ElfFile(File file) throws IOException, FileFormatException {
         super(file);
 
         PosDataInputStream input = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         this.ident = new Identification(input);
+        
+        PosDataInputStreamElf inputElf = new PosDataInputStreamElf(new PosByteArrayInputStream(this.fileByteArray), this.ident.EI_DATA);
+        BytesTool.skip(input, Identification.EI_NIDENT);
+        this.header = new Elf64_Ehdr(inputElf);
     }
 
     @Override
@@ -46,5 +52,6 @@ public class ElfFile extends FileFormat {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.ident.generateTreeNode(parentNode);
+        this.header.generateTreeNode(parentNode);
     }
 }

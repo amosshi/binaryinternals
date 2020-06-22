@@ -29,7 +29,7 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 public class Identification extends FileComponent implements GenerateTreeNode {
 
     /**
-     * Number of bytes for identification.
+     * Number of bytes in identification.
      *
      * @see
      * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
