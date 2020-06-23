@@ -177,8 +177,8 @@ public final class BytesTool {
         final long fileSize = zipEntry.getSize();
         final byte contents[] = new byte[(int) fileSize];
         ByteBuffer byteBuf = ByteBuffer.allocate(contents.length);
-        InputStream is = null;
-        int bytesRead = 0;
+        InputStream is;
+        int bytesRead;
         int bytesAll = 0;
 
         try {
@@ -216,6 +216,7 @@ public final class BytesTool {
         }
     }
     
+    @Deprecated
     public static void skipBytes(final DataInput di, final int skip) throws IOException {
         long skippedBytes = di.skipBytes(skip);
         if (skippedBytes != skip) {

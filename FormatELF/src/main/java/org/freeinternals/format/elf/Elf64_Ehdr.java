@@ -90,7 +90,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         this.e_shnum = input.read_Elf64_Half();
         this.e_shstrndx = input.read_Elf64_Half();
 
-        super.length = input.getPos();
+        super.length = input.getPos() - super.startPos;
     }
 
     /**

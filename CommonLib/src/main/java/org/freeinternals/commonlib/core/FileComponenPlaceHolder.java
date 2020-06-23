@@ -25,7 +25,7 @@ public class FileComponenPlaceHolder extends FileComponent {
 
         if (length > 0) {
             this.length = length;
-            BytesTool.skipBytes(posDataInputStream, length);
+            BytesTool.skip(posDataInputStream, length);
         } else {
             this.length = 0;
         }

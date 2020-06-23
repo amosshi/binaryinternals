@@ -1623,7 +1623,7 @@ public final class Opcode {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
                 parsed.nArgs = pdis.readUnsignedByte();
-                BytesTool.skipBytes(pdis, 1);
+                BytesTool.skip(pdis, 1);
 
                 parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, parsed.nArgs);
                 return parsed;
@@ -1639,7 +1639,7 @@ public final class Opcode {
                 parsed.cpIndex = pdis.readUnsignedShort();
 
                 // Skip 2 zero bytes
-                BytesTool.skipBytes(pdis, 2);
+                BytesTool.skip(pdis, 2);
                 parsed.opCodeText = this.name();
                 return parsed;
             }
@@ -1985,7 +1985,7 @@ public final class Opcode {
             int skip = pdis.getPos() % 4;
             skip = (skip > 0) ? 4 - skip : skip;
             if (skip > 0) {
-                BytesTool.skipBytes(pdis, skip);
+                BytesTool.skip(pdis, skip);
             }
         }
 

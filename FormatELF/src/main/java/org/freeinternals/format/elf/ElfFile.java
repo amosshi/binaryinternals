@@ -38,7 +38,7 @@ public class ElfFile extends FileFormat {
 
         PosDataInputStream input = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         this.ident = new Identification(input);
-        
+
         PosDataInputStreamElf inputElf = new PosDataInputStreamElf(new PosByteArrayInputStream(this.fileByteArray), this.ident.EI_DATA);
         BytesTool.skip(input, Identification.EI_NIDENT);
         this.header = new Elf64_Ehdr(inputElf);
