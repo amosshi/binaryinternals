@@ -16,7 +16,7 @@ import java.math.BigInteger;
  * @author Amos Shi
  */
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
-    
+
     /**
      * Shift Operators, offset with 8.
      */
@@ -74,8 +74,16 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * Byte max value: 255.
      */
     private static final int BYTE_MAX_255 = 255;
-    
-    
+
+    /**
+     * New line character: LINE FEED (LF).
+     */
+    public static final byte NEWLINE_LF = 0x0A;
+    /**
+     * New line character: CARRIAGE RETURN (CR).
+     */
+    public static final byte NEWLINE_CR = 0x0D;
+
     /**
      * Offset of the 1st byte.
      */
@@ -107,7 +115,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * <code>startPos</code> of original stream, with length
      * <code>length</code>.
      *
-     * @param startPos Start position 
+     * @param startPos Start position
      * @param length Length
      * @return A partial {@link PosDataInputStream} object
      */
@@ -371,18 +379,18 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
-     * Read current byte array as ASCII string until a {@link NEWLINE} flag
-     * found.
+     * Read current byte array as ASCII string until a {@link #NEWLINE_CR} /
+     * {@link #NEWLINE_LF} flag found.
      *
-     * @return 
+     * @return
      * @throws java.io.IOException
      */
     public ASCIILine readASCIILine() throws IOException {
         int nlLen = 1;
-        String line = this.readASCIIUntil(NEWLINE.CR, NEWLINE.LF);
+        String line = this.readASCIIUntil(NEWLINE_CR, NEWLINE_LF);
         if (this.hasNext()) {
             byte next = this.readByte();
-            if (next != NEWLINE.LF && next != NEWLINE.CR) {
+            if (next != NEWLINE_LF && next != NEWLINE_CR) {
                 this.backward(1);
             } else {
                 nlLen += 1;
@@ -590,21 +598,6 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return this.getPos() - this.offset <= (this.getBuf().length - 1);
     }
 
-    /**
-     * Flag for New Line.
-     */
-    public static class NEWLINE {
-
-        /**
-         * LINE FEED (LF). New line character.
-         */
-        public static final byte LF = 0x0A;
-        /**
-         * CARRIAGE RETURN (CR).
-         */
-        public static final byte CR = 0x0D;
-    }
-
     public static class ASCIILine {
 
         /**
@@ -619,7 +612,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         }
 
         /**
-         * Length of the line, including the {@link NEWLINE}.
+         * Length of the line, including the {@link #NEWLINE_CR} /
+         * {@link #NEWLINE_LF}.
          *
          * @return {@link ASCIILine} length
          */
