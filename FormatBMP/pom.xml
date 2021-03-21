@@ -6,13 +6,13 @@
         <artifactId>freeinternals</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>FormatBMP</artifactId>
+    <artifactId>freeinternals.format.bmp</artifactId>
     <packaging>jar</packaging>
     <name>freeinternals :: FormatBMP</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CommonLib</artifactId>
+            <artifactId>freeinternals.commonlib</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

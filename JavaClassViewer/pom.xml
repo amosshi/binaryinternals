@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatCLASS</artifactId>
+            <artifactId>freeinternals.format.class</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

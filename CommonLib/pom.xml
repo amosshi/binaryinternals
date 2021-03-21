@@ -6,7 +6,7 @@
         <artifactId>freeinternals</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>CommonLib</artifactId>
+    <artifactId>freeinternals.commonlib</artifactId>
     <name>freeinternals :: CommonLib</name>
     <packaging>jar</packaging>
 

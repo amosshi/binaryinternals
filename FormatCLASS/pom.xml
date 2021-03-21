@@ -8,7 +8,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>FormatCLASS</artifactId>
+    <artifactId>freeinternals.format.class</artifactId>
     <name>freeinternals :: FormatCLASS</name>
     <packaging>jar</packaging>
     <version>12.0</version>
@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CommonLib</artifactId>
+            <artifactId>freeinternals.commonlib</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
         </dependency>

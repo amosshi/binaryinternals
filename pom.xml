@@ -10,7 +10,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spotbugs.version>4.1.4</spotbugs.version>
+        <spotbugs.version>4.2.2</spotbugs.version>
     </properties>
 
     <dependencies>
@@ -46,7 +46,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.36.2</version>
+                        <version>8.41</version>
                     </dependency>
                 </dependencies>
                 <configuration>

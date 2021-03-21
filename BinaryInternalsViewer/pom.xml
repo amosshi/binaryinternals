@@ -15,42 +15,42 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatBMP</artifactId>
+            <artifactId>freeinternals.format.bmp</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatJPEG</artifactId>
+            <artifactId>freeinternals.format.jpeg</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatZIP</artifactId>
+            <artifactId>freeinternals.format.zip</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatPDF</artifactId>
+            <artifactId>freeinternals.format.pdf</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatDEX</artifactId>
+            <artifactId>freeinternals.format.dex</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatELF</artifactId>
+            <artifactId>freeinternals.format.elf</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatPE</artifactId>
+            <artifactId>freeinternals.format.pe</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>FormatPNG</artifactId>
+            <artifactId>freeinternals.format.png</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
