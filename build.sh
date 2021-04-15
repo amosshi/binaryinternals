@@ -10,8 +10,22 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 #export JAVA_HOME=/usr/lib64/jvm/java
 
 mvn clean package install
-mvn javadoc:aggregate
 
+mvn javadoc:aggregate
+mvn javadoc:aggregate-jar
+
+mvn source:aggregate
+mvn source:jar
+
+mvn checkstyle:checkstyle
+mvn checkstyle:checkstyle-aggregate
+mvn checkstyle:check
+mvn pmd:pmd
+
+mvn pdf:pdf
+
+mvn jdeps:jdkinternals
 mvn versions:display-dependency-updates
 
+# mvn deploy:deploy
 # mvn spotbugs:gui
