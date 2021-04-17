@@ -61,7 +61,7 @@ public class GenerateTreeNode_CDE {
                 String.format(".ZIP file comment length = %d", cde.ZipFileCommentLength))));
         if (cde.ZipFileComment != null) {
             nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position += 2,
+                    position + 2,
                     cde.ZipFileComment.length,
                     ".ZIP file comment")));
         }

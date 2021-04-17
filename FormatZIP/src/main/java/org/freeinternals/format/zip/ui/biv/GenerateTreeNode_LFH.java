@@ -113,7 +113,7 @@ public class GenerateTreeNode_LFH {
 
         // File data
         if (lfh.CompressedSize > 0) {
-            parent.add(nodeLfh = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
                     (int) lfh.CompressedSize, // TODO - We are in danger of very big file longer than int value size.
                     "File data")));

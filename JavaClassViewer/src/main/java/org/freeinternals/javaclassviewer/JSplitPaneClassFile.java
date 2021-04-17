@@ -17,7 +17,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.HTMLKit;
 import org.freeinternals.commonlib.ui.JBinaryViewer;
@@ -68,11 +67,8 @@ public class JSplitPaneClassFile extends JSplitPane {
 
         // Construct class file viewer
         final JTreeClassFile jTreeClassFile = new JTreeClassFile(this.classFile);
-        jTreeClassFile.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(final javax.swing.event.TreeSelectionEvent evt) {
-                jTreeClassFileSelectionChanged(evt);
-            }
+        jTreeClassFile.addTreeSelectionListener((final javax.swing.event.TreeSelectionEvent evt) -> {
+            jTreeClassFileSelectionChanged(evt);
         });
         final JPanelForTree panel = new JPanelForTree(jTreeClassFile, top);
 

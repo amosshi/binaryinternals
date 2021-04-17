@@ -120,7 +120,7 @@ public class Chunk_cHRM extends Chunk {
                 4,
                 String.format("Blue x = %05d or %f", this.BlueX, this.BlueX_value))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start += 4,
+                start + 4,
                 4,
                 String.format("Blue y = %05d or %f", this.BlueY, this.BlueY_value))));
     }
