@@ -11,11 +11,13 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 
 mvn clean package install
 
+mvn javadoc:javadoc
+mvn javadoc:jar
 mvn javadoc:aggregate
 mvn javadoc:aggregate-jar
 
-mvn source:aggregate
 mvn source:jar
+mvn source:aggregate
 
 mvn checkstyle:checkstyle
 mvn checkstyle:checkstyle-aggregate

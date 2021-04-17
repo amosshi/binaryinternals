@@ -23,10 +23,6 @@ public class JXMLViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
     /**
-     * Default font size.
-     */
-    private static final int FONT_SIZE = 16;
-    /**
      * Tabbed Pane for "XML View" and "XML Plain Text".
      */
     private final JTabbedPane tabbedPane;

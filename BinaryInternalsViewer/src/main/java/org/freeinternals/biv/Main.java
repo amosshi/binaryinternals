@@ -8,17 +8,26 @@ package org.freeinternals.biv;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -33,8 +42,8 @@ import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.UITool;
 
 /**
- * 
- * 
+ *
+ *
  * @author Amos Shi
  */
 public class Main extends JFrame {
@@ -44,8 +53,9 @@ public class Main extends JFrame {
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String TITLE_EXT = " - " + TITLE;
     private final JPanel filedropPanel = new JPanel();
+    private final Set<File> recentFiles = new HashSet<>();
+    private final JMenu menu_FileRecentFile = new JMenu("Recent Files");
     private JSplitPaneFile contentPane = null;
-    
 
     @SuppressWarnings("LeakingThisInConstructor")
     private Main() {
@@ -58,10 +68,11 @@ public class Main extends JFrame {
         this.filedropPanel.setLayout(new BorderLayout());
         this.add(this.filedropPanel, BorderLayout.CENTER);
 
-        this.enalbeFileDrop();
+        this.enalbeFileDrop(this.filedropPanel);
+        this.enalbeFileDrop(this.getJMenuBar());
         this.setVisible(true);
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -94,23 +105,15 @@ public class Main extends JFrame {
         // File --> Close
         final JMenuItem menuItem_FileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
         menuItem_FileClose.setMnemonic(KeyEvent.VK_C);
-        menuItem_FileClose.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                closeFile();
-            }
+        menuItem_FileClose.addActionListener((final ActionEvent e) -> {
+            closeFile();
         });
         menuFile.add(menuItem_FileClose);
 
-        //
-        //menuFile.addSeparator();
-
+        menuFile.addSeparator();
         // File --> Recent Files
-        //JMenu menu_FileRecentFile = new JMenu("Recent Files");
-        //menu_FileRecentFile.setMnemonic(KeyEvent.VK_R);
-        //menuFile.add(menu_FileRecentFile);
-
+        this.menu_FileRecentFile.setMnemonic(KeyEvent.VK_R);
+        menuFile.add(this.menu_FileRecentFile);
         //
         menuFile.addSeparator();
 
@@ -155,14 +158,22 @@ public class Main extends JFrame {
         menuHelp.add(menuItem_HelpAbout);
     }
 
-    private void enalbeFileDrop(){
-        // only the 1st file are handled
-        new FileDrop(this.filedropPanel, (java.io.File[] files) -> {
-            openFile(files[0]);
-        });
-        //new FileDrop(System.out, this.getJMenuBar(), new FileDrop.Listener() {
-        new FileDrop(this.getJMenuBar(), (java.io.File[] files) -> {
-            openFile(files[0]);
+    /**
+     * Support drag and drop. Only the 1st file are handled, if more than 1 file
+     * are dropped.
+     */
+    private void enalbeFileDrop(Component c) {
+        c.setDropTarget(new DropTarget() {
+            @Override
+            public synchronized void drop(DropTargetDropEvent evt) {
+                try {
+                    evt.acceptDrop(DnDConstants.ACTION_COPY);
+                    List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    openFile(droppedFiles.get(0));
+                } catch (UnsupportedFlavorException | IOException e) {
+                    LOGGER.warning(e.getMessage());
+                }
+            }
         });
     }
 
@@ -178,8 +189,22 @@ public class Main extends JFrame {
     }
 
     private void openFile(final File file) {
-        this.closeFile();      // Close any open file first
+        // Close any open file first if exists
+        this.closeFile();
 
+        // Update Recent files menu item
+        this.menu_FileRecentFile.removeAll();
+        this.recentFiles.add(file);
+        this.recentFiles.forEach(recent -> {
+            this.menu_FileRecentFile.add(new JMenuItem(new AbstractAction(recent.getAbsolutePath()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openFile(recent);
+                }
+            }));
+        });
+
+        // Add the file to UI
         try {
             this.contentPane = new JSplitPaneFile(file, this);
         } catch (Throwable ex) {
@@ -218,7 +243,7 @@ public class Main extends JFrame {
         plugins.setLocationRelativeTo(this);
         plugins.setVisible(true);
     }
-    
+
     private void menu_HelpAbout() {
         final JDialogAbout about = new JDialogAbout(this, "About");
         about.setLocationRelativeTo(this);
