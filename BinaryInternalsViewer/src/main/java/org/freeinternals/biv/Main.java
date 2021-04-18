@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -62,7 +64,7 @@ public class Main extends JFrame {
         this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        UITool.centerJFrame(this);
+        this.centerJFrame();
         this.createMenu();
         this.filedropPanel.setBackground(Color.WHITE);
         this.filedropPanel.setLayout(new BorderLayout());
@@ -80,6 +82,20 @@ public class Main extends JFrame {
         SwingUtilities.invokeLater(() -> {
             new Main().setVisible(true);
         });
+    }
+
+    /**
+     * Set a {@code JFrame} window to screen center.
+     */
+    private void centerJFrame() {
+        // Set main window size
+        final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(
+                (int) (d.getWidth() * UITool.POPUP_RATIO),
+                (int) (d.getHeight() * UITool.POPUP_RATIO));
+
+        // Center the main window
+        this.setLocationRelativeTo(null);
     }
 
     private void createMenu() {

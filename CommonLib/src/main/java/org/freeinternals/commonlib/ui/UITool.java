@@ -7,8 +7,6 @@
 package org.freeinternals.commonlib.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -27,25 +25,9 @@ public final class UITool {
     /**
      * Size ratio of the pop-up window and its parent.
      */
-    private static final float POPUP_RATIO = 0.8f;
+    public static final float POPUP_RATIO = 0.8f;
 
     private UITool() {
-    }
-
-    /**
-     * Set a {@code JFrame} window to screen center.
-     *
-     * @param f The target window
-     */
-    public static void centerJFrame(final JFrame f) {
-        // Set main window size
-        final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        f.setSize(
-                (int) (d.getWidth() * POPUP_RATIO),
-                (int) (d.getHeight() * POPUP_RATIO));
-
-        // Center the main window
-        f.setLocationRelativeTo(null);
     }
 
     /**

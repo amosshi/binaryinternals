@@ -5,7 +5,7 @@
  * Use is subject to license terms.
  */
 
-package org.freeinternals.commonlib.ui;
+package org.freeinternals.biv;
 
 import java.awt.Cursor;
 import java.awt.Desktop;

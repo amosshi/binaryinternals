@@ -57,8 +57,6 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
  */
 public class ClassFile extends FileFormat {
 
-    public static final String EXTENTION_CLASS = ".class";
-
     /**
      * Magic number of {@code class} file.
      */

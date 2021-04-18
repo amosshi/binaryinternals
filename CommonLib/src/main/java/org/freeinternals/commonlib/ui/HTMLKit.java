@@ -1,11 +1,18 @@
 package org.freeinternals.commonlib.ui;
 
+import java.awt.Font;
+
 /**
  * HTML Kit for the <code>JTextPane</code> control.
  *
  * @author Amos
  */
 public final class HTMLKit {
+
+    /**
+     * Default font.
+     */
+    public static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 14);
 
     /**
      * Font color yellow.
@@ -81,8 +88,8 @@ public final class HTMLKit {
      */
     public static String span(final String text) {
         return String.format("<span style=\"font-size:%dpx; font-family:%s;\">%s</span>",
-                JBinaryViewer.FONT.getSize() - 2,
-                JBinaryViewer.FONT.getFamily(),
+                FONT.getSize() - 2,
+                FONT.getFamily(),
                 text);
     }
 
@@ -96,8 +103,8 @@ public final class HTMLKit {
     public static String span(final String text, final String color) {
         return String.format("<span style=\"background-color:%s; font-size:%dpx; font-family:%s;\">%s</span>",
                 color,
-                JBinaryViewer.FONT.getSize() - 2,
-                JBinaryViewer.FONT.getFamily(),
+                FONT.getSize() - 2,
+                FONT.getFamily(),
                 text);
     }
 

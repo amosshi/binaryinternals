@@ -6,6 +6,7 @@
  */
 package org.freeinternals.biv;
 
+import org.freeinternals.binaryviewer.JBinaryViewer;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,9 +25,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.biv.plugin.PluginManager;
-import org.freeinternals.commonlib.ui.JBinaryViewer;
 import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.commonlib.ui.JPanelForTree;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 

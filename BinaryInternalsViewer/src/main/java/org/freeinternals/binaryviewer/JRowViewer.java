@@ -4,19 +4,18 @@
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.commonlib.ui.binviewer;
+package org.freeinternals.binaryviewer;
 
 import org.freeinternals.commonlib.ui.HTMLKit;
 import java.awt.Component;
 import javax.swing.JTextPane;
-import org.freeinternals.commonlib.ui.JBinaryViewer;
 
 /**
  * Display rows of binary data.
  *
  * @author Amos Shi
  */
-public class JRowViewer extends JTextPane {
+class JRowViewer extends JTextPane {
 
     private static final long serialVersionUID = 4876543219876500000L;
     /**

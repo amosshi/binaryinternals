@@ -4,7 +4,7 @@
  * Copyright 2009, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.commonlib.ui;
+package org.freeinternals.biv;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -24,6 +24,8 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 
 /**
  * A panel containing a {@code JTree} object.

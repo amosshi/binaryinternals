@@ -4,10 +4,9 @@
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.commonlib.ui;
+package org.freeinternals.binaryviewer;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
@@ -19,9 +18,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.SpringLayout;
-import org.freeinternals.commonlib.ui.binviewer.JAsciiDataViewer;
-import org.freeinternals.commonlib.ui.binviewer.JRawDataViewer;
-import org.freeinternals.commonlib.ui.binviewer.JRowViewer;
 
 /**
  * Viewer for binary data. It contains three columns: row numbers, data in HEX,
@@ -32,11 +28,6 @@ import org.freeinternals.commonlib.ui.binviewer.JRowViewer;
 public final class JBinaryViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
-
-    /**
-     * Default font.
-     */
-    public static final Font FONT = new Font(Font.DIALOG_INPUT, Font.PLAIN, 14);
 
     /**
      * Height for each row.
@@ -385,6 +376,7 @@ public final class JBinaryViewer extends JPanel {
             }
         }
 
+        @Override
         public void keyReleased(final KeyEvent e) {
         }
     }
