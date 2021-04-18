@@ -6,6 +6,7 @@
  */
 package org.freeinternals.biv;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -54,13 +55,16 @@ public class Main extends JFrame {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String TITLE_EXT = " - " + TITLE;
+    private static final String MASS_TEST_MODE_PROPERTY = "org.freeinternals.masstestmode";
+
     private final JPanel filedropPanel = new JPanel();
     private final Set<File> recentFiles = new HashSet<>();
     private final JMenu menu_FileRecentFile = new JMenu("Recent Files");
     private JSplitPaneFile contentPane = null;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    private Main() {
+    @SuppressFBWarnings(value="DM_EXIT", justification="This is desigend for mass test mode")
+    private Main(final String[] args) {
         this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -73,6 +77,26 @@ public class Main extends JFrame {
         this.enalbeFileDrop(this.filedropPanel);
         this.enalbeFileDrop(this.getJMenuBar());
         this.setVisible(true);
+
+        // Accept file name at command line
+        if (args.length > 0) {
+            final String fileName = args[0];
+            final File file = new File(fileName);
+            if (file.exists()) {
+                try {
+                    this.openFile(file);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Failed to open the file. filename=" + fileName, e);
+                }
+            } else {
+                LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
+            }
+
+            // Exit immediately for mass test mode
+            if (Boolean.valueOf(System.getProperty(Main.MASS_TEST_MODE_PROPERTY, "false"))) {
+                System.exit(0);
+            }
+        }
     }
 
     /**
@@ -80,7 +104,7 @@ public class Main extends JFrame {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new Main().setVisible(true);
+            new Main(args).setVisible(true);
         });
     }
 

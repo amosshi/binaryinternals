@@ -31,21 +31,17 @@ find "$JAVA_FOLDER/jmods/" -iname *.jmod | while read jmodfilename; do
 
   # Processing each .class file
   find $jmodfilename_short -iname *.class | while read classfilename; do
-    echo "timeout 5 java -Djavaclassviewer.masstestmode=true -jar ../../JavaClassViewer/target/JavaClassViewer-12.0.jar '$classfilename'" >> masstest.cmds
-#   timeout 5 java -Djavaclassviewer.masstestmode=true -jar ../../JavaClassViewer/target/JavaClassViewer-12.0.jar $classfilename
+    echo "timeout 5 java -Dorg.freeinternals.masstestmode=true -jar ../../BinaryInternalsViewer/target/BinaryInternalsViewer-3.0.jar '$classfilename'" >> masstest.cmds
   done
 
   # Clean up .jmod file
   rm       $jmodfilename_nopath
 done
 
-echo "$(logtime) Commands"
+echo "$(logtime) Commands sample"
 tail -10 masstest.cmds
 
 echo "$(logtime) Mass Test Starts"
-
-# chmod +x masstest.cmds
-# ./masstest.cmds
 
 parallel --ungroup -j 50% < masstest.cmds
 
