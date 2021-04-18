@@ -4,60 +4,65 @@
     <parent>
         <groupId>org.freeinternals</groupId>
         <artifactId>freeinternals</artifactId>
-        <version>1.0</version>
+        <version>2.0</version>
     </parent>
 
     <artifactId>BinaryInternalsViewer</artifactId>
     <name>freeinternals :: BinaryInternalsViewer</name>
     <packaging>jar</packaging>
-    <version>2.0</version>
+    <version>3.0</version>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>freeinternals.format.class</artifactId>
+            <version>12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.bmp</artifactId>
-            <version>${project.parent.version}</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.jpeg</artifactId>
-            <version>${project.parent.version}</version>
+            <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.zip</artifactId>
-            <version>${project.parent.version}</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.pdf</artifactId>
-            <version>${project.parent.version}</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.dex</artifactId>
-            <version>${project.parent.version}</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.elf</artifactId>
-            <version>${project.parent.version}</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.pe</artifactId>
-            <version>${project.parent.version}</version>
+            <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.png</artifactId>
-            <version>${project.parent.version}</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
-            
+
             <!-- Copy dependencies libraries to Target folder -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -96,5 +101,5 @@
 
         </plugins>
     </build>
-    
+
 </project>

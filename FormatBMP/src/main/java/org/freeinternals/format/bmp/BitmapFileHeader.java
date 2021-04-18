@@ -60,6 +60,7 @@ public class BitmapFileHeader extends FileComponent implements GenerateTreeNode 
         }
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
         DefaultMutableTreeNode node;

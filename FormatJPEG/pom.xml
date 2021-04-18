@@ -4,16 +4,19 @@
     <parent>
         <groupId>org.freeinternals</groupId>
         <artifactId>freeinternals</artifactId>
-        <version>1.0</version>
+        <version>2.0</version>
     </parent>
+
     <artifactId>freeinternals.format.jpeg</artifactId>
-    <packaging>jar</packaging>
     <name>freeinternals :: FormatJPEG</name>
+    <packaging>jar</packaging>
+    <version>2.0</version>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.commonlib</artifactId>
-            <version>${project.version}</version>
+            <version>${commonlib.version}</version>
         </dependency>
     </dependencies>
     

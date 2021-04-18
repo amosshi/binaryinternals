@@ -34,7 +34,9 @@ public final class JTreeNodeFileComponent {
      */
     private Icon icon;
     /**
-     * Description text for current tree node.
+     * Description text for current tree node. 
+     * It will be shown on the left bottom window on the screen.
+     * It supports HTML.
      */
     private String description;
     /**

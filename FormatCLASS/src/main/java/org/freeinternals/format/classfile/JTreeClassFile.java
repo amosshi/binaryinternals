@@ -4,46 +4,41 @@
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.javaclassviewer;
+package org.freeinternals.format.classfile;
 
-import javax.swing.JTree;
+import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import org.freeinternals.commonlib.core.BytesTool;
+import org.freeinternals.commonlib.ui.HTMLKit;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import org.freeinternals.format.classfile.constant.CPInfo;
-import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.FieldInfo;
-import org.freeinternals.format.classfile.MethodInfo;
-import org.freeinternals.format.classfile.U2ClassComponent;
-import org.freeinternals.format.classfile.u2;
-import org.freeinternals.format.classfile.u4;
 
 /**
- * A tree for {@link ClassFile} displaying all compoents in the class file.
+ * A tree for {@link ClassFile} displaying all components in the class file.
  *
  * @author Amos Shi
  * @see ClassFile
  */
-public class JTreeClassFile extends JTree {
+public class JTreeClassFile {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    static final String CP_PREFIX = "constant_pool[";
+    static final String FIELDS_PREFIX = "fields[";
+    static final String METHODS_PERFIX = "methods[";
     private final ClassFile classFile;
-    DefaultMutableTreeNode root = null;
+    DefaultMutableTreeNode root;
 
     /**
      * Creates a tree for {@link ClassFile}.
      *
      * @param classFile The class file to be shown
      */
-    public JTreeClassFile(final ClassFile classFile) {
+    JTreeClassFile(final ClassFile classFile) {
         this.classFile = classFile;
-        this.generateTreeNodes();
-        this.setModel(new DefaultTreeModel(this.root));
     }
 
-    private void generateTreeNodes() {
-        this.root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, this.classFile.classByteArray.length, "Class File"));
+    void generateTreeNodes(final DefaultMutableTreeNode rootNode) {
+        this.root = rootNode;
         this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, u4.LENGTH, "magic")));
 
         this.generateTreeNodeClsssFileVersion();
@@ -87,7 +82,7 @@ public class JTreeClassFile extends JTree {
         final DefaultMutableTreeNode constant_pool = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - startPos,
-                "constant_pool[" + cpCount + "]"
+                CP_PREFIX + cpCount + "]"
         ));
         this.root.add(constant_pool);
 
@@ -193,7 +188,7 @@ public class JTreeClassFile extends JTree {
             final DefaultMutableTreeNode fieldsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     fields[0].getStartPos(),
                     fields[fieldCount - 1].getStartPos() + fields[fieldCount - 1].getLength() - fields[0].getStartPos(),
-                    "fields[" + fieldCount + "]"
+                    FIELDS_PREFIX + fieldCount + "]"
             ));
             this.root.add(fieldsNode);
 
@@ -260,7 +255,7 @@ public class JTreeClassFile extends JTree {
                         String.format("%d. %s", i + 1, attr.getName()
                         )));
                 AttributeInfo.generateTreeNode(treeNodeAttrItem, attr, this.classFile);
-                
+
                 treeNodeAttr.add(treeNodeAttrItem);
             }
             rootNode.add(treeNodeAttr);
@@ -281,7 +276,7 @@ public class JTreeClassFile extends JTree {
             final DefaultMutableTreeNode methodsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     methods[0].getStartPos(),
                     methods[methodCount - 1].getStartPos() + methods[methodCount - 1].getLength() - methods[0].getStartPos(),
-                    "methods[" + methodCount + "]"
+                    METHODS_PERFIX + methodCount + "]"
             ));
             this.root.add(methodsNode);
 
@@ -298,7 +293,7 @@ public class JTreeClassFile extends JTree {
         }
     }
 
-    public void generateMethod(final DefaultMutableTreeNode rootNode, final MethodInfo method_info, final ClassFile classFile) {
+    private void generateMethod(final DefaultMutableTreeNode rootNode, final MethodInfo method_info, final ClassFile classFile) {
         if (method_info == null) {
             return;
         }
@@ -384,5 +379,129 @@ public class JTreeClassFile extends JTree {
                 attrsNode.add(attrNode);
             }
         }
+    }
+
+    StringBuilder generateOpcodeParseResult(byte[] opcodeData) {
+        StringBuilder sb = new StringBuilder(1024);
+        sb.append(HTMLKit.start());
+
+        int cpindexCounter = 0;
+
+        // The Extracted Code
+        sb.append("<pre>");
+        sb.append(BytesTool.getByteDataHexView(opcodeData));
+        sb.append('\n');
+        List<Opcode.InstructionParsed> codeResult = Opcode.parseCode(opcodeData);
+        for (Opcode.InstructionParsed iResult : codeResult) {
+            sb.append(iResult.toString(this.classFile));
+            sb.append('\n');
+            if (iResult.getCpindex() != null) {
+                cpindexCounter++;
+            }
+        }
+        sb.append("</pre>");
+
+        // The Reference Object
+        if (cpindexCounter > 0) {
+            sb.append("<ol>");
+            codeResult.stream().filter((iResult) -> (iResult.getCpindex() != null)).forEachOrdered((Opcode.InstructionParsed iResult) -> {
+                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(
+                        this.classFile.getCPDescription(iResult.getCpindex()))));
+            });
+            sb.append("</ol>");
+        }
+
+        sb.append(HTMLKit.end());
+        return sb;
+    }
+
+    StringBuilder generateReport2CP() {
+        StringBuilder sb = new StringBuilder(1024);
+        sb.append(HTMLKit.start());
+
+        int count;
+
+        // Constant Pool
+        count = this.classFile.constant_pool_count.value;
+        sb.append(String.format("Constant Pool Count: %d", count));
+        sb.append(HTMLKit.newLine());
+        if (count > 0) {
+            CPInfo[] CPInfoList = this.classFile.constant_pool;
+
+            // Constant Pool - by Type
+            sb.append("Constant Pool - Class");
+            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Class.tag);
+            sb.append("Constant Pool - Field");
+            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Fieldref.tag);
+            sb.append("Constant Pool - Method");
+            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Methodref.tag);
+
+            // Constant Pool Object List
+            sb.append("Constant Pool Object List");
+            sb.append(HTMLKit.newLine());
+            sb.append("<ol>");
+            for (CPInfo cpItem : this.classFile.constant_pool) {
+                String cpitemString = (cpItem == null) ? "(empty)" : cpItem.toString(this.classFile.constant_pool);
+                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(cpitemString)));
+            }
+            sb.append("</ol>");
+        }
+
+        sb.append(HTMLKit.end());
+        return sb;
+    }
+
+    private void generateReport4CPType(StringBuilder sb, CPInfo[] CPInfoList, int count, short tag) {
+        sb.append(HTMLKit.newLine());
+        sb.append("<ul>");
+        for (int i = 1; i < count; i++) {
+            if (CPInfoList[i] != null && CPInfoList[i].tag.value == tag) {
+                sb.append(String.format("<li>%d. %s</li>", i,
+                        HTMLKit.escapeFilter(this.classFile.getCPDescription(i))));
+            }
+        }
+        sb.append("</ul>");
+    }
+
+    StringBuilder generateReport2Fields() {
+        StringBuilder sb = new StringBuilder(1024);
+        sb.append(HTMLKit.start());
+
+        // Fields
+        int count = this.classFile.fields_count.getValue();
+        sb.append(String.format("Field Count: %d", count));
+        sb.append(HTMLKit.newLine());
+        if (count > 0) {
+            sb.append("<ol>");
+            for (FieldInfo field : this.classFile.fields) {
+                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(field.getDeclaration())));
+            }
+            sb.append("</ol>");
+        }
+        sb.append(HTMLKit.newLine());
+
+        sb.append(HTMLKit.end());
+        return sb;
+    }
+
+    StringBuilder generateReport2Methods() {
+        StringBuilder sb = new StringBuilder(1024);
+        sb.append(HTMLKit.start());
+
+        // Methods
+        int count = this.classFile.methods_count.getValue();
+        sb.append(String.format("Method Count: %d", count));
+        sb.append(HTMLKit.newLine());
+        if (count > 0) {
+            sb.append("<ol>");
+            for (MethodInfo method : this.classFile.methods) {
+                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(method.getDeclaration())));
+            }
+            sb.append("</ol>");
+        }
+        sb.append(HTMLKit.newLine());
+
+        sb.append(HTMLKit.end());
+        return sb;
     }
 }

@@ -6,10 +6,17 @@
  */
 package org.freeinternals.format.classfile;
 
+import java.io.File;
 import java.io.IOException;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.format.classfile.attribute.AttributeCode;
 import org.freeinternals.format.classfile.attribute.AttributeInfo;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
@@ -48,18 +55,15 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
  * VM Spec: The ClassFile Structure </a>
  */
-public class ClassFile {
+public class ClassFile extends FileFormat {
 
     public static final String EXTENTION_CLASS = ".class";
-    public static final String EXTENTION_JAR = ".jar";
-    public static final String EXTENTION_JMOD = ".jmod";
 
     /**
      * Magic number of {@code class} file.
      */
     public static final int MAGIC = 0xCAFEBABE;
 
-    public final byte[] classByteArray;
     public final u4 magic;
 
     //
@@ -115,10 +119,10 @@ public class ClassFile {
     //
     // Class Declaration
     //
-
     /**
-     * A mask of flags used to denote access permissions to and properties of this class or interface.
-     * 
+     * A mask of flags used to denote access permissions to and properties of
+     * this class or interface.
+     *
      * @see AccessFlag#ACC_PUBLIC
      * @see AccessFlag#ACC_FINAL
      * @see AccessFlag#ACC_SUPER
@@ -217,17 +221,17 @@ public class ClassFile {
     /**
      * Creates a new instance of ClassFile from byte array.
      *
-     * @param classByteArray Byte array of a class file
+     * @param classFile Java class file
      * @throws IOException Error happened when reading the byte array
      * @throws FileFormatException Invalid class file format
      */
-    public ClassFile(final byte[] classByteArray) throws IOException, FileFormatException {
-        this.classByteArray = classByteArray.clone();
+    public ClassFile(final File classFile) throws IOException, FileFormatException {
+        super(classFile);
 
         //
         // Parse the Classfile byte by byte
         //
-        PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(classByteArray));
+        PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         // magic number
         this.magic = new u4(posDataInputStream);
@@ -324,7 +328,7 @@ public class ClassFile {
     public String getModifiers() {
         return AccessFlag.getClassModifier(this.access_flags.value.value);
     }
-    
+
     /**
      * Get the text of {@link #super_class}, which is the super class name.
      *
@@ -372,8 +376,7 @@ public class ClassFile {
      * <code>CONSTANT_Utf8_info</code>
      * @param cpInfo Constant pool items
      * @return The UTF-8 text
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
-     * format
+     * @throws FileFormatException Invalid class file format
      */
     public static String getConstantUtf8Value(final int cpIndex, final CPInfo[] cpInfo) throws FileFormatException {
         String returnValue = null;
@@ -401,28 +404,6 @@ public class ClassFile {
     ///////////////////////////////////////////////////////////////////////////
     // Get raw data
     /**
-     * Get part of the class byte array. The array begins at the specified
-     * {@code startIndex} and extends to the byte at
-     * {@code startIndex}+{@code length}.
-     *
-     * @param startIndex The start index
-     * @param length The length of the array
-     * @return Part of the class byte array
-     */
-    public byte[] getClassByteArray(final int startIndex, final int length) {
-        if ((startIndex < 0) || (length < 1)) {
-            throw new IllegalArgumentException("startIndex or length is not valid. startIndex = " + startIndex + ", length = " + length);
-        }
-        if (startIndex + length - 1 > this.classByteArray.length) {
-            throw new ArrayIndexOutOfBoundsException("The last item index is bigger than class byte array size.");
-        }
-
-        byte[] data = new byte[length];
-        System.arraycopy(this.classByteArray, startIndex, data, 0, length);
-        return data;
-    }
-
-    /**
      * Returns a string of the constant pool item at the specified
      * {@code index}.
      *
@@ -439,7 +420,7 @@ public class ClassFile {
         if (index == 0) {
             throw new IllegalArgumentException("Constant Pool Index cannot be zero. index=" + index);
         }
-        
+
         CPInfo cp = this.constant_pool[index];
         if (cp == null) {
             // For Double, Long type, each item take two indexs, so there could be some index contains nothing.
@@ -463,6 +444,46 @@ public class ClassFile {
         return "Class contains "
                 + this.fields_count.value.value + " field(s) and "
                 + this.methods_count.value.value + " method(s)";
+    }
+
+    @Override
+    public String getContentTabName() {
+        return "JVM Class File";
+    }
+
+    // Lazy creation of JTreeClassFile 
+    private JTreeClassFile jtreeAdapter;
+    private JTreeClassFile getJTreeAdapter() {
+        if (this.jtreeAdapter == null) {
+            this.jtreeAdapter = new JTreeClassFile(this);
+        }
+        return this.jtreeAdapter;
+    }
+    
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+        this.getJTreeAdapter().generateTreeNodes(parentNode);
+    }
+
+    @Override
+    public void treeSelectionChanged(final JTreeNodeFileComponent tnfc, final JTabbedPane tabs) {
+        super.treeSelectionChanged(tnfc, tabs);
+
+        if (AttributeCode.ATTRIBUTE_CODE_NODE.equals(tnfc.getText())) {
+            final byte[] data = this.getFileByteArray(tnfc.getStartPos(), tnfc.getLength());
+            StringBuilder sb = this.getJTreeAdapter().generateOpcodeParseResult(data);
+            JTextPane pane = super.tabAddTextPane(tabs, "Opcode");
+            pane.setText(sb.toString());
+        } else if (tnfc.getText().startsWith(JTreeClassFile.CP_PREFIX)) {
+            JTextPane pane = super.tabAddTextPane(tabs, "Constant Pool");
+            pane.setText(this.getJTreeAdapter().generateReport2CP().toString());
+        } else if (tnfc.getText().startsWith(JTreeClassFile.FIELDS_PREFIX)) {
+            JTextPane pane = super.tabAddTextPane(tabs, "Fields");
+            pane.setText(this.getJTreeAdapter().generateReport2Fields().toString());
+        } else if (tnfc.getText().startsWith(JTreeClassFile.METHODS_PERFIX)) {
+            JTextPane pane = super.tabAddTextPane(tabs, "Methods");
+            pane.setText(this.getJTreeAdapter().generateReport2Methods().toString());
+        }
     }
 
     /**

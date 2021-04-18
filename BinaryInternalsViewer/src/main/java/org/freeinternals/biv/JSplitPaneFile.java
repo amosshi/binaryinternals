@@ -40,7 +40,8 @@ public class JSplitPaneFile extends JSplitPane {
     private static final long serialVersionUID = 4876543219876500000L;
     private final JFrame topLevelFrame;
     private final FileFormat file;
-    private JBinaryViewer binaryViewer = null;
+    private final JTabbedPane tabbedPane = new JTabbedPane();
+    private final JBinaryViewer binaryViewer = new JBinaryViewer();
     private JScrollPane binaryViewerView = null;
 
     /**
@@ -119,12 +120,10 @@ public class JSplitPaneFile extends JSplitPane {
 
         final JPanelForTree panel = new JPanelForTree(tree, this.topLevelFrame);
 
-        final JTabbedPane tabbedPane = new JTabbedPane();
-        this.binaryViewer = new JBinaryViewer();
         this.binaryViewer.setData(this.file.fileByteArray);
         this.binaryViewerView = new JScrollPane(this.binaryViewer);
         this.binaryViewerView.getVerticalScrollBar().setValue(0);
-        tabbedPane.add(this.file.getContentTabName(), this.binaryViewerView);
+        this.tabbedPane.add(this.file.getContentTabName(), this.binaryViewerView);
 
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         this.setDividerSize(5);
@@ -143,6 +142,7 @@ public class JSplitPaneFile extends JSplitPane {
             if (obj instanceof JTreeNodeFileComponent) {
                 final JTreeNodeFileComponent objTnfc = (JTreeNodeFileComponent) obj;
                 this.binaryViewer.setSelection(objTnfc.getStartPos(), objTnfc.getLength());
+                this.file.treeSelectionChanged(objTnfc, this.tabbedPane);
             }
         }
     }
