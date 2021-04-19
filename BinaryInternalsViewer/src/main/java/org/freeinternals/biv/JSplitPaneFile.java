@@ -61,7 +61,8 @@ public class JSplitPaneFile extends JSplitPane {
         final DefaultMutableTreeNode root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 0,
                 this.file.fileByteArray.length,
-                this.file.fileName));
+                this.file.fileName,
+                this.file.filePath));
         this.file.generateTreeNode(root);
         final JTree tree = new JTree(new DefaultTreeModel(root));
 

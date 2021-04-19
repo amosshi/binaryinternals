@@ -16,7 +16,6 @@ import java.util.TreeMap;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
@@ -31,6 +30,10 @@ public abstract class FileFormat {
      */
     public final String fileName;
     /**
+     * The file name.
+     */
+    public final String filePath;
+    /**
      * Raw byte array of the file.
      */
     public final byte[] fileByteArray;
@@ -42,6 +45,7 @@ public abstract class FileFormat {
 
     public FileFormat(final File file) throws IOException, FileFormatException {
         this.fileName = file.getName();
+        this.filePath = file.getCanonicalPath();
 
         if (file.length() == 0) {
             throw new FileFormatException(

@@ -47,4 +47,4 @@ parallel --ungroup -j 50% < masstest.cmds
 
 # Go back
 cd ../../
-echo "Finished"
+echo "$(logtime) Finished"

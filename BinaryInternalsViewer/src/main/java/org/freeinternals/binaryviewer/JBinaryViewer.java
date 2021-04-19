@@ -87,14 +87,14 @@ public final class JBinaryViewer extends JPanel {
     /**
      * Start index to be high-lighted.
      *
-     * @see org.freeinternals.commonlib.ui.binviewer.DataViewer#selectedStartIndex
+     * @see DataViewer#selectedStartIndex
      */
     private int selectedStartIndex = 0;
 
     /**
      * Length to be high-lighted.
      *
-     * @see org.freeinternals.commonlib.ui.binviewer.DataViewer#selectedLength
+     * @see DataViewer#selectedLength
      */
     private int selectedLength = 0;
 
