@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
 
     <name>Free Internals</name>
-    <description>Free Tools to View Internals of Binary File </description>
+    <description>Free Tools to show binary file internals visually and interactively for the meaning of every byte</description>
     <url>http://www.freeinternals.org</url>
 
     <licenses>

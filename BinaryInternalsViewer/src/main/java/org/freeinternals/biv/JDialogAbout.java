@@ -61,9 +61,9 @@ class JDialogAbout extends JDialog {
         label.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         listPane.add(label);
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Watch binary file visually & interactively for the meaning of every byte"));
+        listPane.add(new JLabel("Watch binary file internals visually & interactively for the meaning of every byte"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Version: 2.0"));
+        listPane.add(new JLabel("Version: 3.0"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
         listPane.add(new JLabel("Author: Amos Shi"));
         listPane.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -71,7 +71,7 @@ class JDialogAbout extends JDialog {
                 "https://github.com/amosshi/freeinternals",
                 "https://github.com/amosshi/freeinternals"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Free Tools to reach the Internals"));
+        listPane.add(new JLabel("Free Tools to view Binary Internals"));
         listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Lay out the buttons from left to right.

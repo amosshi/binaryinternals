@@ -1,11 +1,6 @@
-# freeinternals
+## `freeinternals`: Binary Internals Viewer
 
-## Binary Internals Viewer
-
-An application to show binary file visually & interactively for the meaning of every byte.
-
-Download
-* Download Application: https://github.com/amosshi/freeinternals/releases
+An application to show binary file internals visually & interactively for the meaning of every byte.
 
 Supported Formats
 * [BMP](https://en.wikipedia.org/wiki/BMP_file_format) file
@@ -32,3 +27,12 @@ Build the Source Code
   * `./build-quick.sh` Do a quickly build, to get an running application
   * `./build.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
 
+Download
+* Download Application: https://github.com/amosshi/freeinternals/releases
+
+Usage guide
+
+* We need the `java` command to run this tool
+  * `java -jar BinaryInternalsViewer-3.0.jar`
+  * Menu item: `File` > `Open...`
+  * Choose the binary file to view
