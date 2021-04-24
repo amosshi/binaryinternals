@@ -6,11 +6,12 @@
         <artifactId>freeinternals</artifactId>
         <version>2.0</version>
     </parent>
-
     <artifactId>freeinternals.format.class</artifactId>
-    <name>freeinternals :: FormatCLASS</name>
-    <packaging>jar</packaging>
     <version>12.0</version>
+    <packaging>jar</packaging>
+
+    <name>freeinternals :: FormatCLASS</name>
+    <description>The Java Virtual Machine Specification - The class File Format</description>
 
     <dependencies>
         <dependency>

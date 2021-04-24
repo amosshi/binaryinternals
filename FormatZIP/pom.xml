@@ -6,11 +6,12 @@
         <artifactId>freeinternals</artifactId>
         <version>2.0</version>
     </parent>
-
     <artifactId>freeinternals.format.zip</artifactId>
-    <name>freeinternals :: FormatZIP</name>
-    <packaging>jar</packaging>
     <version>0.5</version>
+    <packaging>jar</packaging>
+
+    <name>freeinternals :: FormatZIP</name>
+    <description>ZIP is an archive file format that supports lossless data compression.</description>
 
     <dependencies>
         <dependency>
