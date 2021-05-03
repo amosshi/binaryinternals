@@ -6,7 +6,6 @@
  */
 package org.freeinternals.commonlib.core;
 
-import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -152,7 +151,7 @@ public final class BytesTool {
         try {
             fileBytes = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
         } catch (IOException ex) {
-            Logger.getLogger(BytesTool.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BytesTool.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         return fileBytes;
@@ -215,13 +214,4 @@ public final class BytesTool {
             throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
         }
     }
-    
-    @Deprecated
-    public static void skipBytes(final DataInput di, final int skip) throws IOException {
-        long skippedBytes = di.skipBytes(skip);
-        if (skippedBytes != skip) {
-            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
-        }
-    }
-
 }

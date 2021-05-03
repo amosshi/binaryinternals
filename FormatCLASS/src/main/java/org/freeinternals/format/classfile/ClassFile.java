@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
@@ -224,7 +225,15 @@ public class ClassFile extends FileFormat {
      * @throws FileFormatException Invalid class file format
      */
     public ClassFile(final File classFile) throws IOException, FileFormatException {
-        super(classFile);
+        this(BytesTool.readFileAsBytes(classFile), classFile.getName(), classFile.getCanonicalPath());
+    }
+
+    public ClassFile(final byte[] classFileBytes) throws IOException, FileFormatException {
+        this(classFileBytes, null, null);
+    }
+
+    public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException, FileFormatException {
+        super(classFileBytes, fileName, filePath);
 
         //
         // Parse the Classfile byte by byte
@@ -449,7 +458,7 @@ public class ClassFile extends FileFormat {
         return "JVM Class File";
     }
 
-    // Lazy creation of JTreeClassFile 
+    // Lazy creation of JTreeClassFile
     private JTreeClassFile jtreeAdapter;
     private JTreeClassFile getJTreeAdapter() {
         if (this.jtreeAdapter == null) {
@@ -457,7 +466,7 @@ public class ClassFile extends FileFormat {
         }
         return this.jtreeAdapter;
     }
-    
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.getJTreeAdapter().generateTreeNodes(parentNode);

@@ -218,7 +218,6 @@ public class Main extends JFrame {
     }
 
     private void menu_FileOpen() {
-
         final JFileChooser chooser = new JFileChooser();
         PluginManager.initChooseFilters(chooser);
 

@@ -1,32 +1,17 @@
 #!/bin/bash
 #
-# Build with all targets
+# Build quickly
 #
 
+# Please change the JAVA_HOME according to the current system settings
 
-./build-quick.sh
+# System default java on Ubuntu LTS Linux
+export JAVA_HOME=/usr/lib/jvm/default-java
 
-mvn  source:jar
-mvn  source:aggregate
+# System default java on openSUSE Linux
+#export JAVA_HOME=/usr/lib64/jvm/java
 
-mvn  javadoc:javadoc
-mvn  javadoc:jar
-mvn  javadoc:aggregate
-mvn  javadoc:aggregate-jar
-
-mvn  pdf:pdf
-
-mvn  checkstyle:checkstyle
-mvn  checkstyle:checkstyle-aggregate
-mvn  checkstyle:check
-
-mvn  pmd:pmd
-mvn  spotbugs:spotbugs
-#mvn spotbugs:gui
-
-mvn  site
-mvn  site:deploy
-mvn  site:jar
-
-#mvn deploy:deploy
+mvn  clean package install
+mvn  jdeps:jdkinternals
+mvn  versions:display-dependency-updates
 

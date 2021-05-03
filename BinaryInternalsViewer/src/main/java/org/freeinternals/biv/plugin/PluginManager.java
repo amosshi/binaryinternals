@@ -133,17 +133,17 @@ public class PluginManager {
         try {
             c = fileFormatClass.getConstructor(File.class);
         } catch (NoSuchMethodException | SecurityException | IllegalArgumentException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw ex;
         }
 
         try {
             ff = c.newInstance(file);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw ex;
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw ex.getCause();
         }
 

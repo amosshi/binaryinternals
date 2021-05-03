@@ -43,6 +43,13 @@ public abstract class FileFormat {
      */
     protected final SortedMap<Long, FileComponent> components = new TreeMap<>();
 
+    /**
+     * Parse the content from a {@link File} object.
+     *
+     * @param file {@link File} object
+     * @throws java.io.IOException Failed to Read file
+     * @throws org.freeinternals.commonlib.core.FileFormatException The file is empty
+     */
     public FileFormat(final File file) throws IOException, FileFormatException {
         this.fileName = file.getName();
         this.filePath = file.getCanonicalPath();
@@ -52,6 +59,20 @@ public abstract class FileFormat {
                     String.format("The file content is empty. name = %s", file.getPath()));
         }
         this.fileByteArray = BytesTool.readFileAsBytes(file);
+    }
+
+    /**
+     * Parse a byte array (in memory) as a file.
+     *
+     * @param bytes Contents in bytes
+     * @param fileName
+     * @param filePath
+     */
+    public FileFormat(final byte[] bytes, final String fileName, final String filePath) {
+        final String inMemory = "In Memory Bytes data";
+        this.fileName = (fileName == null) ? inMemory : fileName;
+        this.filePath = (filePath == null) ? inMemory : filePath;
+        this.fileByteArray = bytes;
     }
 
     /**
