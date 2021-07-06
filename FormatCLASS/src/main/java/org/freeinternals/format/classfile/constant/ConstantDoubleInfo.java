@@ -38,13 +38,14 @@ public class ConstantDoubleInfo extends CPInfo {
     public static final int RAW_DATA_SIZE = 8;
     public static final int LENGTH = 9;
 
-    //private u4 high_bytes;
-    //private u4 low_bytes;
+    /**
+     * In JVM Spec we have two fields: u4 high_bytes and u4 low_bytes.
+     */
     public final byte[] rawData;
     public final double doubleValue;
 
     ConstantDoubleInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Double.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Double.tag, true, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

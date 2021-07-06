@@ -74,6 +74,7 @@ import org.freeinternals.format.classfile.u2;
  * VM Spec: The Module Attribute</a>
  */
 public class AttributeModule extends AttributeInfo {
+    private final String MESSAGE_ETI = "exports_to_index[";
 
     public final u2 module_name_index;
     public final u2 module_flags;
@@ -94,8 +95,9 @@ public class AttributeModule extends AttributeInfo {
     public final u2 provides_count;
     public final Provides[] provides;
 
+    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
     AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
 
         this.module_name_index = new u2(posDataInputStream);
         this.module_flags = new u2(posDataInputStream);
@@ -170,6 +172,7 @@ public class AttributeModule extends AttributeInfo {
     }
 
     @Override
+    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
 
         int startPosMoving = super.startPos + 6;
@@ -385,7 +388,7 @@ public class AttributeModule extends AttributeInfo {
             final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH * provide.provides_with_count.value,
-                    "exports_to_index[" + provide.provides_with_count.value + "]"
+                    MESSAGE_ETI + provide.provides_with_count.value + "]"
             ));
             rootNode.add(exportsToIndexNode);
 
@@ -393,7 +396,7 @@ public class AttributeModule extends AttributeInfo {
                 exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        "exports_to_index[" + i + "]: " + provide.provides_with_index[i].value + " - " + classFile.getCPDescription(provide.provides_with_index[i].value)
+                        MESSAGE_ETI + i + "]: " + provide.provides_with_index[i].value + " - " + classFile.getCPDescription(provide.provides_with_index[i].value)
                 )));
             }
         }
@@ -427,7 +430,7 @@ public class AttributeModule extends AttributeInfo {
             final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH * open.opens_to_count.value,
-                    "exports_to_index[" + open.opens_to_count.value + "]"
+                    MESSAGE_ETI + open.opens_to_count.value + "]"
             ));
             rootNode.add(exportsToIndexNode);
 
@@ -435,7 +438,7 @@ public class AttributeModule extends AttributeInfo {
                 exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        "exports_to_index[" + i + "]: " + open.opens_to_index[i].value + " - " + classFile.getCPDescription(open.opens_to_index[i].value)
+                        MESSAGE_ETI + i + "]: " + open.opens_to_index[i].value + " - " + classFile.getCPDescription(open.opens_to_index[i].value)
                 )));
             }
         }
@@ -469,7 +472,7 @@ public class AttributeModule extends AttributeInfo {
             final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH * export.exports_to_count.value,
-                    "exports_to_index[" + export.exports_to_count.value + "]"
+                    MESSAGE_ETI + export.exports_to_count.value + "]"
             ));
             rootNode.add(exportsToIndexNode);
 
@@ -477,7 +480,7 @@ public class AttributeModule extends AttributeInfo {
                 exportsToIndexNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        "exports_to_index[" + i + "]: " + export.exports_to_index[i].value + " - " + classFile.getCPDescription(export.exports_to_index[i].value)
+                        MESSAGE_ETI + i + "]: " + export.exports_to_index[i].value + " - " + classFile.getCPDescription(export.exports_to_index[i].value)
                 )));
             }
         }

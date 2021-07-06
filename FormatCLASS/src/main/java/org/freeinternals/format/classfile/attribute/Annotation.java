@@ -32,6 +32,7 @@ import org.freeinternals.format.classfile.u2;
  * VM Spec: annotation structure
  * </a>
  */
+@SuppressWarnings("java:S116") // Class variable fields should not have public accessibility --> No, we like the simplifed final value manner
 public class Annotation extends FileComponent {
 
     public u2 type_index;
@@ -181,7 +182,6 @@ public class Annotation extends FileComponent {
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
     protected static void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation a, int currentPos, final ClassFile classFile) {
 
-        // int currentPos = a.getStartPos();
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 u2.LENGTH,
@@ -228,7 +228,7 @@ public class Annotation extends FileComponent {
      * VM Spec: The RuntimeVisibleAnnotations Attribute
      * </a>
      */
-    public final static class ElementValuePair extends FileComponent {
+    public static final class ElementValuePair extends FileComponent {
 
         /**
          * The name of the element of the element-value pair represented by this
@@ -284,7 +284,7 @@ public class Annotation extends FileComponent {
      * VM Spec: The element_value structure
      * </a>
      */
-    public final static class ElementValue extends FileComponent {
+    public static final class ElementValue extends FileComponent {
 
         /**
          * The <code>tag</code> item uses a single ASCII character to indicate
@@ -385,6 +385,7 @@ public class Annotation extends FileComponent {
          * VM Spec: The element_value structure
          * </a>
          */
+        @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
         public enum TagEnum {
 
             /**
@@ -478,7 +479,7 @@ public class Annotation extends FileComponent {
             }
         }
 
-        public final static class EnumConstValue extends FileComponent {
+        public static final class EnumConstValue extends FileComponent {
 
             public static final int LENGTH = 4;
             public final u2 type_name_index;
@@ -493,7 +494,7 @@ public class Annotation extends FileComponent {
             }
         }
 
-        public final static class ArrayValue extends FileComponent {
+        public static final class ArrayValue extends FileComponent {
 
             public final u2 num_values;
             public final ElementValue[] values;

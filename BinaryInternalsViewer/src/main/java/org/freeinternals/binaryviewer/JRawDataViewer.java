@@ -31,12 +31,12 @@ final class JRawDataViewer extends DataViewer {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.start());
+        sb.append(HTMLKit.START);
 
         final int dataLength = data.length;
         int breakCounter = 0;
         for (int i = 0; i < dataLength; i++) {
-            sb.append(HTMLKit.space());
+            sb.append(HTMLKit.SPACE);
             if (this.getSelectedLength() > 0
                     && i >= this.getSelectedStartIndex()
                     && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
@@ -47,12 +47,12 @@ final class JRawDataViewer extends DataViewer {
             breakCounter++;
 
             if (breakCounter > JBinaryViewer.ROW_ITEM_MAX_INDEX) {
-                sb.append(HTMLKit.newLine());
+                sb.append(HTMLKit.NEW_LINE);
                 breakCounter = 0;
             }
         }
 
-        sb.append(HTMLKit.end());
+        sb.append(HTMLKit.END);
         this.setText(sb.toString());
     }
 }

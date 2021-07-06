@@ -112,6 +112,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
      * VM Spec: The Constant Pool
      * </a>
      */
+    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
     public enum ConstantType {
 
         /**

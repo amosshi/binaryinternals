@@ -51,7 +51,7 @@ public class ConstantMethodHandleInfo extends CPInfo {
     public final u2 reference_index;
 
     ConstantMethodHandleInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodHandle.tag, true, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
+        super(CPInfo.ConstantType.CONSTANT_MethodHandle.tag, true, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
         super.startPos = posDataInputStream.getPos() - 1;
         this.reference_kind = new u1(posDataInputStream, true);
         this.reference_index = new u2(posDataInputStream);
@@ -103,6 +103,7 @@ public class ConstantMethodHandleInfo extends CPInfo {
      * VM Spec: Method Type and Method Handle Resolution
      * </a>
      */
+    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
     public static enum ReferenceKind {
 
         REF_getField(1),

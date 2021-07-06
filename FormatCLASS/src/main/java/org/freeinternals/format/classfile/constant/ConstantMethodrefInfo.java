@@ -35,7 +35,7 @@ import org.freeinternals.format.classfile.JavaSEVersion;
 public class ConstantMethodrefInfo extends ConstantRefInfo {
 
     ConstantMethodrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
     }
 
     @Override

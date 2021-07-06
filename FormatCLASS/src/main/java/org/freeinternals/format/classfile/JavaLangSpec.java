@@ -85,10 +85,10 @@ public class JavaLangSpec {
         VOLATILE("volatile"),
         WHILE("while");
 
-        public final String keyword;
+        public final String text;
 
         private Keyword(String k) {
-            this.keyword = k;
+            this.text = k;
         }
     }
 

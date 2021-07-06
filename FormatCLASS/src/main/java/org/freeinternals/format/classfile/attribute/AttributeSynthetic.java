@@ -35,7 +35,7 @@ import org.freeinternals.format.classfile.u2;
 public class AttributeSynthetic extends AttributeInfo {
 
     AttributeSynthetic(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_1);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_1);
 
         if (this.attribute_length.value != 0) {
             throw new FileFormatException(String.format("The attribute_length of AttributeSynthetic is not 0, it is %d.", this.attribute_length.value));

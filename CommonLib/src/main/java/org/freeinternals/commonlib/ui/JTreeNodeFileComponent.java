@@ -172,6 +172,7 @@ public final class JTreeNodeFileComponent {
      *
      * @param p Value for {@link #panelDetail}
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP2", justification="We need it")
     public void setDetailPanel(final JPanel p) {
         this.panelDetail = p;
     }
@@ -190,6 +191,7 @@ public final class JTreeNodeFileComponent {
      *
      * @return {@link #panelDetail} value
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP", justification="We need it")
     public JPanel getDetailPanel() {
         return this.panelDetail;
     }

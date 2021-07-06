@@ -102,7 +102,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         ASCIILine line;
         do {
             line = stream.readASCIILine();
-            if (line.Line.length() == SIGNATURE_END.length() && SIGNATURE_END.equalsIgnoreCase(line.Line)) {
+            if (line.line.length() == SIGNATURE_END.length() && SIGNATURE_END.equalsIgnoreCase(line.line)) {
                 super.length = stream.getPos() - super.startPos;
                 this.signatureEnd = line;
                 break;
@@ -120,7 +120,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
 
         while (stream.hasNext()) {
             line = stream.readASCIILine();
-            if (line.Line.endsWith(Stream.SIGNATURE_START)) {
+            if (line.line.endsWith(Stream.SIGNATURE_START)) {
                 compStreams.add(new Stream(stream, line));
             }
         }
@@ -181,16 +181,16 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
 
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.signatureStart.Line.length(),
-                Texts.Signature + this.signatureStart.Line)));
-        pos += this.signatureStart.Line.length();
+                this.signatureStart.line.length(),
+                Texts.Signature + this.signatureStart.line)));
+        pos += this.signatureStart.line.length();
 
-        if (this.signatureStart.NewLineLength > 0) {
+        if (this.signatureStart.newLineLength > 0) {
             nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos,
-                    this.signatureStart.NewLineLength,
+                    this.signatureStart.newLineLength,
                     Texts.NewLine)));
-            pos += this.signatureStart.NewLineLength;
+            pos += this.signatureStart.newLineLength;
         }
 
         int contLen = super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length();
@@ -214,7 +214,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         pos += SIGNATURE_END.length();
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.signatureEnd.NewLineLength,
+                this.signatureEnd.newLineLength,
                 Texts.NewLine)));
 
         parentNode.add(nodeIO);

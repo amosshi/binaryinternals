@@ -29,6 +29,7 @@ import org.freeinternals.format.classfile.u2;
  * </a>
  */
 public class AttributeStackMapTable extends AttributeInfo {
+    private final String MESSAGE_OFFSET_DELTA = "offset_delta: ";
 
     /**
      * Gives the number of {@link StackMapFrame} entries in the {@link #entries}
@@ -43,7 +44,7 @@ public class AttributeStackMapTable extends AttributeInfo {
     public final StackMapFrame[] entries;
 
     AttributeStackMapTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_50_0, JavaSEVersion.Version_6);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_50_0, JavaSEVersion.VERSION_6);
 
         this.number_of_entries = new u2(posDataInputStream);
         if (this.number_of_entries.value > 0) {
@@ -90,6 +91,7 @@ public class AttributeStackMapTable extends AttributeInfo {
     /**
      * Generate Tree Node for {@link StackMapFrame}.
      */
+    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final StackMapFrame smf, final ClassFile classFile) {
         int startPosMoving = smf.getStartPos();
 
@@ -121,7 +123,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     2,
-                    "offset_delta: " + smf.union_same_locals_1_stack_item_frame_extended.offset_delta.value
+                    MESSAGE_OFFSET_DELTA + smf.union_same_locals_1_stack_item_frame_extended.offset_delta.value
             )));
             startPosMoving += 2;
 
@@ -145,7 +147,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     2,
-                    "offset_delta: " + smf.union_chop_frame.offset_delta.value
+                    MESSAGE_OFFSET_DELTA + smf.union_chop_frame.offset_delta.value
             )));
             // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
 
@@ -154,7 +156,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     2,
-                    "offset_delta: " + smf.union_same_frame_extended.offset_delta.value
+                    MESSAGE_OFFSET_DELTA + smf.union_same_frame_extended.offset_delta.value
             )));
             // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
 
@@ -163,7 +165,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     2,
-                    "offset_delta: " + smf.union_append_frame.offset_delta.value
+                    MESSAGE_OFFSET_DELTA + smf.union_append_frame.offset_delta.value
             )));
             startPosMoving += 2;
 
@@ -196,7 +198,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "offset_delta: " + smf.union_full_frame.offset_delta.value
+                    MESSAGE_OFFSET_DELTA + smf.union_full_frame.offset_delta.value
             )));
             startPosMoving += u2.LENGTH;
 
@@ -293,7 +295,7 @@ public class AttributeStackMapTable extends AttributeInfo {
         }
     }
 
-    public final static class StackMapFrame extends FileComponent {
+    public static final class StackMapFrame extends FileComponent {
 
         public final u1 frame_type;
         public final SameLocals1StackItemFrame union_same_locals_1_stack_item_frame;
@@ -303,6 +305,7 @@ public class AttributeStackMapTable extends AttributeInfo {
         public final AppendFrame union_append_frame;
         public final FullFrame union_full_frame;
 
+        @SuppressWarnings("java:S1871") // Two branches in a conditional structure should not have exactly the same implementation --> We need it to make code more readable
         private StackMapFrame(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();
 
@@ -368,7 +371,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public final static class SameLocals1StackItemFrame extends FileComponent {
+        public static final class SameLocals1StackItemFrame extends FileComponent {
 
             public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
 
@@ -380,7 +383,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class SameLocals1StackItemFrameExtended extends FileComponent {
+        public static final class SameLocals1StackItemFrameExtended extends FileComponent {
 
             public final u2 offset_delta;
             public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
@@ -394,7 +397,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class ChopFrame extends FileComponent {
+        public static final class ChopFrame extends FileComponent {
 
             public final u2 offset_delta;
 
@@ -406,7 +409,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class SameFrameExtended extends FileComponent {
+        public static final class SameFrameExtended extends FileComponent {
 
             public final u2 offset_delta;
 
@@ -418,7 +421,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class AppendFrame extends FileComponent {
+        public static final class AppendFrame extends FileComponent {
 
             public final u2 offset_delta;
             public final VerificationTypeInfo[] locals;
@@ -436,7 +439,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class FullFrame extends FileComponent {
+        public static final class FullFrame extends FileComponent {
 
             public final u2 offset_delta;
             public final u2 number_of_locals;
@@ -552,7 +555,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public final static class ObjectVariableInfo {
+        public static final class ObjectVariableInfo {
 
             public final u2 cpool_index;
 
@@ -561,7 +564,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        public final static class UninitializedVariableInfo {
+        public static final class UninitializedVariableInfo {
 
             public u2 offset;
 
@@ -570,6 +573,7 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
+        @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
         public enum TagEnum {
 
             ITEM_Top(0),

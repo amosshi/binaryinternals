@@ -48,7 +48,7 @@ public class AttributeNestHost extends AttributeInfo {
     public final u2 host_class_index;
 
     AttributeNestHost(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_55_0, JavaSEVersion.Version_11);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_55_0, JavaSEVersion.VERSION_11);
         this.host_class_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }

@@ -41,7 +41,7 @@ public class ConstantNameAndTypeInfo extends CPInfo {
     public final u2 descriptor_index;
 
     ConstantNameAndTypeInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_NameAndType.tag, false, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_NameAndType.tag, false, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

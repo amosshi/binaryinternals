@@ -40,7 +40,7 @@ public class ConstantFloatInfo extends CPInfo {
     public final Float floatValue;
 
     ConstantFloatInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Float.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Float.tag, true, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

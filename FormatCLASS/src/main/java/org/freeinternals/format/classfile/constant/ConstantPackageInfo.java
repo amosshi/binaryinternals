@@ -46,7 +46,7 @@ public class ConstantPackageInfo extends CPInfo {
     public final u2 name_index;
 
     ConstantPackageInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Package.tag, false, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
+        super(CPInfo.ConstantType.CONSTANT_Package.tag, false, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

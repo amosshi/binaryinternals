@@ -44,7 +44,7 @@ public class AttributeModuleTarget extends AttributeInfo {
     public final u2 os_arch_index;
 
     AttributeModuleTarget(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
         this.os_arch_index = new u2(posDataInputStream);
 
         super.checkSize(posDataInputStream.getPos());

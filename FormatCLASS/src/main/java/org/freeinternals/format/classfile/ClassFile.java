@@ -61,7 +61,7 @@ public class ClassFile extends FileFormat {
     /**
      * Magic number of {@code class} file.
      */
-    public static final int MAGIC = 0xCAFEBABE;
+    public static final int FORMAT_MAGIC_NUMBER = 0xCAFEBABE;
 
     public final u4 magic;
 
@@ -232,6 +232,9 @@ public class ClassFile extends FileFormat {
         this(classFileBytes, null, null);
     }
 
+    // java:S127 - "for" loop stop conditions should be invariant --> No we need it because Long/Double type occupies two Constant Pool index
+    // java:S3776 - Cognitive Complexity of methods should not be too high --> No, it is not high
+    @SuppressWarnings({"java:S127", "java:S3776"})
     public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException, FileFormatException {
         super(classFileBytes, fileName, filePath);
 
@@ -242,7 +245,7 @@ public class ClassFile extends FileFormat {
 
         // magic number
         this.magic = new u4(posDataInputStream);
-        if (this.magic.value != ClassFile.MAGIC) {
+        if (this.magic.value != ClassFile.FORMAT_MAGIC_NUMBER) {
             throw new FileFormatException("The magic number of the byte array is not 0xCAFEBABE");
         }
 
@@ -504,17 +507,17 @@ public class ClassFile extends FileFormat {
     public enum Version {
 
         /**
-         * For 45.3, it could be both {@link JavaSEVersion#Version_1_1} or
-         * {@link JavaSEVersion#Version_1_0_2}. We simply use the
-         * {@link JavaSEVersion#Version_1_1} which is the newer one.
+         * For 45.3, it could be both {@link JavaSEVersion#VERSION_1_1} or
+         * {@link JavaSEVersion#VERSION_1_0_2}. We simply use the
+         * {@link JavaSEVersion#VERSION_1_1} which is the newer one.
          */
-        Format_45_3(45, 3, JavaSEVersion.Version_1_1),
-        Format_49_0(49, 0, JavaSEVersion.Version_5_0),
-        Format_50_0(50, 0, JavaSEVersion.Version_6),
-        Format_51_0(51, 0, JavaSEVersion.Version_7),
-        Format_52_0(52, 0, JavaSEVersion.Version_8),
-        Format_53_0(53, 0, JavaSEVersion.Version_9),
-        Format_55_0(55, 0, JavaSEVersion.Version_11);
+        FORMAT_45_3(45, 3, JavaSEVersion.VERSION_1_1),
+        FORMAT_49_0(49, 0, JavaSEVersion.VERSION_5_0),
+        FORMAT_50_0(50, 0, JavaSEVersion.VERSION_6),
+        FORMAT_51_0(51, 0, JavaSEVersion.VERSION_7),
+        FORMAT_52_0(52, 0, JavaSEVersion.VERSION_8),
+        FORMAT_53_0(53, 0, JavaSEVersion.VERSION_9),
+        FORMAT_55_0(55, 0, JavaSEVersion.VERSION_11);
 
         public final int major_version;
         public final int minor_version;

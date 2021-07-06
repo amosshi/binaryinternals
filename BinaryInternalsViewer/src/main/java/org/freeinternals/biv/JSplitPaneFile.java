@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +42,6 @@ public class JSplitPaneFile extends JSplitPane {
     private final FileFormat file;
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JBinaryViewer binaryViewer = new JBinaryViewer();
-    private JScrollPane binaryViewerView = null;
 
     /**
      * Creates a split panel from a Java class file byte array.
@@ -50,7 +50,8 @@ public class JSplitPaneFile extends JSplitPane {
      * @param frame
      * @throws FileFormatException
      */
-    public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, Throwable {
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
+    public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, NoSuchMethodException, SecurityException, InstantiationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         this.file = PluginManager.getFile(file);
         this.topLevelFrame = frame;
         this.createAndShowGUI();
@@ -77,19 +78,17 @@ public class JSplitPaneFile extends JSplitPane {
                         sel, expanded, leaf, row,
                         hasFocus);
 
-                if (value instanceof DefaultMutableTreeNode) {
-                    if (((DefaultMutableTreeNode) value).getUserObject() instanceof JTreeNodeFileComponent) {
-                        JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) ((DefaultMutableTreeNode) value).getUserObject();
-                        final Icon icon = fileComp.getIcon();
-                        if (icon != null) {
-                            this.setIcon(icon);
-                        }
+                if (value instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) value).getUserObject() instanceof JTreeNodeFileComponent) {
+                    JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) ((DefaultMutableTreeNode) value).getUserObject();
+                    final Icon icon = fileComp.getIcon();
+                    if (icon != null) {
+                        this.setIcon(icon);
+                    }
 
-                        if (fileComp.isDetailAvailable()) {
-                            this.setText("<html><font color=blue><u>" + fileComp.getText());
-                        } else {
-                            this.setText(fileComp.getText());
-                        }
+                    if (fileComp.isDetailAvailable()) {
+                        this.setText("<html><font color=blue><u>" + fileComp.getText());
+                    } else {
+                        this.setText(fileComp.getText());
                     }
                 }
 
@@ -121,9 +120,9 @@ public class JSplitPaneFile extends JSplitPane {
         final JPanelForTree panel = new JPanelForTree(tree, this.topLevelFrame);
 
         this.binaryViewer.setData(this.file.fileByteArray);
-        this.binaryViewerView = new JScrollPane(this.binaryViewer);
-        this.binaryViewerView.getVerticalScrollBar().setValue(0);
-        this.tabbedPane.add(this.file.getContentTabName(), this.binaryViewerView);
+        JScrollPane binaryViewerView = new JScrollPane(this.binaryViewer);
+        binaryViewerView.getVerticalScrollBar().setValue(0);
+        this.tabbedPane.add(this.file.getContentTabName(), binaryViewerView);
 
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         this.setDividerSize(5);
@@ -131,7 +130,7 @@ public class JSplitPaneFile extends JSplitPane {
         this.setLeftComponent(panel);
         this.setRightComponent(tabbedPane);
 
-        this.binaryViewerView.getVerticalScrollBar().setValue(0);
+        binaryViewerView.getVerticalScrollBar().setValue(0);
     }
 
     private void treeSelectionChanged(final TreeSelectionEvent evt) {

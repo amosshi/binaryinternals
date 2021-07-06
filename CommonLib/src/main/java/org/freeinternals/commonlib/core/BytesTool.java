@@ -24,6 +24,9 @@ import java.util.zip.ZipFile;
  */
 public final class BytesTool {
 
+    private BytesTool() {
+    }
+
     /**
      * Get a string for the {@code hex} view of byte array {@code data}.
      *
@@ -174,26 +177,21 @@ public final class BytesTool {
         }
 
         final long fileSize = zipEntry.getSize();
-        final byte contents[] = new byte[(int) fileSize];
+        final byte[] contents = new byte[(int) fileSize];
         ByteBuffer byteBuf = ByteBuffer.allocate(contents.length);
         InputStream is;
         int bytesRead;
         int bytesAll = 0;
 
-        try {
-            is = zipFile.getInputStream(zipEntry);
-            while (true) {
-                bytesRead = is.read(contents);
-                if (bytesRead != -1) {
-                    byteBuf.put(contents, 0, bytesRead);
-                    bytesAll += bytesRead;
-                } else {
-                    break;
-                }
+        is = zipFile.getInputStream(zipEntry);
+        while (true) {
+            bytesRead = is.read(contents);
+            if (bytesRead != -1) {
+                byteBuf.put(contents, 0, bytesRead);
+                bytesAll += bytesRead;
+            } else {
+                break;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(BytesTool.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
         }
 
         if (bytesAll == fileSize) {

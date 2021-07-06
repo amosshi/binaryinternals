@@ -56,7 +56,7 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
     public final u2 name_and_type_index;
 
     ConstantInvokeDynamicInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag, false, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
+        super(CPInfo.ConstantType.CONSTANT_InvokeDynamic.tag, false, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
         super.startPos = posDataInputStream.getPos() - 1;
         this.bootstrap_method_attr_index = new u2(posDataInputStream);
         this.name_and_type_index = new u2(posDataInputStream);

@@ -36,6 +36,10 @@ public final class Opcode {
      */
     private static final String FORMAT_OPCODE_NUMBER = "%s %d";
     private static final String FORMAT_OPCODE_LOCAL_IINC = "%s index = %d const = %d";
+    private static final String FORMAT_OPCODE_STRING = "%s %s";
+
+    private Opcode() {
+    }
 
     /**
      * The Java Virtual Machine Instruction Set.
@@ -45,6 +49,7 @@ public final class Opcode {
      * VM Spec: Instructions
      * </a>
      */
+    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
     public static enum Instruction {
 
         /**
@@ -1450,7 +1455,7 @@ public final class Opcode {
                     parsed.tableSwitch.jumpoffsets.put(i, pdis.readInt());
                 }
 
-                parsed.opCodeText = String.format("%s %s", this.name(), parsed.tableSwitch.toString(curPos));
+                parsed.opCodeText = String.format(FORMAT_OPCODE_STRING, this.name(), parsed.tableSwitch.toString(curPos));
                 return parsed;
             }
         },
@@ -1470,7 +1475,7 @@ public final class Opcode {
                     parsed.lookupSwitch.mapoffsets.put(pdis.readInt(), pdis.readInt());
                 }
 
-                parsed.opCodeText = String.format("%s %s", this.name(), parsed.lookupSwitch.toString(curPos));
+                parsed.opCodeText = String.format(FORMAT_OPCODE_STRING, this.name(), parsed.lookupSwitch.toString(curPos));
                 return parsed;
             }
         },
@@ -1673,7 +1678,7 @@ public final class Opcode {
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.arrayType = pdis.readUnsignedByte();
-                parsed.opCodeText = String.format("%s %s", Opcode.Instruction.newarray.name(), NewarrayType.valueOf(parsed.arrayType).name());
+                parsed.opCodeText = String.format(FORMAT_OPCODE_STRING, Opcode.Instruction.newarray.name(), NewarrayType.valueOf(parsed.arrayType).name());
                 return parsed;
             }
         },
@@ -1946,11 +1951,11 @@ public final class Opcode {
             return result;
         }
 
+        @SuppressWarnings("java:S1172") // Unused method parameters should be removed --> `pdis` is used by children classes
         protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.opCodeText = this.name();
             return parsed;
-
         }
 
         private InstructionParsed parse_Branchbyte_Short(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -2057,9 +2062,6 @@ public final class Opcode {
             } catch (IOException ioe) {
                 LOG.log(Level.SEVERE, "parseCode() with code length - {0}", code.length);
                 LOG.log(Level.SEVERE, ioe.toString(), ioe);
-                // We keep the System.err here, in case there is no logger settings exist
-                System.err.println("parseCode() with code length - " + code.length);
-                System.err.println(ioe.toString());
                 break;
             }
         }

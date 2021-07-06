@@ -111,6 +111,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * @throws org.freeinternals.commonlib.core.FileFormatException Class file format
      * error
      */
+    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
     public static AttributeInfo parse(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         AttributeInfo attr = null;
 
@@ -203,7 +204,6 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
                 startPosMoving,
                 u4.LENGTH,
                 "attribute_length: " + attribute_info.attribute_length.value)));
-        // startPosMoving += u4.LENGTH;
 
         attribute_info.generateTreeNode(rootNode, classFile);
     }
@@ -216,6 +216,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes </a>
      */
+    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
     public enum AttributeTypes {
 
         /**
@@ -511,6 +512,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          *
          * @return Value of {@link #clazz}
          */
+        @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP", justification="We need it")
         public Class<?> getClassType() {
             return this.clazz;
         }

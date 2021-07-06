@@ -46,6 +46,6 @@ import org.freeinternals.format.classfile.u2;
 public class AttributeRuntimeInvisibleParameterAnnotations extends AttributeRuntimeParameterAnnotations {
 
     AttributeRuntimeInvisibleParameterAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
     }
 }

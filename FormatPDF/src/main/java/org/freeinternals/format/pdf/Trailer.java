@@ -35,7 +35,7 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
         ASCIILine line;
         do {
             line = stream.readASCIILine();
-            if (StartXRef.SIGNATURE.equalsIgnoreCase(line.Line)) {
+            if (StartXRef.SIGNATURE.equalsIgnoreCase(line.line)) {
                 stream.backward(line.length());
                 break;
             }
@@ -53,14 +53,14 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
         int pos = this.startPos;
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.Line.length(),
+                this.HeaderLine.line.length(),
                 Texts.Signature + SIGNATURE)));
-        pos += this.HeaderLine.Line.length();
+        pos += this.HeaderLine.line.length();
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.NewLineLength,
+                this.HeaderLine.newLineLength,
                 Texts.NewLine)));
-        pos += this.HeaderLine.NewLineLength;
+        pos += this.HeaderLine.newLineLength;
         int len = super.length - this.HeaderLine.length();
         if (len > 0) {
             nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

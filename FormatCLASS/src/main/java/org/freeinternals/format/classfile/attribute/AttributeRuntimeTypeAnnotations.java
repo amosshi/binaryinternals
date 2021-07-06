@@ -84,7 +84,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode type_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_parameter_target.getLength(),
-                    "type_parameter_target"));
+                    TypeAnnotation.TypeParameterTarget.UNION_NAME));
             rootNode.add(type_parameter_target);
             type_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
@@ -97,7 +97,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode supertype_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_supertype_target.getLength(),
-                    "supertype_target"
+                    TypeAnnotation.SupertypeTarget.UNION_NAME
             ));
             rootNode.add(supertype_target);
             supertype_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -111,7 +111,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode type_parameter_bound_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_parameter_bound_target.getLength(),
-                    "type_parameter_bound_target"
+                    TypeAnnotation.TypeParameterBoundTarget.UNION_NAME
             ));
             rootNode.add(type_parameter_bound_target);
             type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -147,7 +147,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode throws_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_throws_target.getLength(),
-                    "throws_target"
+                    TypeAnnotation.ThrowsTarget.UNION_NAME
             ));
             rootNode.add(throws_target);
             throws_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -161,7 +161,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode localvar_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_localvar_target.getLength(),
-                    "localvar_target"
+                    TypeAnnotation.LocalvarTarget.UNION_NAME
             ));
             startPosMoving += ta.union_localvar_target.getLength();
             rootNode.add(localvar_target);
@@ -171,7 +171,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode catch_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_catch_target.getLength(),
-                    "catch_target"
+                    TypeAnnotation.CatchTarget.UNION_NAME
             ));
             rootNode.add(catch_target);
             catch_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -185,7 +185,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode offset_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_offset_target.getLength(),
-                    "offset_target"
+                    TypeAnnotation.OffsetTarget.UNION_NAME
             ));
             rootNode.add(offset_target);
             offset_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -199,7 +199,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             DefaultMutableTreeNode type_argument_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_argument_target.getLength(),
-                    "type_argument_target"
+                    TypeAnnotation.TypeArgumentTarget.UNION_NAME
             ));
             rootNode.add(type_argument_target);
             type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -340,12 +340,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final TypeArgumentTarget union_type_argument_target;
         public final TypePath target_path;
 
+        @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
         public TypeAnnotation(PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super(posDataInputStream, false);
 
             this.target_type = new u1(posDataInputStream);
-            if (this.target_type.value == TargetType.Value00.value
-                    || this.target_type.value == TargetType.Value01.value) {
+            if (this.target_type.value == TargetType.VALUE_00.value
+                    || this.target_type.value == TargetType.VALUE_01.value) {
                 this.union_type_parameter_target = new TypeParameterTarget(posDataInputStream);
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -356,7 +357,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value10.value) {
+            } else if (this.target_type.value == TargetType.VALUE_10.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = new SupertypeTarget(posDataInputStream);
                 this.union_type_parameter_bound_target = null;
@@ -367,8 +368,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value11.value
-                    || this.target_type.value == TargetType.Value12.value) {
+            } else if (this.target_type.value == TargetType.VALUE_11.value
+                    || this.target_type.value == TargetType.VALUE_12.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = new TypeParameterBoundTarget(posDataInputStream);
@@ -379,9 +380,9 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value13.value
-                    || this.target_type.value == TargetType.Value14.value
-                    || this.target_type.value == TargetType.Value15.value) {
+            } else if (this.target_type.value == TargetType.VALUE_13.value
+                    || this.target_type.value == TargetType.VALUE_14.value
+                    || this.target_type.value == TargetType.VALUE_15.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -392,7 +393,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value16.value) {
+            } else if (this.target_type.value == TargetType.VALUE_16.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -403,7 +404,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value17.value) {
+            } else if (this.target_type.value == TargetType.VALUE_17.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -414,8 +415,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value40.value
-                    || this.target_type.value == TargetType.Value41.value) {
+            } else if (this.target_type.value == TargetType.VALUE_40.value
+                    || this.target_type.value == TargetType.VALUE_41.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -426,7 +427,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value42.value) {
+            } else if (this.target_type.value == TargetType.VALUE_42.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -437,10 +438,10 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = new CatchTarget(posDataInputStream);
                 this.union_offset_target = null;
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value43.value
-                    || this.target_type.value == TargetType.Value44.value
-                    || this.target_type.value == TargetType.Value45.value
-                    || this.target_type.value == TargetType.Value46.value) {
+            } else if (this.target_type.value == TargetType.VALUE_43.value
+                    || this.target_type.value == TargetType.VALUE_44.value
+                    || this.target_type.value == TargetType.VALUE_45.value
+                    || this.target_type.value == TargetType.VALUE_46.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -451,11 +452,11 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 this.union_catch_target = null;
                 this.union_offset_target = new OffsetTarget(posDataInputStream);
                 this.union_type_argument_target = null;
-            } else if (this.target_type.value == TargetType.Value47.value
-                    || this.target_type.value == TargetType.Value48.value
-                    || this.target_type.value == TargetType.Value49.value
-                    || this.target_type.value == TargetType.Value4A.value
-                    || this.target_type.value == TargetType.Value4B.value) {
+            } else if (this.target_type.value == TargetType.VALUE_47.value
+                    || this.target_type.value == TargetType.VALUE_48.value
+                    || this.target_type.value == TargetType.VALUE_49.value
+                    || this.target_type.value == TargetType.VALUE_4A.value
+                    || this.target_type.value == TargetType.VALUE_4B.value) {
                 this.union_type_parameter_target = null;
                 this.union_supertype_target = null;
                 this.union_type_parameter_bound_target = null;
@@ -490,100 +491,100 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             /**
              * type parameter declaration of generic class or interface.
              */
-            Value00(0x00),
+            VALUE_00(0x00),
             /**
              * type parameter declaration of generic method or constructor.
              */
-            Value01(0x01),
+            VALUE_01(0x01),
             /**
              * type in extends or implements clause of class declaration
              * (including the direct superclass or direct superinterface of an
              * anonymous class declaration), or in extends clause of interface
              * declaration.
              */
-            Value10(0x10),
+            VALUE_10(0x10),
             /**
              * type in bound of type parameter declaration of generic class or
              * interface.
              */
-            Value11(0x11),
+            VALUE_11(0x11),
             /**
              * type in bound of type parameter declaration of generic method or
              * constructor.
              */
-            Value12(0x12),
+            VALUE_12(0x12),
             /**
              * type in field declaration.
              */
-            Value13(0x13),
+            VALUE_13(0x13),
             /**
              * return type of method, or type of newly constructed object.
              */
-            Value14(0x14),
+            VALUE_14(0x14),
             /**
              * receiver type of method or constructor.
              */
-            Value15(0x15),
+            VALUE_15(0x15),
             /**
              * type in formal parameter declaration of method, constructor, or
              * lambda expression.
              */
-            Value16(0x16),
+            VALUE_16(0x16),
             /**
              * type in throws clause of method or constructor.
              */
-            Value17(0x17),
+            VALUE_17(0x17),
             /**
              * type in local variable declaration.
              */
-            Value40(0x40),
+            VALUE_40(0x40),
             /**
              * type in resource variable declaration.
              */
-            Value41(0x41),
+            VALUE_41(0x41),
             /**
              * type in exception parameter declaration.
              */
-            Value42(0x42),
+            VALUE_42(0x42),
             /**
              * type in instanceof expression.
              */
-            Value43(0x43),
+            VALUE_43(0x43),
             /**
              * type in new expression.
              */
-            Value44(0x44),
+            VALUE_44(0x44),
             /**
              * type in method reference expression using ::new.
              */
-            Value45(0x45),
+            VALUE_45(0x45),
             /**
              * type in method reference expression using ::Identifier.
              */
-            Value46(0x46),
+            VALUE_46(0x46),
             /**
              * type in cast expression.
              */
-            Value47(0x47),
+            VALUE_47(0x47),
             /**
              * type argument for generic constructor in new expression or
              * explicit constructor invocation statement.
              */
-            Value48(0x48),
+            VALUE_48(0x48),
             /**
              * type argument for generic method in method invocation expression.
              */
-            Value49(0x49),
+            VALUE_49(0x49),
             /**
              * type argument for generic constructor in method reference
              * expression using ::new.
              */
-            Value4A(0x4A),
+            VALUE_4A(0x4A),
             /**
              * type argument for generic method in method reference expression
              * using ::Identifier.
              */
-            Value4B(0x4B);
+            VALUE_4B(0x4B);
 
             /**
              * Internal value of the enum.
@@ -600,40 +601,41 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
              * @param v {@link #value} of {@link TargetType}
              * @return <code>type_annotation</code> structure union name
              */
+            @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
             public static String getTargetUnionName(short v) {
                 String unionName;
 
-                if (v == Value00.value
-                        || v == Value01.value) {
+                if (v == VALUE_00.value
+                        || v == VALUE_01.value) {
                     unionName = TypeParameterTarget.UNION_NAME;
-                } else if (v == Value10.value) {
+                } else if (v == VALUE_10.value) {
                     unionName = SupertypeTarget.UNION_NAME;
-                } else if (v == Value11.value
-                        || v == Value12.value) {
+                } else if (v == VALUE_11.value
+                        || v == VALUE_12.value) {
                     unionName = TypeParameterBoundTarget.UNION_NAME;
-                } else if (v == Value13.value
-                        || v == Value14.value
-                        || v == Value15.value) {
+                } else if (v == VALUE_13.value
+                        || v == VALUE_14.value
+                        || v == VALUE_15.value) {
                     unionName = EmptyTarget.UNION_NAME;
-                } else if (v == Value16.value) {
+                } else if (v == VALUE_16.value) {
                     unionName = FormalParameterTarget.UNION_NAME;
-                } else if (v == Value17.value) {
+                } else if (v == VALUE_17.value) {
                     unionName = ThrowsTarget.UNION_NAME;
-                } else if (v == Value40.value
-                        || v == Value41.value) {
+                } else if (v == VALUE_40.value
+                        || v == VALUE_41.value) {
                     unionName = LocalvarTarget.UNION_NAME;
-                } else if (v == Value42.value) {
+                } else if (v == VALUE_42.value) {
                     unionName = CatchTarget.UNION_NAME;
-                } else if (v == Value43.value
-                        || v == Value44.value
-                        || v == Value45.value
-                        || v == Value46.value) {
+                } else if (v == VALUE_43.value
+                        || v == VALUE_44.value
+                        || v == VALUE_45.value
+                        || v == VALUE_46.value) {
                     unionName = OffsetTarget.UNION_NAME;
-                } else if (v == Value47.value
-                        || v == Value48.value
-                        || v == Value49.value
-                        || v == Value4A.value
-                        || v == Value4B.value) {
+                } else if (v == VALUE_47.value
+                        || v == VALUE_48.value
+                        || v == VALUE_49.value
+                        || v == VALUE_4A.value
+                        || v == VALUE_4B.value) {
                     unionName = TypeArgumentTarget.UNION_NAME;
                 } else {
                     unionName = "Un-recognized";
@@ -835,7 +837,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class TypeArgumentTarget extends FileComponent {
+        public static final class TypeArgumentTarget extends FileComponent {
 
             public static final String UNION_NAME = "type_argument_target";
             public final u2 offset;
@@ -849,7 +851,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class TypePath extends FileComponent {
+        public static final class TypePath extends FileComponent {
 
             public final u1 path_length;
             public final Path[] path;
@@ -868,7 +870,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
 
-            public final static class Path extends FileComponent {
+            public static final class Path extends FileComponent {
 
                 public final u1 type_path_kind;
                 public final u1 type_argument_index;
@@ -886,20 +888,20 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 /**
                  * Annotation is deeper in an array type.
                  */
-                Value0(0, "Annotation is deeper in an array type"),
+                VALUE_0(0, "Annotation is deeper in an array type"),
                 /**
                  * Annotation is deeper in a nested type.
                  */
-                Value1(1, "Annotation is deeper in a nested type"),
+                VALUE_1(1, "Annotation is deeper in a nested type"),
                 /**
                  * Annotation is on the bound of a wildcard type argument of a
                  * parameterized type.
                  */
-                Value2(2, "Annotation is on the bound of a wildcard type argument of a parameterized type"),
+                VALUE_2(2, "Annotation is on the bound of a wildcard type argument of a parameterized type"),
                 /**
                  * Annotation is on a type argument of a parameterized type.
                  */
-                Value3(3, "Annotation is on a type argument of a parameterized type");
+                VALUE_3(3, "Annotation is on a type argument of a parameterized type");
 
                 /**
                  * Internal value of the type path kind.

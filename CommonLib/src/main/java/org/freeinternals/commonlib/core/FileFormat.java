@@ -50,7 +50,7 @@ public abstract class FileFormat {
      * @throws java.io.IOException Failed to Read file
      * @throws org.freeinternals.commonlib.core.FileFormatException The file is empty
      */
-    public FileFormat(final File file) throws IOException, FileFormatException {
+    protected FileFormat(final File file) throws IOException, FileFormatException {
         this.fileName = file.getName();
         this.filePath = file.getCanonicalPath();
 
@@ -68,7 +68,7 @@ public abstract class FileFormat {
      * @param fileName
      * @param filePath
      */
-    public FileFormat(final byte[] bytes, final String fileName, final String filePath) {
+    protected FileFormat(final byte[] bytes, final String fileName, final String filePath) {
         final String inMemory = "In Memory Bytes data";
         this.fileName = (fileName == null) ? inMemory : fileName;
         this.filePath = (filePath == null) ? inMemory : filePath;

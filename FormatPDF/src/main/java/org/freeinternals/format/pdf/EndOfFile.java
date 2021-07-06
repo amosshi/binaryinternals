@@ -40,11 +40,11 @@ public class EndOfFile extends FileComponent implements GenerateTreeNode {
 
         nodeEoF.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
-                this.Line.Line.length(),
+                this.Line.line.length(),
                 Texts.Signature + SIGNATURE)));
         nodeEoF.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + this.Line.Line.length(),
-                this.Line.NewLineLength,
+                super.startPos + this.Line.line.length(),
+                this.Line.newLineLength,
                 Texts.NewLine)));
         parentNode.add(nodeEoF);
     }

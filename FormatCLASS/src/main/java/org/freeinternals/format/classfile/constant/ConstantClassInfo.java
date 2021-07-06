@@ -38,7 +38,7 @@ public class ConstantClassInfo extends CPInfo {
     public final u2 name_index;
 
     ConstantClassInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Class.tag, true, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Class.tag, true, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
 
         this.startPos = posDataInputStream.getPos() - 1;
         this.length = LENGTH;

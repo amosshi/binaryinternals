@@ -59,7 +59,7 @@ public class AttributeMethodParameters extends AttributeInfo {
     public final Parameter[] parameters;
 
     AttributeMethodParameters(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_52_0, JavaSEVersion.Version_8);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_52_0, JavaSEVersion.VERSION_8);
 
         this.parameters_count = new u1(posDataInputStream, true);
         if (this.parameters_count.value > 0) {

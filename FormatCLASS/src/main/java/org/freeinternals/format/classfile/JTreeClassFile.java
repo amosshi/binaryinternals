@@ -24,6 +24,12 @@ import org.freeinternals.format.classfile.constant.CPInfo;
  */
 public class JTreeClassFile {
 
+    private static final String HTML_LI = "<li>%s</li>";
+    private static final String HTML_OL_BEGIN = "<ol>";
+    private static final String HTML_OL_END = "</ol>";
+    private static final String MESSAGE_ACCESS_FLAGS = "access_flags: ";
+    private static final String MESSAGE_ATTR_COUNT = "attributes_count: ";
+
     static final String CP_PREFIX = "constant_pool[";
     static final String FIELDS_PREFIX = "fields[";
     static final String METHODS_PERFIX = "methods[";
@@ -119,7 +125,7 @@ public class JTreeClassFile {
         final DefaultMutableTreeNode access_flags = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
-                "access_flags: " + this.classFile.getModifiers(),
+                MESSAGE_ACCESS_FLAGS + this.classFile.getModifiers(),
                 MESSAGES.getString("msg_access_flags")
         ));
         this.root.add(access_flags);
@@ -233,7 +239,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "access_flags: " + field_info.access_flags.value + ", " + field_info.getModifiers()
+                MESSAGE_ACCESS_FLAGS + field_info.access_flags.value + ", " + field_info.getModifiers()
         )));
         int name_index = field_info.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -250,7 +256,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                "attributes_count: " + attributesCount
+                MESSAGE_ATTR_COUNT + attributesCount
         )));
 
         if (attributesCount > 0) {
@@ -324,7 +330,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                "access_flags: " + method_info.access_flags.value + ", " + method_info.getModifiers()
+                MESSAGE_ACCESS_FLAGS + method_info.access_flags.value + ", " + method_info.getModifiers()
         )));
         cp_index = method_info.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -341,7 +347,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
                 2,
-                "attributes_count: " + attributesCount)));
+                MESSAGE_ATTR_COUNT + attributesCount)));
 
         if (attributesCount > 0) {
             final AttributeInfo lastAttr = method_info.getAttribute(attributesCount - 1);
@@ -373,7 +379,7 @@ public class JTreeClassFile {
         final DefaultMutableTreeNode attrs_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.attributes_count.getStartPos(),
                 this.classFile.attributes_count.getLength(),
-                "attributes_count: " + attrCount,
+                MESSAGE_ATTR_COUNT + attrCount,
                 MESSAGES.getString("msg_attributes_count")
         ));
         this.root.add(attrs_count);
@@ -404,7 +410,7 @@ public class JTreeClassFile {
 
     StringBuilder generateOpcodeParseResult(byte[] opcodeData) {
         StringBuilder sb = new StringBuilder(1024);
-        sb.append(HTMLKit.start());
+        sb.append(HTMLKit.START);
 
         int cpindexCounter = 0;
 
@@ -424,28 +430,28 @@ public class JTreeClassFile {
 
         // The Reference Object
         if (cpindexCounter > 0) {
-            sb.append("<ol>");
+            sb.append(HTML_OL_BEGIN);
             codeResult.stream().filter((iResult) -> (iResult.getCpindex() != null)).forEachOrdered((Opcode.InstructionParsed iResult) -> {
-                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(
+                sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(
                         this.classFile.getCPDescription(iResult.getCpindex()))));
             });
-            sb.append("</ol>");
+            sb.append(HTML_OL_END);
         }
 
-        sb.append(HTMLKit.end());
+        sb.append(HTMLKit.END);
         return sb;
     }
 
     StringBuilder generateReport2CP() {
         StringBuilder sb = new StringBuilder(1024);
-        sb.append(HTMLKit.start());
+        sb.append(HTMLKit.START);
 
         int count;
 
         // Constant Pool
         count = this.classFile.constant_pool_count.value;
         sb.append(String.format("Constant Pool Count: %d", count));
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
         if (count > 0) {
             CPInfo[] CPInfoList = this.classFile.constant_pool;
 
@@ -459,21 +465,21 @@ public class JTreeClassFile {
 
             // Constant Pool Object List
             sb.append("Constant Pool Object List");
-            sb.append(HTMLKit.newLine());
-            sb.append("<ol>");
+            sb.append(HTMLKit.NEW_LINE);
+            sb.append(HTML_OL_BEGIN);
             for (CPInfo cpItem : this.classFile.constant_pool) {
                 String cpitemString = (cpItem == null) ? "(empty)" : cpItem.toString(this.classFile.constant_pool);
-                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(cpitemString)));
+                sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(cpitemString)));
             }
-            sb.append("</ol>");
+            sb.append(HTML_OL_END);
         }
 
-        sb.append(HTMLKit.end());
+        sb.append(HTMLKit.END);
         return sb;
     }
 
     private void generateReport4CPType(StringBuilder sb, CPInfo[] CPInfoList, int count, short tag) {
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
         sb.append("<ul>");
         for (int i = 1; i < count; i++) {
             if (CPInfoList[i] != null && CPInfoList[i].tag.value == tag) {
@@ -486,43 +492,43 @@ public class JTreeClassFile {
 
     StringBuilder generateReport2Fields() {
         StringBuilder sb = new StringBuilder(1024);
-        sb.append(HTMLKit.start());
+        sb.append(HTMLKit.START);
 
         // Fields
         int count = this.classFile.fields_count.getValue();
         sb.append(String.format("Field Count: %d", count));
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
         if (count > 0) {
-            sb.append("<ol>");
+            sb.append(HTML_OL_BEGIN);
             for (FieldInfo field : this.classFile.fields) {
-                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(field.getDeclaration())));
+                sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(field.getDeclaration())));
             }
-            sb.append("</ol>");
+            sb.append(HTML_OL_END);
         }
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
 
-        sb.append(HTMLKit.end());
+        sb.append(HTMLKit.END);
         return sb;
     }
 
     StringBuilder generateReport2Methods() {
         StringBuilder sb = new StringBuilder(1024);
-        sb.append(HTMLKit.start());
+        sb.append(HTMLKit.START);
 
         // Methods
         int count = this.classFile.methods_count.getValue();
         sb.append(String.format("Method Count: %d", count));
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
         if (count > 0) {
-            sb.append("<ol>");
+            sb.append(HTML_OL_BEGIN);
             for (MethodInfo method : this.classFile.methods) {
-                sb.append(String.format("<li>%s</li>", HTMLKit.escapeFilter(method.getDeclaration())));
+                sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(method.getDeclaration())));
             }
-            sb.append("</ol>");
+            sb.append(HTML_OL_END);
         }
-        sb.append(HTMLKit.newLine());
+        sb.append(HTMLKit.NEW_LINE);
 
-        sb.append(HTMLKit.end());
+        sb.append(HTMLKit.END);
         return sb;
     }
 }

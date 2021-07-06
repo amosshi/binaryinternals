@@ -68,7 +68,7 @@ public class AttributeCode extends AttributeInfo {
     public AttributeInfo[] attributes;
 
     AttributeCode(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
 
         int i;
 
@@ -279,7 +279,7 @@ public class AttributeCode extends AttributeInfo {
      *
      * @author Amos Shi
      */
-    public final static class ExceptionTable extends FileComponent {
+    public static final class ExceptionTable extends FileComponent {
 
         public static final int LENGTH = 8;
         public final u2 start_pc;

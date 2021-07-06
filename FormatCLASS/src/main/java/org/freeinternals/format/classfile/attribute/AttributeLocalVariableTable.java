@@ -48,7 +48,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
     private final LocalVariableTable[] localVariableTable;
 
     AttributeLocalVariableTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_45_3, JavaSEVersion.Version_1_0_2);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
 
         this.local_variable_table_length = new u2(posDataInputStream);
         if (this.local_variable_table_length.value > 0) {
@@ -158,7 +158,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
      * @author Amos Shi
      * @see AttributeLocalVariableTable
      */
-    public final static class LocalVariableTable extends FileComponent {
+    public static final class LocalVariableTable extends FileComponent {
 
         public final static int LENGTH = 10;
         /**

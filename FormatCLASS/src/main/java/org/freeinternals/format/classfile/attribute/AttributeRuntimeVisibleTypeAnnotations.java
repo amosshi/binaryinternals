@@ -38,7 +38,7 @@ import org.freeinternals.format.classfile.u2;
 public class AttributeRuntimeVisibleTypeAnnotations extends AttributeRuntimeTypeAnnotations {
 
     public AttributeRuntimeVisibleTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, name, posDataInputStream, ClassFile.Version.Format_52_0, JavaSEVersion.Version_8);
+        super(nameIndex, name, posDataInputStream, ClassFile.Version.FORMAT_52_0, JavaSEVersion.VERSION_8);
     }
 
 }

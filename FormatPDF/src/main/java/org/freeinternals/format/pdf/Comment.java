@@ -25,7 +25,7 @@ public class Comment extends FileComponent implements GenerateTreeNode {
     Comment(PosDataInputStream stream, ASCIILine line) throws IOException {
         super.startPos = stream.getPos() - line.length();
         super.length = line.length();
-        this.Text = line.Line;
+        this.Text = line.line;
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

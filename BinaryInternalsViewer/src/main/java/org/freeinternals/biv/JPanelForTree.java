@@ -22,7 +22,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
@@ -74,6 +73,7 @@ public final class JPanelForTree extends JPanel {
      * @param jTree The tree to be contained
      * @param frame The parent window
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP2", justification="We need it")
     public JPanelForTree(final JTree jTree, final JFrame frame) {
         if (jTree == null) {
             throw new IllegalArgumentException("[tree] cannot be null.");
@@ -81,12 +81,8 @@ public final class JPanelForTree extends JPanel {
 
         this.tree = jTree;
         this.topLevelFrame = frame;
-        this.tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            @Override
-            public void valueChanged(final javax.swing.event.TreeSelectionEvent evt) {
-                treeSelectionChanged(evt);
-            }
+        this.tree.addTreeSelectionListener((final javax.swing.event.TreeSelectionEvent evt) -> {
+            treeSelectionChanged(evt);
         });
 
         this.toolbar = new JToolBar();

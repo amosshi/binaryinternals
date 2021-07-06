@@ -31,8 +31,9 @@ public class AttributeSignature extends AttributeInfo {
 
     public final u2 signature_index;
 
+    @SuppressWarnings("java:S1172") // Unused method parameters should be removed --> `cp` is used by children classes
     AttributeSignature(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_49_0, JavaSEVersion.Version_5_0);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }
@@ -61,36 +62,36 @@ public class AttributeSignature extends AttributeInfo {
         /**
          * signed byte.
          */
-        B('B', JavaLangSpec.Keyword.BYTE.keyword),
+        B('B', JavaLangSpec.Keyword.BYTE.text),
         /**
          * Unicode character code point in the Basic Multilingual Plane, encoded
          * with UTF-16.
          */
-        C('C', JavaLangSpec.Keyword.CHAR.keyword),
+        C('C', JavaLangSpec.Keyword.CHAR.text),
         /**
          * double-precision floating-point value.
          */
-        D('D', JavaLangSpec.Keyword.DOUBLE.keyword),
+        D('D', JavaLangSpec.Keyword.DOUBLE.text),
         /**
          * single-precision floating-point value.
          */
-        F('F', JavaLangSpec.Keyword.FLOAT.keyword),
+        F('F', JavaLangSpec.Keyword.FLOAT.text),
         /**
          * integer.
          */
-        I('I', JavaLangSpec.Keyword.INT.keyword),
+        I('I', JavaLangSpec.Keyword.INT.text),
         /**
          * long integer.
          */
-        J('J', JavaLangSpec.Keyword.LONG.keyword),
+        J('J', JavaLangSpec.Keyword.LONG.text),
         /**
          * signed short.
          */
-        S('S', JavaLangSpec.Keyword.SHORT.keyword),
+        S('S', JavaLangSpec.Keyword.SHORT.text),
         /**
          * true or false.
          */
-        Z('Z', JavaLangSpec.Keyword.BOOLEAN.keyword);
+        Z('Z', JavaLangSpec.Keyword.BOOLEAN.text);
 
         public final char signature;
         public final String JavaKeyWord;
@@ -148,6 +149,7 @@ public class AttributeSignature extends AttributeInfo {
      * VM Spec: Reference Type Signature
      * </a>
      */
+    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead    
     public enum ReferenceType {
 
         ClassTypeSignature('L'),

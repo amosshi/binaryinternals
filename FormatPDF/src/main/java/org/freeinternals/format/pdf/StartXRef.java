@@ -37,7 +37,7 @@ public class StartXRef extends FileComponent implements GenerateTreeNode {
         super.startPos = stream.getPos() - line.length();
         this.HeaderLine = line;
         this.OffsetLine = stream.readASCIILine();
-        this.Offset = Integer.parseInt(this.OffsetLine.Line);
+        this.Offset = Integer.parseInt(this.OffsetLine.line);
         super.length = stream.getPos() - super.startPos;
     }
 
@@ -52,22 +52,22 @@ public class StartXRef extends FileComponent implements GenerateTreeNode {
         int pos = this.startPos;
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.Line.length(),
+                this.HeaderLine.line.length(),
                 Texts.Signature + SIGNATURE)));
-        pos += this.HeaderLine.Line.length();
+        pos += this.HeaderLine.line.length();
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.NewLineLength,
+                this.HeaderLine.newLineLength,
                 Texts.NewLine)));
-        pos += this.HeaderLine.NewLineLength;
+        pos += this.HeaderLine.newLineLength;
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.OffsetLine.Line.length(),
+                this.OffsetLine.line.length(),
                 String.format("Offset of last Cross Reference Section: %d (%08X)", this.Offset, this.Offset))));
-        pos += this.OffsetLine.Line.length();
+        pos += this.OffsetLine.line.length();
         nodeTrailer.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.OffsetLine.NewLineLength,
+                this.OffsetLine.newLineLength,
                 Texts.NewLine)));
     }
 }

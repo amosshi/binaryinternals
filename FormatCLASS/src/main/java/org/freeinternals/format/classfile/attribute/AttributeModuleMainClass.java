@@ -46,7 +46,7 @@ public class AttributeModuleMainClass extends AttributeInfo {
     public final u2 main_class_index;
 
     AttributeModuleMainClass(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
         this.main_class_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }

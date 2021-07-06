@@ -42,6 +42,9 @@ public class PluginManager {
         loadPlugins();
     }
 
+    private PluginManager() {
+    }
+
     private static void loadPlugins() {
         File pluginFolder = new File(PLUGIN_DIR);
         String pluginDescClassName;
@@ -70,8 +73,6 @@ public class PluginManager {
                     }
 
                     loadPlugin(plguinFile, pluginDescClassName);
-                } catch (IOException ex) {
-                    Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
                     Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -79,17 +80,19 @@ public class PluginManager {
         }
     }
 
-    private static void loadPlugin(File pluginFile, String pluginDescClassName) throws Exception {
+    private static void loadPlugin(File pluginFile, String pluginDescClassName) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         URL url = pluginFile.toURI().toURL();
-        ClassLoader loader = new URLClassLoader(new URL[]{url});
-        Class<?> cls = loader.loadClass(pluginDescClassName);
-        if (cls == null) {
-            return;
+        try (URLClassLoader loader = new URLClassLoader(new URL[]{url})) {
+            Class<?> cls = loader.loadClass(pluginDescClassName);
+            if (cls == null) {
+                return;
+            }
+
+            PLUGINS.put(pluginFile.getName(), (PluginDescriptor) cls.getDeclaredConstructor().newInstance());
         }
-        PLUGINS.put(pluginFile.getName(), (PluginDescriptor) cls.getDeclaredConstructor().newInstance());
     }
 
-    public static String getPlugedExtensions(){
+    public static String getPlugedExtensions() {
         StringBuilder builder = new StringBuilder(16);
         if (!PLUGINS.isEmpty()) {
             builder.append(" - ");
@@ -101,10 +104,10 @@ public class PluginManager {
             });
             builder.append(" ...");
         }
-    
+
         return builder.toString();
     }
-    
+
     public static void initChooseFilters(JFileChooser chooser) {
         FileNameExtensionFilter filter;
         for (PluginDescriptor plugin : PLUGINS.values()) {
@@ -115,10 +118,10 @@ public class PluginManager {
         }
     }
 
-    public static FileFormat getFile(final File file) throws FileFormatException, Throwable {
+    public static FileFormat getFile(final File file) throws FileFormatException, NoSuchMethodException,
+            SecurityException, IllegalArgumentException, InstantiationException, IllegalAccessException,
+            InvocationTargetException {
         Class<? extends FileFormat> fileFormatClass = null;
-        Constructor<? extends FileFormat> c = null;
-        FileFormat ff = null;
         String ext = file.getName().substring(file.getName().lastIndexOf('.') + 1);
 
         for (PluginDescriptor plugin : PLUGINS.values()) {
@@ -130,24 +133,8 @@ public class PluginManager {
             fileFormatClass = DefaultFileFormat.class;
         }
 
-        try {
-            c = fileFormatClass.getConstructor(File.class);
-        } catch (NoSuchMethodException | SecurityException | IllegalArgumentException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            throw ex;
-        }
-
-        try {
-            ff = c.newInstance(file);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            throw ex;
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            throw ex.getCause();
-        }
-
-        return ff;
+        Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(File.class);
+        return c.newInstance(file);
     }
 
     static boolean isContain(String[] exts, String ext) {
@@ -166,10 +153,11 @@ public class PluginManager {
 
     /**
      * Return the loaded {@link #PLUGINS}.
-     * 
+     *
      * @return Loaded plug-ins
      */
-    public static Map<String, PluginDescriptor> getPlugins(){
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "MS_EXPOSE_REP", justification = "We need it")
+    public static Map<String, PluginDescriptor> getPlugins() {
         return PLUGINS;
     }
 }

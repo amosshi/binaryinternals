@@ -48,7 +48,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
     public final u2 descriptor_index;
 
     ConstantMethodTypeInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodType.tag, true, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
+        super(CPInfo.ConstantType.CONSTANT_MethodType.tag, true, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream);
         super.length = LENGTH;

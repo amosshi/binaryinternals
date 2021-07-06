@@ -46,39 +46,23 @@ public final class HTMLKit {
 
     /**
      * HTML start tags.
-     *
-     * @return HTML tags for start
      */
-    public static String start() {
-        return "<!DOCTYPE html><html><head></head><body>";
-    }
+    public static final String START = "<!DOCTYPE html><html><head></head><body>";
 
     /**
      * HTML end tags.
-     *
-     * @return HTML tags for end
      */
-    public static String end() {
-        return "\n</body>\n</html>";
-    }
+    public static final String END = "\n</body>\n</html>";
 
     /**
      * HTML new line.
-     *
-     * @return HTML new line tag
      */
-    public static String newLine() {
-        return "<br />";
-    }
+    public static final String NEW_LINE = "<br />";
 
     /**
      * HTML space.
-     *
-     * @return HTML space tag
      */
-    public static String space() {
-        return "&nbsp;";
-    }
+    public static final String SPACE = "&nbsp;";
 
     /**
      * Get HTML format for text with new line.
@@ -137,8 +121,8 @@ public final class HTMLKit {
     public static String escapeFilter(final String text) {
         String result = null;
         if (text != null) {
-            result = text.replaceAll("<", "&lt;");
-            result = result.replaceAll(">", "&gt;");
+            result = text.replace("<", "&lt;");
+            result = result.replace(">", "&gt;");
         }
 
         return result;

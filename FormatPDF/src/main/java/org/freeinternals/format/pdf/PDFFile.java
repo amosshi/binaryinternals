@@ -48,19 +48,19 @@ public class PDFFile extends FileFormat {
         PosDataInputStream.ASCIILine line;
         while (stream.hasNext()) {
             line = stream.readASCIILine();
-            System.out.println("PDFFile: line = " + line.Line);
+            System.out.println("PDFFile: line = " + line.line);
 
-            if (line.Line.equalsIgnoreCase(EndOfFile.SIGNATURE)) {                          // %%EOF
+            if (line.line.equalsIgnoreCase(EndOfFile.SIGNATURE)) {                          // %%EOF
                 super.addFileComponent(new EndOfFile(stream, line));
-            } else if (line.Line.charAt(0) == PDFStatics.DelimiterCharacter.PS_CHAR) {      // %, Comment line
+            } else if (line.line.charAt(0) == PDFStatics.DelimiterCharacter.PS_CHAR) {      // %, Comment line
                 super.addFileComponent(new Comment(stream, line));
-            } else if (line.Line.matches(IndirectObject.SIGNATURE_START_REGEXP)) {          // 1 0 obj 
+            } else if (line.line.matches(IndirectObject.SIGNATURE_START_REGEXP)) {          // 1 0 obj 
                 super.addFileComponent(new IndirectObject(stream, line));
-            } else if (line.Line.trim().equalsIgnoreCase(CrossReferenceTable.SIGNATURE)) {  // xref
+            } else if (line.line.trim().equalsIgnoreCase(CrossReferenceTable.SIGNATURE)) {  // xref
                 super.addFileComponent(new CrossReferenceTable(stream, line));
-            } else if (line.Line.equalsIgnoreCase(Trailer.SIGNATURE)) {                     // trailer
+            } else if (line.line.equalsIgnoreCase(Trailer.SIGNATURE)) {                     // trailer
                 super.addFileComponent(new Trailer(stream, line));
-            } else if (line.Line.equalsIgnoreCase(StartXRef.SIGNATURE)) {                   // startxref
+            } else if (line.line.equalsIgnoreCase(StartXRef.SIGNATURE)) {                   // startxref
                 super.addFileComponent(new StartXRef(stream, line));
             } else {
                 super.addFileComponent(new EmptyLine(stream, line));

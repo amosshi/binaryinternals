@@ -22,10 +22,14 @@ Legacy note
 Build the Source Code
 
 * We require the maven command line `mvn` has been installed
-* Edit `build-quick.sh` file for the `JAVA_HOME` location, if needed
+* Edit `build.sh` file for the `JAVA_HOME` location, if needed
 * Run Either build scripts
-  * `./build-quick.sh` Do a quickly build, to get an running application
-  * `./build.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
+  * `./build.sh` Do a quickly build, to get an running application
+  * `./build-full-lifecycle.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
+
+Test Case
+* Test case for Java/JVM `.class` format
+  * `./masstest-format-class.sh` Parse all `.class` files in current Ubuntu linux system `default-java` folder
 
 Download
 * Download Application: https://github.com/amosshi/freeinternals/releases

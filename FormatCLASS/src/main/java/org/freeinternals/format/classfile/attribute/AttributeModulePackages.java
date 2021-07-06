@@ -55,7 +55,7 @@ public class AttributeModulePackages extends AttributeInfo {
     public final u2[] package_index;
 
     AttributeModulePackages(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_53_0, JavaSEVersion.Version_9);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
 
         this.package_count = new u2(posDataInputStream);
         if (this.package_count.value > 0) {

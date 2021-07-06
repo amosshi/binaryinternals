@@ -16,24 +16,39 @@ package org.freeinternals.format.classfile;
  */
 public enum JavaSEVersion {
 
-    Version_1_0_2("1.0.2", 1),
-    Version_1_1("1.1", 1),
-    Version_5_0("5.0", 5),
-    Version_6("6", 6),
-    Version_7("7", 7),
-    Version_8("8", 8),
-    Version_9("9", 9),
-    Version_11("11", 11),
-    Version_12("12", 12),
-    Version_13("13", 13),
-    Version_14("14", 14),
-    Version_15("15", 15);
+    VERSION_1_0_2("1.0.2", 1, false),
+    VERSION_1_1("1.1", 1, false),
+    VERSION_5_0("5.0", 5, false),
+    VERSION_6("6", 6, false),
+    VERSION_7("7", 7, false),
+    VERSION_8("8", 8, false),
+    VERSION_9("9", 9, false),
+    VERSION_11("11", 11, true),
+    VERSION_12("12", 12, false),
+    VERSION_13("13", 13, false),
+    VERSION_14("14", 14, false),
+    VERSION_15("15", 15, false),
+    VERSION_16("16", 16, false),
+    VERSION_17("17", 17, true);
 
-    public final String name;
+    /**
+     * Version name.
+     */
+    public final String versionName;
+
+    /**
+     * Major version number.
+     */
     public final int majorVersion;
 
-    private JavaSEVersion(String name, int majorVersion) {
-        this.name = name;
+    /**
+     * Is Long-Term-Support (LTS) release or not.
+     */
+    public final boolean isLTS;
+
+    private JavaSEVersion(String name, int majorVersion, boolean lts) {
+        this.versionName = name;
         this.majorVersion = majorVersion;
+        this.isLTS = lts;
     }
 }

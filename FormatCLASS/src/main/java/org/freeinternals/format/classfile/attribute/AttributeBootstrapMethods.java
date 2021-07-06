@@ -29,6 +29,7 @@ import org.freeinternals.format.classfile.u2;
  * VM Spec: The BootstrapMethods Attribute
  * </a>
  */
+@SuppressWarnings("java:S116") // Class variable fields should not have public accessibility --> No, we like the simplifed final value manner
 public class AttributeBootstrapMethods extends AttributeInfo {
 
     /**
@@ -46,7 +47,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
     public final BootstrapMethod[] bootstrap_methods;
 
     AttributeBootstrapMethods(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.Format_51_0, JavaSEVersion.Version_7);
+        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
 
         this.num_bootstrap_methods = new u2(posDataInputStream);
         if (this.num_bootstrap_methods.value > 0) {
@@ -131,7 +132,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
         }
     }
     
-    public final static class BootstrapMethod extends FileComponent {
+    public static final class BootstrapMethod extends FileComponent {
 
         /**
          * The value of the {@link #bootstrap_method_ref} item must be a valid
