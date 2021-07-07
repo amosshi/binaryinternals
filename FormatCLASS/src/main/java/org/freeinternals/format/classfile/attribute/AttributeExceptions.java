@@ -35,7 +35,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.5">
  * VM Spec: The Exceptions Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeExceptions extends AttributeInfo {
 
     /**
@@ -103,11 +108,11 @@ public class AttributeExceptions extends AttributeInfo {
                     "exceptions"));
 
             for (i = 0; i < numOfExceptions; i++) {
-                int cp_index = this.getExceptionIndexTableItem(i);
+                int cpIndex = this.getExceptionIndexTableItem(i);
                 treeNodeExceptions.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPos + 10 + i * 2,
                         2,
-                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cp_index, classFile.getCPDescription(cp_index))
+                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cpIndex, classFile.getCPDescription(cpIndex))
                 )));
             }
 

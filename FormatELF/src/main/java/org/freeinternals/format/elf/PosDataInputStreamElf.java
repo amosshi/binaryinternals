@@ -25,7 +25,12 @@ import org.freeinternals.format.elf.Identification.Endianness;
  * Extended reader for <code>ELF</code> format.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We respect the name from ELF spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S100")
 public class PosDataInputStreamElf extends PosDataInputStream {
 
     protected final Endianness endian;

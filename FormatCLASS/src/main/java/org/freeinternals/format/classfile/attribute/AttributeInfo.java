@@ -44,7 +44,12 @@ import org.freeinternals.format.classfile.u4;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
  * VM Spec: Attributes
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public abstract class AttributeInfo extends FileComponent implements GenerateClassfileTreeNode {
 
     private static final Logger LOG = Logger.getLogger(AttributeInfo.class.getName());
@@ -110,8 +115,12 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * @throws java.io.IOException Input Stream read fail
      * @throws org.freeinternals.commonlib.core.FileFormatException Class file format
      * error
+     *
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+     * </pre>
      */
-    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+    @SuppressWarnings("java:S3776")
     public static AttributeInfo parse(final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
         AttributeInfo attr = null;
 
@@ -123,7 +132,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
             for (AttributeTypes attrType : AttributeTypes.values()) {
                 if (attrType.name().equals(type) && attrType.clazz != null) {
                     // There is only 1 constructor in the JVM Attributes
-                    Constructor cons = attrType.clazz.getDeclaredConstructors()[0];
+                    Constructor<?> cons = attrType.clazz.getDeclaredConstructors()[0];
 
                     try {
                         switch (cons.getParameterCount()) {
@@ -144,7 +153,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
                     }
                 }
             }
-            if (matched == false) {
+            if (!matched) {
                 LOG.log(Level.WARNING, "Un-recognized Attribute Found !!! Type = {0}", type);
                 attr = new AttributeUnrecognized(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
             }
@@ -188,24 +197,24 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
         return (this.name != null) ? this.name : "";
     }
     
-    public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInfo attribute_info, final ClassFile classFile) {
-        if (attribute_info == null) {
+    public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInfo attributeInfo, final ClassFile classFile) {
+        if (attributeInfo == null) {
             return;
         }
 
-        int startPosMoving = attribute_info.getStartPos();
+        int startPosMoving = attributeInfo.getStartPos();
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "attribute_name_index: " + attribute_info.attribute_name_index.value + ", name=" + attribute_info.getName())));
+                "attribute_name_index: " + attributeInfo.attribute_name_index.value + ", name=" + attributeInfo.getName())));
         startPosMoving += u2.LENGTH;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u4.LENGTH,
-                "attribute_length: " + attribute_info.attribute_length.value)));
+                "attribute_length: " + attributeInfo.attribute_length.value)));
 
-        attribute_info.generateTreeNode(rootNode, classFile);
+        attributeInfo.generateTreeNode(rootNode, classFile);
     }
     
 
@@ -215,8 +224,12 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * @see
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes </a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+     * </pre>
      */
-    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
+    @SuppressWarnings("java:S115")
     public enum AttributeTypes {
 
         /**
@@ -503,7 +516,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          */
         final Class<?> clazz;
 
-        AttributeTypes(Class clazz) {
+        AttributeTypes(Class<?> clazz) {
             this.clazz = clazz;
         }
 

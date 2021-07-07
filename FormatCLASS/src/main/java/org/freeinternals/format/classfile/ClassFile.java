@@ -55,7 +55,12 @@ import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
  * @see <a
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html">
  * VM Spec: The ClassFile Structure </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ClassFile extends FileFormat {
 
     /**
@@ -232,8 +237,8 @@ public class ClassFile extends FileFormat {
         this(classFileBytes, null, null);
     }
 
-    // java:S127 - "for" loop stop conditions should be invariant --> No we need it because Long/Double type occupies two Constant Pool index
-    // java:S3776 - Cognitive Complexity of methods should not be too high --> No, it is not high
+    // java:S127 - "for" loop stop conditions should be invariant --- No we need it because Long/Double type occupies two Constant Pool index
+    // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
     @SuppressWarnings({"java:S127", "java:S3776"})
     public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException, FileFormatException {
         super(classFileBytes, fileName, filePath);

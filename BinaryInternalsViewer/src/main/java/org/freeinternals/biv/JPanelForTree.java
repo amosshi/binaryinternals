@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -73,7 +72,7 @@ public final class JPanelForTree extends JPanel {
      * @param jTree The tree to be contained
      * @param frame The parent window
      */
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP2", justification="We need it")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public JPanelForTree(final JTree jTree, final JFrame frame) {
         if (jTree == null) {
             throw new IllegalArgumentException("[tree] cannot be null.");
@@ -81,9 +80,7 @@ public final class JPanelForTree extends JPanel {
 
         this.tree = jTree;
         this.topLevelFrame = frame;
-        this.tree.addTreeSelectionListener((final javax.swing.event.TreeSelectionEvent evt) -> {
-            treeSelectionChanged(evt);
-        });
+        this.tree.addTreeSelectionListener(this::treeSelectionChanged);
 
         this.toolbar = new JToolBar();
         this.toolbarbtnDetails = new JButton("Details");
@@ -122,43 +119,21 @@ public final class JPanelForTree extends JPanel {
 
     private void initToolbar() {
         this.toolbar.setRollover(true);
-        //this.toolbar.setFloatable(false);
 
         // Button: Expand All
         final JButton buttonExpandAll = new JButton("Expand All");
-        buttonExpandAll.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                toolbarExpandAll();
-            }
-        });
+        buttonExpandAll.addActionListener((final ActionEvent e) -> toolbarExpandAll());
         this.toolbar.add(buttonExpandAll);
 
         // Button: Collapse All
         final JButton buttonCollapseAll = new JButton("Collapse All");
-        buttonCollapseAll.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                toolbarCollapseAll();
-            }
-        });
+        buttonCollapseAll.addActionListener((final ActionEvent e) -> toolbarCollapseAll());
         this.toolbar.add(buttonCollapseAll);
 
         // Button: Details
         this.toolbarbtnDetails.setVisible(false);
-        this.toolbarbtnDetails.addActionListener(new ActionListener() {
-
-            public void actionPerformed(final ActionEvent e) {
-                toolbarShowDetails();
-            }
-        });
-        //this.toolbar.addSeparator();
+        this.toolbarbtnDetails.addActionListener((final ActionEvent e) -> toolbarShowDetails());
         this.toolbar.add(this.toolbarbtnDetails);
-
-        // Button: Find
-        //this.toolbar.add(new JButton("Find"));
     }
 
     private void toolbarExpandAll() {

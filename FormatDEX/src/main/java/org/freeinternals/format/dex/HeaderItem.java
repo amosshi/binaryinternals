@@ -14,7 +14,13 @@ import org.freeinternals.commonlib.core.FileComponent;
  * The <code>header_item</code> structure of the DEX file.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * </pre>
  */
+@SuppressWarnings({"java:S116", "java:S1104"})
 public class HeaderItem extends FileComponent {
 
     /**
@@ -78,13 +84,13 @@ public class HeaderItem extends FileComponent {
     HeaderItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
 
-        this.checksum = stream.Dex_uint();                                      //  new Dex_uint(stream.readUnsignedInt());
+        this.checksum = stream.Dex_uint();
         for (int i = 0; i < this.signature.length; i++) {
-            this.signature[i] = stream.Dex_ubyte();                             //  new Dex_ubyte(stream.readUnsignedByte());
+            this.signature[i] = stream.Dex_ubyte();
         }
-        this.file_size = stream.Dex_uint();                                     // new Dex_uint(stream.readUnsignedInt_LittleEndian());
-        BytesTool.skip(stream, Dex_uint.LENGTH);                                // header_item-header_size - constant value 0x70
-        this.endian_tag = new Dex_uint(stream.readUnsignedInt());               // Always read from left to right
+        this.file_size = stream.Dex_uint();
+        BytesTool.skip(stream, Dex_uint.LENGTH);
+        this.endian_tag = new Dex_uint(stream.readUnsignedInt()); // Always read from left to right
         this.link_size = stream.Dex_uint();
         this.link_off = stream.Dex_uint();
         this.map_off = stream.Dex_uint();
@@ -115,7 +121,7 @@ public class HeaderItem extends FileComponent {
      * {@link Endian#ENDIAN_CONSTANT}, it would know that the file has been
      * byte-swapped from the expected form.
      */
-    public static enum Endian {
+    public enum Endian {
 
         /**
          * Little-endian, which is DEX standard.

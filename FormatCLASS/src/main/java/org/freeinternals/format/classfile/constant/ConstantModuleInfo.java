@@ -32,7 +32,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.11">
  * VM Spec: The CONSTANT_Module_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantModuleInfo extends CPInfo {
 
     public static final int LENGTH = 3;
@@ -64,8 +69,8 @@ public class ConstantModuleInfo extends CPInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        return ((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue();
+    public String toString(CPInfo[] constantPool) {
+        return ((ConstantUtf8Info) constantPool[this.name_index.value]).getValue();
     }
 
     @Override

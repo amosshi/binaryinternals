@@ -29,6 +29,7 @@ public class DefaultFileFormat extends FileFormat{
     }
 
     @Override
+    @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
     }
 }

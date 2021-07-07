@@ -32,7 +32,12 @@ import org.freeinternals.format.classfile.constant.CPInfo;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.5">
  * VM Spec: Fields
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class FieldInfo extends FileComponent {
 
     public final u2 access_flags;
@@ -139,7 +144,7 @@ public class FieldInfo extends FileComponent {
 
         String type;
         try {
-            type = SignatureConvertor.FieldDescriptorExtractor(this.descriptor).toString();
+            type = SignatureConvertor.fieldDescriptorExtractor(this.descriptor).toString();
         } catch (FileFormatException se) {
             type = "[Unexpected signature type]: " + this.descriptor;
         }

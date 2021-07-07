@@ -31,8 +31,13 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.16">
  * VM Spec: annotation structure
  * </a>
+ * 
+ * <pre>
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
-@SuppressWarnings("java:S116") // Class variable fields should not have public accessibility --> No, we like the simplifed final value manner
+@SuppressWarnings({"java:S1104", "java:S116"})
 public class Annotation extends FileComponent {
 
     public u2 type_index;
@@ -99,19 +104,19 @@ public class Annotation extends FileComponent {
                     "const_value_index: " + constValueIndex + " - " + classFile.getCPDescription(constValueIndex)
             )));
         } else if (elementValue.union_enum_const_value != null) {
-            int cp_index = elementValue.union_enum_const_value.type_name_index.value;
+            int cpIndex = elementValue.union_enum_const_value.type_name_index.value;
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "type_name_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+                    "type_name_index: " + cpIndex + " - " + classFile.getCPDescription(cpIndex)
             )));
             startPosMoving += u2.LENGTH;
 
-            cp_index = elementValue.union_enum_const_value.const_name_index.value;
+            cpIndex = elementValue.union_enum_const_value.const_name_index.value;
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "const_name_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+                    "const_name_index: " + cpIndex + " - " + classFile.getCPDescription(cpIndex)
             )));
         } else if (elementValue.union_class_info_index != null) {
             int classInfoIndex = elementValue.union_class_info_index.value;
@@ -123,11 +128,11 @@ public class Annotation extends FileComponent {
         } else if (elementValue.union_annotation_value != null) {
             generateSubnode(rootNode, elementValue.union_annotation_value, classFile);
         } else if (elementValue.union_array_value != null) {
-            int num_values = elementValue.union_array_value.num_values.value;
+            int numValues = elementValue.union_array_value.num_values.value;
             rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "num_values: " + num_values
+                    "num_values: " + numValues
             )));
             startPosMoving += u2.LENGTH;
 
@@ -136,7 +141,7 @@ public class Annotation extends FileComponent {
                 DefaultMutableTreeNode values = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         elementValue.getLength() - 3,
-                        "values: " + num_values
+                        "values: " + numValues
                 ));
                 rootNode.add(values);
 
@@ -196,23 +201,23 @@ public class Annotation extends FileComponent {
         currentPos += u2.LENGTH;
 
         if (a.num_element_value_pairs.value > 0) {
-            DefaultMutableTreeNode element_value_pairs = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode elementValuePairs = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     currentPos,
                     a.getStartPos() + a.getLength() - currentPos,
                     "element_value_pairs"
             ));
-            rootNode.add(element_value_pairs);
+            rootNode.add(elementValuePairs);
 
             for (int i = 0; i < a.num_element_value_pairs.value; i++) {
                 Annotation.ElementValuePair pair = a.getElementvaluePair(i);
-                DefaultMutableTreeNode element_value_pair_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode elementValuePairNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pair.getStartPos(),
                         pair.getLength(),
                         String.format("element_value_pair %d", i + 1)
                 ));
-                element_value_pairs.add(element_value_pair_node);
+                elementValuePairs.add(elementValuePairNode);
 
-                generateSubnode(element_value_pair_node, pair, classFile);
+                generateSubnode(elementValuePairNode, pair, classFile);
             }
         }
     }
@@ -384,8 +389,12 @@ public class Annotation extends FileComponent {
          * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16.1-130">
          * VM Spec: The element_value structure
          * </a>
+         *
+         * <pre>
+         * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+         * </pre>
          */
-        @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
+        @SuppressWarnings("java:S115")
         public enum TagEnum {
 
             /**

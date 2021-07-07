@@ -36,7 +36,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.10">
  * VM Spec: The CONSTANT_InvokeDynamic_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantInvokeDynamicInfo extends CPInfo {
 
     public static final int LENGTH = 5;
@@ -79,12 +84,10 @@ public class ConstantInvokeDynamicInfo extends CPInfo {
     }
     
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        // TODO Improve this logic with test case
-        final StringBuilder sb = new StringBuilder(64);
-        sb.append("bootstrap_method_attr_index = ").append(this.bootstrap_method_attr_index.value);
-        sb.append(", name_and_type_index = ").append(constant_pool[this.name_and_type_index.value].toString(constant_pool));
-        return sb.toString();
+    public String toString(CPInfo[] constantPool) {
+        return String.format("bootstrap_method_attr_index=%d name_and_type_index=%s",
+                this.bootstrap_method_attr_index.value,
+                constantPool[this.name_and_type_index.value].toString(constantPool));
     }
 
     @Override

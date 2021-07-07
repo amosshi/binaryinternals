@@ -47,7 +47,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.24">
  * VM Spec: The MethodParameters Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeMethodParameters extends AttributeInfo {
 
     /**
@@ -123,7 +128,7 @@ public class AttributeMethodParameters extends AttributeInfo {
         }
     }
 
-    public final static class Parameter extends FileComponent {
+    public static final class Parameter extends FileComponent {
 
         /**
          * The value of the name_index item must either be zero or a valid index

@@ -25,7 +25,12 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  * <a href="https://github.com/torvalds/linux/blob/master/include/linux/elfcore.h">include/linux/elfcore.h</a>
  * @see
  * <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class Identification extends FileComponent implements GenerateTreeNode {
 
     /**
@@ -108,28 +113,28 @@ public class Identification extends FileComponent implements GenerateTreeNode {
 
         // ELF Class: 32-/64-bit
         int value = input.readUnsignedByte();
-        if (ElfClass.contains(value) == false) {
+        if (!ElfClass.contains(value)) {
             throw new FileFormatException("Unrecognized EI_CLASS value in  ELF file header. value=" + value);
         }
         this.EI_CLASS = ElfClass.valueOf(value);
 
         // Endianness
         value = input.readUnsignedByte();
-        if (Endianness.contains(value) == false) {
+        if (!Endianness.contains(value)) {
             throw new FileFormatException("Unrecognized EI_DATA value in  ELF file header. value=" + value);
         }
         this.EI_DATA = Endianness.valueOf(value);
 
         // Version
         value = input.readUnsignedByte();
-        if (Version.contains(value) == false) {
+        if (!Version.contains(value)) {
             throw new FileFormatException("Unrecognized EI_VERSION value in  ELF file header. value=" + value);
         }
         this.EI_VERSION = Version.valueOf(value);
 
         // EI_OSABI
         value = input.readUnsignedByte();
-        if (OSAbi.contains(value) == false) {
+        if (!OSAbi.contains(value)) {
             throw new FileFormatException("Unrecognized EI_OSABI value in  ELF file header. value=" + value);
         }
         this.EI_OSABI = OSAbi.valueOf(value);
@@ -152,15 +157,15 @@ public class Identification extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        DefaultMutableTreeNode node;
         int currentPos = this.startPos;
 
-        parentNode.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos,
                 this.length,
                 String.format("ELF File Header [0x%08X, %d]", this.startPos, this.length),
                 "The ELF header defines whether to use 32-bit or 64-bit addresses. The header contains three fields that are affected by this setting and offset other fields that follow them."
-        )));
+        ));
+        parentNode.add(node);
 
         // EI_MAG
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -445,7 +450,12 @@ public class Identification extends FileComponent implements GenerateTreeNode {
      * and Linkable Format</a>
      * @see
      * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --> We respect the name from ELF Spec instead
+     * </pre>
      */
+    @SuppressWarnings("java:S115")
     public enum OSAbi {
         /**
          * Regardless of the target platform. The value <code>0</code> could be

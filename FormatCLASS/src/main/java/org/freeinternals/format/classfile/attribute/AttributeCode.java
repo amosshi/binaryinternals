@@ -53,7 +53,13 @@ import org.freeinternals.format.classfile.u4;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.3">
  * VM Spec: The Code Attribute
  * </a>
+ *
+ * <pre>
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings({"java:S1104", "java:S116"})
 public class AttributeCode extends AttributeInfo {
 
     public static final String ATTRIBUTE_CODE_NODE = "code";
@@ -266,11 +272,11 @@ public class AttributeCode extends AttributeInfo {
                 "handler_pc: " + et.handler_pc.value
         )));
         final int catch_type = et.catch_type.value;
-        String catch_type_desc = (catch_type == 0) ? "" : " - " + classFile.getCPDescription(catch_type);
+        String catchTypeDesc = (catch_type == 0) ? "" : " - " + classFile.getCPDescription(catch_type);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 6,
                 2,
-                "catch_type: " + catch_type + catch_type_desc
+                "catch_type: " + catch_type + catchTypeDesc
         )));
     }
 

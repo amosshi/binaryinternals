@@ -14,7 +14,12 @@ import org.freeinternals.format.classfile.attribute.AttributeModule;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S2386 - Mutable fields should not be "public static" --- We keep the simplied public variable
+ * </pre>
  */
+@SuppressWarnings("java:S2386")
 public enum AccessFlag {
 
     /**

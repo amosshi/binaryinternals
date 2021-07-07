@@ -60,7 +60,7 @@ public class ConstantFloatInfo extends CPInfo {
     }
     
     @Override
-    public String toString(CPInfo[] constant_pool) {
+    public String toString(CPInfo[] constantPool) {
         return String.valueOf(this.floatValue);
     }
 

@@ -15,7 +15,12 @@ import org.freeinternals.format.dex.HeaderItem.Endian;
 /**
  *
  * @author Amos Shi
+ * 
+ * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We use different naming convention for better readablity
+ * </pre>
  */
+@SuppressWarnings("java:S100")
 public class PosDataInputStreamDex extends PosDataInputStream {
 
     /**

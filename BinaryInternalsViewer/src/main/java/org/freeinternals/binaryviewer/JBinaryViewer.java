@@ -8,7 +8,6 @@ package org.freeinternals.binaryviewer;
 
 import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -103,19 +102,12 @@ public final class JBinaryViewer extends JPanel {
      */
     public JBinaryViewer() {
         this.setLayout(new BorderLayout());
-        // this.setFont(JBinaryViewer.FONT);
         this.addComponentListener(new ComponentResizedAdapter());
         this.addMouseWheelListener(new MouseWheelAdapter());
 
         // Vertical Bar
         this.vBar = new JScrollBar();
-        this.vBar.addAdjustmentListener(new AdjustmentListener() {
-
-            @Override
-            public void adjustmentValueChanged(final AdjustmentEvent e) {
-                updateViewContent();
-            }
-        });
+        this.vBar.addAdjustmentListener((final AdjustmentEvent e) -> updateViewContent());
         this.vBar.setVisible(false);
 
         this.add(this.vBar, BorderLayout.EAST);
@@ -219,12 +211,7 @@ public final class JBinaryViewer extends JPanel {
             diff = (diff > 0) ? diff : 0;
             this.vBar.setValue(diff);
         }
-
-        if (extent > this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT) {
-            this.vBar.setVisible(false);
-        } else {
-            this.vBar.setVisible(true);
-        }
+        this.vBar.setVisible(extent < this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT);
 
         // Revise row viewer, raw data viewer, ASCII data viewer
         this.rowViewer.setData(this.vBar.getValue(), extent, this.rowMax);
@@ -339,6 +326,7 @@ public final class JBinaryViewer extends JPanel {
     class KeyboardAdapter implements KeyListener {
 
         @Override
+        @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
         public void keyTyped(final KeyEvent e) {
         }
 
@@ -377,6 +365,7 @@ public final class JBinaryViewer extends JPanel {
         }
 
         @Override
+        @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
         public void keyReleased(final KeyEvent e) {
         }
     }

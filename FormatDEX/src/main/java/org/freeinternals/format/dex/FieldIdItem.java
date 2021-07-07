@@ -12,7 +12,13 @@ import org.freeinternals.commonlib.core.FileComponent;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * </pre>
  */
+@SuppressWarnings({"java:S116", "java:S1104"})
 public class FieldIdItem extends FileComponent {
 
     /**

@@ -41,7 +41,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.6">
  * VM Spec: The InnerClasses Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeInnerClasses extends AttributeInfo {
 
     public final u2 number_of_classes;
@@ -116,27 +121,27 @@ public class AttributeInnerClasses extends AttributeInfo {
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final AttributeInnerClasses.Class innerClass, final ClassFile classFile) {
         final int startPosMoving = innerClass.getStartPos();
 
-        int cp_index = innerClass.inner_class_info_index.value;
+        int cpIndex = innerClass.inner_class_info_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 2,
-                "inner_class_info_index: " + cp_index + " - " + classFile.getCPDescription(cp_index)
+                "inner_class_info_index: " + cpIndex + " - " + classFile.getCPDescription(cpIndex)
         )));
 
-        cp_index = innerClass.outer_class_info_index.value;
-        final String outer_class_info_index_desc = (cp_index == 0) ? "" : " - " + classFile.getCPDescription(cp_index);
+        cpIndex = innerClass.outer_class_info_index.value;
+        final String outer_class_info_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 2,
                 2,
-                "outer_class_info_index: " + cp_index + outer_class_info_index_desc
+                "outer_class_info_index: " + cpIndex + outer_class_info_index_desc
         )));
 
-        cp_index = innerClass.inner_name_index.value;
-        final String inner_name_index_desc = (cp_index == 0) ? "" : " - " + classFile.getCPDescription(cp_index);
+        cpIndex = innerClass.inner_name_index.value;
+        final String inner_name_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 4,
                 2,
-                "inner_name_index: " + cp_index + inner_name_index_desc
+                "inner_name_index: " + cpIndex + inner_name_index_desc
         )));
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

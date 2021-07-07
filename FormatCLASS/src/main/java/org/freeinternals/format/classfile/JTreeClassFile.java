@@ -91,55 +91,55 @@ public class JTreeClassFile {
         startPos += u2.LENGTH;
 
         final CPInfo[] cp = this.classFile.constant_pool;
-        final DefaultMutableTreeNode constant_pool = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode constantPool = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - startPos,
                 CP_PREFIX + cpCount + "]",
                 MESSAGES.getString("msg_constant_pool_table")
         ));
-        this.root.add(constant_pool);
+        this.root.add(constantPool);
 
-        DefaultMutableTreeNode cp_info_node;
+        DefaultMutableTreeNode cpInfoNode;
         for (int i = 1; i < cpCount; i++) {
             if (cp[i] != null) {
-                cp_info_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(cp[i].getStartPos(), cp[i].getLength(), i + ". " + cp[i].getName()));
-                cp_info_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                cpInfoNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(cp[i].getStartPos(), cp[i].getLength(), i + ". " + cp[i].getName()));
+                cpInfoNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cp[i].getStartPos(),
                         1,
                         "tag: " + cp[i].tag.value,
                         MESSAGES.getString("msg_cp_tag")
                 )));
-                cp[i].generateTreeNode(cp_info_node, this.classFile);
+                cp[i].generateTreeNode(cpInfoNode, this.classFile);
             } else {
-                cp_info_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]",
-                    MESSAGES.getString("msg_cp_empty")));
+                cpInfoNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]",
+                        MESSAGES.getString("msg_cp_empty")));
             }
 
-            constant_pool.add(cp_info_node);
+            constantPool.add(cpInfoNode);
         }
     }
 
     private void generateClassDeclaration() {
 
         final StringBuilder sb = new StringBuilder();
-        final DefaultMutableTreeNode access_flags = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode accessFlags = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
                 MESSAGE_ACCESS_FLAGS + this.classFile.getModifiers(),
                 MESSAGES.getString("msg_access_flags")
         ));
-        this.root.add(access_flags);
+        this.root.add(accessFlags);
 
         sb.append("this_class: ");
         sb.append(this.classFile.this_class.getValue());
         sb.append(String.format(" - %s", this.classFile.getCPDescription(this.classFile.this_class.getValue())));
-        final DefaultMutableTreeNode this_class = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode thisClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.this_class.getStartPos(),
                 this.classFile.this_class.getLength(),
                 sb.toString(),
                 MESSAGES.getString("msg_this_class")
         ));
-        this.root.add(this_class);
+        this.root.add(thisClass);
 
         final int superClassValue = this.classFile.super_class.getValue();
         sb.setLength(0);
@@ -149,22 +149,22 @@ public class JTreeClassFile {
         if (superClassValue > 0) {
             sb.append(String.format(" - %s", this.classFile.getCPDescription(this.classFile.super_class.getValue())));
         }
-        final DefaultMutableTreeNode super_class = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode superClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.super_class.getStartPos(),
                 this.classFile.super_class.getLength(),
                 sb.toString(),
                 MESSAGES.getString("msg_super_class")
         ));
-        this.root.add(super_class);
+        this.root.add(superClass);
 
         final int interfaceCount = this.classFile.interfaces_count.getValue();
-        final DefaultMutableTreeNode interfaces_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode interfacesCount = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.interfaces_count.getStartPos(),
                 this.classFile.interfaces_count.getLength(),
                 "interfaces_count: " + interfaceCount,
                 MESSAGES.getString("msg_interfaces_count")
         ));
-        this.root.add(interfaces_count);
+        this.root.add(interfacesCount);
 
         if (this.classFile.interfaces_count.getValue() > 0) {
             final U2ClassComponent[] interfaces = this.classFile.interfaces;
@@ -197,13 +197,13 @@ public class JTreeClassFile {
 
     private void generateFields() {
         final int fieldCount = this.classFile.fields_count.getValue();
-        final DefaultMutableTreeNode fields_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode fieldsCount = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.fields_count.getStartPos(),
                 this.classFile.fields_count.getLength(),
                 "fields_count: " + fieldCount,
                 MESSAGES.getString("msg_fields_count")
         ));
-        this.root.add(fields_count);
+        this.root.add(fieldsCount);
 
         if (fieldCount > 0) {
             final FieldInfo[] fields = this.classFile.fields;
@@ -228,30 +228,30 @@ public class JTreeClassFile {
         }
     }
 
-    private void generateField(final DefaultMutableTreeNode rootNode, final FieldInfo field_info, final ClassFile classFile) {
-        if (field_info == null) {
+    private void generateField(final DefaultMutableTreeNode rootNode, final FieldInfo fieldInfo, final ClassFile classFile) {
+        if (fieldInfo == null) {
             return;
         }
 
-        final int startPos = field_info.getStartPos();
-        final int attributesCount = field_info.attributes_count.value;
+        final int startPos = fieldInfo.getStartPos();
+        final int attributesCount = fieldInfo.attributes_count.value;
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                MESSAGE_ACCESS_FLAGS + field_info.access_flags.value + ", " + field_info.getModifiers()
+                MESSAGE_ACCESS_FLAGS + fieldInfo.access_flags.value + ", " + fieldInfo.getModifiers()
         )));
-        int name_index = field_info.name_index.value;
+        int nameIndex = fieldInfo.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
-                "name_index: " + name_index + " - " + classFile.getCPDescription(name_index)
+                "name_index: " + nameIndex + " - " + classFile.getCPDescription(nameIndex)
         )));
-        int descriptor_index = field_info.descriptor_index.value;
+        int descriptorIndex = fieldInfo.descriptor_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 4,
                 2,
-                "descriptor_index: " + descriptor_index + " - " + classFile.getCPDescription(descriptor_index)
+                "descriptor_index: " + descriptorIndex + " - " + classFile.getCPDescription(descriptorIndex)
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
@@ -260,7 +260,7 @@ public class JTreeClassFile {
         )));
 
         if (attributesCount > 0) {
-            final AttributeInfo lastAttr = field_info.getAttribute(attributesCount - 1);
+            final AttributeInfo lastAttr = fieldInfo.getAttribute(attributesCount - 1);
             final DefaultMutableTreeNode treeNodeAttr = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - startPos - 8,
@@ -270,7 +270,7 @@ public class JTreeClassFile {
             DefaultMutableTreeNode treeNodeAttrItem;
             AttributeInfo attr;
             for (int i = 0; i < attributesCount; i++) {
-                attr = field_info.getAttribute(i);
+                attr = fieldInfo.getAttribute(i);
 
                 treeNodeAttrItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         attr.getStartPos(),
@@ -287,13 +287,13 @@ public class JTreeClassFile {
 
     private void generateMethods() {
         final int methodCount = this.classFile.methods_count.getValue();
-        final DefaultMutableTreeNode methods_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode methodsCount = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.methods_count.getStartPos(),
                 this.classFile.methods_count.getLength(),
                 "methods_count: " + methodCount,
                 MESSAGES.getString("msg_methods_count")
         ));
-        this.root.add(methods_count);
+        this.root.add(methodsCount);
 
         if (methodCount > 0) {
             final MethodInfo[] methods = this.classFile.methods;
@@ -318,31 +318,31 @@ public class JTreeClassFile {
         }
     }
 
-    private void generateMethod(final DefaultMutableTreeNode rootNode, final MethodInfo method_info, final ClassFile classFile) {
-        if (method_info == null) {
+    private void generateMethod(final DefaultMutableTreeNode rootNode, final MethodInfo methodInfo, final ClassFile classFile) {
+        if (methodInfo == null) {
             return;
         }
 
-        final int startPos = method_info.getStartPos();
-        final int attributesCount = method_info.attributes_count.value;
-        int cp_index;
+        final int startPos = methodInfo.getStartPos();
+        final int attributesCount = methodInfo.attributes_count.value;
+        int cpIndex;
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                MESSAGE_ACCESS_FLAGS + method_info.access_flags.value + ", " + method_info.getModifiers()
+                MESSAGE_ACCESS_FLAGS + methodInfo.access_flags.value + ", " + methodInfo.getModifiers()
         )));
-        cp_index = method_info.name_index.value;
+        cpIndex = methodInfo.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 2,
                 2,
-                String.format("name_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+                String.format("name_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
         )));
-        cp_index = method_info.descriptor_index.value;
+        cpIndex = methodInfo.descriptor_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 4,
                 2,
-                String.format("descriptor_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+                String.format("descriptor_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 6,
@@ -350,7 +350,7 @@ public class JTreeClassFile {
                 MESSAGE_ATTR_COUNT + attributesCount)));
 
         if (attributesCount > 0) {
-            final AttributeInfo lastAttr = method_info.getAttribute(attributesCount - 1);
+            final AttributeInfo lastAttr = methodInfo.getAttribute(attributesCount - 1);
             final DefaultMutableTreeNode treeNodeAttr = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - startPos - 8,
@@ -360,7 +360,7 @@ public class JTreeClassFile {
             DefaultMutableTreeNode treeNodeAttrItem;
             AttributeInfo attr;
             for (int i = 0; i < attributesCount; i++) {
-                attr = method_info.getAttribute(i);
+                attr = methodInfo.getAttribute(i);
                 treeNodeAttrItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         attr.getStartPos(),
                         attr.getLength(),
@@ -376,13 +376,13 @@ public class JTreeClassFile {
 
     private void generateAttributes() {
         final int attrCount = this.classFile.attributes_count.getValue();
-        final DefaultMutableTreeNode attrs_count = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode attrsCount = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.attributes_count.getStartPos(),
                 this.classFile.attributes_count.getLength(),
                 MESSAGE_ATTR_COUNT + attrCount,
                 MESSAGES.getString("msg_attributes_count")
         ));
-        this.root.add(attrs_count);
+        this.root.add(attrsCount);
 
         if (attrCount > 0) {
             final AttributeInfo[] attrs = this.classFile.attributes;
@@ -431,10 +431,10 @@ public class JTreeClassFile {
         // The Reference Object
         if (cpindexCounter > 0) {
             sb.append(HTML_OL_BEGIN);
-            codeResult.stream().filter((iResult) -> (iResult.getCpindex() != null)).forEachOrdered((Opcode.InstructionParsed iResult) -> {
-                sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(
-                        this.classFile.getCPDescription(iResult.getCpindex()))));
-            });
+            codeResult.stream().filter(iResult -> (iResult.getCpindex() != null)).forEachOrdered(
+                    (Opcode.InstructionParsed iResult) -> sb.append(String.format(HTML_LI, HTMLKit.escapeFilter(
+                            this.classFile.getCPDescription(iResult.getCpindex()))))
+            );
             sb.append(HTML_OL_END);
         }
 
@@ -453,15 +453,15 @@ public class JTreeClassFile {
         sb.append(String.format("Constant Pool Count: %d", count));
         sb.append(HTMLKit.NEW_LINE);
         if (count > 0) {
-            CPInfo[] CPInfoList = this.classFile.constant_pool;
+            CPInfo[] cpInfoList = this.classFile.constant_pool;
 
             // Constant Pool - by Type
             sb.append("Constant Pool - Class");
-            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Class.tag);
+            this.generateReport4CPType(sb, cpInfoList, count, CPInfo.ConstantType.CONSTANT_Class.tag);
             sb.append("Constant Pool - Field");
-            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Fieldref.tag);
+            this.generateReport4CPType(sb, cpInfoList, count, CPInfo.ConstantType.CONSTANT_Fieldref.tag);
             sb.append("Constant Pool - Method");
-            this.generateReport4CPType(sb, CPInfoList, count, CPInfo.ConstantType.CONSTANT_Methodref.tag);
+            this.generateReport4CPType(sb, cpInfoList, count, CPInfo.ConstantType.CONSTANT_Methodref.tag);
 
             // Constant Pool Object List
             sb.append("Constant Pool Object List");
@@ -478,11 +478,11 @@ public class JTreeClassFile {
         return sb;
     }
 
-    private void generateReport4CPType(StringBuilder sb, CPInfo[] CPInfoList, int count, short tag) {
+    private void generateReport4CPType(StringBuilder sb, CPInfo[] cpInfoList, int count, short tag) {
         sb.append(HTMLKit.NEW_LINE);
         sb.append("<ul>");
         for (int i = 1; i < count; i++) {
-            if (CPInfoList[i] != null && CPInfoList[i].tag.value == tag) {
+            if (cpInfoList[i] != null && cpInfoList[i].tag.value == tag) {
                 sb.append(String.format("<li>%d. %s</li>", i,
                         HTMLKit.escapeFilter(this.classFile.getCPDescription(i))));
             }

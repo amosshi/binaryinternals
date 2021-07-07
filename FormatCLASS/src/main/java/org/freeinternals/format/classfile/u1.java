@@ -11,10 +11,14 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
 /**
- *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
 @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+@SuppressWarnings("java:S101")
 public class u1 {
 
     /**
@@ -49,6 +53,6 @@ public class u1 {
      * @return The {@link #value} as <code>int</code>
      */
     public int intValue() {
-        return Short.valueOf(this.value).intValue();
+        return this.value;
     }
 }

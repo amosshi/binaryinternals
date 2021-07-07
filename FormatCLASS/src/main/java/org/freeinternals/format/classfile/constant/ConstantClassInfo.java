@@ -31,7 +31,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.1">
  * VM Spec: The CONSTANT_Class_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantClassInfo extends CPInfo {
 
     public static final int LENGTH = 3;
@@ -57,11 +62,11 @@ public class ConstantClassInfo extends CPInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
+    public String toString(CPInfo[] constantPool) {
         // The value of the name_index item must be a valid index into the constant_pool table.
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing a valid fully qualified class or interface name encoded in internal form.
-        return SignatureConvertor.ParseClassSignature(((ConstantUtf8Info) constant_pool[this.name_index.value]).getValue());
+        return SignatureConvertor.parseClassSignature(((ConstantUtf8Info) constantPool[this.name_index.value]).getValue());
     }
 
     @Override

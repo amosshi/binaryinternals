@@ -30,7 +30,13 @@ import org.freeinternals.format.dex.HeaderItem.Endian;
  * @see
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
  * Dalvik Executable (DEX) format</a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * </pre>
  */
+@SuppressWarnings({"java:S116", "java:S1104"})
 public class DexFile extends FileFormat {
 
     /**
@@ -79,8 +85,8 @@ public class DexFile extends FileFormat {
         System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.size());
         System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.size());
         
-        byte[] magic1Const = new byte[]{DEX_FILE_MAGIC1.get(0).byteValue(), DEX_FILE_MAGIC1.get(1).byteValue(), DEX_FILE_MAGIC1.get(2).byteValue(), DEX_FILE_MAGIC1.get(3).byteValue()};
-        if (BytesTool.isByteArraySame(magic1Const, magic1) == false
+        byte[] magic1Const = new byte[]{DEX_FILE_MAGIC1.get(0), DEX_FILE_MAGIC1.get(1), DEX_FILE_MAGIC1.get(2), DEX_FILE_MAGIC1.get(3)};
+        if ( !BytesTool.isByteArraySame(magic1Const, magic1)
                 || magic2[DEX_FILE_MAGIC2.size() - 1] != DEX_FILE_MAGIC2.get(DEX_FILE_MAGIC2.size() - 1)) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
@@ -116,6 +122,12 @@ public class DexFile extends FileFormat {
         return this.getString(this.type_ids[index].descriptor_idx.intValue());
     }
 
+    /**
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
+     * </pre>
+     */
+    @SuppressWarnings("java:S3776")
     private void parse() throws IOException, FileFormatException {
         PosDataInputStream parseEndian = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
@@ -146,7 +158,7 @@ public class DexFile extends FileFormat {
 
         PosDataInputStreamDex stream = new PosDataInputStreamDex(new PosByteArrayInputStream(super.fileByteArray), endian);
 
-        SortedMap<Long, Class> todoData = new TreeMap<>();
+        SortedMap<Long, Class<?>> todoData = new TreeMap<>();
 
         // Header
         BytesTool.skip(stream, DEX_FILE_MAGIC1.size());
@@ -221,7 +233,7 @@ public class DexFile extends FileFormat {
         }
 
         // data
-        for (Map.Entry<Long, Class> todoItem : todoData.entrySet()) {
+        for (Map.Entry<Long, Class<?>> todoItem : todoData.entrySet()) {
             if (todoItem.getValue() == StringDataItem.class) {
                 stream.flyTo(todoItem.getKey().intValue());
                 this.data.put(todoItem.getKey(), new StringDataItem(stream));

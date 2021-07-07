@@ -35,7 +35,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.9">
  * VM Spec: The CONSTANT_MethodType_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantMethodTypeInfo extends CPInfo {
 
     public static final int LENGTH = 3;
@@ -66,19 +71,20 @@ public class ConstantMethodTypeInfo extends CPInfo {
     }
     
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        String descriptor = constant_pool[this.descriptor_index.value].toString(constant_pool);
-        String parameters, returnType;
+    public String toString(CPInfo[] constantPool) {
+        String descriptor = constantPool[this.descriptor_index.value].toString(constantPool);
+        String parameters;
+        String returnType;
 
         try {
-            parameters = SignatureConvertor.MethodParameters2Readable(descriptor);
+            parameters = SignatureConvertor.methodParameters2Readable(descriptor);
         } catch (FileFormatException ex) {
             parameters = descriptor + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method parameters: " + descriptor, ex);
         }
 
         try {
-            returnType = SignatureConvertor.MethodReturnTypeExtractor(descriptor).toString();
+            returnType = SignatureConvertor.methodReturnTypeExtractor(descriptor).toString();
         } catch (FileFormatException ex) {
             returnType = descriptor + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + descriptor, ex);

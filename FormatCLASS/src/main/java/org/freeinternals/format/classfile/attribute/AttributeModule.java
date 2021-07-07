@@ -72,9 +72,14 @@ import org.freeinternals.format.classfile.u2;
  * @see
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.25">
  * VM Spec: The Module Attribute</a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeModule extends AttributeInfo {
-    private final String MESSAGE_ETI = "exports_to_index[";
+    private static final String MESSAGE_ETI = "exports_to_index[";
 
     public final u2 module_name_index;
     public final u2 module_flags;
@@ -95,7 +100,12 @@ public class AttributeModule extends AttributeInfo {
     public final u2 provides_count;
     public final Provides[] provides;
 
-    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+    /**
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+     * </pre>
+     */
+    @SuppressWarnings("java:S3776")
     AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
 
@@ -171,8 +181,16 @@ public class AttributeModule extends AttributeInfo {
         return AccessFlag.getModifier(this.module_flags.value, AccessFlag.ForModule);
     }
 
+    /**
+     * @param parentNode Parent JTree node
+     * @param classFile Current class file object
+     *
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+    @SuppressWarnings("java:S3776")
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
 
         int startPosMoving = super.startPos + 6;
@@ -194,14 +212,14 @@ public class AttributeModule extends AttributeInfo {
         startPosMoving += u2.LENGTH;
 
         // module_version_index
-        String module_version = (this.module_version_index.value == 0)
+        String moduleVersion = (this.module_version_index.value == 0)
                 ? "no version information"
                 : classFile.getCPDescription(this.module_version_index.value);
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "module_version_index: " + this.module_version_index.value + " - " + module_version
+                "module_version_index: " + this.module_version_index.value + " - " + moduleVersion
         )));
         startPosMoving += u2.LENGTH;
 
@@ -490,7 +508,7 @@ public class AttributeModule extends AttributeInfo {
         int startPosMoving = require.getStartPos();
 
         // requires_version_index
-        String requires_version_index = (require.requires_version_index.value == 0)
+        String requiresVersionIndex = (require.requires_version_index.value == 0)
                 ? "no version information"
                 : classFile.getCPDescription(require.requires_version_index.value);
 
@@ -511,7 +529,7 @@ public class AttributeModule extends AttributeInfo {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "requires_version_index: " + require.requires_version_index.value + " - " + requires_version_index
+                "requires_version_index: " + require.requires_version_index.value + " - " + requiresVersionIndex
         )));
     }
 
@@ -522,7 +540,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final static class Requires extends FileComponent {
+    public static final class Requires extends FileComponent {
 
         public static final int LENGTH = 6;
         public final u2 requires_index;
@@ -556,7 +574,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final static class Exports extends FileComponent {
+    public static final class Exports extends FileComponent {
 
         public final u2 exports_index;
         public final u2 exports_flags;
@@ -598,7 +616,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final static class Opens extends FileComponent {
+    public static final class Opens extends FileComponent {
 
         public final u2 opens_index;
         public final u2 opens_flags;
@@ -640,7 +658,7 @@ public class AttributeModule extends AttributeInfo {
      * @since Java 9
      * @see Module
      */
-    public final static class Provides extends FileComponent {
+    public static final class Provides extends FileComponent {
 
         public final u2 provides_index;
         public final u2 provides_with_count;

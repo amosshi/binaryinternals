@@ -47,18 +47,18 @@ public class ConstantFieldrefInfo extends ConstantRefInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
+    public String toString(CPInfo[] constantPool) {
         // Class
-        String clazz = constant_pool[this.class_index.value].toString(constant_pool);
+        String clazz = constantPool[this.class_index.value].toString(constantPool);
 
         // Name and Type
-        ConstantNameAndTypeInfo nameType = (ConstantNameAndTypeInfo) constant_pool[this.name_and_type_index.value];
-        String name = constant_pool[nameType.name_index.value].toString(constant_pool);
-        String type = constant_pool[nameType.descriptor_index.value].toString(constant_pool);
+        ConstantNameAndTypeInfo nameType = (ConstantNameAndTypeInfo) constantPool[this.name_and_type_index.value];
+        String name = constantPool[nameType.name_index.value].toString(constantPool);
+        String type = constantPool[nameType.descriptor_index.value].toString(constantPool);
         String typeDesc;
 
         try {
-            typeDesc = SignatureConvertor.FieldDescriptorExtractor(type).toString();
+            typeDesc = SignatureConvertor.fieldDescriptorExtractor(type).toString();
         } catch (FileFormatException ex) {
             typeDesc = type + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the field type: " + type, ex);

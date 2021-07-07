@@ -48,7 +48,12 @@ import org.freeinternals.format.classfile.u2;
  * @see
  * <a href="https://hg.openjdk.java.net/jdk9/dev/jdk/file/65464a307408/src/java.base/share/classes/jdk/internal/module/ClassFileAttributes.java">
  * ModuleHashes attribute.</a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeModuleHashes extends AttributeInfo {
 
     /**
@@ -152,7 +157,7 @@ public class AttributeModuleHashes extends AttributeInfo {
      * @since OpenJDK 9
      * @see Module
      */
-    public final static class Hashes extends FileComponent {
+    public static final class Hashes extends FileComponent {
 
         /**
          * Index to CONSTANT_Module_info structure.

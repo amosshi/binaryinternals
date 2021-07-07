@@ -13,7 +13,12 @@ package org.freeinternals.format.dex;
  * @see
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
  * Dalvik Executable (DEX) format</a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We need different Name convesins for readability
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class Dex_long {
 
     /**

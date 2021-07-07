@@ -44,7 +44,13 @@ import org.freeinternals.format.elf.Elf64Type.Elf64_Word;
  *
  * @see
  * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from ELF C programming language source code
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
+ * </pre>
  */
+@SuppressWarnings({"java:S101", "java:S116"})
 public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
 
     /**
@@ -171,7 +177,12 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
      * @see
      * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
      * and Linkable Format</a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --> We respect the name from ELF Spec instead
+     * </pre>
      */
+    @SuppressWarnings("java:S115")
     public enum ELF_Machine {
         /**
          * No specific instruction set.
@@ -297,15 +308,15 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        DefaultMutableTreeNode node;
         int currentPos = this.startPos;
 
-        parentNode.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos,
                 this.length,
                 String.format("ELF64 Header [0x%08X, %d]", this.startPos, this.length),
                 "The ELF header on 64-bit CPU architecture."
-        )));
+        ));
+        parentNode.add(node);
 
         // e_type
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

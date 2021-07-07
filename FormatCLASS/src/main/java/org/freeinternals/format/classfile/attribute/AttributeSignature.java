@@ -26,12 +26,22 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.9">
  * VM Spec: The Signature Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeSignature extends AttributeInfo {
 
     public final u2 signature_index;
 
-    @SuppressWarnings("java:S1172") // Unused method parameters should be removed --> `cp` is used by children classes
+    /**
+     * <pre>
+     * java:S1172 - Unused method parameters should be removed --- `cp` is used by children classes
+     * </pre>
+     */
+    @SuppressWarnings("java:S1172")
     AttributeSignature(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
         this.signature_index = new u2(posDataInputStream);
@@ -148,8 +158,12 @@ public class AttributeSignature extends AttributeInfo {
      * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.9.1">
      * VM Spec: Reference Type Signature
      * </a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+     * </pre>
      */
-    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead    
+    @SuppressWarnings("java:S115")
     public enum ReferenceType {
 
         ClassTypeSignature('L'),

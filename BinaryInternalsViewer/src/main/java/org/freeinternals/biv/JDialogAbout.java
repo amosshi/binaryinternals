@@ -18,9 +18,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -37,7 +37,7 @@ class JDialogAbout extends JDialog {
      */
     JDialogAbout(final Frame owner, final String title) {
         super(owner, title);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setModal(true);
 
         this.initComponents();
@@ -49,9 +49,7 @@ class JDialogAbout extends JDialog {
         this.setLayout(new FlowLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> {
-            buttonOK_Clicked();
-        });
+        buttonClose.addActionListener((final ActionEvent e) -> buttonOKClicked());
 
         // Lay out the labels from top to bottom.
         final JPanel listPane = new JPanel();
@@ -88,7 +86,7 @@ class JDialogAbout extends JDialog {
 
     }
 
-    private void buttonOK_Clicked() {
+    private void buttonOKClicked() {
         this.setVisible(false);
     }
 }

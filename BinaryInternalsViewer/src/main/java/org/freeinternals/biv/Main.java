@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.ui.UITool;
 
@@ -53,20 +54,21 @@ public class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final String URI_HOMEPAGE = "https://github.com/amosshi/freeinternals";
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String TITLE_EXT = " - " + TITLE;
     private static final String MASS_TEST_MODE_PROPERTY = "org.freeinternals.masstestmode";
 
     private final JPanel filedropPanel = new JPanel();
     private final Set<File> recentFiles = new HashSet<>();
-    private final JMenu menu_FileRecentFile = new JMenu("Recent Files");
+    private final JMenu menuFileRecentFile = new JMenu("Recent Files");
     private JSplitPaneFile contentPane = null;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    @SuppressFBWarnings(value="DM_EXIT", justification="This is desigend for mass test mode")
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "This is desigend for mass test mode")
     private Main(final String[] args) {
         this.setTitle(TITLE + PluginManager.getPlugedExtensions());
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.centerJFrame();
         this.createMenu();
@@ -86,14 +88,14 @@ public class Main extends JFrame {
                 try {
                     this.openFile(file);
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "Failed to open the file. filename=" + fileName, e);
+                    LOGGER.log(Level.SEVERE, String.format("Failed to open the file. filename=%s", fileName), e);
                 }
             } else {
                 LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
             }
 
             // Exit immediately for mass test mode
-            if (Boolean.valueOf(System.getProperty(Main.MASS_TEST_MODE_PROPERTY, "false"))) {
+            if (Boolean.TRUE.equals(Boolean.valueOf(System.getProperty(Main.MASS_TEST_MODE_PROPERTY, "false")))) {
                 System.exit(0);
             }
         }
@@ -103,9 +105,7 @@ public class Main extends JFrame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Main(args).setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new Main(args).setVisible(true));
     }
 
     /**
@@ -132,41 +132,37 @@ public class Main extends JFrame {
         menuBar.add(menuFile);
 
         // File --> Open
-        final JMenuItem menuItem_FileOpen = new JMenuItem("Open...", UIManager.getIcon("FileView.directoryIcon"));
-        menuItem_FileOpen.setMnemonic(KeyEvent.VK_O);
-        menuItem_FileOpen.setAccelerator(KeyStroke.getKeyStroke(
+        final JMenuItem menuItemFileOpen = new JMenuItem("Open...", UIManager.getIcon("FileView.directoryIcon"));
+        menuItemFileOpen.setMnemonic(KeyEvent.VK_O);
+        menuItemFileOpen.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O,
                 ActionEvent.CTRL_MASK));
-        menuItem_FileOpen.addActionListener((final ActionEvent e) -> {
-            menu_FileOpen();
-        });
-        menuFile.add(menuItem_FileOpen);
+        menuItemFileOpen.addActionListener((final ActionEvent e) -> menuFileOpen());
+        menuFile.add(menuItemFileOpen);
 
         // File --> Close
-        final JMenuItem menuItem_FileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
-        menuItem_FileClose.setMnemonic(KeyEvent.VK_C);
-        menuItem_FileClose.addActionListener((final ActionEvent e) -> {
-            closeFile();
-        });
-        menuFile.add(menuItem_FileClose);
+        final JMenuItem menuItemFileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
+        menuItemFileClose.setMnemonic(KeyEvent.VK_C);
+        menuItemFileClose.addActionListener((final ActionEvent e) -> closeFile());
+        menuFile.add(menuItemFileClose);
 
         menuFile.addSeparator();
         // File --> Recent Files
-        this.menu_FileRecentFile.setMnemonic(KeyEvent.VK_R);
-        menuFile.add(this.menu_FileRecentFile);
+        this.menuFileRecentFile.setMnemonic(KeyEvent.VK_R);
+        menuFile.add(this.menuFileRecentFile);
         //
         menuFile.addSeparator();
 
         // File --> Exit
-        final JMenuItem menuItem_FileExit = new JMenuItem("Exit", UIManager.getIcon("Table.ascendingSortIcon"));
-        menuItem_FileExit.setMnemonic(KeyEvent.VK_X);
-        menuItem_FileExit.setAccelerator(KeyStroke.getKeyStroke(
+        final JMenuItem menuItemFileExit = new JMenuItem("Exit", UIManager.getIcon("Table.ascendingSortIcon"));
+        menuItemFileExit.setMnemonic(KeyEvent.VK_X);
+        menuItemFileExit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_X,
                 ActionEvent.ALT_MASK));
-        menuItem_FileExit.addActionListener((final ActionEvent e) -> {
-            Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)));
-        });
-        menuFile.add(menuItem_FileExit);
+        menuItemFileExit.addActionListener((final ActionEvent e)
+                -> Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)))
+        );
+        menuFile.add(menuItemFileExit);
 
         // Help
         final JMenu menuHelp = new JMenu("Help");
@@ -174,28 +170,22 @@ public class Main extends JFrame {
         menuBar.add(menuHelp);
 
         // Help --> Homepage
-        final JMenuItem menuItem_HelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
-        menuItem_HelpHomepage.setMnemonic(KeyEvent.VK_P);
-        menuItem_HelpHomepage.addActionListener((final ActionEvent e) -> {
-            menu_HelpHomepage();
-        });
-        menuHelp.add(menuItem_HelpHomepage);
+        final JMenuItem menuItemHelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
+        menuItemHelpHomepage.setMnemonic(KeyEvent.VK_P);
+        menuItemHelpHomepage.addActionListener((final ActionEvent e) -> menuHelpHomepage());
+        menuHelp.add(menuItemHelpHomepage);
 
         // Help --> Plugins
-        final JMenuItem menuItem_HelpPlugins = new JMenuItem("Plug-ins");
-        menuItem_HelpPlugins.setMnemonic(KeyEvent.VK_A);
-        menuItem_HelpPlugins.addActionListener((final ActionEvent e) -> {
-            menu_HelpPlugins();
-        });
-        menuHelp.add(menuItem_HelpPlugins);
+        final JMenuItem menuItemHelpPlugins = new JMenuItem("Plug-ins");
+        menuItemHelpPlugins.setMnemonic(KeyEvent.VK_A);
+        menuItemHelpPlugins.addActionListener((final ActionEvent e) -> menuHelpPlugins());
+        menuHelp.add(menuItemHelpPlugins);
 
         // Help --> About
-        final JMenuItem menuItem_HelpAbout = new JMenuItem("About");
-        menuItem_HelpAbout.setMnemonic(KeyEvent.VK_A);
-        menuItem_HelpAbout.addActionListener((final ActionEvent e) -> {
-            menu_HelpAbout();
-        });
-        menuHelp.add(menuItem_HelpAbout);
+        final JMenuItem menuItemHelpAbout = new JMenuItem("About");
+        menuItemHelpAbout.setMnemonic(KeyEvent.VK_A);
+        menuItemHelpAbout.addActionListener((final ActionEvent e) -> menuHelpAbout());
+        menuHelp.add(menuItemHelpAbout);
     }
 
     /**
@@ -217,7 +207,7 @@ public class Main extends JFrame {
         });
     }
 
-    private void menu_FileOpen() {
+    private void menuFileOpen() {
         final JFileChooser chooser = new JFileChooser();
         PluginManager.initChooseFilters(chooser);
 
@@ -227,21 +217,22 @@ public class Main extends JFrame {
         }
     }
 
+    @SuppressWarnings("java:S1181")  // Throwable and Error should not be caught  --- We need to cache all exception here
     private void openFile(final File file) {
         // Close any open file first if exists
         this.closeFile();
 
         // Update Recent files menu item
-        this.menu_FileRecentFile.removeAll();
+        this.menuFileRecentFile.removeAll();
         this.recentFiles.add(file);
-        this.recentFiles.forEach(recent -> {
-            this.menu_FileRecentFile.add(new JMenuItem(new AbstractAction(recent.getAbsolutePath()) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    openFile(recent);
-                }
-            }));
-        });
+        this.recentFiles.forEach(recent
+                -> this.menuFileRecentFile.add(new JMenuItem(new AbstractAction(recent.getAbsolutePath()) {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        openFile(recent);
+                    }
+                }))
+        );
 
         // Add the file to UI
         try {
@@ -267,7 +258,6 @@ public class Main extends JFrame {
         this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         // Clear Content
         if (this.contentPane != null) {
-            //this.remove(this.contentPane);
             this.filedropPanel.remove(this.contentPane);
             this.validate();
         }
@@ -277,21 +267,21 @@ public class Main extends JFrame {
         this.setSize(this.getWidth() - 1, this.getHeight());
     }
 
-    private void menu_HelpPlugins() {
+    private void menuHelpPlugins() {
         final JDialogPlugins plugins = new JDialogPlugins(this, "Plug-ins");
         plugins.setLocationRelativeTo(this);
         plugins.setVisible(true);
     }
 
-    private void menu_HelpAbout() {
+    private void menuHelpAbout() {
         final JDialogAbout about = new JDialogAbout(this, "About");
         about.setLocationRelativeTo(this);
         about.setVisible(true);
     }
 
-    private void menu_HelpHomepage() {
+    private void menuHelpHomepage() {
         try {
-            Desktop.getDesktop().browse(new URI("https://github.com/amosshi/freeinternals"));
+            Desktop.getDesktop().browse(new URI(URI_HOMEPAGE));
         } catch (URISyntaxException | IOException ex) {
             JOptionPane.showMessageDialog(
                     this,

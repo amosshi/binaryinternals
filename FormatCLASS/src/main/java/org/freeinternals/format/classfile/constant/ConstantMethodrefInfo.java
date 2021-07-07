@@ -44,8 +44,8 @@ public class ConstantMethodrefInfo extends ConstantRefInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        return super.toString4Method(constant_pool);
+    public String toString(CPInfo[] constantPool) {
+        return super.toString4Method(constantPool);
     }
 
     @Override

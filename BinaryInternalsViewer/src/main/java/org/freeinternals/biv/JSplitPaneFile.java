@@ -57,6 +57,7 @@ public class JSplitPaneFile extends JSplitPane {
         this.createAndShowGUI();
     }
 
+    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high
     private void createAndShowGUI() {
 
         final DefaultMutableTreeNode root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(

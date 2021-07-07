@@ -45,7 +45,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.14">
  * VM Spec: The LocalVariableTypeTable Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeLocalVariableTypeTable extends AttributeInfo {
 
     /**
@@ -85,45 +90,45 @@ public class AttributeLocalVariableTypeTable extends AttributeInfo {
         )));
 
         if (this.local_variable_type_table_length.value > 0) {
-            DefaultMutableTreeNode lvtt_nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode lvttNodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.local_variable_type_table_length.value * LocalVariableTypeTable.LENGTH,
                     "local_variable_type_table"
             ));
-            parentNode.add(lvtt_nodes);
+            parentNode.add(lvttNodes);
 
             for (int i = 0; i < this.local_variable_type_table_length.value; i++) {
                 LocalVariableTypeTable item = this.local_variable_type_table[i];
-                int item_startPos = item.getStartPos();
-                DefaultMutableTreeNode lvtt_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos,
+                int itemStartPos = item.getStartPos();
+                DefaultMutableTreeNode lvttNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos,
                         item.getLength(),
                         "local_variable_type_table " + (i + 1)
                 ));
-                lvtt_nodes.add(lvtt_node);
+                lvttNodes.add(lvttNode);
 
-                lvtt_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos,
+                lvttNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos,
                         2,
                         "start_pc: " + item.start_pc.value
                 )));
-                lvtt_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos + 2,
+                lvttNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos + 2,
                         2,
                         "length: " + item.lvtt_length.value
                 )));
-                lvtt_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos + 4,
+                lvttNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos + 4,
                         2,
                         "signature_index: " + item.signature_index.value + " - " + classFile.getCPDescription(item.signature_index.value)
                 )));
-                lvtt_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos + 6,
+                lvttNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos + 6,
                         2,
                         "name_index: " + item.name_index.value + " - " + classFile.getCPDescription(item.name_index.value)
                 )));
-                lvtt_node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item_startPos + 8,
+                lvttNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        itemStartPos + 8,
                         2,
                         "index: " + item.index.value
                 )));
@@ -138,7 +143,7 @@ public class AttributeLocalVariableTypeTable extends AttributeInfo {
      * which that local variable can be found. Each entry must contain the
      * following five items (the 5 instance fields of current class).
      */
-    public final static class LocalVariableTypeTable extends FileComponent {
+    public static final class LocalVariableTypeTable extends FileComponent {
 
         public static final int LENGTH = 10;
         public final u2 start_pc;

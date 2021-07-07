@@ -33,7 +33,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.6">
  * VM Spec: The CONSTANT_NameAndType_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantNameAndTypeInfo extends CPInfo {
 
     public static final int LENGTH = 5;
@@ -61,9 +66,9 @@ public class ConstantNameAndTypeInfo extends CPInfo {
     }
     
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        String nameStr = constant_pool[this.name_index.value].toString(constant_pool);
-        String typeStr = constant_pool[this.descriptor_index.value].toString(constant_pool);
+    public String toString(CPInfo[] constantPool) {
+        String nameStr = constantPool[this.name_index.value].toString(constantPool);
+        String typeStr = constantPool[this.descriptor_index.value].toString(constantPool);
 
         return String.format("name=%s, type=%s", nameStr, typeStr);
     }

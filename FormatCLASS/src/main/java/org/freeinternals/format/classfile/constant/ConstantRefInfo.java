@@ -13,7 +13,12 @@ import org.freeinternals.format.classfile.u2;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public abstract class ConstantRefInfo extends CPInfo {
 
     public static final int LENGTH = 5;
@@ -39,28 +44,29 @@ public abstract class ConstantRefInfo extends CPInfo {
     /**
      * Shared {@link #toString(org.freeinternals.format.classfile.constant.CPInfo[])} method for methods.
      * 
-     * @param constant_pool  Constant pool of current class file.
+     * @param constantPool  Constant pool of current class file.
      * @return Reader friendly string of current object
      */
-    protected String toString4Method(CPInfo[] constant_pool) {
+    protected String toString4Method(CPInfo[] constantPool) {
         // Class
-        String clazz = constant_pool[this.class_index.value].toString(constant_pool);
+        String clazz = constantPool[this.class_index.value].toString(constantPool);
 
         // Name and Type
-        ConstantNameAndTypeInfo nameType = (ConstantNameAndTypeInfo) constant_pool[this.name_and_type_index.value];
-        String nameStr = constant_pool[nameType.name_index.value].toString(constant_pool);
-        String typeStr = constant_pool[nameType.descriptor_index.value].toString(constant_pool);
-        String parameters, returnType;
+        ConstantNameAndTypeInfo nameType = (ConstantNameAndTypeInfo) constantPool[this.name_and_type_index.value];
+        String nameStr = constantPool[nameType.name_index.value].toString(constantPool);
+        String typeStr = constantPool[nameType.descriptor_index.value].toString(constantPool);
+        String parameters;
+        String returnType;
 
         try {
-            parameters = SignatureConvertor.MethodParameters2Readable(typeStr);
+            parameters = SignatureConvertor.methodParameters2Readable(typeStr);
         } catch (FileFormatException ex) {
             parameters = typeStr + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method parameters: " + typeStr, ex);
         }
 
         try {
-            returnType = SignatureConvertor.MethodReturnTypeExtractor(typeStr).toString();
+            returnType = SignatureConvertor.methodReturnTypeExtractor(typeStr).toString();
         } catch (FileFormatException ex) {
             returnType = typeStr + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + typeStr, ex);

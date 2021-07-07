@@ -28,8 +28,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.23">
  * VM Spec: The BootstrapMethods Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
-@SuppressWarnings("java:S116") // Class variable fields should not have public accessibility --> No, we like the simplifed final value manner
+@SuppressWarnings("java:S116")
 public class AttributeBootstrapMethods extends AttributeInfo {
 
     /**
@@ -73,21 +77,21 @@ public class AttributeBootstrapMethods extends AttributeInfo {
         )));
 
         if (this.bootstrap_methods != null && this.bootstrap_methods.length > 0) {
-            DefaultMutableTreeNode bootstrap_methods_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode bootstrapMethodsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
                     "bootstrap_methods"));
-            parentNode.add(bootstrap_methods_node);
+            parentNode.add(bootstrapMethodsNode);
 
             for (int i = 0; i < this.bootstrap_methods.length; i++) {
                 BootstrapMethod m = this.bootstrap_methods[i];
-                DefaultMutableTreeNode bootstrap_method = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode bootstrapMethod = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         m.getStartPos(),
                         m.getLength(),
                         String.format("bootstrap_method %d", i + 1)
                 ));
-                bootstrap_methods_node.add(bootstrap_method);
-                this.generateSubnode(bootstrap_method, m, classFile);
+                bootstrapMethodsNode.add(bootstrapMethod);
+                this.generateSubnode(bootstrapMethod, m, classFile);
             }
         } 
     }
@@ -114,20 +118,20 @@ public class AttributeBootstrapMethods extends AttributeInfo {
         startPosMoving += u2.LENGTH;
 
         if (m.bootstrap_arguments != null && m.bootstrap_arguments.length > 0) {
-            DefaultMutableTreeNode bootstrap_arguments = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode bootstrapArguments = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     m.bootstrap_arguments.length * u2.LENGTH,
                     "bootstrap_arguments"));
-            rootNode.add(bootstrap_arguments);
+            rootNode.add(bootstrapArguments);
 
             for (int i = 0; i < m.bootstrap_arguments.length; i++) {
-                DefaultMutableTreeNode bootstrap_method = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode bootstrapMethod = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         u2.LENGTH,
                         "argument " + (i + 1) + ": " + m.bootstrap_arguments[i].value + " - " + classFile.getCPDescription(m.bootstrap_arguments[i].value)
                 ));
                 startPosMoving += u2.LENGTH;
-                bootstrap_arguments.add(bootstrap_method);
+                bootstrapArguments.add(bootstrapMethod);
             }
         }
     }

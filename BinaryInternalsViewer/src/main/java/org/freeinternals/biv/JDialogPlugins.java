@@ -19,10 +19,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -44,7 +44,7 @@ class JDialogPlugins extends JDialog {
      */
     JDialogPlugins(final Frame owner, final String title) {
         super(owner, title);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setModal(true);
 
         this.initComponents();
@@ -56,9 +56,7 @@ class JDialogPlugins extends JDialog {
         this.setLayout(new BorderLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> {
-            buttonOK_Clicked();
-        });
+        buttonClose.addActionListener((final ActionEvent e) -> buttonOKClicked());
 
         // Lay out the labels from top to bottom.
         final JTable table = new JTable(new PluginsModel());
@@ -84,7 +82,7 @@ class JDialogPlugins extends JDialog {
         contentPane.add(buttonPane, BorderLayout.PAGE_END);
     }
 
-    private void buttonOK_Clicked() {
+    private void buttonOKClicked() {
         this.setVisible(false);
     }
 
@@ -103,8 +101,8 @@ class JDialogPlugins extends JDialog {
 
     public static class PluginsModel extends AbstractTableModel {
 
-        List<String> columnNames = new LinkedList<>();
-        List<List<String>> rowData = new LinkedList<>();
+        transient List<String> columnNames = new LinkedList<>();
+        transient List<List<String>> rowData = new LinkedList<>();
 
         PluginsModel() {
             Map<String, PluginDescriptor> plugins = PluginManager.getPlugins();
@@ -115,10 +113,10 @@ class JDialogPlugins extends JDialog {
             this.columnNames.add("Extension Description");
 
             // Row Data
-            for (Map.Entry pair : plugins.entrySet()) {
+            for (Map.Entry<String, PluginDescriptor> pair : plugins.entrySet()) {
                 PluginDescriptor value = (PluginDescriptor) pair.getValue();
                 List<String> row = new LinkedList<>();
-                row.add(pair.getKey().toString());
+                row.add(pair.getKey());
                 row.add(value.getFileFormatClass().getName());
                 row.add(value.getExtensionDescription());
                 this.rowData.add(row);

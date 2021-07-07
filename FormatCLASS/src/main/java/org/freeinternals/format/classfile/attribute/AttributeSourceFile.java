@@ -34,7 +34,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.10">
  * VM Spec: The SourceFile Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeSourceFile extends AttributeInfo {
 
     public final u2 sourcefile_index;
@@ -53,11 +58,11 @@ public class AttributeSourceFile extends AttributeInfo {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
-        int cp_index = this.sourcefile_index.value;
+        int cpIndex = this.sourcefile_index.value;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
                 2,
-                String.format("sourcefile_index: %d [%s]", cp_index, classFile.getCPDescription(cp_index))
+                String.format("sourcefile_index: %d [%s]", cpIndex, classFile.getCPDescription(cpIndex))
         )));
     }
 

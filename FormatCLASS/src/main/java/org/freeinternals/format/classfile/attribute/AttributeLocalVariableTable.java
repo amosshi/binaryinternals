@@ -41,7 +41,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.13">
  * VM Spec: The LocalVariableTable Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeLocalVariableTable extends AttributeInfo {
 
     public final u2 local_variable_table_length;
@@ -119,7 +124,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
         }
 
         final int pos = lvt.getStartPos();
-        int cp_index;
+        int cpIndex;
 
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
@@ -131,17 +136,17 @@ public class AttributeLocalVariableTable extends AttributeInfo {
                 2,
                 "length: " + lvt.length_code.value
         )));
-        cp_index = lvt.name_index.value;
+        cpIndex = lvt.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 4,
                 2,
-                String.format("name_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+                String.format("name_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
         )));
-        cp_index = lvt.descriptor_index.value;
+        cpIndex = lvt.descriptor_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 6,
                 2,
-                String.format("descriptor_index: %d - %s", cp_index, classFile.getCPDescription(cp_index))
+                String.format("descriptor_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
         )));
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 8,
@@ -160,7 +165,7 @@ public class AttributeLocalVariableTable extends AttributeInfo {
      */
     public static final class LocalVariableTable extends FileComponent {
 
-        public final static int LENGTH = 10;
+        public static final int LENGTH = 10;
         /**
          * The given local variable must have a value at indices into the
          * {@link AttributeCode#code} array in the interval

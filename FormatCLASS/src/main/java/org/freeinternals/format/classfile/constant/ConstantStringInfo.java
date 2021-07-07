@@ -31,7 +31,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.3">
  * VM Spec: The CONSTANT_String_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantStringInfo extends CPInfo {
 
     public static final int LENGTH = 3;
@@ -56,11 +61,11 @@ public class ConstantStringInfo extends CPInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
+    public String toString(CPInfo[] constantPool) {
         // The value of the string_index item must be a valid index into the constant_pool table.
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing the sequence of characters to which the String object is to be initialized.
-        return ((ConstantUtf8Info) constant_pool[this.string_index.value]).getValue();
+        return ((ConstantUtf8Info) constantPool[this.string_index.value]).getValue();
     }
 
     @Override

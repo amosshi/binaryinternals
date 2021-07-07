@@ -32,7 +32,12 @@ import org.freeinternals.commonlib.core.FileFormatException;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.6">
  * VM Spec: Methods
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class MethodInfo extends FileComponent {
 
     public final u2 access_flags;
@@ -141,12 +146,12 @@ public class MethodInfo extends FileComponent {
         String parameters;
 
         try {
-            returnType = SignatureConvertor.MethodReturnTypeExtractor(this.descriptor).toString();
+            returnType = SignatureConvertor.methodReturnTypeExtractor(this.descriptor).toString();
         } catch (FileFormatException se) {
             returnType = String.format("[Unexpected method return type: %s]", this.descriptor);
         }
         try {
-            parameters = SignatureConvertor.MethodParameters2Readable(this.descriptor);
+            parameters = SignatureConvertor.methodParameters2Readable(this.descriptor);
         } catch (FileFormatException se) {
             parameters = String.format("[Unexpected method parameters: %s]", this.descriptor);
         }

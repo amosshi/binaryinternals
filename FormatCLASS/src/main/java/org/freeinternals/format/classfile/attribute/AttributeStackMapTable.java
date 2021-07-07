@@ -27,9 +27,15 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.4">
  * VM Spec: The StackMapTable Attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeStackMapTable extends AttributeInfo {
-    private final String MESSAGE_OFFSET_DELTA = "offset_delta: ";
+
+    private static final String MESSAGE_OFFSET_DELTA = "offset_delta: ";
 
     /**
      * Gives the number of {@link StackMapFrame} entries in the {@link #entries}
@@ -87,11 +93,15 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
     }
-    
+
     /**
      * Generate Tree Node for {@link StackMapFrame}.
+     *
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+     * </pre>
      */
-    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+    @SuppressWarnings("java:S3776")
     private void generateSubnode(final DefaultMutableTreeNode rootNode, final StackMapFrame smf, final ClassFile classFile) {
         int startPosMoving = smf.getStartPos();
 
@@ -169,14 +179,14 @@ public class AttributeStackMapTable extends AttributeInfo {
             )));
             startPosMoving += 2;
 
-            int size_locals = 0;
+            int sizeLocals = 0;
             if (smf.union_append_frame.locals.length > 0) {
                 for (VerificationTypeInfo local : smf.union_append_frame.locals) {
-                    size_locals += local.getLength();
+                    sizeLocals += local.getLength();
                 }
                 DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
-                        size_locals,
+                        sizeLocals,
                         "locals[" + smf.union_append_frame.locals.length + "]"
                 ));
                 // startPosMoving += size_locals;  // Not needed for now, keep here in case the StackMapTable struture could be extended later
@@ -209,17 +219,17 @@ public class AttributeStackMapTable extends AttributeInfo {
             )));
             startPosMoving += u2.LENGTH;
 
-            int size_locals = 0;
+            int sizeLocals = 0;
             if (smf.union_full_frame.number_of_locals.value > 0) {
                 for (int i = 0; i < smf.union_full_frame.number_of_locals.value; i++) {
-                    size_locals += smf.union_full_frame.locals[i].getLength();
+                    sizeLocals += smf.union_full_frame.locals[i].getLength();
                 }
                 DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
-                        size_locals,
+                        sizeLocals,
                         "locals[" + smf.union_full_frame.number_of_locals.value + "]"
                 ));
-                startPosMoving += size_locals;
+                startPosMoving += sizeLocals;
                 rootNode.add(locals);
 
                 for (int i = 0; i < smf.union_full_frame.locals.length; i++) {
@@ -240,15 +250,15 @@ public class AttributeStackMapTable extends AttributeInfo {
             )));
             startPosMoving += 2;
 
-            int size_stack = 0;
+            int sizeStack = 0;
             if (smf.union_full_frame.number_of_stack_items.value > 0) {
                 for (int i = 0; i < smf.union_full_frame.number_of_stack_items.value; i++) {
-                    size_stack += smf.union_full_frame.stack[i].getLength();
+                    sizeStack += smf.union_full_frame.stack[i].getLength();
                 }
 
                 DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
-                        size_stack,
+                        sizeStack,
                         "stack[" + smf.union_full_frame.number_of_stack_items.value + "]"
                 ));
                 rootNode.add(stacks);
@@ -305,7 +315,12 @@ public class AttributeStackMapTable extends AttributeInfo {
         public final AppendFrame union_append_frame;
         public final FullFrame union_full_frame;
 
-        @SuppressWarnings("java:S1871") // Two branches in a conditional structure should not have exactly the same implementation --> We need it to make code more readable
+        /**
+         * <pre>
+         * java:S1871 - Two branches in a conditional structure should not have exactly the same implementation --- We need it to make code more readable
+         * </pre>
+         */
+        @SuppressWarnings("java:S1871")
         private StackMapFrame(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();
 
@@ -564,6 +579,12 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
+        /**
+         * <pre>
+         * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+         * </pre>
+         */
+        @SuppressWarnings("java:S1104")
         public static final class UninitializedVariableInfo {
 
             public u2 offset;
@@ -573,7 +594,12 @@ public class AttributeStackMapTable extends AttributeInfo {
             }
         }
 
-        @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
+        /**
+         * <pre>
+         * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+         * </pre>
+         */
+        @SuppressWarnings("java:S115")
         public enum TagEnum {
 
             ITEM_Top(0),

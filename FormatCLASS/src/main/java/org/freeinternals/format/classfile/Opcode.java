@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.BytesTool;
@@ -24,7 +25,12 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  * @see
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html">VM
  * Spec: The Java Virtual Machine Instruction Set</a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public final class Opcode {
 
     private static final Logger LOG = Logger.getLogger(Opcode.class.getName());
@@ -48,9 +54,13 @@ public final class Opcode {
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5">
      * VM Spec: Instructions
      * </a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+     * </pre>
      */
-    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
-    public static enum Instruction {
+    @SuppressWarnings("java:S115")
+    public enum Instruction {
 
         /**
          * Do nothing.
@@ -223,7 +233,7 @@ public final class Opcode {
         iload(21) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -237,7 +247,7 @@ public final class Opcode {
         lload(22) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -251,7 +261,7 @@ public final class Opcode {
         fload(23) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -265,7 +275,7 @@ public final class Opcode {
         dload(24) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -279,7 +289,7 @@ public final class Opcode {
         aload(25) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -530,7 +540,7 @@ public final class Opcode {
         istore(54) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -546,7 +556,7 @@ public final class Opcode {
         lstore(55) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -561,7 +571,7 @@ public final class Opcode {
         fstore(56) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -578,7 +588,7 @@ public final class Opcode {
         dstore(57) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -593,7 +603,7 @@ public final class Opcode {
         astore(58) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -1317,85 +1327,85 @@ public final class Opcode {
         ifeq(153) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         ifne(154) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         iflt(155) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         ifge(156) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         ifgt(157) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         ifle(158) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmpeq(159) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmpne(160) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmplt(161) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmpge(162) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmpgt(163) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_icmple(164) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_acmpeq(165) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         if_acmpne(166) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         /**
@@ -1421,7 +1431,7 @@ public final class Opcode {
         jsr(168) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Branchbyte_Short(curPos, pdis);
+                return super.parseBranchbyteShort(curPos, pdis);
             }
         },
         /**
@@ -1436,7 +1446,7 @@ public final class Opcode {
         ret(169) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Lvindex_UnsignedByte(curPos, pdis);
+                return super.parseLvindexUnsignedByte(curPos, pdis);
             }
         },
         /**
@@ -1557,7 +1567,7 @@ public final class Opcode {
         getstatic(178) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1570,7 +1580,7 @@ public final class Opcode {
         putstatic(179) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1579,7 +1589,7 @@ public final class Opcode {
         getfield(180) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1588,7 +1598,7 @@ public final class Opcode {
         putfield(181) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1597,7 +1607,7 @@ public final class Opcode {
         invokevirtual(182) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1607,7 +1617,7 @@ public final class Opcode {
         invokespecial(183) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1616,7 +1626,7 @@ public final class Opcode {
         invokestatic(184) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1692,7 +1702,7 @@ public final class Opcode {
         anewarray(189) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1709,7 +1719,7 @@ public final class Opcode {
         checkcast(192) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
-                return super.parse_Cpindex_UnsignedShort(curPos, pdis);
+                return super.parseCpindexUnsignedShort(curPos, pdis);
             }
         },
         /**
@@ -1753,22 +1763,6 @@ public final class Opcode {
          * Extend local variable index by additional bytes.
          */
         wide(196) {
-            private List<Integer> WIDE_SINGLE_OPCODES = new ArrayList<Integer>() {
-                {
-                    add(Opcode.Instruction.iload.code);
-                    add(Opcode.Instruction.lload.code);
-                    add(Opcode.Instruction.fload.code);
-                    add(Opcode.Instruction.dload.code);
-                    add(Opcode.Instruction.aload.code);
-                    add(Opcode.Instruction.istore.code);
-                    add(Opcode.Instruction.lstore.code);
-                    add(Opcode.Instruction.fstore.code);
-                    add(Opcode.Instruction.dstore.code);
-                    add(Opcode.Instruction.astore.code);
-                    add(Opcode.Instruction.ret.code);
-                }
-            };
-
             /**
              * The opcode with wide targets.
              */
@@ -1781,7 +1775,7 @@ public final class Opcode {
                 parsed.isWide = true;
 
                 String opCodeText;
-                if (this.WIDE_SINGLE_OPCODES.contains(wide_opcode)) {
+                if (WIDE_SINGLE_OPCODES.contains(wide_opcode)) {
                     parsed.lvIndex = pdis.readUnsignedShort();
                     opCodeText = String.format(FORMAT_OPCODE_NUMBER, getWideName(Opcode.Instruction.valueOf(wide_opcode).name()), parsed.lvIndex);
                 } else if (wide_opcode == Opcode.Instruction.iinc.code) {
@@ -1889,6 +1883,20 @@ public final class Opcode {
         UNKNOWN(-1, true);
 
         public static final String OPCODE_NAME_RESERVED_PREFIX = "[Reserved] ";
+        private static final List<Integer> WIDE_SINGLE_OPCODES = new ArrayList<>();
+        static {
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.iload.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.lload.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.fload.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.dload.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.aload.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.istore.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.lstore.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.fstore.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.dstore.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.astore.code);
+            WIDE_SINGLE_OPCODES.add(Opcode.Instruction.ret.code);
+        }
 
         /**
          * Internal code for an Instruction.
@@ -1951,28 +1959,34 @@ public final class Opcode {
             return result;
         }
 
-        @SuppressWarnings("java:S1172") // Unused method parameters should be removed --> `pdis` is used by children classes
+        /**
+         * <pre>
+         * java:S1130 - "throws" declarations should not be superfluous --- The subclass throws IOException
+         * java:S1172 - Unused method parameters should be removed --- `pdis` is used by children classes
+         * </pre>
+         */
+        @SuppressWarnings({"java:S1130", "java:S1172"})
         protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.opCodeText = this.name();
             return parsed;
         }
 
-        private InstructionParsed parse_Branchbyte_Short(final int curPos, final PosDataInputStream pdis) throws IOException {
+        private InstructionParsed parseBranchbyteShort(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.branchbyte = Integer.valueOf(pdis.readShort());
             parsed.opCodeText = this.name();
             return parsed;
         }
 
-        private InstructionParsed parse_Cpindex_UnsignedShort(final int curPos, final PosDataInputStream pdis) throws IOException {
+        private InstructionParsed parseCpindexUnsignedShort(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.cpIndex = pdis.readUnsignedShort();
             parsed.opCodeText = this.name();
             return parsed;
         }
 
-        private InstructionParsed parse_Lvindex_UnsignedByte(final int curPos, final PosDataInputStream pdis) throws IOException {
+        private InstructionParsed parseLvindexUnsignedByte(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
             parsed.lvIndex = pdis.readUnsignedByte();
             parsed.opCodeText = String.format(FORMAT_OPCODE_NUMBER, this.name(), parsed.lvIndex);
@@ -2004,7 +2018,7 @@ public final class Opcode {
      * VM Spec: Table 6.5.newarray-A. Array type codes
      * </a>
      */
-    public static enum NewarrayType {
+    public enum NewarrayType {
 
         T_UNKNOWN(-1),
         T_BOOLEAN(4),
@@ -2078,7 +2092,7 @@ public final class Opcode {
 
         public final int defaultbyte;
         public final int npairs;
-        public final LinkedHashMap<Integer, Integer> mapoffsets = new LinkedHashMap<>();
+        public final Map<Integer, Integer> mapoffsets = new LinkedHashMap<>();
 
         LookupSwitch(int defaultByte, int nPairs) {
             this.defaultbyte = defaultByte;
@@ -2088,7 +2102,7 @@ public final class Opcode {
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append('(').append(this.npairs).append(" Pairs)");
-            this.mapoffsets.keySet().forEach((key) -> {
+            this.mapoffsets.keySet().forEach(key -> {
                 Integer value = this.mapoffsets.get(key);
                 sb.append(String.format("%n    case %d. jump to %d (relative offset = %d)", key, value + currentOffset, value));
             });
@@ -2111,7 +2125,7 @@ public final class Opcode {
         public final int defaultbyte;
         public final int lowbyte;
         public final int highbyte;
-        public final LinkedHashMap<Integer, Integer> jumpoffsets = new LinkedHashMap<>();
+        public final Map<Integer, Integer> jumpoffsets = new LinkedHashMap<>();
 
         TableSwitch(int defaultByte, int lowByte, int highByte) {
             this.defaultbyte = defaultByte;
@@ -2122,7 +2136,7 @@ public final class Opcode {
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append(" (from ").append(this.lowbyte).append(" to ").append(this.highbyte).append(')');
-            this.jumpoffsets.keySet().forEach((key) -> {
+            this.jumpoffsets.keySet().forEach(key -> {
                 Integer value = this.jumpoffsets.get(key);
                 sb.append(String.format("%n    case %d. jump to %d (relative offset = %d) ", key, value + currentOffset, value));
             });

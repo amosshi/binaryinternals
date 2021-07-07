@@ -13,8 +13,13 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
 @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+@SuppressWarnings("java:S101")
 public class u2 {
 
     /**

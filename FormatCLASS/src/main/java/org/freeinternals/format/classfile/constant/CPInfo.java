@@ -6,7 +6,6 @@
  */
 package org.freeinternals.format.classfile.constant;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,10 +98,10 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
     /**
      * Get a human reader friendly of current constant pool item.
      *
-     * @param constant_pool Constant Pool items needed
+     * @param constantPool Constant Pool items needed
      * @return Reader friendly string
      */
-    public abstract String toString(CPInfo[] constant_pool);
+    public abstract String toString(CPInfo[] constantPool);
 
     /**
      * Constant pool tags.
@@ -111,8 +110,12 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
      * VM Spec: The Constant Pool
      * </a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+     * </pre>
      */
-    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
+    @SuppressWarnings("java:S115")
     public enum ConstantType {
 
         /**
@@ -322,10 +325,9 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
 
             for (ConstantType item : ConstantType.values()) {
                 if (item.tag == tag) {
-                    // There is only 1 constructor in the JVM Attributes
-                    Constructor cons = item.clazz.getDeclaredConstructors()[0];
                     try {
-                        cpInfo = (CPInfo) cons.newInstance(posDataInputStream);
+                        // There is only 1 constructor in the JVM Attributes
+                        cpInfo = (CPInfo) item.clazz.getDeclaredConstructors()[0].newInstance(posDataInputStream);
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                         Log.log(Level.SEVERE, "Failed to parse the JVM Constant Tag at position {0}, {1}", new Object[]{posDataInputStream.getPos() - 1, ex.toString()});
                     }

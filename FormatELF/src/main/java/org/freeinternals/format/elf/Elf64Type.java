@@ -25,8 +25,16 @@ import java.math.BigInteger;
  * @author Amos Shi
  * @see
  * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from ELF C programming language source code
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class Elf64Type {
+
+    private Elf64Type() {
+    }
 
     /**
      * <code>typedef __u64    Elf64_Addr;</code>.

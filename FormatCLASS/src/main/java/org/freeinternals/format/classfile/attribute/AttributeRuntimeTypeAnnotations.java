@@ -15,7 +15,12 @@ import org.freeinternals.format.classfile.u2;
  * The Runtime(In)VisibleTypeAnnotations Attribute.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
 
     public final u2 num_annotations;
@@ -78,15 +83,14 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 "target_type: 0x" + String.format("%02X", ta.target_type.value)
         )));
         startPosMoving += u1.LENGTH;
-        // TODO - Refactor as JTreeNodeFileComponent to set description
 
         if (ta.union_type_parameter_target != null) {
-            DefaultMutableTreeNode type_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode typeParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_parameter_target.getLength(),
                     TypeAnnotation.TypeParameterTarget.UNION_NAME));
-            rootNode.add(type_parameter_target);
-            type_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(typeParameterTarget);
+            typeParameterTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u1.LENGTH,
                     "type_parameter_index: " + ta.union_type_parameter_target.type_parameter_index.value
@@ -94,13 +98,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u1.LENGTH;
 
         } else if (ta.union_supertype_target != null) {
-            DefaultMutableTreeNode supertype_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode supertypeTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_supertype_target.getLength(),
                     TypeAnnotation.SupertypeTarget.UNION_NAME
             ));
-            rootNode.add(supertype_target);
-            supertype_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(supertypeTarget);
+            supertypeTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
                     "supertype_index: " + ta.union_supertype_target.supertype_index.value
@@ -108,19 +112,19 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u2.LENGTH;
 
         } else if (ta.union_type_parameter_bound_target != null) {
-            DefaultMutableTreeNode type_parameter_bound_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode typeParameterBoundTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_parameter_bound_target.getLength(),
                     TypeAnnotation.TypeParameterBoundTarget.UNION_NAME
             ));
-            rootNode.add(type_parameter_bound_target);
-            type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(typeParameterBoundTarget);
+            typeParameterBoundTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u1.LENGTH,
                     "type_parameter_index: " + ta.union_type_parameter_bound_target.type_parameter_index.value
             )));
             startPosMoving += u1.LENGTH;
-            type_parameter_bound_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            typeParameterBoundTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u1.LENGTH,
                     "bound_index: " + ta.union_type_parameter_bound_target.bound_index.value
@@ -130,13 +134,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         } else if (ta.union_empty_target != null) {
             // Do nothing since it is empty
         } else if (ta.union_method_formal_parameter_target != null) {
-            DefaultMutableTreeNode formal_parameter_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode formalParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_method_formal_parameter_target.getLength(),
                     "formal_parameter_target"
             ));
-            rootNode.add(formal_parameter_target);
-            formal_parameter_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(formalParameterTarget);
+            formalParameterTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u1.LENGTH,
                     "formal_parameter_index: " + ta.union_method_formal_parameter_target.formal_parameter_index.value
@@ -144,13 +148,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u1.LENGTH;
 
         } else if (ta.union_throws_target != null) {
-            DefaultMutableTreeNode throws_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode throwsTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_throws_target.getLength(),
                     TypeAnnotation.ThrowsTarget.UNION_NAME
             ));
-            rootNode.add(throws_target);
-            throws_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(throwsTarget);
+            throwsTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
                     "throws_type_index: " + ta.union_throws_target.throws_type_index.value
@@ -158,23 +162,23 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u2.LENGTH;
 
         } else if (ta.union_localvar_target != null) {
-            DefaultMutableTreeNode localvar_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode localvarTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_localvar_target.getLength(),
                     TypeAnnotation.LocalvarTarget.UNION_NAME
             ));
             startPosMoving += ta.union_localvar_target.getLength();
-            rootNode.add(localvar_target);
-            this.generateSubnode(localvar_target, ta.union_localvar_target);
+            rootNode.add(localvarTarget);
+            this.generateSubnode(localvarTarget, ta.union_localvar_target);
 
         } else if (ta.union_catch_target != null) {
-            DefaultMutableTreeNode catch_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode catchTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_catch_target.getLength(),
                     TypeAnnotation.CatchTarget.UNION_NAME
             ));
-            rootNode.add(catch_target);
-            catch_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(catchTarget);
+            catchTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
                     "exception_table_index: " + ta.union_catch_target.exception_table_index.value
@@ -182,13 +186,13 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u2.LENGTH;
 
         } else if (ta.union_offset_target != null) {
-            DefaultMutableTreeNode offset_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode offsetTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_offset_target.getLength(),
                     TypeAnnotation.OffsetTarget.UNION_NAME
             ));
-            rootNode.add(offset_target);
-            offset_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(offsetTarget);
+            offsetTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
                     "offset: " + ta.union_offset_target.offset.value
@@ -196,19 +200,19 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             startPosMoving += u2.LENGTH;
 
         } else if (ta.union_type_argument_target != null) {
-            DefaultMutableTreeNode type_argument_target = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode typeArgumentTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     ta.union_type_argument_target.getLength(),
                     TypeAnnotation.TypeArgumentTarget.UNION_NAME
             ));
-            rootNode.add(type_argument_target);
-            type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            rootNode.add(typeArgumentTarget);
+            typeArgumentTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
                     "offset: " + ta.union_type_argument_target.offset.value
             )));
             startPosMoving += u2.LENGTH;
-            type_argument_target.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            typeArgumentTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u1.LENGTH,
                     "type_argument_index: " + ta.union_type_argument_target.type_argument_index.value
@@ -217,14 +221,14 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         }
 
         // target_path
-        DefaultMutableTreeNode target_path = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode targetPath = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 ta.target_path.getLength(),
                 "target_path"
         ));
         startPosMoving += ta.target_path.getLength();
-        rootNode.add(target_path);
-        this.generateSubnode(target_path, ta.target_path);
+        rootNode.add(targetPath);
+        this.generateSubnode(targetPath, ta.target_path);
 
         // Annotation
         Annotation.generateSubnode(rootNode, ta, startPosMoving, classFile);
@@ -340,7 +344,12 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
         public final TypeArgumentTarget union_type_argument_target;
         public final TypePath target_path;
 
-        @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+        /**
+         * <pre>
+         * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+         * </pre>
+         */
+        @SuppressWarnings("java:S3776")
         public TypeAnnotation(PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super(posDataInputStream, false);
 
@@ -591,8 +600,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
              */
             public final short value;
 
-            TargetType(int v) {
-                this.value = Integer.valueOf(v).shortValue();
+            TargetType(Integer v) {
+                this.value = v.shortValue();
             }
 
             /**
@@ -600,8 +609,12 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
              *
              * @param v {@link #value} of {@link TargetType}
              * @return <code>type_annotation</code> structure union name
+             *
+             * <pre>
+             * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+             * </pre>
              */
-            @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high --> No, it is not high
+            @SuppressWarnings("java:S3776")
             public static String getTargetUnionName(short v) {
                 String unionName;
 
@@ -656,7 +669,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
          * VM Spec: The target_info union - type_parameter_target
          * </a>
          */
-        public final static class TypeParameterTarget extends FileComponent {
+        public static final class TypeParameterTarget extends FileComponent {
 
             public static final String UNION_NAME = "type_parameter_target";
 
@@ -684,7 +697,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
          * VM Spec: The target_info union - supertype_target
          * </a>
          */
-        public final static class SupertypeTarget extends FileComponent {
+        public static final class SupertypeTarget extends FileComponent {
 
             public static final String UNION_NAME = "supertype_target";
 
@@ -713,7 +726,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class TypeParameterBoundTarget extends FileComponent {
+        public static final class TypeParameterBoundTarget extends FileComponent {
 
             public static final String UNION_NAME = "type_parameter_bound_target";
             public final u1 type_parameter_index;
@@ -727,7 +740,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class EmptyTarget extends FileComponent {
+        public static final class EmptyTarget extends FileComponent {
 
             public static final String UNION_NAME = "empty_target";
 
@@ -737,7 +750,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class FormalParameterTarget extends FileComponent {
+        public static final class FormalParameterTarget extends FileComponent {
 
             public static final String UNION_NAME = "method_formal_parameter_target";
             public final u1 formal_parameter_index;
@@ -749,7 +762,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class ThrowsTarget extends FileComponent {
+        public static final class ThrowsTarget extends FileComponent {
 
             public static final String UNION_NAME = "throws_target";
             public final u2 throws_type_index;
@@ -776,7 +789,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
          * }
          * </pre>
          */
-        public final static class LocalvarTarget extends FileComponent {
+        public static final class LocalvarTarget extends FileComponent {
 
             public static final String UNION_NAME = "localvar_target";
             public final u2 table_length;
@@ -796,7 +809,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
 
-            public final static class Table extends FileComponent {
+            public static final class Table extends FileComponent {
 
                 public final u2 start_pc;
                 public final u2 length_code;
@@ -813,7 +826,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class CatchTarget extends FileComponent {
+        public static final class CatchTarget extends FileComponent {
 
             public static final String UNION_NAME = "catch_target";
             public final u2 exception_table_index;
@@ -825,7 +838,7 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
             }
         }
 
-        public final static class OffsetTarget extends FileComponent {
+        public static final class OffsetTarget extends FileComponent {
 
             public static final String UNION_NAME = "offset_target";
             public final u2 offset;
@@ -912,8 +925,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
                  */
                 public final String description;
 
-                TypePathKind(int v, String d) {
-                    this.value = Integer.valueOf(v).shortValue();
+                TypePathKind(Integer v, String d) {
+                    this.value = v.shortValue();
                     this.description = d;
                 }
 

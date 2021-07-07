@@ -21,8 +21,13 @@ import org.freeinternals.format.classfile.attribute.AttributeSignature.Reference
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.2">
  * VM Spec: The Internal Form of Names
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
-final public class SignatureConvertor {
+@SuppressWarnings("java:S116")
+public final class SignatureConvertor {
 
     /**
      * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.2.1">
@@ -67,7 +72,7 @@ final public class SignatureConvertor {
      * VM Spec: Method Descriptors
      * </a>
      */
-    public static SignatureResult MethodReturnTypeExtractor(final String signature)
+    public static SignatureResult methodReturnTypeExtractor(final String signature)
             throws FileFormatException {
         if (signature == null) {
             throw new IllegalArgumentException("'signature' should not be null.");
@@ -86,7 +91,7 @@ final public class SignatureConvertor {
         if ("V".equals(returnType)) {
             returnValue = new SignatureResult(0, returnType, JavaLangSpec.Keyword.VOID.text);
         } else {
-            returnValue = SignatureConvertor.FieldDescriptorExtractor(returnType);
+            returnValue = SignatureConvertor.fieldDescriptorExtractor(returnType);
         }
 
         return returnValue;
@@ -104,9 +109,9 @@ final public class SignatureConvertor {
      * @return Java Language Specification (JLS) format of parameters
      * @throws FileFormatException Invalid signature string found
      */
-    public static String MethodParameters2Readable(final String signature)
+    public static String methodParameters2Readable(final String signature)
             throws FileFormatException {
-        List<SignatureResult> paramters = MethodParametersSplit(signature);
+        List<SignatureResult> paramters = methodParametersSplit(signature);
         StringBuilder result = new StringBuilder();
 
         result.append(METHODDESCRIPTOR_LEFT);
@@ -125,7 +130,7 @@ final public class SignatureConvertor {
     }
 
     // (com/sun/java/accessibility/AccessBridge;Ljavax/accessibility/AccessibleContext;)V
-    public static List<SignatureResult> MethodParametersSplit(final String signature)
+    public static List<SignatureResult> methodParametersSplit(final String signature)
             throws FileFormatException {
         // check parameter
         if (signature == null) {
@@ -173,9 +178,9 @@ final public class SignatureConvertor {
             }
         }
 
-        if (parameters.size() > 0) {
+        if (!parameters.isEmpty()) {
             for (String s : parameters) {
-                parametersResult.add(FieldDescriptorExtractor(s));
+                parametersResult.add(fieldDescriptorExtractor(s));
             }
         }
 
@@ -199,7 +204,7 @@ final public class SignatureConvertor {
      * VM Spec: Field Descriptors
      * </a>
      */
-    public static SignatureResult FieldDescriptorExtractor(final String signature)
+    public static SignatureResult fieldDescriptorExtractor(final String signature)
             throws FileFormatException {
 
         if ((signature == null) || signature.isEmpty()) {
@@ -224,7 +229,7 @@ final public class SignatureConvertor {
                 sig = sig.substring(1, sigLength - 1);
             }
 
-            sigJls = ParseClassSignature(sig);
+            sigJls = parseClassSignature(sig);
         }
 
         return new SignatureResult(arrayCount, sig, sigJls);
@@ -241,7 +246,7 @@ final public class SignatureConvertor {
      * @param classSignature JVM internal format of class signature
      * @return Java Language Specification (JLS) format of class signature
      */
-    public static String ParseClassSignature(final String classSignature)
+    public static String parseClassSignature(final String classSignature)
             throws IllegalArgumentException {
         if (classSignature == null) {
             throw new IllegalArgumentException("'ClassSignature' should not be null.");
@@ -256,7 +261,7 @@ final public class SignatureConvertor {
      * @param classSignature JVM internal format of class signature
      * @return Package name of class signature, or null if the class not in any package
      */
-    public static String ParsePackage(final String classSignature){
+    public static String parsePackage(final String classSignature){
         if (classSignature == null) {
             throw new IllegalArgumentException("'ClassSignature' should not be null.");
         }
@@ -265,7 +270,7 @@ final public class SignatureConvertor {
         if (lastIndex == -1) {
             return null;
         } else {
-            return SignatureConvertor.ParseClassSignature(classSignature.substring(0, lastIndex)).toLowerCase();
+            return SignatureConvertor.parseClassSignature(classSignature.substring(0, lastIndex)).toLowerCase();
         }
     }
 
@@ -293,7 +298,7 @@ final public class SignatureConvertor {
             this.ArrayDimension = count;
             this.TypeBinaryName = bin;
             this.TypeJLSName = jls;
-            this.TypePackage = ParsePackage(bin);
+            this.TypePackage = parsePackage(bin);
         }
 
         /**

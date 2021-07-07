@@ -7,7 +7,6 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -15,7 +14,13 @@ import org.freeinternals.commonlib.core.FileFormatException;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+ * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+ * </pre>
  */
+@SuppressWarnings({"java:S116", "java:S1104"})
 public class StringDataItem extends FileComponent {
 
     /**

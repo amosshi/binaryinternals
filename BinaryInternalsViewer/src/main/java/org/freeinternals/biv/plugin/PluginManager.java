@@ -45,11 +45,18 @@ public class PluginManager {
     private PluginManager() {
     }
 
+    /**
+     * <pre>
+     * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- multiple "continue" make code more readable
+     * java:S3776 - Cognitive Complexity of methods should not be too high
+     * </pre>
+     */
+    @SuppressWarnings({"java:S135", "java:S3776"}) 
     private static void loadPlugins() {
         File pluginFolder = new File(PLUGIN_DIR);
         String pluginDescClassName;
 
-        if (pluginFolder.exists() == false) {
+        if (!pluginFolder.exists()) {
             // The plugin folder does not exist
             return;
         }
@@ -96,7 +103,7 @@ public class PluginManager {
         StringBuilder builder = new StringBuilder(16);
         if (!PLUGINS.isEmpty()) {
             builder.append(" - ");
-            PLUGINS.values().stream().map((plugin) -> plugin.getExtensions()).forEachOrdered((exts) -> {
+            PLUGINS.values().stream().map(plugin -> plugin.getExtensions()).forEachOrdered(exts -> {
                 for (String ext : exts) {
                     builder.append(ext);
                     builder.append(", ");

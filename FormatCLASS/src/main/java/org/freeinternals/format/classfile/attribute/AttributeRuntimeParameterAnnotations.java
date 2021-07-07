@@ -15,7 +15,12 @@ import org.freeinternals.format.classfile.u2;
  * The Runtime(In)VisibleParameterAnnotations Attribute.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
 
     public final u1 num_parameters;
@@ -49,21 +54,21 @@ public class AttributeRuntimeParameterAnnotations extends AttributeInfo {
         )));
 
         if (this.parameter_annotations != null && this.parameter_annotations.length > 0) {
-            DefaultMutableTreeNode parameter_annotations_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode parameterAnnotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 7,
                     this.getLength() - 7,
                     "parameter_annotations"
             ));
-            parentNode.add(parameter_annotations_node);
+            parentNode.add(parameterAnnotationsNode);
 
             for (int i = 0; i < this.parameter_annotations.length; i++) {
-                DefaultMutableTreeNode parameter_annotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode parameterAnnotation = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         this.parameter_annotations[i].getStartPos(),
                         this.parameter_annotations[i].getLength(),
                         String.format("parameter_annotation %d", i + 1)
                 ));
-                parameter_annotations_node.add(parameter_annotation);
-                this.generateSubnode(parameter_annotation, this.parameter_annotations[i], classFile);
+                parameterAnnotationsNode.add(parameterAnnotation);
+                this.generateSubnode(parameterAnnotation, this.parameter_annotations[i], classFile);
             }
         }
     }

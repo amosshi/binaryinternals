@@ -34,7 +34,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.8">
  * VM Spec: The CONSTANT_MethodHandle_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class ConstantMethodHandleInfo extends CPInfo {
 
     public static final int LENGTH = 5;
@@ -72,12 +77,10 @@ public class ConstantMethodHandleInfo extends CPInfo {
     }
 
     @Override
-    public String toString(CPInfo[] constant_pool) {
-        // TODO Improve this logic with test case
-        final StringBuilder sb = new StringBuilder(64);
-        sb.append("reference_kind = ").append(ReferenceKind.name(this.reference_kind.value));
-        sb.append(", reference_index = ").append(constant_pool[this.reference_index.value].toString(constant_pool));
-        return sb.toString();
+    public String toString(CPInfo[] constantPool) {
+        return String.format("reference_kind=%s reference_index=%s",
+                ReferenceKind.name(this.reference_kind.value),
+                constantPool[this.reference_index.value].toString(constantPool));
     }
 
     @Override
@@ -102,9 +105,13 @@ public class ConstantMethodHandleInfo extends CPInfo {
      * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html#jvms-5.4.3.5">
      * VM Spec: Method Type and Method Handle Resolution
      * </a>
+     *
+     * <pre>
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+     * </pre>
      */
-    @SuppressWarnings("java:S115") // Constant names should comply with a naming convention --> We respect the name from JVM Spec instead
-    public static enum ReferenceKind {
+    @SuppressWarnings("java:S115")
+    public enum ReferenceKind {
 
         REF_getField(1),
         REF_getStatic(2),

@@ -11,7 +11,12 @@ import org.freeinternals.format.classfile.u2;
 /**
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeRuntimeAnnotations extends AttributeInfo {
 
     public final u2 num_annotations;

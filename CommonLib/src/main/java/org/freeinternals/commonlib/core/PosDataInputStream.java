@@ -207,8 +207,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return (ch2 << SHIFT_8) + (ch1);
     }
 
+    /**
+     * @throws IOException
+     *
+     * <pre>
+     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S1110") // Redundant parenthesis is needed for readability
+    @SuppressWarnings("java:S1110")
     public int readIntInLittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
@@ -220,8 +227,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return (((ch4 << SHIFT_24) + (ch3 << SHIFT_16) + (ch2 << SHIFT_8) + (ch1)));
     }
 
+    /**
+     * @throws IOException
+     *
+     * <pre>
+     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S1110") // Redundant parenthesis is needed for readability
+    @SuppressWarnings("java:S1110")
     public long readUnsignedInt() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_8];
 
@@ -241,8 +255,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                 + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 
+    /**
+     * @throws IOException
+     *
+     * <pre>
+     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S1110") // Redundant parenthesis is needed for readability
+    @SuppressWarnings("java:S1110")
     public long readUnsignedIntInLittleEndian() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_8];
 
@@ -266,8 +287,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                 + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 
+    /**
+     * @throws IOException
+     *
+     * <pre>
+     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S1110") // Redundant parenthesis is needed for readability
+    @SuppressWarnings("java:S1110")
     public long readLongInLittleEndian() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_8];
         super.readFully(readBuffer, 0, 8);
@@ -330,9 +358,13 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      *
      * @param end
      * @throws java.io.IOException
+     *
+     * <pre>
+     * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
+     * </pre>
      */
     @Override
-    @SuppressWarnings("java:S135") // Loops should not contain more than a single "break" or "continue" statement
+    @SuppressWarnings("java:S135")
     public String readASCIIUntil(final byte end) throws IOException {
         byte b;
         StringBuilder sb = new StringBuilder();
@@ -359,8 +391,12 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @param end End value for the ASCII string
      * @return ASCII as string
      * @throws java.io.IOException Read failed
+     *
+     * <pre>
+     * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
+     * </pre>
      */
-    @SuppressWarnings("java:S135") // Loops should not contain more than a single "break" or "continue" statement
+    @SuppressWarnings("java:S135")
     public String readASCIIUntil(byte... end) throws IOException {
         if (end == null || end.length < 1) {
             throw new IllegalArgumentException("Inalid parameter 'end'.");
@@ -417,8 +453,13 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return result;
     }
 
+    /**
+     * <pre>
+     * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
+     * </pre>
+     */
     @Override
-    @SuppressWarnings("java:S135") // Loops should not contain more than a single "break" or "continue" statement
+    @SuppressWarnings("java:S135")
     public byte[] readBinary() throws IOException {
         int size = this.getBuf().length - this.getPos() + this.offset + 1;
         byte[] big = new byte[size];

@@ -31,7 +31,7 @@ public abstract class DataViewer extends JTextPane {
     /**
      * Constructor.
      */
-    public DataViewer() {
+    DataViewer() {
         super();
         this.setEditable(false);
         this.setBorder(null);

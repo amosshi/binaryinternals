@@ -37,7 +37,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.22">
  * VM Spec: The AnnotationDefault attribute
  * </a>
+ *
+ * <pre>
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S116")
 public class AttributeAnnotationDefault extends AttributeInfo {
 
     /**
@@ -55,13 +60,13 @@ public class AttributeAnnotationDefault extends AttributeInfo {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
-        DefaultMutableTreeNode default_value_node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode defaultValueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
                 this.getLength() - 6,
                 "default_value"
         ));
-        parentNode.add(default_value_node);
+        parentNode.add(defaultValueNode);
         
-        Annotation.generateSubnode(default_value_node, this.default_value, classFile);
+        Annotation.generateSubnode(defaultValueNode, this.default_value, classFile);
     }
 }
