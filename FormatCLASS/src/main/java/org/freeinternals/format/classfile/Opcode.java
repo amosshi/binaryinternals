@@ -1536,7 +1536,7 @@ public final class Opcode {
          * the return descriptor of the current method.
          *
          * @see #ireturn
-         * @see org.freeinternals.format.classfile.MethodInfo#getDeclaration()
+         * @see method_info#getDeclaration()
          */
         areturn(176),
         /**

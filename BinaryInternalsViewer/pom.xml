@@ -15,7 +15,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.class</artifactId>
-            <version>12.0</version>
+            <version>17.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

@@ -19,12 +19,12 @@ import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.attribute.AttributeCode;
-import org.freeinternals.format.classfile.attribute.AttributeInfo;
-import org.freeinternals.format.classfile.constant.CPInfo;
-import org.freeinternals.format.classfile.constant.CPInfo.ConstantType;
-import org.freeinternals.format.classfile.constant.ConstantClassInfo;
-import org.freeinternals.format.classfile.constant.ConstantUtf8Info;
+import org.freeinternals.format.classfile.attribute.Code_attribute;
+import org.freeinternals.format.classfile.attribute.attribute_info;
+import org.freeinternals.format.classfile.constant.cp_info;
+import org.freeinternals.format.classfile.constant.cp_info.ConstantType;
+import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
+import org.freeinternals.format.classfile.constant.CONSTANT_Utf8_info;
 
 /**
  * Represents a {@code class} file. A {@code class} file structure has the
@@ -120,7 +120,7 @@ public class ClassFile extends FileFormat {
      * </a>
      */
     public final u2 constant_pool_count;
-    public final CPInfo[] constant_pool;
+    public final cp_info[] constant_pool;
 
     //
     // Class Declaration
@@ -190,7 +190,7 @@ public class ClassFile extends FileFormat {
      * </a>
      */
     public final U2ClassComponent fields_count;
-    public final FieldInfo[] fields;
+    public final field_info[] fields;
 
     //
     // Method
@@ -206,7 +206,7 @@ public class ClassFile extends FileFormat {
      * </a>
      */
     public final U2ClassComponent methods_count;
-    public final MethodInfo[] methods;
+    public final method_info[] methods;
 
     //
     // Attribute
@@ -222,7 +222,7 @@ public class ClassFile extends FileFormat {
      * </a>
      */
     public final U2ClassComponent attributes_count;
-    public final AttributeInfo[] attributes;
+    public final attribute_info[] attributes;
 
     /**
      * Creates a new instance of ClassFile from byte array.
@@ -262,12 +262,12 @@ public class ClassFile extends FileFormat {
 
         // Constant Pool
         this.constant_pool_count = new u2(posDataInputStream);
-        this.constant_pool = new CPInfo[this.constant_pool_count.value];
+        this.constant_pool = new cp_info[this.constant_pool_count.value];
         for (int i = 1; i < this.constant_pool_count.value; i++) {
             short tag = (short) posDataInputStream.readUnsignedByte();
 
             this.constant_pool[i] = ConstantType.parse(tag, posDataInputStream);
-            if (tag == CPInfo.ConstantType.CONSTANT_Long.tag || tag == CPInfo.ConstantType.CONSTANT_Double.tag) {
+            if (tag == cp_info.ConstantType.CONSTANT_Long.tag || tag == cp_info.ConstantType.CONSTANT_Double.tag) {
                 // Long/Double type occupies two Constant Pool index
                 i++;
             }
@@ -291,9 +291,9 @@ public class ClassFile extends FileFormat {
         this.fields_count = new U2ClassComponent(posDataInputStream);
         final int fieldCount = this.fields_count.getValue();
         if (fieldCount > 0) {
-            this.fields = new FieldInfo[fieldCount];
+            this.fields = new field_info[fieldCount];
             for (int i = 0; i < fieldCount; i++) {
-                this.fields[i] = new FieldInfo(posDataInputStream, this.constant_pool);
+                this.fields[i] = new field_info(posDataInputStream, this.constant_pool);
             }
         } else {
             this.fields = null;
@@ -304,9 +304,9 @@ public class ClassFile extends FileFormat {
         final int methodCount = this.methods_count.getValue();
 
         if (methodCount > 0) {
-            this.methods = new MethodInfo[methodCount];
+            this.methods = new method_info[methodCount];
             for (int i = 0; i < methodCount; i++) {
-                this.methods[i] = new MethodInfo(posDataInputStream, this.constant_pool);
+                this.methods[i] = new method_info(posDataInputStream, this.constant_pool);
             }
         } else {
             this.methods = null;
@@ -316,9 +316,9 @@ public class ClassFile extends FileFormat {
         this.attributes_count = new U2ClassComponent(posDataInputStream);
         final int attributeCount = this.attributes_count.getValue();
         if (attributeCount > 0) {
-            this.attributes = new AttributeInfo[attributeCount];
+            this.attributes = new attribute_info[attributeCount];
             for (int i = 0; i < attributeCount; i++) {
-                this.attributes[i] = AttributeInfo.parse(posDataInputStream, this.constant_pool);
+                this.attributes[i] = attribute_info.parse(posDataInputStream, this.constant_pool);
             }
         } else {
             this.attributes = null;
@@ -375,8 +375,8 @@ public class ClassFile extends FileFormat {
     public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
         String name = null;
         if ((cpIndex >= 0 && cpIndex < this.constant_pool.length)
-                && (this.constant_pool[cpIndex] instanceof ConstantClassInfo)) {
-            ConstantClassInfo clsInfo = (ConstantClassInfo) this.constant_pool[cpIndex];
+                && (this.constant_pool[cpIndex] instanceof CONSTANT_Class_info)) {
+            CONSTANT_Class_info clsInfo = (CONSTANT_Class_info) this.constant_pool[cpIndex];
             name = getConstantUtf8Value(clsInfo.name_index.value, this.constant_pool);
         } else {
             throw new FileFormatException(String.format("Constant Pool index (value = %d) is out of range, or it is not a CONSTANT_Class_info. ", cpIndex));
@@ -395,7 +395,7 @@ public class ClassFile extends FileFormat {
      * @return The UTF-8 text
      * @throws FileFormatException Invalid class file format
      */
-    public static String getConstantUtf8Value(final int cpIndex, final CPInfo[] cpInfo) throws FileFormatException {
+    public static String getConstantUtf8Value(final int cpIndex, final cp_info[] cpInfo) throws FileFormatException {
         String returnValue = null;
 
         if ((cpIndex == 0) || (cpIndex >= cpInfo.length)) {
@@ -405,13 +405,12 @@ public class ClassFile extends FileFormat {
                     cpIndex));
         }
 
-        if (cpInfo[cpIndex].tag.value == CPInfo.ConstantType.CONSTANT_Utf8.tag) {
-            final ConstantUtf8Info utf8Info = (ConstantUtf8Info) cpInfo[cpIndex];
+        if (cpInfo[cpIndex].tag.value == cp_info.ConstantType.CONSTANT_Utf8.tag) {
+            final CONSTANT_Utf8_info utf8Info = (CONSTANT_Utf8_info) cpInfo[cpIndex];
             returnValue = utf8Info.getValue();
         } else {
-            throw new FileFormatException(String.format(
-                    "Unexpected constant pool type: Utf8(%d) expected, but it is '%d'.",
-                    CPInfo.ConstantType.CONSTANT_Utf8.tag,
+            throw new FileFormatException(String.format("Unexpected constant pool type: Utf8(%d) expected, but it is '%d'.",
+                    cp_info.ConstantType.CONSTANT_Utf8.tag,
                     cpInfo[cpIndex].tag.value));
         }
 
@@ -438,7 +437,7 @@ public class ClassFile extends FileFormat {
             throw new IllegalArgumentException("Constant Pool Index cannot be zero. index=" + index);
         }
 
-        CPInfo cp = this.constant_pool[index];
+        cp_info cp = this.constant_pool[index];
         if (cp == null) {
             // For Double, Long type, each item take two indexs, so there could be some index contains nothing.
             throw new IllegalArgumentException("Nothing exist at the Constant Pool Index. index=" + index);
@@ -486,7 +485,7 @@ public class ClassFile extends FileFormat {
     public void treeSelectionChanged(final JTreeNodeFileComponent tnfc, final JTabbedPane tabs) {
         super.treeSelectionChanged(tnfc, tabs);
 
-        if (AttributeCode.ATTRIBUTE_CODE_NODE.equals(tnfc.getText())) {
+        if (Code_attribute.ATTRIBUTE_CODE_NODE.equals(tnfc.getText())) {
             final byte[] data = this.getFileByteArray(tnfc.getStartPos(), tnfc.getLength());
             StringBuilder sb = this.getJTreeAdapter().generateOpcodeParseResult(data);
             JTextPane pane = super.tabAddTextPane(tabs, "Opcode");

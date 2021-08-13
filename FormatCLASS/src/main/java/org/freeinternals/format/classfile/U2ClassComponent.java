@@ -20,10 +20,10 @@ public class U2ClassComponent extends FileComponent {
 
     public final u2 value;
 
-    U2ClassComponent(final PosDataInputStream posDataInputStream) throws IOException {
-        this.startPos = posDataInputStream.getPos();
+    U2ClassComponent(final PosDataInputStream stream) throws IOException {
+        this.startPos = stream.getPos();
         this.length = u2.LENGTH;
-        this.value = new u2(posDataInputStream);
+        this.value = new u2(stream);
     }
 
     /**

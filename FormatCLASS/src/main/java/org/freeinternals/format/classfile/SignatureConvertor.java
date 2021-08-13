@@ -6,11 +6,11 @@
  */
 package org.freeinternals.format.classfile;
 
-import org.freeinternals.format.classfile.attribute.AttributeSignature;
+import org.freeinternals.format.classfile.attribute.Signature_attribute;
 import java.util.ArrayList;
 import java.util.List;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.classfile.attribute.AttributeSignature.ReferenceType;
+import org.freeinternals.format.classfile.attribute.Signature_attribute.ReferenceType;
 
 /**
  * Convert the Internal Form of Names into java language specification type
@@ -62,8 +62,7 @@ public final class SignatureConvertor {
     }
 
     /**
-     * Get return type from method descriptor
-     * {@link MethodInfo#descriptor_index}.
+     * Get return type from method descriptor {@link method_info#descriptor_index}.
      *
      * @param signature Method signature in JVM internal format
      * @return Method return type in Java Programming language format
@@ -98,8 +97,8 @@ public final class SignatureConvertor {
     }
 
     /**
-     * Get parameters type from method descriptor
-     * {@link MethodInfo#descriptor_index}.
+     * Get parameters type from method descriptor {@link method_info#descriptor_index}.
+     *
      * <p>
      * Example: <code>(ILjava/lang/String;[I)</code> to
      * <code>(int, String, int[])</code>
@@ -158,7 +157,7 @@ public final class SignatureConvertor {
             if (rawParameters.charAt(0) == '[') {
                 sbParameter.append(rawParameters.charAt(0));
                 rawParameters = rawParameters.substring(1);
-            } else if (AttributeSignature.BaseType.isPrimitiveType(rawParameters.charAt(0))) {
+            } else if (Signature_attribute.BaseType.isPrimitiveType(rawParameters.charAt(0))) {
                 sbParameter.append(rawParameters.charAt(0));
                 rawParameters = rawParameters.substring(1);
                 // Add one parameter
@@ -222,7 +221,7 @@ public final class SignatureConvertor {
         final int sigLength = sig.length();
         String sigJls;
         if (sigLength == 1) {
-            sigJls = AttributeSignature.BaseType.extractPrimitiveType(sig.charAt(0));
+            sigJls = Signature_attribute.BaseType.extractPrimitiveType(sig.charAt(0));
         } else {
             if (sig.charAt(0) == ReferenceType.ClassTypeSignature.signature
                     && sig.charAt(sig.length() - 1) == ReferenceType.ClassTypeSignatureSuffix.signature) {

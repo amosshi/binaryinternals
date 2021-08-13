@@ -9,7 +9,9 @@ package org.freeinternals.format.classfile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.freeinternals.format.classfile.attribute.AttributeModule;
+import org.freeinternals.format.classfile.attribute.InnerClasses_attribute;
+import org.freeinternals.format.classfile.attribute.MethodParameters_attribute;
+import org.freeinternals.format.classfile.attribute.Module_attribute;
 
 /**
  *
@@ -43,7 +45,7 @@ public enum AccessFlag {
      */
     ACC_FINAL(0x0010, JavaLangSpec.Keyword.FINAL.text),
     /**
-     * Indicates that this module ({@link AttributeModule}) is open.
+     * Indicates that this module ({@link Module_attribute}) is open.
      */
     ACC_OPEN(0x0010, JavaLangSpec.RestrictedKeyword.OPEN.keyword),
     /**
@@ -102,7 +104,7 @@ public enum AccessFlag {
     /**
      * Declared <code>synthetic</code>; not present in the source code.
      *
-     * Indicates that this module ({@link AttributeModule}) was not explicitly
+     * Indicates that this module ({@link Module_attribute}) was not explicitly
      * or implicitly declared.
      *
      * Indicates that this dependence was not explicitly or implicitly declared
@@ -162,40 +164,38 @@ public enum AccessFlag {
      */
     public static final List<AccessFlag> ForClass = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for {@link FieldInfo}.
+     * Modifiers for {@link field_info}.
      */
     public static final List<AccessFlag> ForField = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for
-     * {@link org.freeinternals.format.classfile.attribute.AttributeInnerClasses}.
+     * Modifiers for {@link InnerClasses_attribute}.
      */
     public static final List<AccessFlag> ForInnerClass = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for {@link MethodInfo}.
+     * Modifiers for {@link method_info}.
      */
     public static final List<AccessFlag> ForMethod = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * Modifiers for
-     * {@link org.freeinternals.format.classfile.attribute.AttributeMethodParameters}.
+     * Modifiers for {@link MethodParameters_attribute}.
      */
     public static final List<AccessFlag> ForMethodParameters = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * {@link AttributeModule#module_flags} for {@link AttributeModule}.
+     * {@link Module_attribute#module_flags} for {@link Module_attribute}.
      */
     public static final List<AccessFlag> ForModule = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * {@link AttributeModule.Exports#exports_flags} for
-     * {@link AttributeModule.Exports}.
+     * {@link Module_attribute.Exports#exports_flags} for
+     * {@link Module_attribute.Exports}.
      */
     public static final List<AccessFlag> ForModuleExports = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * {@link AttributeModule.Opens#opens_flags} for
-     * {@link AttributeModule.Opens}.
+     * {@link Module_attribute.Opens#opens_flags} for
+     * {@link Module_attribute.Opens}.
      */
     public static final List<AccessFlag> ForModuleOpens = Collections.synchronizedList(new ArrayList<AccessFlag>());
     /**
-     * {@link AttributeModule.Requires#requires_flags} for
-     * {@link AttributeModule.Requires}.
+     * {@link Module_attribute.Requires#requires_flags} for
+     * {@link Module_attribute.Requires}.
      */
     public static final List<AccessFlag> ForModuleRequires = Collections.synchronizedList(new ArrayList<AccessFlag>());
 
@@ -304,7 +304,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a {@link FieldInfo}.
+     * Get the modifiers text for a {@link field_info}.
      *
      * @param value Value in the Class file
      * @return Modifier text
@@ -314,7 +314,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a {@link MethodInfo}.
+     * Get the modifiers text for a {@link method_info}.
      *
      * @param value Value in the Class file
      * @return Modifier text
@@ -324,8 +324,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a
-     * {@link org.freeinternals.format.classfile.attribute.AttributeInnerClasses}.
+     * Get the modifiers text for a {@link InnerClasses_attribute}.
      *
      * @param value Value in the Class file
      * @return Modifier text
@@ -335,8 +334,7 @@ public enum AccessFlag {
     }
 
     /**
-     * Get the modifiers text for a
-     * {@link org.freeinternals.format.classfile.attribute.AttributeMethodParameters}.
+     * Get the modifiers text for a {@link MethodParameters_attribute}.
      *
      * @param value Value in the Class file
      * @return Modifier text
