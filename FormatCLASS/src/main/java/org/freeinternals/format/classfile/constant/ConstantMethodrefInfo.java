@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 
 /**
  * The class for the {@code CONSTANT_Methodref_info} structure in constant pool.
@@ -35,7 +34,7 @@ import org.freeinternals.format.classfile.JavaSEVersion;
 public class ConstantMethodrefInfo extends ConstantRefInfo {
 
     ConstantMethodrefInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_Methodref.tag, posDataInputStream);
     }
 
     @Override

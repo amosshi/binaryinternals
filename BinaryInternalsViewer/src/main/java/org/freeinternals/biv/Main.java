@@ -238,10 +238,14 @@ public class Main extends JFrame {
         try {
             this.contentPane = new JSplitPaneFile(file, this);
         } catch (Throwable ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+            if (message == null || message.trim().length() < 1) {
+                message = ex.getCause() != null ? ex.getCause().getMessage() : "";
+            }
+            LOGGER.log(Level.SEVERE, message, ex);
             JOptionPane.showMessageDialog(
                     this,
-                    ex.getMessage(),
+                    message,
                     this.getTitle(),
                     JOptionPane.ERROR_MESSAGE);
         }

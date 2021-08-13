@@ -12,7 +12,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -56,7 +55,7 @@ public class ConstantMethodHandleInfo extends CPInfo {
     public final u2 reference_index;
 
     ConstantMethodHandleInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodHandle.tag, true, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
+        super(CPInfo.ConstantType.CONSTANT_MethodHandle.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.reference_kind = new u1(posDataInputStream, true);
         this.reference_index = new u2(posDataInputStream);

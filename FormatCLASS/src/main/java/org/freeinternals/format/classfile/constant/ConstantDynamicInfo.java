@@ -12,7 +12,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -67,7 +66,7 @@ public class ConstantDynamicInfo extends CPInfo {
     public final u2 name_and_type_index;
 
     ConstantDynamicInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_Dynamic.tag, true, ClassFile.Version.FORMAT_55_0, JavaSEVersion.VERSION_11);
+        super(CPInfo.ConstantType.CONSTANT_Dynamic.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.bootstrap_method_attr_index = new u2(posDataInputStream);
         this.name_and_type_index = new u2(posDataInputStream);

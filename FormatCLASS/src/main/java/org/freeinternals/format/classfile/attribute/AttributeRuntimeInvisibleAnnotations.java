@@ -8,8 +8,6 @@ package org.freeinternals.format.classfile.attribute;
 
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -42,6 +40,6 @@ import org.freeinternals.format.classfile.u2;
 public class AttributeRuntimeInvisibleAnnotations extends AttributeRuntimeAnnotations {
 
     AttributeRuntimeInvisibleAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
+        super(nameIndex, type, posDataInputStream);
     }
 }

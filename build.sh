@@ -12,6 +12,7 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 #export JAVA_HOME=/usr/lib64/jvm/java
 
 mvn  clean package install
+mvn  javadoc:aggregate
 mvn  jdeps:jdkinternals
 mvn  versions:display-dependency-updates
 

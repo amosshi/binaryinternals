@@ -14,7 +14,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
@@ -53,7 +52,7 @@ public class ConstantMethodTypeInfo extends CPInfo {
     public final u2 descriptor_index;
 
     ConstantMethodTypeInfo(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(CPInfo.ConstantType.CONSTANT_MethodType.tag, true, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
+        super(CPInfo.ConstantType.CONSTANT_MethodType.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream);
         super.length = LENGTH;

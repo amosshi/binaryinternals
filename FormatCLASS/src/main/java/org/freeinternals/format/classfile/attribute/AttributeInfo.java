@@ -59,11 +59,13 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * the VM Spec.
      */
     public static final String UNRECOGNIZED = "[Un-Recognized] ";
+
     /**
      * Name of the attribute. It is one of the enum names in
      * {@link AttributeTypes}.
      */
     public final String name;
+
     /**
      * The {@link #attribute_name_index} must be a valid unsigned 16-bit index
      * into the
@@ -75,6 +77,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * representing the name of the attribute.
      */
     public final u2 attribute_name_index;
+
     /**
      * The value of the {@link #attribute_length} item indicates the length of
      * the subsequent information in bytes. The length does not include the
@@ -83,20 +86,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      */
     public final u4 attribute_length;
 
-    /**
-     * Class file format.
-     */
-    public final ClassFile.Version format;
-
-    /**
-     * Java SE platform version.
-     */
-    public final JavaSEVersion javaSE;
-
-    AttributeInfo(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException {
+    AttributeInfo(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
-        this.format = format;
-        this.javaSE = javaSE;
 
         this.name = name;
         this.attribute_name_index = nameIndex;
@@ -112,9 +103,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * @param posDataInputStream Input Stream for the class file
      * @param cp Constant Pool item
      * @return Parsed result
-     * @throws java.io.IOException Input Stream read fail
-     * @throws org.freeinternals.commonlib.core.FileFormatException Class file format
-     * error
+     * @throws IOException Input Stream read fail
+     * @throws FileFormatException Class file format error
      *
      * <pre>
      * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
@@ -158,7 +148,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
                 attr = new AttributeUnrecognized(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
             }
         } else {
-            throw new FileFormatException(String.format("Attribute name_index is not CONSTANT_Utf8. Constant index = %d, type = %d.", attrNameIndex.value, cp[attrNameIndex.value].tag.value));
+            throw new FileFormatException(String.format("Attribute name_index is not CONSTANT_Utf8. Constant index = %d, type = %d, position = 0x%X", attrNameIndex.value, cp[attrNameIndex.value].tag.value, posDataInputStream.getPos()));
         }
 
         return attr;
@@ -168,8 +158,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * Verify the current class file input stream position is correct.
      *
      * @param endPos Current position
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid class file
-     * format
+     * @throws FileFormatException Invalid class file format
      */
     protected void checkSize(final int endPos) throws FileFormatException {
         if (this.startPos + this.length != endPos) {
@@ -182,7 +171,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
      * <code>null</code>, it will return an empty string.
      *
      * Attributes are used in the {@code ClassFile}
-     * ({@link org.freeinternals.format.classfile.ClassFile}), {@code field_info} ({@link org.freeinternals.format.classfile.FieldInfo}),
+     * ({@link ClassFile}), {@code field_info} ({@link org.freeinternals.format.classfile.FieldInfo}),
      * {@code method_info}
      * ({@link org.freeinternals.format.classfile.MethodInfo}), and
      * {@code Code_attribute} structures of the class file format.
@@ -196,7 +185,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
     public String getName() {
         return (this.name != null) ? this.name : "";
     }
-    
+
     public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final AttributeInfo attributeInfo, final ClassFile classFile) {
         if (attributeInfo == null) {
             return;
@@ -216,7 +205,6 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
 
         attributeInfo.generateTreeNode(rootNode, classFile);
     }
-    
 
     /**
      * Attributes in Java <code>classfile</code>.
@@ -240,7 +228,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The ConstantValue Attribute
          * </a>
          */
-        ConstantValue(AttributeConstantValue.class),
+        ConstantValue(AttributeConstantValue.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
+
         /**
          * The name for {@code Code} attribute type.
          *
@@ -249,7 +238,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Code Attribute
          * </a>
          */
-        Code(AttributeCode.class),
+
+        Code(AttributeCode.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
         /**
          * The name for {@code StackMapTable} attribute type.
          *
@@ -258,7 +248,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The StackMapTable Attribute
          * </a>
          */
-        StackMapTable(AttributeStackMapTable.class),
+
+        StackMapTable(AttributeStackMapTable.class, ClassFile.FormatVersion.FORMAT_50, JavaSEVersion.VERSION_6),
         /**
          * The name for {@code Exceptions} attribute type.
          *
@@ -267,7 +258,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Exceptions Attribute
          * </a>
          */
-        Exceptions(AttributeExceptions.class),
+
+        Exceptions(AttributeExceptions.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
         /**
          * The name for {@code InnerClasses} attribute type.
          *
@@ -276,18 +268,19 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The InnerClasses Attribute
          * </a>
          */
-        InnerClasses(AttributeInnerClasses.class),
+
+        InnerClasses(AttributeInnerClasses.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_1),
         /**
          * The name for {@code EnclosingMethod} attribute type.
-         *
-         * TO DO
          *
          * @see
          * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.7">
          * VM Spec: The EnclosingMethod Attribute
          * </a>
          */
-        EnclosingMethod(AttributeEnclosingMethod.class),
+
+        EnclosingMethod(AttributeEnclosingMethod.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code Synthetic} attribute type.
          *
@@ -296,7 +289,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Synthetic Attribute
          * </a>
          */
-        Synthetic(AttributeSynthetic.class),
+        Synthetic(AttributeSynthetic.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_1),
+
         /**
          * The name for {@code Signature} attribute type.
          *
@@ -305,7 +299,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Signature Attribute
          * </a>
          */
-        Signature(AttributeSignature.class),
+        Signature(AttributeSignature.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code SourceFile} attribute type.
          *
@@ -314,18 +309,18 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The SourceFile Attribute
          * </a>
          */
-        SourceFile(AttributeSourceFile.class),
+        SourceFile(AttributeSourceFile.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
+
         /**
          * The name for {@code SourceDebugExtension} attribute type.
-         *
-         * TO DO
          *
          * @see
          * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.11">
          * VM Spec: The SourceDebugExtension Attribute
          * </a>
          */
-        SourceDebugExtension(AttributeSourceDebugExtension.class),
+        SourceDebugExtension(AttributeSourceDebugExtension.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code LineNumberTable} attribute type.
          *
@@ -334,7 +329,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The LineNumberTable Attribute
          * </a>
          */
-        LineNumberTable(AttributeLineNumberTable.class),
+        LineNumberTable(AttributeLineNumberTable.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
+
         /**
          * The name for {@code LocalVariableTable} attribute type.
          *
@@ -343,7 +339,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The LocalVariableTable Attribute
          * </a>
          */
-        LocalVariableTable(AttributeLocalVariableTable.class),
+        LocalVariableTable(AttributeLocalVariableTable.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2),
+
         /**
          * The name for {@code LocalVariableTypeTable} attribute type.
          *
@@ -352,7 +349,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The LocalVariableTypeTable Attribute
          * </a>
          */
-        LocalVariableTypeTable(AttributeLocalVariableTypeTable.class),
+        LocalVariableTypeTable(AttributeLocalVariableTypeTable.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code Deprecated} attribute type.
          *
@@ -361,7 +359,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Deprecated Attribute
          * </a>
          */
-        Deprecated(AttributeDeprecated.class),
+        Deprecated(AttributeDeprecated.class, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_1),
+
         /**
          * The name for {@code RuntimeVisibleAnnotations } attribute type.
          *
@@ -370,7 +369,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeVisibleAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleAnnotations(AttributeRuntimeVisibleAnnotations.class),
+        RuntimeVisibleAnnotations(AttributeRuntimeVisibleAnnotations.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code RuntimeInvisibleAnnotations } attribute type.
          *
@@ -379,7 +379,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeInvisibleAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleAnnotations(AttributeRuntimeInvisibleAnnotations.class),
+        RuntimeInvisibleAnnotations(AttributeRuntimeInvisibleAnnotations.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code RuntimeVisibleParameterAnnotations } attribute
          * type.
@@ -389,7 +390,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeVisibleParameterAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleParameterAnnotations(AttributeRuntimeVisibleParameterAnnotations.class),
+        RuntimeVisibleParameterAnnotations(AttributeRuntimeVisibleParameterAnnotations.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code RuntimeInvisibleParameterAnnotations} attribute
          * type.
@@ -399,7 +401,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeInvisibleParameterAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleParameterAnnotations(AttributeRuntimeInvisibleParameterAnnotations.class),
+        RuntimeInvisibleParameterAnnotations(AttributeRuntimeInvisibleParameterAnnotations.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code RuntimeVisibleTypeAnnotations} attribute type.
          *
@@ -408,7 +411,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeVisibleTypeAnnotations Attribute
          * </a>
          */
-        RuntimeVisibleTypeAnnotations(AttributeRuntimeVisibleTypeAnnotations.class),
+        RuntimeVisibleTypeAnnotations(AttributeRuntimeVisibleTypeAnnotations.class, ClassFile.FormatVersion.FORMAT_52, JavaSEVersion.VERSION_8),
+
         /**
          * The name for {@code RuntimeInvisibleTypeAnnotations} attribute type.
          *
@@ -417,7 +421,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The RuntimeInvisibleTypeAnnotations Attribute
          * </a>
          */
-        RuntimeInvisibleTypeAnnotations(AttributeRuntimeInvisibleTypeAnnotations.class),
+        RuntimeInvisibleTypeAnnotations(AttributeRuntimeInvisibleTypeAnnotations.class, ClassFile.FormatVersion.FORMAT_52, JavaSEVersion.VERSION_8),
+
         /**
          * The name for {@code AnnotationDefault} attribute type.
          *
@@ -426,7 +431,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The AnnotationDefault Attribute
          * </a>
          */
-        AnnotationDefault(AttributeAnnotationDefault.class),
+        AnnotationDefault(AttributeAnnotationDefault.class, ClassFile.FormatVersion.FORMAT_49, JavaSEVersion.VERSION_5_0),
+
         /**
          * The name for {@code BootstrapMethods} attribute type.
          *
@@ -435,7 +441,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The BootstrapMethods Attribute
          * </a>
          */
-        BootstrapMethods(AttributeBootstrapMethods.class),
+        BootstrapMethods(AttributeBootstrapMethods.class, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7),
+
         /**
          * The name for {@code MethodParameters} attribute type.
          *
@@ -444,7 +451,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The MethodParameters Attribute
          * </a>
          */
-        MethodParameters(AttributeMethodParameters.class),
+        MethodParameters(AttributeMethodParameters.class, ClassFile.FormatVersion.FORMAT_52, JavaSEVersion.VERSION_8),
+
         /**
          * The name for {@code Module} attribute type.
          *
@@ -453,7 +461,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The Module Attribute
          * </a>
          */
-        Module(AttributeModule.class),
+        Module(AttributeModule.class, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9),
+
         /**
          * The name for {@code ModulePackages} attribute type.
          *
@@ -462,7 +471,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The ModuModulePackages Attribute
          * </a>
          */
-        ModulePackages(AttributeModulePackages.class),
+        ModulePackages(AttributeModulePackages.class, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9),
+
         /**
          * The name for {@code ModuleMainClass} attribute type.
          *
@@ -471,7 +481,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The ModuleMainClass Attribute
          * </a>
          */
-        ModuleMainClass(AttributeModuleMainClass.class),
+        ModuleMainClass(AttributeModuleMainClass.class, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9),
+
         /**
          * The name for {@code ModuleHashes} attribute type. This is a OpenJDK
          * specific attribute and do not exist in Oracle JDK.
@@ -480,7 +491,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">
          * OpenJDK specific attribute specifications</a>
          */
-        ModuleHashes(AttributeModuleHashes.class),
+        ModuleHashes(AttributeModuleHashes.class, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9),
+
         /**
          * The name for {@code ModuleTarget} attribute type. This is a OpenJDK
          * specific attribute and do not exist in Oracle JDK.
@@ -489,7 +501,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * <a href="https://openjdk.java.net/jeps/261"> JEP 261: Module
          * System</a>
          */
-        ModuleTarget(AttributeModuleTarget.class),
+        ModuleTarget(AttributeModuleTarget.class, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9),
+
         /**
          * The name for {@code NestHost} attribute type.
          *
@@ -498,7 +511,8 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The NestHost Attribute
          * </a>
          */
-        NestHost(AttributeNestHost.class),
+        NestHost(AttributeNestHost.class, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11),
+
         /**
          * The name for {@code NestMembers} attribute type.
          *
@@ -507,7 +521,17 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          * VM Spec: The NestMembers Attribute
          * </a>
          */
-        NestMembers(AttributeNestMembers.class);
+        NestMembers(AttributeNestMembers.class, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11),
+
+        /**
+         * The name for {@code Record} attribute type.
+         *
+         * @see
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">
+         * VM Spec: The Record Attribute
+         * </a>
+         */
+        Record(AttributeRecord.class, ClassFile.FormatVersion.FORMAT_60, JavaSEVersion.VERSION_16);
 
         /**
          * The Java class representing to the attributes.
@@ -516,8 +540,20 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          */
         final Class<?> clazz;
 
-        AttributeTypes(Class<?> clazz) {
+        /**
+         * Class file format.
+         */
+        public final ClassFile.FormatVersion format;
+
+        /**
+         * Java SE platform version.
+         */
+        public final JavaSEVersion javaSE;
+
+        AttributeTypes(Class<?> clazz, ClassFile.FormatVersion format, JavaSEVersion javaSE) {
             this.clazz = clazz;
+            this.format = format;
+            this.javaSE = javaSE;
         }
 
         /**
@@ -525,7 +561,7 @@ public abstract class AttributeInfo extends FileComponent implements GenerateCla
          *
          * @return Value of {@link #clazz}
          */
-        @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP", justification="We need it")
+        @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "We need it")
         public Class<?> getClassType() {
             return this.clazz;
         }

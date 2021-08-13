@@ -5,8 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
@@ -25,8 +23,8 @@ public abstract class ConstantRefInfo extends CPInfo {
     public final u2 class_index;
     public final u2 name_and_type_index;
 
-    protected ConstantRefInfo(short tag, final PosDataInputStream posDataInputStream, ClassFile.Version version, JavaSEVersion javaSE) throws IOException {
-        super(tag, false, version, javaSE);
+    protected ConstantRefInfo(short tag, final PosDataInputStream posDataInputStream) throws IOException {
+        super(tag);
 
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;

@@ -11,7 +11,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -53,7 +52,7 @@ public class AttributeEnclosingMethod extends AttributeInfo {
     public final u2 method_index;
 
     AttributeEnclosingMethod(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
+        super(nameIndex, type, posDataInputStream);
 
         this.class_index = new u2(posDataInputStream);
         this.method_index = new u2(posDataInputStream);

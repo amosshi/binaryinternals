@@ -13,7 +13,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -65,7 +64,7 @@ public class AttributeLocalVariableTypeTable extends AttributeInfo {
     public final LocalVariableTypeTable[] local_variable_type_table;
 
     AttributeLocalVariableTypeTable(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
+        super(nameIndex, type, posDataInputStream);
 
         this.local_variable_type_table_length = new u2(posDataInputStream);
         if (this.local_variable_type_table_length.value > 0) {

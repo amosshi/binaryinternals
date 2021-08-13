@@ -13,7 +13,6 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.JavaLangSpec;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -43,7 +42,7 @@ public class AttributeSignature extends AttributeInfo {
      */
     @SuppressWarnings("java:S1172")
     AttributeSignature(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_49_0, JavaSEVersion.VERSION_5_0);
+        super(nameIndex, type, posDataInputStream);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }

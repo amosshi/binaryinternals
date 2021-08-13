@@ -8,6 +8,8 @@ package org.freeinternals.biv;
 
 import org.freeinternals.binaryviewer.JBinaryViewer;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -55,6 +57,17 @@ public class JSplitPaneFile extends JSplitPane {
         this.file = PluginManager.getFile(file);
         this.topLevelFrame = frame;
         this.createAndShowGUI();
+    }
+    
+    private int calcDividerLocation(){
+        final double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.4;
+        if (width < 260) {
+            return 260;
+        } else if (width > 1200) {
+            return 1200;
+        } else {
+            return (int) Math.floor(width);
+        }
     }
 
     @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high
@@ -127,7 +140,7 @@ public class JSplitPaneFile extends JSplitPane {
 
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         this.setDividerSize(5);
-        this.setDividerLocation(390);
+        this.setDividerLocation(this.calcDividerLocation());
         this.setLeftComponent(panel);
         this.setRightComponent(tabbedPane);
 

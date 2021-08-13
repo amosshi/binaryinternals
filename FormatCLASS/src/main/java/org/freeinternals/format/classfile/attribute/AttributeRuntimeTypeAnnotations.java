@@ -7,7 +7,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -26,8 +25,8 @@ public class AttributeRuntimeTypeAnnotations extends AttributeInfo {
     public final u2 num_annotations;
     public final TypeAnnotation[] annotations;
 
-    public AttributeRuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream, ClassFile.Version format, JavaSEVersion javaSE) throws IOException, FileFormatException {
-        super(nameIndex, name, posDataInputStream, format, javaSE);
+    public AttributeRuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        super(nameIndex, name, posDataInputStream);
 
         this.num_annotations = new u2(posDataInputStream);
         if (this.num_annotations.value > 0) {

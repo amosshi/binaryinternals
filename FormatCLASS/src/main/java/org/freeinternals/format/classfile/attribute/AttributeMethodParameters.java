@@ -14,7 +14,6 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -64,7 +63,7 @@ public class AttributeMethodParameters extends AttributeInfo {
     public final Parameter[] parameters;
 
     AttributeMethodParameters(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_52_0, JavaSEVersion.VERSION_8);
+        super(nameIndex, type, posDataInputStream);
 
         this.parameters_count = new u1(posDataInputStream, true);
         if (this.parameters_count.value > 0) {

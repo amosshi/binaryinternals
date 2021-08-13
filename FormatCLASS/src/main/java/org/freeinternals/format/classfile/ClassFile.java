@@ -8,6 +8,8 @@ package org.freeinternals.format.classfile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Month;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -450,8 +452,8 @@ public class ClassFile extends FileFormat {
      *
      * @return The Java class file version.
      */
-    public Version getVersion() {
-        return Version.valueOf(this.major_version.value, this.minor_version.value);
+    public FormatVersion getVersion() {
+        return FormatVersion.valueOf(this.major_version.value, this.minor_version.value);
     }
 
     @Override
@@ -502,14 +504,14 @@ public class ClassFile extends FileFormat {
     }
 
     /**
-     * Version numbers of a class file. Together, a major and a minor version
+     * Class file Format Version numbers. Together, a major and a minor version
      * number determine the version of the class file format. If a class file
      * has major version number M and minor version number m, we denote the
      * version of its class file format as M.m.
      *
      * @author Amos Shi
      */
-    public enum Version {
+    public enum FormatVersion {
 
         /**
          * For 45.3, it could be both {@link JavaSEVersion#VERSION_1_1} or
@@ -517,25 +519,35 @@ public class ClassFile extends FileFormat {
          * {@link JavaSEVersion#VERSION_1_1} which is the newer one.
          */
         FORMAT_45_3(45, 3, JavaSEVersion.VERSION_1_1),
-        FORMAT_49_0(49, 0, JavaSEVersion.VERSION_5_0),
-        FORMAT_50_0(50, 0, JavaSEVersion.VERSION_6),
-        FORMAT_51_0(51, 0, JavaSEVersion.VERSION_7),
-        FORMAT_52_0(52, 0, JavaSEVersion.VERSION_8),
-        FORMAT_53_0(53, 0, JavaSEVersion.VERSION_9),
-        FORMAT_55_0(55, 0, JavaSEVersion.VERSION_11);
+        FORMAT_46(46, 0, JavaSEVersion.VERSION_1_2),
+        FORMAT_47(47, 0, JavaSEVersion.VERSION_1_3),
+        FORMAT_48(48, 0, JavaSEVersion.VERSION_1_4),
+        FORMAT_49(49, 0, JavaSEVersion.VERSION_5_0),
+        FORMAT_50(50, 0, JavaSEVersion.VERSION_6),
+        FORMAT_51(51, 0, JavaSEVersion.VERSION_7),
+        FORMAT_52(52, 0, JavaSEVersion.VERSION_8),
+        FORMAT_53(53, 0, JavaSEVersion.VERSION_9),
+        FORMAT_54(54, 0, JavaSEVersion.VERSION_10),
+        FORMAT_55(55, 0, JavaSEVersion.VERSION_11),
+        FORMAT_56(56, 0, JavaSEVersion.VERSION_12),
+        FORMAT_57(57, 0, JavaSEVersion.VERSION_13),
+        FORMAT_58(58, 0, JavaSEVersion.VERSION_14),
+        FORMAT_59(59, 0, JavaSEVersion.VERSION_15),
+        FORMAT_60(60, 0, JavaSEVersion.VERSION_16),
+        FORMAT_61(61, 0, JavaSEVersion.VERSION_17);
 
         public final int major_version;
         public final int minor_version;
         public final JavaSEVersion java_se;
 
-        private Version(int major, int minor, JavaSEVersion javaSE) {
+        private FormatVersion(int major, int minor, JavaSEVersion javaSE) {
             this.major_version = major;
             this.minor_version = minor;
             this.java_se = javaSE;
         }
 
-        public static Version valueOf(int major, int minor) {
-            for (Version v : Version.values()) {
+        public static FormatVersion valueOf(int major, int minor) {
+            for (FormatVersion v : FormatVersion.values()) {
                 if (v.major_version == major && v.minor_version == minor) {
                     return v;
                 }

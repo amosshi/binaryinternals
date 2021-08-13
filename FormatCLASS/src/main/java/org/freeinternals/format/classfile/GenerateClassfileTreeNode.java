@@ -7,6 +7,8 @@
 
 package org.freeinternals.format.classfile;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
@@ -14,6 +16,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Amos Shi
  */
 public interface GenerateClassfileTreeNode {
+
+    ResourceBundle MESSAGES = ResourceBundle.getBundle(GenerateClassfileTreeNode.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
 
     void generateTreeNode(final DefaultMutableTreeNode parentNode, ClassFile classFile);
 

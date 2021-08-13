@@ -40,7 +40,7 @@ public class AttributeUnrecognized extends AttributeInfo {
     private byte[] rawData;
 
     AttributeUnrecognized(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
+        super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value > 0) {
             this.rawData = new byte[this.attribute_length.value];

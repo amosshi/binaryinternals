@@ -51,34 +51,8 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
      */
     public final u1 tag;
 
-    /**
-     * Some entries in the constant_pool table are loadable because they
-     * represent entities that can be pushed onto the stack at run time to
-     * enable further computation.
-     *
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4-310">
-     * VM Spec: Table 4.4-C. Loadable constant pool tags
-     * </a>
-     */
-    public final boolean loadable;
-
-    /**
-     * Class file format.
-     */
-    public final ClassFile.Version format;
-
-    /**
-     * Java SE platform version.
-     */
-    public final JavaSEVersion javaSE;
-
-    CPInfo(short tag, boolean loadable, ClassFile.Version format, JavaSEVersion javaSE) {
+    CPInfo(short tag) {
         this.tag = new u1(tag);
-
-        this.loadable = loadable;
-        this.format = format;
-        this.javaSE = javaSE;
     }
 
     /**
@@ -126,7 +100,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Utf8_info Structure
          * </a>
          */
-        CONSTANT_Utf8(1, ConstantUtf8Info.class),
+        CONSTANT_Utf8(1, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, ConstantUtf8Info.class),
         /**
          * The value for constant type {@code CONSTANT_Integer}.
          *
@@ -135,7 +109,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
-        CONSTANT_Integer(3, ConstantIntegerInfo.class),
+        CONSTANT_Integer(3, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantIntegerInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Float}.
          *
@@ -144,7 +118,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
-        CONSTANT_Float(4, ConstantFloatInfo.class),
+        CONSTANT_Float(4, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantFloatInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Long}.
          *
@@ -153,7 +127,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
-        CONSTANT_Long(5, ConstantLongInfo.class),
+        CONSTANT_Long(5, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantLongInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Double}.
          *
@@ -162,7 +136,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
-        CONSTANT_Double(6, ConstantDoubleInfo.class),
+        CONSTANT_Double(6, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantDoubleInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Class}.
          *
@@ -171,7 +145,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Class_info Structure
          * </a>
          */
-        CONSTANT_Class(7, ConstantClassInfo.class),
+        CONSTANT_Class(7, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantClassInfo.class),
         /**
          * The value for constant type {@code CONSTANT_String}.
          *
@@ -180,7 +154,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_String_info Structure
          * </a>
          */
-        CONSTANT_String(8, ConstantStringInfo.class),
+        CONSTANT_String(8, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, ConstantStringInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Fieldref}.
          *
@@ -190,7 +164,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_Fieldref(9, ConstantFieldrefInfo.class),
+        CONSTANT_Fieldref(9, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, ConstantFieldrefInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Methodref}.
          *
@@ -200,7 +174,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_Methodref(10, ConstantMethodrefInfo.class),
+        CONSTANT_Methodref(10, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, ConstantMethodrefInfo.class),
         /**
          * The value for constant type {@code CONSTANT_InterfaceMethodref}.
          *
@@ -210,7 +184,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_InterfaceMethodref(11, ConstantInterfaceMethodrefInfo.class),
+        CONSTANT_InterfaceMethodref(11, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, ConstantInterfaceMethodrefInfo.class),
         /**
          * The value for constant type {@code CONSTANT_NameAndType}.
          *
@@ -219,7 +193,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_NameAndType_info Structure
          * </a>
          */
-        CONSTANT_NameAndType(12, ConstantNameAndTypeInfo.class),
+        CONSTANT_NameAndType(12, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, ConstantNameAndTypeInfo.class),
         /**
          * The value for constant type {@code CONSTANT_MethodHandle}.
          *
@@ -228,7 +202,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_MethodHandle_info Structure
          * </a>
          */
-        CONSTANT_MethodHandle(15, ConstantMethodHandleInfo.class),
+        CONSTANT_MethodHandle(15, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, ConstantMethodHandleInfo.class),
         /**
          * The value for constant type {@code CONSTANT_MethodType}.
          *
@@ -237,7 +211,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_MethodType_info Structure
          * </a>
          */
-        CONSTANT_MethodType(16, ConstantMethodTypeInfo.class),
+        CONSTANT_MethodType(16, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, ConstantMethodTypeInfo.class),
         /**
          * The value for constant type {@code CONSTANT_Dynamic}.
          *
@@ -247,7 +221,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * Structures
          * </a>
          */
-        CONSTANT_Dynamic(17, ConstantDynamicInfo.class),
+        CONSTANT_Dynamic(17, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11, true, ConstantDynamicInfo.class),
         /**
          * The value for constant type {@code CONSTANT_InvokeDynamic}.
          *
@@ -256,7 +230,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_InvokeDynamic Structure
          * </a>
          */
-        CONSTANT_InvokeDynamic(18, ConstantInvokeDynamicInfo.class),
+        CONSTANT_InvokeDynamic(18, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, false, ConstantInvokeDynamicInfo.class),
         /**
          * The CONSTANT_Module_info structure is used to represent a module.
          *
@@ -265,7 +239,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Module_info Structure
          * </a>
          */
-        CONSTANT_Module(19, ConstantModuleInfo.class),
+        CONSTANT_Module(19, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, ConstantModuleInfo.class),
         /**
          * The CONSTANT_Package_info structure is used to represent a package
          * exported or opened by a module.
@@ -275,7 +249,7 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * VM Spec: The CONSTANT_Package_info Structure
          * </a>
          */
-        CONSTANT_Package(20, ConstantPackageInfo.class);
+        CONSTANT_Package(20, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, ConstantPackageInfo.class);
 
         private static final Logger Log = Logger.getLogger(ConstantType.class.getName());
 
@@ -285,12 +259,37 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
         public final short tag;
 
         /**
+         * Class file format.
+         */
+        public final ClassFile.FormatVersion format;
+
+        /**
+         * Java SE platform version.
+         */
+        public final JavaSEVersion javaSE;
+
+    /**
+     * Some entries in the constant_pool table are loadable because they
+     * represent entities that can be pushed onto the stack at run time to
+     * enable further computation.
+     *
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4-310">
+     * VM Spec: Table 4.4-C. Loadable constant pool tags
+     * </a>
+     */
+    public final boolean loadable;
+        
+        /**
          * The Java class representing to the attributes.
          */
         final Class<?> clazz;
 
-        private ConstantType(int tag, Class<?> clz) {
+        private ConstantType(int tag, ClassFile.FormatVersion format, JavaSEVersion javaSE, boolean loadable, Class<?> clz) {
             this.tag = (short) tag;
+            this.format = format;
+            this.javaSE = javaSE;
+            this.loadable = loadable;
             this.clazz = clz;
         }
 
@@ -317,8 +316,8 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
          * @param tag Constant pool item tag, indicating the type of the item
          * @param posDataInputStream Class file byte stream
          * @return Parsed constant pool info
-         * @throws org.freeinternals.commonlib.core.FileFormatException An invalid class
-         * file format encountered
+         * @throws org.freeinternals.commonlib.core.FileFormatException An
+         * invalid class file format encountered
          */
         public static CPInfo parse(int tag, final PosDataInputStream posDataInputStream) throws FileFormatException {
             CPInfo cpInfo = null;
@@ -342,4 +341,3 @@ public abstract class CPInfo extends FileComponent implements GenerateClassfileT
         }
     }
 }
-

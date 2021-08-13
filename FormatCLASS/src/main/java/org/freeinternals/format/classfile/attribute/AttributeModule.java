@@ -14,7 +14,6 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -107,7 +106,7 @@ public class AttributeModule extends AttributeInfo {
      */
     @SuppressWarnings("java:S3776")
     AttributeModule(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_53_0, JavaSEVersion.VERSION_9);
+        super(nameIndex, type, posDataInputStream);
 
         this.module_name_index = new u2(posDataInputStream);
         this.module_flags = new u2(posDataInputStream);

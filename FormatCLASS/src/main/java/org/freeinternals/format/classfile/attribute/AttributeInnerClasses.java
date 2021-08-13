@@ -14,7 +14,6 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -53,7 +52,7 @@ public class AttributeInnerClasses extends AttributeInfo {
     private final Class[] classes;
 
     AttributeInnerClasses(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_1);
+        super(nameIndex, type, posDataInputStream);
 
         this.number_of_classes = new u2(posDataInputStream);
         if (this.number_of_classes.value > 0) {

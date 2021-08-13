@@ -12,7 +12,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -53,7 +52,7 @@ public class AttributeNestHost extends AttributeInfo {
     public final u2 host_class_index;
 
     AttributeNestHost(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_55_0, JavaSEVersion.VERSION_11);
+        super(nameIndex, type, posDataInputStream);
         this.host_class_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }

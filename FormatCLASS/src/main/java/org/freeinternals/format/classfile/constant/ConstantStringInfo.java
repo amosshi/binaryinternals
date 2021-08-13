@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -43,7 +42,7 @@ public class ConstantStringInfo extends CPInfo {
     public final u2 string_index;
 
     ConstantStringInfo(final PosDataInputStream posDataInputStream) throws IOException {
-        super(CPInfo.ConstantType.CONSTANT_String.tag, true, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
+        super(CPInfo.ConstantType.CONSTANT_String.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         super.length = LENGTH;
 

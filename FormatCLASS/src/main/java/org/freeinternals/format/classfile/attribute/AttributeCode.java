@@ -15,7 +15,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.constant.CPInfo;
 import org.freeinternals.format.classfile.Opcode;
 import org.freeinternals.format.classfile.u2;
@@ -66,15 +65,23 @@ public class AttributeCode extends AttributeInfo {
 
     public final u2 max_stack;
     public final u2 max_locals;
+
+    /**
+     * The value of the {@link #code_length} item gives the number of bytes in
+     * the code array for this method.
+     *
+     * The value of {@link #code_length} must be greater than <code>zero</code>
+     * (as the code array must not be empty) and less than <code>65536</code>.
+     */
     public final u4 code_length;
-    private final byte[] code;
+    public final byte[] code;
     public final u2 exception_table_length;
     public ExceptionTable[] exceptionTable;
     public final u2 attributes_count;
-    public AttributeInfo[] attributes;
+    public final AttributeInfo[] attributes;
 
     AttributeCode(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final CPInfo[] cp) throws IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2);
+        super(nameIndex, type, posDataInputStream);
 
         int i;
 
@@ -101,19 +108,11 @@ public class AttributeCode extends AttributeInfo {
             for (i = 0; i < this.attributes_count.value; i++) {
                 this.attributes[i] = AttributeInfo.parse(posDataInputStream, cp);
             }
-
+        } else {
+            this.attributes = null;
         }
 
         super.checkSize(posDataInputStream.getPos());
-    }
-
-    /**
-     * Get the value of {@code code}.
-     *
-     * @return The value of {@code code}
-     */
-    public byte[] getCode() {
-        return this.code.clone();
     }
 
     /**
@@ -144,23 +143,12 @@ public class AttributeCode extends AttributeInfo {
         return et;
     }
 
-    /**
-     * Get the value of {@code attributes}[{@code index}].
-     *
-     * @param index Zero-based index of the attributes
-     * @return The value of {@code attributes}[{@code index}]
-     */
-    public AttributeInfo getAttribute(final int index) {
-        return this.attributes[index];
-    }
-
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
         int i;
         final int codeLength = this.code_length.value;
         DefaultMutableTreeNode treeNodeExceptionTable;
         DefaultMutableTreeNode treeNodeExceptionTableItem;
-        final int attrCount = this.attributes_count.value;
         DefaultMutableTreeNode treeNodeAttribute;
         DefaultMutableTreeNode treeNodeAttributeItem;
 
@@ -215,6 +203,7 @@ public class AttributeCode extends AttributeInfo {
         }
 
         // Add attributes
+        final int attrCount = this.attributes_count.value;
         final int attrStartPos = super.startPos + 14 + codeLength + 2 + this.exception_table_length.value * ExceptionTable.LENGTH;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 attrStartPos,
@@ -234,7 +223,7 @@ public class AttributeCode extends AttributeInfo {
             ));
 
             for (i = 0; i < attrCount; i++) {
-                AttributeInfo attr = this.getAttribute(i);
+                AttributeInfo attr = this.attributes[i];
                 treeNodeAttributeItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         attr.getStartPos(),
                         attr.getLength(),

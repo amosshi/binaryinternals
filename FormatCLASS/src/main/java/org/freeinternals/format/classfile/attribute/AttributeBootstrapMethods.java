@@ -13,7 +13,6 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -51,7 +50,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
     public final BootstrapMethod[] bootstrap_methods;
 
     AttributeBootstrapMethods(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
-        super(nameIndex, type, posDataInputStream, ClassFile.Version.FORMAT_51_0, JavaSEVersion.VERSION_7);
+        super(nameIndex, type, posDataInputStream);
 
         this.num_bootstrap_methods = new u2(posDataInputStream);
         if (this.num_bootstrap_methods.value > 0) {
@@ -93,9 +92,9 @@ public class AttributeBootstrapMethods extends AttributeInfo {
                 bootstrapMethodsNode.add(bootstrapMethod);
                 this.generateSubnode(bootstrapMethod, m, classFile);
             }
-        } 
+        }
     }
-    
+
     /**
      * Generate tree node for {@link BootstrapMethod}.
      */
@@ -135,7 +134,7 @@ public class AttributeBootstrapMethods extends AttributeInfo {
             }
         }
     }
-    
+
     public static final class BootstrapMethod extends FileComponent {
 
         /**

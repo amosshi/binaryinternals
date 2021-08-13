@@ -33,7 +33,6 @@ public class JTreeClassFile {
     static final String CP_PREFIX = "constant_pool[";
     static final String FIELDS_PREFIX = "fields[";
     static final String METHODS_PERFIX = "methods[";
-    static final ResourceBundle MESSAGES = ResourceBundle.getBundle(JTreeClassFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     private final ClassFile classFile;
     DefaultMutableTreeNode root;
 
@@ -48,7 +47,7 @@ public class JTreeClassFile {
 
     void generateTreeNodes(final DefaultMutableTreeNode rootNode) {
         this.root = rootNode;
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, u4.LENGTH, "magic", MESSAGES.getString("msg_magic"))));
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, u4.LENGTH, "magic", GenerateClassfileTreeNode.MESSAGES.getString("msg_magic"))));
 
         this.generateTreeNodeClsssFileVersion();
         this.generateConstantPool();
@@ -65,7 +64,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "minor_version: " + this.classFile.minor_version.value,
-                MESSAGES.getString("msg_version")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_version")
         )));
         startPos += u2.LENGTH;
 
@@ -73,7 +72,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "major_version: " + this.classFile.major_version.value,
-                MESSAGES.getString("msg_version")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_version")
         )));
     }
 
@@ -86,7 +85,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "constant_pool_count: " + cpCount,
-                MESSAGES.getString("msg_constant_pool_count")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_constant_pool_count")
         )));
         startPos += u2.LENGTH;
 
@@ -95,7 +94,7 @@ public class JTreeClassFile {
                 startPos,
                 cp[cpCount - 1].getStartPos() + cp[cpCount - 1].getLength() - startPos,
                 CP_PREFIX + cpCount + "]",
-                MESSAGES.getString("msg_constant_pool_table")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_constant_pool_table")
         ));
         this.root.add(constantPool);
 
@@ -107,12 +106,12 @@ public class JTreeClassFile {
                         cp[i].getStartPos(),
                         1,
                         "tag: " + cp[i].tag.value,
-                        MESSAGES.getString("msg_cp_tag")
+                        GenerateClassfileTreeNode.MESSAGES.getString("msg_cp_tag")
                 )));
                 cp[i].generateTreeNode(cpInfoNode, this.classFile);
             } else {
                 cpInfoNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, 0, i + ". [Empty Item]",
-                        MESSAGES.getString("msg_cp_empty")));
+                        GenerateClassfileTreeNode.MESSAGES.getString("msg_cp_empty")));
             }
 
             constantPool.add(cpInfoNode);
@@ -126,7 +125,7 @@ public class JTreeClassFile {
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
                 MESSAGE_ACCESS_FLAGS + this.classFile.getModifiers(),
-                MESSAGES.getString("msg_access_flags")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_access_flags")
         ));
         this.root.add(accessFlags);
 
@@ -137,7 +136,7 @@ public class JTreeClassFile {
                 this.classFile.this_class.getStartPos(),
                 this.classFile.this_class.getLength(),
                 sb.toString(),
-                MESSAGES.getString("msg_this_class")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_this_class")
         ));
         this.root.add(thisClass);
 
@@ -153,7 +152,7 @@ public class JTreeClassFile {
                 this.classFile.super_class.getStartPos(),
                 this.classFile.super_class.getLength(),
                 sb.toString(),
-                MESSAGES.getString("msg_super_class")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_super_class")
         ));
         this.root.add(superClass);
 
@@ -162,7 +161,7 @@ public class JTreeClassFile {
                 this.classFile.interfaces_count.getStartPos(),
                 this.classFile.interfaces_count.getLength(),
                 "interfaces_count: " + interfaceCount,
-                MESSAGES.getString("msg_interfaces_count")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_interfaces_count")
         ));
         this.root.add(interfacesCount);
 
@@ -173,7 +172,7 @@ public class JTreeClassFile {
                     interfaces[0].getStartPos(),
                     interfaces[interfaceCount - 1].getStartPos() + interfaces[interfaceCount - 1].getLength() - interfaces[0].getStartPos(),
                     "interfaces[" + interfaceCount + "]",
-                    MESSAGES.getString("msg_interfaces_table")
+                    GenerateClassfileTreeNode.MESSAGES.getString("msg_interfaces_table")
             ));
             this.root.add(interfacesNode);
 
@@ -201,7 +200,7 @@ public class JTreeClassFile {
                 this.classFile.fields_count.getStartPos(),
                 this.classFile.fields_count.getLength(),
                 "fields_count: " + fieldCount,
-                MESSAGES.getString("msg_fields_count")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_fields_count")
         ));
         this.root.add(fieldsCount);
 
@@ -211,7 +210,7 @@ public class JTreeClassFile {
                     fields[0].getStartPos(),
                     fields[fieldCount - 1].getStartPos() + fields[fieldCount - 1].getLength() - fields[0].getStartPos(),
                     FIELDS_PREFIX + fieldCount + "]",
-                    MESSAGES.getString("msg_fields_table")
+                    GenerateClassfileTreeNode.MESSAGES.getString("msg_fields_table")
             ));
             this.root.add(fieldsNode);
 
@@ -291,7 +290,7 @@ public class JTreeClassFile {
                 this.classFile.methods_count.getStartPos(),
                 this.classFile.methods_count.getLength(),
                 "methods_count: " + methodCount,
-                MESSAGES.getString("msg_methods_count")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_methods_count")
         ));
         this.root.add(methodsCount);
 
@@ -301,7 +300,7 @@ public class JTreeClassFile {
                     methods[0].getStartPos(),
                     methods[methodCount - 1].getStartPos() + methods[methodCount - 1].getLength() - methods[0].getStartPos(),
                     METHODS_PERFIX + methodCount + "]",
-                    MESSAGES.getString("msg_methods_table")
+                    GenerateClassfileTreeNode.MESSAGES.getString("msg_methods_table")
             ));
             this.root.add(methodsNode);
 
@@ -380,7 +379,7 @@ public class JTreeClassFile {
                 this.classFile.attributes_count.getStartPos(),
                 this.classFile.attributes_count.getLength(),
                 MESSAGE_ATTR_COUNT + attrCount,
-                MESSAGES.getString("msg_attributes_count")
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_attributes_count")
         ));
         this.root.add(attrsCount);
 
@@ -390,7 +389,7 @@ public class JTreeClassFile {
                     attrs[0].getStartPos(),
                     attrs[attrCount - 1].getStartPos() + attrs[attrCount - 1].getLength() - attrs[0].getStartPos(),
                     "attributes[" + attrCount + "]",
-                    MESSAGES.getString("msg_attributes_table")
+                    GenerateClassfileTreeNode.MESSAGES.getString("msg_attributes_table")
             ));
             this.root.add(attrsNode);
 
