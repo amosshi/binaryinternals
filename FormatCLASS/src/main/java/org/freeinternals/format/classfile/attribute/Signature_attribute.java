@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -41,7 +42,7 @@ public class Signature_attribute extends attribute_info {
      * </pre>
      */
     @SuppressWarnings("java:S1172")
-    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws java.io.IOException, FileFormatException {
+    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());

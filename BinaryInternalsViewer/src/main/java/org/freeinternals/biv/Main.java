@@ -217,7 +217,12 @@ public class Main extends JFrame {
         }
     }
 
-    @SuppressWarnings("java:S1181")  // Throwable and Error should not be caught  --- We need to cache all exception here
+    /**
+     * <pre>
+     * java:S1181 - Throwable and Error should not be caught  --- We need to cache all exception here
+     * </pre>
+     */
+    @SuppressWarnings("java:S1181")
     private void openFile(final File file) {
         // Close any open file first if exists
         this.closeFile();
@@ -294,5 +299,4 @@ public class Main extends JFrame {
                     JOptionPane.WARNING_MESSAGE);
         }
     }
-
 }

@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -206,7 +207,7 @@ public class Module_attribute extends attribute_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "module_flags: " + this.module_flags.value + " " + this.getModuleFlags()
+                "module_flags: " + BytesTool.getBinaryString(this.module_flags.value) + " " + this.getModuleFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -432,7 +433,7 @@ public class Module_attribute extends attribute_info {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "opens_flags: " + open.opens_flags.value + " " + open.getOpenFlags()
+                "opens_flags: " + BytesTool.getBinaryString(open.opens_flags.value) + " " + open.getOpenFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -474,7 +475,7 @@ public class Module_attribute extends attribute_info {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "exports_flags: " + export.exports_flags.value + " " + export.getExportFlags()
+                "exports_flags: " + BytesTool.getBinaryString(export.exports_flags.value) + " " + export.getExportFlags()
         )));
         startPosMoving += u2.LENGTH;
 
@@ -521,7 +522,7 @@ public class Module_attribute extends attribute_info {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "requires_flags: " + require.requires_flags.value + " " + require.getRequiresFlags()
+                "requires_flags: " + BytesTool.getBinaryString(require.requires_flags.value) + " " + require.getRequiresFlags()
         )));
         startPosMoving += u2.LENGTH;
 

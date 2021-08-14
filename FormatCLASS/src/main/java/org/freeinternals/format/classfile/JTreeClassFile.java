@@ -124,7 +124,7 @@ public class JTreeClassFile {
         final DefaultMutableTreeNode accessFlags = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
-                MESSAGE_ACCESS_FLAGS + this.classFile.getModifiers(),
+                MESSAGE_ACCESS_FLAGS + BytesTool.getBinaryString(this.classFile.access_flags.value.value) + " " + this.classFile.getModifiers(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_access_flags")
         ));
         this.root.add(accessFlags);
@@ -238,7 +238,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                MESSAGE_ACCESS_FLAGS + fieldInfo.access_flags.value + ", " + fieldInfo.getModifiers()
+                MESSAGE_ACCESS_FLAGS + BytesTool.getBinaryString(fieldInfo.access_flags.value) + " " + fieldInfo.getModifiers()
         )));
         int nameIndex = fieldInfo.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -329,7 +329,7 @@ public class JTreeClassFile {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 2,
-                MESSAGE_ACCESS_FLAGS + methodInfo.access_flags.value + ", " + methodInfo.getModifiers()
+                MESSAGE_ACCESS_FLAGS + BytesTool.getBinaryString(methodInfo.access_flags.value) + " " + methodInfo.getModifiers()
         )));
         cpIndex = methodInfo.name_index.value;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -395,12 +395,13 @@ public class JTreeClassFile {
 
             DefaultMutableTreeNode attrNode;
             for (int i = 0; i < attrCount; i++) {
+                attribute_info attr = attrs[i];
                 attrNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        attrs[i].getStartPos(),
-                        attrs[i].getLength(),
-                        (i + 1) + ". " + attrs[i].getName()
+                        attr.getStartPos(),
+                        attr.getLength(),
+                        (i + 1) + ". " + attr.getName()
                 ));
-                attribute_info.generateTreeNode(attrNode, attrs[i], this.classFile);
+                attribute_info.generateTreeNode(attrNode, attr, this.classFile);
 
                 attrsNode.add(attrNode);
             }

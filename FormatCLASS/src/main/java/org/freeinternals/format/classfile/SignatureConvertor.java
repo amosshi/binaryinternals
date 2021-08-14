@@ -273,6 +273,9 @@ public final class SignatureConvertor {
         }
     }
 
+    /**
+     * Signature parse result.
+     */
     public static class SignatureResult {
 
         /**

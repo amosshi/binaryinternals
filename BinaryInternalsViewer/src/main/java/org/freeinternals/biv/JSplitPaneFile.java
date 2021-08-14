@@ -6,10 +6,7 @@
  */
 package org.freeinternals.biv;
 
-import org.freeinternals.binaryviewer.JBinaryViewer;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -26,11 +23,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.binaryviewer.JBinaryViewer;
 import org.freeinternals.biv.plugin.PluginManager;
-import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 
 /**
  * A split panel created from a class file byte array.
@@ -51,6 +49,10 @@ public class JSplitPaneFile extends JSplitPane {
      * @param file
      * @param frame
      * @throws FileFormatException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, NoSuchMethodException, SecurityException, InstantiationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -60,7 +62,7 @@ public class JSplitPaneFile extends JSplitPane {
     }
     
     private int calcDividerLocation(){
-        final double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.4;
+        final double width = this.topLevelFrame.getWidth() * 0.4;
         if (width < 260) {
             return 260;
         } else if (width > 1200) {

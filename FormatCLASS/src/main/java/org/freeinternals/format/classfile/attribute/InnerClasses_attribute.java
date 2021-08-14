@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -107,7 +108,7 @@ public class InnerClasses_attribute extends attribute_info {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("class [%d]", i + 1)
+                        String.format("class %d", i + 1)
                 ));
                 this.generateSubnode(treeNodeInnerClassItem, cls, classFile);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
@@ -146,7 +147,7 @@ public class InnerClasses_attribute extends attribute_info {
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 6,
                 2,
-                "inner_class_access_flags: " + innerClass.inner_class_access_flags.value + " - " + innerClass.getModifiers()
+                "inner_class_access_flags: " + BytesTool.getBinaryString(innerClass.inner_class_access_flags.value) + " - " + innerClass.getModifiers()
         )));
     }
 

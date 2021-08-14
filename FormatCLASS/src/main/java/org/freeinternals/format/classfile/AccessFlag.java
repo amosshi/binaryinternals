@@ -14,6 +14,8 @@ import org.freeinternals.format.classfile.attribute.MethodParameters_attribute;
 import org.freeinternals.format.classfile.attribute.Module_attribute;
 
 /**
+ * Access flags are mask of flags used to denote access permissions to and
+ * properties of this class file.
  *
  * @author Amos Shi
  *

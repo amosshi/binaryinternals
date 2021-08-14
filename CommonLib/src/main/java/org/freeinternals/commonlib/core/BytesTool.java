@@ -28,6 +28,16 @@ public final class BytesTool {
     }
 
     /**
+     * Get binary string with leading zero.
+     *
+     * @param i Integer value to convert
+     * @return  Binary string with leading zero
+     */
+    public static String getBinaryString(int i){
+        return String.format("%16s", Integer.toBinaryString(i)).replace(' ', '0');
+    }
+
+    /**
      * Get a string for the {@code hex} view of byte array {@code data}.
      *
      * @param data Byte array

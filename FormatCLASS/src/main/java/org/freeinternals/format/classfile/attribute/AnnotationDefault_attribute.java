@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
+import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -51,7 +52,7 @@ public class AnnotationDefault_attribute extends attribute_info {
      */
     public final Annotation.ElementValue default_value;
 
-    AnnotationDefault_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    AnnotationDefault_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
         this.default_value = new Annotation.ElementValue(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());

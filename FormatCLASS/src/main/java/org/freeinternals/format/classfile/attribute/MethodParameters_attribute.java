@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -119,9 +120,8 @@ public class MethodParameters_attribute extends attribute_info {
             parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH,
-                    "access_flags: 0x"
-                    + String.format("%04X", this.parameters[i].access_flags.value) + " - "
-                    + this.parameters[i].getAccessFlagsText()
+                    "access_flags: " + BytesTool.getBinaryString(this.parameters[i].access_flags.value)
+                    + " - " + this.parameters[i].getAccessFlagsText()
             )));
             startPosMoving += u2.LENGTH;
         }

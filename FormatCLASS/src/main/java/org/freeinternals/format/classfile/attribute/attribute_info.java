@@ -501,7 +501,15 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          * VM Spec: The Record Attribute
          * </a>
          */
-        Record(Record_attribute.class, ClassFile.FormatVersion.FORMAT_60, JavaSEVersion.VERSION_16);
+        Record(Record_attribute.class, ClassFile.FormatVersion.FORMAT_60, JavaSEVersion.VERSION_16),
+
+        /**
+         * The name for {@code PermittedSubclasses} attribute type.
+         *
+         * @see <a href="https://openjdk.java.net/jeps/360"> JEP 360</a>
+         * @see <a href="https://openjdk.java.net/jeps/409"> JEP 409</a>
+         */
+        PermittedSubclasses(PermittedSubclasses_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17);
 
         /**
          * The Java class representing to the attributes.

@@ -26,12 +26,12 @@
         and then, we can get various information from the class file:
 
         <pre>
-    AccessFlags af = classfile.getAccessFlags();
-    AbstractConstantPool[] cp = classfile.getConstantPool();
-    FieldCount fc = classfile.getFieldCount();
-    FieldInfo[] fi = classfile.getFields();
-    MethodCount mc = classfile.getMethodCount();
-    MethodInfo[] mi = classfile.getMethods();
+    String modifiers = classfile.getModifiers();
+    cp_info[] cp = classfile.constant_pool;
+    u2 fieldsCount = classfile.fields_count.value;
+    field_info[] fields = classfile.field_info;
+    u2 methodsCount = classfile.methods_count.value;
+    method_info[] methods = classfile.methods;
     ...
         </pre>
 

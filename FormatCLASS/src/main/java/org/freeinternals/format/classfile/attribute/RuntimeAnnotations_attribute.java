@@ -1,5 +1,6 @@
 package org.freeinternals.format.classfile.attribute;
 
+import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -21,7 +22,7 @@ public class RuntimeAnnotations_attribute extends attribute_info {
     public final u2 num_annotations;
     private final Annotation[] annotations;
 
-    RuntimeAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    RuntimeAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
         this.num_annotations = new u2(posDataInputStream);

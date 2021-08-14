@@ -93,6 +93,9 @@ public class JavaLangSpec {
     }
 
     /**
+     * The identifiers <code>var</code> and <code>yield</code> are restricted
+     * identifiers because they are not allowed in some contexts.
+     *
      * @see <a
      * href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.8">
      * Keywords
@@ -111,6 +114,13 @@ public class JavaLangSpec {
     }
 
     /**
+     * A further ten character sequences are restricted keywords: open, module,
+     * requires, transitive, exports, opens, to, uses, provides, and with.
+     *
+     * These character sequences are tokenized as keywords solely where they
+     * appear as terminals in the ModuleDeclaration, ModuleDirective, and
+     * RequiresModifier productions.
+     *
      * @see <a
      * href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.9">
      * Keywords

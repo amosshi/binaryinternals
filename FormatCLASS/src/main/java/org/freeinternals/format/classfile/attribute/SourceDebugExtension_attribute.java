@@ -30,6 +30,8 @@ import org.freeinternals.format.classfile.u2;
  *   u1 debug_extension[attribute_length];
  * }
  * </pre>
+ * 
+ * Note. TODO - This Attribute is not tested - since no test case found
  *
  * @author Amos Shi
  * @since Java 5
@@ -42,7 +44,6 @@ import org.freeinternals.format.classfile.u2;
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-// TODO - This Attribute is not tested - since no test case found
 @SuppressWarnings("java:S116")
 public class SourceDebugExtension_attribute extends attribute_info {
 

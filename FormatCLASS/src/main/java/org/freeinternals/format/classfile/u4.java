@@ -11,6 +11,7 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 
 /**
+ * An unsigned four-byte quantity.
  *
  * @author Amos Shi
  *
