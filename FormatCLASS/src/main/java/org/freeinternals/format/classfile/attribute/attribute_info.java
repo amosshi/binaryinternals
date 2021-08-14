@@ -26,7 +26,6 @@ import org.freeinternals.format.classfile.method_info;
 import org.freeinternals.format.classfile.u2;
 import org.freeinternals.format.classfile.u4;
 
-
 /**
  * Super class for attributes in class file. All attributes have the following
  * format:
@@ -502,14 +501,23 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          * </a>
          */
         Record(Record_attribute.class, ClassFile.FormatVersion.FORMAT_60, JavaSEVersion.VERSION_16),
-
         /**
          * The name for {@code PermittedSubclasses} attribute type.
          *
          * @see <a href="https://openjdk.java.net/jeps/360"> JEP 360</a>
          * @see <a href="https://openjdk.java.net/jeps/409"> JEP 409</a>
          */
-        PermittedSubclasses(PermittedSubclasses_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17);
+        PermittedSubclasses(PermittedSubclasses_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17),
+        /**
+         * The name for {@code ModuleResolution} attribute type.
+         *
+         * This attribute is found in the following openJDK 17 .class files:
+         * <pre>
+         *   openjdk-17/jmods/jdk.incubator.foreign.jmod/classes/module-info.class
+         *   openjdk-17/jmods/jdk.incubator.vector.jmod/classes/module-info.class
+         * </pre>
+         */
+        ModuleResolution(ModuleResolution_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17);
 
         /**
          * The Java class representing to the attributes.
