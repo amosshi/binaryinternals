@@ -7,8 +7,6 @@
 package org.freeinternals.format.classfile;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.ui.HTMLKit;

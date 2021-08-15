@@ -16,6 +16,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
+import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -44,10 +45,11 @@ import org.freeinternals.format.classfile.u2;
  * </a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class InnerClasses_attribute extends attribute_info {
 
     public final u2 number_of_classes;

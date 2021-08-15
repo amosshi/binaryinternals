@@ -17,6 +17,8 @@ import java.math.BigInteger;
  */
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
+    public static final byte[] EMPTY_BYTE_ARRAY = {};
+    
     /**
      * Number in bytes for Java <code>byte</code> type.
      */
@@ -501,7 +503,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
             System.arraycopy(big, 0, result, 0, bigCounter);
             return result;
         } else {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
     }
 

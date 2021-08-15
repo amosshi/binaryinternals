@@ -44,7 +44,12 @@ import org.freeinternals.format.classfile.u2;
  * Per current findings, this attribute's length is always <code>0</code>.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class Scala_attribute extends attribute_info {
 
     public Scala_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {

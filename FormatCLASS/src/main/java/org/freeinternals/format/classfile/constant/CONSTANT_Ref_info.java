@@ -13,10 +13,11 @@ import org.freeinternals.format.classfile.u2;
  * @author Amos Shi
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public abstract class CONSTANT_Ref_info extends cp_info {
 
     public static final int LENGTH = 5;

@@ -54,11 +54,12 @@ import org.freeinternals.format.classfile.u4;
  * </a>
  *
  * <pre>
+ * java:S101  - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings({"java:S1104", "java:S116"})
+@SuppressWarnings({"java:S101", "java:S1104", "java:S116"})
 public class Code_attribute extends attribute_info {
 
     public static final String ATTRIBUTE_CODE_NODE = "code";

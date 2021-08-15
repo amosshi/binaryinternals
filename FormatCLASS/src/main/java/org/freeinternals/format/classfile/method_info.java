@@ -34,10 +34,11 @@ import org.freeinternals.commonlib.core.FileFormatException;
  * </a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class method_info extends FileComponent {
 
     public final u2 access_flags;

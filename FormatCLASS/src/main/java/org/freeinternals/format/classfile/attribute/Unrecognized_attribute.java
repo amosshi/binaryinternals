@@ -33,7 +33,12 @@ import org.freeinternals.format.classfile.u2;
  *
  * @author Amos Shi
  * @since Java 1.0.2
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class Unrecognized_attribute extends attribute_info {
 
     private byte[] rawData;

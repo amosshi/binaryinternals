@@ -12,6 +12,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -29,10 +30,11 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class Classes_attribute extends attribute_info {
 
     /**

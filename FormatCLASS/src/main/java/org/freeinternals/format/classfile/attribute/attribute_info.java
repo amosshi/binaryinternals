@@ -53,10 +53,11 @@ import org.freeinternals.format.classfile.u4;
  * </a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public abstract class attribute_info extends FileComponent implements GenerateClassfileTreeNode {
 
     private static final Logger LOG = Logger.getLogger(attribute_info.class.getName());
@@ -561,7 +562,7 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          */
         final Class<?> clazz;
         
-        public final String name;
+        public final String fullname;
 
         /**
          * Class file format.
@@ -577,7 +578,7 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
             this.clazz = clazz;
             this.format = format;
             this.javaSE = javaSE;
-            this.name = name;
+            this.fullname = name;
         }
 
         AttributeTypes(Class<?> clazz, ClassFile.FormatVersion format, JavaSEVersion javaSE) {
@@ -603,12 +604,12 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
         }
         
         /**
-         * Get the attribute name used in <code>.class</code> file.
+         * Get the attribute full name used in <code>.class</code> file.
          *
-         * @return Attribute name used in <code>.class</code> file
+         * @return Attribute full name used in <code>.class</code> file
          */
         public String getName(){
-            return (this.name == null) ? this.name() : this.name;
+            return (this.fullname == null) ? this.name() : this.fullname;
         }
     }
 }

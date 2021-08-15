@@ -35,7 +35,12 @@ import org.freeinternals.format.classfile.u1;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
  * VM Spec: The Constant Pool
  * </a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public abstract class cp_info extends FileComponent implements GenerateClassfileTreeNode {
 
     /**

@@ -106,7 +106,7 @@ public class Chunk_iTXt extends Chunk {
                 - this.Keyword.length() - 1
                 - 1 - 1
                 - this.LanguageTag.length() - 1;
-        if (this.TranslatedKeyword != null) {
+        if (this.TranslatedKeyword.length > 0) {
             rest -= this.TranslatedKeyword.length;
         }
         rest -= 1;

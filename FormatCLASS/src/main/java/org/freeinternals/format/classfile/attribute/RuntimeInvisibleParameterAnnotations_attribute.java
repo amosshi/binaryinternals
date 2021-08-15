@@ -40,7 +40,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.19">
  * VM Spec: The RuntimeInvisibleParameterAnnotations attribute
  * </a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class RuntimeInvisibleParameterAnnotations_attribute extends RuntimeParameterAnnotations_attribute {
 
     RuntimeInvisibleParameterAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {

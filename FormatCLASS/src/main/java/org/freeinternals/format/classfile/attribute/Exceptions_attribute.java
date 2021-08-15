@@ -39,8 +39,13 @@ import org.freeinternals.format.classfile.u2;
  * <pre>
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class Exceptions_attribute extends attribute_info {
 
     /**

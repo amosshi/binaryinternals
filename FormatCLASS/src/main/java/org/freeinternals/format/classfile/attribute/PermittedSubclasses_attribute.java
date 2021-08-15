@@ -33,7 +33,12 @@ import org.freeinternals.format.classfile.u2;
  * @since Java 17
  * @see <a href="https://openjdk.java.net/jeps/360"> JEP 360</a>
  * @see <a href="https://openjdk.java.net/jeps/409"> JEP 409</a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class PermittedSubclasses_attribute extends Classes_attribute {
 
     public PermittedSubclasses_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {

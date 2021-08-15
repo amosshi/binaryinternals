@@ -33,7 +33,12 @@ import org.freeinternals.format.classfile.SignatureConvertor;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
  * VM Spec: The CONSTANT_Fieldref_info Structure
  * </a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class CONSTANT_Fieldref_info extends CONSTANT_Ref_info {
 
     CONSTANT_Fieldref_info(final PosDataInputStream posDataInputStream) throws IOException {

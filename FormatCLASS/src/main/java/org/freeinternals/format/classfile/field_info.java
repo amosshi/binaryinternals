@@ -34,10 +34,11 @@ import org.freeinternals.format.classfile.constant.cp_info;
  * </a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class field_info extends FileComponent {
 
     public final u2 access_flags;

@@ -35,10 +35,11 @@ import org.freeinternals.format.classfile.u2;
  * </a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_Utf8_info extends cp_info {
 
     public final u2 length_utf8;

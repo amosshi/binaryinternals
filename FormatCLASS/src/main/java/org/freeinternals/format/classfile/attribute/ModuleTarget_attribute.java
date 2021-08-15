@@ -35,10 +35,11 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://openjdk.java.net/jeps/261"> JEP 261: Module System</a>
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings("java:S116")
+@SuppressWarnings({"java:S101", "java:S116"})
 public class ModuleTarget_attribute extends attribute_info {
 
     /**

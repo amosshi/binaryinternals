@@ -32,7 +32,12 @@ import org.freeinternals.format.classfile.u2;
  * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.29">
  * VM Spec: The NestMembers Attribute
  * </a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class NestMembers_attribute extends Classes_attribute {
 
     public NestMembers_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {

@@ -32,7 +32,12 @@ import org.freeinternals.format.classfile.u2;
  * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.20">
  * VM Spec: The RuntimeVisibleTypeAnnotations Attribute
  * </a>
+ *
+ * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+ * </pre>
  */
+@SuppressWarnings("java:S101")
 public class RuntimeVisibleTypeAnnotations_attribute extends RuntimeTypeAnnotations_attribute {
 
     public RuntimeVisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
