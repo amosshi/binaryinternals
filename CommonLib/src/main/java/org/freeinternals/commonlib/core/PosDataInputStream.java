@@ -18,6 +18,23 @@ import java.math.BigInteger;
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
     /**
+     * Number in bytes for Java <code>byte</code> type.
+     */
+    public static final int LENGTH_BYTE = 1;
+    /**
+     * Number in bytes for Java <code>short</code> type.
+     */
+    public static final int LENGTH_SHORT = 2;
+    /**
+     * Number in bytes for Java <code>int</code> type.
+     */
+    public static final int LENGTH_INT = 4;
+    /**
+     * Number in bytes for Java <code>long</code> type.
+     */
+    public static final int LENGTH_LONG = 8;
+
+    /**
      * Shift Operators, offset with 8.
      */
     private static final int SHIFT_8 = 8;

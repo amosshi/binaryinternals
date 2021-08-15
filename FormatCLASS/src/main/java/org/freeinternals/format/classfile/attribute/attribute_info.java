@@ -19,6 +19,11 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
+import org.freeinternals.format.classfile.attribute.aspectj.AjSynthetic_attribute;
+import org.freeinternals.format.classfile.attribute.aspectj.MethodDeclarationLineNumber_attribute;
+import org.freeinternals.format.classfile.attribute.aspectj.WeaverVersion_attribute;
+import org.freeinternals.format.classfile.attribute.scala.ScalaSig_attribute;
+import org.freeinternals.format.classfile.attribute.scala.Scala_attribute;
 import org.freeinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.field_info;
@@ -88,7 +93,7 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
      */
     public final u4 attribute_length;
 
-    attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
+    public attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
         this.name = name;
@@ -122,7 +127,7 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
 
             boolean matched = false;
             for (AttributeTypes attrType : AttributeTypes.values()) {
-                if (attrType.name().equals(type) && attrType.clazz != null) {
+                if (attrType.getName().equals(type) && attrType.clazz != null) {
                     // There is only 1 constructor in the JVM Attributes
                     Constructor<?> cons = attrType.clazz.getDeclaredConstructors()[0];
 
@@ -493,6 +498,11 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          */
         NestMembers(NestMembers_attribute.class, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11),
         /**
+         * The name for {@code Bridge} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        Bridge(Bridge_attribute.class, ClassFile.FormatVersion.FORMAT_48, JavaSEVersion.VERSION_1_4),
+        /**
          * The name for {@code Record} attribute type.
          *
          * @see
@@ -517,7 +527,32 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          *   openjdk-17/jmods/jdk.incubator.vector.jmod/classes/module-info.class
          * </pre>
          */
-        ModuleResolution(ModuleResolution_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17);
+        ModuleResolution(ModuleResolution_attribute.class, ClassFile.FormatVersion.FORMAT_61, JavaSEVersion.VERSION_17),
+        /**
+         * The name for {@code Scala} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        Scala(Scala_attribute.class),
+        /**
+         * The name for {@code ScalaSig} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        ScalaSig(ScalaSig_attribute.class),
+        /**
+         * The name for {@code org.aspectj.weaver.WeaverVersion} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        WeaverVersion(WeaverVersion_attribute.class, WeaverVersion_attribute.FULLNAME),
+        /**
+         * The name for {@code org.aspectj.weaver.AjSynthetic} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        AjSynthetic(AjSynthetic_attribute.class, AjSynthetic_attribute.FULLNAME),
+        /**
+         * The name for {@code org.aspectj.weaver.AjSynthetic} attribute type.
+         * This is a none-JVM-Spec attribute.
+         */
+        MethodDeclarationLineNumber(MethodDeclarationLineNumber_attribute.class, MethodDeclarationLineNumber_attribute.FULLNAME);
 
         /**
          * The Java class representing to the attributes.
@@ -525,6 +560,8 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          * If {@link #clazz} is null, which means it is not implemented yet.
          */
         final Class<?> clazz;
+        
+        public final String name;
 
         /**
          * Class file format.
@@ -536,10 +573,23 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
          */
         public final JavaSEVersion javaSE;
 
-        AttributeTypes(Class<?> clazz, ClassFile.FormatVersion format, JavaSEVersion javaSE) {
+        AttributeTypes(Class<?> clazz, ClassFile.FormatVersion format, JavaSEVersion javaSE, String name) {
             this.clazz = clazz;
             this.format = format;
             this.javaSE = javaSE;
+            this.name = name;
+        }
+
+        AttributeTypes(Class<?> clazz, ClassFile.FormatVersion format, JavaSEVersion javaSE) {
+            this(clazz, format, javaSE, null);
+        }
+
+        AttributeTypes(Class<?> clazz, String name) {
+            this(clazz, null, null, name);
+        }
+
+        AttributeTypes(Class<?> clazz) {
+            this(clazz, null, null, null);
         }
 
         /**
@@ -550,6 +600,15 @@ public abstract class attribute_info extends FileComponent implements GenerateCl
         @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "We need it")
         public Class<?> getClassType() {
             return this.clazz;
+        }
+        
+        /**
+         * Get the attribute name used in <code>.class</code> file.
+         *
+         * @return Attribute name used in <code>.class</code> file
+         */
+        public String getName(){
+            return (this.name == null) ? this.name() : this.name;
         }
     }
 }

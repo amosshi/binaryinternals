@@ -15,6 +15,7 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -108,9 +109,9 @@ public class InnerClasses_attribute extends attribute_info {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("class %d", i + 1)
+                        String.format("class %d: %s", i + 1, classFile.getCPDescription(cls.inner_class_info_index.value))
                 ));
-                this.generateSubnode(treeNodeInnerClassItem, cls, classFile);
+                cls.generateTreeNode(treeNodeInnerClassItem, classFile);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
             }
 
@@ -118,51 +119,24 @@ public class InnerClasses_attribute extends attribute_info {
         }
     }
 
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final InnerClasses_attribute.Class innerClass, final ClassFile classFile) {
-        final int startPosMoving = innerClass.getStartPos();
-
-        int cpIndex = innerClass.inner_class_info_index.value;
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                2,
-                "inner_class_info_index: " + cpIndex + " - " + classFile.getCPDescription(cpIndex)
-        )));
-
-        cpIndex = innerClass.outer_class_info_index.value;
-        final String outer_class_info_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 2,
-                2,
-                "outer_class_info_index: " + cpIndex + outer_class_info_index_desc
-        )));
-
-        cpIndex = innerClass.inner_name_index.value;
-        final String inner_name_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 4,
-                2,
-                "inner_name_index: " + cpIndex + inner_name_index_desc
-        )));
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 6,
-                2,
-                "inner_class_access_flags: " + BytesTool.getBinaryString(innerClass.inner_class_access_flags.value) + " - " + innerClass.getModifiers()
-        )));
-    }
-
     /**
      * The {@code classes} structure in {@code InnerClasses} attribute.
      *
      * @author Amos Shi
      */
-    public static final class Class extends FileComponent {
+    public static final class Class extends FileComponent implements GenerateClassfileTreeNode {
 
         /**
          * The length of current component.
          */
         public static final int LENGTH = 8;
 
+        /**
+         * The value of the {@link inner_class_info_index} item must be a valid
+         * index into the {@link ClassFile#constant_pool} table. The
+         * {@link ClassFile#constant_pool} entry at that index must be a
+         * {@link CONSTANT_Class_info} structure representing <code>C</code>.
+         */
         public final u2 inner_class_info_index;
         /**
          * If C is not a member of a class or an interface - that is, if C is a
@@ -208,6 +182,40 @@ public class InnerClasses_attribute extends attribute_info {
          */
         public String getModifiers() {
             return AccessFlag.getInnerClassModifier(this.inner_class_access_flags.value);
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+            final int startPosMoving = this.getStartPos();
+
+            int cpIndex = this.inner_class_info_index.value;
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    2,
+                    "inner_class_info_index: " + cpIndex + " - " + classFile.getCPDescription(cpIndex)
+            )));
+
+            cpIndex = this.outer_class_info_index.value;
+            final String outer_class_info_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 2,
+                    2,
+                    "outer_class_info_index: " + cpIndex + outer_class_info_index_desc
+            )));
+
+            cpIndex = this.inner_name_index.value;
+            final String inner_name_index_desc = (cpIndex == 0) ? "" : " - " + classFile.getCPDescription(cpIndex);
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 4,
+                    2,
+                    "inner_name_index: " + cpIndex + inner_name_index_desc
+            )));
+
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving + 6,
+                    2,
+                    "inner_class_access_flags: " + BytesTool.getBinaryString(this.inner_class_access_flags.value) + " - " + this.getModifiers()
+            )));
         }
     }
 }

@@ -67,7 +67,7 @@ public class RuntimeAnnotations_attribute extends attribute_info {
             DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    "annotations"
+                    String.format("annotations[%d]", this.num_annotations.value)
             ));
             parentNode.add(annotationsNode);
 
@@ -76,7 +76,7 @@ public class RuntimeAnnotations_attribute extends attribute_info {
                 DefaultMutableTreeNode annotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         a.getStartPos(),
                         a.getLength(),
-                        String.format("annotation %d", i + 1)
+                        String.format("annotation %d: %s", i + 1, classFile.getCPDescription(a.type_index.value))
                 ));
                 annotationsNode.add(annotationNode);
 

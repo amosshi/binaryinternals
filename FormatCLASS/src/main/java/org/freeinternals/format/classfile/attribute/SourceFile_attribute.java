@@ -61,7 +61,7 @@ public class SourceFile_attribute extends attribute_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
                 2,
-                String.format("sourcefile_index: %d [%s]", cpIndex, classFile.getCPDescription(cpIndex))
+                String.format("sourcefile_index: %d %s", cpIndex, classFile.getCPDescription(cpIndex))
         )));
     }
 
