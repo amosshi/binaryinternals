@@ -19,7 +19,7 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_ubyte {
+public class Type_ubyte {
 
     /**
      * Length of the type in bytes.
@@ -31,7 +31,7 @@ public class Dex_ubyte {
      */
     public final int value;
 
-    protected Dex_ubyte(int i) {
+    protected Type_ubyte(int i) {
         this.value = i;
     }
 
@@ -41,7 +41,7 @@ public class Dex_ubyte {
      * @param bytes <code>ubyte</code> array
      * @return String value
      */
-    public static String toString(Dex_ubyte[] bytes) {
+    public static String toString(Type_ubyte[] bytes) {
         if (bytes == null || bytes.length < 1) {
             return "empty array";
         }

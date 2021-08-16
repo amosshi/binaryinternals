@@ -1,5 +1,5 @@
 /*
- * dexbyte.java    June 17, 2015, 21:32
+ * dexlong.java    June 17, 2015, 21:39
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,7 +7,7 @@
 package org.freeinternals.format.dex;
 
 /**
- * 8-bit signed int.
+ * 64-bit signed int, little-endian.
  *
  * @author Amos Shi
  * @see
@@ -19,23 +19,18 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_byte {
+public class Type_long {
 
     /**
      * Length of the type in bytes.
      */
-    public static final int LENGTH = 1;
-
+    public static final int LENGTH = 8;
     /**
-     * Value of the DEX <code>byte</code>.
-     *
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.2.1">
-     * Java byte type</a>
+     * Value of the DEX <code>long</code>.
      */
-    public final byte value;
+    public final long value;
 
-    protected Dex_byte(byte b) {
-        this.value = b;
+    protected Type_long(long l) {
+        this.value = l;
     }
 }

@@ -27,36 +27,36 @@ public class HeaderItem extends FileComponent {
      * adler32 checksum of the rest of the file (everything but magic and this
      * field); used to detect file corruption.
      */
-    public Dex_uint checksum;
+    public Type_uint checksum;
 
     /**
      * SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
      * {@link #checksum}, and this field {@link #signature}); used to uniquely
      * identify files.
      */
-    public Dex_ubyte[] signature = new Dex_ubyte[20];
+    public Type_ubyte[] signature = new Type_ubyte[20];
 
     /**
      * size of the entire file (including the {@link HeaderItem}), in bytes.
      */
-    public Dex_uint file_size;
+    public Type_uint file_size;
 
     /**
      * size of the header (this entire section), in bytes. This allows for at
      * least a limited amount of backwards/forwards compatibility without
      * invalidating the format.
      */
-    public final Dex_uint header_size = new Dex_uint(0x70);
+    public final Type_uint header_size = new Type_uint(0x70);
 
     /**
      * Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
      * {@link Endian#REVERSE_ENDIAN_CONSTANT}.
      */
-    public Dex_uint endian_tag;
+    public Type_uint endian_tag;
     /**
      * Size of the link section, or 0 if this file isn't statically linked.
      */
-    public Dex_uint link_size;
+    public Type_uint link_size;
     /**
      * Offset from the start of the file to the link section, or 0 if
      * {@link #link_size} == 0. The offset, if non-zero, should be to an offset
@@ -64,22 +64,22 @@ public class HeaderItem extends FileComponent {
      * pointed at is left unspecified by this document; this header field (and
      * the previous) are left as hooks for use by runtime implementations.
      */
-    public Dex_uint link_off;
-    public Dex_uint map_off;
-    public Dex_uint string_ids_size;
-    public Dex_uint string_ids_off;
-    public Dex_uint type_ids_size;
-    public Dex_uint type_ids_off;
-    public Dex_uint proto_ids_size;
-    public Dex_uint proto_ids_off;
-    public Dex_uint field_ids_size;
-    public Dex_uint field_ids_off;
-    public Dex_uint method_ids_size;
-    public Dex_uint method_ids_off;
-    public Dex_uint class_defs_size;
-    public Dex_uint class_defs_off;
-    public Dex_uint data_size;
-    public Dex_uint data_off;
+    public Type_uint link_off;
+    public Type_uint map_off;
+    public Type_uint string_ids_size;
+    public Type_uint string_ids_off;
+    public Type_uint type_ids_size;
+    public Type_uint type_ids_off;
+    public Type_uint proto_ids_size;
+    public Type_uint proto_ids_off;
+    public Type_uint field_ids_size;
+    public Type_uint field_ids_off;
+    public Type_uint method_ids_size;
+    public Type_uint method_ids_off;
+    public Type_uint class_defs_size;
+    public Type_uint class_defs_off;
+    public Type_uint data_size;
+    public Type_uint data_off;
 
     HeaderItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
@@ -89,8 +89,8 @@ public class HeaderItem extends FileComponent {
             this.signature[i] = stream.Dex_ubyte();
         }
         this.file_size = stream.Dex_uint();
-        BytesTool.skip(stream, Dex_uint.LENGTH);
-        this.endian_tag = new Dex_uint(stream.readUnsignedInt()); // Always read from left to right
+        BytesTool.skip(stream, Type_uint.LENGTH);
+        this.endian_tag = new Type_uint(stream.readUnsignedInt()); // Always read from left to right
         this.link_size = stream.Dex_uint();
         this.link_off = stream.Dex_uint();
         this.map_off = stream.Dex_uint();

@@ -56,6 +56,15 @@ public class DexFile extends FileFormat {
     public static final List<Byte> DEX_FILE_MAGIC2 = Collections.unmodifiableList(Arrays.asList(new Byte[] {'0', '3', '5', '\0'}));
 
     /**
+     * Magic value part 1.
+     */
+    public final byte[] magic1;
+    /**
+     * Magic value part 2.
+     */
+    public final byte[] magic2;
+    
+    /**
      * The file header.
      */
     public HeaderItem header;
@@ -74,14 +83,14 @@ public class DexFile extends FileFormat {
      * The parsed file components.
      */
     public SortedMap<Long, FileComponent> data = new TreeMap<>();
-    public Dex_ubyte[] link_data;
+    public Type_ubyte[] link_data;
 
     public DexFile(File file) throws IOException, FileFormatException {
         super(file);
 
         // Check the file signature
-        byte[] magic1 = new byte[DEX_FILE_MAGIC1.size()];
-        byte[] magic2 = new byte[DEX_FILE_MAGIC2.size()];
+        this.magic1 = new byte[DEX_FILE_MAGIC1.size()];
+        this.magic2 = new byte[DEX_FILE_MAGIC2.size()];
         System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.size());
         System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.size());
         
@@ -133,10 +142,10 @@ public class DexFile extends FileFormat {
 
         BytesTool.skip(parseEndian, DEX_FILE_MAGIC1.size());
         BytesTool.skip(parseEndian, DEX_FILE_MAGIC2.size());
-        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // checksum
+        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // checksum
         BytesTool.skip(parseEndian, 20);                        // signature
-        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // file_size
-        BytesTool.skip(parseEndian, Dex_uint.LENGTH);           // header_size
+        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // file_size
+        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // header_size
 
         int i1 = parseEndian.readUnsignedByte();
         int i2 = parseEndian.readUnsignedByte();

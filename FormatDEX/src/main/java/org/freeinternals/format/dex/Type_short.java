@@ -1,5 +1,5 @@
 /*
- * dexushort.java    June 17, 2015, 21:37
+ * dexshort.java    June 17, 2015, 21:36
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,7 +7,7 @@
 package org.freeinternals.format.dex;
 
 /**
- * 16-bit unsigned int, little-endian.
+ * 16-bit signed int, little-endian.
  *
  * @author Amos Shi
  * @see
@@ -19,7 +19,7 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_ushort {
+public class Type_short {
 
     /**
      * Length of the type in bytes.
@@ -27,16 +27,16 @@ public class Dex_ushort {
     public static final int LENGTH = 2;
 
     /**
-     * Value of the DEX <code>ubyte</code>.
+     * Value of the DEX <code>short</code>.
      */
-    public final int value;
+    public final short value;
 
-    protected Dex_ushort(int i) {
-        this.value = i;
+    protected Type_short(short s) {
+        this.value = s;
     }
-    
+
     @Override
     public String toString() {
         return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
-    }    
+    }
 }

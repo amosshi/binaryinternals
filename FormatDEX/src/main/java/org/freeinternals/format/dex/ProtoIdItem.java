@@ -32,12 +32,12 @@ public class ProtoIdItem extends FileComponent {
      * ShortyDescriptor, defined above, and must correspond to the return type
      * and parameters of this item.
      */
-    public Dex_uint shorty_idx;
+    public Type_uint shorty_idx;
 
     /**
      * index into the type_ids list for the return type of this prototype.
      */
-    public Dex_uint return_type_idx;
+    public Type_uint return_type_idx;
 
     /**
      * offset from the start of the file to the list of parameter types for this
@@ -46,7 +46,7 @@ public class ProtoIdItem extends FileComponent {
      * the format specified by "type_list" below. Additionally, there should be
      * no reference to the type void in the list.
      */
-    public final Dex_uint parameters_off;
+    public final Type_uint parameters_off;
 
     ProtoIdItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();

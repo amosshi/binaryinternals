@@ -27,11 +27,11 @@ public class StringIdItem extends FileComponent {
      * be in the format specified by "string_data_item" below. There is no
      * alignment requirement for the offset.
      */
-    public Dex_uint string_data_off;
+    public Type_uint string_data_off;
 
     StringIdItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.string_data_off = stream.Dex_uint();
-        super.length = Dex_uint.LENGTH;
+        super.length = Type_uint.LENGTH;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * dexshort.java    June 17, 2015, 21:36
+ * dexsleb128.java    June 17, 2015, 21:41
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,7 +7,7 @@
 package org.freeinternals.format.dex;
 
 /**
- * 16-bit signed int, little-endian.
+ * Signed LEB128, variable-length.
  *
  * @author Amos Shi
  * @see
@@ -19,24 +19,19 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_short {
+public class Type_sleb128 {
 
     /**
-     * Length of the type in bytes.
+     * Value of the DEX <code>sleb128</code>.
      */
-    public static final int LENGTH = 2;
-
+    public final int value;
     /**
-     * Value of the DEX <code>short</code>.
+     * Length of the number in DEX file in bytes.
      */
-    public final short value;
+    public final int length;
 
-    protected Dex_short(short s) {
-        this.value = s;
-    }
-
-    @Override
-    public String toString() {
-        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
+    protected Type_sleb128(int v, int l) {
+        this.value = v;
+        this.length = l;
     }
 }

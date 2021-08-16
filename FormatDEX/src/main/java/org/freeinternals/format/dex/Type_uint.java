@@ -19,7 +19,7 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_uint {
+public class Type_uint {
 
     /**
      * Length of the type in bytes.
@@ -31,7 +31,7 @@ public class Dex_uint {
      */
     public final long value;
 
-    protected Dex_uint(long l) {
+    protected Type_uint(long l) {
         this.value = l;
     }
 
@@ -41,7 +41,7 @@ public class Dex_uint {
 
     @Override
     public String toString() {
-        return Dex_uint.toString(this.value);
+        return Type_uint.toString(this.value);
     }
 
     /**

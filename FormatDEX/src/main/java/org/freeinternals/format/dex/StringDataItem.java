@@ -28,7 +28,7 @@ public class StringDataItem extends FileComponent {
      * in many systems). That is, this is the decoded length of the string. (The
      * encoded length is implied by the position of the 0 byte.)
      */
-    public Dex_uleb128 utf16_size;
+    public Type_uleb128 utf16_size;
 
     /**
      * a series of MUTF-8 code units (a.k.a. octets, a.k.a. bytes) followed by a

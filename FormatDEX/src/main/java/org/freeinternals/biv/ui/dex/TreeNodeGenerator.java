@@ -6,15 +6,16 @@
  */
 package org.freeinternals.biv.ui.dex;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.dex.ClassDefItem;
 import org.freeinternals.format.dex.DexFile;
-import org.freeinternals.format.dex.Dex_ubyte;
-import org.freeinternals.format.dex.Dex_uint;
-import org.freeinternals.format.dex.Dex_ushort;
+import org.freeinternals.format.dex.Type_ubyte;
+import org.freeinternals.format.dex.Type_uint;
+import org.freeinternals.format.dex.Type_ushort;
 import org.freeinternals.format.dex.FieldIdItem;
 import org.freeinternals.format.dex.HeaderItem;
 import org.freeinternals.format.dex.HeaderItem.Endian;
@@ -76,13 +77,13 @@ public class TreeNodeGenerator {
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 DexFile.DEX_FILE_MAGIC1.size(),
-                "magic 1")));
+                "magic 1: " + new String(this.dexFile.magic1, StandardCharsets.UTF_8))));
         startPos += DexFile.DEX_FILE_MAGIC1.size();
 
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 DexFile.DEX_FILE_MAGIC2.size(),
-                "magic 2")));
+                "magic 2: " + new String(this.dexFile.magic2, StandardCharsets.UTF_8))));
     }
 
     private void generateHeaderItem() {
@@ -96,76 +97,76 @@ public class TreeNodeGenerator {
                 "header_item"));
         this.rootNode.add(headerNode);
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "checksum", header.checksum);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "checksum", header.checksum);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 header.signature.length,
-                "signature: " + Dex_ubyte.toString(header.signature))));
+                "signature: " + Type_ubyte.toString(header.signature))));
         startPos += header.signature.length;
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "file_size", header.file_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "file_size", header.file_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "header_size", header.header_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "header_size", header.header_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                Dex_uint.LENGTH,
+                Type_uint.LENGTH,
                 "endian_tag: " + header.endian_tag.toString() + " / " + Endian.toString(header.endian_tag.intValue()))));
-        startPos += Dex_uint.LENGTH;
+        startPos += Type_uint.LENGTH;
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "link_size", header.link_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "link_size", header.link_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "link_off", header.link_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "link_off", header.link_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "map_off", header.map_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "map_off", header.map_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "string_ids_size", header.string_ids_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "string_ids_size", header.string_ids_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "string_ids_off", header.string_ids_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "string_ids_off", header.string_ids_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "type_ids_size", header.type_ids_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "type_ids_size", header.type_ids_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "type_ids_off", header.type_ids_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "type_ids_off", header.type_ids_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "proto_ids_size", header.proto_ids_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "proto_ids_size", header.proto_ids_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "proto_ids_off", header.proto_ids_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "proto_ids_off", header.proto_ids_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "field_ids_size", header.field_ids_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "field_ids_size", header.field_ids_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "field_ids_off", header.field_ids_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "field_ids_off", header.field_ids_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "method_ids_size", header.method_ids_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "method_ids_size", header.method_ids_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "method_ids_off", header.method_ids_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "method_ids_off", header.method_ids_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "class_defs_size", header.class_defs_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "class_defs_size", header.class_defs_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "class_defs_off", header.class_defs_off);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "class_defs_off", header.class_defs_off);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = this.addNode(headerNode, startPos, Dex_uint.LENGTH, "data_size", header.data_size);
+        nodeTemp = this.addNode(headerNode, startPos, Type_uint.LENGTH, "data_size", header.data_size);
         startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        this.addNode(headerNode, startPos, Dex_uint.LENGTH, "data_off", header.data_off);
+        this.addNode(headerNode, startPos, Type_uint.LENGTH, "data_off", header.data_off);
     }
 
     private void generateStringIds() {
@@ -178,7 +179,7 @@ public class TreeNodeGenerator {
 
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                size * Dex_uint.LENGTH,
+                size * Type_uint.LENGTH,
                 "string_ids"));
         this.rootNode.add(node);
 
@@ -212,7 +213,7 @@ public class TreeNodeGenerator {
 
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                size * Dex_uint.LENGTH,
+                size * Type_uint.LENGTH,
                 "type_ids"));
         this.rootNode.add(node);
 
@@ -253,11 +254,11 @@ public class TreeNodeGenerator {
                     "proto_id_item[" + String.format("%,d", i) + "]"));
             node.add(itemNode);
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "shorty_idx", item.shorty_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "shorty_idx", item.shorty_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
             this.addNode(nodeTemp, 0, 0, "Value", this.dexFile.getString(item.shorty_idx.intValue()));
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "return_type_idx", item.return_type_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "return_type_idx", item.return_type_idx);
             this.addNode(nodeTemp, 0, 0, "Value", this.dexFile.getTypeDescriptor(item.return_type_idx.intValue()));
         }
     }
@@ -285,13 +286,13 @@ public class TreeNodeGenerator {
                     "proto_id_item[" + String.format("%,d", i) + "]"));
             node.add(itemNode);
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_ushort.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_ushort.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_ushort.LENGTH, "type_idx", item.type_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_ushort.LENGTH, "type_idx", item.type_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            this.addNode(itemNode, startPos, Dex_uint.LENGTH, "name_idx", item.name_idx);
+            this.addNode(itemNode, startPos, Type_uint.LENGTH, "name_idx", item.name_idx);
         }
     }
 
@@ -318,13 +319,13 @@ public class TreeNodeGenerator {
                     "method_id_item[" + String.format("%,d", i) + "]"));
             node.add(itemNode);
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_ushort.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_ushort.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_ushort.LENGTH, "proto_idx", item.proto_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_ushort.LENGTH, "proto_idx", item.proto_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            this.addNode(itemNode, startPos, Dex_uint.LENGTH, "name_idx", item.name_idx);
+            this.addNode(itemNode, startPos, Type_uint.LENGTH, "name_idx", item.name_idx);
         }
     }
 
@@ -351,28 +352,28 @@ public class TreeNodeGenerator {
                     "class_def_item[" + String.format("%,d", i) + "]"));
             node.add(itemNode);
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "access_flags", item.access_flags);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "access_flags", item.access_flags);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "superclass_idx", item.superclass_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "superclass_idx", item.superclass_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "interfaces_off", item.interfaces_off);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "interfaces_off", item.interfaces_off);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "source_file_idx", item.source_file_idx);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "source_file_idx", item.source_file_idx);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "annotations_off", item.annotations_off);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "annotations_off", item.annotations_off);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            nodeTemp = this.addNode(itemNode, startPos, Dex_uint.LENGTH, "class_data_off", item.class_data_off);
+            nodeTemp = this.addNode(itemNode, startPos, Type_uint.LENGTH, "class_data_off", item.class_data_off);
             startPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-            this.addNode(itemNode, startPos, Dex_uint.LENGTH, "static_values_off", item.static_values_off);
+            this.addNode(itemNode, startPos, Type_uint.LENGTH, "static_values_off", item.static_values_off);
         }
     }
 
@@ -394,7 +395,7 @@ public class TreeNodeGenerator {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     fc.getLength(),
-                    Dex_uint.toString(startPos) + " - " + fc.getClass().getSimpleName()));
+                    Type_uint.toString(startPos) + " - " + fc.getClass().getSimpleName()));
             node.add(itemNode);
 
             if (fc instanceof StringDataItem) {

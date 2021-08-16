@@ -1,15 +1,13 @@
 /*
- * dexulong.java    June 17, 2015, 21:40
+ * dexbyte.java    June 17, 2015, 21:32
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
 package org.freeinternals.format.dex;
 
-import java.math.BigInteger;
-
 /**
- * 64-bit unsigned int, little-endian.
+ * 8-bit signed int.
  *
  * @author Amos Shi
  * @see
@@ -21,19 +19,23 @@ import java.math.BigInteger;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_ulong {
+public class Type_byte {
 
     /**
      * Length of the type in bytes.
      */
-    public static final int LENGTH = 8;
+    public static final int LENGTH = 1;
 
     /**
-     * Value of the DEX <code>ulong</code>.
+     * Value of the DEX <code>byte</code>.
+     *
+     * @see
+     * <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.2.1">
+     * Java byte type</a>
      */
-    public final BigInteger value;
+    public final byte value;
 
-    protected Dex_ulong(BigInteger bi) {
-        this.value = bi;
+    protected Type_byte(byte b) {
+        this.value = b;
     }
 }

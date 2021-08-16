@@ -1,5 +1,5 @@
 /*
- * dexlong.java    June 17, 2015, 21:39
+ * dexuleb128.java    June 17, 2015, 21:42
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,7 +7,7 @@
 package org.freeinternals.format.dex;
 
 /**
- * 64-bit signed int, little-endian.
+ * Unsigned LEB128, variable-length.
  *
  * @author Amos Shi
  * @see
@@ -19,18 +19,19 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_long {
+public class Type_uleb128 {
 
     /**
-     * Length of the type in bytes.
+     * Value of the DEX <code>uleb128</code>.
      */
-    public static final int LENGTH = 8;
+    public final int value;
     /**
-     * Value of the DEX <code>long</code>.
+     * Length of the number in DEX file in bytes.
      */
-    public final long value;
+    public final int length;
 
-    protected Dex_long(long l) {
-        this.value = l;
+    protected Type_uleb128(int v, int l) {
+        this.value = v;
+        this.length = l;
     }
 }

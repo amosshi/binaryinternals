@@ -25,11 +25,11 @@ public class TypeIdItem extends FileComponent {
      * index into the string_ids list for the descriptor string of this type.
      * The string must conform to the syntax for TypeDescriptor, defined above.
      */
-    public Dex_uint descriptor_idx;
+    public Type_uint descriptor_idx;
 
     TypeIdItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.descriptor_idx = stream.Dex_uint();
-        super.length = Dex_uint.LENGTH;
+        super.length = Type_uint.LENGTH;
     }
 }

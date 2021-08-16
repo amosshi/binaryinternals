@@ -29,18 +29,18 @@ public class MethodIdItem extends FileComponent{
      * index into the type_ids list for the definer of this method. This must be
      * a class or array type, and not a primitive type.
      */
-    public Dex_ushort class_idx;
+    public Type_ushort class_idx;
 
     /**
      * index into the proto_ids list for the prototype of this method.
      */
-    public Dex_ushort proto_idx;
+    public Type_ushort proto_idx;
 
     /**
      * index into the string_ids list for the name of this method. The string
      * must conform to the syntax for MemberName, defined above.
      */
-    public Dex_uint name_idx;
+    public Type_uint name_idx;
 
     MethodIdItem(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();

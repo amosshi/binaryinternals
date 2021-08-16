@@ -1,14 +1,16 @@
 /*
- * dexuleb128p1.java    June 17, 2015, 21:42
+ * dexulong.java    June 17, 2015, 21:40
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
 package org.freeinternals.format.dex;
 
+import java.math.BigInteger;
+
 /**
- * Unsigned LEB128 plus 1, variable-length.
- * 
+ * 64-bit unsigned int, little-endian.
+ *
  * @author Amos Shi
  * @see
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
@@ -19,19 +21,19 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_uleb128p1 {
+public class Type_ulong {
 
     /**
-     * Value of the DEX <code>uleb128</code>.
+     * Length of the type in bytes.
      */
-    public final int value;
-    /**
-     * Length of the number in DEX file in bytes.
-     */
-    public final int length;
+    public static final int LENGTH = 8;
 
-    protected Dex_uleb128p1(int v, int l) {
-        this.value = v;
-        this.length = l;
+    /**
+     * Value of the DEX <code>ulong</code>.
+     */
+    public final BigInteger value;
+
+    protected Type_ulong(BigInteger bi) {
+        this.value = bi;
     }
 }

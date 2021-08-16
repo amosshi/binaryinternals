@@ -1,5 +1,5 @@
 /*
- * dexint.java    June 17, 2015, 21:38
+ * dexushort.java    June 17, 2015, 21:37
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,8 +7,8 @@
 package org.freeinternals.format.dex;
 
 /**
- * 32-bit signed int, little-endian.
- * 
+ * 16-bit unsigned int, little-endian.
+ *
  * @author Amos Shi
  * @see
  * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
@@ -19,18 +19,24 @@ package org.freeinternals.format.dex;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class Dex_int {
+public class Type_ushort {
+
     /**
      * Length of the type in bytes.
      */
-    public static final int LENGTH = 4;
-    
+    public static final int LENGTH = 2;
+
     /**
-     * Value of the DEX <code>int</code>.
+     * Value of the DEX <code>ubyte</code>.
      */
     public final int value;
 
-    protected Dex_int(int i) {
+    protected Type_ushort(int i) {
         this.value = i;
     }
+    
+    @Override
+    public String toString() {
+        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
+    }    
 }
