@@ -148,6 +148,15 @@ public final class JTreeNodeFileComponent {
     public Icon getIcon() {
         return this.icon;
     }
+    
+    /**
+     * Setter for {@link #icon}.
+     *
+     * @param icon value for {@link #icon}
+     */
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
 
     /**
      * Setter for {@link #description}.
@@ -176,7 +185,7 @@ public final class JTreeNodeFileComponent {
     public void setDetailPanel(final JPanel p) {
         this.panelDetail = p;
     }
-
+    
     /**
      * Indicates whether we have a detailed panel {@link #panelDetail}.
      *

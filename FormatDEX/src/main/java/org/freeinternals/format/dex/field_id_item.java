@@ -14,12 +14,13 @@ import org.freeinternals.commonlib.core.FileComponent;
  * @author Amos Shi
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * </pre>
  */
-@SuppressWarnings({"java:S116", "java:S1104"})
-public class FieldIdItem extends FileComponent {
+@SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
+public class field_id_item extends FileComponent {
 
     /**
      * Item Size In Bytes.
@@ -41,7 +42,7 @@ public class FieldIdItem extends FileComponent {
      */
     public Type_uint name_idx;
 
-    FieldIdItem(PosDataInputStreamDex stream) throws IOException {
+    field_id_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.class_idx = stream.Dex_ushort();
         this.type_idx = stream.Dex_ushort();

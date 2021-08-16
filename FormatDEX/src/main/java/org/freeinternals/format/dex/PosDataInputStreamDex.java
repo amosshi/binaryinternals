@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.dex.HeaderItem.Endian;
+import org.freeinternals.format.dex.header_item.Endian;
 
 /**
  *
@@ -28,14 +28,14 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * {@link HeaderItem.Endian#ENDIAN_CONSTANT}, as the DEX format
      * specification said.
      */
-    protected final HeaderItem.Endian endian;
+    protected final header_item.Endian endian;
 
     public PosDataInputStreamDex(PosByteArrayInputStream in) {
         super(in);
         this.endian = Endian.ENDIAN_CONSTANT;
     }
 
-    public PosDataInputStreamDex(PosByteArrayInputStream in, HeaderItem.Endian e) {
+    public PosDataInputStreamDex(PosByteArrayInputStream in, header_item.Endian e) {
         super(in);
         this.endian = e;
     }
@@ -67,7 +67,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_short Dex_short() throws IOException {
-        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_short(this.readShort());
         } else {
             return new Type_short(this.readShortInLittleEndian());
@@ -81,7 +81,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_ushort Dex_ushort() throws IOException {
-        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_ushort(this.readUnsignedShort());
         } else {
             return new Type_ushort(this.readUnsignedShortInLittleEndian());
@@ -95,7 +95,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_int Dex_int() throws IOException {
-        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_int(this.readInt());
         } else {
             return new Type_int(this.readIntInLittleEndian());
@@ -109,7 +109,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_uint Dex_uint() throws IOException {
-        if (this.endian.value == HeaderItem.Endian.ENDIAN_CONSTANT.value) {
+        if (this.endian.value == header_item.Endian.ENDIAN_CONSTANT.value) {
             return new Type_uint(this.readUnsignedInt());
         } else {
             return new Type_uint(this.readUnsignedIntInLittleEndian());
@@ -123,7 +123,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_long Dex_long() throws IOException {
-        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_long(this.readLong());
         } else {
             return new Type_long(this.readLongInLittleEndian());
@@ -137,7 +137,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws java.io.IOException I/O Error
      */
     public Type_ulong Dex_ulong() throws IOException {
-        if (this.endian == HeaderItem.Endian.ENDIAN_CONSTANT) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_ulong(this.readUnsignedLong());
         } else {
             return new Type_ulong(this.readUnsignedLongInLittleEndian());

@@ -36,7 +36,7 @@ public class Type_uint {
     }
 
     public int intValue() {
-        return Long.valueOf(this.value).intValue();
+        return (int)value;
     }
 
     @Override

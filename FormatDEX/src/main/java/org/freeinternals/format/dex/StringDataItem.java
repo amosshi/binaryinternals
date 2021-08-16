@@ -8,8 +8,13 @@ package org.freeinternals.format.dex;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
 
 /**
  *
@@ -21,7 +26,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
  * </pre>
  */
 @SuppressWarnings({"java:S116", "java:S1104"})
-public class StringDataItem extends FileComponent {
+public class StringDataItem extends FileComponent implements GenerateTreeNode {
 
     /**
      * size of this string, in UTF-16 code units (which is the "string length"
@@ -60,5 +65,18 @@ public class StringDataItem extends FileComponent {
      */
     public String getString() {
         return new String(this.data, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+        DefaultMutableTreeNode nodeTemp;
+        int floatPos = this.getStartPos();
+        int utf16Size = this.utf16_size.value;
+
+        nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size); // , UITool.getShortcutIcon()
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
+        if (utf16Size > 0) {
+            addNode(parentNode, floatPos, this.data.length, "data", this.getString());
+        }
     }
 }

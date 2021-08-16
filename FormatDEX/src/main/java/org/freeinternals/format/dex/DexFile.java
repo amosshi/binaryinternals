@@ -15,14 +15,13 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.biv.ui.dex.TreeNodeGenerator;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.dex.HeaderItem.Endian;
+import org.freeinternals.format.dex.header_item.Endian;
 
 /**
  *
@@ -67,17 +66,16 @@ public class DexFile extends FileFormat {
     /**
      * The file header.
      */
-    public HeaderItem header;
+    public header_item header;
     /**
-     * String identifiers list, or <code>null</code> if
-     * {@link HeaderItem#string_ids_off} is <code>0</code>.
+     * String identifiers list, or <code>null{@link header_item#string_ids_off} is <code>0
      */
-    public StringIdItem[] string_ids;
-    public TypeIdItem[] type_ids;
-    public ProtoIdItem[] proto_ids;
-    public FieldIdItem[] field_ids;
-    public MethodIdItem[] method_ids;
-    public ClassDefItem[] class_defs;
+    public string_id_item[] string_ids;
+    public type_id_item[] type_ids;
+    public proto_id_item[] proto_ids;
+    public field_id_item[] field_ids;
+    public method_id_item[] method_ids;
+    public class_def_item[] class_defs;
     // public Dex_ubyte[] data;
     /**
      * The parsed file components.
@@ -172,16 +170,16 @@ public class DexFile extends FileFormat {
         // Header
         BytesTool.skip(stream, DEX_FILE_MAGIC1.size());
         BytesTool.skip(stream, DEX_FILE_MAGIC2.size());
-        this.header = new HeaderItem(stream);
+        this.header = new header_item(stream);
 
         // string_ids
         if (this.header.string_ids_off.intValue() == 0) {
             this.string_ids = null;
         } else {
             stream.flyTo(this.header.string_ids_off.intValue());
-            this.string_ids = new StringIdItem[this.header.string_ids_size.intValue()];
+            this.string_ids = new string_id_item[this.header.string_ids_size.intValue()];
             for (int i = 0; i < this.string_ids.length; i++) {
-                this.string_ids[i] = new StringIdItem(stream);
+                this.string_ids[i] = new string_id_item(stream);
                 todoData.put(this.string_ids[i].string_data_off.value, StringDataItem.class);
             }
         }
@@ -191,9 +189,9 @@ public class DexFile extends FileFormat {
             this.type_ids = null;
         } else {
             stream.flyTo(this.header.type_ids_off.intValue());
-            this.type_ids = new TypeIdItem[this.header.type_ids_size.intValue()];
+            this.type_ids = new type_id_item[this.header.type_ids_size.intValue()];
             for (int i = 0; i < this.type_ids.length; i++) {
-                this.type_ids[i] = new TypeIdItem(stream);
+                this.type_ids[i] = new type_id_item(stream);
             }
         }
 
@@ -202,9 +200,9 @@ public class DexFile extends FileFormat {
             this.proto_ids = null;
         } else {
             stream.flyTo(this.header.proto_ids_off.intValue());
-            this.proto_ids = new ProtoIdItem[this.header.proto_ids_size.intValue()];
+            this.proto_ids = new proto_id_item[this.header.proto_ids_size.intValue()];
             for (int i = 0; i < this.proto_ids.length; i++) {
-                this.proto_ids[i] = new ProtoIdItem(stream);
+                this.proto_ids[i] = new proto_id_item(stream);
             }
         }
 
@@ -213,9 +211,9 @@ public class DexFile extends FileFormat {
             this.field_ids = null;
         } else {
             stream.flyTo(this.header.field_ids_off.intValue());
-            this.field_ids = new FieldIdItem[this.header.field_ids_size.intValue()];
+            this.field_ids = new field_id_item[this.header.field_ids_size.intValue()];
             for (int i = 0; i < this.field_ids.length; i++) {
-                this.field_ids[i] = new FieldIdItem(stream);
+                this.field_ids[i] = new field_id_item(stream);
             }
         }
 
@@ -224,9 +222,9 @@ public class DexFile extends FileFormat {
             this.method_ids = null;
         } else {
             stream.flyTo(this.header.method_ids_off.intValue());
-            this.method_ids = new MethodIdItem[this.header.method_ids_size.intValue()];
+            this.method_ids = new method_id_item[this.header.method_ids_size.intValue()];
             for (int i = 0; i < this.method_ids.length; i++) {
-                this.method_ids[i] = new MethodIdItem(stream);
+                this.method_ids[i] = new method_id_item(stream);
             }
         }
 
@@ -235,9 +233,9 @@ public class DexFile extends FileFormat {
             this.class_defs = null;
         } else {
             stream.flyTo(this.header.class_defs_off.intValue());
-            this.class_defs = new ClassDefItem[this.header.class_defs_size.intValue()];
+            this.class_defs = new class_def_item[this.header.class_defs_size.intValue()];
             for (int i = 0; i < this.class_defs.length; i++) {
-                this.class_defs[i] = new ClassDefItem(stream);
+                this.class_defs[i] = new class_def_item(stream);
             }
         }
 
