@@ -119,8 +119,8 @@ public class TreeNodeGenerator {
             node.add(itemNode);
 
             FileComponent fc = this.dexFile.data.get(item.string_data_off.value);
-            if (fc instanceof StringDataItem) {
-                ((StringDataItem) fc).generateTreeNode(itemNode);
+            if (fc instanceof string_data_item) {
+                ((string_data_item) fc).generateTreeNode(itemNode);
             } else {
                 itemNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         0,
@@ -325,8 +325,8 @@ public class TreeNodeGenerator {
                     Type_uint.toString(startPos) + " - " + fc.getClass().getSimpleName()));
             node.add(itemNode);
 
-            if (fc instanceof StringDataItem) {
-                ((StringDataItem) fc).generateTreeNode(itemNode);
+            if (fc instanceof string_data_item) {
+                ((string_data_item) fc).generateTreeNode(itemNode);
             }
         }
     }

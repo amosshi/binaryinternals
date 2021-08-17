@@ -13,7 +13,6 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
 
 /**
@@ -21,12 +20,13 @@ import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
  * @author Amos Shi
  *
  * <pre>
+ * java:S101 - Class names should comply with a naming convention --- We respect the name from Dex Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * </pre>
  */
-@SuppressWarnings({"java:S116", "java:S1104"})
-public class StringDataItem extends FileComponent implements GenerateTreeNode {
+@SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
+public class string_data_item extends FileComponent implements GenerateTreeNode {
 
     /**
      * size of this string, in UTF-16 code units (which is the "string length"
@@ -42,7 +42,7 @@ public class StringDataItem extends FileComponent implements GenerateTreeNode {
      */
     public byte[] data;
 
-    StringDataItem(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    string_data_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
         super.startPos = stream.getPos();
         this.utf16_size = stream.Dex_uleb128();
         if (this.utf16_size.value > 0) {
@@ -73,7 +73,7 @@ public class StringDataItem extends FileComponent implements GenerateTreeNode {
         int floatPos = this.getStartPos();
         int utf16Size = this.utf16_size.value;
 
-        nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size); // , UITool.getShortcutIcon()
+        nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size);
         floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
         if (utf16Size > 0) {
             addNode(parentNode, floatPos, this.data.length, "data", this.getString());

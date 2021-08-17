@@ -15,12 +15,12 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.core.BytesTool;
-import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.dex.header_item.Endian;
 
 /**
@@ -114,8 +114,8 @@ public class DexFile extends FileFormat {
         }
 
         FileComponent fc = this.data.get(this.string_ids[index].string_data_off.value);
-        if (fc instanceof StringDataItem) {
-            return ((StringDataItem) fc).getString();
+        if (fc instanceof string_data_item) {
+            return ((string_data_item) fc).getString();
         } else {
             return null;
         }
@@ -180,7 +180,7 @@ public class DexFile extends FileFormat {
             this.string_ids = new string_id_item[this.header.string_ids_size.intValue()];
             for (int i = 0; i < this.string_ids.length; i++) {
                 this.string_ids[i] = new string_id_item(stream);
-                todoData.put(this.string_ids[i].string_data_off.value, StringDataItem.class);
+                todoData.put(this.string_ids[i].string_data_off.value, string_data_item.class);
             }
         }
 
@@ -241,9 +241,9 @@ public class DexFile extends FileFormat {
 
         // data
         for (Map.Entry<Long, Class<?>> todoItem : todoData.entrySet()) {
-            if (todoItem.getValue() == StringDataItem.class) {
+            if (todoItem.getValue() == string_data_item.class) {
                 stream.flyTo(todoItem.getKey().intValue());
-                this.data.put(todoItem.getKey(), new StringDataItem(stream));
+                this.data.put(todoItem.getKey(), new string_data_item(stream));
             }
 
         }
