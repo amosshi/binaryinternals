@@ -93,8 +93,8 @@ public final class JTreeNodeFileComponent {
      */
     public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icon nodeIcon, final String desc) {
         this(nodeStartPos, nodeLength, nodeText);
+        this.setIcon(nodeIcon);
         this.description = desc;
-        this.icon = nodeIcon;
     }
 
     @Override
@@ -155,7 +155,9 @@ public final class JTreeNodeFileComponent {
      * @param icon value for {@link #icon}
      */
     public void setIcon(Icon icon) {
-        this.icon = icon;
+        if (icon != null) {
+            this.icon = icon;
+        }
     }
 
     /**

@@ -8,6 +8,7 @@ package org.freeinternals.commonlib.ui;
 
 import java.awt.BorderLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,12 +59,65 @@ public final class UITool {
     }
 
     /**
-     * Get Java system default icon for shortcut.
+     * Icon for counter.
      *
-     * @return Shortcut icon in Java
+     * @return Icon for counter
+     * @see <a href="https://icons8.com/icon/2U6ROkjIrXIA/abacus">Abacus</a> icon by <a href="https://icons8.com">Icons8</a>
      */
-    public static Icon getShortcutIcon() {
-        return UIManager.getIcon("InternalFrame.maximizeIcon");
+    public static Icon icon4Counter() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-abacus-16.png"));
+    }
+
+    /**
+     * Icon for DEX file.
+     *
+     * @return Icon for dex file
+     * @see <a href="https://icons8.com/icon/38933/apk">APK</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Dex() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-apk-20.png"));
+    }
+
+    /**
+     * Icon for Java.
+     *
+     * @return Icon for Java
+     */
+    public static Icon icon4Java() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-java-20.png"));
+    }
+
+    /**
+     * Icon for magic number.
+     *
+     * @return Icon for magic number
+     * @see <a href="https://icons8.com/icon/q8t3iE9rg6YF/magic-wand">Magic Wand</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Magic() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-magic-wand-16.png"));
+    }
+
+    /**
+     * Icon for shortcut.
+     *
+     * @return Shortcut icon
+     *
+     * @see <a href="https://icons8.com/icon/78265/shortcut">Shortcut</a> icon
+     * by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Shortcut() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-shortcut-16.png"));
+    }
+
+    /**
+     * Icon for version.
+     *
+     * @return Icon for versions
+     * @see <a href="https://icons8.com/icon/21933/versions">Versions</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/59954/versions">Versions</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Versions() {
+        return new ImageIcon(UITool.class.getResource("/image/icons8-versions-16.png"));
     }
 
     /**

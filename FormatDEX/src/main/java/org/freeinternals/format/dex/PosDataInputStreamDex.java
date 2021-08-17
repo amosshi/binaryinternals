@@ -44,7 +44,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_byte} from the input stream.
      *
      * @return a {@link Type_byte}
-     * @throws java.io.IOException I/O error
+     * @throws IOException I/O error
      */
     public Type_byte Dex_byte() throws IOException {
         return new Type_byte(this.readByte());
@@ -54,7 +54,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_ubyte} from the input stream.
      *
      * @return a {@link Type_ubyte}
-     * @throws java.io.IOException I/O error
+     * @throws IOException I/O error
      */
     public Type_ubyte Dex_ubyte() throws IOException {
         return new Type_ubyte(this.readUnsignedByte());
@@ -64,7 +64,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_short} from the input stream.
      *
      * @return a {@link Type_short}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_short Dex_short() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
@@ -78,7 +78,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_ushort} from the input stream.
      *
      * @return a {@link Type_ushort}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_ushort Dex_ushort() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
@@ -92,7 +92,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_int} from the input stream.
      *
      * @return a {@link Type_int}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_int Dex_int() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
@@ -106,7 +106,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_uint} from the input stream.
      *
      * @return a {@link Type_uint}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_uint Dex_uint() throws IOException {
         if (this.endian.value == header_item.Endian.ENDIAN_CONSTANT.value) {
@@ -120,7 +120,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_long} from the input stream.
      *
      * @return a {@link Type_long}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_long Dex_long() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
@@ -134,7 +134,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * Read a {@link Type_ulong} from the input stream.
      *
      * @return a {@link Type_ulong}
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     public Type_ulong Dex_ulong() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
@@ -147,7 +147,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     /**
      * Read a {@link Type_sleb128} from the input stream.
      *
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_sleb128}
      */
@@ -179,7 +179,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     /**
      * Read a {@link Type_uleb128} from the input stream.
      *
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_uleb128}
      */
@@ -205,9 +205,8 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     /**
      * Read a {@link Type_uleb128p1} from the input stream.
      *
-     * @throws java.io.IOException I/O Error
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid LEB128
-     * format
+     * @throws IOException I/O Error
+     * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_uleb128p1}
      */
     public Type_uleb128p1 Dex_uleb128p1() throws IOException, FileFormatException {

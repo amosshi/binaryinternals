@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.ui.HTMLKit;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.constant.cp_info;
 
@@ -45,7 +46,12 @@ public class JTreeClassFile {
 
     void generateTreeNodes(final DefaultMutableTreeNode rootNode) {
         this.root = rootNode;
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(0, u4.LENGTH, "magic", GenerateClassfileTreeNode.MESSAGES.getString("msg_magic"))));
+        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                0,
+                u4.LENGTH,
+                "magic",
+                UITool.icon4Magic(),
+                GenerateClassfileTreeNode.MESSAGES.getString("msg_magic"))));
 
         this.generateTreeNodeClsssFileVersion();
         this.generateConstantPool();
@@ -62,6 +68,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "minor_version: " + this.classFile.minor_version.value,
+                UITool.icon4Versions(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_version")
         )));
         startPos += u2.LENGTH;
@@ -70,6 +77,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "major_version: " + this.classFile.major_version.value,
+                UITool.icon4Versions(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_version")
         )));
     }
@@ -83,6 +91,7 @@ public class JTreeClassFile {
                 startPos,
                 u2.LENGTH,
                 "constant_pool_count: " + cpCount,
+                UITool.icon4Counter(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_constant_pool_count")
         )));
         startPos += u2.LENGTH;
@@ -159,6 +168,7 @@ public class JTreeClassFile {
                 this.classFile.interfaces_count.getStartPos(),
                 this.classFile.interfaces_count.getLength(),
                 "interfaces_count: " + interfaceCount,
+                UITool.icon4Counter(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_interfaces_count")
         ));
         this.root.add(interfacesCount);
@@ -198,6 +208,7 @@ public class JTreeClassFile {
                 this.classFile.fields_count.getStartPos(),
                 this.classFile.fields_count.getLength(),
                 "fields_count: " + fieldCount,
+                UITool.icon4Counter(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_fields_count")
         ));
         this.root.add(fieldsCount);
@@ -288,6 +299,7 @@ public class JTreeClassFile {
                 this.classFile.methods_count.getStartPos(),
                 this.classFile.methods_count.getLength(),
                 "methods_count: " + methodCount,
+                UITool.icon4Counter(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_methods_count")
         ));
         this.root.add(methodsCount);
@@ -377,6 +389,7 @@ public class JTreeClassFile {
                 this.classFile.attributes_count.getStartPos(),
                 this.classFile.attributes_count.getLength(),
                 MESSAGE_ATTR_COUNT + attrCount,
+                UITool.icon4Counter(),
                 GenerateClassfileTreeNode.MESSAGES.getString("msg_attributes_count")
         ));
         this.root.add(attrsCount);

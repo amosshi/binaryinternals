@@ -4,5 +4,5 @@
 #
 
 export JAVA_HOME=/usr/lib/jvm/default-java
-mvn  --projects FormatCLASS,BinaryInternalsViewer  clean package install
+mvn  --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
 

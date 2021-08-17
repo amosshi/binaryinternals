@@ -376,7 +376,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * <code>end</code>.
      *
      * @param end
-     * @throws java.io.IOException
+     * @throws IOException
      *
      * <pre>
      * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
@@ -409,7 +409,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      *
      * @param end End value for the ASCII string
      * @return ASCII as string
-     * @throws java.io.IOException Read failed
+     * @throws IOException Read failed
      *
      * <pre>
      * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
@@ -444,7 +444,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * {@link #NEWLINE_LF} flag found.
      *
      * @return
-     * @throws java.io.IOException
+     * @throws IOException
      */
     public ASCIILine readASCIILine() throws IOException {
         int nlLen = 1;

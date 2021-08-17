@@ -321,8 +321,7 @@ public abstract class cp_info extends FileComponent implements GenerateClassfile
          * @param tag Constant pool item tag, indicating the type of the item
          * @param posDataInputStream Class file byte stream
          * @return Parsed constant pool info
-         * @throws org.freeinternals.commonlib.core.FileFormatException An
-         * invalid class file format encountered
+         * @throws FileFormatException An invalid class file format encountered
          */
         public static cp_info parse(int tag, final PosDataInputStream posDataInputStream) throws FileFormatException {
             cp_info cpInfo = null;

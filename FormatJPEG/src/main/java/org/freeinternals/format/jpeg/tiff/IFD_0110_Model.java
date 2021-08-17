@@ -52,7 +52,7 @@ public class IFD_0110_Model extends IFD_ASCII {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     String.format("Model: %s", this.value),
-                    UITool.getShortcutIcon(), null);
+                    UITool.icon4Shortcut(), null);
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0110_Description));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

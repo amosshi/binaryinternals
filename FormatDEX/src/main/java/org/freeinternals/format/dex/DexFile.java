@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
@@ -21,6 +22,7 @@ import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.dex.header_item.Endian;
 
 /**
@@ -99,6 +101,11 @@ public class DexFile extends FileFormat {
         }
 
         this.parse();
+    }
+
+    @Override
+    public Icon getIcon() {
+        return UITool.icon4Dex();
     }
 
     /**

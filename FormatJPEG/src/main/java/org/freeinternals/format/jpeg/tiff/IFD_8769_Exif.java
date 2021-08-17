@@ -75,7 +75,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
                 super.tiff_StartPos + (int) this.value[0],
                 2 + this.ifd_number * IFD.SIZE,
                 "Exif Sub IFD",
-                UITool.getShortcutIcon(), null);
+                UITool.icon4Shortcut(), null);
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
         node = new DefaultMutableTreeNode(comp);
         parentNode.add(node);

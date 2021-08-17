@@ -88,7 +88,7 @@ public interface DataInputEx {
      * <code>long</code> value.
      *
      * @return the <code>long</code> value read.
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     long readUnsignedIntInLittleEndian() throws IOException;
 
@@ -96,7 +96,7 @@ public interface DataInputEx {
      * Reads eight input bytes and returns a {@code long} value.
      *
      * @return the <code>long</code> value read.
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     long readLongInLittleEndian() throws IOException;
 
@@ -104,7 +104,7 @@ public interface DataInputEx {
      * Reads eight input bytes and returns a {@code unsigned long} value.
      *
      * @return the <code>unsigned long</code> value read
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     BigInteger readUnsignedLong() throws IOException;
 
@@ -112,7 +112,7 @@ public interface DataInputEx {
      * Reads eight input bytes and returns a {@code unsigned long} value.
      *
      * @return the <code>unsigned long</code> value read
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     BigInteger readUnsignedLongInLittleEndian() throws IOException;
 
@@ -147,14 +147,14 @@ public interface DataInputEx {
      * Read until a null terminator, or the end of the buffer as binary.
      *
      * @return
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     byte[] readBinary() throws IOException;
 
     /**
      * Skip to the end of the buffer.
      *
-     * @throws java.io.IOException I/O Error
+     * @throws IOException I/O Error
      */
     void skipToEnd() throws IOException;
 

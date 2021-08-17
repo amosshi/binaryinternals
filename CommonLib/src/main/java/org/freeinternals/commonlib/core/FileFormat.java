@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import javax.swing.Icon;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
@@ -47,8 +48,8 @@ public abstract class FileFormat {
      * Parse the content from a {@link File} object.
      *
      * @param file {@link File} object
-     * @throws java.io.IOException Failed to Read file
-     * @throws org.freeinternals.commonlib.core.FileFormatException The file is empty
+     * @throws IOException Failed to Read file
+     * @throws FileFormatException The file is empty
      */
     protected FileFormat(final File file) throws IOException, FileFormatException {
         this.fileName = file.getName();
@@ -127,6 +128,16 @@ public abstract class FileFormat {
      */
     public Collection<FileComponent> getFileComponents() {
         return Collections.unmodifiableCollection(this.components.values());
+    }
+
+    /**
+     * The child class may choose to provide an icon for the file format. This
+     * method should be change to abstract if all children has provided an icon.
+     *
+     * @return <code>null</code> to use default icon, else use supplied icon
+     */
+    public Icon getIcon() {
+        return null;
     }
 
     /**

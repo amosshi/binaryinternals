@@ -53,7 +53,7 @@ public class IFD_010E_ImageDescription extends IFD_ASCII {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     String.format("Image Description: %s", this.value),
-                    UITool.getShortcutIcon(), null);
+                    UITool.icon4Shortcut(), null);
             comp.setDescription(IFD_010E_ImageDescription.IFD_Image_Description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

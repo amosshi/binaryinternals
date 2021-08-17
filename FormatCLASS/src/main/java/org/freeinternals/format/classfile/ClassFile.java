@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile;
 
 import java.io.File;
 import java.io.IOException;
+import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,6 +18,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.attribute.Code_attribute;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
@@ -327,8 +329,7 @@ public class ClassFile extends FileFormat {
      * Get the text of {@link #this_class}, which is the class name.
      *
      * @return Corresponding text of {@link #this_class}
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
-     * {@link #constant_pool} item found
+     * @throws FileFormatException Invalid {@link #constant_pool} item found
      */
     public String getThisClassName() throws FileFormatException {
         return this.getConstantClassInfoName(this.this_class.getValue());
@@ -348,8 +349,7 @@ public class ClassFile extends FileFormat {
      * Get the text of {@link #super_class}, which is the super class name.
      *
      * @return Corresponding text of {@link #super_class}
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
-     * {@link #constant_pool} item found
+     * @throws FileFormatException Invalid {@link #constant_pool} item found
      */
     public String getSuperClassName() throws FileFormatException {
         int superClass = this.super_class.getValue();
@@ -367,8 +367,7 @@ public class ClassFile extends FileFormat {
      *
      * @param cpIndex {@link #constant_pool} item index
      * @return Get <code>CONSTANT_Class_info</code> name at <code>cpIndex</code>
-     * @throws org.freeinternals.commonlib.core.FileFormatException Invalid
-     * {@link #constant_pool} item found
+     * @throws FileFormatException Invalid {@link #constant_pool} item found
      */
     public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
         String name = null;
@@ -463,6 +462,11 @@ public class ClassFile extends FileFormat {
     @Override
     public String getContentTabName() {
         return "JVM Class File";
+    }
+
+    @Override
+    public Icon getIcon() {
+        return UITool.icon4Java();
     }
 
     // Lazy creation of JTreeClassFile

@@ -106,7 +106,7 @@ public class IFD_UNDEFINED extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     node,
-                    UITool.getShortcutIcon(), null);
+                    UITool.icon4Shortcut(), null);
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

@@ -72,7 +72,7 @@ public class Tag extends FileComponent {
                 (int) (this.BasePos + this.Offset),
                 (int) this.Size,
                 "Tag Data",
-                UITool.getShortcutIcon(), null);
+                UITool.icon4Shortcut(), null);
         parentNode.add(nodeTagData = new DefaultMutableTreeNode(comp));
         this.tagData.generateTreeNode(nodeTagData);
     }

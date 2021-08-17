@@ -176,7 +176,7 @@ public final class BytesTool {
      * @param zipFile The {@code jar} or {@code zip} file
      * @param zipEntry The entry to be read
      * @return Byte array of the class file, or {@code null} if error happened.
-     * @throws java.io.IOException Error happened when reading the zip file
+     * @throws IOException Error happened when reading the zip file
      */
     public static byte[] readZipEntryAsBytes(final ZipFile zipFile, final ZipEntry zipEntry) throws IOException {
         if (zipFile == null) {

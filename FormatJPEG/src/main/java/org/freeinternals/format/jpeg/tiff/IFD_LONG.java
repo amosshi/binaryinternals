@@ -73,7 +73,7 @@ public class IFD_LONG extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     super.getTagName(),
-                    UITool.getShortcutIcon(), null);
+                    UITool.icon4Shortcut(), null);
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
             parentNode.add(new DefaultMutableTreeNode(comp));
         }
