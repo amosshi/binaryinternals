@@ -120,13 +120,15 @@ public class TreeNodeGenerator {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    "string_id_item[" + String.format("%,d", i) + "].string_data_off: " + item.string_data_off.toString()));
+                    "string_id_item[" + String.format("%,d", i) + "]"));
             node.add(itemNode);
+            item.generateTreeNode(itemNode);
 
             FileComponent fc = this.dexFile.data.get(item.string_data_off.value);
             if (fc instanceof string_data_item) {
                 ((string_data_item) fc).generateTreeNode(itemNode);
             } else {
+                // Unexpected case
                 itemNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         0,
                         0,

@@ -7,7 +7,9 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
 
 /**
  *
@@ -20,7 +22,7 @@ import org.freeinternals.commonlib.core.FileComponent;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class type_id_item extends FileComponent {
+public class type_id_item extends FileComponent implements GenerateTreeNode {
 
     /**
      * index into the string_ids list for the descriptor string of this type.
@@ -32,5 +34,9 @@ public class type_id_item extends FileComponent {
         super.startPos = stream.getPos();
         this.descriptor_idx = stream.Dex_uint();
         super.length = Type_uint.LENGTH;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
     }
 }

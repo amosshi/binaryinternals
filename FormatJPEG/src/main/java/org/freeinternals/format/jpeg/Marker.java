@@ -10,10 +10,10 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  *
@@ -30,11 +30,10 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     Marker(final PosDataInputStream pDIS, int markerCode) throws IOException, FileFormatException {
 
         // The marker is not valid
-        if (MarkerCode.isValid(markerCode) == false) {
+        if (!MarkerCode.isValid(markerCode)) {
             throw new FileFormatException(String.format(
                     "Non-valid marker found. marker code = %X (%d).",
-                    markerCode,
-                    markerCode));
+                    markerCode, markerCode));
         }
 
         // Start Position of this Marker

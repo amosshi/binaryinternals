@@ -11,7 +11,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
+import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -95,12 +97,15 @@ public class CONSTANT_InvokeDynamic_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
-                "bootstrap_method_attr_index: " + this.bootstrap_method_attr_index.value
+                "bootstrap_method_attr_index: " + this.bootstrap_method_attr_index.value,
+                MESSAGES.getString("msg_const_dynamic_bootstrap_method_attr_index")
         )));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
-                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value)
+                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value),
+                UITool.icon4Offset(),
+                MESSAGES.getString("msg_const_dynamic_name_and_type_index")
         )));
     }
 }

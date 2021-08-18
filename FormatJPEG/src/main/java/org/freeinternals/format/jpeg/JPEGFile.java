@@ -10,18 +10,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
-import org.freeinternals.commonlib.core.FileFormatException;
 
 /**
  *
  * @author Amos Shi
  */
-public class JPEGFile extends FileFormat{
+public class JPEGFile extends FileFormat {
 
     public JPEGFile(File file) throws IOException, FileFormatException {
         super(file);
@@ -37,8 +37,7 @@ public class JPEGFile extends FileFormat{
         if (MarkerCode.SOI != soi) {
             throw new FileFormatException(String.format(
                     "File is not started with JPEG SOI. Expected value %x, current value %x.",
-                    MarkerCode.SOI,
-                    soi));
+                    MarkerCode.SOI, soi));
         }
         super.addFileComponent(new Marker_SOI(posDataInputStream, soi));
 

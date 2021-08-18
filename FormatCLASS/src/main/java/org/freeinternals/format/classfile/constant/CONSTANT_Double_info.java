@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
 
 /**
@@ -77,12 +78,16 @@ public class CONSTANT_Double_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 1,
                 4,
-                "high_bytes - value: " + this.doubleValue + " - " + BytesTool.getByteDataHexView(this.rawData)
+                "high_bytes - value: " + this.doubleValue + " - " + BytesTool.getByteDataHexView(this.rawData),
+                UITool.icon4Bytes(),
+                MESSAGES.getString("msg_const_double_bytes")
         )));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 5,
                 4,
-                "low_bytes"
+                "low_bytes",
+                UITool.icon4Bytes(),
+                MESSAGES.getString("msg_const_double_bytes")
         )));
     }
 }

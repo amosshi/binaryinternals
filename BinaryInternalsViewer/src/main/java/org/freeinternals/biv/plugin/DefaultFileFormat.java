@@ -9,8 +9,10 @@ package org.freeinternals.biv.plugin;
 import org.freeinternals.commonlib.core.FileFormat;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -23,13 +25,18 @@ public class DefaultFileFormat extends FileFormat{
         super(file);
     }
 
+
+    @Override
+    @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    }
     @Override
     public String getContentTabName() {
        return "Binary Data";
     }
 
     @Override
-    @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    public Icon getIcon() {
+        return UITool.icon4BinaryFile();
     }
 }

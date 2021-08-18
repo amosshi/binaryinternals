@@ -53,8 +53,8 @@ public class DexFile extends FileFormat {
      * monotonically over time as the format evolves.
      * </p>
      */
-    public static final List<Byte> DEX_FILE_MAGIC1 = Collections.unmodifiableList(Arrays.asList(new Byte[] {'d', 'e', 'x', '\n'}));
-    public static final List<Byte> DEX_FILE_MAGIC2 = Collections.unmodifiableList(Arrays.asList(new Byte[] {'0', '3', '5', '\0'}));
+    public static final List<Byte> DEX_FILE_MAGIC1 = Collections.unmodifiableList(Arrays.asList(new Byte[]{'d', 'e', 'x', '\n'}));
+    public static final List<Byte> DEX_FILE_MAGIC2 = Collections.unmodifiableList(Arrays.asList(new Byte[]{'0', '3', '5', '\0'}));
 
     /**
      * Magic value part 1.
@@ -64,13 +64,14 @@ public class DexFile extends FileFormat {
      * Magic value part 2.
      */
     public final byte[] magic2;
-    
+
     /**
      * The file header.
      */
     public header_item header;
     /**
-     * String identifiers list, or <code>null{@link header_item#string_ids_off} is <code>0
+     * String identifiers list, or <code>null{@link header_item#string_ids_off}
+     * is <code>0
      */
     public string_id_item[] string_ids;
     public type_id_item[] type_ids;
@@ -93,14 +94,20 @@ public class DexFile extends FileFormat {
         this.magic2 = new byte[DEX_FILE_MAGIC2.size()];
         System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.size());
         System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.size());
-        
+
         byte[] magic1Const = new byte[]{DEX_FILE_MAGIC1.get(0), DEX_FILE_MAGIC1.get(1), DEX_FILE_MAGIC1.get(2), DEX_FILE_MAGIC1.get(3)};
-        if ( !BytesTool.isByteArraySame(magic1Const, magic1)
+        if (!BytesTool.isByteArraySame(magic1Const, magic1)
                 || magic2[DEX_FILE_MAGIC2.size() - 1] != DEX_FILE_MAGIC2.get(DEX_FILE_MAGIC2.size() - 1)) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
 
         this.parse();
+    }
+
+    static void checkUint(String fieldName, Type_uint uint, int streamPosition) throws FileFormatException {
+        if (uint.value > Integer.MAX_VALUE) {
+            throw new FileFormatException(String.format("%s is too big cannot be handled here: %d, position 0x%X", fieldName, uint.value, streamPosition));
+        }
     }
 
     @Override

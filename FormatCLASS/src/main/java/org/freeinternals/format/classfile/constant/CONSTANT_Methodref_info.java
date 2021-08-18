@@ -10,7 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
+import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Methodref_info} structure in constant pool.
@@ -57,12 +59,16 @@ public class CONSTANT_Methodref_info extends CONSTANT_Ref_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
-                "class_index: " + this.class_index.value + " - " + classFile.getCPDescription(this.class_index.value)
+                "class_index: " + this.class_index.value + " - " + classFile.getCPDescription(this.class_index.value),
+                UITool.icon4Offset(),
+                MESSAGES.getString("msg_const_ref_class_index")
         )));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
-                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value)
+                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value),
+                UITool.icon4Offset(),
+                MESSAGES.getString("msg_const_ref_name_and_type_index")
         )));
     }
 }

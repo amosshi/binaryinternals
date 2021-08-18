@@ -113,6 +113,7 @@ public class JTreeClassFile {
                         cp[i].getStartPos(),
                         1,
                         "tag: " + cp[i].tag.value,
+                        UITool.icon4Tag(),
                         GenerateClassfileTreeNode.MESSAGES.getString("msg_cp_tag")
                 )));
                 cp[i].generateTreeNode(cpInfoNode, this.classFile);

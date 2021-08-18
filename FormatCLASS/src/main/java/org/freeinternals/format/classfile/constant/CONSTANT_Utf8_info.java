@@ -12,6 +12,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u2;
 
@@ -98,12 +99,16 @@ public class CONSTANT_Utf8_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
-                "length: " + this.length_utf8.value
+                "length: " + this.length_utf8.value,
+                UITool.icon4Length(),
+                MESSAGES.getString("msg_const_utf8_length")
         )));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 this.length_utf8.value,
-                "bytes: " + this.getValue()
+                "bytes: " + this.getValue(),
+                UITool.icon4Bytes(),
+                MESSAGES.getString("msg_const_utf8_bytes")
         )));
     }
 }

@@ -8,11 +8,11 @@ package org.freeinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.JXMLViewer;
-import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.jpeg.tiff.TIFF;
 import org.freeinternals.format.jpeg.xmp.XMP;
 

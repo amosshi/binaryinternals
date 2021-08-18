@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
 
 /**
@@ -73,7 +74,9 @@ public class CONSTANT_Float_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 1,
                 4,
-                "bytes: " + this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData)
+                "bytes: " + this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData),
+                UITool.icon4Bytes(),
+                MESSAGES.getString("msg_const_float_bytes")
         )));
     }
 }

@@ -7,7 +7,11 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
 
 /**
  *
@@ -20,7 +24,7 @@ import org.freeinternals.commonlib.core.FileComponent;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class string_id_item extends FileComponent{
+public class string_id_item extends FileComponent implements GenerateTreeNode {
 
     /**
      * offset from the start of the file to the string data for this item. The
@@ -28,11 +32,16 @@ public class string_id_item extends FileComponent{
      * be in the format specified by "string_data_item" below. There is no
      * alignment requirement for the offset.
      */
-    public Type_uint string_data_off;
+    public final Type_uint string_data_off;
 
     string_id_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.string_data_off = stream.Dex_uint();
         super.length = Type_uint.LENGTH;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+        addNode(parentNode, this.startPos, Type_uint.LENGTH, "string_data_off", string_data_off, "msg_string_id_item__string_data_off", UITool.icon4Offset());
     }
 }

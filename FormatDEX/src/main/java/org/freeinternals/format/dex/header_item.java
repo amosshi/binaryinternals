@@ -32,19 +32,19 @@ public class header_item extends FileComponent implements GenerateTreeNode {
      * adler32 checksum of the rest of the file (everything but magic and this
      * field); used to detect file corruption.
      */
-    public Type_uint checksum;
+    public final Type_uint checksum;
 
     /**
      * SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
      * {@link #checksum}, and this field {@link #signature}); used to uniquely
      * identify files.
      */
-    public Type_ubyte[] signature = new Type_ubyte[20];
+    public final Type_ubyte[] signature = new Type_ubyte[20];
 
     /**
      * size of the entire file (including the {@link header_item}), in bytes.
      */
-    public Type_uint file_size;
+    public final Type_uint file_size;
 
     /**
      * size of the header (this entire section), in bytes. This allows for at
@@ -57,11 +57,11 @@ public class header_item extends FileComponent implements GenerateTreeNode {
      * Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
      * {@link Endian#REVERSE_ENDIAN_CONSTANT}.
      */
-    public Type_uint endian_tag;
+    public final Type_uint endian_tag;
     /**
      * Size of the link section, or 0 if this file isn't statically linked.
      */
-    public Type_uint link_size;
+    public final Type_uint link_size;
     /**
      * Offset from the start of the file to the link section, or 0 if
      * {@link #link_size} == 0. The offset, if non-zero, should be to an offset
@@ -69,22 +69,22 @@ public class header_item extends FileComponent implements GenerateTreeNode {
      * pointed at is left unspecified by this document; this header field (and
      * the previous) are left as hooks for use by runtime implementations.
      */
-    public Type_uint link_off;
-    public Type_uint map_off;
-    public Type_uint string_ids_size;
-    public Type_uint string_ids_off;
-    public Type_uint type_ids_size;
-    public Type_uint type_ids_off;
-    public Type_uint proto_ids_size;
-    public Type_uint proto_ids_off;
-    public Type_uint field_ids_size;
-    public Type_uint field_ids_off;
-    public Type_uint method_ids_size;
-    public Type_uint method_ids_off;
-    public Type_uint class_defs_size;
-    public Type_uint class_defs_off;
-    public Type_uint data_size;
-    public Type_uint data_off;
+    public final Type_uint link_off;
+    public final Type_uint map_off;
+    public final Type_uint string_ids_size;
+    public final Type_uint string_ids_off;
+    public final Type_uint type_ids_size;
+    public final Type_uint type_ids_off;
+    public final Type_uint proto_ids_size;
+    public final Type_uint proto_ids_off;
+    public final Type_uint field_ids_size;
+    public final Type_uint field_ids_off;
+    public final Type_uint method_ids_size;
+    public final Type_uint method_ids_off;
+    public final Type_uint class_defs_size;
+    public final Type_uint class_defs_off;
+    public final Type_uint data_size;
+    public final Type_uint data_off;
 
     header_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
@@ -128,80 +128,76 @@ public class header_item extends FileComponent implements GenerateTreeNode {
                 "header_item"));
         parentNode.add(headerNode);
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "checksum", this.checksum, "msg_header_item_checksum");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "checksum", this.checksum, "msg_header_item_checksum", UITool.icon4Checksum());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                floatPos,
-                this.signature.length,
-                "signature: " + Type_ubyte.toString(this.signature),
-                TreeNodeGenerator.MESSAGES.getString("msg_header_item_signature")
-        )));
-        floatPos += this.signature.length;
-
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "file_size", this.file_size, "msg_header_item_file_size");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, this.signature.length, "signature", Type_ubyte.toString(this.signature), "msg_header_item_signature", UITool.icon4Signature());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "header_size", this.header_size, "msg_header_item_header_size");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "file_size", this.file_size, "msg_header_item_file_size", UITool.icon4Size());
+        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "header_size", this.header_size, "msg_header_item_header_size", UITool.icon4Size());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 Type_uint.LENGTH,
                 "endian_tag: " + this.endian_tag.toString() + " / " + Endian.toString(this.endian_tag.intValue()),
+                UITool.icon4Endian(),
                 TreeNodeGenerator.MESSAGES.getString("msg_header_item_endian_tag")
         )));
         floatPos += Type_uint.LENGTH;
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_size", this.link_size, "msg_header_item_link_size");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_size", this.link_size, "msg_header_item_link_size", UITool.icon4Size());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_off", this.link_off, "msg_header_item_link_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_off", this.link_off, "msg_header_item_link_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "map_off", this.map_off, "msg_header_item_map_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "map_off", this.map_off, "msg_header_item_map_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_size", this.string_ids_size, "msg_header_item_string_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_off", this.string_ids_off, "msg_header_item_string_ids_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_off", this.string_ids_off, "msg_header_item_string_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_size", this.type_ids_size, "msg_header_item_type_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_off", this.type_ids_off, "msg_header_item_type_ids_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_off", this.type_ids_off, "msg_header_item_type_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_size", this.proto_ids_size, "msg_header_item_proto_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_off", this.proto_ids_off, "msg_header_item_proto_ids_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_off", this.proto_ids_off, "msg_header_item_proto_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_size", this.field_ids_size, "msg_header_item_field_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_off", this.field_ids_off, "msg_header_item_field_ids_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_off", this.field_ids_off, "msg_header_item_field_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_size", this.method_ids_size, "msg_header_item_method_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_off", this.method_ids_off, "msg_header_item_method_ids_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_off", this.method_ids_off, "msg_header_item_method_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_size", this.class_defs_size, "msg_header_item_class_defs_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_off", this.class_defs_off, "msg_header_item_class_defs_off");
+        nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_off", this.class_defs_off, "msg_header_item_class_defs_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "data_size", this.data_size, "msg_header_item_data_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "data_off", this.data_off, "msg_header_item_data_off");
+        TreeNodeGenerator.addNode(headerNode, floatPos, Type_uint.LENGTH, "data_off", this.data_off, "msg_header_item_data_off", UITool.icon4Offset());
     }
 
     /**

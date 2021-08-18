@@ -11,7 +11,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
+import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Integer_info} structure in constant pool.
@@ -72,7 +74,9 @@ public class CONSTANT_Integer_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 1,
                 4,
-                "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData)
+                "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData),
+                UITool.icon4Bytes(),
+                MESSAGES.getString("msg_const_int_bytes")
         )));
     }
 }

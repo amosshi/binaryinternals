@@ -7,8 +7,8 @@
 package org.freeinternals.format.jpeg;
 
 import java.io.IOException;
-import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 
 /**
  *
