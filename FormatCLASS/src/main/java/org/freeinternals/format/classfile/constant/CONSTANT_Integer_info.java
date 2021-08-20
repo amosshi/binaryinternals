@@ -13,7 +13,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
+import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Integer_info} structure in constant pool.
@@ -75,7 +75,7 @@ public class CONSTANT_Integer_info extends cp_info {
                 super.startPos + 1,
                 4,
                 "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                UITool.icon4Bytes(),
+                UITool.icon4Data(),
                 MESSAGES.getString("msg_const_int_bytes")
         )));
     }

@@ -75,7 +75,7 @@ public class CONSTANT_Float_info extends cp_info {
                 this.getStartPos() + 1,
                 4,
                 "bytes: " + this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                UITool.icon4Bytes(),
+                UITool.icon4Data(),
                 MESSAGES.getString("msg_const_float_bytes")
         )));
     }

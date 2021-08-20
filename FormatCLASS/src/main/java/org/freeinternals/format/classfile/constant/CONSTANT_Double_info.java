@@ -79,14 +79,14 @@ public class CONSTANT_Double_info extends cp_info {
                 super.startPos + 1,
                 4,
                 "high_bytes - value: " + this.doubleValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                UITool.icon4Bytes(),
+                UITool.icon4Data(),
                 MESSAGES.getString("msg_const_double_bytes")
         )));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 5,
                 4,
                 "low_bytes",
-                UITool.icon4Bytes(),
+                UITool.icon4Data(),
                 MESSAGES.getString("msg_const_double_bytes")
         )));
     }

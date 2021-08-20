@@ -24,8 +24,10 @@ public class class_def_item extends FileComponent {
 
     /**
      * Item Size In Bytes.
+     *
+     * @see map_list.TypeCodes#TYPE_CLASS_DEF_ITEM
      */
-    public static final int LENGTH = 0x20;
+    public static final int ITEM_SIZE = 0x20;
 
     /**
      * index into the type_ids list for this class. This must be a class type,

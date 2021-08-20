@@ -7,25 +7,31 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
  * @author Amos Shi
  *
  * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
  * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * </pre>
  */
-@SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class proto_id_item extends FileComponent {
+@SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
+public class proto_id_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     /**
      * Item Size In Bytes.
+     *
+     * @see map_list.TypeCodes#TYPE_PROTO_ID_ITEM
      */
-    public static final int LENGTH = 12;
+    public static final int ITEM_SIZE = 0x0c;
 
     /**
      * index into the string_ids list for the short-form descriptor string of
@@ -34,11 +40,14 @@ public class proto_id_item extends FileComponent {
      * and parameters of this item.
      */
     public Type_uint shorty_idx;
+    private String shorty = null;
 
     /**
      * index into the type_ids list for the return type of this prototype.
      */
     public Type_uint return_type_idx;
+    private String return_type = null;
+    private String return_type_jls = null;
 
     /**
      * offset from the start of the file to the list of parameter types for this
@@ -55,5 +64,79 @@ public class proto_id_item extends FileComponent {
         this.return_type_idx = stream.Dex_uint();
         this.parameters_off = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
+    }
+    
+    /**
+     * Get {@link #shorty_idx} text.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return shorty text
+     * @see #shorty_idx
+     */
+    public String get_shorty(DexFile dexFile) {
+        if (this.shorty == null) {
+            this.shorty = dexFile.get_string_ids_string(shorty_idx.intValue());
+        }
+        return this.shorty;
+    }
+
+    /**
+     * Get {@link #return_type_idx} text.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return {@link #return_type_idx} text
+     * @see #return_type_idx
+     */
+    public String get_return_type(DexFile dexFile) {
+        if (this.return_type == null) {
+            this.return_type = dexFile.get_type_ids_string(return_type_idx.intValue());
+        }
+        return this.return_type;
+    }
+
+    /**
+     * Get {@link #return_type_idx} text in Java Language Specification format.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return {@link #return_type_idx} text in JSL format
+     * @see #return_type_idx
+     */
+    public String get_return_type_jls(DexFile dexFile) {
+        if (this.return_type_jls == null) {
+            this.return_type_jls = dexFile.type_ids[return_type_idx.intValue()].get_descriptor_jls(dexFile).toString();
+        }
+        return this.return_type_jls;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        int floatPos = super.startPos;
+
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "shorty_idx",
+                String.format(FORMAT_STRING_STRING, this.shorty_idx, this.get_shorty(dexFile)),
+                "msg_proto_id_item__shorty_idx",
+                UITool.icon4Index());
+        floatPos += Type_uint.LENGTH;
+
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "return_type_idx",
+                String.format(FORMAT_STRING_STRING, this.return_type_idx, this.get_return_type_jls(dexFile)),
+                "msg_proto_id_item__return_type_idx",
+                UITool.icon4Return());
+        floatPos += Type_uint.LENGTH;
+
+        String param = (this.parameters_off.value == 0L) ? "no paramter" : "TO LOAD";
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "parameters_off",
+                String.format(FORMAT_STRING_STRING, this.parameters_off, param),
+                "msg_proto_id_item__parameters_off",
+                UITool.icon4Offset());
     }
 }

@@ -57,6 +57,10 @@ public final class SignatureConvertor {
      * </a>
      */
     public static final char METHODDESCRIPTOR_RIGHT = ')';
+    /**
+     * <code>void</code> return type for method.
+     */
+    public static final String METHODRETURN_VOID = "V";
 
     private SignatureConvertor() {
     }
@@ -85,9 +89,20 @@ public final class SignatureConvertor {
             throw new IllegalArgumentException(String.format("There is no ')' in the method signature: %s", signature));
         }
 
-        SignatureResult returnValue;
         final String returnType = signature.substring(bracketEnd + 1);
-        if ("V".equals(returnType)) {
+        return methodReturnTypeJLS(returnType);
+    }
+    
+    /**
+     * JLS format of return type.
+     *
+     * @param returnType Return type in binary format
+     * @return Method return type in Java Programming language format
+     * @throws FileFormatException
+     */
+    public static SignatureResult methodReturnTypeJLS(final String returnType) throws FileFormatException {
+        SignatureResult returnValue;
+        if (METHODRETURN_VOID.equals(returnType)) {
             returnValue = new SignatureResult(0, returnType, JavaLangSpec.Keyword.VOID.text);
         } else {
             returnValue = SignatureConvertor.fieldDescriptorExtractor(returnType);
@@ -95,6 +110,7 @@ public final class SignatureConvertor {
 
         return returnValue;
     }
+
 
     /**
      * Get parameters type from method descriptor {@link method_info#descriptor_index}.

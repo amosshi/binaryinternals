@@ -125,7 +125,7 @@ class JDialogPlugins extends JDialog {
 
         @Override
         public int getRowCount() {
-            return this.rowData.size() + 2;
+            return this.rowData.size() + 1;
         }
 
         @Override

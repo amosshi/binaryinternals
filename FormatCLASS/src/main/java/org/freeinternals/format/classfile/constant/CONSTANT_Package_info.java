@@ -12,7 +12,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
+import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 import org.freeinternals.format.classfile.u2;
 
 /**

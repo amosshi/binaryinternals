@@ -17,7 +17,6 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.attribute.aspectj.AjSynthetic_attribute;
 import org.freeinternals.format.classfile.attribute.aspectj.MethodDeclarationLineNumber_attribute;
@@ -30,6 +29,7 @@ import org.freeinternals.format.classfile.field_info;
 import org.freeinternals.format.classfile.method_info;
 import org.freeinternals.format.classfile.u2;
 import org.freeinternals.format.classfile.u4;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  * Super class for attributes in class file. All attributes have the following
@@ -58,7 +58,7 @@ import org.freeinternals.format.classfile.u4;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public abstract class attribute_info extends FileComponent implements GenerateClassfileTreeNode {
+public abstract class attribute_info extends FileComponent implements GenerateTreeNodeClassFile {
 
     private static final Logger LOG = Logger.getLogger(attribute_info.class.getName());
 

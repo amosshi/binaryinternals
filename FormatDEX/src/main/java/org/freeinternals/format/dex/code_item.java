@@ -49,7 +49,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         this.insns_size = stream.Dex_uint();
         if (this.insns_size.value > 0) {
-            DexFile.checkUint("code_item.insns_size", this.insns_size, stream.getPos());
+            DexFile.check_uint("code_item.insns_size", this.insns_size, stream.getPos());
             this.insns = new Type_ushort[(int) this.insns_size.value];
             for (int i = 0; i < this.insns_size.value; i++) {
                 this.insns[i] = stream.Dex_ushort();
@@ -82,7 +82,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet 1.");
     }
 
 
@@ -102,7 +102,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 2.");
         }
     }
 
@@ -127,7 +127,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 3.");
         }
     }
 
@@ -162,7 +162,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 4.");
         }
     }
 
@@ -180,7 +180,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 5.");
         }
     }
 }

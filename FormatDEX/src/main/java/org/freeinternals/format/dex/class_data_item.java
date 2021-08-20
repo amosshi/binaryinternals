@@ -35,6 +35,12 @@ public class class_data_item extends FileComponent implements GenerateTreeNode {
     public final encoded_method[] direct_methods;
     public final encoded_method[] virtual_methods;
 
+    /**
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
+     * </pre>
+     */
+    @SuppressWarnings("java:S3776")
     class_data_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
         super.startPos = stream.getPos();
         this.static_fields_size = stream.Dex_uleb128();
@@ -83,7 +89,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet 1.");
     }
 
     public static class encoded_field extends FileComponent implements GenerateTreeNode {
@@ -100,7 +106,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 2.");
         }
     }
 
@@ -120,7 +126,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new UnsupportedOperationException("Not supported yet 3.");
         }
     }
 }

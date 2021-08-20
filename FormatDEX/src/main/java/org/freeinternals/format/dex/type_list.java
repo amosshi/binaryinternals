@@ -32,8 +32,8 @@ public class type_list extends FileComponent implements GenerateTreeNode {
         super.startPos = stream.getPos();
         this.size = stream.Dex_uint();
         if (this.size.value > 0) {
-            DexFile.checkUint("type_list.size", this.size, stream.getPos());
-            this.list = new type_item[(int)this.size.value];
+            DexFile.check_uint("type_list.size", this.size, stream.getPos());
+            this.list = new type_item[(int) this.size.value];
             for (int i = 0; i < this.size.value; i++) {
                 this.list[i] = new type_item(stream);
             }
@@ -45,11 +45,23 @@ public class type_list extends FileComponent implements GenerateTreeNode {
     }
 
     @Override
+    public String toString() {
+        return "TODO";
+    }
+
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public static class type_item extends FileComponent implements GenerateTreeNode {
+
+        /**
+         * Item Size In Bytes.
+         *
+         * @see map_list.TypeCodes#TYPE_TYPE_LIST
+         */
+        public static final int ITEM_SIZE = 2;
 
         public final Type_ushort type_idx;
 

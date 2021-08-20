@@ -15,9 +15,9 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
 import org.freeinternals.format.classfile.u2;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  * The class for the {@code InnerClasses} attribute. The {@code InnerClasses}
@@ -126,7 +126,7 @@ public class InnerClasses_attribute extends attribute_info {
      *
      * @author Amos Shi
      */
-    public static final class Class extends FileComponent implements GenerateClassfileTreeNode {
+    public static final class Class extends FileComponent implements GenerateTreeNodeClassFile {
 
         /**
          * The length of current component.

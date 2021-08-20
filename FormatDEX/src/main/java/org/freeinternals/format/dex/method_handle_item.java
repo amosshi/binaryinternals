@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -28,8 +28,10 @@ public class method_handle_item extends FileComponent implements GenerateTreeNod
 
     /**
      * Item Size In Bytes.
+     *
+     * @see map_list.TypeCodes#TYPE_METHOD_HANDLE_ITEM
      */
-    public static final int LENGTH = Type_ushort.LENGTH * 4;
+    public static final int ITEM_SIZE = 0x08;
 
     /**
      * type of the method handle.

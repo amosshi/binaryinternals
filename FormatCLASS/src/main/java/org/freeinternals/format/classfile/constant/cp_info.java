@@ -13,9 +13,9 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  * The super class for constant pool items in class file. All constant pool
@@ -41,7 +41,7 @@ import org.freeinternals.format.classfile.u1;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public abstract class cp_info extends FileComponent implements GenerateClassfileTreeNode {
+public abstract class cp_info extends FileComponent implements GenerateTreeNodeClassFile {
 
     /**
      * Warning message for un-recognized type.

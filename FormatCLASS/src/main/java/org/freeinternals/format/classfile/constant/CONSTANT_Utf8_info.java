@@ -107,7 +107,7 @@ public class CONSTANT_Utf8_info extends cp_info {
                 startPos + 3,
                 this.length_utf8.value,
                 "bytes: " + this.getValue(),
-                UITool.icon4Bytes(),
+                UITool.icon4Data(),
                 MESSAGES.getString("msg_const_utf8_bytes")
         )));
     }

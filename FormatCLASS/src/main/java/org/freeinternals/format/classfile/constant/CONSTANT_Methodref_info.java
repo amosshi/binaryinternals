@@ -12,7 +12,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateClassfileTreeNode.MESSAGES;
+import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Methodref_info} structure in constant pool.

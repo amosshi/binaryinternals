@@ -28,6 +28,12 @@ public final class UITool {
      * Size ratio of the pop-up window and its parent.
      */
     public static final float POPUP_RATIO = 0.8f;
+    /**
+     * Max length for tree node string.
+     * 
+     * @see #left(String)
+     */
+    public static final int TREENODE_STRING_MAXLEN = 30;
 
     private UITool() {
     }
@@ -59,7 +65,8 @@ public final class UITool {
                 diffStr)));
     }
 
-    private static final Map<String, Icon> iconCache = new HashMap<>();    
+    private static final Map<String, Icon> iconCache = new HashMap<>();
+
     private static Icon icon(String url) {
         return iconCache.computeIfAbsent(url, k -> new ImageIcon(UITool.class.getResource(url)));
     }
@@ -68,27 +75,19 @@ public final class UITool {
      * Icon for binary file.
      *
      * @return Icon for binary file
-     * @see <a href="https://icons8.com/icon/38992/binary-file">Binary File</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/38992/binary-file">Binary File</a>
+     * icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4BinaryFile() {
         return icon("/image/icons8-binary-file-20.png");
     }
 
     /**
-     * Icon for bytes.
-     *
-     * @return Icon for bytes
-     * @see <a href="https://icons8.com/icon/62371/scart">Scart</a> icon by <a href="https://icons8.com">Icons8</a>
-     */
-    public static Icon icon4Bytes() {
-        return icon("/image/icons8-scart-16.png");
-    }
-
-    /**
      * Icon for checksum.
      *
      * @return Icon for checksum
-     * @see <a href="https://icons8.com/icon/sz8cPVwzLrMP/check-mark">Check Mark</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/sz8cPVwzLrMP/check-mark">Check
+     * Mark</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Checksum() {
         return icon("/image/icons8-check-mark-16.png");
@@ -98,27 +97,40 @@ public final class UITool {
      * Icon for counter.
      *
      * @return Icon for counter
-     * @see <a href="https://icons8.com/icon/2U6ROkjIrXIA/abacus">Abacus</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/2U6ROkjIrXIA/abacus">Abacus</a>
+     * icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Counter() {
         return icon("/image/icons8-abacus-16.png");
+    }
+    
+    /**
+     * Icon for raw Data.
+     *
+     * @return Icon for raw data
+     * @see <a href="https://icons8.com/icon/84736/blockchain-technology">Blockchain Technology</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Data() {
+        return icon("/image/icons8-blockchain-technology-16.png");
     }
 
     /**
      * Icon for DEX file.
      *
      * @return Icon for dex file
-     * @see <a href="https://icons8.com/icon/38933/apk">APK</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/38933/apk">APK</a> icon by
+     * <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Dex() {
         return icon("/image/icons8-apk-20.png");
     }
-    
+
     /**
      * Icon for endian.
      *
      * @return Icon for endian
-     * @see <a href="https://icons8.com/icon/Xf1Gx1HbxVsm/up-down-arrow">Up Down Arrow</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/Xf1Gx1HbxVsm/up-down-arrow">Up Down
+     * Arrow</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Endian() {
         return icon("/image/icons8-up-down-arrow-16.png");
@@ -128,10 +140,21 @@ public final class UITool {
      * Icon for length.
      *
      * @return Icon for length
-     * @see <a href="https://icons8.com/icon/44699/length">Length</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/44699/length">Length</a> icon by
+     * <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Length() {
         return icon("/image/icons8-length-16.png");
+    }
+
+    /**
+     * Icon for Index.
+     *
+     * @return Icon for Index
+     * @see <a href="https://icons8.com/icon/79485/one-finger">One Finger</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Index() {
+        return icon("/image/icons8-one-finger-16.png");
     }
 
     /**
@@ -142,25 +165,48 @@ public final class UITool {
     public static Icon icon4Java() {
         return icon("/image/icons8-java-20.png");
     }
-    
+
     /**
      * Icon for Offset / Location / Index.
      *
      * @return Icon for Offset
-     * @see <a href="https://icons8.com/icon/2gsR2g07AQvu/map-pin">Map Pin</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/2gsR2g07AQvu/map-pin">Map Pin</a>
+     * icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Offset() {
         return icon("/image/icons8-map-pin-16.png");
     }
 
     /**
+     * Icon for parameter, of a method.
+     *
+     * @return Icon for Offset
+     * @see <a href="https://icons8.com/icon/Pohj4RQVOJYd/filter">Filter</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Parameter() {
+        return icon("/image/icons8-filter-16.png");
+    }
+
+    /**
      * Icon for magic number.
      *
      * @return Icon for magic number
-     * @see <a href="https://icons8.com/icon/q8t3iE9rg6YF/magic-wand">Magic Wand</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/q8t3iE9rg6YF/magic-wand">Magic
+     * Wand</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Magic() {
         return icon("/image/icons8-magic-wand-16.png");
+    }
+
+    /**
+     * Icon for return type, of a method.
+     *
+     * @return return type icon
+     *
+     * @see <a href="https://icons8.com/icon/13107/return">Return</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Return() {
+        return icon("/image/icons8-return-16.png");
     }
 
     /**
@@ -168,8 +214,7 @@ public final class UITool {
      *
      * @return Shortcut icon
      *
-     * @see <a href="https://icons8.com/icon/78265/shortcut">Shortcut</a> icon
-     * by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/i1z7pQ2orcJk/shortcut">Shortcut</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Shortcut() {
         return icon("/image/icons8-shortcut-16.png");
@@ -179,28 +224,31 @@ public final class UITool {
      * Icon for signature.
      *
      * @return Icon for signature
-     * @see <a href="https://icons8.com/icon/bmicUxC0XDNt/signature">Signature</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see
+     * <a href="https://icons8.com/icon/bmicUxC0XDNt/signature">Signature</a>
+     * icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Signature() {
         return icon("/image/icons8-signature-16.png");
     }
-    
+
     /**
      * Icon for Size.
-     * 
+     *
      * @return Shortcut icon
-     * @see <a href="https://icons8.com/icon/d8VomliGByyY/page-size">Page Size</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/d8VomliGByyY/page-size">Page
+     * Size</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Size() {
         return icon("/image/icons8-page-size-16.png");
     }
 
-    
     /**
      * Icon for tag.
-     * 
+     *
      * @return tag icon
-     * @see <a href="https://icons8.com/icon/pmzH4rF8Lrv9/tag">Tag</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/pmzH4rF8Lrv9/tag">Tag</a> icon by
+     * <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Tag() {
         return icon("/image/icons8-tag-16.png");
@@ -210,11 +258,40 @@ public final class UITool {
      * Icon for version.
      *
      * @return Icon for versions
-     * @see <a href="https://icons8.com/icon/21933/versions">Versions</a> icon by <a href="https://icons8.com">Icons8</a>
-     * @see <a href="https://icons8.com/icon/59954/versions">Versions</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/21933/versions">Versions</a> icon
+     * by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/59954/versions">Versions</a> icon
+     * by <a href="https://icons8.com">Icons8</a>
      */
     public static Icon icon4Versions() {
         return icon("/image/icons8-versions-16.png");
+    }
+
+    /**
+     * Get left part of string for tree node.
+     *
+     * @param s The String to get left part
+     * @return Left part of string
+     */
+    public static String left(String s) {
+        return left(s, TREENODE_STRING_MAXLEN);
+    }
+
+    /**
+     * Get left part of string.
+     *
+     * @param s The String to get left part
+     * @param length Length to get
+     * @return Left part of string
+     */
+    public static String left(String s, int length) {
+        if (s == null) {
+            return s;
+        } else if (s.length() < length) {
+            return s;
+        } else {
+            return s.substring(0, length - 1) + " ...";
+        }
     }
 
     /**

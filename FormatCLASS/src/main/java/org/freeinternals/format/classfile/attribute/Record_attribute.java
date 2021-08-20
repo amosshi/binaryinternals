@@ -13,9 +13,9 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.GenerateClassfileTreeNode;
 import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.u2;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  *
@@ -131,7 +131,7 @@ public class Record_attribute extends attribute_info {
      * </pre>
      */
     @SuppressWarnings("java:S101")
-    public static final class record_component_info extends FileComponent implements GenerateClassfileTreeNode {
+    public static final class record_component_info extends FileComponent implements GenerateTreeNodeClassFile {
 
         /**
          * The value of the name_index item must be a valid index into the

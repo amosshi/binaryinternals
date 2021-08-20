@@ -25,7 +25,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
 
     /**
      * Endian of the {@link DexFile}. The default value is little-endian
-     * {@link HeaderItem.Endian#ENDIAN_CONSTANT}, as the DEX format
+     * {@link header_item.Endian#ENDIAN_CONSTANT}, as the DEX format
      * specification said.
      */
     protected final header_item.Endian endian;

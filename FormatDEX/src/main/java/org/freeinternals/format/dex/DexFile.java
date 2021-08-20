@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
@@ -33,12 +35,15 @@ import org.freeinternals.format.dex.header_item.Endian;
  * Dalvik Executable (DEX) format</a>
  *
  * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * </pre>
  */
-@SuppressWarnings({"java:S116", "java:S1104"})
+@SuppressWarnings({"java:S100", "java:S116", "java:S1104"})
 public class DexFile extends FileFormat {
+
+    private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
     /**
      * The constant array/string
@@ -68,17 +73,16 @@ public class DexFile extends FileFormat {
     /**
      * The file header.
      */
-    public header_item header;
+    public final header_item header;
     /**
-     * String identifiers list, or <code>null{@link header_item#string_ids_off}
-     * is <code>0
+     * String identifiers list, or <code>null<code>.
      */
-    public string_id_item[] string_ids;
-    public type_id_item[] type_ids;
-    public proto_id_item[] proto_ids;
-    public field_id_item[] field_ids;
-    public method_id_item[] method_ids;
-    public class_def_item[] class_defs;
+    public final string_id_item[] string_ids;
+    public final type_id_item[] type_ids;
+    public final proto_id_item[] proto_ids;
+    public final field_id_item[] field_ids;
+    public final method_id_item[] method_ids;
+    public final class_def_item[] class_defs;
     // public Dex_ubyte[] data;
     /**
      * The parsed file components.
@@ -86,6 +90,16 @@ public class DexFile extends FileFormat {
     public SortedMap<Long, FileComponent> data = new TreeMap<>();
     public Type_ubyte[] link_data;
 
+    /**
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
+     * </pre>
+     *
+     * @param file
+     * @throws IOException
+     * @throws FileFormatException
+     */
+    @SuppressWarnings("java:S3776")
     public DexFile(File file) throws IOException, FileFormatException {
         super(file);
 
@@ -101,55 +115,7 @@ public class DexFile extends FileFormat {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
 
-        this.parse();
-    }
-
-    static void checkUint(String fieldName, Type_uint uint, int streamPosition) throws FileFormatException {
-        if (uint.value > Integer.MAX_VALUE) {
-            throw new FileFormatException(String.format("%s is too big cannot be handled here: %d, position 0x%X", fieldName, uint.value, streamPosition));
-        }
-    }
-
-    @Override
-    public Icon getIcon() {
-        return UITool.icon4Dex();
-    }
-
-    /**
-     * Get the underlying String value for a {@link #string_ids} item.
-     *
-     * @param index Index in the {@link #string_ids} array
-     * @return String value for the {@link #string_ids} item, or
-     * <code>null</code> for invalid index
-     */
-    public String getString(int index) {
-        if (index < -1 || this.string_ids == null || index >= this.string_ids.length) {
-            return null;
-        }
-
-        FileComponent fc = this.data.get(this.string_ids[index].string_data_off.value);
-        if (fc instanceof string_data_item) {
-            return ((string_data_item) fc).getString();
-        } else {
-            return null;
-        }
-    }
-
-    public String getTypeDescriptor(int index) {
-        if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {
-            return null;
-        }
-
-        return this.getString(this.type_ids[index].descriptor_idx.intValue());
-    }
-
-    /**
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
-     * </pre>
-     */
-    @SuppressWarnings("java:S3776")
-    private void parse() throws IOException, FileFormatException {
+        // Parse section by section
         PosDataInputStream parseEndian = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         BytesTool.skip(parseEndian, DEX_FILE_MAGIC1.size());
@@ -261,7 +227,54 @@ public class DexFile extends FileFormat {
             }
 
         }
+    }
 
+    static void check_uint(String fieldName, Type_uint uint, int streamPosition) throws FileFormatException {
+        if (uint.value > Integer.MAX_VALUE) {
+            throw new FileFormatException(String.format("%s is too big cannot be handled here: %d, position 0x%X", fieldName, uint.value, streamPosition));
+        }
+    }
+
+    @Override
+    public Icon getIcon() {
+        return UITool.icon4Dex();
+    }
+
+    /**
+     * Get the underlying String value for a {@link #string_ids} item.
+     *
+     * @param index Index in the {@link #string_ids} array
+     * @return String value for the {@link #string_ids} item, or
+     * <code>null</code> for invalid index
+     */
+    public String get_string_ids_string(int index) {
+        if (index < -1 || this.string_ids == null || index >= this.string_ids.length) {
+            LOGGER.log(Level.WARNING, "Return null for invalid string_ids index={0}", index);
+            return null;
+        }
+
+        FileComponent fc = this.data.get(this.string_ids[index].string_data_off.value);
+        if (fc instanceof string_data_item) {
+            return ((string_data_item) fc).getString();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the underlying String value for a {@link #type_ids} item.
+     *
+     * @param index Index in the {@link #type_ids} array
+     * @return String value for the {@link #type_ids} item, or <code>null</code>
+     * for invalid index
+     */
+    public String get_type_ids_string(int index) {
+        if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {
+            LOGGER.log(Level.WARNING, "Return null for invalid type_ids index={0}", index);
+            return null;
+        }
+
+        return this.get_string_ids_string(this.type_ids[index].descriptor_idx.intValue());
     }
 
     @Override
@@ -271,6 +284,6 @@ public class DexFile extends FileFormat {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        TreeNodeGenerator.generate(this, parentNode);
+        (new JTreeDexFile()).generateTreeNode(parentNode, this);
     }
 }

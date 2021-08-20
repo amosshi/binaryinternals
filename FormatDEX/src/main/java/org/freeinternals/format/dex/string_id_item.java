@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -25,6 +25,11 @@ import static org.freeinternals.format.dex.TreeNodeGenerator.addNode;
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public class string_id_item extends FileComponent implements GenerateTreeNode {
+
+    /**
+     * @see map_list.TypeCodes#TYPE_STRING_ID_ITEM
+     */
+    public static final int ITEM_SIZE = 0x04;
 
     /**
      * offset from the start of the file to the string data for this item. The
