@@ -7,20 +7,24 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
  * @author Amos Shi
- * 
+ *
  * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
  * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
  * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
  * </pre>
  */
-@SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class class_def_item extends FileComponent {
+@SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
+public class class_def_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     /**
      * Item Size In Bytes.
@@ -34,6 +38,7 @@ public class class_def_item extends FileComponent {
      * and not an array or primitive type.
      */
     public final Type_uint class_idx;
+    private String clazz_jls;
 
     /**
      * access flags for the class (public, final, etc.). See "access_flags
@@ -48,6 +53,7 @@ public class class_def_item extends FileComponent {
      * primitive type.
      */
     public final Type_uint superclass_idx;
+    private String superclass_jls = null;
 
     /**
      * offset from the start of the file to the list of interfaces, or 0 if
@@ -66,6 +72,7 @@ public class class_def_item extends FileComponent {
      * that most classes will only come from one source file.
      */
     public final Type_uint source_file_idx;
+    private String source_file = null;
 
     /**
      * offset from the start of the file to the annotations structure for this
@@ -112,5 +119,137 @@ public class class_def_item extends FileComponent {
         this.class_data_off = stream.Dex_uint();
         this.static_values_off = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
+    }
+
+    /**
+     * Get {@link #class_idx} name in Java Language Specification format.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return class name in JLS format
+     * @see #class_idx
+     */
+    public String get_class_jls(DexFile dexFile) {
+        if (this.clazz_jls == null) {
+            this.clazz_jls = dexFile.type_ids[this.class_idx.intValue()].get_descriptor_jls(dexFile).toString();
+        }
+        return this.clazz_jls;
+    }
+
+    /**
+     * Get {@link #superclass_idx} name in Java Language Specification format.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return super class name in JLS format
+     * @see #superclass_idx
+     */
+    public String get_superclass_jls(DexFile dexFile) {
+        if (this.superclass_jls == null) {
+            this.superclass_jls = this.superclass_idx.equals(DexFile.NO_INDEX)
+                    ? ""
+                    : dexFile.type_ids[this.superclass_idx.intValue()].get_descriptor_jls(dexFile).toString();
+        }
+        return this.superclass_jls;
+    }
+
+    /**
+     * Get {@link #interfaces_off} value.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return {@link type_list} value if {@link #interfaces_off} is not
+     * <code>0</code>, or else <code>null</code>
+     * @see #interfaces_off
+     */
+    public type_list get_interfaces(DexFile dexFile) {
+        return (this.interfaces_off.value == 0) ? null : (type_list) dexFile.data.get(this.interfaces_off.value);
+    }
+
+    public String get_interfaces_desc(DexFile dexFile) {
+        type_list types = this.get_interfaces(dexFile);
+        return (types == null) ? "(no interface)" : types.toString(dexFile);
+    }
+
+    /**
+     * Get {@link #source_file_idx} value.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return source file
+     * @see #source_file_idx
+     */
+    public String get_source_file(DexFile dexFile) {
+        if (this.source_file == null) {
+            this.source_file = (this.source_file_idx.value == 0 || this.source_file_idx.equals(DexFile.NO_INDEX))
+                    ? "(lack of information)"
+                    : dexFile.get_string_ids_string(this.source_file_idx.intValue());
+        }
+        return this.source_file;
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        int floatPos = super.startPos;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "class_idx",
+                String.format(FORMAT_STRING_STRING, this.class_idx, this.get_class_jls(dexFile)),
+                "msg_class_def_item__class_idx",
+                UITool.icon4Index());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "access_flags",
+                this.access_flags,
+                "msg_class_def_item__access_flags",
+                UITool.icon4Checksum());   // to be changed
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "superclass_idx",
+                String.format(FORMAT_STRING_STRING, this.superclass_idx, this.get_superclass_jls(dexFile)),
+                "msg_class_def_item__superclass_idx",
+                UITool.icon4Index());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "interfaces_off",
+                String.format(FORMAT_STRING_STRING, this.interfaces_off, this.get_interfaces_desc(dexFile)),
+                "msg_class_def_item__interfaces_off",
+                UITool.icon4Offset());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "source_file_idx",
+                String.format(FORMAT_STRING_STRING, this.source_file_idx, this.get_source_file(dexFile)),
+                "msg_class_def_item__source_file_idx",
+                UITool.icon4Index());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "annotations_off",
+                this.annotations_off,
+                "msg_class_def_item__annotations_off",
+                UITool.icon4Offset());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "class_data_off",
+                this.class_data_off,
+                "msg_class_def_item__class_data_off",
+                UITool.icon4Data());
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode,
+                floatPos,
+                Type_uint.LENGTH,
+                "static_values_off",
+                this.static_values_off,
+                "msg_class_def_item__static_values_off",
+                UITool.icon4Offset());
+
     }
 }

@@ -89,7 +89,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        throw new UnsupportedOperationException("Not supported yet 1.");
+        // to add
     }
 
     public static class encoded_field extends FileComponent implements GenerateTreeNode {

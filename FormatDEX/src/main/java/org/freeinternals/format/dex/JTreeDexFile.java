@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 
@@ -28,7 +29,6 @@ import org.freeinternals.commonlib.ui.UITool;
 public class JTreeDexFile implements GenerateTreeNodeDexFile {
 
     private static final Logger LOGGER = Logger.getLogger(JTreeDexFile.class.getName());
-    private static final String MESSAGE_CLASS_IDX = "class_idx";
 
     JTreeDexFile() {
     }
@@ -193,7 +193,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    "proto_id_item[" + String.format("%,d", i) + "]"));
+                    String.format("proto_id_item[%,d] : %s", i, item.get_shorty(dexFile))));
             item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
         }
@@ -252,8 +252,6 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         }
 
         int size = dexFile.class_defs.length;
-        DefaultMutableTreeNode nodeTemp;
-
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.class_defs_off.intValue(),
                 size * class_def_item.ITEM_SIZE,
@@ -266,31 +264,9 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     item.getLength(),
-                    "class_def_item[" + String.format("%,d", i) + "]"));
+                    String.format("class_def_item[%,d] %s", i, item.get_class_jls(dexFile))));
+            item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, MESSAGE_CLASS_IDX, item.class_idx);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "access_flags", item.access_flags);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "superclass_idx", item.superclass_idx);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "interfaces_off", item.interfaces_off);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "source_file_idx", item.source_file_idx);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "annotations_off", item.annotations_off);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            nodeTemp = addNode(itemNode, startPos, Type_uint.LENGTH, "class_data_off", item.class_data_off);
-            startPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
-
-            addNode(itemNode, startPos, Type_uint.LENGTH, "static_values_off", item.static_values_off);
         }
     }
 
@@ -302,21 +278,26 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.data_off.intValue(),
                 dexFile.header.data_size.intValue(),
-                "data"));
+                String.format("data [%,d]", dexFile.data.size())));
         parentNode.add(node);
 
         for (Map.Entry<Long, FileComponent> item : dexFile.data.entrySet()) {
-            FileComponent fc = item.getValue();
-            int startPos = fc.getStartPos();
+            FileComponent comp = item.getValue();
+            int startPos = comp.getStartPos();
 
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
-                    fc.getLength(),
-                    Type_uint.toString(startPos) + " - " + fc.getClass().getSimpleName()));
+                    comp.getLength(),
+                    Type_uint.toString(startPos) + " - " + comp.getClass().getSimpleName()));
             node.add(itemNode);
 
-            if (fc instanceof string_data_item) {
-                ((string_data_item) fc).generateTreeNode(itemNode);
+            if (comp instanceof GenerateTreeNode) {
+                ((GenerateTreeNode) comp).generateTreeNode(itemNode);
+            } else if (comp instanceof GenerateTreeNodeDexFile) {
+                ((GenerateTreeNodeDexFile) comp).generateTreeNode(itemNode, dexFile);
+            } else {
+                // This should never happen, or else it is a coding logic error
+                LOGGER.severe(String.format("FileComponent is not added to the tree: position=0x%X type=%s", comp.getStartPos(), comp.getClass().getName()));
             }
         }
     }

@@ -9,6 +9,7 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
@@ -58,14 +59,14 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
      */
     public final Type_uint parameters_off;
 
-    proto_id_item(PosDataInputStreamDex stream) throws IOException {
+    proto_id_item(final PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.shorty_idx = stream.Dex_uint();
         this.return_type_idx = stream.Dex_uint();
         this.parameters_off = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
     }
-    
+
     /**
      * Get {@link #shorty_idx} text.
      *
@@ -73,7 +74,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
      * @return shorty text
      * @see #shorty_idx
      */
-    public String get_shorty(DexFile dexFile) {
+    public String get_shorty(final DexFile dexFile) {
         if (this.shorty == null) {
             this.shorty = dexFile.get_string_ids_string(shorty_idx.intValue());
         }
@@ -87,7 +88,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
      * @return {@link #return_type_idx} text
      * @see #return_type_idx
      */
-    public String get_return_type(DexFile dexFile) {
+    public String get_return_type(final DexFile dexFile) {
         if (this.return_type == null) {
             this.return_type = dexFile.get_type_ids_string(return_type_idx.intValue());
         }
@@ -101,11 +102,41 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
      * @return {@link #return_type_idx} text in JSL format
      * @see #return_type_idx
      */
-    public String get_return_type_jls(DexFile dexFile) {
+    public String get_return_type_jls(final DexFile dexFile) {
         if (this.return_type_jls == null) {
             this.return_type_jls = dexFile.type_ids[return_type_idx.intValue()].get_descriptor_jls(dexFile).toString();
         }
         return this.return_type_jls;
+    }
+
+    /**
+     * Get the corresponding {@link type_list} for {@link #parameters_off}.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return {@link type_list} for {@link #parameters_off}, or null if no
+     * parameters
+     */
+    public type_list get_parameters(final DexFile dexFile) {
+        if (this.parameters_off.value == 0) {
+            return null;
+        } else {
+            return (type_list) dexFile.data.get(this.parameters_off.value);
+        }
+    }
+
+    /**
+     * String format of current {@link proto_id_item}.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return String format of a {@link proto_id_item}
+     */
+    public String toString(DexFile dexFile) {
+        type_list params = this.get_parameters(dexFile);
+        return String.format("%s - %s (%s)",
+                this.get_shorty(dexFile),
+                this.get_return_type_jls(dexFile),
+                (params == null) ? "" : params.toString(dexFile)
+        );
     }
 
     @Override
@@ -130,7 +161,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                 UITool.icon4Return());
         floatPos += Type_uint.LENGTH;
 
-        String param = (this.parameters_off.value == 0L) ? "no paramter" : "TO LOAD";
+        String param = (this.parameters_off.value == 0) ? "no parameter" : String.format("%d paramters", this.get_parameters(dexFile).size.value);
         addNode(parentNode,
                 floatPos,
                 Type_uint.LENGTH,
@@ -138,5 +169,18 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                 String.format(FORMAT_STRING_STRING, this.parameters_off, param),
                 "msg_proto_id_item__parameters_off",
                 UITool.icon4Offset());
+
+        type_list list = this.get_parameters(dexFile);
+        if (list != null) {
+            DefaultMutableTreeNode listNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    list.getStartPos(),
+                    list.getLength(),
+                    "type_list",
+                    UITool.icon4Shortcut(),
+                    MESSAGES.getString("msg_type_list")
+            ));
+            parentNode.add(listNode);
+            list.generateTreeNode(listNode, dexFile);
+        }
     }
 }

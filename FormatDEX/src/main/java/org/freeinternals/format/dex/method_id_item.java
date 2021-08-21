@@ -60,7 +60,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
         this.name_idx = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
     }
-    
+
 
     /**
      * Get {@link #class_idx} name.
@@ -92,6 +92,17 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
     }
 
     /**
+     * Get {@link #proto_idx} value.
+     *
+     * @param dexFile Current {@link DexFile}
+     * @return {@link #proto_idx} value
+     */
+    public proto_id_item get_proto(DexFile dexFile) {
+        return dexFile.proto_ids[this.proto_idx.value];
+    }
+
+
+    /**
      * Get {@link #name_idx} name.
      *
      * @param dexFile Current {@link DexFile}
@@ -112,9 +123,16 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
      * @return String format of a method
      */
     public String toString(DexFile dexFile) {
-        return String.format("%s.%s() return %s", this.get_class_jls(dexFile), this.get_name(dexFile), "todo");
+        proto_id_item proto = this.get_proto(dexFile);
+        type_list params = proto.get_parameters(dexFile);
+        return String.format("%s %s.%s(%s)",
+                proto.get_return_type_jls(dexFile),
+                this.get_class_jls(dexFile),
+                this.get_name(dexFile),
+                (params == null) ? "" : params.toString(dexFile)
+        );
     }
-    
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
         int floatPos = super.startPos;
@@ -132,7 +150,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_ushort.LENGTH,
                 "proto_idx",
-                this.proto_idx,
+                this.get_proto(dexFile).toString(dexFile),
                 "msg_method_id_item__proto_idx",
                 UITool.icon4Index());
         floatPos += Type_ushort.LENGTH;

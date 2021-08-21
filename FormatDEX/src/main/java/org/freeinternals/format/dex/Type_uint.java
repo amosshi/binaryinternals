@@ -35,8 +35,18 @@ public class Type_uint {
         this.value = l;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Type_uint && ((Type_uint)other).value == this.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(this.value).hashCode();
+    }
+
     public int intValue() {
-        return (int)value;
+        return (int) value;
     }
 
     @Override
@@ -46,7 +56,7 @@ public class Type_uint {
 
     /**
      * Convert <code>long</code> to String with both offset and readable format.
-     * 
+     *
      * @param l The <code>long</code> value
      * @return The String for <code>l</code>
      */

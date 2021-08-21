@@ -20,6 +20,6 @@ public interface GenerateTreeNodeDexFile {
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle(JTreeDexFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     static final String FORMAT_STRING_STRING = "%s - %s";
 
-    void generateTreeNode(final DefaultMutableTreeNode parentNode, DexFile dexFile);
+    void generateTreeNode(final DefaultMutableTreeNode parentNode, final DexFile dexFile);
 
 }

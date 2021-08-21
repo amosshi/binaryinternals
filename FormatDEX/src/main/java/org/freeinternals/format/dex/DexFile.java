@@ -8,6 +8,8 @@ package org.freeinternals.format.dex;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +45,11 @@ import org.freeinternals.format.dex.header_item.Endian;
 @SuppressWarnings({"java:S100", "java:S116", "java:S1104"})
 public class DexFile extends FileFormat {
 
+    /**
+     * The constant NO_INDEX is used to indicate that an index value is absent.
+     * Embedded in {@link class_def_item} and {@link debug_info_item}
+     */
+    public static final Type_uint NO_INDEX = new Type_uint(0xffffffff);
     private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
     /**
@@ -75,7 +82,7 @@ public class DexFile extends FileFormat {
      */
     public final header_item header;
     /**
-     * String identifiers list, or <code>null<code>.
+     * String identifiers list, or <code>null</code>.
      */
     public final string_id_item[] string_ids;
     public final type_id_item[] type_ids;
@@ -83,11 +90,10 @@ public class DexFile extends FileFormat {
     public final field_id_item[] field_ids;
     public final method_id_item[] method_ids;
     public final class_def_item[] class_defs;
-    // public Dex_ubyte[] data;
     /**
      * The parsed file components.
      */
-    public SortedMap<Long, FileComponent> data = new TreeMap<>();
+    public final SortedMap<Long, FileComponent> data = new TreeMap<>();
     public Type_ubyte[] link_data;
 
     /**
@@ -121,7 +127,7 @@ public class DexFile extends FileFormat {
         BytesTool.skip(parseEndian, DEX_FILE_MAGIC1.size());
         BytesTool.skip(parseEndian, DEX_FILE_MAGIC2.size());
         BytesTool.skip(parseEndian, Type_uint.LENGTH);           // checksum
-        BytesTool.skip(parseEndian, 20);                        // signature
+        BytesTool.skip(parseEndian, 20);                         // signature
         BytesTool.skip(parseEndian, Type_uint.LENGTH);           // file_size
         BytesTool.skip(parseEndian, Type_uint.LENGTH);           // header_size
 
@@ -144,7 +150,6 @@ public class DexFile extends FileFormat {
         }
 
         PosDataInputStreamDex stream = new PosDataInputStreamDex(new PosByteArrayInputStream(super.fileByteArray), endian);
-
         SortedMap<Long, Class<?>> todoData = new TreeMap<>();
 
         // Header
@@ -183,6 +188,9 @@ public class DexFile extends FileFormat {
             this.proto_ids = new proto_id_item[this.header.proto_ids_size.intValue()];
             for (int i = 0; i < this.proto_ids.length; i++) {
                 this.proto_ids[i] = new proto_id_item(stream);
+                if (this.proto_ids[i].parameters_off.value != 0) {
+                    todoData.put(this.proto_ids[i].parameters_off.value, type_list.class);
+                }
             }
         }
 
@@ -216,16 +224,34 @@ public class DexFile extends FileFormat {
             this.class_defs = new class_def_item[this.header.class_defs_size.intValue()];
             for (int i = 0; i < this.class_defs.length; i++) {
                 this.class_defs[i] = new class_def_item(stream);
+
+                if (this.class_defs[i].interfaces_off.value != 0) {
+                    todoData.put(this.class_defs[i].interfaces_off.value, type_list.class);
+                }
+                if (this.class_defs[i].annotations_off.value != 0) {
+                    todoData.put(this.class_defs[i].annotations_off.value, annotations_directory_item.class);
+                }
+                if (this.class_defs[i].class_data_off.value != 0) {
+                    todoData.put(this.class_defs[i].class_data_off.value, class_data_item.class);
+                }
+                if (this.class_defs[i].class_data_off.value != 0) {
+                    todoData.put(this.class_defs[i].static_values_off.value, encoded_array_item.class);
+                }
             }
         }
 
         // data
         for (Map.Entry<Long, Class<?>> todoItem : todoData.entrySet()) {
-            if (todoItem.getValue() == string_data_item.class) {
-                stream.flyTo(todoItem.getKey().intValue());
-                this.data.put(todoItem.getKey(), new string_data_item(stream));
+            // There is only 1 constructor in the item class
+            Constructor<?> cons = todoItem.getValue().getDeclaredConstructors()[0];
+            stream.flyTo(todoItem.getKey().intValue());
+            try {
+                this.data.put(todoItem.getKey(), (FileComponent) cons.newInstance(stream));
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                String msg = String.format("newInstance failed for data item at 0x%X of type %s", todoItem.getKey(), todoItem.getValue());
+                LOGGER.severe(msg);
+                throw new IOException(msg, e);
             }
-
         }
     }
 

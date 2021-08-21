@@ -6,6 +6,8 @@
  */
 package org.freeinternals.format.dex;
 
+import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 
 /**
@@ -19,6 +21,15 @@ import org.freeinternals.commonlib.core.FileComponent;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class encoded_array_item extends FileComponent{
-    
+public class encoded_array_item extends FileComponent implements GenerateTreeNodeDexFile {
+
+    encoded_array_item(PosDataInputStreamDex stream) throws IOException {
+        super.startPos = stream.getPos();
+        super.length = 10; // to be changed
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        // to add
+    }
 }

@@ -140,7 +140,11 @@ public class field_id_item extends FileComponent implements GenerateTreeNodeDexF
      * @return String format of a field
      */
     public String toString(DexFile dexFile) {
-        return String.format("field %s.%s type %s", this.get_class_jls(dexFile), this.get_name(dexFile), this.get_type_jls(dexFile));
+        return String.format("%s  %s.%s",
+                this.get_type_jls(dexFile),
+                this.get_class_jls(dexFile),
+                this.get_name(dexFile)
+        );
     }
 
     @Override
