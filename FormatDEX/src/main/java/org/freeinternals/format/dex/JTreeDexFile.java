@@ -8,7 +8,6 @@ package org.freeinternals.format.dex;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -117,35 +116,13 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
 
         for (int i = 0; i < size; i++) {
             string_id_item item = dexFile.string_ids[i];
-            FileComponent fc = dexFile.data.get(item.string_data_off.value);
-            string_data_item strData = null;
-            String strDataValue = "";
-            if (fc instanceof string_data_item) {
-                strData = (string_data_item) fc;
-                strDataValue = strData.getString();
-            } else {
-                LOGGER.log(Level.SEVERE, String.format("This case should never happen. The string_ids did not point to string_data_item: index=%d offset=0x%08X", i, fc.getStartPos()));
-            }
-
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("string_id_item[%,d] : %s", i, UITool.left(strDataValue))
+                    String.format("string_id_item[%,d] : %s", i, UITool.left(dexFile.get_string_ids_string(i)))
             ));
             node.add(itemNode);
-            item.generateTreeNode(itemNode);
-
-            if (strData != null) {
-                DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        strData.getStartPos(),
-                        strData.getLength(),
-                        "string_data_item",
-                        UITool.icon4Shortcut(),
-                        GenerateTreeNodeDexFile.MESSAGES.getString("msg_string_data_item")
-                ));
-                itemNode.add(dataNode);
-                strData.generateTreeNode(dataNode);
-            }
+            item.generateTreeNode(itemNode, dexFile);
         }
     }
 
@@ -290,8 +267,11 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
                     comp.getLength(),
                     Type_uint.toString(startPos) + " - " + comp.getClass().getSimpleName()));
             node.add(itemNode);
-
-            if (comp instanceof GenerateTreeNode) {
+            
+            if (comp instanceof string_data_item) {
+                // Ignore string_data_item in data section, to avoid to many duplicate records
+                continue;
+            } else if (comp instanceof GenerateTreeNode) {
                 ((GenerateTreeNode) comp).generateTreeNode(itemNode);
             } else if (comp instanceof GenerateTreeNodeDexFile) {
                 ((GenerateTreeNodeDexFile) comp).generateTreeNode(itemNode, dexFile);

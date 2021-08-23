@@ -9,6 +9,7 @@ package org.freeinternals.format.classfile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.format.classfile.attribute.InnerClasses_attribute;
 import org.freeinternals.format.classfile.attribute.MethodParameters_attribute;
 import org.freeinternals.format.classfile.attribute.Module_attribute;
@@ -148,12 +149,22 @@ public enum AccessFlag {
      * Indicates that this opening was implicitly declared in the source of the
      * module declaration.
      */
-    ACC_MANDATED(0x8000, "ACC_MANDATED");
+    ACC_MANDATED(    0x8000, "ACC_MANDATED"),
+    /**
+     * Constructor method (class or instance initializer).
+     * Used by Android dex.
+     */
+    ACC_CONSTRUCTOR(0x10000, "ACC_CONSTRUCTOR"),
+    /**
+     * Declared <code>synchronized</code>.
+     * Used by Android dex.
+     */
+    ACC_DECLARED_SYNCHRONIZED(0x20000, "ACC_DECLARED_SYNCHRONIZED");
 
     /**
      * Binary value in the {@link ClassFile}.
      */
-    public final int value;
+    public final long value;
 
     /**
      * Modifier in the java source file. Some modifier does not exist in the
@@ -279,7 +290,7 @@ public enum AccessFlag {
      * @param i Value in the Class file
      * @param m Modifier in the java source file
      */
-    AccessFlag(int i, String m) {
+    private AccessFlag(long i, String m) {
         this.value = i;
         this.modifier = m;
     }
@@ -291,8 +302,13 @@ public enum AccessFlag {
      * @return <code>true</code> if the access flag matches the
      * <code>accFlags</code>, else <code>false</code>
      */
-    public boolean match(int accFlags) {
+    public boolean match(long accFlags) {
         return (accFlags & this.value) > 0;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s value=%s modifier=%s", name(), BytesTool.getBinaryString(this.value), this.modifier);
     }
 
     /**
@@ -301,7 +317,7 @@ public enum AccessFlag {
      * @param value Value in the Class file
      * @return Modifier text
      */
-    public static String getClassModifier(int value) {
+    public static String getClassModifier(long value) {
         return getModifier(value, AccessFlag.ForClass);
     }
 
@@ -311,7 +327,7 @@ public enum AccessFlag {
      * @param value Value in the Class file
      * @return Modifier text
      */
-    public static String getFieldModifier(int value) {
+    public static String getFieldModifier(long value) {
         return getModifier(value, AccessFlag.ForField);
     }
 
@@ -321,7 +337,7 @@ public enum AccessFlag {
      * @param value Value in the Class file
      * @return Modifier text
      */
-    public static String getMethodModifier(int value) {
+    public static String getMethodModifier(long value) {
         return getModifier(value, AccessFlag.ForMethod);
     }
 
@@ -331,7 +347,7 @@ public enum AccessFlag {
      * @param value Value in the Class file
      * @return Modifier text
      */
-    public static String getInnerClassModifier(int value) {
+    public static String getInnerClassModifier(long value) {
         return getModifier(value, AccessFlag.ForInnerClass);
     }
 
@@ -341,20 +357,16 @@ public enum AccessFlag {
      * @param value Value in the Class file
      * @return Modifier text
      */
-    public static String getMethodParametersModifier(int value) {
+    public static String getMethodParametersModifier(long value) {
         return getModifier(value, AccessFlag.ForMethodParameters);
     }
 
-    public static String getModifier(int value, List<AccessFlag> list) {
-        final StringBuilder sb = new StringBuilder(25);
+    public static String getModifier(long value, List<AccessFlag> list) {
+        final List<String> modifiers = new ArrayList<>();
+        list.stream().filter(flag -> (flag.match(value))).forEachOrdered(flag -> {
+            modifiers.add(flag.modifier);
+        });
 
-        for (AccessFlag af : list) {
-            if (af.match(value)) {
-                sb.append(af.modifier);
-                sb.append(" ");
-            }
-        }
-
-        return sb.toString();
+        return String.join(" ", modifiers);
     }
 }

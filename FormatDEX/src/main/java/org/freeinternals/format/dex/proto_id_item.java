@@ -162,7 +162,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
         floatPos += Type_uint.LENGTH;
 
         String param = (this.parameters_off.value == 0) ? "no parameter" : String.format("%d paramters", this.get_parameters(dexFile).size.value);
-        addNode(parentNode,
+        DefaultMutableTreeNode parametersNode = addNode(parentNode,
                 floatPos,
                 Type_uint.LENGTH,
                 "parameters_off",
@@ -179,7 +179,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                     UITool.icon4Shortcut(),
                     MESSAGES.getString("msg_type_list")
             ));
-            parentNode.add(listNode);
+            parametersNode.add(listNode);
             list.generateTreeNode(listNode, dexFile);
         }
     }

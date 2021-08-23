@@ -43,7 +43,7 @@ import org.freeinternals.format.dex.header_item.Endian;
  * </pre>
  */
 @SuppressWarnings({"java:S100", "java:S116", "java:S1104"})
-public class DexFile extends FileFormat {
+public final class DexFile extends FileFormat {
 
     /**
      * The constant NO_INDEX is used to indicate that an index value is absent.
@@ -242,17 +242,33 @@ public class DexFile extends FileFormat {
 
         // data
         for (Map.Entry<Long, Class<?>> todoItem : todoData.entrySet()) {
-            // There is only 1 constructor in the item class
-            Constructor<?> cons = todoItem.getValue().getDeclaredConstructors()[0];
-            stream.flyTo(todoItem.getKey().intValue());
-            try {
-                this.data.put(todoItem.getKey(), (FileComponent) cons.newInstance(stream));
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                String msg = String.format("newInstance failed for data item at 0x%X of type %s", todoItem.getKey(), todoItem.getValue());
-                LOGGER.severe(msg);
-                throw new IOException(msg, e);
-            }
+            this.parseData(todoItem.getKey(), todoItem.getValue(), stream);
         }
+    }
+
+    void parseData(Long offset, Class<?> type, PosDataInputStreamDex stream) throws IOException, FileFormatException{
+        int breakPos = stream.getPos();
+
+        Constructor<?> cons = type.getDeclaredConstructors()[0];
+        stream.flyTo(offset.intValue());
+        try {
+            switch(cons.getParameterCount()) {
+                case 1:
+                    this.data.put(offset, (FileComponent) cons.newInstance(stream));
+                    break;
+                case 2:
+                    this.data.put(offset, (FileComponent) cons.newInstance(stream, this));
+                    break;
+                default:
+                    throw new FileFormatException(String.format("Coding issue: no suitable constructor for type %s at 0x%X", type.getSimpleName(), offset.intValue()));
+            }
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            String msg = String.format("newInstance failed for data item for type %s at 0x%X", type.getSimpleName(), offset.intValue());
+            LOGGER.severe(msg);
+            throw new IOException(msg, e);
+        }
+
+        stream.flyTo(breakPos);
     }
 
     static void check_uint(String fieldName, Type_uint uint, int streamPosition) throws FileFormatException {

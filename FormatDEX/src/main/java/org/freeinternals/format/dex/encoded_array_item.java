@@ -25,7 +25,7 @@ public class encoded_array_item extends FileComponent implements GenerateTreeNod
 
     encoded_array_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
-        super.length = 10; // to be changed
+        super.length = stream.getPos() - super.startPos;
     }
 
     @Override

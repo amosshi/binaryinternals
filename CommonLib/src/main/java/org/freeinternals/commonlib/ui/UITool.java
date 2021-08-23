@@ -30,7 +30,7 @@ public final class UITool {
     public static final float POPUP_RATIO = 0.8f;
     /**
      * Max length for tree node string.
-     * 
+     *
      * @see #left(String)
      */
     public static final int TREENODE_STRING_MAXLEN = 30;
@@ -72,6 +72,15 @@ public final class UITool {
     }
 
     /**
+     * Icon for annotations.
+     *
+     * @return Icon for annotations
+     */
+    public static Icon icon4Annotations() {
+        return icon("/image/icons8-bookmark-16.png");
+    }
+
+    /**
      * Icon for binary file.
      *
      * @return Icon for binary file
@@ -103,7 +112,7 @@ public final class UITool {
     public static Icon icon4Counter() {
         return icon("/image/icons8-abacus-16.png");
     }
-    
+
     /**
      * Icon for raw Data.
      *
