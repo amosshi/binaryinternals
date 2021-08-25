@@ -37,11 +37,6 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
             this.values = new encoded_value[this.size.value];
             for (int i = 0; i < this.size.value; i++) {
                 this.values[i] = new encoded_value(stream);
-
-                // Dev phase Only
-                if (i >= 1) {
-                    break;
-                }
             }
         } else {
             this.values = null;
@@ -51,12 +46,17 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
     }
 
     @Override
+    public String toString() {
+        return String.format(FORMAT_STRING_STRING, this.getClass().getSimpleName(), size.toString());
+    }
+
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
         int floatPos = super.startPos;
         addNode(parentNode,
                 floatPos,
                 size.length,
-                "class_annotations_off",
+                "size",
                 this.size,
                 "msg_encoded_array__size",
                 UITool.icon4Size());
@@ -74,16 +74,10 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
 
             for (int i = 0; i < this.values.length; i++) {
                 encoded_value value = this.values[i];
-
-                // Dev phase Only
-                if (value == null) {
-                    continue;
-                }
-
                 DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         value.getStartPos(),
                         value.getLength(),
-                        String.format("%s[%d]", value.getClass().getSimpleName(), i),
+                        String.format("%s[%d] %s", value.getClass().getSimpleName(), i, value.toString()),
                         UITool.icon4Data(),
                         MESSAGES.getString("msg_encoded_value")
                 ));

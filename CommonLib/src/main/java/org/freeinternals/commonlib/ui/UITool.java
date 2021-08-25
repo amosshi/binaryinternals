@@ -81,6 +81,16 @@ public final class UITool {
     }
 
     /**
+     * Icon for array.
+     *
+     * @return Icon for array
+     * @see <a href="https://icons8.com/icon/78816/view-array">View Array</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Array() {
+        return icon("/image/icons8-view-array-16.png");
+    }
+
+    /**
      * Icon for binary file.
      *
      * @return Icon for binary file
@@ -253,7 +263,7 @@ public final class UITool {
     }
 
     /**
-     * Icon for tag.
+     * Icon for Tag or Type.
      *
      * @return tag icon
      * @see <a href="https://icons8.com/icon/pmzH4rF8Lrv9/tag">Tag</a> icon by

@@ -1,5 +1,5 @@
 /*
- * dexbyte.java    June 17, 2015, 21:32
+ * Type_byte.java    June 17, 2015, 21:32
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -37,5 +37,10 @@ public class Type_byte {
 
     protected Type_byte(byte b) {
         this.value = b;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("0x%s | %d | %c", Integer.toHexString(this.value).toUpperCase(), this.value, this.value);
     }
 }

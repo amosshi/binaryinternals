@@ -15,10 +15,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * Interface for generating tree node for {@link DexFile}.
  *
  * @author Amos Shi
+ *
+ * <pre>
+ * java:S115 - Constant name does not follow naming conventions --- We respect the DEX spec name instead
+ * </pre>
  */
+@SuppressWarnings({"java:S115"})
 public interface GenerateTreeNodeDexFile {
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle(JTreeDexFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     static final String FORMAT_STRING_STRING = "%s - %s";
+
+    static final String msg_annotation_set_item = "msg_annotation_set_item";
 
     void generateTreeNode(final DefaultMutableTreeNode parentNode, final DexFile dexFile);
 

@@ -1,5 +1,5 @@
 /*
- * dexsleb128.java    June 17, 2015, 21:41
+ * Type_sleb128.java    June 17, 2015, 21:41
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -33,5 +33,10 @@ public class Type_sleb128 {
     protected Type_sleb128(int v, int l) {
         this.value = v;
         this.length = l;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("length=%d value=0x%s | %,d", this.length, Integer.toHexString(this.value).toUpperCase(), this.value);
     }
 }

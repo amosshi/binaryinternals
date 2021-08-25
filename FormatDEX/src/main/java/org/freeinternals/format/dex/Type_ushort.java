@@ -1,5 +1,5 @@
 /*
- * dexushort.java    June 17, 2015, 21:37
+ * Type_ushort.java    June 17, 2015, 21:37
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -34,9 +34,9 @@ public class Type_ushort {
     protected Type_ushort(int i) {
         this.value = i;
     }
-    
+
     @Override
     public String toString() {
-        return "0x" + Long.toHexString(this.value).toUpperCase() + " | " + String.format("%,d", this.value);
-    }    
+        return String.format("0x%s | %,d", Long.toHexString(this.value).toUpperCase(), this.value);
+    }
 }

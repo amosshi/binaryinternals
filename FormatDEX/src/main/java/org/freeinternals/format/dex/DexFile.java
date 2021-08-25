@@ -1,5 +1,5 @@
 /*
- * DEXFile.java    June 14, 2015, 22:20
+ * DexFile.java    June 14, 2015, 22:20
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -223,7 +223,7 @@ public final class DexFile extends FileFormat {
             stream.flyTo(this.header.class_defs_off.intValue());
             this.class_defs = new class_def_item[this.header.class_defs_size.intValue()];
             for (int i = 0; i < this.class_defs.length; i++) {
-                this.class_defs[i] = new class_def_item(stream);
+                this.class_defs[i] = new class_def_item(stream, this);
 
                 if (this.class_defs[i].interfaces_off.value != 0) {
                     todoData.put(this.class_defs[i].interfaces_off.value, type_list.class);

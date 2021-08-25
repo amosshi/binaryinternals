@@ -1,5 +1,5 @@
 /*
- * dexuint.java    June 17, 2015, 21:39
+ * Type_uint.java    June 17, 2015, 21:39
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -61,6 +61,6 @@ public class Type_uint {
      * @return The String for <code>l</code>
      */
     public static String toString(long l) {
-        return "0x" + Long.toHexString(l).toUpperCase() + " | " + String.format("%,d", l);
+        return String.format("0x%s | %,d", Long.toHexString(l).toUpperCase(), l);
     }
 }

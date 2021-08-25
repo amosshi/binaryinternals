@@ -1,5 +1,5 @@
 /*
- * dexlong.java    June 17, 2015, 21:39
+ * Type_long.java    June 17, 2015, 21:39
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -32,5 +32,10 @@ public class Type_long {
 
     protected Type_long(long l) {
         this.value = l;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("0x%s | %,d", Long.toHexString(this.value).toUpperCase(), this.value);
     }
 }

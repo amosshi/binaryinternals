@@ -1,5 +1,5 @@
 /*
- * AnnotationSetRefList.java    June 23, 2015, 06:20
+ * annotation_set_ref_list.java    June 23, 2015, 06:20
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -46,6 +46,11 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
     }
 
     @Override
+    public String toString() {
+        return String.format(FORMAT_STRING_STRING, this.getClass().getSimpleName(), this.size);
+    }
+
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
         int floatPos = super.startPos;
         addNode(parentNode,
@@ -58,7 +63,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
         //floatPos += Type_uint.LENGTH;
 
         if (this.list != null) {
-            //
+            // TODO
         }
     }
 

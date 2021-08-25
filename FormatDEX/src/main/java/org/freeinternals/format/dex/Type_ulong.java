@@ -1,5 +1,5 @@
 /*
- * dexulong.java    June 17, 2015, 21:40
+ * Type_ulong.java    June 17, 2015, 21:40
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -35,5 +35,13 @@ public class Type_ulong {
 
     protected Type_ulong(BigInteger bi) {
         this.value = bi;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("0x%s | %s | %,d",
+                this.value.toString(16).toUpperCase(),
+                this.value.toString(),
+                this.value.longValue());
     }
 }

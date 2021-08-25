@@ -1,5 +1,5 @@
 /*
- * dexubyte.java    June 17, 2015, 21:32
+ * Type_ubyte.java    June 17, 2015, 21:32
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -35,9 +35,14 @@ public class Type_ubyte {
         this.value = i;
     }
 
+    @Override
+    public String toString() {
+        return String.format("0x%s | %d", Integer.toHexString(this.value).toUpperCase(), this.value);
+    }
+
     /**
      * Get string for <code>ubyte</code> array.
-     * 
+     *
      * @param bytes <code>ubyte</code> array
      * @return String value
      */

@@ -1,5 +1,5 @@
 /*
- * ClassDefItem.java    June 23, 2015, 06:20
+ * class_def_item.java    June 23, 2015, 06:20
  *
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 import static org.freeinternals.format.dex.JTreeDexFile.addNode;
@@ -112,7 +113,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
      */
     public final Type_uint static_values_off;
 
-    class_def_item(PosDataInputStreamDex stream) throws IOException {
+    class_def_item(final PosDataInputStreamDex stream, final DexFile dex) throws IOException, FileFormatException {
         super.startPos = stream.getPos();
         this.class_idx = stream.Dex_uint();
         this.access_flags = stream.Dex_uint();
@@ -121,6 +122,11 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         this.source_file_idx = stream.Dex_uint();
         this.annotations_off = stream.Dex_uint();
         this.class_data_off = stream.Dex_uint();
+        if (this.class_data_off.value != 0) {
+            System.out.println(String.format("%s : class_data_off exists at 0x%X", class_def_item.class.getSimpleName(), this.startPos));
+            dex.parseData(this.class_data_off.value, class_data_item.class, stream);
+        }
+
         this.static_values_off = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
     }
@@ -286,7 +292,6 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
 
         annotations_directory_item ans = this.get_annotations(dexFile);
         if (ans != null) {
-            System.out.println(String.format("%s annotations_off exists at 0x%X", this.getClass().getSimpleName(), this.getStartPos()));
             DefaultMutableTreeNode ansNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     ans.getStartPos(),
                     ans.getLength(),
@@ -304,8 +309,9 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "class_data_off",
                 this.class_data_off,
                 "msg_class_def_item__class_data_off",
-                UITool.icon4Data());
+                UITool.icon4Offset());
         floatPos += Type_uint.LENGTH;
+        // TODO class_data_off
 
         addNode(parentNode,
                 floatPos,
