@@ -9,6 +9,9 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -22,14 +25,18 @@ import org.freeinternals.commonlib.core.FileComponent;
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public class encoded_array_item extends FileComponent implements GenerateTreeNodeDexFile {
+    
+    public final encoded_array value;
 
-    encoded_array_item(PosDataInputStreamDex stream) throws IOException {
+    encoded_array_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
         super.startPos = stream.getPos();
+        this.value = new encoded_array(stream);
         super.length = stream.getPos() - super.startPos;
     }
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
-        // to add
+        DefaultMutableTreeNode valueNode = addNode(parentNode, super.startPos, this.value.getLength(), "value", this.value, "msg_encoded_array_item__value", UITool.icon4Data());
+        this.value.generateTreeNode(valueNode, dexFile);
     }
 }

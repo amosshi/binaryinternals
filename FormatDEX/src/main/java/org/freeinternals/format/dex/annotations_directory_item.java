@@ -133,9 +133,6 @@ public class annotations_directory_item extends FileComponent implements Generat
                 this.annotated_parameters_size,
                 "msg_annotations_directory_item__annotated_parameters_size",
                 UITool.icon4Size());
-        if (this.parameter_annotations != null) {
-            System.out.println(this.getClass().getSimpleName() + " annotated_parameters_size > 0 at 0x" + Integer.toHexString(this.startPos));
-        }
 
         if (this.field_annotations != null) {
             final int fieldLen = this.field_annotations.length;
@@ -161,6 +158,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 item.generateTreeNode(node, dexFile);
             }
         }
+
         if (this.method_annotations != null) {
             final int methodLen = this.method_annotations.length;
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(

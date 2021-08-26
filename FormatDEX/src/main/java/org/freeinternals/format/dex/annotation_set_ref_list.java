@@ -10,7 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.GenerateTreeNodeDexFile.MESSAGES;
 import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
@@ -24,7 +26,7 @@ import static org.freeinternals.format.dex.JTreeDexFile.addNode;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class annotation_set_ref_list extends FileComponent implements GenerateTreeNodeDexFile{
+public class annotation_set_ref_list extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uint size;
     public final annotation_set_ref_item[] list;
@@ -60,16 +62,52 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                 this.size,
                 "msg_annotation_set_ref_list__size",
                 UITool.icon4Size());
-        //floatPos += Type_uint.LENGTH;
+        floatPos += Type_uint.LENGTH;
 
-        if (this.list != null) {
-            // TODO
+        if (this.list == null) {
+            return;
+        }
+
+        DefaultMutableTreeNode listNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                floatPos,
+                annotation_set_ref_item.LENGTH * this.list.length,
+                String.format("list [%d]", this.list.length),
+                UITool.icon4Data(),
+                MESSAGES.getString("msg_annotation_set_ref_list__list")
+        ));
+        parentNode.add(listNode);
+
+        for (int i = 0; i < this.list.length; i++) {
+            // Since annotation_set_ref_item has only 1 field, so we do not use child node
+            annotation_set_ref_item refItem = this.list[i];
+            DefaultMutableTreeNode refItemNode = addNode(listNode,
+                    refItem.getStartPos(),
+                    refItem.getLength(),
+                    String.format("%s[%d].annotations_off", annotation_set_ref_item.class.getSimpleName(), i),
+                    refItem.annotations_off,
+                    "msg_annotation_set_ref_item__annotations_off",
+                    UITool.icon4Offset()
+            );
+
+            FileComponent fc = dexFile.data.get(refItem.annotations_off.value);
+            //annotation_set_item item = (annotation_set_item) 
+            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    fc.getStartPos(),
+                    fc.getLength(),
+                    fc.getClass().getSimpleName(),
+                    UITool.icon4Shortcut(),
+                    MESSAGES.getString("msg_annotation_set_item")
+            ));
+            refItemNode.add(itemNode);
+            if (fc instanceof GenerateTreeNodeDexFile) {
+                ((GenerateTreeNodeDexFile)fc).generateTreeNode(itemNode, dexFile);
+            }
         }
     }
 
+    public static class annotation_set_ref_item extends FileComponent {
 
-    public static class annotation_set_ref_item extends FileComponent implements GenerateTreeNodeDexFile {
-
+        public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotations_off;
 
         annotation_set_ref_item(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
@@ -80,12 +118,5 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
             }
             super.length = stream.getPos() - super.startPos;
         }
-
-        @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
-            //
-        }
-
     }
-
 }

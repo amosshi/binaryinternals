@@ -44,12 +44,6 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
         if (this.size.value > 0) {
             this.elements = new annotation_element[this.size.value];
             for (int i = 0; i < this.size.value; i++) {
-                // Dev phase only
-                //if (i >= 2) {
-                //    System.out.println(String.format("%s Skip for loop %d", encoded_annotation.class.getSimpleName(), i));
-                //    continue;
-                //}
-
                 this.elements[i] = new annotation_element(stream);
             }
         } else {

@@ -62,45 +62,47 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                 UITool.icon4Size());
         floatPos += Type_uint.LENGTH;
 
-        if (this.entries != null) {
-            DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    floatPos,
-                    annotation_off_item.LEGNTH * this.entries.length,
-                    String.format("entries [%d]", this.entries.length),
-                    UITool.icon4Data(),
-                    MESSAGES.getString("msg_annotation_set_item__entries")
+        if (this.entries == null) {
+            return;
+        }
+
+        DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                floatPos,
+                annotation_off_item.LENGTH * this.entries.length,
+                String.format("entries [%d]", this.entries.length),
+                UITool.icon4Data(),
+                MESSAGES.getString("msg_annotation_set_item__entries")
+        ));
+        parentNode.add(entriesNode);
+
+        for (int i = 0; i < this.entries.length; i++) {
+            // Since annotation_off_item has only 1 field, so we do not use child node
+            annotation_off_item offItem = this.entries[i];
+            DefaultMutableTreeNode offItemNode = addNode(entriesNode,
+                    offItem.getStartPos(),
+                    offItem.getLength(),
+                    String.format("%s[%d].annotation_off", annotation_off_item.class.getSimpleName(), i),
+                    offItem.annotation_off,
+                    "msg_annotation_off_item__annotation_off",
+                    UITool.icon4Offset()
+            );
+
+            annotation_item item = (annotation_item) dexFile.data.get(offItem.annotation_off.value);
+            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    item.getStartPos(),
+                    item.getLength(),
+                    annotation_item.class.getSimpleName(),
+                    UITool.icon4Shortcut(),
+                    MESSAGES.getString("msg_annotation_item")
             ));
-            parentNode.add(entriesNode);
-
-            for (int i = 0; i < this.entries.length; i++) {
-                // Since annotation_off_item has only 1 field, so we do not use child node
-                annotation_off_item offItem = this.entries[i];
-                DefaultMutableTreeNode offItemNode = addNode(entriesNode,
-                        offItem.getStartPos(),
-                        offItem.getLength(),
-                        String.format("%s[%d].annotation_off", annotation_off_item.class.getSimpleName(), i),
-                        offItem.annotation_off,
-                        "msg_annotation_off_item__annotation_off",
-                        UITool.icon4Offset()
-                );
-
-                annotation_item item = (annotation_item) dexFile.data.get(offItem.annotation_off.value);
-                DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        item.getStartPos(),
-                        item.getLength(),
-                        annotation_item.class.getSimpleName(),
-                        UITool.icon4Shortcut(),
-                        MESSAGES.getString("msg_annotation_item")
-                ));
-                offItemNode.add(itemNode);
-                item.generateTreeNode(itemNode, dexFile);
-            }
+            offItemNode.add(itemNode);
+            item.generateTreeNode(itemNode, dexFile);
         }
     }
 
     public static class annotation_off_item extends FileComponent {
 
-        public static final int LEGNTH = Type_uint.LENGTH;
+        public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotation_off;
 
         annotation_off_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException, FileFormatException {

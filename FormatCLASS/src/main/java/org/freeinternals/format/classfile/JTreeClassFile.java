@@ -133,6 +133,7 @@ public class JTreeClassFile {
                 this.classFile.access_flags.getStartPos(),
                 this.classFile.access_flags.getLength(),
                 MESSAGE_ACCESS_FLAGS + BytesTool.getBinaryString(this.classFile.access_flags.value.value) + " " + this.classFile.getModifiers(),
+                UITool.icon4AccessFlag(),
                 GenerateTreeNodeClassFile.MESSAGES.getString("msg_access_flags")
         ));
         this.root.add(accessFlags);

@@ -84,25 +84,22 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 this.union_value_int = this.read_int(stream, this.value_arg);
                 break;
             case VALUE_LONG:
-                // TODO FIX
                 if (this.value_arg != 7) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_LONG value_arg is not 7 but " + this.value_arg + " - to be parsed");
+                    System.out.println(this.getClass().getSimpleName() + " VALUE_LONG value_arg is not 7 but " + this.value_arg + " - to test");
                 }
-                this.union_value_long = stream.Dex_long();
+                this.union_value_long = this.read_long(stream, length);
                 break;
             case VALUE_FLOAT:
-                // TODO FIX
                 if (this.value_arg != 3) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg is not 3 but " + this.value_arg + " - to be parsed");
+                    System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg is not 3 but " + this.value_arg + " - to test");
                 }
-                this.union_value_float = stream.readFloat();
+                this.union_value_float = this.read_float(stream, this.value_arg);
                 break;
             case VALUE_DOUBLE:
-                // TODO FIX
                 if (this.value_arg != 7) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg is not 7 but " + this.value_arg + " - to be parsed");
+                    System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg is not 7 but " + this.value_arg + " - to test");
                 }
-                this.union_value_double = stream.readDouble();
+                this.union_value_double = this.read_double(stream, this.value_arg);
                 break;
             case VALUE_METHOD_TYPE:
                 this.union_value_method_type = this.read_uint(stream, this.value_arg);
@@ -178,7 +175,6 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
     public Float get_value_float() {
         return this.union_value_float;
     }
-
     public Double get_value_double() {
         return this.union_value_double;
     }
@@ -211,6 +207,74 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
     }
     public Boolean get_value_bollean() {
         return this.union_value_bollean;
+    }
+
+    private Type_long read_long(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+        Type_long result = null;
+        switch (arg) {
+            case 0:
+                result = new Type_long(stream.Dex_byte().value);
+                break;
+
+            case 1:
+                result = new Type_long(stream.Dex_short().value);
+                break;
+
+            case 3:
+                result = new Type_long(stream.Dex_int().value);
+                break;
+
+            case 2:
+            case 4:
+            case 5:
+            case 6:
+                // TODO 
+                byte[] raw = new byte[arg + 1];
+                int rb = stream.read(raw);
+                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered for long - TODO implement logic - readbytes=" + rb);
+                if (rb != arg + 1) {
+                    throw new IOException(String.format("Cannot read enough bytes for long. expected=%d readbytes=%d", arg + 1, rb));
+                }
+                result = new Type_long(5);
+                break;
+
+            case 7:
+                result = stream.Dex_long();
+                break;
+
+            default:
+                throw new FileFormatException(String.format("Unrecognized value_arg (%d) in %s for int at location 0x%08X",
+                        arg,
+                        this.getClass().getSimpleName(),
+                        stream.getPos())
+                );
+        }
+
+        return result;
+    }
+
+    private Float read_float(final PosDataInputStreamDex stream, final int arg) throws IOException{
+        Float result = Float.MIN_VALUE; // TODO convert the bytes to float
+
+        byte[] raw = new byte[arg + 1];
+        int rb = stream.read(raw);
+        if (rb != arg + 1) {
+            throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
+        }
+
+        return result;
+    }
+    
+    private Double read_double(final PosDataInputStreamDex stream, final int arg) throws IOException{
+        Double result = Double.MAX_VALUE; // TODO convert the bytes to double
+
+        byte[] raw = new byte[arg + 1];
+        int rb = stream.read(raw);
+        if (rb != arg + 1) {
+            throw new IOException(String.format("Cannot read enough bytes for double. expected=%d readbytes=%d", arg + 1, rb));
+        }
+
+        return result;
     }
 
     private Type_short read_short(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
@@ -264,9 +328,14 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 result = new Type_int(stream.Dex_short().value);
                 break;
             case 2:
-                // todo
-                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes int");
-                result = null;
+                // TODO 
+                byte[] raw = new byte[arg + 1];
+                int rb = stream.read(raw);
+                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes int - TODO implement logic - readbytes=" + rb);
+                if (rb != arg + 1) {
+                    throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
+                }
+                result = new Type_int(3);
                 break;
             case 3:
                 result = stream.Dex_int();
@@ -293,8 +362,13 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 break;
             case 2:
                 // todo
-                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes uint");
-                result = null;
+                byte[] raw = new byte[arg + 1];
+                int rb = stream.read(raw);
+                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes uint - TODO implement logic - readbytes=" + rb);
+                if (rb != arg + 1) {
+                    throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
+                }
+                result = new Type_uint(2);
                 break;
             case 3:
                 result = stream.Dex_uint();

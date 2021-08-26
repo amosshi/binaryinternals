@@ -11,6 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.UITool;
+import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -23,7 +25,7 @@ import org.freeinternals.commonlib.ui.GenerateTreeNode;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class code_item extends FileComponent implements GenerateTreeNode {
+public class code_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_ushort registers_size;
     public final Type_ushort ins_size;
@@ -46,6 +48,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
         this.outs_size = stream.Dex_ushort();
         this.tries_size = stream.Dex_ushort();
         this.debug_info_off = stream.Dex_uint();
+        // TODO Parse debug info
 
         this.insns_size = stream.Dex_uint();
         if (this.insns_size.value > 0) {
@@ -81,8 +84,17 @@ public class code_item extends FileComponent implements GenerateTreeNode {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        throw new UnsupportedOperationException("Not supported yet 1.");
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        int floatPos = super.startPos;
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "registers_size", this.registers_size, "msg_code_item__registers_size", UITool.icon4Size());
+        floatPos += Type_ushort.LENGTH;
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "ins_size", this.ins_size, "msg_code_item__ins_size", UITool.icon4Size());
+        floatPos += Type_ushort.LENGTH;
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "outs_size", this.outs_size, "msg_code_item__outs_size", UITool.icon4Size());
+        floatPos += Type_ushort.LENGTH;
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "tries_size", this.tries_size, "msg_code_item__tries_size", UITool.icon4Size());
+        floatPos += Type_ushort.LENGTH;
+        addNode(parentNode, floatPos, Type_uint.LENGTH, "debug_info_off", this.debug_info_off, "msg_code_item__debug_info_off", UITool.icon4Offset());
     }
 
 
@@ -102,7 +114,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet 2.");
+            // TODO
         }
     }
 
@@ -127,7 +139,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet 3.");
+            // TODO
         }
     }
 
@@ -162,7 +174,7 @@ public class code_item extends FileComponent implements GenerateTreeNode {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet 4.");
+            // TODO
         }
     }
 

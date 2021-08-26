@@ -72,6 +72,16 @@ public final class UITool {
     }
 
     /**
+     * Icon for access flags.
+     *
+     * @return Icon for access flags
+     * @see <a href="https://icons8.com/icon/En14xvMmiGjB/approval">Approval</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4AccessFlag() {
+        return icon("/image/icons8-approval-16.png");
+    }
+
+    /**
      * Icon for annotations.
      *
      * @return Icon for annotations
@@ -154,6 +164,16 @@ public final class UITool {
     public static Icon icon4Endian() {
         return icon("/image/icons8-up-down-arrow-16.png");
     }
+    
+    /**
+     * Icon for field.
+     *
+     * @return Icon for field
+     * @see <a href="https://icons8.com/icon/45099/play-property">Play Property</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Field() {
+        return icon("/image/icons8-play-property-16.png");
+    }
 
     /**
      * Icon for length.
@@ -183,6 +203,16 @@ public final class UITool {
      */
     public static Icon icon4Java() {
         return icon("/image/icons8-java-20.png");
+    }
+
+    /**
+     * Icon for Method.
+     *
+     * @return Icon for Method
+     * @see <a href="https://icons8.com/icon/e5uh9CTQUVii/mechanistic-analysis">Mechanistic Analysis</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Method() {
+        return icon("/image/icons8-mechanistic-analysis-16.png");
     }
 
     /**

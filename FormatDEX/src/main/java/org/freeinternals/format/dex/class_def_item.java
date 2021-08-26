@@ -123,7 +123,6 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         this.annotations_off = stream.Dex_uint();
         this.class_data_off = stream.Dex_uint();
         if (this.class_data_off.value != 0) {
-            System.out.println(String.format("%s : class_data_off exists at 0x%X", class_def_item.class.getSimpleName(), this.startPos));
             dex.parseData(this.class_data_off.value, class_data_item.class, stream);
         }
 
@@ -154,7 +153,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
      */
     public String get_superclass_jls(DexFile dexFile) {
         if (this.superclass_jls == null) {
-            this.superclass_jls = this.superclass_idx.equals(DexFile.NO_INDEX)
+            this.superclass_jls = (this.superclass_idx.value == DexFile.NO_INDEX)
                     ? ""
                     : dexFile.type_ids[this.superclass_idx.intValue()].get_descriptor_jls(dexFile).toString();
         }
@@ -213,7 +212,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
      */
     public String get_source_file(DexFile dexFile) {
         if (this.source_file == null) {
-            this.source_file = (this.source_file_idx.value == 0 || this.source_file_idx.equals(DexFile.NO_INDEX))
+            this.source_file = (this.source_file_idx.value == 0 || this.source_file_idx.value == DexFile.NO_INDEX)
                     ? "(lack of information)"
                     : dexFile.get_string_ids_string(this.source_file_idx.intValue());
         }
@@ -238,7 +237,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "access_flags",
                 this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getClassModifier(this.access_flags.intValue()),
                 "msg_class_def_item__access_flags",
-                UITool.icon4Checksum());   // to be changed
+                UITool.icon4AccessFlag());
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -303,7 +302,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
             ans.generateTreeNode(ansNode, dexFile);
         }
 
-        addNode(parentNode,
+        DefaultMutableTreeNode offNode = addNode(parentNode,
                 floatPos,
                 Type_uint.LENGTH,
                 "class_data_off",
@@ -311,7 +310,18 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "msg_class_def_item__class_data_off",
                 UITool.icon4Offset());
         floatPos += Type_uint.LENGTH;
-        // TODO class_data_off
+        if (this.class_data_off.value != 0) {
+            class_data_item item = (class_data_item) dexFile.data.get(this.class_data_off.value);
+            DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    item.getStartPos(),
+                    item.getLength(),
+                    item.getClass().getSimpleName(),
+                    UITool.icon4Shortcut(),
+                    MESSAGES.getString("msg_class_data_item")
+            ));
+            offNode.add(itemNode);
+            item.generateTreeNode(itemNode, dexFile);
+        }
 
         addNode(parentNode,
                 floatPos,

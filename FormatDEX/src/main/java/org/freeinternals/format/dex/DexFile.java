@@ -49,7 +49,7 @@ public final class DexFile extends FileFormat {
      * The constant NO_INDEX is used to indicate that an index value is absent.
      * Embedded in {@link class_def_item} and {@link debug_info_item}
      */
-    public static final Type_uint NO_INDEX = new Type_uint(0xffffffff);
+    public static final long NO_INDEX = 0xffffffffL;
     private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
     /**
@@ -234,7 +234,7 @@ public final class DexFile extends FileFormat {
                 if (this.class_defs[i].class_data_off.value != 0) {
                     todoData.put(this.class_defs[i].class_data_off.value, class_data_item.class);
                 }
-                if (this.class_defs[i].class_data_off.value != 0) {
+                if (this.class_defs[i].static_values_off.value != 0) {
                     todoData.put(this.class_defs[i].static_values_off.value, encoded_array_item.class);
                 }
             }
