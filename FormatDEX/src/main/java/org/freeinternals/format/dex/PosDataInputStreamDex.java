@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.dex;
 
+import java.io.EOFException;
 import java.io.IOException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
@@ -15,13 +16,27 @@ import org.freeinternals.format.dex.header_item.Endian;
 /**
  *
  * @author Amos Shi
- * 
+ *
  * <pre>
  * java:S100 - Method names should comply with a naming convention --- We use different naming convention for better readablity
+ * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
  * </pre>
  */
-@SuppressWarnings("java:S100")
+@SuppressWarnings({"java:S100", "java:S1110"})
 public class PosDataInputStreamDex extends PosDataInputStream {
+
+    /**
+     * Full Byte length: 3.
+     */
+    private static final int BYTE_LENGTH_3 = 3;
+    private static final int BYTE_LENGTH_5 = 5;
+    private static final int BYTE_LENGTH_6 = 6;
+    private static final int BYTE_LENGTH_7 = 7;
+
+    /**
+     * Byte position: 6.
+     */
+    private static final int BYTE_POSITION_5 = 5;
 
     /**
      * Endian of the {@link DexFile}. The default value is little-endian
@@ -103,6 +118,20 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     }
 
     /**
+     * Read a 3-byte {@link Type_int} from the input stream.
+     *
+     * @return a {@link Type_int}
+     * @throws IOException I/O Error
+     */
+    public Type_int Dex_int3() throws IOException {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
+            return new Type_int(this.readInt3());
+        } else {
+            return new Type_int(this.readInt3InLittleEndian());
+        }
+    }
+
+    /**
      * Read a {@link Type_uint} from the input stream.
      *
      * @return a {@link Type_uint}
@@ -113,6 +142,20 @@ public class PosDataInputStreamDex extends PosDataInputStream {
             return new Type_uint(this.readUnsignedInt());
         } else {
             return new Type_uint(this.readUnsignedIntInLittleEndian());
+        }
+    }
+
+    /**
+     * Read a {@link Type_uint} from the input stream for only 3 bytes.
+     *
+     * @return a {@link Type_uint}
+     * @throws IOException I/O Error
+     */
+    public Type_uint Dex_uint3() throws IOException {
+        if (this.endian.value == header_item.Endian.ENDIAN_CONSTANT.value) {
+            return new Type_uint(this.readUnsignedInt3());
+        } else {
+            return new Type_uint(this.readUnsignedInt3InLittleEndian());
         }
     }
 
@@ -128,6 +171,39 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         } else {
             return new Type_long(this.readLongInLittleEndian());
         }
+    }
+
+    /**
+     * Read a 5/6/7-byte {@link Type_long} from the input stream.
+     *
+     * @param length Dynamic long length value: 5, 6, or 7
+     * @return a {@link Type_long}
+     * @throws IOException I/O Error
+     */
+    public Type_long Dex_long(int length) throws IOException {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
+            switch (length) {
+                case 5:
+                    return new Type_long(this.readLong5());
+                case 6:
+                    return new Type_long(this.readLong6());
+                case 7:
+                    return new Type_long(this.readLong7());
+                default:
+            }
+        } else {
+            switch (length) {
+                case 5:
+                    return new Type_long(this.readLong5InLittleEndian());
+                case 6:
+                    return new Type_long(this.readLong6InLittleEndian());
+                case 7:
+                    return new Type_long(this.readLong7InLittleEndian());
+                default:
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("Unexpected long value length: %d", length));
     }
 
     /**
@@ -212,5 +288,179 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     public Type_uleb128p1 Dex_uleb128p1() throws IOException, FileFormatException {
         Type_uleb128 uleb128 = this.Dex_uleb128();
         return new Type_uleb128p1(uleb128.value - 1, uleb128.length);
+    }
+
+    /**
+     * Read 3-byte int.
+     */
+    private int readInt3() throws IOException {
+        int ch1 = this.in.read();
+        int ch2 = this.in.read();
+        int ch3 = this.in.read();
+        if ((ch1 | ch2 | ch3) < 0) {
+            throw new EOFException();
+        }
+
+        if ((ch3 & 0x80) > 0) {
+            System.out.println("TODO verify - 3-byte int test case at 0x" + Integer.toHexString(this.getPos()) + " ----------------------- readInt3 ----");
+            return 0xFF000000 | (ch1 << SHIFT_16) | (ch2 << SHIFT_8) | (ch3);
+        } else {
+            return (ch1 << SHIFT_16) | (ch2 << SHIFT_8) | (ch3);
+        }
+    }
+
+    /**
+     * Read 3-byte int in little-endian.
+     */
+    private int readInt3InLittleEndian() throws IOException {
+        int ch1 = this.in.read();
+        int ch2 = this.in.read();
+        int ch3 = this.in.read();
+        if ((ch1 | ch2 | ch3) < 0) {
+            throw new EOFException();
+        }
+
+        if ((ch3 & 0x80) > 0) {
+            // System.out.println("TODO verify via Java source code via minus value - 3-byte int test case at 0x" + Integer.toHexString(this.getPos()) + " ----------------------- readIntInLittleEndian3 ----");
+            return 0xFF000000 | (ch3 << SHIFT_16) | (ch2 << SHIFT_8) | (ch1);
+        } else {
+            return (ch3 << SHIFT_16) | (ch2 << SHIFT_8) | (ch1);
+        }
+    }
+
+    private long readLong5() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 3, BYTE_LENGTH_5);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+    private long readLong5InLittleEndian() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 3, BYTE_LENGTH_5);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+
+    private long readLong6() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 2, BYTE_LENGTH_6);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+    private long readLong6InLittleEndian() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 2, BYTE_LENGTH_6);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+
+    private long readLong7() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 1, BYTE_LENGTH_7);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+    private long readLong7InLittleEndian() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+        super.readFully(readBuffer, 1, BYTE_LENGTH_7);
+
+        // TODO
+        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
+                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    }
+
+    /**
+     * Read 3-byte unsigned int.
+     */
+    private long readUnsignedInt3() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+
+        super.readFully(readBuffer, BYTE_POSITION_5, BYTE_LENGTH_3);
+        readBuffer[BYTE_OFFSET_0] = 0;
+        readBuffer[BYTE_OFFSET_1] = 0;
+        readBuffer[BYTE_OFFSET_2] = 0;
+        readBuffer[BYTE_OFFSET_3] = 0;
+        readBuffer[BYTE_OFFSET_4] = 0;
+
+        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
+                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
+                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
+                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
+                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
+                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
+    }
+
+    /**
+     * Read 3-byte unsigned int in little-endian.
+     */
+    private long readUnsignedInt3InLittleEndian() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
+
+        super.readFully(readBuffer, 0, BYTE_LENGTH_3);
+        readBuffer[BYTE_OFFSET_7] = readBuffer[BYTE_OFFSET_0];
+        readBuffer[BYTE_OFFSET_6] = readBuffer[BYTE_OFFSET_1];
+        readBuffer[BYTE_OFFSET_5] = readBuffer[BYTE_OFFSET_2];
+        readBuffer[BYTE_OFFSET_4] = 0;
+        readBuffer[BYTE_OFFSET_3] = 0;
+        readBuffer[BYTE_OFFSET_2] = 0;
+        readBuffer[BYTE_OFFSET_1] = 0;
+        readBuffer[BYTE_OFFSET_0] = 0;
+
+        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
+                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
+                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
+                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
+                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
+                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 }

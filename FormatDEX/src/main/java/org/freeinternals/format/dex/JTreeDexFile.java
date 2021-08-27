@@ -7,11 +7,9 @@
 package org.freeinternals.format.dex;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
@@ -78,22 +76,22 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
 
         DefaultMutableTreeNode magicNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC1.size() + DexFile.DEX_FILE_MAGIC2.size(),
+                DexFile.DEX_FILE_MAGIC1.length + DexFile.DEX_FILE_MAGIC2.length,
                 "magic"));
         parentNode.add(magicNode);
 
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC1.size(),
+                DexFile.DEX_FILE_MAGIC1.length,
                 "magic 1: " + new String(dexFile.magic1, StandardCharsets.UTF_8),
                 UITool.icon4Magic(),
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_dex_file_magic1")
         )));
-        startPos += DexFile.DEX_FILE_MAGIC1.size();
+        startPos += DexFile.DEX_FILE_MAGIC1.length;
 
         magicNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
-                DexFile.DEX_FILE_MAGIC2.size(),
+                DexFile.DEX_FILE_MAGIC2.length,
                 "magic 2: " + new String(dexFile.magic2, StandardCharsets.UTF_8),
                 UITool.icon4Magic(),
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_dex_file_magic2")

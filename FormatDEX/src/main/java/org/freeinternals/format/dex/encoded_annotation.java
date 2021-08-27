@@ -139,9 +139,10 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
             super.startPos = stream.getPos();
             this.name_idx = stream.Dex_uleb128();
 
-            try {  // Dev phase only
+            try {  // TODO Dev phase only
                 this.value = new encoded_value(stream);
             } catch (FileFormatException e) {
+                // This should never happen
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
 

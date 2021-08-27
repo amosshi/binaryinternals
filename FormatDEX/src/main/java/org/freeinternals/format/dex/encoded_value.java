@@ -56,6 +56,12 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
     private encoded_annotation union_value_annotation;
     private Boolean union_value_bollean;
 
+    /**
+     * <pre>
+     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+     * </pre>
+     */
+    @SuppressWarnings({"java:S127", "java:S3776"})
     encoded_value(final PosDataInputStreamDex stream) throws IOException, FileFormatException {
         super.startPos = stream.getPos();
         value_arg_and_type  = stream.Dex_ubyte();
@@ -84,21 +90,12 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 this.union_value_int = this.read_int(stream, this.value_arg);
                 break;
             case VALUE_LONG:
-                if (this.value_arg != 7) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_LONG value_arg is not 7 but " + this.value_arg + " - to test");
-                }
-                this.union_value_long = this.read_long(stream, length);
+                this.union_value_long = this.read_long(stream, this.value_arg);
                 break;
             case VALUE_FLOAT:
-                if (this.value_arg != 3) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg is not 3 but " + this.value_arg + " - to test");
-                }
                 this.union_value_float = this.read_float(stream, this.value_arg);
                 break;
             case VALUE_DOUBLE:
-                if (this.value_arg != 7) {
-                    System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg is not 7 but " + this.value_arg + " - to test");
-                }
                 this.union_value_double = this.read_double(stream, this.value_arg);
                 break;
             case VALUE_METHOD_TYPE:
@@ -220,22 +217,22 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 result = new Type_long(stream.Dex_short().value);
                 break;
 
+            case 2:
+                result = new Type_long(stream.Dex_int3().value);
+                if (result.value < 0) {
+                    System.out.println(this.getClass().getSimpleName() + String.format(" : read_long for triple bytes (minus value) at 0x%X ======= to verify =======", stream.getPos()) );
+                }
+                break;
+
             case 3:
                 result = new Type_long(stream.Dex_int().value);
                 break;
 
-            case 2:
             case 4:
             case 5:
             case 6:
-                // TODO 
-                byte[] raw = new byte[arg + 1];
-                int rb = stream.read(raw);
-                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered for long - TODO implement logic - readbytes=" + rb);
-                if (rb != arg + 1) {
-                    throw new IOException(String.format("Cannot read enough bytes for long. expected=%d readbytes=%d", arg + 1, rb));
-                }
-                result = new Type_long(5);
+                System.out.println(this.getClass().getSimpleName() + " : read_long for bytes 5/6/7 at 0x" + Integer.toHexString(stream.getPos()).toUpperCase() + " ======= to verify =======");
+                result = stream.Dex_long(arg + 1);
                 break;
 
             case 7:
@@ -256,6 +253,10 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
     private Float read_float(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Float result = Float.MIN_VALUE; // TODO convert the bytes to float
 
+        if (arg != 3) {
+            System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg is not 3 but " + this.value_arg + " at 0x" + Integer.toHexString(stream.getPos())  + " - to implment");
+        }
+
         byte[] raw = new byte[arg + 1];
         int rb = stream.read(raw);
         if (rb != arg + 1) {
@@ -264,9 +265,13 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
 
         return result;
     }
-    
+
     private Double read_double(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Double result = Double.MAX_VALUE; // TODO convert the bytes to double
+
+        if (arg != 7) {
+            System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg is not 7 but " + this.value_arg + " at 0x" + Integer.toHexString(stream.getPos())  + " - to implment");
+        }
 
         byte[] raw = new byte[arg + 1];
         int rb = stream.read(raw);
@@ -328,14 +333,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 result = new Type_int(stream.Dex_short().value);
                 break;
             case 2:
-                // TODO 
-                byte[] raw = new byte[arg + 1];
-                int rb = stream.read(raw);
-                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes int - TODO implement logic - readbytes=" + rb);
-                if (rb != arg + 1) {
-                    throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
-                }
-                result = new Type_int(3);
+                result = stream.Dex_int3();
                 break;
             case 3:
                 result = stream.Dex_int();
@@ -361,14 +359,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 result = new Type_uint(stream.Dex_ushort().value);
                 break;
             case 2:
-                // todo
-                byte[] raw = new byte[arg + 1];
-                int rb = stream.read(raw);
-                System.out.println(this.getClass().getSimpleName() + " Unhandled case encountered: triple bytes uint - TODO implement logic - readbytes=" + rb);
-                if (rb != arg + 1) {
-                    throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
-                }
-                result = new Type_uint(2);
+                result = stream.Dex_uint3();
                 break;
             case 3:
                 result = stream.Dex_uint();

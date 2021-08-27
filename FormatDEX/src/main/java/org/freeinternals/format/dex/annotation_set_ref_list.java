@@ -89,8 +89,12 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                     UITool.icon4Offset()
             );
 
+            if (refItem.annotations_off.value == 0) {
+                continue;
+            }
+
             FileComponent fc = dexFile.data.get(refItem.annotations_off.value);
-            //annotation_set_item item = (annotation_set_item) 
+            //annotation_set_item item = (annotation_set_item)
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     fc.getStartPos(),
                     fc.getLength(),
@@ -100,7 +104,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
             ));
             refItemNode.add(itemNode);
             if (fc instanceof GenerateTreeNodeDexFile) {
-                ((GenerateTreeNodeDexFile)fc).generateTreeNode(itemNode, dexFile);
+                ((GenerateTreeNodeDexFile) fc).generateTreeNode(itemNode, dexFile);
             }
         }
     }

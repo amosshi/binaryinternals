@@ -33,7 +33,7 @@ public final class UITool {
      *
      * @see #left(String)
      */
-    public static final int TREENODE_STRING_MAXLEN = 30;
+    public static final int TREENODE_STRING_MAXLEN = 64;
 
     private UITool() {
     }

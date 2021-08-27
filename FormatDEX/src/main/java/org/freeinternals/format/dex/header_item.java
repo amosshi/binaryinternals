@@ -119,7 +119,7 @@ public class header_item extends FileComponent implements GenerateTreeNode {
         this.data_size = stream.Dex_uint();
         this.data_off = stream.Dex_uint();
 
-        super.length = this.header_size.intValue() - DexFile.DEX_FILE_MAGIC1.size() - DexFile.DEX_FILE_MAGIC2.size();
+        super.length = this.header_size.intValue() - DexFile.DEX_FILE_MAGIC1.length - DexFile.DEX_FILE_MAGIC2.length;
     }
 
     @Override

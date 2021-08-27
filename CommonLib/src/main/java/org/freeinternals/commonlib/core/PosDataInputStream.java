@@ -18,7 +18,7 @@ import java.math.BigInteger;
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
     public static final byte[] EMPTY_BYTE_ARRAY = {};
-    
+
     /**
      * Number in bytes for Java <code>byte</code> type.
      */
@@ -39,60 +39,60 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /**
      * Shift Operators, offset with 8.
      */
-    private static final int SHIFT_8 = 8;
+    protected static final int SHIFT_8 = 8;
     /**
      * Shift Operators, offset with 16.
      */
-    private static final int SHIFT_16 = 16;
+    protected static final int SHIFT_16 = 16;
     /**
      * Shift Operators, offset with 24.
      */
-    private static final int SHIFT_24 = 24;
+    protected static final int SHIFT_24 = 24;
     /**
      * Shift Operators, offset with 32.
      */
-    private static final int SHIFT_32 = 32;
+    protected static final int SHIFT_32 = 32;
     /**
      * Shift Operators, offset with 40.
      */
-    private static final int SHIFT_40 = 40;
+    protected static final int SHIFT_40 = 40;
     /**
      * Shift Operators, offset with 48.
      */
-    private static final int SHIFT_48 = 48;
+    protected static final int SHIFT_48 = 48;
     /**
      * Shift Operators, offset with 56.
      */
-    private static final int SHIFT_56 = 56;
+    protected static final int SHIFT_56 = 56;
     /**
      * Half Byte length: 4.
      */
-    private static final int BYTE_LENGTH_4 = 4;
+    protected static final int BYTE_LENGTH_4 = 4;
     /**
      * Full Byte length: 8.
      */
-    private static final int BYTE_LENGTH_8 = 8;
+    protected static final int BYTE_LENGTH_8 = 8;
 
     /** Byte offset 0. */
-    private static final int BYTE_OFFSET_0 = 0;
+    protected static final int BYTE_OFFSET_0 = 0;
     /** Byte offset 1. */
-    private static final int BYTE_OFFSET_1 = 1;
+    protected static final int BYTE_OFFSET_1 = 1;
     /** Byte offset 2. */
-    private static final int BYTE_OFFSET_2 = 2;
+    protected static final int BYTE_OFFSET_2 = 2;
     /** Byte offset 3. */
-    private static final int BYTE_OFFSET_3 = 3;
+    protected static final int BYTE_OFFSET_3 = 3;
     /** Byte offset 4. */
-    private static final int BYTE_OFFSET_4 = 4;
+    protected static final int BYTE_OFFSET_4 = 4;
     /** Byte offset 5. */
-    private static final int BYTE_OFFSET_5 = 5;
+    protected static final int BYTE_OFFSET_5 = 5;
     /** Byte offset 6. */
-    private static final int BYTE_OFFSET_6 = 6;
+    protected static final int BYTE_OFFSET_6 = 6;
     /** Byte offset 7. */
-    private static final int BYTE_OFFSET_7 = 7;
+    protected static final int BYTE_OFFSET_7 = 7;
     /**
      * Byte max value: 255.
      */
-    private static final int BYTE_MAX_255 = 255;
+    protected static final int BYTE_MAX_255 = 255;
 
     /**
      * New line character: LINE FEED (LF).

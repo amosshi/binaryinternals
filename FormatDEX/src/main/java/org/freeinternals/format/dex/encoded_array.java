@@ -7,6 +7,8 @@
 package org.freeinternals.format.dex;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -27,6 +29,7 @@ import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public class encoded_array extends FileComponent implements GenerateTreeNodeDexFile {
 
+    private static final Logger LOGGER = Logger.getLogger(encoded_array.class.getName());
     public final Type_uleb128 size;
     public final encoded_value[] values;
 
@@ -36,7 +39,12 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
         if (this.size.value > 0) {
             this.values = new encoded_value[this.size.value];
             for (int i = 0; i < this.size.value; i++) {
-                this.values[i] = new encoded_value(stream);
+                try {
+                    this.values[i] = new encoded_value(stream);
+                } catch (FileFormatException e) {
+                    // This should never happen
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
             }
         } else {
             this.values = null;
@@ -74,16 +82,21 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
 
             for (int i = 0; i < this.values.length; i++) {
                 encoded_value value = this.values[i];
-                DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        value.getStartPos(),
-                        value.getLength(),
-                        String.format("%s[%d] %s", value.getClass().getSimpleName(), i, value.toString()),
-                        UITool.icon4Data(),
-                        MESSAGES.getString("msg_encoded_value")
-                ));
+                if (value != null) {
+                    DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            value.getStartPos(),
+                            value.getLength(),
+                            String.format("%s[%d] %s", value.getClass().getSimpleName(), i, value.toString()),
+                            UITool.icon4Data(),
+                            MESSAGES.getString("msg_encoded_value")
+                    ));
 
-                valuesNode.add(valueNode);
-                value.generateTreeNode(valueNode, dexFile);
+                    valuesNode.add(valueNode);
+                    value.generateTreeNode(valueNode, dexFile);
+                } else {
+                    // This should never happen
+                    LOGGER.log(Level.SEVERE, "{0} at 0x{1} : value[{2}] is null", new Object[]{this.getClass().getSimpleName(), Integer.toHexString(this.getStartPos()), i});
+                }
             }
         }
     }
