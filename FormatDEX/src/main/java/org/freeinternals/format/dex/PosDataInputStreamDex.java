@@ -290,6 +290,30 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         return new Type_uleb128p1(uleb128.value - 1, uleb128.length);
     }
 
+    public Double readDouble(int length) throws IOException{
+        System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg " + (length - 1) + " at 0x" + Integer.toHexString(this.getPos())  + " - to implment");
+
+        byte[] raw = new byte[length];
+        int rb = this.read(raw);
+        if (rb != length) {
+            throw new IOException(String.format("Cannot read enough bytes for double. expected=%d readbytes=%d", length, rb));
+        }
+
+        return Double.MAX_VALUE;
+    }
+
+    public Float readFloat(int length) throws IOException{
+        System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg " + (length -1) + " at 0x" + Integer.toHexString(this.getPos())  + " - to implment");
+
+        byte[] raw = new byte[length];
+        int rb = this.read(raw);
+        if (rb != length) {
+            throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", length, rb));
+        }
+
+        return Float.MIN_VALUE;
+    }
+
     /**
      * Read 3-byte int.
      */
@@ -329,90 +353,141 @@ public class PosDataInputStreamDex extends PosDataInputStream {
     }
 
     private long readLong5() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 3, BYTE_LENGTH_5);
+        final byte[] readBuffer = new byte[BYTE_LENGTH_5];
+        super.readFully(readBuffer);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 NEGATIVE----");
+            return (0xFFFFFF0000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
+        } else {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 POSITIVE----");
+            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
+        }
     }
-    private long readLong5InLittleEndian() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 3, BYTE_LENGTH_5);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+    private long readLong5InLittleEndian() throws IOException {
+        final byte[] readBuffer = new byte[BYTE_LENGTH_5];
+        super.readFully(readBuffer);
+
+        if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5InLittleEndian NEGATIVE----");
+            return (0xFFFFFF0000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        } else {
+            return (  ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        }
     }
 
     private long readLong6() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 2, BYTE_LENGTH_6);
+        final byte[] readBuffer = new byte[BYTE_LENGTH_6];
+        super.readFully(readBuffer);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6 NEGATIVE----");
+            return (0xFFFF000000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255)));
+        } else {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6 POSITIVE----");
+            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255)));
+        }
     }
     private long readLong6InLittleEndian() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 2, BYTE_LENGTH_6);
+        final byte[] readBuffer = new byte[BYTE_LENGTH_6];
+        super.readFully(readBuffer);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6InLittleEndian NEGATIVE----");
+            return (0xFFFF000000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        } else {
+            return (  ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        }
     }
 
     private long readLong7() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 1, BYTE_LENGTH_7);
+        final byte[] readBuffer = new byte[BYTE_LENGTH_7];
+        super.readFully(readBuffer);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        if ((readBuffer[BYTE_OFFSET_6] & 0x80) > 0) {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong7 NEGATIVE----");
+            return (0xFF00000000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255)));
+        } else {
+            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong7 POSITIVE----");
+            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255)));
+        }
     }
     private long readLong7InLittleEndian() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 1, BYTE_LENGTH_7);
+        final byte[] readBuffer = new byte[BYTE_LENGTH_7];
+        super.readFully(readBuffer);
 
-        // TODO
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                | ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                | ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                | ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        if ((readBuffer[BYTE_OFFSET_6] & 0x80) > 0) {
+            return (0xFF00000000000000L
+                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        } else {
+            return (  ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+                    | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
+                    | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
+                    | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        }
     }
 
     /**

@@ -93,10 +93,10 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 this.union_value_long = this.read_long(stream, this.value_arg);
                 break;
             case VALUE_FLOAT:
-                this.union_value_float = this.read_float(stream, this.value_arg);
+                this.union_value_float = stream.readFloat(this.value_arg + 1);
                 break;
             case VALUE_DOUBLE:
-                this.union_value_double = this.read_double(stream, this.value_arg);
+                this.union_value_double = stream.readDouble(this.value_arg + 1);
                 break;
             case VALUE_METHOD_TYPE:
                 this.union_value_method_type = this.read_uint(stream, this.value_arg);
@@ -231,7 +231,6 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
             case 4:
             case 5:
             case 6:
-                System.out.println(this.getClass().getSimpleName() + " : read_long for bytes 5/6/7 at 0x" + Integer.toHexString(stream.getPos()).toUpperCase() + " ======= to verify =======");
                 result = stream.Dex_long(arg + 1);
                 break;
 
@@ -245,38 +244,6 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                         this.getClass().getSimpleName(),
                         stream.getPos())
                 );
-        }
-
-        return result;
-    }
-
-    private Float read_float(final PosDataInputStreamDex stream, final int arg) throws IOException{
-        Float result = Float.MIN_VALUE; // TODO convert the bytes to float
-
-        if (arg != 3) {
-            System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg is not 3 but " + this.value_arg + " at 0x" + Integer.toHexString(stream.getPos())  + " - to implment");
-        }
-
-        byte[] raw = new byte[arg + 1];
-        int rb = stream.read(raw);
-        if (rb != arg + 1) {
-            throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", arg + 1, rb));
-        }
-
-        return result;
-    }
-
-    private Double read_double(final PosDataInputStreamDex stream, final int arg) throws IOException{
-        Double result = Double.MAX_VALUE; // TODO convert the bytes to double
-
-        if (arg != 7) {
-            System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg is not 7 but " + this.value_arg + " at 0x" + Integer.toHexString(stream.getPos())  + " - to implment");
-        }
-
-        byte[] raw = new byte[arg + 1];
-        int rb = stream.read(raw);
-        if (rb != arg + 1) {
-            throw new IOException(String.format("Cannot read enough bytes for double. expected=%d readbytes=%d", arg + 1, rb));
         }
 
         return result;
