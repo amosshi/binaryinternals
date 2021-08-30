@@ -9,9 +9,9 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -24,7 +24,7 @@ import static org.freeinternals.format.dex.JTreeDexFile.addNode;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class method_handle_item extends FileComponent implements GenerateTreeNode {
+public class method_handle_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     /**
      * Item Size In Bytes.
@@ -61,14 +61,14 @@ public class method_handle_item extends FileComponent implements GenerateTreeNod
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         int floatPos = this.getStartPos();
 
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type", UITool.icon4Offset());
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id");  // add icon later
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id", UITool.icon4Index());
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
     }

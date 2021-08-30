@@ -11,10 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.SignatureConvertor;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  * Type identifiers list item.
@@ -94,12 +94,12 @@ public class type_id_item extends FileComponent implements GenerateTreeNodeDexFi
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
         addNode(parentNode,
                 this.startPos,
                 Type_uint.LENGTH,
                 "descriptor_idx",
-                String.format("%s - %s", descriptor_idx, this.get_descriptor(dexFile)),
+                String.format("%s - %s", descriptor_idx, this.get_descriptor((DexFile)dexFile)),
                 "msg_type_id_item__descriptor_idx",
                 UITool.icon4Offset()
         );

@@ -3,6 +3,7 @@
 An application to show binary file internals visually & interactively for the meaning of every byte.
 
 Supported Formats
+
 * [BMP](https://en.wikipedia.org/wiki/BMP_file_format) file
 * [Class](https://docs.oracle.com/javase/specs/) file
   * Programming Logic: http://www.codeproject.com/Articles/35915/Java-Class-Viewer
@@ -12,11 +13,13 @@ Supported Formats
 * [ZIP](https://en.wikipedia.org/wiki/ZIP_(file_format)) file
 
 Will supported formats
+
 * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
 * [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (todo)
 * [PE](https://en.wikipedia.org/wiki/Portable_Executable) file for Windows (todo)
 
 Legacy note
+
 * The orignal *Java Class Viewer* has been retired, and merged into *Binary Internals Viewer* since Apr 2021
  
 Build the Source Code
@@ -32,6 +35,7 @@ Test Case
   * `./masstest-format-class.sh` Parse all `.class` files in current Ubuntu linux system `default-java` folder
 
 Download
+
 * Download Application: https://github.com/amosshi/freeinternals/releases
 
 Usage guide
@@ -40,3 +44,8 @@ Usage guide
   * `java -jar BinaryInternalsViewer-3.0.jar`
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
+
+Dependency
+
+* This application do not rely on any 3rd party libraries, easy to add it to your project
+

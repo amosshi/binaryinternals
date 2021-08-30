@@ -9,9 +9,9 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -46,7 +46,8 @@ public class string_id_item extends FileComponent implements GenerateTreeNodeDex
     }
 
     @Override
-    public void generateTreeNode(final DefaultMutableTreeNode parentNode, final DexFile dexFile) {
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode, final FileFormat format) {
+        DexFile dexFile = (DexFile)format;
         DefaultMutableTreeNode offsetNode = addNode(parentNode, this.startPos, Type_uint.LENGTH, "string_data_off", string_data_off, "msg_string_id_item__string_data_off", UITool.icon4Offset());
 
         string_data_item item = (string_data_item) dexFile.data.get(this.string_data_off.value);
@@ -58,6 +59,6 @@ public class string_id_item extends FileComponent implements GenerateTreeNodeDex
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_string_data_item")
         ));
         offsetNode.add(dataNode);
-        item.generateTreeNode(dataNode);
+        item.generateTreeNode(dataNode, format);
     }
 }

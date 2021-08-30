@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
-import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
 
@@ -26,7 +26,7 @@ import org.freeinternals.commonlib.ui.UITool;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class header_item extends FileComponent implements GenerateTreeNode {
+public class header_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     /**
      * @see map_list.TypeCodes#TYPE_HEADER_ITEM
@@ -123,7 +123,7 @@ public class header_item extends FileComponent implements GenerateTreeNode {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         DefaultMutableTreeNode nodeTemp;
         int floatPos = this.getStartPos();
 
@@ -133,16 +133,16 @@ public class header_item extends FileComponent implements GenerateTreeNode {
                 "header_item"));
         parentNode.add(headerNode);
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "checksum", this.checksum, "msg_header_item_checksum", UITool.icon4Checksum());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "checksum", this.checksum, "msg_header_item_checksum", UITool.icon4Checksum());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, this.signature.length, "signature", Type_ubyte.toString(this.signature), "msg_header_item_signature", UITool.icon4Signature());
+        nodeTemp = addNode(headerNode, floatPos, this.signature.length, "signature", Type_ubyte.toString(this.signature), "msg_header_item_signature", UITool.icon4Signature());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "file_size", this.file_size, "msg_header_item_file_size", UITool.icon4Size());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "file_size", this.file_size, "msg_header_item_file_size", UITool.icon4Size());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "header_size", this.header_size, "msg_header_item_header_size", UITool.icon4Size());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "header_size", this.header_size, "msg_header_item_header_size", UITool.icon4Size());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -154,56 +154,57 @@ public class header_item extends FileComponent implements GenerateTreeNode {
         )));
         floatPos += Type_uint.LENGTH;
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_size", this.link_size, "msg_header_item_link_size", UITool.icon4Size());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "link_size", this.link_size, "msg_header_item_link_size", UITool.icon4Size());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "link_off", this.link_off, "msg_header_item_link_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "link_off", this.link_off, "msg_header_item_link_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "map_off", this.map_off, "msg_header_item_map_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "map_off", this.map_off, "msg_header_item_map_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_size", this.string_ids_size, "msg_header_item_string_ids_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_size", this.string_ids_size, "msg_header_item_string_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_off", this.string_ids_off, "msg_header_item_string_ids_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_off", this.string_ids_off, "msg_header_item_string_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_size", this.type_ids_size, "msg_header_item_type_ids_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_size", this.type_ids_size, "msg_header_item_type_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_off", this.type_ids_off, "msg_header_item_type_ids_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_off", this.type_ids_off, "msg_header_item_type_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_size", this.proto_ids_size, "msg_header_item_proto_ids_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_size", this.proto_ids_size, "msg_header_item_proto_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_off", this.proto_ids_off, "msg_header_item_proto_ids_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_off", this.proto_ids_off, "msg_header_item_proto_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_size", this.field_ids_size, "msg_header_item_field_ids_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_size", this.field_ids_size, "msg_header_item_field_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_off", this.field_ids_off, "msg_header_item_field_ids_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_off", this.field_ids_off, "msg_header_item_field_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_size", this.method_ids_size, "msg_header_item_method_ids_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_size", this.method_ids_size, "msg_header_item_method_ids_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_off", this.method_ids_off, "msg_header_item_method_ids_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_off", this.method_ids_off, "msg_header_item_method_ids_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_size", this.class_defs_size, "msg_header_item_class_defs_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_size", this.class_defs_size, "msg_header_item_class_defs_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_off", this.class_defs_off, "msg_header_item_class_defs_off", UITool.icon4Offset());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_off", this.class_defs_off, "msg_header_item_class_defs_off", UITool.icon4Offset());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "data_size", this.data_size, "msg_header_item_data_size", UITool.icon4Counter());
+        nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "data_size", this.data_size, "msg_header_item_data_size", UITool.icon4Counter());
         floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
 
-        JTreeDexFile.addNode(headerNode, floatPos, Type_uint.LENGTH, "data_off", this.data_off, "msg_header_item_data_off", UITool.icon4Offset());
+        addNode(headerNode, floatPos, Type_uint.LENGTH, "data_off", this.data_off, "msg_header_item_data_off", UITool.icon4Offset());
     }
+
 
     /**
      * The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the

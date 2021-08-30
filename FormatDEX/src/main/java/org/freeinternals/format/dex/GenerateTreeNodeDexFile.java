@@ -10,6 +10,7 @@ package org.freeinternals.format.dex;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.GenerateTreeNodeFileFormat;
 
 /**
  * Interface for generating tree node for {@link DexFile}.
@@ -21,12 +22,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * </pre>
  */
 @SuppressWarnings({"java:S115"})
-public interface GenerateTreeNodeDexFile {
+public interface GenerateTreeNodeDexFile extends GenerateTreeNodeFileFormat {
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle(JTreeDexFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     static final String FORMAT_STRING_STRING = "%s - %s";
-
     static final String msg_annotation_set_item = "msg_annotation_set_item";
 
-    void generateTreeNode(final DefaultMutableTreeNode parentNode, final DexFile dexFile);
-
+    @Override
+    default ResourceBundle getMessages() {
+        return MESSAGES;
+    }
 }

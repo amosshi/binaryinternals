@@ -9,11 +9,10 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.GenerateTreeNodeDexFile.FORMAT_STRING_STRING;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -84,8 +83,10 @@ public class annotations_directory_item extends FileComponent implements Generat
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+        DexFile dexFile = (DexFile)format;
         int floatPos = super.startPos;
+
         DefaultMutableTreeNode classAnOffsetNode = addNode(parentNode,
                 floatPos,
                 Type_uint.LENGTH,
@@ -229,8 +230,10 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
+
             addNode(parentNode,
                     floatPos,
                     Type_uint.LENGTH,
@@ -281,8 +284,10 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
+
             addNode(parentNode,
                     floatPos,
                     Type_uint.LENGTH,
@@ -332,8 +337,10 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
+
             addNode(parentNode,
                     floatPos,
                     Type_uint.LENGTH,

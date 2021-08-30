@@ -10,11 +10,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -27,7 +26,7 @@ import static org.freeinternals.format.dex.JTreeDexFile.addNode;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class string_data_item extends FileComponent implements GenerateTreeNode {
+public class string_data_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     /**
      * size of this string, in UTF-16 code units (which is the "string length"
@@ -69,7 +68,7 @@ public class string_data_item extends FileComponent implements GenerateTreeNode 
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         DefaultMutableTreeNode nodeTemp;
         int floatPos = this.getStartPos();
         int utf16Size = this.utf16_size.value;

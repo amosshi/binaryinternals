@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
@@ -30,38 +31,11 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
     JTreeDexFile() {
     }
 
-    protected static DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value) {
-        return addNode(parentNode, startPos, len, name, value, null, null);
-    }
-
-    protected static DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value, Icon icon) {
-        return addNode(parentNode, startPos, len, name, value, null, icon);
-    }
-
-    protected static DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value, String msgkey) {
-        return addNode(parentNode, startPos, len, name, value, msgkey, null);
-    }
-
-    protected static DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value, String msgkey, Icon icon) {
-        JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
-                startPos,
-                len,
-                name + ": " + value.toString()
-        );
-        if (msgkey != null) {
-            fileComp.setDescription(GenerateTreeNodeDexFile.MESSAGES.getString(msgkey));
-        }
-        fileComp.setIcon(icon);
-
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileComp);
-        parentNode.add(node);
-        return node;
-    }
-
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+        DexFile dexFile = (DexFile)format;
         this.generate_magic(parentNode, dexFile);
-        dexFile.header.generateTreeNode(parentNode);
+        dexFile.header.generateTreeNode(parentNode, dexFile);
         this.generate_string_ids(parentNode, dexFile);
         this.generate_type_ids(parentNode, dexFile);
         this.generate_proto_ids(parentNode, dexFile);

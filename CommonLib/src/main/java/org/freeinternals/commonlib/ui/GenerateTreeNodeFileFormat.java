@@ -28,6 +28,10 @@ public interface GenerateTreeNodeFileFormat {
      */
     ResourceBundle getMessages();
 
+    default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value) {
+        return addNode(parentNode, startPos, len, name, value, null, null);
+    }
+
     default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String fieldName, Object value, String msgkey, Icon icon) {
         JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
                 startPos,

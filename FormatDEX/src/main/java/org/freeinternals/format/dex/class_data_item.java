@@ -10,11 +10,10 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.GenerateTreeNodeDexFile.MESSAGES;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -93,8 +92,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
 
     @Override
     @SuppressWarnings("java:S3776")
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dex) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+        DexFile dex = (DexFile)format;
         int floatPos = super.startPos;
+
         addNode(parentNode, floatPos, this.static_fields_size.length, "static_fields_size", this.static_fields_size, "msg_class_data_item__static_fields_size", UITool.icon4Size());
         floatPos += this.static_fields_size.length;
         addNode(parentNode, floatPos, this.instance_fields_size.length, "instance_fields_size", this.instance_fields_size, "msg_class_data_item__instance_fields_size", UITool.icon4Size());
@@ -234,8 +235,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
+
             field_id_item field = dexFile.field_ids[this.field_idx_diff.value];
             addNode(parentNode,
                     floatPos,
@@ -274,8 +277,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
+
             method_id_item method = dexFile.method_ids[this.method_idx_diff.value];
             addNode(parentNode,
                     floatPos,

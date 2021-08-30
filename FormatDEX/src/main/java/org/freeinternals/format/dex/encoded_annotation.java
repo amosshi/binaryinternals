@@ -11,11 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.GenerateTreeNodeDexFile.MESSAGES;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -76,7 +75,8 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+        DexFile dexFile = (DexFile)format;
         int floatPos = super.startPos;
         addNode(parentNode,
                 floatPos,
@@ -150,7 +150,8 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dexFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            DexFile dexFile = (DexFile)format;
             int floatPos = super.startPos;
             addNode(parentNode,
                     floatPos,

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.SignatureConvertor;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -50,7 +50,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
     }
 
     @Override
-    public void generateTreeNode(final DefaultMutableTreeNode parentNode, final DexFile dexFile) {
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode, final FileFormat dexFile) {
         int floatPos = this.getStartPos();
 
         addNode(parentNode,
@@ -70,7 +70,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
                         item.getStartPos(),
                         item.getLength(),
                         String.format("type_item[%d].type_idx", i),
-                        item.get_type_jls(dexFile),
+                        item.get_type_jls((DexFile)dexFile),
                         "msg_type_item__type_idx",
                         UITool.icon4Index()
                 );

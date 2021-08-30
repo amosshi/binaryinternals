@@ -9,9 +9,9 @@ package org.freeinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.UITool;
-import static org.freeinternals.format.dex.JTreeDexFile.addNode;
 
 /**
  *
@@ -354,7 +354,8 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
 
     @Override
     @SuppressWarnings({"java:S2259", "java:S3776"})
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, DexFile dex) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+        DexFile dex = (DexFile)fileFormat;
         int floatPos = super.startPos;
 
         ValueFormat format = ValueFormat.valueOf(this.value_type);
