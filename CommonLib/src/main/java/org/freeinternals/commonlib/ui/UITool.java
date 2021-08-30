@@ -216,6 +216,16 @@ public final class UITool {
     }
 
     /**
+     * Icon for Name.
+     *
+     * @return Icon for Name
+     * @see <a href="https://icons8.com/icon/zbNHwSyrej7I/name-tag">Name Tag</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Name() {
+        return icon("/image/icons8-name-tag-16.png");
+    }
+
+    /**
      * Icon for Offset / Location / Index.
      *
      * @return Icon for Offset

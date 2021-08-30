@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -57,12 +58,12 @@ public class SourceFile_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int cpIndex = this.sourcefile_index.value;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
                 2,
-                String.format("sourcefile_index: %d %s", cpIndex, classFile.getCPDescription(cpIndex))
+                String.format("sourcefile_index: %d %s", cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex))
         )));
     }
 

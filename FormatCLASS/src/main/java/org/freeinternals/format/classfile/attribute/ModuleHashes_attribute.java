@@ -9,6 +9,7 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -86,7 +87,8 @@ public class ModuleHashes_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat format) {
+        ClassFile classFile = (ClassFile) format;
         int startPosMoving = super.startPos + 6;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

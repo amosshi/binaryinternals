@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -145,7 +146,7 @@ public class Code_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         int i;
         final int codeLength = this.code_length.value;
         DefaultMutableTreeNode treeNodeExceptionTable;
@@ -196,7 +197,7 @@ public class Code_attribute extends attribute_info {
                         et.getLength(),
                         String.format("exception_table [%d]", i)
                 ));
-                this.generateSubnode(treeNodeExceptionTableItem, et, classFile);
+                this.generateSubnode(treeNodeExceptionTableItem, et, (ClassFile)classFile);
                 treeNodeExceptionTable.add(treeNodeExceptionTableItem);
             }
 
@@ -230,7 +231,7 @@ public class Code_attribute extends attribute_info {
                         attr.getLength(),
                         (i + 1) + ". " + attr.getName()
                 ));
-                attribute_info.generateTreeNode(treeNodeAttributeItem, attr, classFile);
+                attribute_info.generateTreeNode(treeNodeAttributeItem, attr, (ClassFile)classFile);
 
                 treeNodeAttribute.add(treeNodeAttributeItem);
             }

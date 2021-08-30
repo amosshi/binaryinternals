@@ -1,5 +1,5 @@
 /*
- * JTreeJPEGFile.java    September 01, 2010, 23:57
+ * GenerateTreeNode.java    September 01, 2010, 23:57
  *
  * Copyright 2010, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -20,6 +20,6 @@ public interface GenerateTreeNode {
      *
      * @param parentNode Parent tree node
      */
-    void generateTreeNode(DefaultMutableTreeNode parentNode);
+    void generateTreeNode(final DefaultMutableTreeNode parentNode);
 
 }

@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -95,7 +96,7 @@ public class Exceptions_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int i;
         final int numOfExceptions = this.number_of_exceptions.value;
         DefaultMutableTreeNode treeNodeExceptions;
@@ -116,7 +117,7 @@ public class Exceptions_attribute extends attribute_info {
                 treeNodeExceptions.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPos + 10 + i * 2,
                         2,
-                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cpIndex, classFile.getCPDescription(cpIndex))
+                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex))
                 )));
             }
 

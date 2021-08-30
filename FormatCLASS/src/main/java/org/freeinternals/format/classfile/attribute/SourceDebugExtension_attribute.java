@@ -8,10 +8,10 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.freeinternals.format.classfile.u2;
 
@@ -30,7 +30,7 @@ import org.freeinternals.format.classfile.u2;
  *   u1 debug_extension[attribute_length];
  * }
  * </pre>
- * 
+ *
  * Note. TODO - This Attribute is not tested - since no test case found
  *
  * @author Amos Shi
@@ -83,7 +83,7 @@ public class SourceDebugExtension_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         if (this.debug_extension != null && this.debug_extension.length > 0) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 6,

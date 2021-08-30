@@ -9,17 +9,19 @@ package org.freeinternals.format.classfile;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.GenerateTreeNodeFileFormat;
 
 /**
  * Interface for generating tree node for {@link ClassFile}.
  *
  * @author Amos Shi
  */
-public interface GenerateTreeNodeClassFile {
+public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {
 
     ResourceBundle MESSAGES = ResourceBundle.getBundle(GenerateTreeNodeClassFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
 
-    void generateTreeNode(final DefaultMutableTreeNode parentNode, ClassFile classFile);
-
+    @Override
+    default ResourceBundle getMessages() {
+        return MESSAGES;
+    }
 }

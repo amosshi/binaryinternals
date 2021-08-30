@@ -9,6 +9,7 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -80,7 +81,7 @@ public class Record_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -106,9 +107,9 @@ public class Record_attribute extends attribute_info {
                     info.getStartPos(),
                     info.getLength(),
                     String.format("component %d", i + 1),
-                    MESSAGES.getString("msg_record_component_info")
+                    MESSAGES.getString("msg_attr_record_component_info")
             ));
-            info.generateTreeNode(infoNode, classFile);
+            info.generateTreeNode(infoNode, (ClassFile)classFile);
             compsNode.add(infoNode);
         }
     }
@@ -183,7 +184,8 @@ public class Record_attribute extends attribute_info {
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            ClassFile classFile = (ClassFile) format;
             int startPosMoving = super.getStartPos();
 
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

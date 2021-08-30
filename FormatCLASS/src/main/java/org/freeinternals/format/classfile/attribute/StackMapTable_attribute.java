@@ -9,6 +9,7 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -66,7 +67,7 @@ public class StackMapTable_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
                 2,
@@ -89,7 +90,7 @@ public class StackMapTable_attribute extends attribute_info {
                 ));
 
                 entriesNode.add(entry);
-                this.generateSubnode(entry, this.entries[i], classFile);
+                this.generateSubnode(entry, this.entries[i], (ClassFile)classFile);
             }
         }
     }

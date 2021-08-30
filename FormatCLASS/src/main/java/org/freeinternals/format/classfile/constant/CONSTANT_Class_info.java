@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
@@ -71,11 +72,11 @@ public class CONSTANT_Class_info extends cp_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 1,
                 2,
-                "name_index: " + this.name_index.value + " - " + classFile.getCPDescription(this.name_index.value),
+                "name_index: " + this.name_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.name_index.value),
                 UITool.icon4Offset(),
                 MESSAGES.getString("msg_const_class_name_index")
         )));

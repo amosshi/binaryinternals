@@ -3,6 +3,7 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -45,7 +46,7 @@ public class RuntimeParameterAnnotations_attribute extends attribute_info {
     // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
     // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving + 6,
@@ -68,7 +69,7 @@ public class RuntimeParameterAnnotations_attribute extends attribute_info {
                         String.format("parameter_annotation %d", i + 1)
                 ));
                 parameterAnnotationsNode.add(parameterAnnotation);
-                this.generateSubnode(parameterAnnotation, this.parameter_annotations[i], classFile);
+                this.generateSubnode(parameterAnnotation, this.parameter_annotations[i], (ClassFile)classFile);
             }
         }
     }

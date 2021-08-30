@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -77,7 +78,7 @@ public class ModulePackages_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -100,7 +101,7 @@ public class ModulePackages_attribute extends attribute_info {
                 packageIndexesNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        "package_index [" + i + "]: " + packageIndex + " - " + classFile.getCPDescription(packageIndex)
+                        "package_index [" + i + "]: " + packageIndex + " - " + ((ClassFile)classFile).getCPDescription(packageIndex)
                 )));
             }
         }

@@ -9,6 +9,7 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -81,7 +82,7 @@ public class BootstrapMethods_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         int startPosMoving = this.getStartPos();
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -105,7 +106,7 @@ public class BootstrapMethods_attribute extends attribute_info {
                         String.format("bootstrap_method %d", i + 1)
                 ));
                 bootstrapMethodsNode.add(bootstrapMethod);
-                this.generateSubnode(bootstrapMethod, m, classFile);
+                this.generateSubnode(bootstrapMethod, m, (ClassFile)classFile);
             }
         }
     }

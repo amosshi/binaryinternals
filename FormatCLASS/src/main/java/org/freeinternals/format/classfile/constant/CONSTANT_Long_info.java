@@ -9,10 +9,10 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.ui.UITool;
-import org.freeinternals.format.classfile.ClassFile;
 import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
@@ -76,7 +76,7 @@ public class CONSTANT_Long_info extends cp_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos + 1,
                 4,

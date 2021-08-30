@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -93,7 +94,7 @@ public class CONSTANT_InvokeDynamic_info extends cp_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
@@ -103,7 +104,7 @@ public class CONSTANT_InvokeDynamic_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 3,
                 2,
-                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value),
+                "name_and_type_index: " + this.name_and_type_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.name_and_type_index.value),
                 UITool.icon4Offset(),
                 MESSAGES.getString("msg_const_dynamic_name_and_type_index")
         )));

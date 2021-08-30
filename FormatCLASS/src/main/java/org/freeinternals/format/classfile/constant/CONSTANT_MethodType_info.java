@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -96,11 +97,11 @@ public class CONSTANT_MethodType_info extends cp_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 1,
                 2,
-                "descriptor_index: " + this.descriptor_index.value + " - " + classFile.getCPDescription(this.descriptor_index.value),
+                "descriptor_index: " + this.descriptor_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.descriptor_index.value),
                 UITool.icon4Offset(),
                 MESSAGES.getString("msg_const_methodtype_descriptor_index")
         )));

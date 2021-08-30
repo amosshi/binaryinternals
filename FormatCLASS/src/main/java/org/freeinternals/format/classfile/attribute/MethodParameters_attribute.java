@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -81,7 +82,7 @@ public class MethodParameters_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -115,7 +116,7 @@ public class MethodParameters_attribute extends attribute_info {
                     u2.LENGTH,
                     "name_index: "
                     + this.parameters[i].name_index.value + " - "
-                    + classFile.getCPDescription(this.parameters[i].name_index.value)
+                    + ((ClassFile)classFile).getCPDescription(this.parameters[i].name_index.value)
             )));
             startPosMoving += u2.LENGTH;
             parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

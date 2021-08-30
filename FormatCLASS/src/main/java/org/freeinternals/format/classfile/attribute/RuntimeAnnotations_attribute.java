@@ -2,6 +2,7 @@ package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -57,7 +58,8 @@ public class RuntimeAnnotations_attribute extends attribute_info {
     // 4.7.16. The RuntimeVisibleAnnotations Attribute
     // 4.7.17. The RuntimeInvisibleAnnotations Attribute
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+        ClassFile classFile = (ClassFile) format;
         final int startPosMoving = super.startPos;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -81,7 +83,6 @@ public class RuntimeAnnotations_attribute extends attribute_info {
                         String.format("annotation %d: %s", i + 1, classFile.getCPDescription(a.type_index.value))
                 ));
                 annotationsNode.add(annotationNode);
-
                 Annotation.generateSubnode(annotationNode, a, classFile);
             }
         }

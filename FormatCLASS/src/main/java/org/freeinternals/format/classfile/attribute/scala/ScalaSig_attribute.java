@@ -8,10 +8,10 @@ package org.freeinternals.format.classfile.attribute.scala;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.u2;
 
@@ -88,7 +88,7 @@ public class ScalaSig_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int floatPos = super.startPos + 6;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,

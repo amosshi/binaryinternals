@@ -16,6 +16,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.attribute.aspectj.AjSynthetic_attribute;
@@ -202,12 +203,18 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u2.LENGTH,
-                "attribute_name_index: " + attributeInfo.attribute_name_index.value + ", name=" + attributeInfo.getName())));
+                "attribute_name_index: " + attributeInfo.attribute_name_index.value + ", name=" + attributeInfo.getName(),
+                UITool.icon4Name(),
+                MESSAGES.getString("msg_attribute_info__attribute_name_index")
+        )));
         startPosMoving += u2.LENGTH;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 u4.LENGTH,
-                "attribute_length: " + attributeInfo.attribute_length.value)));
+                "attribute_length: " + attributeInfo.attribute_length.value,
+                UITool.icon4Length(),
+                MESSAGES.getString("msg_attribute_info__attribute_length")
+        )));
 
         attributeInfo.generateTreeNode(rootNode, classFile);
     }

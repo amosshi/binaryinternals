@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -87,7 +88,7 @@ public class InnerClasses_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, final ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         int i;
         final int numOfClasses = this.number_of_classes.value;
         DefaultMutableTreeNode treeNodeInnerClass;
@@ -111,7 +112,7 @@ public class InnerClasses_attribute extends attribute_info {
                 treeNodeInnerClassItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("class %d: %s", i + 1, classFile.getCPDescription(cls.inner_class_info_index.value))
+                        String.format("class %d: %s", i + 1, ((ClassFile)classFile).getCPDescription(cls.inner_class_info_index.value))
                 ));
                 cls.generateTreeNode(treeNodeInnerClassItem, classFile);
                 treeNodeInnerClass.add(treeNodeInnerClassItem);
@@ -187,7 +188,8 @@ public class InnerClasses_attribute extends attribute_info {
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
+            ClassFile classFile = (ClassFile) format;
             final int startPosMoving = this.getStartPos();
 
             int cpIndex = this.inner_class_info_index.value;

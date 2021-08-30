@@ -8,6 +8,7 @@ package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
@@ -85,7 +86,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile) {
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 1,
                 1,
@@ -95,7 +96,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 2,
                 2,
-                "reference_index: " + this.reference_index.value + " - " + classFile.getCPDescription(this.reference_index.value),
+                "reference_index: " + this.reference_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.reference_index.value),
                 UITool.icon4Offset(),
                 MESSAGES.getString("msg_const_methodhandle_reference_index")
         )));
