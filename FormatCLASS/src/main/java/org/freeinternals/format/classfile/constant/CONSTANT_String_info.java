@@ -54,6 +54,11 @@ public class CONSTANT_String_info extends cp_info {
     }
 
     @Override
+    public String getMessageKey() {
+        return "msg_const_string";
+    }
+
+    @Override
     public String getName() {
         return ConstantType.CONSTANT_String.name();
     }

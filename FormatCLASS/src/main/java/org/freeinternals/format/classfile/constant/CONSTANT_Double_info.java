@@ -90,4 +90,9 @@ public class CONSTANT_Double_info extends cp_info {
                 MESSAGES.getString("msg_const_double_bytes")
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_longdouble";
+    }
 }

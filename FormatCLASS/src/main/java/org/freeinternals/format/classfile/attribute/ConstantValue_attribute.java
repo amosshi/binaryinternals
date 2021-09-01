@@ -70,4 +70,9 @@ public class ConstantValue_attribute extends attribute_info {
                 "constantvalue_index: " + index + " - " + ((ClassFile)classFile).getCPDescription(index)
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ConstantValue";
+    }
 }

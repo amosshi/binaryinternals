@@ -49,4 +49,9 @@ public class RuntimeVisibleParameterAnnotations_attribute extends RuntimeParamet
     RuntimeVisibleParameterAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_RuntimeVisibleParameterAnnotations";
+    }
 }

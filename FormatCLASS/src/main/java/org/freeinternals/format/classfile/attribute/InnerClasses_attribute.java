@@ -122,6 +122,11 @@ public class InnerClasses_attribute extends attribute_info {
         }
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_InnerClasses";
+    }
+
     /**
      * The {@code classes} structure in {@code InnerClasses} attribute.
      *

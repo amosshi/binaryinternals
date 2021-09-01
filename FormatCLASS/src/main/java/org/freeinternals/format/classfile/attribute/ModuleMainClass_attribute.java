@@ -69,4 +69,9 @@ public class ModuleMainClass_attribute extends attribute_info {
                 "main_class_index: " + this.main_class_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.main_class_index.value)
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ModuleMainClass";
+    }
 }

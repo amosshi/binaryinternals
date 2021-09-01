@@ -71,4 +71,9 @@ public class AnnotationDefault_attribute extends attribute_info {
 
         Annotation.generateSubnode(defaultValueNode, this.default_value, (ClassFile)classFile);
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_AnnotationDefault";
+    }
 }

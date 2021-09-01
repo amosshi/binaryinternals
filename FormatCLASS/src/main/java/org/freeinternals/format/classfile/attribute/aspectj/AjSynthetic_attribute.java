@@ -73,4 +73,9 @@ public class AjSynthetic_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         // Nothing is needed
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NoneJVM";
+    }
 }

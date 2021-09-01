@@ -106,4 +106,9 @@ public class ModulePackages_attribute extends attribute_info {
             }
         }
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ModulePackages";
+    }
 }

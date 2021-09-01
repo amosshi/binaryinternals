@@ -137,6 +137,11 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
         }
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_LocalVariableTypeTable";
+    }
+
     /**
      * Each entry in the local_variable_type_table array indicates a range of
      * code array offsets within which a local variable has a value. It also

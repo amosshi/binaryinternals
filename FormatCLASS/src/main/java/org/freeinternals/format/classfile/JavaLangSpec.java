@@ -1,5 +1,5 @@
 /*
- * JavaLang.java    17:18 PM, May 19, 2014
+ * JavaLangSpec.java    17:18 PM, May 19, 2014
  *
  * Copyright  2014, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.

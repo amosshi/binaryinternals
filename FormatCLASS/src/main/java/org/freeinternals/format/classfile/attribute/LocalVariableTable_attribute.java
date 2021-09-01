@@ -156,6 +156,11 @@ public class LocalVariableTable_attribute extends attribute_info {
         )));
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_LocalVariableTable";
+    }
+
 
     /**
      * The {@code local_variable_table} structure in {@code LocalVariableTable}

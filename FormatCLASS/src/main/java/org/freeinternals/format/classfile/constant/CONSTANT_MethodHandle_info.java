@@ -66,16 +66,21 @@ public class CONSTANT_MethodHandle_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_MethodHandle.name();
-    }
-
-    @Override
     public String getDescription() {
         return this.getName() + ": Start Position: [" + super.startPos
                 + "], length: [" + super.length
                 + "], reference_kind: [" + this.reference_kind.value
                 + "], reference_index = [" + this.reference_index.value + "]";
+    }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_methodhandle";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_MethodHandle.name();
     }
 
     @Override

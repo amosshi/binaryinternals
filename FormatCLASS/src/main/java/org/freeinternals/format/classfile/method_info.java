@@ -1,17 +1,22 @@
 /*
- * MethodInfo.java    4:01 AM, August 5, 2007
+ * method_info.java    4:01 AM, August 5, 2007
  *
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
 package org.freeinternals.format.classfile;
 
-import org.freeinternals.format.classfile.constant.cp_info;
-import org.freeinternals.format.classfile.attribute.attribute_info;
 import java.io.IOException;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
-import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.format.classfile.attribute.attribute_info;
+import org.freeinternals.format.classfile.constant.cp_info;
 
 /**
  * {@code Method} of a class or interface. The {@code Method} structure has the
@@ -39,7 +44,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public class method_info extends FileComponent {
+public class method_info extends FileComponent implements GenerateTreeNodeClassFile {
 
     public final u2 access_flags;
     public final u2 name_index;
@@ -159,5 +164,68 @@ public class method_info extends FileComponent {
 
         this.declaration = String.format("%s %s %s %s",
                 this.getModifiers(), returnType, this.name, parameters);
+    }
+
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+        final ClassFile classFile = (ClassFile)fileFormat;
+        final int floatPos = this.getStartPos();
+        final int attributesCount = this.attributes_count.value;
+        int cpIndex;
+
+        this.addNode(parentNode,
+                floatPos,
+                u2.LENGTH,
+                FIELD_ACCESS_FLAGS,
+                BytesTool.getBinaryString(this.access_flags.value) + " " + this.getModifiers(),
+                "msg_method_info__access_flags",
+                UITool.icon4AccessFlag()
+        );
+
+        cpIndex = this.name_index.value;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                floatPos + 2,
+                u2.LENGTH,
+                String.format("name_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
+        )));
+        cpIndex = this.descriptor_index.value;
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                floatPos + 4,
+                u2.LENGTH,
+                String.format("descriptor_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
+        )));
+        this.addNode(parentNode,
+                floatPos + 6,
+                u2.LENGTH,
+                FIELD_ATTR_COUNT,
+                attributesCount,
+                "msg_method_info__attributes_count",
+                UITool.icon4Counter()
+        );
+
+        if (attributesCount > 0) {
+            final attribute_info lastAttr = this.getAttribute(attributesCount - 1);
+            final DefaultMutableTreeNode treeNodeAttr = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    floatPos + 8,
+                    lastAttr.getStartPos() + lastAttr.getLength() - floatPos - 8,
+                    "attributes[" + attributesCount + "]"
+            ));
+
+            DefaultMutableTreeNode treeNodeAttrItem;
+            attribute_info attr;
+            for (int i = 0; i < attributesCount; i++) {
+                attr = this.getAttribute(i);
+                treeNodeAttrItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        attr.getStartPos(),
+                        attr.getLength(),
+                        String.format("%d. %s", i + 1, attr.getName()),
+                        UITool.icon4Annotations(),
+                        MESSAGES.getString(attr.getMessageKey())
+                ));
+                attribute_info.generateTreeNode(treeNodeAttrItem, attr, classFile);
+                treeNodeAttr.add(treeNodeAttrItem);
+            }
+            parentNode.add(treeNodeAttr);
+        }
     }
 }

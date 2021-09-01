@@ -20,7 +20,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public class RuntimeAnnotations_attribute extends attribute_info {
+public abstract class RuntimeAnnotations_attribute extends attribute_info {
 
     public final u2 num_annotations;
     private final Annotation[] annotations;

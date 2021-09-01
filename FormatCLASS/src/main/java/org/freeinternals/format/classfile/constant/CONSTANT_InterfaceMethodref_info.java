@@ -46,6 +46,11 @@ public class CONSTANT_InterfaceMethodref_info extends CONSTANT_Ref_info {
     }
     
     @Override
+    public String getMessageKey() {
+        return "msg_const_ref";
+    }
+
+    @Override
     public String getName() {
         return ConstantType.CONSTANT_InterfaceMethodref.name();
     }

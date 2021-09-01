@@ -107,4 +107,9 @@ public class MethodDeclarationLineNumber_attribute extends attribute_info {
                 "offset: " + this.offset
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NoneJVM";
+    }
 }

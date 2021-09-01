@@ -95,9 +95,13 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
      */
     public final u4 attribute_length;
 
+    @SuppressWarnings("java:S5993")
     public attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
+        if (name == null || name.length() < 1) {
+            throw new IllegalArgumentException("The attribute name annot be none. location=0x" + Integer.toHexString(posDataInputStream.getPos()));
+        }
         this.name = name;
         this.attribute_name_index = nameIndex;
         this.attribute_length = new u4(posDataInputStream);
@@ -176,6 +180,13 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     }
 
     /**
+     * The get the Message key which contains the corresponding description of current attribute.
+     *
+     * @return Message key
+     */
+    public abstract String getMessageKey();
+
+    /**
      * Get the {@link #name} of the attribute, if {@link #name} is
      * <code>null</code>, it will return an empty string.
      *
@@ -190,7 +201,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
      * </a>
      */
     public String getName() {
-        return (this.name != null) ? this.name : "";
+        return this.name;
     }
 
     public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final attribute_info attributeInfo, final ClassFile classFile) {
@@ -568,7 +579,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * If {@link #clazz} is null, which means it is not implemented yet.
          */
         final Class<?> clazz;
-        
+
         public final String fullname;
 
         /**
@@ -609,7 +620,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         public Class<?> getClassType() {
             return this.clazz;
         }
-        
+
         /**
          * Get the attribute full name used in <code>.class</code> file.
          *

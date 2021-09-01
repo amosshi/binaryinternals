@@ -17,8 +17,14 @@ import org.freeinternals.commonlib.ui.GenerateTreeNodeFileFormat;
  * @author Amos Shi
  */
 public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {
+    static final String FIELD_ACCESS_FLAGS = "access_flags";
+    static final String FIELD_ATTR_COUNT = "attributes_count";
 
-    ResourceBundle MESSAGES = ResourceBundle.getBundle(GenerateTreeNodeClassFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
+    static final String CP_PREFIX = "constant_pool[";
+    static final String FIELDS_PREFIX = "fields[";
+    static final String METHODS_PERFIX = "methods[";
+
+    static final ResourceBundle MESSAGES = ResourceBundle.getBundle(GenerateTreeNodeClassFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
 
     @Override
     default ResourceBundle getMessages() {

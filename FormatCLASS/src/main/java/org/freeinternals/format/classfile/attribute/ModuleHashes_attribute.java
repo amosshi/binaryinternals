@@ -152,6 +152,11 @@ public class ModuleHashes_attribute extends attribute_info {
         }
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ModuleHashes";
+    }
+
     /**
      * The {@code hashes} structure in {@code ModuleHashes} attribute.
      *

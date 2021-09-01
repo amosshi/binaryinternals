@@ -110,4 +110,9 @@ public class ScalaSig_attribute extends attribute_info {
                 "number_of_entries: " + this.number_of_entries
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NoneJVM";
+    }
 }

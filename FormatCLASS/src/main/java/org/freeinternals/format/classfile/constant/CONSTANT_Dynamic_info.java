@@ -77,11 +77,6 @@ public class CONSTANT_Dynamic_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_Dynamic.name();
-    }
-
-    @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
                 this.getName(),
@@ -89,6 +84,16 @@ public class CONSTANT_Dynamic_info extends cp_info {
                 super.length,
                 this.bootstrap_method_attr_index.value,
                 this.name_and_type_index.value);
+    }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_dynamic";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Dynamic.name();
     }
 
     @Override

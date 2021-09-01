@@ -99,4 +99,9 @@ public class WeaverVersion_attribute extends attribute_info {
                 String.format("minor_version: %d %s", this.version_time, verionTimeStr)
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NoneJVM";
+    }
 }

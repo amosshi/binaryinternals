@@ -473,14 +473,14 @@ public class ClassFile extends FileFormat {
     private JTreeClassFile jtreeAdapter;
     private JTreeClassFile getJTreeAdapter() {
         if (this.jtreeAdapter == null) {
-            this.jtreeAdapter = new JTreeClassFile(this);
+            this.jtreeAdapter = new JTreeClassFile();
         }
         return this.jtreeAdapter;
     }
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        this.getJTreeAdapter().generateTreeNodes(parentNode);
+        this.getJTreeAdapter().generateTreeNode(parentNode, this);
     }
 
     @Override
@@ -492,13 +492,13 @@ public class ClassFile extends FileFormat {
             StringBuilder sb = this.getJTreeAdapter().generateOpcodeParseResult(data);
             JTextPane pane = super.tabAddTextPane(tabs, "Opcode");
             pane.setText(sb.toString());
-        } else if (tnfc.getText().startsWith(JTreeClassFile.CP_PREFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.CP_PREFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Constant Pool");
             pane.setText(this.getJTreeAdapter().generateReport2CP().toString());
-        } else if (tnfc.getText().startsWith(JTreeClassFile.FIELDS_PREFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.FIELDS_PREFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Fields");
             pane.setText(this.getJTreeAdapter().generateReport2Fields().toString());
-        } else if (tnfc.getText().startsWith(JTreeClassFile.METHODS_PERFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.METHODS_PERFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Methods");
             pane.setText(this.getJTreeAdapter().generateReport2Methods().toString());
         }

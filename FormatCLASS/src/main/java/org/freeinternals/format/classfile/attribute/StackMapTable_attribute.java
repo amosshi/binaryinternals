@@ -306,6 +306,11 @@ public class StackMapTable_attribute extends attribute_info {
         }
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_StackMapTable";
+    }
+
     public static final class StackMapFrame extends FileComponent {
 
         public final u1 frame_type;

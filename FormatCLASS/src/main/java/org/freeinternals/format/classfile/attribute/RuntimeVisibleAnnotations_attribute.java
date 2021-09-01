@@ -1,5 +1,5 @@
 /*
- * AttributeCode.java    09:24 AM, April 28, 2014
+ * RuntimeVisibleAnnotations_attribute.java    09:24 AM, April 28, 2014
  *
  * Copyright  2014, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -49,5 +49,10 @@ public class RuntimeVisibleAnnotations_attribute extends RuntimeAnnotations_attr
 
     RuntimeVisibleAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
+    }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_RuntimeVisibleAnnotations";
     }
 }

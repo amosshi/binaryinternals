@@ -44,4 +44,8 @@ public class RuntimeVisibleTypeAnnotations_attribute extends RuntimeTypeAnnotati
         super(nameIndex, name, posDataInputStream);
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_RuntimeVisibleTypeAnnotations";
+    }
 }

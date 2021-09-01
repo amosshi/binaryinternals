@@ -10,9 +10,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.u2;
 
@@ -66,13 +65,18 @@ public class CONSTANT_Utf8_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_Utf8.name();
+    public String getDescription() {
+        return String.format("%s: Start Position: [%d], length: [%d], value: [%s].", this.getName(), this.startPos, super.length, this.getValue());
     }
 
     @Override
-    public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: [%s].", this.getName(), this.startPos, super.length, this.getValue());
+    public String getMessageKey() {
+        return "msg_const_utf8";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Utf8.name();
     }
 
     /**

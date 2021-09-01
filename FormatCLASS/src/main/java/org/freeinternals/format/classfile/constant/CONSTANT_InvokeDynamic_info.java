@@ -72,11 +72,6 @@ public class CONSTANT_InvokeDynamic_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_InvokeDynamic.name();
-    }
-
-    @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
                 this.getName(),
@@ -86,6 +81,16 @@ public class CONSTANT_InvokeDynamic_info extends cp_info {
                 this.name_and_type_index.value);
     }
     
+    @Override
+    public String getMessageKey() {
+        return "msg_const_dynamic";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_InvokeDynamic.name();
+    }
+
     @Override
     public String toString(cp_info[] constantPool) {
         return String.format("bootstrap_method_attr_index=%d name_and_type_index=%s",

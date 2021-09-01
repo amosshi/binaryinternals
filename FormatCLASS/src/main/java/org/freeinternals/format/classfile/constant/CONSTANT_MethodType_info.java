@@ -63,16 +63,21 @@ public class CONSTANT_MethodType_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_MethodType.name();
-    }
-
-    @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], descriptor_index: [%d]. ",
                 this.getName(), this.startPos, super.length, this.descriptor_index.value);
     }
     
+    @Override
+    public String getMessageKey() {
+        return "msg_const_methodtype";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_MethodType.name();
+    }
+
     @Override
     public String toString(cp_info[] constantPool) {
         String descriptor = constantPool[this.descriptor_index.value].toString(constantPool);

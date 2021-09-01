@@ -36,7 +36,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public class Classes_attribute extends attribute_info {
+public abstract class Classes_attribute extends attribute_info {
 
     /**
      * The value of the number_of_classes item indicates the number of entries

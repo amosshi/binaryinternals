@@ -81,4 +81,9 @@ public class EnclosingMethod_attribute extends attribute_info {
                 "method_index: " + this.method_index.value + methodDesc
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_EnclosingMethod";
+    }
 }

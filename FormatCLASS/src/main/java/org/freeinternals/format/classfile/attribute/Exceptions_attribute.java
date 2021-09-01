@@ -124,4 +124,9 @@ public class Exceptions_attribute extends attribute_info {
             parentNode.add(treeNodeExceptions);
         }
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_Exceptions";
+    }
 }

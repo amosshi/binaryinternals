@@ -22,7 +22,7 @@ import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSA
  * <pre>
  *    CONSTANT_Long_info {
  *        u1 tag;
- * 
+ *
  *        u4 high_bytes;
  *        u4 low_bytes;
  *    }
@@ -69,7 +69,12 @@ public class CONSTANT_Long_info extends cp_info {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
                 this.getName(), this.startPos, this.length, this.longValue);
     }
-    
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_longdouble";
+    }
+
     @Override
     public String toString(cp_info[] constantPool) {
         return String.valueOf(this.longValue);

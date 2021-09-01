@@ -129,6 +129,11 @@ public class MethodParameters_attribute extends attribute_info {
         }
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_MethodParameters";
+    }
+
     public static final class Parameter extends FileComponent {
 
         /**

@@ -81,4 +81,9 @@ public class CONSTANT_Class_info extends cp_info {
                 MESSAGES.getString("msg_const_class_name_index")
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_class";
+    }
 }

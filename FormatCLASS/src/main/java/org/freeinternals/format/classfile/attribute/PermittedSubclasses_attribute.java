@@ -45,4 +45,8 @@ public class PermittedSubclasses_attribute extends Classes_attribute {
         super(nameIndex, type, posDataInputStream);
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_PermittedSubclasses";
+    }
 }

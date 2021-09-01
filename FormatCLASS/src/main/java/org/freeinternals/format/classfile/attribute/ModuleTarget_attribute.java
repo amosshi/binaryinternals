@@ -63,4 +63,9 @@ public class ModuleTarget_attribute extends attribute_info {
                 "os_arch_index: " + this.os_arch_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.os_arch_index.value)
         )));
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ModuleTarget";
+    }
 }

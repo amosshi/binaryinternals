@@ -8,7 +8,6 @@ package org.freeinternals.format.dex;
 
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;

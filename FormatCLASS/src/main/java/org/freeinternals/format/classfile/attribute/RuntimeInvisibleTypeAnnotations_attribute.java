@@ -41,4 +41,9 @@ public class RuntimeInvisibleTypeAnnotations_attribute extends RuntimeTypeAnnota
     public RuntimeInvisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, name, posDataInputStream);
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_RuntimeInvisibleTypeAnnotations";
+    }
 }

@@ -22,7 +22,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public class RuntimeParameterAnnotations_attribute extends attribute_info {
+public abstract class RuntimeParameterAnnotations_attribute extends attribute_info {
 
     public final u1 num_parameters;
     public final ParameterAnnotation[] parameter_annotations;

@@ -66,4 +66,9 @@ public class Scala_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         // Nothing to add
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NoneJVM";
+    }
 }

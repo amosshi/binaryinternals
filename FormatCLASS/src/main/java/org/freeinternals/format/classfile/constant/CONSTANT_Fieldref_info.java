@@ -48,6 +48,11 @@ public class CONSTANT_Fieldref_info extends CONSTANT_Ref_info {
     }
     
     @Override
+    public String getMessageKey() {
+        return "msg_const_ref";
+    }
+
+    @Override
     public String getName() {
         return ConstantType.CONSTANT_Fieldref.name();
     }

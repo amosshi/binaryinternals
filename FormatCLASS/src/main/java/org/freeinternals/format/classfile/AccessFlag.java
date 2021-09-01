@@ -363,9 +363,9 @@ public enum AccessFlag {
 
     public static String getModifier(long value, List<AccessFlag> list) {
         final List<String> modifiers = new ArrayList<>();
-        list.stream().filter(flag -> (flag.match(value))).forEachOrdered(flag -> {
-            modifiers.add(flag.modifier);
-        });
+        list.stream().filter(flag -> (flag.match(value))).forEachOrdered(flag ->
+            modifiers.add(flag.modifier)
+        );
 
         return String.join(" ", modifiers);
     }

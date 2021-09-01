@@ -123,6 +123,16 @@ public final class UITool {
     }
 
     /**
+     * Icon for Constant value.
+     *
+     * @return Icon for constant value
+     * @see <a href="https://icons8.com/icon/93705/no-entry">No Entry</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    public static Icon icon4Constant() {
+        return icon("/image/icons8-no-entry-16.png");
+    }
+
+    /**
      * Icon for counter.
      *
      * @return Icon for counter

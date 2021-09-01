@@ -10,10 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -63,5 +62,10 @@ public class ModuleResolution_attribute extends attribute_info {
                 2,
                 "resolution_flags: " + BytesTool.getBinaryString(this.resolution_flags.value)
         )));
+    }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_ModuleResolution";
     }
 }

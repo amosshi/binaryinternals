@@ -535,6 +535,11 @@ public class Module_attribute extends attribute_info {
         )));
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_Module";
+    }
+
     /**
      * The {@code requires} structure in {@code Module} attribute.
      *

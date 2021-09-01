@@ -43,4 +43,9 @@ public class NestMembers_attribute extends Classes_attribute {
     public NestMembers_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_NestMembers";
+    }
 }

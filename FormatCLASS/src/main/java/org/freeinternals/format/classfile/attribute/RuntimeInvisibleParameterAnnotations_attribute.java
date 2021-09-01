@@ -51,4 +51,9 @@ public class RuntimeInvisibleParameterAnnotations_attribute extends RuntimeParam
     RuntimeInvisibleParameterAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
     }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_RuntimeInvisibleParameterAnnotations";
+    }
 }

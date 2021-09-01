@@ -54,16 +54,21 @@ public class CONSTANT_Integer_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_Integer.name();
-    }
-
-    @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
                 this.getName(), super.startPos, super.length, this.integerValue);
     }
     
+    @Override
+    public String getMessageKey() {
+        return "msg_const_intfloat";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Integer.name();
+    }
+
     @Override
     public String toString(cp_info[] constantPool) {
         return String.valueOf(this.integerValue);

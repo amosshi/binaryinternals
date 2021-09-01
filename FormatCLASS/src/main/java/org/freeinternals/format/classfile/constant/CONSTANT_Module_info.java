@@ -61,14 +61,19 @@ public class CONSTANT_Module_info extends cp_info {
     }
 
     @Override
-    public String getName() {
-        return ConstantType.CONSTANT_Module.name();
-    }
-
-    @Override
     public String getDescription() {
         return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d].",
                 this.getName(), super.startPos, this.length, this.name_index.value);
+    }
+
+    @Override
+    public String getMessageKey() {
+        return "msg_const_module";
+    }
+
+    @Override
+    public String getName() {
+        return ConstantType.CONSTANT_Module.name();
     }
 
     @Override

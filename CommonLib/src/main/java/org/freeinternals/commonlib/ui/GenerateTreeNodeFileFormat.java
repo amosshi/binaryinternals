@@ -18,6 +18,8 @@ import org.freeinternals.commonlib.core.FileFormat;
  */
 public interface GenerateTreeNodeFileFormat {
 
+    static final String FORMAT_STRING_STRING = "%s - %s";
+
     void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
     /**

@@ -61,6 +61,11 @@ public class Signature_attribute extends attribute_info {
         )));
     }
 
+    @Override
+    public String getMessageKey() {
+        return "msg_attr_Signature";
+    }
+
     /**
      * A primitive type of the Java programming language.
      *

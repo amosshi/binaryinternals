@@ -61,6 +61,13 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
     }
 
     /**
+     * Get a detailed, technical description of the constant pool item.
+     *
+     * @return Detailed, technical description of the item
+     */
+    public abstract String getDescription();
+
+    /**
      * Get the name of current constant pool item.
      *
      * @return Name of the constant pool item
@@ -68,11 +75,11 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
     public abstract String getName();
 
     /**
-     * Get a detailed, technical description of the constant pool item.
+     * The get the Message key which contains the corresponding description of current attribute.
      *
-     * @return Detailed, technical description of the item
+     * @return Message key
      */
-    public abstract String getDescription();
+    public abstract String getMessageKey();
 
     /**
      * Get a human reader friendly of current constant pool item.
