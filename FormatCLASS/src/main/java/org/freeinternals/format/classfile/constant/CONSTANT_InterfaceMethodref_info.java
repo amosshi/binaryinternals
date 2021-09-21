@@ -30,7 +30,7 @@ import org.freeinternals.format.classfile.ClassFile;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.2">
  * VM Spec: The CONSTANT_InterfaceMethodref_info Structure
  * </a>
  *

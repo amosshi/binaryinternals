@@ -42,7 +42,7 @@ import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSA
  * @author Amos Shi
  * @since Java 16
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.7.30">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.30">
  * VM Spec: The Record Attribute
  * </a>
  *

@@ -23,7 +23,7 @@ import org.freeinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html">VM
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html">VM
  * Spec: The Java Virtual Machine Instruction Set</a>
  *
  * <pre>
@@ -51,7 +51,7 @@ public final class Opcode {
      * The Java Virtual Machine Instruction Set.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html#jvms-6.5">
      * VM Spec: Instructions
      * </a>
      *
@@ -2014,7 +2014,7 @@ public final class Opcode {
      * Data types used by {@link Instruction#newarray}.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.newarray">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html#jvms-6.5.newarray">
      * VM Spec: Table 6.5.newarray-A. Array type codes
      * </a>
      */
@@ -2117,7 +2117,7 @@ public final class Opcode {
      *
      * @see Instruction#tableswitch
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-6.html#jvms-6.5.tableswitch">VM
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html#jvms-6.5.tableswitch">VM
      * Spec: The Java Virtual Machine Instruction Set</a>
      */
     public static class TableSwitch {

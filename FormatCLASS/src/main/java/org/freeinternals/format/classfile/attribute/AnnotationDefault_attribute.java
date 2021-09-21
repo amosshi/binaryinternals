@@ -35,7 +35,7 @@ import org.freeinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 5
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.22">
+ * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.22">
  * VM Spec: The AnnotationDefault attribute
  * </a>
  *
@@ -52,11 +52,11 @@ public class AnnotationDefault_attribute extends attribute_info {
      * annotation type element whose default value is represented by this
      * AnnotationDefault attribute.
      */
-    public final Annotation.ElementValue default_value;
+    public final Annotation.element_value default_value;
 
     AnnotationDefault_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
-        this.default_value = new Annotation.ElementValue(posDataInputStream);
+        this.default_value = new Annotation.element_value(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
     }
 

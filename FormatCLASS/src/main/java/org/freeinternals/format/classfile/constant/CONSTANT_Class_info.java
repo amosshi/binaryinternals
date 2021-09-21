@@ -29,7 +29,7 @@ import org.freeinternals.format.classfile.u2;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.1">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.1">
  * VM Spec: The CONSTANT_Class_info Structure
  * </a>
  *

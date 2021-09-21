@@ -28,7 +28,7 @@ import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSA
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.4">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.4">
  * VM Spec: The CONSTANT_Integer_info Structure
  * </a>
  *

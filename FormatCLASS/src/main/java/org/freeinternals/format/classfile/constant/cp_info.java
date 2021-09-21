@@ -32,7 +32,7 @@ import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4">
  * VM Spec: The Constant Pool
  * </a>
  *
@@ -93,7 +93,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
      * Constant pool tags.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4">
      * VM Spec: The Constant Pool
      * </a>
      *
@@ -108,7 +108,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Utf8}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.7">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.7">
          * VM Spec: The CONSTANT_Utf8_info Structure
          * </a>
          */
@@ -117,7 +117,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Integer}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.4">
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
@@ -126,7 +126,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Float}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.4">
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
@@ -135,7 +135,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Long}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.5">
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
@@ -144,7 +144,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Double}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.5">
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
@@ -153,7 +153,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Class}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.1">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.1">
          * VM Spec: The CONSTANT_Class_info Structure
          * </a>
          */
@@ -162,7 +162,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_String}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.3">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.3">
          * VM Spec: The CONSTANT_String_info Structure
          * </a>
          */
@@ -171,7 +171,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Fieldref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
@@ -181,7 +181,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Methodref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
@@ -191,7 +191,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_InterfaceMethodref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
@@ -201,7 +201,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_NameAndType}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.6">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.6">
          * VM Spec: The CONSTANT_NameAndType_info Structure
          * </a>
          */
@@ -210,7 +210,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_MethodHandle}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.8">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.8">
          * VM Spec: The CONSTANT_MethodHandle_info Structure
          * </a>
          */
@@ -219,7 +219,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_MethodType}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.9">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.9">
          * VM Spec: The CONSTANT_MethodType_info Structure
          * </a>
          */
@@ -228,7 +228,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Dynamic}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.10">
          * VM Spec: The CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info
          * Structures
          * </a>
@@ -238,7 +238,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_InvokeDynamic}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.10">
          * VM Spec: The CONSTANT_InvokeDynamic Structure
          * </a>
          */
@@ -247,7 +247,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The CONSTANT_Module_info structure is used to represent a module.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.11">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.11">
          * VM Spec: The CONSTANT_Module_info Structure
          * </a>
          */
@@ -257,7 +257,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * exported or opened by a module.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.12">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.12">
          * VM Spec: The CONSTANT_Package_info Structure
          * </a>
          */
@@ -286,7 +286,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * enable further computation.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4-310">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4-310">
          * VM Spec: Table 4.4-C. Loadable constant pool tags
          * </a>
          */

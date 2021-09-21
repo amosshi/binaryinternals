@@ -29,7 +29,7 @@ import org.freeinternals.commonlib.ui.UITool;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.4.5">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.4.5">
  * VM Spec: The CONSTANT_Double_info Structure
  *
  * <pre>

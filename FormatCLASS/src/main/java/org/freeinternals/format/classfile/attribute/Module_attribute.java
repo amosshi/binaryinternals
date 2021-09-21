@@ -71,7 +71,7 @@ import org.freeinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 9
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.25">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.25">
  * VM Spec: The Module Attribute</a>
  *
  * <pre>

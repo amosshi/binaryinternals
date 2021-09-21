@@ -13,7 +13,7 @@ import java.time.Month;
  * Java SE platform version.
  *
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se16/html/jvms-4.html#jvms-4.1">The
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">The
  * ClassFile Structure</a>
  * @author Amos Shi
  */

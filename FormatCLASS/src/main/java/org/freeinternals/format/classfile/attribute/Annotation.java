@@ -28,7 +28,7 @@ import org.freeinternals.format.classfile.u2;
  *
  * @author Amos Shi
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.16">
+ * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16">
  * VM Spec: annotation structure
  * </a>
  * 
@@ -85,14 +85,14 @@ public class Annotation extends FileComponent {
     
     
     // 4.7.16, 4.7.17:  The RuntimeAnnotations Attribute
-    protected static void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation.ElementValue elementValue, final ClassFile classFile) {
+    protected static void generateSubnode(final DefaultMutableTreeNode rootNode, final Annotation.element_value elementValue, final ClassFile classFile) {
 
         int startPosMoving = elementValue.getStartPos();
         char tag = elementValue.tag;
         rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 1,
-                "tag: " + tag + " - " + ElementValue.TagEnum.getType(tag)
+                "tag: " + tag + " - " + element_value.TagEnum.getType(tag)
         )));
         startPosMoving += 1;
 
@@ -229,7 +229,7 @@ public class Annotation extends FileComponent {
      * <code>annotation</code> structure.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16">
+     * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16">
      * VM Spec: The RuntimeVisibleAnnotations Attribute
      * </a>
      */
@@ -244,13 +244,13 @@ public class Annotation extends FileComponent {
          * Represents the value of the element-value pair represented by this
          * {@link Annotation#element_value_pairs} entry.
          */
-        public final ElementValue value;
+        public final element_value value;
 
         protected ElementValuePair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
             this.element_name_index = new u2(posDataInputStream);
-            this.value = new ElementValue(posDataInputStream);
+            this.value = new element_value(posDataInputStream);
 
             this.length = posDataInputStream.getPos() - this.startPos;
         }
@@ -285,11 +285,11 @@ public class Annotation extends FileComponent {
      * </pre>
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16.1">
      * VM Spec: The element_value structure
      * </a>
      */
-    public static final class ElementValue extends FileComponent {
+    public static final class element_value extends FileComponent {
 
         /**
          * The <code>tag</code> item uses a single ASCII character to indicate
@@ -324,7 +324,7 @@ public class Annotation extends FileComponent {
          */
         public final ArrayValue union_array_value;
 
-        protected ElementValue(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected element_value(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
             this.tag = (char) posDataInputStream.read(); // Read 1 byte only
@@ -364,7 +364,7 @@ public class Annotation extends FileComponent {
                 this.union_annotation_value = new Annotation(posDataInputStream);
                 this.union_array_value = null;
 
-            } else if (this.tag == TagEnum.leftbracket.value) {
+            } else if (this.tag == TagEnum.array_type.value) {
                 this.union_const_value_index = null;
                 this.union_enum_const_value = null;
                 this.union_class_info_index = null;
@@ -386,7 +386,7 @@ public class Annotation extends FileComponent {
          * The valid characters for the <code>tag</code> item.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7.16.1-130">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16.1-130">
          * VM Spec: The element_value structure
          * </a>
          *
@@ -448,7 +448,7 @@ public class Annotation extends FileComponent {
             /**
              * Type <code>Array type</code>.
              */
-            leftbracket('[', "Array type");
+            array_type('[', "Array type");
 
             /**
              * Internal value of the enum.
@@ -506,7 +506,7 @@ public class Annotation extends FileComponent {
         public static final class ArrayValue extends FileComponent {
 
             public final u2 num_values;
-            public final ElementValue[] values;
+            public final element_value[] values;
 
             protected ArrayValue(final PosDataInputStream posDataInputStream)
                     throws IOException, FileFormatException {
@@ -514,9 +514,9 @@ public class Annotation extends FileComponent {
 
                 this.num_values = new u2(posDataInputStream);
                 if (this.num_values.value > 0) {
-                    this.values = new ElementValue[this.num_values.value];
+                    this.values = new element_value[this.num_values.value];
                     for (int i = 0; i < this.num_values.value; i++) {
-                        this.values[i] = new ElementValue(posDataInputStream);
+                        this.values[i] = new element_value(posDataInputStream);
                     }
                 } else {
                     this.values = null;

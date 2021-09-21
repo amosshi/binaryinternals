@@ -34,7 +34,7 @@ import org.freeinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 5
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se12/html/jvms-4.html#jvms-4.7.17">
+ * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.17">
  * VM Spec: The RuntimeInvisibleAnnotations Attribute
  * </a>
  *

@@ -42,7 +42,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spotbugs.version>4.4.0</spotbugs.version>
+        <spotbugs.version>4.4.1</spotbugs.version>
         
         <commonlib.version>2.0</commonlib.version>
     </properties>

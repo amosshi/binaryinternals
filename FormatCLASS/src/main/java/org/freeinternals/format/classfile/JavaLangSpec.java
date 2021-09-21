@@ -28,7 +28,7 @@ public class JavaLangSpec {
      * </p>
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.9">
+     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.9">
      * Keywords
      * </a>
      */
@@ -97,12 +97,15 @@ public class JavaLangSpec {
      * identifiers because they are not allowed in some contexts.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.8">
+     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.8">
      * Keywords
      * </a>
      */
     public enum RestrictedIdentifier {
 
+        PERMITS("permits"),
+        RECORD("record"),
+        SEALED("sealed"),
         VAR("var"),
         YIELD("yield");
 
@@ -122,7 +125,7 @@ public class JavaLangSpec {
      * RequiresModifier productions.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.9">
+     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.9">
      * Keywords
      * </a>
      */
@@ -130,14 +133,19 @@ public class JavaLangSpec {
 
         EXPORTS("exports"),
         MODULE("module"),
+        NON_SEALED("non-sealed"),
         OPEN("open"),
         OPENS("opens"),
         PROVIDES("provides"),
+        RECORD("record"),
         REQUIRES("requires"),
+        SEALED("sealed"),
         TO("to"),
         TRANSITIVE("transitive"),
         USES("uses"),
-        WITH("with");
+        VAR("var"),
+        WITH("with"),
+        YIELD("yield");
 
         public final String keyword;
 
