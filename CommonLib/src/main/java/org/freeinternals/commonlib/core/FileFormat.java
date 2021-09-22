@@ -13,11 +13,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import javax.swing.Icon;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
@@ -136,7 +136,7 @@ public abstract class FileFormat {
      *
      * @return <code>null</code> to use default icon, else use supplied icon
      */
-    public Icon getIcon() {
+    public Icons getIcon() {
         return null;
     }
 

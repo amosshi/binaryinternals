@@ -20,7 +20,7 @@ import org.freeinternals.format.jpeg.icc.ICCProfile;
  */
 public class Marker_APP02 extends Marker {
 
-    public static final String identifier_ICC_PROFILE = "ICC_PROFILE";
+    public static final String IDENTIFIER_ICC_PROFILE = "ICC_PROFILE";
     private String identifier;
     private ICCProfile icc;
 
@@ -33,7 +33,7 @@ public class Marker_APP02 extends Marker {
         super.parseInitSkip(pDisMarker);
         this.identifier = super.parseIdentifier(pDisMarker);
 
-        if (Marker_APP02.identifier_ICC_PROFILE.equals(this.identifier)) {
+        if (Marker_APP02.IDENTIFIER_ICC_PROFILE.equals(this.identifier)) {
             int lengthICC = this.marker_length - 2 - this.identifier.length() - 1;
             lengthICC = lengthICC - 2;
             final byte[] bytesICC = new byte[lengthICC];
@@ -70,7 +70,7 @@ public class Marker_APP02 extends Marker {
                 this.identifier.length() + 1,
                 String.format("identifier: %s", this.identifier))));
 
-        if (Marker_APP02.identifier_ICC_PROFILE.equals(this.identifier)) {
+        if (Marker_APP02.IDENTIFIER_ICC_PROFILE.equals(this.identifier)) {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos = lastPos + this.identifier.length() + 1,
                     2,

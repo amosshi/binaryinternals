@@ -8,10 +8,10 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  *
@@ -106,7 +106,7 @@ public class IFD_UNDEFINED extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
                     node,
-                    UITool.icon4Shortcut(), null);
+                    Icons.Shortcut, null);
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         }

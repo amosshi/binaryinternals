@@ -12,8 +12,8 @@ import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -96,13 +96,13 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         DexFile dex = (DexFile)format;
         int floatPos = super.startPos;
 
-        addNode(parentNode, floatPos, this.static_fields_size.length, "static_fields_size", this.static_fields_size, "msg_class_data_item__static_fields_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, this.static_fields_size.length, "static_fields_size", this.static_fields_size, "msg_class_data_item__static_fields_size", Icons.Size);
         floatPos += this.static_fields_size.length;
-        addNode(parentNode, floatPos, this.instance_fields_size.length, "instance_fields_size", this.instance_fields_size, "msg_class_data_item__instance_fields_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, this.instance_fields_size.length, "instance_fields_size", this.instance_fields_size, "msg_class_data_item__instance_fields_size", Icons.Size);
         floatPos += this.instance_fields_size.length;
-        addNode(parentNode, floatPos, this.direct_methods_size.length, "direct_methods_size", this.direct_methods_size, "msg_class_data_item__direct_methods_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, this.direct_methods_size.length, "direct_methods_size", this.direct_methods_size, "msg_class_data_item__direct_methods_size", Icons.Size);
         floatPos += this.direct_methods_size.length;
-        addNode(parentNode, floatPos, this.virtual_methods_size.length, "virtual_methods_size", this.virtual_methods_size, "msg_class_data_item__virtual_methods_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, this.virtual_methods_size.length, "virtual_methods_size", this.virtual_methods_size, "msg_class_data_item__virtual_methods_size", Icons.Size);
 
         if (this.static_fields != null) {
             int fieldLenSum = 0;
@@ -114,7 +114,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     this.static_fields[0].getStartPos(),
                     fieldLenSum,
                     String.format("static_fields [%,d]", this.static_fields.length),
-                    UITool.icon4Field(),
+                    Icons.Field,
                     MESSAGES.getString("msg_class_data_item__static_fields")
             ));
             parentNode.add(nodes);
@@ -125,7 +125,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                         item.getStartPos(),
                         item.getLength(),
                         String.format("static_fields [%,d]", i),
-                        UITool.icon4Field(),
+                        Icons.Field,
                         encoded_field.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -143,7 +143,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     this.instance_fields[0].getStartPos(),
                     fieldLenSum,
                     String.format("instance_fields [%,d]", this.instance_fields.length),
-                    UITool.icon4Field(),
+                    Icons.Field,
                     MESSAGES.getString("msg_class_data_item__instance_fields")
             ));
             parentNode.add(nodes);
@@ -154,7 +154,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                         item.getStartPos(),
                         item.getLength(),
                         String.format("encoded_field [%,d]", i),
-                        UITool.icon4Field(),
+                        Icons.Field,
                         encoded_field.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -172,7 +172,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     this.direct_methods[0].getStartPos(),
                     methodLenSum,
                     String.format("direct_methods [%,d]", this.direct_methods.length),
-                    UITool.icon4Method(),
+                    Icons.Method,
                     MESSAGES.getString("msg_class_data_item__direct_methods")
             ));
             parentNode.add(nodes);
@@ -183,7 +183,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                         item.getStartPos(),
                         item.getLength(),
                         String.format("encoded_method [%,d]", i),
-                        UITool.icon4Method(),
+                        Icons.Method,
                         encoded_method.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -201,7 +201,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     this.virtual_methods[0].getStartPos(),
                     methodLenSum,
                     String.format("virtual_methods [%,d]", this.virtual_methods.length),
-                    UITool.icon4Method(),
+                    Icons.Method,
                     MESSAGES.getString("msg_class_data_item__virtual_methods")
             ));
             parentNode.add(nodes);
@@ -212,7 +212,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                         item.getStartPos(),
                         item.getLength(),
                         String.format("encoded_method [%,d]", i),
-                        UITool.icon4Method(),
+                        Icons.Method,
                         encoded_method.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -246,7 +246,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "field_idx_diff",
                     String.format(FORMAT_STRING_STRING, this.field_idx_diff, (field == null) ? "null (should not happen)" : field.toString(dexFile)),
                     "msg_encoded_field__field_idx_diff",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += this.field_idx_diff.length;
 
             addNode(parentNode,
@@ -255,7 +255,8 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "access_flags",
                     this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getFieldModifier(this.access_flags.value),
                     "msg_class_def_item__access_flags",
-                    UITool.icon4AccessFlag());
+                    Icons.AccessFlag
+            );
         }
     }
 
@@ -288,7 +289,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "method_idx_diff",
                     String.format(FORMAT_STRING_STRING, this.method_idx_diff, (method == null) ? "null (should not happen)" : method.toString(dexFile)),
                     "msg_encoded_method__method_idx_diff",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += this.method_idx_diff.length;
 
             addNode(parentNode,
@@ -297,7 +298,8 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "access_flags",
                     this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getMethodModifier(this.access_flags.value),
                     "msg_encoded_method__access_flags",
-                    UITool.icon4AccessFlag());
+                    Icons.AccessFlag
+            );
 
             DefaultMutableTreeNode codeoffNode = addNode(parentNode,
                     floatPos,
@@ -305,14 +307,14 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "code_off",
                     this.code_off,
                     "msg_encoded_method__code_off",
-                    UITool.icon4Offset());
+                    Icons.Offset);
             if (this.code_off.value != 0) {
                 code_item item = (code_item) dexFile.data.get(Long.valueOf(this.code_off.value));
                 DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
                         code_item.class.getSimpleName(),
-                        UITool.icon4Shortcut(),
+                        Icons.Shortcut,
                         MESSAGES.getString("msg_code_item")
                 ));
                 codeoffNode.add(itemNode);

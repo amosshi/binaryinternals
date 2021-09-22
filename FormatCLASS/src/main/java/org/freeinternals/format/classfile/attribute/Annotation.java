@@ -289,6 +289,7 @@ public class Annotation extends FileComponent {
      * VM Spec: The element_value structure
      * </a>
      */
+    @SuppressWarnings({"java:S101"})
     public static final class element_value extends FileComponent {
 
         /**

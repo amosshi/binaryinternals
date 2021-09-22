@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -144,7 +144,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 "class_idx",
                 String.format(FORMAT_STRING_STRING, this.class_idx, this.get_class_jls(dexFile)),
                 "msg_method_id_item__class_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_ushort.LENGTH;
 
         addNode(parentNode,
@@ -153,7 +153,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 "proto_idx",
                 this.get_proto(dexFile).toString(dexFile),
                 "msg_method_id_item__proto_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_ushort.LENGTH;
 
         addNode(parentNode,
@@ -162,6 +162,6 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 "name_idx",
                 String.format(FORMAT_STRING_STRING, this.name_idx, this.get_name(dexFile)),
                 "msg_method_id_item__name_idx",
-                UITool.icon4Index());
+                Icons.Index);
     }
 }

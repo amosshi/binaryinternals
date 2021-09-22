@@ -89,11 +89,28 @@ public final class JTreeNodeFileComponent {
      * @param nodeLength Value for {@link #length}
      * @param nodeText Value for {@link #text}
      * @param nodeIcon Value for {@link #icon}, could be null
+     */
+    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icons nodeIcon) {
+        this(nodeStartPos, nodeLength, nodeText);
+        if (nodeIcon != null) {
+            this.setIcon(nodeIcon.getIcon());
+        }
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param nodeStartPos Value for {@link #startPos}
+     * @param nodeLength Value for {@link #length}
+     * @param nodeText Value for {@link #text}
+     * @param nodeIcon Value for {@link #icon}, could be null
      * @param desc Value for {@link #description}, could be null
      */
-    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icon nodeIcon, final String desc) {
+    public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icons nodeIcon, final String desc) {
         this(nodeStartPos, nodeLength, nodeText);
-        this.setIcon(nodeIcon);
+        if (nodeIcon != null) {
+            this.setIcon(nodeIcon.getIcon());
+        }
         this.description = desc;
     }
 
@@ -155,9 +172,7 @@ public final class JTreeNodeFileComponent {
      * @param icon value for {@link #icon}
      */
     public void setIcon(Icon icon) {
-        if (icon != null) {
-            this.icon = icon;
-        }
+        this.icon = icon;
     }
 
     /**

@@ -13,10 +13,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
 
-public class TIFF extends FileComponent {
+public class TIFF extends FileComponent implements GenerateTreeNode {
 
     public static final String IFD_Number_Description = "A 2-byte count of the number of directory entries (i.e., the number of fields)";
     private final byte[] tiffByteArray;
@@ -39,6 +39,7 @@ public class TIFF extends FileComponent {
         }
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
         DefaultMutableTreeNode nodeTiffHeader;
@@ -70,9 +71,7 @@ public class TIFF extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (this.startPos + ref.offset) - lastEnd;
             if (diff > 0) {
-                UITool.generateTreeNodeDiff(
-                        parentNode, lastEnd, diff,
-                        this.tiffByteArray, this.startPos);
+                generateTreeNodeDiff(parentNode, lastEnd, diff, this.tiffByteArray, this.startPos);
             }
 
             if (ref.ifdgroup != null) {
@@ -94,9 +93,7 @@ public class TIFF extends FileComponent {
         // In case, there is some extra space in the end
         diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
         if (diff > 0) {
-            UITool.generateTreeNodeDiff(
-                    parentNode, lastEnd, diff,
-                    this.tiffByteArray, this.startPos);
+            generateTreeNodeDiff(parentNode, lastEnd, diff, this.tiffByteArray, this.startPos);
         }
     }
 

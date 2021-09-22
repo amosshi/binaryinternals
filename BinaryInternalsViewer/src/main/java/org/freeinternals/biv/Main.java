@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -43,7 +44,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import org.freeinternals.biv.plugin.PluginManager;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -54,6 +54,10 @@ public class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500000L;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    /**
+     * Size ratio of the pop-up window and its parent.
+     */
+    private static final float POPUP_RATIO = 0.8f;
     private static final String URI_HOMEPAGE = "https://github.com/amosshi/freeinternals";
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String TITLE_EXT = " - " + TITLE;
@@ -115,8 +119,8 @@ public class Main extends JFrame {
         // Set main window size
         final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(
-                (int) (d.getWidth() * UITool.POPUP_RATIO),
-                (int) (d.getHeight() * UITool.POPUP_RATIO));
+                (int) (d.getWidth() * POPUP_RATIO),
+                (int) (d.getHeight() * POPUP_RATIO));
 
         // Center the main window
         this.setLocationRelativeTo(null);
@@ -171,15 +175,21 @@ public class Main extends JFrame {
 
         // Help --> Homepage
         final JMenuItem menuItemHelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
-        menuItemHelpHomepage.setMnemonic(KeyEvent.VK_P);
+        menuItemHelpHomepage.setMnemonic(KeyEvent.VK_H);
         menuItemHelpHomepage.addActionListener((final ActionEvent e) -> menuHelpHomepage());
         menuHelp.add(menuItemHelpHomepage);
 
         // Help --> Plugins
         final JMenuItem menuItemHelpPlugins = new JMenuItem("Plug-ins");
-        menuItemHelpPlugins.setMnemonic(KeyEvent.VK_A);
+        menuItemHelpPlugins.setMnemonic(KeyEvent.VK_P);
         menuItemHelpPlugins.addActionListener((final ActionEvent e) -> menuHelpPlugins());
         menuHelp.add(menuItemHelpPlugins);
+
+        // Help --> Plugins
+        final JMenuItem menuItemHelpIcons = new JMenuItem("Icons");
+        menuItemHelpIcons.setMnemonic(KeyEvent.VK_P);
+        menuItemHelpIcons.addActionListener((final ActionEvent e) -> menuHelpIcons());
+        menuHelp.add(menuItemHelpIcons);
 
         // Help --> About
         final JMenuItem menuItemHelpAbout = new JMenuItem("About");
@@ -276,12 +286,6 @@ public class Main extends JFrame {
         this.setSize(this.getWidth() - 1, this.getHeight());
     }
 
-    private void menuHelpPlugins() {
-        final JDialogPlugins plugins = new JDialogPlugins(this, "Plug-ins");
-        plugins.setLocationRelativeTo(this);
-        plugins.setVisible(true);
-    }
-
     private void menuHelpAbout() {
         final JDialogAbout about = new JDialogAbout(this, "About");
         about.setLocationRelativeTo(this);
@@ -298,5 +302,39 @@ public class Main extends JFrame {
                     this.getTitle(),
                     JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+    private void menuHelpIcons() {
+        final JDialogIcons icons = new JDialogIcons(this, "Icons");
+        icons.setLocationRelativeTo(this);
+        icons.setVisible(true);
+    }
+
+    private void menuHelpPlugins() {
+        final JDialogPlugins plugins = new JDialogPlugins(this, "Plug-ins");
+        plugins.setLocationRelativeTo(this);
+        plugins.setVisible(true);
+    }
+
+    /**
+     * Show a popup window with given message.
+     *
+     * @param frame Parent window
+     * @param panel Content in panel
+     * @param title Popup window title
+     */
+    static void showPopup(final JFrame frame, final JPanel panel, final String title) {
+        if (frame == null || panel == null) {
+            return;
+        }
+
+        final JDialog popup = new JDialog(frame, title);
+        popup.setSize(
+                (int) Math.floor(frame.getWidth() * POPUP_RATIO),
+                (int) Math.floor(frame.getHeight() * POPUP_RATIO));
+        popup.setLayout(new BorderLayout());
+        popup.add(panel, BorderLayout.CENTER);
+        popup.setLocationRelativeTo(frame);
+        popup.setVisible(true);
     }
 }

@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -365,7 +365,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 "value_arg + value_type",
                 String.format("0x%s | %s", Integer.toHexString(this.value_arg_and_type.value), Integer.toBinaryString(this.value_arg_and_type.value)),
                 "msg_encoded_value__value_type",
-                UITool.icon4Tag()
+                Icons.Tag
         );
         addNode(parentNode,
                 floatPos,
@@ -373,7 +373,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 "value_type",
                 String.format("%d | 0x%s - %s", this.value_type, Integer.toHexString(this.value_type), format.name()),
                 "msg_encoded_value__value_type",
-                UITool.icon4Tag()
+                Icons.Tag
         );
         addNode(parentNode,
                 floatPos,
@@ -381,30 +381,30 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                 "value_arg",
                 String.format("decimal %d | binary %s", this.value_arg, Integer.toBinaryString(this.value_arg)),
                 "msg_encoded_value__value_arg",
-                UITool.icon4Parameter()
+                Icons.Parameter
         );
         floatPos += Type_ubyte.LENGTH;
 
         if (this.union_value_byte != null) {
-            addNode(parentNode, floatPos, Type_ubyte.LENGTH, "VALUE_BYTE", this.union_value_byte, "msg_encoded_value__value_byte", UITool.icon4Data());
+            addNode(parentNode, floatPos, Type_ubyte.LENGTH, "VALUE_BYTE", this.union_value_byte, "msg_encoded_value__value_byte", Icons.Data);
         } else if (this.union_value_short != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_SHORT", this.union_value_short, "msg_encoded_value__value_short", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_SHORT", this.union_value_short, "msg_encoded_value__value_short", Icons.Data);
         } else if (this.union_value_char != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_CHAR", this.union_value_char, "msg_encoded_value__value_char", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_CHAR", this.union_value_char, "msg_encoded_value__value_char", Icons.Data);
         } else if (this.union_value_int != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_INT", this.union_value_int, "msg_encoded_value__value_int", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_INT", this.union_value_int, "msg_encoded_value__value_int", Icons.Data);
         } else if (this.union_value_long != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_LONG", this.union_value_long, "msg_encoded_value__value_long", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_LONG", this.union_value_long, "msg_encoded_value__value_long", Icons.Data);
         } else if (this.union_value_float != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_FLOAT", this.union_value_float, "msg_encoded_value__value_float", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_FLOAT", this.union_value_float, "msg_encoded_value__value_float", Icons.Data);
         } else if (this.union_value_double != null) {
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_DOUBLE", this.union_value_double, "msg_encoded_value__value_double", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_DOUBLE", this.union_value_double, "msg_encoded_value__value_double", Icons.Data);
         } else if (this.union_value_method_type != null) {
             // TODO for value
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD_TYPE", this.union_value_method_type, "msg_encoded_value__value_method_type", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD_TYPE", this.union_value_method_type, "msg_encoded_value__value_method_type", Icons.Data);
         } else if (this.union_value_method_handle != null) {
             // TODO for value
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD_HANDLE", this.union_value_method_handle, "msg_encoded_value__value_method_handle", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD_HANDLE", this.union_value_method_handle, "msg_encoded_value__value_method_handle", Icons.Data);
         } else if (this.union_value_string != null) {
             addNode(parentNode,
                     floatPos,
@@ -412,16 +412,16 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                     "VALUE_STRING",
                     String.format(FORMAT_STRING_STRING, this.union_value_string, dex.get_string_ids_string(this.union_value_string.intValue())),
                     "msg_encoded_value__value_string",
-                    UITool.icon4Data());
+                    Icons.Data);
         } else if (this.union_value_type != null) {
             // TODO for value
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_TYPE", this.union_value_type, "msg_encoded_value__type", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_TYPE", this.union_value_type, "msg_encoded_value__type", Icons.Data);
         } else if (this.union_value_field != null) {
             // TODO for value
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_FIELD", this.union_value_field, "msg_encoded_value__value_field", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_FIELD", this.union_value_field, "msg_encoded_value__value_field", Icons.Data);
         } else if (this.union_value_method != null) {
             // TODO for value
-            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD", this.union_value_method, "msg_encoded_value__value_method", UITool.icon4Data());
+            addNode(parentNode, floatPos, this.value_arg + 1, "VALUE_METHOD", this.union_value_method, "msg_encoded_value__value_method", Icons.Data);
         } else if (this.union_value_enum != null) {
             field_id_item fieldId = dex.field_ids[this.union_value_enum.intValue()];
             addNode(parentNode,
@@ -430,17 +430,17 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
                     "VALUE_ENUM",
                     String.format(FORMAT_STRING_STRING, this.union_value_enum, (fieldId == null) ? "null (should not happen)" : fieldId.toString(dex)),
                     "msg_encoded_value__value_enum",
-                    UITool.icon4Data());
+                    Icons.Data);
         } else if (this.union_value_array != null) {
             DefaultMutableTreeNode arrayNode = addNode(parentNode,
-                    floatPos, this.union_value_array.getLength(), "VALUE_ARRAY", this.union_value_array, "msg_encoded_value__value_array", UITool.icon4Array());
+                    floatPos, this.union_value_array.getLength(), "VALUE_ARRAY", this.union_value_array, "msg_encoded_value__value_array", Icons.Array);
             this.union_value_array.generateTreeNode(arrayNode, dex);
         } else if (this.union_value_annotation != null) {
             DefaultMutableTreeNode annoNode = addNode(parentNode,
-                    floatPos, this.union_value_annotation.getLength(), "VALUE_ANNOTATION", this.union_value_annotation, "msg_encoded_value__value_annotation", UITool.icon4Annotations());
+                    floatPos, this.union_value_annotation.getLength(), "VALUE_ANNOTATION", this.union_value_annotation, "msg_encoded_value__value_annotation", Icons.Annotations);
             this.union_value_annotation.generateTreeNode(annoNode, dex);
         } else if (this.union_value_bollean != null) {
-            addNode(parentNode, super.startPos, Type_ubyte.LENGTH, "VALUE_BOOLEAN", this.union_value_bollean, "msg_encoded_value__value_boolean", UITool.icon4Data());
+            addNode(parentNode, super.startPos, Type_ubyte.LENGTH, "VALUE_BOOLEAN", this.union_value_bollean, "msg_encoded_value__value_boolean", Icons.Data);
         }
     }
 

@@ -28,7 +28,6 @@ import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  * A split panel created from a class file byte array.
@@ -164,6 +163,6 @@ public class JSplitPaneFile extends JSplitPane {
     }
 
     private void treeDoubleClickPopup(JPanel panel, String title) {
-        UITool.showPopup(this.topLevelFrame, panel, title);
+        Main.showPopup(this.topLevelFrame, panel, title);
     }
 }

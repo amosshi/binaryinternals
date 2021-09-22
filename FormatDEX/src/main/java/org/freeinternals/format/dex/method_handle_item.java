@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -63,11 +63,11 @@ public class method_handle_item extends FileComponent implements GenerateTreeNod
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         int floatPos = this.getStartPos();
 
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type", UITool.icon4Offset());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type", Icons.Offset);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id", UITool.icon4Index());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id", Icons.Index);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
     }

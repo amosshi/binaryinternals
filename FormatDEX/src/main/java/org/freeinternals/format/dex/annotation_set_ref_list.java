@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -62,7 +62,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                 "size",
                 this.size,
                 "msg_annotation_set_ref_list__size",
-                UITool.icon4Size());
+                Icons.Size);
         floatPos += Type_uint.LENGTH;
 
         if (this.list == null) {
@@ -73,7 +73,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                 floatPos,
                 annotation_set_ref_item.LENGTH * this.list.length,
                 String.format("list [%d]", this.list.length),
-                UITool.icon4Data(),
+                Icons.Data,
                 MESSAGES.getString("msg_annotation_set_ref_list__list")
         ));
         parentNode.add(listNode);
@@ -87,7 +87,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                     String.format("%s[%d].annotations_off", annotation_set_ref_item.class.getSimpleName(), i),
                     refItem.annotations_off,
                     "msg_annotation_set_ref_item__annotations_off",
-                    UITool.icon4Offset()
+                    Icons.Offset
             );
 
             if (refItem.annotations_off.value == 0) {
@@ -100,7 +100,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                     fc.getStartPos(),
                     fc.getLength(),
                     fc.getClass().getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_annotation_set_item")
             ));
             refItemNode.add(itemNode);

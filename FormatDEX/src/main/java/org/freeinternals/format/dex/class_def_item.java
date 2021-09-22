@@ -12,8 +12,8 @@ import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -229,7 +229,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "class_idx",
                 String.format(FORMAT_STRING_STRING, this.class_idx, this.get_class_jls(dexFile)),
                 "msg_class_def_item__class_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -238,7 +238,8 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "access_flags",
                 this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getClassModifier(this.access_flags.intValue()),
                 "msg_class_def_item__access_flags",
-                UITool.icon4AccessFlag());
+                Icons.AccessFlag
+        );
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -247,7 +248,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "superclass_idx",
                 String.format(FORMAT_STRING_STRING, this.superclass_idx, this.get_superclass_jls(dexFile)),
                 "msg_class_def_item__superclass_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_uint.LENGTH;
 
         DefaultMutableTreeNode ifsOffsetNode = addNode(parentNode,
@@ -256,7 +257,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "interfaces_off",
                 String.format(FORMAT_STRING_STRING, this.interfaces_off, this.get_interfaces_desc(dexFile)),
                 "msg_class_def_item__interfaces_off",
-                UITool.icon4Offset());
+                Icons.Offset);
         floatPos += Type_uint.LENGTH;
 
         type_list ifs = this.get_interfaces(dexFile);
@@ -265,7 +266,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                     ifs.getStartPos(),
                     ifs.getLength(),
                     type_list.class.getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_class_def_item__interfaces_off")
             ));
             ifsOffsetNode.add(ifsNode);
@@ -278,7 +279,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "source_file_idx",
                 String.format(FORMAT_STRING_STRING, this.source_file_idx, this.get_source_file(dexFile)),
                 "msg_class_def_item__source_file_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_uint.LENGTH;
 
         DefaultMutableTreeNode ansOffsetNode = addNode(parentNode,
@@ -287,7 +288,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "annotations_off",
                 this.annotations_off,
                 "msg_class_def_item__annotations_off",
-                UITool.icon4Offset());
+                Icons.Offset);
         floatPos += Type_uint.LENGTH;
 
         annotations_directory_item ans = this.get_annotations(dexFile);
@@ -296,7 +297,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                     ans.getStartPos(),
                     ans.getLength(),
                     annotations_directory_item.class.getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_annotations_directory_item")
             ));
             ansOffsetNode.add(ansNode);
@@ -309,7 +310,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "class_data_off",
                 this.class_data_off,
                 "msg_class_def_item__class_data_off",
-                UITool.icon4Offset());
+                Icons.Offset);
         floatPos += Type_uint.LENGTH;
         if (this.class_data_off.value != 0) {
             class_data_item item = (class_data_item) dexFile.data.get(this.class_data_off.value);
@@ -317,7 +318,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                     item.getStartPos(),
                     item.getLength(),
                     item.getClass().getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_class_data_item")
             ));
             offNode.add(itemNode);
@@ -330,7 +331,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 "static_values_off",
                 this.static_values_off,
                 "msg_class_def_item__static_values_off",
-                UITool.icon4Offset());
+                Icons.Offset);
 
     }
 }

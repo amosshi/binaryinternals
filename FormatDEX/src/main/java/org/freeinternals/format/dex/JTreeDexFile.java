@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -57,7 +57,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
                 startPos,
                 DexFile.DEX_FILE_MAGIC1.length,
                 "magic 1: " + new String(dexFile.magic1, StandardCharsets.UTF_8),
-                UITool.icon4Magic(),
+                Icons.Magic,
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_dex_file_magic1")
         )));
         startPos += DexFile.DEX_FILE_MAGIC1.length;
@@ -66,7 +66,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
                 startPos,
                 DexFile.DEX_FILE_MAGIC2.length,
                 "magic 2: " + new String(dexFile.magic2, StandardCharsets.UTF_8),
-                UITool.icon4Magic(),
+                Icons.Magic,
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_dex_file_magic2")
         )));
     }
@@ -90,7 +90,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("string_id_item[%,d] : %s", i, UITool.left(dexFile.get_string_ids_string(i)))
+                    String.format("string_id_item[%,d] : %s", i, left(dexFile.get_string_ids_string(i)))
             ));
             node.add(itemNode);
             item.generateTreeNode(itemNode, dexFile);

@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -36,7 +36,7 @@ public class encoded_array_item extends FileComponent implements GenerateTreeNod
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
-        DefaultMutableTreeNode valueNode = addNode(parentNode, super.startPos, this.value.getLength(), "value", this.value, "msg_encoded_array_item__value", UITool.icon4Data());
+        DefaultMutableTreeNode valueNode = addNode(parentNode, super.startPos, this.value.getLength(), "value", this.value, "msg_encoded_array_item__value", Icons.Data);
         this.value.generateTreeNode(valueNode, dexFile);
     }
 }

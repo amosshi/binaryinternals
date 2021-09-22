@@ -8,10 +8,10 @@ package org.freeinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  *
@@ -84,7 +84,7 @@ public class IFD_RATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     8,
                     String.format(ShortText.getString(ShortText.KEY_rational_n), i),
-                    UITool.icon4Shortcut(), null);
+                    Icons.Shortcut, null);
             comp.setDescription(description);
             node = new DefaultMutableTreeNode(comp);
             parentNode.add(node);
@@ -93,7 +93,7 @@ public class IFD_RATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_numerator_n), this.value[0].numerator),
-                    UITool.icon4Shortcut(), null);
+                    Icons.Shortcut, null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Numerator));
             node.add(new DefaultMutableTreeNode(comp));
 
@@ -101,7 +101,7 @@ public class IFD_RATIONAL extends IFD {
                     super.tiff_StartPos + super.ifd_value_offset + i * 8 + 4,
                     4,
                     String.format(ShortText.getString(ShortText.KEY_denominator_n), this.value[0].denominator),
-                    UITool.icon4Shortcut(), null);
+                    Icons.Shortcut, null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Denominator));
             node.add(new DefaultMutableTreeNode(comp));
         }

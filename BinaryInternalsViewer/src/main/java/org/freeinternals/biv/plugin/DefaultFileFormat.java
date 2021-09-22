@@ -9,10 +9,9 @@ package org.freeinternals.biv.plugin;
 import org.freeinternals.commonlib.core.FileFormat;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -36,7 +35,7 @@ public class DefaultFileFormat extends FileFormat{
     }
 
     @Override
-    public Icon getIcon() {
-        return UITool.icon4BinaryFile();
+    public Icons getIcon() {
+        return Icons.BinaryFile;
     }
 }

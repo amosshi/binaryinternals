@@ -13,7 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.SignatureConvertor;
 
 /**
@@ -59,7 +59,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
                 "size",
                 this.size,
                 "msg_type_list__size",
-                UITool.icon4Size()
+                Icons.Size
         );
 
         // Since type_item has only 1 field, so we do not use child node
@@ -72,7 +72,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
                         String.format("type_item[%d].type_idx", i),
                         item.get_type_jls((DexFile)dexFile),
                         "msg_type_item__type_idx",
-                        UITool.icon4Index()
+                        Icons.Index
                 );
             }
         }

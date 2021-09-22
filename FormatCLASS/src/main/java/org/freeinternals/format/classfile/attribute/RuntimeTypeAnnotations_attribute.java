@@ -21,7 +21,7 @@ import org.freeinternals.format.classfile.u2;
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings({"java:S101", "java:S116"})
+@SuppressWarnings({"java:S101", "java:S116", "java:S5993"})
 public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
 
     public final u2 num_annotations;

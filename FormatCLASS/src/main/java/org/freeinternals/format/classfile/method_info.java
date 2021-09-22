@@ -13,8 +13,8 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.constant.cp_info;
 
@@ -170,7 +170,6 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         final ClassFile classFile = (ClassFile)fileFormat;
         final int floatPos = this.getStartPos();
-        final int attributesCount = this.attributes_count.value;
         int cpIndex;
 
         this.addNode(parentNode,
@@ -179,28 +178,38 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
                 FIELD_ACCESS_FLAGS,
                 BytesTool.getBinaryString(this.access_flags.value) + " " + this.getModifiers(),
                 "msg_method_info__access_flags",
-                UITool.icon4AccessFlag()
+                Icons.AccessFlag
         );
 
         cpIndex = this.name_index.value;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 floatPos + 2,
                 u2.LENGTH,
-                String.format("name_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
-        )));
+                "name_index",
+                String.format("constant pool index = %d, method name = %s", cpIndex, classFile.getCPDescription(cpIndex)),
+                "msg_method_info__name_index",
+                Icons.Name
+        );
+
+
         cpIndex = this.descriptor_index.value;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 floatPos + 4,
                 u2.LENGTH,
-                String.format("descriptor_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
-        )));
+                "descriptor_index",
+                String.format("constant pool index = %d, method descriptor = %s", cpIndex, classFile.getCPDescription(cpIndex)),
+                "msg_method_info__descriptor_index",
+                Icons.Descriptor
+        );
+
+        final int attributesCount = this.attributes_count.value;
         this.addNode(parentNode,
                 floatPos + 6,
                 u2.LENGTH,
                 FIELD_ATTR_COUNT,
                 attributesCount,
                 "msg_method_info__attributes_count",
-                UITool.icon4Counter()
+                Icons.Counter
         );
 
         if (attributesCount > 0) {
@@ -208,7 +217,9 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
             final DefaultMutableTreeNode treeNodeAttr = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     floatPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - floatPos - 8,
-                    "attributes[" + attributesCount + "]"
+                    String.format("attributes[%d]", attributesCount),
+                    Icons.Annotations,
+                    MESSAGES.getString("msg_method_info__attributes")
             ));
 
             DefaultMutableTreeNode treeNodeAttrItem;
@@ -219,7 +230,7 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
                         attr.getStartPos(),
                         attr.getLength(),
                         String.format("%d. %s", i + 1, attr.getName()),
-                        UITool.icon4Annotations(),
+                        Icons.Annotations,
                         MESSAGES.getString(attr.getMessageKey())
                 ));
                 attribute_info.generateTreeNode(treeNodeAttrItem, attr, classFile);

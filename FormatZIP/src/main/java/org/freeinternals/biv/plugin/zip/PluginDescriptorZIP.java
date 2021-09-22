@@ -19,12 +19,12 @@ public class PluginDescriptorZIP implements PluginDescriptor{
 
     @Override
     public String getExtensionDescription() {
-        return "ZIP file (*.zip)";
+        return "ZIP file (*.jar, *.jmod, *.zip)";
     }
 
     @Override
     public String[] getExtensions() {
-        return new String[]{"zip"};
+        return new String[]{"jar", "jmod", "zip"};
     }
 
     @Override

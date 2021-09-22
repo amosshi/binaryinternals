@@ -13,8 +13,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -67,7 +67,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
                 "size",
                 this.size,
                 "msg_encoded_array__size",
-                UITool.icon4Size());
+                Icons.Size);
         floatPos += size.length;
 
         if (this.values != null) {
@@ -77,7 +77,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
                     "values",
                     this.values.length,
                     "msg_encoded_array__values",
-                    UITool.icon4Data()
+                    Icons.Data
             );
 
             for (int i = 0; i < this.values.length; i++) {
@@ -87,7 +87,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
                             value.getStartPos(),
                             value.getLength(),
                             String.format("%s[%d] %s", value.getClass().getSimpleName(), i, value.toString()),
-                            UITool.icon4Data(),
+                            Icons.Data,
                             MESSAGES.getString("msg_encoded_value")
                     ));
 

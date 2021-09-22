@@ -23,7 +23,7 @@ import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.dex.header_item.Endian;
 
 /**
@@ -276,8 +276,8 @@ public final class DexFile extends FileFormat {
     }
 
     @Override
-    public Icon getIcon() {
-        return UITool.icon4Dex();
+    public Icons getIcon() {
+        return Icons.Dex;
     }
 
     /**

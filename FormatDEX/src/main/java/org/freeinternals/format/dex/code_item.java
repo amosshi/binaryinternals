@@ -12,7 +12,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -86,15 +86,15 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
         int floatPos = super.startPos;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "registers_size", this.registers_size, "msg_code_item__registers_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "registers_size", this.registers_size, "msg_code_item__registers_size", Icons.Size);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "ins_size", this.ins_size, "msg_code_item__ins_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "ins_size", this.ins_size, "msg_code_item__ins_size", Icons.Size);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "outs_size", this.outs_size, "msg_code_item__outs_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "outs_size", this.outs_size, "msg_code_item__outs_size", Icons.Size);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "tries_size", this.tries_size, "msg_code_item__tries_size", UITool.icon4Size());
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "tries_size", this.tries_size, "msg_code_item__tries_size", Icons.Size);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_uint.LENGTH, "debug_info_off", this.debug_info_off, "msg_code_item__debug_info_off", UITool.icon4Offset());
+        addNode(parentNode, floatPos, Type_uint.LENGTH, "debug_info_off", this.debug_info_off, "msg_code_item__debug_info_off", Icons.Offset);
     }
 
 

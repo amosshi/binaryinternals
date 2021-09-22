@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -93,7 +93,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 "class_annotations_off",
                 String.format(FORMAT_STRING_STRING, this.class_annotations_off, this.class_annotations_off),
                 "msg_annotations_directory_item__class_annotations_off",
-                UITool.icon4Offset());
+                Icons.Offset);
         floatPos += Type_uint.LENGTH;
 
         if (this.class_annotations_off.value != 0) {
@@ -102,7 +102,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     classAn.getStartPos(),
                     classAn.getLength(),
                     classAn.getClass().getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString(msg_annotation_set_item)
             ));
             classAnOffsetNode.add(classAnNode);
@@ -115,7 +115,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 "fields_size",
                 this.fields_size,
                 "msg_annotations_directory_item__fields_size",
-                UITool.icon4Size());
+                Icons.Size);
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -124,7 +124,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 "annotated_methods_size",
                 this.annotated_methods_size,
                 "msg_annotations_directory_item__annotated_methods_size",
-                UITool.icon4Size());
+                Icons.Size);
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -133,7 +133,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 "annotated_parameters_size",
                 this.annotated_parameters_size,
                 "msg_annotations_directory_item__annotated_parameters_size",
-                UITool.icon4Size());
+                Icons.Size);
 
         if (this.field_annotations != null) {
             final int fieldLen = this.field_annotations.length;
@@ -141,7 +141,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     this.field_annotations[0].getStartPos(),
                     fieldLen * field_annotation.LENGTH,
                     String.format("field_annotations [%,d]", fieldLen),
-                    UITool.icon4Annotations(),
+                    Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__field_annotations")
             ));
             parentNode.add(nodes);
@@ -152,7 +152,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                         item.getStartPos(),
                         item.getLength(),
                         String.format("field_annotation [%,d]", i),
-                        UITool.icon4Annotations(),
+                        Icons.Annotations,
                         field_annotation.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -166,7 +166,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     this.method_annotations[0].getStartPos(),
                     methodLen * method_annotation.LENGTH,
                     String.format("method_annotations [%,d]", methodLen),
-                    UITool.icon4Annotations(),
+                    Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__method_annotations")
             ));
             parentNode.add(nodes);
@@ -177,7 +177,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                         item.getStartPos(),
                         item.getLength(),
                         String.format("method_annotation [%,d]", i),
-                        UITool.icon4Annotations(),
+                        Icons.Annotations,
                         method_annotation.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -191,7 +191,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     this.parameter_annotations[0].getStartPos(),
                     parameterLen * parameter_annotation.LENGTH,
                     String.format("parameter_annotations [%,d]", parameterLen),
-                    UITool.icon4Annotations(),
+                    Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__parameter_annotations")
             ));
             parentNode.add(nodes);
@@ -202,7 +202,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                         item.getStartPos(),
                         item.getLength(),
                         String.format("parameter_annotation [%,d]", i),
-                        UITool.icon4Annotations(),
+                        Icons.Annotations,
                         parameter_annotation.class.getSimpleName()
                 ));
                 nodes.add(node);
@@ -240,7 +240,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     "field_idx",
                     String.format(FORMAT_STRING_STRING, this.field_idx, dexFile.field_ids[this.field_idx.intValue()].toString(dexFile)),
                     "msg_field_annotation__field_idx",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += Type_uint.LENGTH;
 
             DefaultMutableTreeNode offsetNode = addNode(parentNode,
@@ -249,14 +249,14 @@ public class annotations_directory_item extends FileComponent implements Generat
                     MSG_ANNOTATIONS_OFF,
                     this.annotations_off,
                     "msg_field_annotation__annotations_off",
-                    UITool.icon4Shortcut());
+                    Icons.Shortcut);
 
             annotation_set_item value = (annotation_set_item) dexFile.data.get(this.annotations_off.value);
             DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     value.getStartPos(),
                     value.getLength(),
                     value.toString(),
-                    UITool.icon4Annotations(),
+                    Icons.Annotations,
                     MESSAGES.getString(msg_annotation_set_item)
             ));
             offsetNode.add(valueNode);
@@ -294,7 +294,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     "method_idx",
                     String.format(FORMAT_STRING_STRING, this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
                     "msg_method_annotation__method_idx",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += Type_uint.LENGTH;
 
             DefaultMutableTreeNode offsetNode = addNode(parentNode,
@@ -303,14 +303,14 @@ public class annotations_directory_item extends FileComponent implements Generat
                     MSG_ANNOTATIONS_OFF,
                     this.annotations_off,
                     "msg_method_annotation__annotations_off",
-                    UITool.icon4Offset());
+                    Icons.Offset);
 
             annotation_set_item value = (annotation_set_item) dexFile.data.get(this.annotations_off.value);
             DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     value.getStartPos(),
                     value.getLength(),
                     value.toString(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString(msg_annotation_set_item)
             ));
             offsetNode.add(valueNode);
@@ -347,7 +347,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     "method_idx",
                     String.format(FORMAT_STRING_STRING, this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
                     "msg_parameter_annotation__method_idx",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += Type_uint.LENGTH;
 
             DefaultMutableTreeNode offsetNode = addNode(parentNode,
@@ -356,14 +356,14 @@ public class annotations_directory_item extends FileComponent implements Generat
                     MSG_ANNOTATIONS_OFF,
                     this.annotations_off,
                     "msg_parameter_annotation__annotations_off",
-                    UITool.icon4Offset());
+                    Icons.Offset);
 
             annotation_set_ref_list value = (annotation_set_ref_list) dexFile.data.get(this.annotations_off.value);
             DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     value.getStartPos(),
                     value.getLength(),
                     value.toString(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_annotation_set_ref_list")
             ));
             offsetNode.add(valueNode);

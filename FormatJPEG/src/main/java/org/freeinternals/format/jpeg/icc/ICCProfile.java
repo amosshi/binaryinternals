@@ -11,16 +11,15 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.core.BytesTool;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
  * @author Amos Shi
  * @see <a href="http://www.color.org/">INTERNATIONAL COLOR CONSORTIUM</a>
  */
-public class ICCProfile extends FileComponent {
+public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
     public final byte[] rawData;
     public final Header header;
@@ -44,6 +43,7 @@ public class ICCProfile extends FileComponent {
         }
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode nodeHeader;
         DefaultMutableTreeNode nodeTagTable;
@@ -83,9 +83,7 @@ public class ICCProfile extends FileComponent {
         for (RefItem ref : sortedMap.values()) {
             diff = (int) ((this.startPos + ref.tag.Offset) - lastPos);
             if (diff > 0) {
-                UITool.generateTreeNodeDiff(
-                        parentNode, lastPos, diff,
-                        this.rawData, this.startPos);
+                generateTreeNodeDiff(parentNode, lastPos, diff, this.rawData, this.startPos);
             }
 
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -97,9 +95,7 @@ public class ICCProfile extends FileComponent {
 
         diff = (this.startPos + this.rawData.length) - lastPos;
         if (diff > 0) {
-            UITool.generateTreeNodeDiff(
-                    parentNode, lastPos, diff,
-                    this.rawData, this.startPos);
+            generateTreeNodeDiff(parentNode, lastPos, diff, this.rawData, this.startPos);
         }
     }
 

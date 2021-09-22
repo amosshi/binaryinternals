@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -60,7 +60,8 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                 "size",
                 this.size,
                 "msg_annotation_set_item__size",
-                UITool.icon4Size());
+                Icons.Size
+        );
         floatPos += Type_uint.LENGTH;
 
         if (this.entries == null) {
@@ -71,7 +72,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                 floatPos,
                 annotation_off_item.LENGTH * this.entries.length,
                 String.format("entries [%d]", this.entries.length),
-                UITool.icon4Data(),
+                Icons.Data,
                 MESSAGES.getString("msg_annotation_set_item__entries")
         ));
         parentNode.add(entriesNode);
@@ -85,7 +86,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                     String.format("%s[%d].annotation_off", annotation_off_item.class.getSimpleName(), i),
                     offItem.annotation_off,
                     "msg_annotation_off_item__annotation_off",
-                    UITool.icon4Offset()
+                    Icons.Offset
             );
 
             annotation_item item = (annotation_item) dexFile.data.get(offItem.annotation_off.value);
@@ -93,7 +94,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                     item.getStartPos(),
                     item.getLength(),
                     annotation_item.class.getSimpleName(),
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_annotation_item")
             ));
             offItemNode.add(itemNode);
@@ -137,7 +138,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                     "size",
                     String.format(FORMAT_STRING_STRING, this.visibility, Visibility.toString(this.visibility.value)),
                     "msg_annotation_item__visibility", //
-                    UITool.icon4Data() // Icon to be changed
+                    Icons.Data // TODO Icon to be changed
             );
             floatPos += Type_ubyte.LENGTH;
 
@@ -147,7 +148,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                     "annotation",
                     this.annotation.toString(dexFile),
                     "msg_annotation_item__annotation",
-                    UITool.icon4Annotations()
+                    Icons.Annotations
             );
             this.annotation.generateTreeNode(annoNode, dexFile);
         }

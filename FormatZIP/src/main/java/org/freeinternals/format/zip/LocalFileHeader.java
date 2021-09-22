@@ -8,11 +8,14 @@ package org.freeinternals.format.zip;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
-import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  * Local file header.
@@ -35,17 +38,27 @@ import org.freeinternals.commonlib.core.FileFormatException;
  *
  * @author Amos Shi
  */
-public class LocalFileHeader extends FileComponent {
+public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
 
-    /** Local file header signature. */
+    /**
+     * Local file header signature.
+     */
     public final byte[] Signature = new byte[4];
-    /** Version needed to extract. */
+    /**
+     * Version needed to extract.
+     */
     public final int VersionNeededToExtract;
-    /** General purpose bit flag. */
+    /**
+     * General purpose bit flag.
+     */
     public final byte[] GeneralPurposeBitFlag = new byte[2];
-    /** Compression method. */
+    /**
+     * Compression method.
+     */
     public final int CompressionMethod;
-    /** Last mod file time. */
+    /**
+     * Last mod file time.
+     */
     public final int LastModFileTime;
     /**
      * Parsed value of {@link #LastModFileTime}.
@@ -53,7 +66,9 @@ public class LocalFileHeader extends FileComponent {
      * @see #LastModFileTime
      */
     public final MSDosTime LastModFileTimeValue;
-    /** Last mod file date. */
+    /**
+     * Last mod file date.
+     */
     public final int LastModFileDate;
     /**
      * Parsed value of {@link #LastModFileDate}.
@@ -61,17 +76,29 @@ public class LocalFileHeader extends FileComponent {
      * @see #LastModFileDate
      */
     public final MSDosDate LastModFileDateValue;
-    /** CRC-32. */
+    /**
+     * CRC-32.
+     */
     public final byte[] CRC32 = new byte[4];
-    /** Compressed size. */
+    /**
+     * Compressed size.
+     */
     public final long CompressedSize;
-    /** Uncompressed size. */
+    /**
+     * Uncompressed size.
+     */
     public final long UncompressedSize;
-    /** File name length. */
+    /**
+     * File name length.
+     */
     public final int FileNameLength;
-    /** Extra field length. */
+    /**
+     * Extra field length.
+     */
     public final int ExtraFieldLength;
-    /** File name. <code>null</code> when {@link #FileNameLength} is 0. */
+    /**
+     * File name. <code>null</code> when {@link #FileNameLength} is 0.
+     */
     public final byte[] FileName;
     /**
      * Parsed value of {@link #FileName}.
@@ -79,7 +106,9 @@ public class LocalFileHeader extends FileComponent {
      * @see #FileName
      */
     public final String FileNameValue;
-    /** Extra field. <code>null</code> when {@link #ExtraFieldLength} is 0. */
+    /**
+     * Extra field. <code>null</code> when {@link #ExtraFieldLength} is 0.
+     */
     public final byte[] ExtraField;
 
     LocalFileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
@@ -102,10 +131,14 @@ public class LocalFileHeader extends FileComponent {
         }
 
         this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
+
+        int lastModFileTimeStartPos = stream.getPos();
         this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
-        this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
+        this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime, lastModFileTimeStartPos, PosDataInputStream.USHORT_LENGTH);
+
+        int lastModFileDateStartPos = stream.getPos();
         this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
-        this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
+        this.LastModFileDateValue = new MSDosDate(this.LastModFileDate, lastModFileDateStartPos, PosDataInputStream.USHORT_LENGTH);
 
         readBytes = stream.read(this.CRC32);
         if (readBytes != this.CRC32.length) {
@@ -144,12 +177,133 @@ public class LocalFileHeader extends FileComponent {
         } else {
             this.ExtraField = null;
         }
+
         this.length = 30 + this.FileNameLength + this.ExtraFieldLength;
     }
 
-    /** Get the size of the local file header and the compressed data. */
-    public long getSizeWithFileData() {
-        return this.length + this.CompressedSize;
+    @Override
+    public void generateTreeNode(DefaultMutableTreeNode parent) {
+        int position = this.getStartPos();
+
+        // Local file header
+        DefaultMutableTreeNode nodeLfh = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                this.getLength(),
+                "Local file header - " + this.FileNameValue));
+        parent.add(nodeLfh);
+
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                4,
+                "signature",
+                Icons.Signature
+        )));
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                2,
+                String.format("version needed to extract = %d", this.VersionNeededToExtract),
+                Icons.Versions
+        )));
+
+        DefaultMutableTreeNode nodeBigFlag = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("general purpose bit flag = %02X %02X",
+                        this.GeneralPurposeBitFlag[0],
+                        this.GeneralPurposeBitFlag[1])
+        ));
+        nodeLfh.add(nodeBigFlag);
+        for (int i = 0; i < 16; i++) {
+            nodeBigFlag.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position + ((i > 7) ? 1 : 0),
+                    1,
+                    String.format("Bit %02d = %d", i, this.getGeneralPurposeBitFlagBitValue(i)),
+                    Icons.Tag
+            )));
+        }
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("compression method = %d", this.CompressionMethod))));
+
+        //
+        DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("last mod file time = %s", this.LastModFileTimeValue.toString()),
+                Icons.Time
+        ));
+        nodeLfh.add(nodeTime);
+        this.LastModFileTimeValue.generateTreeNode(nodeTime);
+
+        //
+        DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("last mod file date = %s", this.LastModFileDateValue.toString()),
+                Icons.Calendar
+        ));
+        nodeLfh.add(nodeDate);
+        this.LastModFileDateValue.generateTreeNode(nodeDate);
+
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                4,
+                "crc-32:" + BytesTool.getByteDataHexView(this.CRC32),
+                Icons.Checksum
+        )));
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                4,
+                String.format("compressed size = %d", this.CompressedSize),
+                Icons.Size
+        )));
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                4,
+                String.format("uncompressed size = %d", this.UncompressedSize),
+                Icons.Size
+        )));
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                2,
+                String.format("file name length = %d", this.FileNameLength),
+                Icons.Length
+        )));
+        nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("extra field length = %d", this.ExtraFieldLength),
+                Icons.Length
+        )));
+        position += 2;
+        if (this.FileName != null) {
+            nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.FileName.length,
+                    String.format("file name = %s", this.FileNameValue),
+                    Icons.Name
+            )));
+            position += this.FileName.length;
+        }
+        if (this.ExtraField != null) {
+            nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.ExtraField.length,
+                    "extra field")));
+            position += this.ExtraField.length;
+        }
+
+        // File data
+        if (this.CompressedSize > 0) {
+            parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    (int) this.CompressedSize, // Note. We are in danger of very big file longer than int value size.
+                    "File data",
+                    Icons.Data,
+                    ZIPFile.MESSAGES.getString("MSG_COMPRESSED_FILE")
+            )));
+        }
     }
 
     /**
@@ -164,13 +318,13 @@ public class LocalFileHeader extends FileComponent {
      * </pre>
      *
      * @param position Bit position, from 1 to 15
-     * @return  The bit value, 0 or 1
+     * @return The bit value, 0 or 1
      */
     public int getGeneralPurposeBitFlagBitValue(int position) {
         return LocalFileHeader.parseGeneralPurposeBitFlag(this.GeneralPurposeBitFlag, position);
     }
 
-    static int parseGeneralPurposeBitFlag(byte[] buf, int position){
+    static int parseGeneralPurposeBitFlag(byte[] buf, int position) {
         if (position < 0 || position > 15) {
             throw new IllegalArgumentException(String.format("Invalid postion value %d, [0, 15] is expeced.", position));
         }

@@ -12,7 +12,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -101,8 +101,8 @@ public class CONSTANT_Utf8_info extends cp_info {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int floatPos = super.startPos + 1;
-        this.addNode(parentNode, floatPos, u2.LENGTH, "length", this.length_utf8.value, "msg_const_utf8_length", UITool.icon4Length());
+        this.addNode(parentNode, floatPos, u2.LENGTH, "length", this.length_utf8.value, "msg_const_utf8_length", Icons.Length);
         floatPos += u2.LENGTH;
-        this.addNode(parentNode, floatPos, this.length_utf8.value, "bytes", this.getValue(), "msg_const_utf8_bytes", UITool.icon4Data());
+        this.addNode(parentNode, floatPos, this.length_utf8.value, "bytes", this.getValue(), "msg_const_utf8_bytes", Icons.Data);
     }
 }

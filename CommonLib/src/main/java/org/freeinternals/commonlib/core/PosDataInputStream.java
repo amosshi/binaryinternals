@@ -17,6 +17,7 @@ import java.math.BigInteger;
  */
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
+    public static final int USHORT_LENGTH = 2;
     public static final byte[] EMPTY_BYTE_ARRAY = {};
 
     /**
@@ -626,6 +627,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     /**
+     * Go to the end of the stream.
+     *
      * This method supports {@link PosByteArrayInputStream} only, nothing will
      * do for other input stream types.
      *

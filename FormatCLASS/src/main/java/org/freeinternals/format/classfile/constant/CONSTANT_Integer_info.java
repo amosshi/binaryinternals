@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
@@ -80,7 +80,7 @@ public class CONSTANT_Integer_info extends cp_info {
                 super.startPos + 1,
                 4,
                 "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                UITool.icon4Data(),
+                Icons.Data,
                 MESSAGES.getString("msg_const_int_bytes")
         )));
     }

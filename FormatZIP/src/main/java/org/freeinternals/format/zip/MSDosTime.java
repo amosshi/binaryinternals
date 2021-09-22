@@ -6,6 +6,11 @@
  */
 package org.freeinternals.format.zip;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+
 /**
  * A time in the format used by MS-DOS.
  * <p>
@@ -19,22 +24,42 @@ package org.freeinternals.format.zip;
  * </pre>
  *
  * @author Amos Shi
- * @see <a href="http://www.vsft.com/hal/dostime.htm">MS DOS Date Time Format</a>
+ * @see <a href="http://www.vsft.com/hal/dostime.htm">MS DOS Date Time
+ * Format</a>
  */
-public class MSDosTime {
+public class MSDosTime extends FileComponent implements GenerateTreeNode {
 
     public final int Second;
     public final int Minute;
     public final int Hour;
 
-    MSDosTime(int value) {
-        this.Second = (value & 0x0000001F) * 2 ;  // Double the value, inaccurate for one second
+    MSDosTime(int value, int start, int len) {
+        this.Second = (value & 0x0000001F) * 2;  // Double the value, inaccurate for one second
         this.Minute = (value & 0x000007E0) >> 5;
-        this.Hour   = (value & 0x0000F800) >> 11;
+        this.Hour = (value & 0x0000F800) >> 11;
+
+        super.startPos = start;
+        super.length = len;
     }
 
     @Override
-    public String toString(){
+    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos,
+                super.length,
+                String.format("Hour = %02d", this.Hour))));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos,
+                super.length,
+                String.format("Minute = %02d", this.Minute))));
+        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                super.startPos,
+                super.length,
+                String.format("Second = %02d (maybe inaccurate for one second)", this.Second))));
+    }
+
+    @Override
+    public String toString() {
         return String.format("%02d:%02d:%02d", this.Hour, this.Minute, this.Second);
     }
 }

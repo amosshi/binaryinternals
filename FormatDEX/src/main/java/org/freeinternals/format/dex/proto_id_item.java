@@ -10,8 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -150,7 +150,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                 "shorty_idx",
                 String.format(FORMAT_STRING_STRING, this.shorty_idx, this.get_shorty(dexFile)),
                 "msg_proto_id_item__shorty_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += Type_uint.LENGTH;
 
         addNode(parentNode,
@@ -159,7 +159,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                 "return_type_idx",
                 String.format(FORMAT_STRING_STRING, this.return_type_idx, this.get_return_type_jls(dexFile)),
                 "msg_proto_id_item__return_type_idx",
-                UITool.icon4Return());
+                Icons.Return);
         floatPos += Type_uint.LENGTH;
 
         String param = (this.parameters_off.value == 0) ? "no parameter" : String.format("%d paramters", this.get_parameters(dexFile).size.value);
@@ -169,7 +169,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                 "parameters_off",
                 String.format(FORMAT_STRING_STRING, this.parameters_off, param),
                 "msg_proto_id_item__parameters_off",
-                UITool.icon4Offset());
+                Icons.Offset);
 
         type_list list = this.get_parameters(dexFile);
         if (list != null) {
@@ -177,7 +177,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
                     list.getStartPos(),
                     list.getLength(),
                     "type_list",
-                    UITool.icon4Shortcut(),
+                    Icons.Shortcut,
                     MESSAGES.getString("msg_type_list")
             ));
             parametersNode.add(listNode);

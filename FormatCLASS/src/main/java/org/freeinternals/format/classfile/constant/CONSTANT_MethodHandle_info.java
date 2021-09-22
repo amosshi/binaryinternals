@@ -12,7 +12,7 @@ import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
@@ -102,7 +102,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
                 super.startPos + 2,
                 2,
                 "reference_index: " + this.reference_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.reference_index.value),
-                UITool.icon4Offset(),
+                Icons.Offset,
                 MESSAGES.getString("msg_const_methodhandle_reference_index")
         )));
     }

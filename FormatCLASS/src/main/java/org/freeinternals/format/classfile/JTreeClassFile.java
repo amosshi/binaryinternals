@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.ui.HTMLKit;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.constant.cp_info;
 
@@ -51,7 +51,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 "magic",
                 Integer.toHexString(ClassFile.FORMAT_MAGIC_NUMBER).toUpperCase(),
                 "msg_magic",
-                UITool.icon4Magic()
+                Icons.Magic
         );
         this.generateTreeNodeClsssFileVersion();
         this.generateConstantPool();
@@ -68,7 +68,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 floatPos,
                 u2.LENGTH,
                 "minor_version: " + this.classFile.minor_version.value,
-                UITool.icon4Versions(),
+                Icons.Versions,
                 MESSAGES.getString("msg_version")
         )));
         floatPos += u2.LENGTH;
@@ -77,7 +77,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 floatPos,
                 u2.LENGTH,
                 "major_version: " + this.classFile.major_version.value,
-                UITool.icon4Versions(),
+                Icons.Versions,
                 MESSAGES.getString("msg_version")
         )));
     }
@@ -91,7 +91,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 startPos,
                 u2.LENGTH,
                 "constant_pool_count: " + cpCount,
-                UITool.icon4Counter(),
+                Icons.Counter,
                 MESSAGES.getString("msg_constant_pool_count")
         )));
         startPos += u2.LENGTH;
@@ -115,13 +115,13 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                         String.valueOf(i),
                         cp[i].getName(),
                         cp[i].getMessageKey(),
-                        UITool.icon4Constant()
+                        Icons.Constant
                 );
                 cpInfoNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         cp[i].getStartPos(),
                         1,
                         "tag: " + cp[i].tag.value,
-                        UITool.icon4Tag(),
+                        Icons.Tag,
                         MESSAGES.getString("msg_cp_tag")
                 )));
                 cp[i].generateTreeNode(cpInfoNode, this.classFile);
@@ -143,7 +143,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 FIELD_ACCESS_FLAGS,
                 BytesTool.getBinaryString(this.classFile.access_flags.value.value) + " " + this.classFile.getModifiers(),
                 "msg_access_flags",
-                UITool.icon4AccessFlag()
+                Icons.AccessFlag
         );
 
         sb.append("this_class: ");
@@ -153,6 +153,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.classFile.this_class.getStartPos(),
                 this.classFile.this_class.getLength(),
                 sb.toString(),
+                Icons.Name,
                 MESSAGES.getString("msg_this_class")
         ));
         this.root.add(thisClass);
@@ -170,6 +171,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.classFile.super_class.getStartPos(),
                 this.classFile.super_class.getLength(),
                 sb.toString(),
+                Icons.Name,
                 MESSAGES.getString("msg_super_class")
         ));
         this.root.add(superClass);
@@ -179,7 +181,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.classFile.interfaces_count.getStartPos(),
                 this.classFile.interfaces_count.getLength(),
                 "interfaces_count: " + interfaceCount,
-                UITool.icon4Counter(),
+                Icons.Counter,
                 MESSAGES.getString("msg_interfaces_count")
         ));
         this.root.add(interfacesCount);
@@ -197,16 +199,12 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
 
             DefaultMutableTreeNode interfaceNode;
             for (int i = 0; i < interfaceCount; i++) {
-                sb.setLength(0);
-                sb.append(i);
-                sb.append(". ");
-                sb.append(interfaces[i].getValue());
-                sb.append(String.format(" - [%s]", this.classFile.getCPDescription(interfaces[i].getValue())));
-
                 interfaceNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         interfaces[i].getStartPos(),
                         interfaces[i].getLength(),
-                        sb.toString()
+                        String.format("interface %d: constant pool index = %d, name = %s", i, interfaces[i].getValue(), this.classFile.getCPDescription(interfaces[i].getValue())),
+                        Icons.Name,
+                        MESSAGES.getString("msg_interfaces_item")
                 ));
                 interfacesNode.add(interfaceNode);
             }
@@ -219,7 +217,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.classFile.fields_count.getStartPos(),
                 this.classFile.fields_count.getLength(),
                 "fields_count: " + fieldCount,
-                UITool.icon4Counter(),
+                Icons.Counter,
                 MESSAGES.getString("msg_fields_count")
         ));
         this.root.add(fieldsCount);
@@ -240,7 +238,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                         fields[i].getStartPos(),
                         fields[i].getLength(),
                         String.format("field %d: %s", i + 1, fields[i].getDeclaration()),
-                        UITool.icon4Field(),
+                        Icons.Field,
                         MESSAGES.getString("msg_field_info")
                 ));
                 fields[i].generateTreeNode(fieldNode, classFile);
@@ -257,7 +255,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 "methods_count",
                 methodCount,
                 "msg_methods_count",
-                UITool.icon4Counter());
+                Icons.Counter);
 
         if (methodCount > 0) {
             final method_info[] methods = this.classFile.methods;
@@ -276,7 +274,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                         String.format("method %,d", i + 1),
                         methods[i].getDeclaration(),
                         "msg_method_info",
-                        UITool.icon4Method()
+                        Icons.Method
                 );
                 methods[i].generateTreeNode(methodNode, classFile);
             }
@@ -292,7 +290,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 FIELD_ATTR_COUNT,
                 attrCount,
                 "msg_attributes_count",
-                UITool.icon4Counter()
+                Icons.Counter
         );
 
         if (attrCount > 0) {
@@ -312,7 +310,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                         attr.getStartPos(),
                         attr.getLength(),
                         (i + 1) + ". " + attr.getName(),
-                        UITool.icon4Annotations(),
+                        Icons.Annotations,
                         MESSAGES.getString(attr.getMessageKey())
                 ));
                 attribute_info.generateTreeNode(attrNode, attr, this.classFile);

@@ -60,7 +60,7 @@ class JDialogPlugins extends JDialog {
 
         // Lay out the labels from top to bottom.
         final JTable table = new JTable(new PluginsModel());
-        this.resizeColumnWidth(table);
+        resizeColumnWidth(table);
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -86,7 +86,7 @@ class JDialogPlugins extends JDialog {
         this.setVisible(false);
     }
 
-    private void resizeColumnWidth(JTable table) {
+    protected static void resizeColumnWidth(JTable table) {
         final TableColumnModel columnModel = table.getColumnModel();
         for (int column = 0; column < table.getColumnCount(); column++) {
             int width = 50; // Min width

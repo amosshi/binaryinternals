@@ -10,8 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -48,14 +48,14 @@ public class string_id_item extends FileComponent implements GenerateTreeNodeDex
     @Override
     public void generateTreeNode(final DefaultMutableTreeNode parentNode, final FileFormat format) {
         DexFile dexFile = (DexFile)format;
-        DefaultMutableTreeNode offsetNode = addNode(parentNode, this.startPos, Type_uint.LENGTH, "string_data_off", string_data_off, "msg_string_id_item__string_data_off", UITool.icon4Offset());
+        DefaultMutableTreeNode offsetNode = addNode(parentNode, this.startPos, Type_uint.LENGTH, "string_data_off", string_data_off, "msg_string_id_item__string_data_off", Icons.Offset);
 
         string_data_item item = (string_data_item) dexFile.data.get(this.string_data_off.value);
         DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 item.getStartPos(),
                 item.getLength(),
                 "string_data_item",
-                UITool.icon4Shortcut(),
+                Icons.Shortcut,
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_string_data_item")
         ));
         offsetNode.add(dataNode);

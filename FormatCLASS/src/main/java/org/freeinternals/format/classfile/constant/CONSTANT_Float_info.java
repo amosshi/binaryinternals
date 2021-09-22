@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  * The class for the {@code CONSTANT_Float_info} structure in constant pool. The
@@ -80,7 +80,7 @@ public class CONSTANT_Float_info extends cp_info {
                 this.getStartPos() + 1,
                 4,
                 "bytes: " + this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                UITool.icon4Data(),
+                Icons.Data,
                 MESSAGES.getString("msg_const_float_bytes")
         )));
     }

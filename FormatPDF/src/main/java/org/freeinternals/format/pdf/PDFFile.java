@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
@@ -48,7 +47,6 @@ public class PDFFile extends FileFormat {
         PosDataInputStream.ASCIILine line;
         while (stream.hasNext()) {
             line = stream.readASCIILine();
-            System.out.println("PDFFile: line = " + line.line);
 
             if (line.line.equalsIgnoreCase(EndOfFile.SIGNATURE)) {                          // %%EOF
                 super.addFileComponent(new EndOfFile(stream, line));
@@ -75,11 +73,8 @@ public class PDFFile extends FileFormat {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode root) {
-        for (FileComponent comp : super.components.values()) {
-            if (comp instanceof GenerateTreeNode) {
-                System.out.println("PDF components");
-                ((GenerateTreeNode) comp).generateTreeNode(root);
-            }
-        }
+        super.components.values().stream().filter(comp -> (comp instanceof GenerateTreeNode)).forEachOrdered(comp -> {
+            ((GenerateTreeNode) comp).generateTreeNode(root);
+        });
     }
 }

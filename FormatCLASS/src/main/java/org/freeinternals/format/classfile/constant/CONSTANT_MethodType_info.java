@@ -14,9 +14,8 @@ import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
@@ -107,7 +106,7 @@ public class CONSTANT_MethodType_info extends cp_info {
                 startPos + 1,
                 2,
                 "descriptor_index: " + this.descriptor_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.descriptor_index.value),
-                UITool.icon4Offset(),
+                Icons.Offset,
                 MESSAGES.getString("msg_const_methodtype_descriptor_index")
         )));
     }

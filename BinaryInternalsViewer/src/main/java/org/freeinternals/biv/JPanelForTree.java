@@ -23,7 +23,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  * A panel containing a {@code JTree} object.
@@ -161,7 +160,7 @@ public final class JPanelForTree extends JPanel {
     }
 
     private void toolbarShowDetails() {
-        UITool.showPopup(this.topLevelFrame, this.detailsPanel, this.detailsTitle);
+        Main.showPopup(this.topLevelFrame, this.detailsPanel, this.detailsTitle);
     }
 
     private void treeSelectionChanged(final TreeSelectionEvent e) {

@@ -10,10 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -88,7 +87,7 @@ public class CONSTANT_Package_info extends cp_info {
                 super.startPos + 1,
                 2,
                 "name_index: " + this.name_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.name_index.value),
-                UITool.icon4Offset(),
+                Icons.Offset,
                 MESSAGES.getString("msg_const_package_name_index")
         )));
     }

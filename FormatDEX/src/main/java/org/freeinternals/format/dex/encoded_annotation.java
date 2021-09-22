@@ -13,8 +13,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -84,7 +84,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                 "type_idx",
                 String.format(FORMAT_STRING_STRING, this.type_idx, dexFile.get_type_ids_string(this.type_idx.value)),
                 "msg_encoded_annotation__type_idx",
-                UITool.icon4Index());
+                Icons.Index);
         floatPos += this.type_idx.length;
 
         addNode(parentNode,
@@ -93,7 +93,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                 "size",
                 this.size,
                 "msg_encoded_annotation__size",
-                UITool.icon4Size());
+                Icons.Size);
         floatPos += this.size.length;
 
         if (this.elements != null) {
@@ -101,7 +101,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                     floatPos,
                     this.length - this.type_idx.length - this.size.length,
                     String.format("elements [%d]", this.elements.length),
-                    UITool.icon4Data(),
+                    Icons.Data,
                     MESSAGES.getString("msg_encoded_annotation__elements")
             ));
             parentNode.add(elementsNode);
@@ -118,7 +118,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                         element.getStartPos(),
                         element.getLength(),
                         String.format("%s[%d]", annotation_element.class.getSimpleName(), i),
-                        UITool.icon4Data(),
+                        Icons.Data,
                         MESSAGES.getString("msg_encoded_annotation__elements")
                 ));
 
@@ -159,7 +159,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                     "name_idx",
                     String.format(FORMAT_STRING_STRING, this.name_idx, dexFile.get_string_ids_string(this.name_idx.value)),
                     "msg_annotation_element__name_idx",
-                    UITool.icon4Index());
+                    Icons.Index);
             floatPos += this.name_idx.length;
 
             // Dev phase only
@@ -173,7 +173,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                     "value",
                     this.value,
                     "msg_annotation_element__value",
-                    UITool.icon4Data());
+                    Icons.Data);
             this.value.generateTreeNode(valueNode, dexFile);
         }
     }

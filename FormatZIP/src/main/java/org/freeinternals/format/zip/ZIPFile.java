@@ -1,32 +1,35 @@
 /**
  * PNGFile.java Apr 19, 2011, 07:58
  *
- * Copyright 2011, FreeInternals.org. All rights reserved. 
+ * Copyright 2011, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
 package org.freeinternals.format.zip;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
-import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileComponent;
+import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.format.zip.ui.biv.GenerateTreeNode_CDE;
-import org.freeinternals.format.zip.ui.biv.GenerateTreeNode_CDS;
-import org.freeinternals.format.zip.ui.biv.GenerateTreeNode_LFH;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
 
 /**
  *
  * @author Amos Shi
  */
-public class ZIPFile extends FileFormat {
+public class ZIPFile extends FileFormat implements GenerateTreeNode {
 
+    static final ResourceBundle MESSAGES = ResourceBundle.getBundle(ZIPFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
+
+    /**
+     * Minimal size for a valid zip file.
+     */
     public static final int ZIPFILE_MIN_LENGTH = 22;
     /**
      * Central file header signature of File header in Central directory
@@ -58,8 +61,8 @@ public class ZIPFile extends FileFormat {
      */
     public static final byte[] ARCHIVE_EXTRA_DATA = {(byte) 0x50, (byte) 0x4B, (byte) 0x06, (byte) 0x08};
 
-    CentralDirectoryStructure[] cds = null;
     EndOfCentralDirectoryRecord cde = null;
+    CentralDirectoryStructure[] cds = null;
     LocalFileHeader[] lfh = null;
 
     public ZIPFile(final File file) throws IOException, FileFormatException {
@@ -85,16 +88,21 @@ public class ZIPFile extends FileFormat {
         } else {
             throw new FileFormatException("This is not a valid zip file since cannot find 'end of central directory record'.");
         }
+        super.components.put(Long.valueOf(pos_cde), this.cde);
 
-        // File header of central directory structure.
+        // If no entry, nothing to do
         if (this.cde.EntryTotalNumber < 1) {
             return;
         }
+
+        // File header of central directory structure.
         stream.reset();
         BytesTool.skip(stream, this.cde.CentralDirectoryOffset);
         this.cds = new CentralDirectoryStructure[this.cde.EntryTotalNumber];
         for (int i = 0; i < this.cds.length; i++) {
             this.cds[i] = new CentralDirectoryStructure(stream);
+
+            super.components.put(Long.valueOf(this.cds[i].getStartPos()), this.cds[i]);
         }
 
         // Local file header
@@ -103,74 +111,36 @@ public class ZIPFile extends FileFormat {
             stream.reset();
             BytesTool.skip(stream, this.cds[i].header.RelativeOffsetOfLocalHeader);
             this.lfh[i] = new LocalFileHeader(stream);
-        }
 
-        // Add the components to a central list
-        super.components.put(Long.valueOf(pos_cde), this.cde);
-        if (this.cds != null) {
-            for (CentralDirectoryStructure cds_item : this.cds) {
-                super.components.put(Long.valueOf(cds_item.getStartPos()), cds_item);
-            }
-        }
-        if (this.lfh != null) {
-            for (LocalFileHeader lfh_item : this.lfh) {
-                super.components.put(Long.valueOf(lfh_item.getStartPos()), lfh_item);
-            }
+            super.components.put(Long.valueOf(this.lfh[i].getStartPos()), this.lfh[i]);
         }
     }
 
+    @Override
     public String getContentTabName() {
         return "ZIP File";
     }
 
+    @Override
     public void generateTreeNode(DefaultMutableTreeNode root) {
-        Iterator iterator = super.components.values().iterator();
         int lastPos = 0;
-        int distance;
-        while (iterator.hasNext()) {
-            FileComponent value = (FileComponent) iterator.next();
 
+        for (FileComponent value : super.components.values()) {
             // Fill the gap first
-            distance = value.getStartPos() - lastPos;
-            if (distance > 0) {
-                root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        lastPos,
-                        distance,
-                        String.format("Gap [%x, %x] length = %d", lastPos, lastPos + distance, distance))));
+            int gap = value.getStartPos() - lastPos;
+            if (gap > 0) {
+                generateTreeNodeGap(root, lastPos, gap);
             }
 
             // Generate the tree nodes
-            if (value instanceof LocalFileHeader) {
-                GenerateTreeNode_LFH.localFileHeader((LocalFileHeader) value, root);
-                lastPos = (int) (lastPos + ((LocalFileHeader) value).getSizeWithFileData());
-            } else if (value instanceof CentralDirectoryStructure) {
-                GenerateTreeNode_CDS.centralDirectoryStructure((CentralDirectoryStructure) value, root);
-            } else if (value instanceof EndOfCentralDirectoryRecord) {
-                GenerateTreeNode_CDE.endOfCentralDirectoryRecord((EndOfCentralDirectoryRecord) value, root);
-            } else {
-                root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        lastPos,
-                        distance,
-                        String.format("File Component [%x, %x] length = %d",
-                                value.getStartPos(),
-                                value.getStartPos() + value.getLength(),
-                                value.getLength()))));
-            }
+            if (value instanceof GenerateTreeNode) {
+                ((GenerateTreeNode) value).generateTreeNode(root);
+                lastPos = value.getStartPos() + value.getLength();
 
-            // Refersh the last position
-            if (value instanceof LocalFileHeader) {
-                lastPos = (int) (lastPos + ((LocalFileHeader) value).getSizeWithFileData());
-            } else {
-                lastPos = lastPos + value.getLength();
+                if (value instanceof LocalFileHeader) {
+                    lastPos += ((LocalFileHeader)value).CompressedSize;
+                }
             }
-        }
-
-        distance = this.fileByteArray.length - lastPos;
-        if (distance > 0) {
-            root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    lastPos,
-                    distance,
-                    String.format("Gap [%x, %x] length = %d", lastPos, lastPos + distance, distance))));
         }
     }
 }

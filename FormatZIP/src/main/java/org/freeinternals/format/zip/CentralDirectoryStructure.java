@@ -8,17 +8,21 @@ package org.freeinternals.format.zip;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  * File header of central directory structure.
  *
  * @author Amos Shi
  */
-public class CentralDirectoryStructure extends FileComponent {
+public class CentralDirectoryStructure extends FileComponent implements GenerateTreeNode {
 
     public final FileHeader header;
 
@@ -26,6 +30,171 @@ public class CentralDirectoryStructure extends FileComponent {
         this.startPos = stream.getPos();
         this.header = new FileHeader(stream);
         this.length = this.header.calcLength();
+    }
+
+    @Override
+    @SuppressWarnings({"java:S1121"})
+    public void generateTreeNode(DefaultMutableTreeNode parent) {
+        int position = this.getStartPos();
+
+        DefaultMutableTreeNode nodeCDS = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                this.getLength(),
+                "Central Directory Structure"));
+        parent.add(nodeCDS);
+
+        DefaultMutableTreeNode headerNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                this.header.calcLength(),
+                "File header"));
+        nodeCDS.add(headerNode);
+
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                4,
+                "central file header signature:" + BytesTool.getByteDataHexView(this.header.Signature),
+                Icons.Signature
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                2,
+                String.format("version made by = %d", this.header.VersionMadeBy),
+                Icons.Versions
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("version needed to extract = %d", this.header.VersionNeededToExtract),
+                Icons.Versions
+        )));
+
+        DefaultMutableTreeNode nodeBigFlag = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("general purpose bit flag = %02X %02X",
+                        this.header.GeneralPurposeBitFlag[0],
+                        this.header.GeneralPurposeBitFlag[1])
+        ));
+        headerNode.add(nodeBigFlag);
+        for (int i = 0; i < 16; i++) {
+            nodeBigFlag.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position + ((i > 7) ? 1 : 0),
+                    1,
+                    String.format("Bit %02d = %d", i, this.header.getGeneralPurposeBitFlagBitValue(i)),
+                    Icons.Tag
+            )));
+        }
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("compression method = %d", this.header.CompressionMethod))));
+
+        DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("last mod file time = %s", this.header.LastModFileTimeValue.toString()),
+                Icons.Time
+        ));
+        headerNode.add(nodeTime);
+        this.header.LastModFileTimeValue.generateTreeNode(nodeTime);
+
+        DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("last mod file date = %s", this.header.LastModFileDateValue.toString()),
+                Icons.Calendar
+        ));
+        headerNode.add(nodeDate);
+        this.header.LastModFileDateValue.generateTreeNode(nodeDate);
+
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                4,
+                "crc-32: " + BytesTool.getByteDataHexView(this.header.CRC32),
+                Icons.Checksum
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                4,
+                String.format("compressed size = %d", this.header.CompressedSize),
+                Icons.Size
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                4,
+                String.format("uncompressed size = %d", this.header.UncompressedSize),
+                Icons.Size
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                2,
+                String.format("file name length = %d", this.header.FileNameLength),
+                Icons.Length
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("extra field length = %d", this.header.ExtraFieldLength),
+                Icons.Length
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("file comment length = %d", this.header.FileCommentLength),
+                Icons.Length
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("disk number start = %d", this.header.DiskNumberStart))));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                2,
+                String.format("internal file attributes = %02X %02X",
+                        this.header.InternalFileAttributes[0],
+                        this.header.InternalFileAttributes[1]),
+                Icons.Annotations
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 2,
+                4,
+                String.format("external file attributes = %02X %02X %02X %02X",
+                        this.header.ExternalFileAttributes[0],
+                        this.header.ExternalFileAttributes[1],
+                        this.header.ExternalFileAttributes[2],
+                        this.header.ExternalFileAttributes[3]),
+                Icons.Annotations
+        )));
+        headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position += 4,
+                4,
+                String.format("relative offset of local header = %d", this.header.RelativeOffsetOfLocalHeader),
+                Icons.Offset
+        )));
+        position += 4;
+        if (this.header.FileName != null) {
+            headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.header.FileName.length,
+                    String.format("file name = %s", this.header.FileNameValue),
+                    Icons.Name
+            )));
+            position += this.header.FileName.length;
+        }
+        if (this.header.ExtraField != null) {
+            headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.header.ExtraField.length,
+                    "extra field")));
+            position += this.header.ExtraField.length;
+        }
+        if (this.header.FileComment != null) {
+            headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.header.FileComment.length,
+                    "file comment")));
+        }
+
     }
 
     /**
@@ -119,7 +288,7 @@ public class CentralDirectoryStructure extends FileComponent {
                 throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
             }
             if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
-                throw new FileFormatException("Signature does not match for 'central file header signature'.");
+                throw new FileFormatException("Signature does not match for 'central file header signature' at 0x" + Integer.toHexString(stream.getPos()) + ": found =" + BytesTool.getByteDataHexView(this.Signature) + ", expected =" + BytesTool.getByteDataHexView(ZIPFile.CENTRAL_FILE_HEADER));
             }
 
             this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();
@@ -131,10 +300,14 @@ public class CentralDirectoryStructure extends FileComponent {
             }
 
             this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
+
+            int lastModFileTimeStartPos = stream.getPos();
             this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
-            this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime);
+            this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime, lastModFileTimeStartPos, PosDataInputStream.USHORT_LENGTH);
+
+            int lastModFileDateStartPos = stream.getPos();
             this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
-            this.LastModFileDateValue = new MSDosDate(this.LastModFileDate);
+            this.LastModFileDateValue = new MSDosDate(this.LastModFileDate, lastModFileDateStartPos, PosDataInputStream.USHORT_LENGTH);
 
             readBytes = stream.read(this.CRC32);
             if (readBytes != this.CRC32.length) {
@@ -207,7 +380,7 @@ public class CentralDirectoryStructure extends FileComponent {
          * Get the corresponding bit value of <code>position</code>.
          *
          * @param position Bit position, from 1 to 15
-         * @return  The bit value, 0 or 1
+         * @return The bit value, 0 or 1
          *
          * @see #GeneralPurposeBitFlag
          * @see LocalFileHeader#getGeneralPurposeBitFlagBitValue(int)

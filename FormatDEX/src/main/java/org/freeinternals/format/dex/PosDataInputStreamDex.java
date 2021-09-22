@@ -365,7 +365,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
         } else {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 POSITIVE----");
+            System.out.println("TODO test case at  0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 POSITIVE----");
             return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
@@ -379,7 +379,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5InLittleEndian NEGATIVE----");
+            System.out.println("TODO test case at   0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5InLittleEndian NEGATIVE----");
             return (0xFFFFFF0000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)

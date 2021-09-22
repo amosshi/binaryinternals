@@ -13,7 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.SignatureConvertor;
 
 /**
@@ -101,7 +101,7 @@ public class type_id_item extends FileComponent implements GenerateTreeNodeDexFi
                 "descriptor_idx",
                 String.format("%s - %s", descriptor_idx, this.get_descriptor((DexFile)dexFile)),
                 "msg_type_id_item__descriptor_idx",
-                UITool.icon4Offset()
+                Icons.Offset
         );
     }
 }

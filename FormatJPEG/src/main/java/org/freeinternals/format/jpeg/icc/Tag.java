@@ -11,8 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.commonlib.ui.UITool;
 
 /**
  *
@@ -72,7 +72,7 @@ public class Tag extends FileComponent {
                 (int) (this.BasePos + this.Offset),
                 (int) this.Size,
                 "Tag Data",
-                UITool.icon4Shortcut(), null);
+                Icons.Shortcut, null);
         parentNode.add(nodeTagData = new DefaultMutableTreeNode(comp));
         this.tagData.generateTreeNode(nodeTagData);
     }

@@ -13,12 +13,11 @@ import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.UITool;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.u2;
 import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
  *
@@ -234,7 +233,7 @@ public class Record_attribute extends attribute_info {
                             attr.getStartPos(),
                             attr.getLength(),
                             (i + 1) + ". " + attr.getName(),
-                            UITool.icon4Annotations(),
+                            Icons.Annotations,
                             MESSAGES.getString(attr.getMessageKey())
                     ));
                     attribute_info.generateTreeNode(treeNodeAttributeItem, attr, classFile);
