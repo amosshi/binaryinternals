@@ -18,6 +18,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosByteArrayInputStream;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.GenerateTreeNode;
+import org.freeinternals.commonlib.ui.Icons;
 
 /**
  *
@@ -119,6 +120,11 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
     @Override
     public String getContentTabName() {
         return "ZIP File";
+    }
+
+    @Override
+    public Icons getIcon() {
+        return Icons.ZIP;
     }
 
     @Override

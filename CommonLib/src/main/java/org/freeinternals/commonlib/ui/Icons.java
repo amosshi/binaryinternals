@@ -46,11 +46,11 @@ public enum Icons {
     BinaryFile("icons8-binary-file-20.png"),
     /**
      * Icon for Calendar / Date.
-     * 
-     * @see <a href="https://icons8.com/icon/84997/calendar">Calendar</a> icon by <a href="https://icons8.com">Icons8</a>
+     *
+     * @see <a href="https://icons8.com/icon/84997/calendar">Calendar</a> icon
+     * by <a href="https://icons8.com">Icons8</a>
      */
     Calendar("icons8-calendar-16.png"),
-    
     /**
      * Icon for checksum.
      *
@@ -198,11 +198,11 @@ public enum Icons {
      * <a href="https://icons8.com">Icons8</a>
      */
     Tag("icons8-tag-16.png"),
-    
     /**
      * Icon for time.
      *
-     * @see <a href="https://icons8.com/icon/HIiMyiiPLluy/time">Time</a> icon by <a href="https://icons8.com">Icons8</a>
+     * @see <a href="https://icons8.com/icon/HIiMyiiPLluy/time">Time</a> icon by
+     * <a href="https://icons8.com">Icons8</a>
      */
     Time("icons8-time-16.png"),
     /**
@@ -211,7 +211,14 @@ public enum Icons {
      * @see <a href="https://icons8.com/icon/59954/versions">Versions</a> icon
      * by <a href="https://icons8.com">Icons8</a>
      */
-    Versions("icons8-versions-16.png");
+    Versions("icons8-versions-16.png"),
+    /**
+     * Icon for zip file.
+     *
+     * @see <a href="https://icons8.com/icon/49013/zip">ZIP</a> icon by
+     * <a href="https://icons8.com">Icons8</a>
+     */
+    ZIP("icons8-zip-16.png");
 
     private static final Map<String, Icon> iconCache = new HashMap<>();
 
