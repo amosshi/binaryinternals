@@ -195,7 +195,7 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 4,
-                "signature",
+                "signature:" + BytesTool.getByteDataHexView(this.Signature),
                 Icons.Signature
         )));
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

@@ -11,11 +11,12 @@ Supported Formats
 * [JPEG](https://en.wikipedia.org/wiki/JPEG) file
 * [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) file
 * [ZIP](https://en.wikipedia.org/wiki/ZIP_(file_format)) file
+  * [The structure of a PKZip file](https://users.cs.jmu.edu/buchhofp/forensics/formats/pkzip.html)
 
 Will supported formats
 
 * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
-* [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (todo)
+* [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
 * [PE](https://en.wikipedia.org/wiki/Portable_Executable) file for Windows (todo)
 
 Legacy note

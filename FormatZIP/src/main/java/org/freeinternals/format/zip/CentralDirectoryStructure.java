@@ -40,7 +40,8 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         DefaultMutableTreeNode nodeCDS = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 this.getLength(),
-                "Central Directory Structure"));
+                "Central Directory Structure: " + this.header.FileNameValue
+        ));
         parent.add(nodeCDS);
 
         DefaultMutableTreeNode headerNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -168,7 +169,7 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("relative offset of local header = %d", this.header.RelativeOffsetOfLocalHeader),
+                String.format("relative offset of local header = 0x%08X", this.header.RelativeOffsetOfLocalHeader),
                 Icons.Offset
         )));
         position += 4;

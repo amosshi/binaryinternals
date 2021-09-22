@@ -30,7 +30,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.zip</artifactId>
-            <version>0.5</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
