@@ -186,7 +186,7 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
                 floatPos + 2,
                 u2.LENGTH,
                 "name_index",
-                String.format("constant pool index = %d, method name = %s", cpIndex, classFile.getCPDescription(cpIndex)),
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "method name", classFile.getCPDescription(cpIndex)),
                 "msg_method_info__name_index",
                 Icons.Name
         );
@@ -197,7 +197,7 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
                 floatPos + 4,
                 u2.LENGTH,
                 "descriptor_index",
-                String.format("constant pool index = %d, method descriptor = %s", cpIndex, classFile.getCPDescription(cpIndex)),
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "method descriptor", classFile.getCPDescription(cpIndex)),
                 "msg_method_info__descriptor_index",
                 Icons.Descriptor
         );

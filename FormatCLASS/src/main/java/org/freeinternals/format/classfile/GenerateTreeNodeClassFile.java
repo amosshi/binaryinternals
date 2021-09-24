@@ -20,9 +20,11 @@ public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {
     static final String FIELD_ACCESS_FLAGS = "access_flags";
     static final String FIELD_ATTR_COUNT = "attributes_count";
 
-    static final String CP_PREFIX = "constant_pool[";
-    static final String FIELDS_PREFIX = "fields[";
-    static final String METHODS_PERFIX = "methods[";
+    static final String TEXT_CPINDEX_PUREVALUE = "constant pool index = %d, %s";
+    static final String TEXT_CPINDEX_VALUE = "constant pool index = %d, %s = %s";
+    static final String TEXT_CP_PREFIX = "constant_pool[";
+    static final String TEXT_FIELDS_PREFIX = "fields[";
+    static final String TEXT_METHODS_PERFIX = "methods[";
 
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle(GenerateTreeNodeClassFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
 

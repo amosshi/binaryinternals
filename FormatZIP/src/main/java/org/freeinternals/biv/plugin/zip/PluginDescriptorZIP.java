@@ -19,7 +19,7 @@ public class PluginDescriptorZIP implements PluginDescriptor{
 
     @Override
     public String getExtensionDescription() {
-        return "ZIP file (*.jar, *.jmod, *.zip)";
+        return "ZIP file (*.jar, *.zip)";
     }
 
     @Override

@@ -1,5 +1,5 @@
 /**
- * PNGFile.java Apr 19, 2011, 07:58
+ * ZIPFile.java Apr 19, 2011, 07:58
  *
  * Copyright 2011, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.

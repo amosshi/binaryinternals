@@ -46,7 +46,7 @@ public class CONSTANT_Fieldref_info extends CONSTANT_Ref_info {
     CONSTANT_Fieldref_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_Fieldref.tag, posDataInputStream);
     }
-    
+
     @Override
     public String getMessageKey() {
         return "msg_const_ref";
@@ -80,20 +80,9 @@ public class CONSTANT_Fieldref_info extends CONSTANT_Ref_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        ClassFile classFile = (ClassFile) format;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + 1,
-                2,
-                "class_index: " + this.class_index.value + " - " + classFile.getCPDescription(this.class_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_ref_class_index")
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + 3,
-                2,
-                "name_and_type_index: " + this.name_and_type_index.value + " - " + classFile.getCPDescription(this.name_and_type_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_ref_name_and_type_index")
-        )));
+        super.generateTreeNode(parentNode,
+                (ClassFile) format,
+                "class name"
+        );
     }
 }

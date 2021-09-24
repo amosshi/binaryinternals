@@ -3,8 +3,13 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.tree.DefaultMutableTreeNode;
+import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.format.classfile.ClassFile;
+import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.TEXT_CPINDEX_VALUE;
 import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
@@ -42,8 +47,8 @@ public abstract class CONSTANT_Ref_info extends cp_info {
 
     /**
      * Shared {@link #toString(cp_info[])} method for methods.
-     * 
-     * @param constantPool  Constant pool of current class file.
+     *
+     * @param constantPool Constant pool of current class file.
      * @return Reader friendly string of current object
      */
     protected String toString4Method(cp_info[] constantPool) {
@@ -72,5 +77,25 @@ public abstract class CONSTANT_Ref_info extends cp_info {
         }
 
         return String.format("%s.%s%s : %s", clazz, nameStr, parameters, returnType);
+    }
+
+    protected void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile, String classPerfix) {
+        final int classIndex = this.class_index.value;
+        this.addNode(parentNode,
+                super.startPos + 1,
+                2,
+                "class_index",
+                String.format(TEXT_CPINDEX_VALUE, classIndex, classPerfix, classFile.getCPDescription(classIndex)),
+                "msg_const_ref_class_index",
+                Icons.Offset);
+
+        final int ntIndex = this.name_and_type_index.value;
+        this.addNode(parentNode,
+                super.startPos + 3,
+                2,
+                "name_and_type_index",
+                String.format(TEXT_CPINDEX_PUREVALUE, ntIndex, classFile.getCPDescription(ntIndex)),
+                "msg_const_ref_name_and_type_index",
+                Icons.Offset);
     }
 }

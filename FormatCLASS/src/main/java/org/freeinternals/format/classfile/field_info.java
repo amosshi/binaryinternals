@@ -164,7 +164,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                 floatPos + 2,
                 u2.LENGTH,
                 "name_index",
-                String.format("constant pool index = %d, field name = %s", nameIndex, classFile.getCPDescription(nameIndex)),
+                String.format(TEXT_CPINDEX_VALUE, nameIndex, "field name", classFile.getCPDescription(nameIndex)),
                 "msg_field_info__name_index",
                 Icons.Name
         );
@@ -174,7 +174,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                 floatPos + 4,
                 u2.LENGTH,
                 "descriptor_index",
-                String.format("constant pool index = %d, field descriptor = %s", descriptorIndex, classFile.getCPDescription(descriptorIndex)),
+                String.format(TEXT_CPINDEX_VALUE, descriptorIndex, "field descriptor", classFile.getCPDescription(descriptorIndex)),
                 "msg_field_info__descriptor_index",
                 Icons.Descriptor
         );

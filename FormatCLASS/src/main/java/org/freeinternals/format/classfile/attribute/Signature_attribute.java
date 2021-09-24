@@ -56,7 +56,7 @@ public class Signature_attribute extends attribute_info {
 
         this.addNode(parentNode, super.startPos + 6, 2,
                 "signature_index",
-                String.format("constant pool index = %d, signature = %s", sigIndex, ((ClassFile) classFile).getCPDescription(sigIndex)),
+                String.format(TEXT_CPINDEX_VALUE, sigIndex, "signature", ((ClassFile) classFile).getCPDescription(sigIndex)),
                 "msg_attr_ConstantValue__constantvalue_index",
                 Icons.Signature
         );

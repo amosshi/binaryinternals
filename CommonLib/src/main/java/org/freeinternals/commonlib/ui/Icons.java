@@ -95,6 +95,12 @@ public enum Icons {
      */
     Dex("icons8-apk-20.png"),
     /**
+     * Icon for Empty.
+     *
+     * @see <a href="https://icons8.com/icon/96204/empty-battery">Empty Battery</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Empty("icons8-empty-battery-16.png"),
+    /**
      * Icon for endian.
      *
      * @see <a href="https://icons8.com/icon/Xf1Gx1HbxVsm/up-down-arrow">Up Down

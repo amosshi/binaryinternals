@@ -491,13 +491,13 @@ public class ClassFile extends FileFormat {
             StringBuilder sb = this.getJTreeAdapter().generateOpcodeParseResult(data);
             JTextPane pane = super.tabAddTextPane(tabs, "Opcode");
             pane.setText(sb.toString());
-        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.CP_PREFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.TEXT_CP_PREFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Constant Pool");
             pane.setText(this.getJTreeAdapter().generateReport2CP().toString());
-        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.FIELDS_PREFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.TEXT_FIELDS_PREFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Fields");
             pane.setText(this.getJTreeAdapter().generateReport2Fields().toString());
-        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.METHODS_PERFIX)) {
+        } else if (tnfc.getText().startsWith(GenerateTreeNodeClassFile.TEXT_METHODS_PERFIX)) {
             JTextPane pane = super.tabAddTextPane(tabs, "Methods");
             pane.setText(this.getJTreeAdapter().generateReport2Methods().toString());
         }

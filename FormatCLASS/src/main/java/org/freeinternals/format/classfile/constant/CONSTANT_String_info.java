@@ -77,12 +77,13 @@ public class CONSTANT_String_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 1,
                 2,
-                "string_index: " + this.string_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.string_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_string_string_index")
-        )));
+                "string_index",
+                String.format(TEXT_CPINDEX_VALUE, this.string_index.value, "string", ((ClassFile) classFile).getCPDescription(this.string_index.value)),
+                "msg_const_string_string_index",
+                Icons.Offset
+        );
     }
 }

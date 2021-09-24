@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.Map.Entry;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,6 +21,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 /**
@@ -31,7 +35,7 @@ class JDialogAbout extends JDialog {
     private static final long serialVersionUID = 4876543219876500000L;
 
     /**
-     * 
+     *
      * @param owner
      * @param title
      */
@@ -43,6 +47,17 @@ class JDialogAbout extends JDialog {
         this.initComponents();
         this.pack();
         this.setResizable(false);
+    }
+
+    private void buttonOKClicked() {
+        this.setVisible(false);
+    }
+
+    private JTextField getLine(String label){
+        JTextField field = new JTextField(label);
+        field.setEditable(false);
+        field.setBorder(BorderFactory.createEmptyBorder());
+        return field;
     }
 
     private void initComponents() {
@@ -58,18 +73,32 @@ class JDialogAbout extends JDialog {
         final JLabel label = new JLabel("Binary Internals Viewer");
         label.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         listPane.add(label);
+
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Watch binary file internals visually & interactively for the meaning of every byte"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Version: 3.0"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Author: Amos Shi"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
         listPane.add(new JLabelHyperLink(
                 "https://github.com/amosshi/freeinternals",
                 "https://github.com/amosshi/freeinternals"));
+
+        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
+        listPane.add(this.getLine("Watch binary file internals visually & interactively for the meaning of every byte"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(new JLabel("Free Tools to view Binary Internals"));
+        listPane.add(this.getLine("Version: 3.0"));
+        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        listPane.add(this.getLine("Author: Amos Shi"));
+
+        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
+        listPane.add(this.getLine("System Properties:"));
+        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        JTextArea sysinfo = new JTextArea(8, 40);
+        System.getProperties().forEach((key, value) -> sysinfo.append(key + ": " + value + System.lineSeparator()));
+        sysinfo.setCaretPosition(0);
+        sysinfo.setEditable(false);
+        sysinfo.setLineWrap(true);
+        listPane.add(new JScrollPane(sysinfo));
+
+        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
+        listPane.add(this.getLine("Icons is freely provided by https://icons8.com/"));
+
         listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Lay out the buttons from left to right.
@@ -84,9 +113,5 @@ class JDialogAbout extends JDialog {
         contentPane.add(listPane, BorderLayout.CENTER);
         contentPane.add(buttonPane, BorderLayout.PAGE_END);
 
-    }
-
-    private void buttonOKClicked() {
-        this.setVisible(false);
     }
 }

@@ -66,7 +66,7 @@ public class ConstantValue_attribute extends attribute_info {
         int index = this.constantvalue_index.value;
         this.addNode(parentNode, super.startPos + 6, 2,
                 "constantvalue_index",
-                String.format("constant pool index = %d, constant value = %s", index, ((ClassFile) classFile).getCPDescription(index)),
+                String.format(TEXT_CPINDEX_VALUE, index, "constant value", ((ClassFile) classFile).getCPDescription(index)),
                 "msg_attr_ConstantValue__constantvalue_index",
                 Icons.Constant
         );
