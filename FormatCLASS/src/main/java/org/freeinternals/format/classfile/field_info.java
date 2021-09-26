@@ -211,7 +211,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                         Icons.Annotations,
                         MESSAGES.getString(attr.getMessageKey())
                 ));
-                attribute_info.generateTreeNode(treeNodeAttrItem, attr, classFile);
+                attr.generateTreeNodeCommon(treeNodeAttrItem, classFile);
                 treeNodeAttr.add(treeNodeAttrItem);
             }
             parentNode.add(treeNodeAttr);

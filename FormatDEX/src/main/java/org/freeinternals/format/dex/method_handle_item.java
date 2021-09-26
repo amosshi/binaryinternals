@@ -65,11 +65,11 @@ public class method_handle_item extends FileComponent implements GenerateTreeNod
 
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type", Icons.Offset);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)", "msg_method_handle_item__unused", Icons.Empty);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id", Icons.Index);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)");
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)", "msg_method_handle_item__unused", Icons.Empty);
     }
 
     public enum Type {

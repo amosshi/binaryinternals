@@ -12,13 +12,14 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.constant.cp_info;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.Opcode;
+import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.u2;
 import org.freeinternals.format.classfile.u4;
 
@@ -155,31 +156,46 @@ public class Code_attribute extends attribute_info {
         DefaultMutableTreeNode treeNodeAttribute;
         DefaultMutableTreeNode treeNodeAttributeItem;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 6,
                 2,
-                "max_stack: " + this.max_stack.value
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "max_stack",
+                this.max_stack.value,
+                "msg_attr_Code__max_stack",
+                Icons.Max
+        );
+        this.addNode(parentNode,
                 super.startPos + 8,
                 2,
-                "max_locals: " + this.max_locals.value
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "max_locals",
+                this.max_locals.value,
+                "msg_attr_Code__max_locals",
+                Icons.Max
+        );
+        this.addNode(parentNode,
                 super.startPos + 10,
                 4,
-                "code_length: " + this.code_length.value
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "code_length",
+                this.code_length.value,
+                "msg_attr_Code__code_length",
+                Icons.Length
+        );
+        this.addNode(parentNode,
                 super.startPos + 14,
                 codeLength,
-                ATTRIBUTE_CODE_NODE
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                ATTRIBUTE_CODE_NODE,
+                "byte codes",
+                "msg_attr_Code__code",
+                Icons.Data
+        );
+        this.addNode(parentNode,
                 super.startPos + 14 + codeLength,
                 2,
-                "exception_table_length: " + this.exception_table_length.value
-        )));
+                "exception_table_length",
+                this.exception_table_length.value,
+                "msg_attr_exception_table_length",
+                Icons.Length
+        );
 
         // Add exception table
         if (this.exception_table_length.value > 0) {
@@ -198,7 +214,7 @@ public class Code_attribute extends attribute_info {
                         et.getLength(),
                         String.format("exception_table [%d]", i)
                 ));
-                this.generateSubnode(treeNodeExceptionTableItem, et, (ClassFile)classFile);
+                et.generateTreeNode(treeNodeExceptionTableItem, classFile);
                 treeNodeExceptionTable.add(treeNodeExceptionTableItem);
             }
 
@@ -234,44 +250,12 @@ public class Code_attribute extends attribute_info {
                         Icons.Annotations,
                         MESSAGES.getString(attr.getMessageKey())
                 ));
-                attribute_info.generateTreeNode(treeNodeAttributeItem, attr, (ClassFile)classFile);
-
+                attr.generateTreeNodeCommon(treeNodeAttributeItem, (ClassFile) classFile);
                 treeNodeAttribute.add(treeNodeAttributeItem);
             }
 
             parentNode.add(treeNodeAttribute);
         }
-    }
-
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final Code_attribute.ExceptionTable et, final ClassFile classFile) {
-        if (et == null) {
-            return;
-        }
-
-        final int startPosMoving = et.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                2,
-                "start_pc: " + et.start_pc.value
-        )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 2,
-                2,
-                "end_pc: " + et.end_pc.value
-        )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 4,
-                2,
-                "handler_pc: " + et.handler_pc.value
-        )));
-        final int catch_type = et.catch_type.value;
-        String catchTypeDesc = (catch_type == 0) ? "" : " - " + classFile.getCPDescription(catch_type);
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 6,
-                2,
-                "catch_type: " + catch_type + catchTypeDesc
-        )));
     }
 
     @Override
@@ -284,7 +268,7 @@ public class Code_attribute extends attribute_info {
      *
      * @author Amos Shi
      */
-    public static final class ExceptionTable extends FileComponent {
+    public static final class ExceptionTable extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 8;
         public final u2 start_pc;
@@ -312,6 +296,47 @@ public class Code_attribute extends attribute_info {
             this.end_pc = new u2(posDataInputStream);
             this.handler_pc = new u2(posDataInputStream);
             this.catch_type = new u2(posDataInputStream);
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            final int startPosMoving = super.getStartPos();
+
+            this.addNode(parentNode,
+                    startPosMoving,
+                    u2.LENGTH,
+                    "start_pc",
+                    this.start_pc.value,
+                    "msg_attr_exception_table__start_end_pc",
+                    Icons.Offset
+            );
+            this.addNode(parentNode,
+                    startPosMoving + 2,
+                    u2.LENGTH,
+                    "end_pc",
+                    this.end_pc.value,
+                    "msg_attr_exception_table__start_end_pc",
+                    Icons.Offset
+            );
+            this.addNode(parentNode,
+                    startPosMoving + 4,
+                    u2.LENGTH,
+                    "handler_pc",
+                    this.handler_pc.value,
+                    "msg_attr_exception_table__handler_pc",
+                    Icons.Offset
+            );
+
+            final int catchType = this.catch_type.value;
+            String catchTypeDesc = (catchType == 0) ? "" : " - " + ((ClassFile) fileFormat).getCPDescription(catchType);
+            this.addNode(parentNode,
+                    startPosMoving + 6,
+                    2,
+                    "catch_type",
+                    catchType + catchTypeDesc,
+                    "msg_attr_exception_table__catch_type",
+                    Icons.Kind
+            );
         }
     }
 }

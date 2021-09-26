@@ -6,8 +6,8 @@
  */
 package org.freeinternals.format.classfile.attribute;
 
-import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.classfile.u2;
 
 /**

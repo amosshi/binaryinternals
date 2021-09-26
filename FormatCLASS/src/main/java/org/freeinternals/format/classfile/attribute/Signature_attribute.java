@@ -9,12 +9,12 @@ package org.freeinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.JavaLangSpec;
+import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -57,7 +57,7 @@ public class Signature_attribute extends attribute_info {
         this.addNode(parentNode, super.startPos + 6, 2,
                 "signature_index",
                 String.format(TEXT_CPINDEX_VALUE, sigIndex, "signature", ((ClassFile) classFile).getCPDescription(sigIndex)),
-                "msg_attr_ConstantValue__constantvalue_index",
+                "msg_attr_Signature__signature_index",
                 Icons.Signature
         );
     }

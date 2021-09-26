@@ -47,8 +47,8 @@ public class CONSTANT_Package_info extends cp_info {
     /**
      * The value of the {@link name_index} item must be a valid index into the
      * {@code constant_pool} table. The constant_pool entry at that index must
-     * be a {@link CONSTANT_Utf8_info} structure representing a valid package name
-     * encoded in internal form.
+     * be a {@link CONSTANT_Utf8_info} structure representing a valid package
+     * name encoded in internal form.
      */
     public final u2 name_index;
 
@@ -83,12 +83,14 @@ public class CONSTANT_Package_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final int cpIndex = this.name_index.value;
+        this.addNode(parentNode,
                 super.startPos + 1,
                 2,
-                "name_index: " + this.name_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.name_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_package_name_index")
-        )));
+                "name_index",
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "package name", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                "msg_const_package_name_index",
+                Icons.Name
+        );
     }
 }

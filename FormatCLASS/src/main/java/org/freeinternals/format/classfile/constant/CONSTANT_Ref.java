@@ -27,7 +27,7 @@ public abstract class CONSTANT_Ref extends cp_info {
     public final u2 class_index;
     public final u2 name_and_type_index;
 
-    protected CONSTANT_Ref(short tag, final PosDataInputStream posDataInputStream) throws IOException {
+    protected CONSTANT_Ref(final short tag, final PosDataInputStream posDataInputStream) throws IOException {
         super(tag);
 
         super.startPos = posDataInputStream.getPos() - 1;

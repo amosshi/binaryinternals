@@ -26,7 +26,6 @@ public interface GenerateTreeNodeFileFormat {
      */
     static final int TREENODE_STRING_MAXLEN = 64;
 
-
     void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
     /**
@@ -37,10 +36,18 @@ public interface GenerateTreeNodeFileFormat {
      */
     ResourceBundle getMessages();
 
-    default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String name, Object value) {
-        return addNode(parentNode, startPos, len, name, value, null, null);
-    }
-
+    /**
+     * Add a child node.
+     *
+     * @param parentNode
+     * @param startPos
+     * @param len
+     * @param fieldName
+     * @param value
+     * @param msgkey
+     * @param icon
+     * @return The new added tree node
+     */
     default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String fieldName, Object value, String msgkey, Icons icon) {
         JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
                 startPos,
@@ -58,7 +65,6 @@ public interface GenerateTreeNodeFileFormat {
         parentNode.add(node);
         return node;
     }
-
 
     /**
      * Get left part of string for tree node.

@@ -289,7 +289,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                         Icons.Annotations,
                         MESSAGES.getString(attr.getMessageKey())
                 ));
-                attribute_info.generateTreeNode(attrNode, attr, this.classFile);
+                attr.generateTreeNodeCommon(attrNode, this.classFile);
                 attrsNode.add(attrNode);
             }
         }

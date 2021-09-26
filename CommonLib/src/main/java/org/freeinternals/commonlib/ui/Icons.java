@@ -101,6 +101,12 @@ public enum Icons {
      */
     Empty("icons8-empty-battery-16.png"),
     /**
+     * Icon for Exception.
+     *
+     * @see <a href="https://icons8.com/icon/110759/flash-on">Flash On</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Exception("icons8-flash-on-16.png"),
+    /**
      * Icon for endian.
      *
      * @see <a href="https://icons8.com/icon/Xf1Gx1HbxVsm/up-down-arrow">Up Down
@@ -174,6 +180,10 @@ public enum Icons {
      * Wand</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     Magic("icons8-magic-wand-16.png"),
+    /**
+     * Icon for Max.
+     */
+    Max("icons8-maxcdn-16.png"),
     /**
      * Icon for return type, of a method.
      *

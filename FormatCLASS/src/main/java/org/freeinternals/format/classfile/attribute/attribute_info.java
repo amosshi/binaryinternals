@@ -16,8 +16,8 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.attribute.aspectj.AjSynthetic_attribute;
 import org.freeinternals.format.classfile.attribute.aspectj.MethodDeclarationLineNumber_attribute;
@@ -30,7 +30,6 @@ import org.freeinternals.format.classfile.field_info;
 import org.freeinternals.format.classfile.method_info;
 import org.freeinternals.format.classfile.u2;
 import org.freeinternals.format.classfile.u4;
-import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  * Super class for attributes in class file. All attributes have the following
@@ -204,30 +203,28 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         return this.name;
     }
 
-    public static void generateTreeNode(final DefaultMutableTreeNode rootNode, final attribute_info attributeInfo, final ClassFile classFile) {
-        if (attributeInfo == null) {
-            return;
-        }
-
-        int startPosMoving = attributeInfo.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+    public void generateTreeNodeCommon(final DefaultMutableTreeNode rootNode, final ClassFile classFile) {
+        int startPosMoving = this.getStartPos();
+        this.addNode(rootNode,
                 startPosMoving,
                 u2.LENGTH,
-                "attribute_name_index: " + attributeInfo.attribute_name_index.value + ", name=" + attributeInfo.getName(),
-                Icons.Name,
-                MESSAGES.getString("msg_attribute_info__attribute_name_index")
-        )));
+                "attribute_name_index",
+                String.format(TEXT_CPINDEX_VALUE, this.attribute_name_index.value, "name", this.getName()),
+                "msg_attribute_info__attribute_name_index",
+                Icons.Name
+        );
+
         startPosMoving += u2.LENGTH;
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(rootNode,
                 startPosMoving,
                 u4.LENGTH,
-                "attribute_length: " + attributeInfo.attribute_length.value,
-                Icons.Length,
-                MESSAGES.getString("msg_attribute_info__attribute_length")
-        )));
+                "attribute_length",
+                this.attribute_length.value,
+                "msg_attribute_info__attribute_length",
+                Icons.Length
+        );
 
-        attributeInfo.generateTreeNode(rootNode, classFile);
+        this.generateTreeNode(rootNode, classFile);
     }
 
     /**

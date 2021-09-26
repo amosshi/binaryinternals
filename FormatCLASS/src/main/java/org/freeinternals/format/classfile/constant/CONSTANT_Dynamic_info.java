@@ -7,14 +7,8 @@
 package org.freeinternals.format.classfile.constant;
 
 import java.io.IOException;
-import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.freeinternals.format.classfile.ClassFile;
-import org.freeinternals.format.classfile.u2;
 
 /**
  * The {@code CONSTANT_Dynamic_info} structure is used to represent a
@@ -40,86 +34,20 @@ import org.freeinternals.format.classfile.u2;
  *
  * <pre>
  * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings({"java:S101", "java:S116"})
-public class CONSTANT_Dynamic_info extends cp_info {
-
-    public static final int LENGTH = 5;
-
-    /**
-     * {@code CONSTANT_Dynamic_info} structures are unique in that they are
-     * syntactically allowed to refer to themselves via the bootstrap method
-     * table. Rather than mandating that such cycles are detected when classes
-     * are loaded (a potentially expensive check), we permit cycles initially
-     * but mandate a failure at resolution.
-     */
-    public final u2 bootstrap_method_attr_index;
-
-    /**
-     * The value of the {@code name_and_type_index} item must be a valid index
-     * into the {@code constant_pool} table. The {@code constant_pool} entry at
-     * that index must be a {@code CONSTANT_NameAndType_info} structure
-     * representing a method name and method descriptor.
-     *
-     * In a {@code CONSTANT_Dynamic_info} structure, the indicated descriptor
-     * must be a field descriptor.
-     */
-    public final u2 name_and_type_index;
+@SuppressWarnings({"java:S101"})
+public class CONSTANT_Dynamic_info extends CONSTANT_Dynamic {
 
     CONSTANT_Dynamic_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(cp_info.ConstantType.CONSTANT_Dynamic.tag);
-        super.startPos = posDataInputStream.getPos() - 1;
-        this.bootstrap_method_attr_index = new u2(posDataInputStream);
-        this.name_and_type_index = new u2(posDataInputStream);
-        super.length = LENGTH;
-    }
+        super(cp_info.ConstantType.CONSTANT_Dynamic.tag, posDataInputStream);
 
-    @Override
-    public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
-                this.getName(),
-                this.startPos,
-                super.length,
-                this.bootstrap_method_attr_index.value,
-                this.name_and_type_index.value);
-    }
-
-    @Override
-    public String getMessageKey() {
-        return "msg_const_dynamic";
+        // TODO - Find a test case to verify this chagne is working or not
+        System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
     }
 
     @Override
     public String getName() {
         return ConstantType.CONSTANT_Dynamic.name();
-    }
-
-    @Override
-    public String toString(cp_info[] constantPool) {
-        return String.format("bootstrap_method_attr_index=%d name_and_type_index=%s",
-                this.bootstrap_method_attr_index.value,
-                constantPool[this.name_and_type_index.value].toString(constantPool));
-    }
-
-    @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        // TODO - Find a test case to verify this chagne is working or not
-        System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
-
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 1,
-                2,
-                "bootstrap_method_attr_index: " + this.bootstrap_method_attr_index.value,
-                MESSAGES.getString("msg_const_dynamic_bootstrap_method_attr_index")
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPos + 3,
-                2,
-                "name_and_type_index: " + this.name_and_type_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.name_and_type_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_dynamic_name_and_type_index")
-        )));
     }
 }

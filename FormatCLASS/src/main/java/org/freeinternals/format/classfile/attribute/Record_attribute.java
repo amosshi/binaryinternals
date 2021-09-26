@@ -10,14 +10,14 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.constant.cp_info;
 import org.freeinternals.format.classfile.u2;
-import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  *
@@ -236,7 +236,7 @@ public class Record_attribute extends attribute_info {
                             Icons.Annotations,
                             MESSAGES.getString(attr.getMessageKey())
                     ));
-                    attribute_info.generateTreeNode(treeNodeAttributeItem, attr, classFile);
+                    attr.generateTreeNodeCommon(treeNodeAttributeItem, classFile);
                     treeNodeAttributes.add(treeNodeAttributeItem);
                 }
                 parentNode.add(treeNodeAttributes);
