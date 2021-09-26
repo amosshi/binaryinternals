@@ -11,9 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.SignatureConvertor;
@@ -102,12 +101,14 @@ public class CONSTANT_MethodType_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final int cpIndex = this.descriptor_index.value;
+        this.addNode(parentNode,
                 startPos + 1,
                 2,
-                "descriptor_index: " + this.descriptor_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.descriptor_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_methodtype_descriptor_index")
-        )));
+                "descriptor_index",
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                "msg_const_methodtype_descriptor_index",
+                Icons.Descriptor
+        );
     }
 }

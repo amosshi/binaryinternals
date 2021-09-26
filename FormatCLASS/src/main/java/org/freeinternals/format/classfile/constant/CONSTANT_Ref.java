@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.TEXT_CPINDEX_VALUE;
 import org.freeinternals.format.classfile.SignatureConvertor;
 import org.freeinternals.format.classfile.u2;
 
@@ -23,13 +21,13 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116"})
-public abstract class CONSTANT_Ref_info extends cp_info {
+public abstract class CONSTANT_Ref extends cp_info {
 
     public static final int LENGTH = 5;
     public final u2 class_index;
     public final u2 name_and_type_index;
 
-    protected CONSTANT_Ref_info(short tag, final PosDataInputStream posDataInputStream) throws IOException {
+    protected CONSTANT_Ref(short tag, final PosDataInputStream posDataInputStream) throws IOException {
         super(tag);
 
         super.startPos = posDataInputStream.getPos() - 1;

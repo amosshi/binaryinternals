@@ -12,8 +12,6 @@ import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Integer_info} structure in constant pool.
@@ -58,7 +56,7 @@ public class CONSTANT_Integer_info extends cp_info {
         return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
                 this.getName(), super.startPos, super.length, this.integerValue);
     }
-    
+
     @Override
     public String getMessageKey() {
         return "msg_const_intfloat";
@@ -76,12 +74,13 @@ public class CONSTANT_Integer_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 1,
                 4,
-                "bytes: " + this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                Icons.Data,
-                MESSAGES.getString("msg_const_int_bytes")
-        )));
+                "bytes",
+                this.integerValue + " - " + BytesTool.getByteDataHexView(this.rawData),
+                "msg_const_int_bytes",
+                Icons.Data
+        );
     }
 }

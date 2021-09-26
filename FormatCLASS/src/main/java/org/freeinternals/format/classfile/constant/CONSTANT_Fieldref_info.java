@@ -11,10 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
-import org.freeinternals.commonlib.ui.Icons;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.SignatureConvertor;
 
@@ -41,7 +39,7 @@ import org.freeinternals.format.classfile.SignatureConvertor;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class CONSTANT_Fieldref_info extends CONSTANT_Ref_info {
+public class CONSTANT_Fieldref_info extends CONSTANT_Ref {
 
     CONSTANT_Fieldref_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_Fieldref.tag, posDataInputStream);

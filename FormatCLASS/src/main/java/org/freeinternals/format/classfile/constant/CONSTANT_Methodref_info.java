@@ -10,8 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 
 /**
@@ -38,7 +36,7 @@ import org.freeinternals.format.classfile.ClassFile;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class CONSTANT_Methodref_info extends CONSTANT_Ref_info {
+public class CONSTANT_Methodref_info extends CONSTANT_Ref {
 
     CONSTANT_Methodref_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_Methodref.tag, posDataInputStream);

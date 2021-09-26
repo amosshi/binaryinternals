@@ -10,12 +10,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.freeinternals.commonlib.core.FileComponent;
-import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.JavaSEVersion;
 import org.freeinternals.format.classfile.u1;
-import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 
 /**
  * The super class for constant pool items in class file. All constant pool

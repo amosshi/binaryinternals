@@ -12,8 +12,6 @@ import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
-import static org.freeinternals.format.classfile.GenerateTreeNodeClassFile.MESSAGES;
 
 /**
  * The class for the {@code CONSTANT_Long_info} structure in constant pool. The
@@ -82,19 +80,22 @@ public class CONSTANT_Long_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        String value = "value = " + this.longValue + " Hex Value = " + BytesTool.getByteDataHexView(this.rawData);
+        this.addNode(parentNode,
                 this.startPos + 1,
                 4,
-                "high_bytes - value: " + this.longValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                Icons.Data,
-                MESSAGES.getString("msg_const_long_bytes")
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "high_bytes",
+                value,
+                "msg_const_long_bytes",
+                Icons.Data
+        );
+        this.addNode(parentNode,
                 this.startPos + 5,
                 4,
                 "low_bytes",
-                Icons.Data,
-                MESSAGES.getString("msg_const_long_bytes")
-        )));
+                value,
+                "msg_const_long_bytes",
+                Icons.Data
+        );
     }
 }

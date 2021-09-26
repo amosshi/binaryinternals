@@ -12,7 +12,6 @@ import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
  * The class for the {@code CONSTANT_Float_info} structure in constant pool. The
@@ -76,12 +75,13 @@ public class CONSTANT_Float_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 this.getStartPos() + 1,
                 4,
-                "bytes: " + this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData),
-                Icons.Data,
-                MESSAGES.getString("msg_const_float_bytes")
-        )));
+                "bytes",
+                this.floatValue + " - " + BytesTool.getByteDataHexView(this.rawData),
+                "msg_const_float_bytes",
+                Icons.Data
+        );
     }
 }

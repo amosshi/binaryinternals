@@ -9,9 +9,8 @@ package org.freeinternals.format.classfile.constant;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.commonlib.core.FileFormatException;
+import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u1;
@@ -92,19 +91,22 @@ public class CONSTANT_MethodHandle_info extends cp_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 1,
                 1,
-                "reference_kind: " + this.reference_kind.value + " - " + CONSTANT_MethodHandle_info.ReferenceKind.name(this.reference_kind.value),
-                MESSAGES.getString("msg_const_methodhandle_reference_kind")
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "reference_kind",
+                this.reference_kind.value + " - " + CONSTANT_MethodHandle_info.ReferenceKind.name(this.reference_kind.value),
+                "msg_const_methodhandle_reference_kind",
+                Icons.Kind
+        );
+        this.addNode(parentNode,
                 super.startPos + 2,
                 2,
-                "reference_index: " + this.reference_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.reference_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_methodhandle_reference_index")
-        )));
+                "reference_index",
+                this.reference_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.reference_index.value),
+                "msg_const_methodhandle_reference_index",
+                Icons.Offset
+        );
     }
 
     /**

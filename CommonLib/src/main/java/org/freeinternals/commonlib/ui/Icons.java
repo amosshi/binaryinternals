@@ -133,6 +133,12 @@ public enum Icons {
      */
     Java("icons8-java-20.png"),
     /**
+     * Icon for Kind / Type.
+     *
+     * @see <a href="https://icons8.com/icon/54136/category">Category</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Kind("icons8-category-16.png"),
+    /**
      * Icon for Method.
      *
      * @see
@@ -148,7 +154,7 @@ public enum Icons {
      */
     Name("icons8-name-tag-16.png"),
     /**
-     * Icon for Offset / Location / Index.
+     * Icon for Offset / Location.
      *
      * @see <a href="https://icons8.com/icon/2gsR2g07AQvu/map-pin">Map Pin</a>
      * icon by <a href="https://icons8.com">Icons8</a>

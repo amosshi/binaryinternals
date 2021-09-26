@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.Icons;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u2;
 
@@ -83,19 +82,25 @@ public class CONSTANT_NameAndType_info extends cp_info {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
         ClassFile classFile = (ClassFile) format;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+        int cpIndex = this.name_index.value;
+        this.addNode(parentNode,
                 super.startPos + 1,
                 2,
-                "name_index: " + this.name_index.value + " - " + classFile.getCPDescription(this.name_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_nameandtype_name_index")
-        )));
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                "name_index",
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                "msg_const_nameandtype_name_index",
+                Icons.Name
+        );
+
+        cpIndex = this.descriptor_index.value;
+        this.addNode(parentNode,
                 super.startPos + 3,
                 2,
-                "descriptor_index: " + this.descriptor_index.value + " - " + classFile.getCPDescription(this.descriptor_index.value),
-                Icons.Offset,
-                MESSAGES.getString("msg_const_nameandtype_descriptor_index")
-        )));
+                "descriptor_index",
+                String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                "msg_const_nameandtype_descriptor_index",
+                Icons.Descriptor
+        );
     }
 }
