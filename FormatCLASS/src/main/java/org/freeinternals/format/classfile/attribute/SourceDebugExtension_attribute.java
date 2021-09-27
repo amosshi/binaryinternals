@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.freeinternals.format.classfile.u2;
 
@@ -85,11 +85,11 @@ public class SourceDebugExtension_attribute extends attribute_info {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         if (this.debug_extension != null && this.debug_extension.length > 0) {
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    super.startPos + 6,
-                    this.debug_extension.length,
-                    String.format("debug_extension: %s", this.getDebugExtesionString())
-            )));
+            this.addNode(parentNode,
+                    super.startPos + 6, this.debug_extension.length,
+                    "debug_extension", this.getDebugExtesionString(),
+                    "msg_attr_SourceDebugExtension__debug_extension", Icons.Data
+            );
         }
     }
 
