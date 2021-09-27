@@ -229,15 +229,15 @@ public class Record_attribute extends attribute_info {
 
                 for (int i = 0; i < this.attributes_count.value; i++) {
                     attribute_info attr = this.attributes[i];
-                    DefaultMutableTreeNode treeNodeAttributeItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    DefaultMutableTreeNode treeNodeAttributeItem = this.addNode(treeNodeAttributes,
                             attr.getStartPos(),
                             attr.getLength(),
-                            (i + 1) + ". " + attr.getName(),
-                            Icons.Annotations,
-                            MESSAGES.getString(attr.getMessageKey())
-                    ));
+                            String.valueOf(i + 1),
+                            attr.getName(),
+                            attr.getMessageKey(),
+                            Icons.Annotations
+                    );
                     attr.generateTreeNodeCommon(treeNodeAttributeItem, classFile);
-                    treeNodeAttributes.add(treeNodeAttributeItem);
                 }
                 parentNode.add(treeNodeAttributes);
             }

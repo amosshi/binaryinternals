@@ -185,7 +185,7 @@ public class Module_attribute extends attribute_info {
 
     /**
      * @param parentNode Parent JTree node
-     * @param classFile Current class file object
+     * @param format Current class file object
      *
      * <pre>
      * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high

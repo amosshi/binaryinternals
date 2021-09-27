@@ -196,7 +196,6 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                     floatPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - floatPos - 8,
                     String.format("attributes[%d]", attributesCount),
-                    Icons.Annotations,
                     MESSAGES.getString("msg_field_info__attributes")
             ));
 
@@ -204,15 +203,15 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
             attribute_info attr;
             for (int i = 0; i < attributesCount; i++) {
                 attr = this.attributes[i];
-                treeNodeAttrItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                treeNodeAttrItem = this.addNode(treeNodeAttr,
                         attr.getStartPos(),
                         attr.getLength(),
-                        String.format("%d. %s", i + 1, attr.getName()),
-                        Icons.Annotations,
-                        MESSAGES.getString(attr.getMessageKey())
-                ));
+                        String.valueOf(i + 1),
+                        attr.getName(),
+                        attr.getMessageKey(),
+                        Icons.Annotations
+                );
                 attr.generateTreeNodeCommon(treeNodeAttrItem, classFile);
-                treeNodeAttr.add(treeNodeAttrItem);
             }
             parentNode.add(treeNodeAttr);
         }

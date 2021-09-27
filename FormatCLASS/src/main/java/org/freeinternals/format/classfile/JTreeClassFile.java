@@ -33,8 +33,6 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
 
     /**
      * Creates a tree for {@link ClassFile}.
-     *
-     * @param classFile The class file to be shown
      */
     JTreeClassFile() {
     }
@@ -64,22 +62,24 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
     private void generateTreeNodeClsssFileVersion() {
         int floatPos = 4;
 
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(this.root,
                 floatPos,
                 u2.LENGTH,
-                "minor_version: " + this.classFile.minor_version.value,
-                Icons.Versions,
-                MESSAGES.getString("msg_version")
-        )));
+                "minor_version",
+                this.classFile.minor_version.value,
+                "msg_version",
+                Icons.Versions
+        );
         floatPos += u2.LENGTH;
 
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(this.root,
                 floatPos,
                 u2.LENGTH,
-                "major_version: " + this.classFile.major_version.value,
-                Icons.Versions,
-                MESSAGES.getString("msg_version")
-        )));
+                "major_version",
+                this.classFile.major_version.value,
+                "msg_version",
+                Icons.Versions
+        );
     }
 
     private void generateConstantPool() {
@@ -87,13 +87,14 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         int startPos = 4 + u2.LENGTH + u2.LENGTH;
 
         final int cpCount = this.classFile.constant_pool_count.value;
-        this.root.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(this.root,
                 startPos,
                 u2.LENGTH,
-                "constant_pool_count: " + cpCount,
-                Icons.Counter,
-                MESSAGES.getString("msg_constant_pool_count")
-        )));
+                "constant_pool_count", 
+                cpCount,
+                "msg_constant_pool_count",
+                Icons.Counter
+        );
         startPos += u2.LENGTH;
 
         final cp_info[] cp = this.classFile.constant_pool;
@@ -105,6 +106,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         ));
         this.root.add(constantPool);
 
+        // JVM Spec: The constant_pool table is indexed from 1 to constant_pool_count - 1. 
         for (int i = 1; i < cpCount; i++) {
             if (cp[i] != null) {
                 DefaultMutableTreeNode cpInfoNode = this.addNode(constantPool,
@@ -182,7 +184,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.addNode(interfacesNode,
                         interfaces[i].getStartPos(),
                         interfaces[i].getLength(),
-                        "interface " + i,
+                        "interface " + (i + 1),
                         String.format(TEXT_CPINDEX_VALUE, interfaces[i].getValue(), "name", this.classFile.getCPDescription(interfaces[i].getValue())),
                         "msg_interfaces_item", Icons.Name);
             }
@@ -210,15 +212,15 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
 
             DefaultMutableTreeNode fieldNode;
             for (int i = 0; i < fieldCount; i++) {
-                fieldNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                fieldNode = this.addNode(fieldsNode,
                         fields[i].getStartPos(),
                         fields[i].getLength(),
-                        String.format("field %d: %s", i + 1, fields[i].getDeclaration()),
-                        Icons.Field,
-                        MESSAGES.getString("msg_field_info")
-                ));
+                        String.format("field %d", i + 1),
+                        fields[i].getDeclaration(),
+                        "msg_field_info",
+                        Icons.Field
+                );
                 fields[i].generateTreeNode(fieldNode, classFile);
-                fieldsNode.add(fieldNode);
             }
         }
     }
@@ -282,15 +284,15 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
             DefaultMutableTreeNode attrNode;
             for (int i = 0; i < attrCount; i++) {
                 attribute_info attr = attrs[i];
-                attrNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                attrNode = this.addNode(attrsNode,
                         attr.getStartPos(),
                         attr.getLength(),
-                        (i + 1) + ". " + attr.getName(),
-                        Icons.Annotations,
-                        MESSAGES.getString(attr.getMessageKey())
-                ));
+                        String.valueOf(i + 1),
+                        attr.getName(),
+                        attr.getMessageKey(),
+                        Icons.Annotations
+                );
                 attr.generateTreeNodeCommon(attrNode, this.classFile);
-                attrsNode.add(attrNode);
             }
         }
     }

@@ -214,6 +214,12 @@ public enum Icons {
      */
     Size("icons8-page-size-16.png"),
     /**
+     * Icon for Stack / Call stack entry.
+     *
+     * @see <a href="https://icons8.com/icon/43878/stack">Stack</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Stack("icons8-stack-16.png"),
+    /**
      * Icon for Tag or Type.
      *
      * @see <a href="https://icons8.com/icon/pmzH4rF8Lrv9/tag">Tag</a> icon by
@@ -227,6 +233,12 @@ public enum Icons {
      * <a href="https://icons8.com">Icons8</a>
      */
     Time("icons8-time-16.png"),
+    /**
+     * Icon for verification.
+     *
+     * @see <a href="https://icons8.com/icon/85086/verified-account">Verified Account</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Verification("icons8-verified-account-16.png"),
     /**
      * Icon for version.
      *

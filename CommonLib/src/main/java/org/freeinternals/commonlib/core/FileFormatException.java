@@ -15,18 +15,15 @@ public class FileFormatException extends Exception {
     private static final long serialVersionUID = 4876543219876500000L;
 
     /**
-     * Creates a new instance of <code>FileFormatException</code> without
-     * detail message.
-     */
-    public FileFormatException() {
-    }
-
-    /**
      * Constructs an instance of <code>FileFormatException</code> with the
      * specified detail message.
      * @param msg the detail message.
      */
     public FileFormatException(final String msg) {
         super(msg);
+    }
+
+    public FileFormatException(final String msg, final Throwable cause) {
+        super(msg, cause);
     }
 }

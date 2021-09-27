@@ -7,13 +7,17 @@
 package org.freeinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -36,11 +40,13 @@ import org.freeinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class StackMapTable_attribute extends attribute_info {
 
-    private static final String MESSAGE_OFFSET_DELTA = "offset_delta: ";
+    private static final String FIELD_OFFSET_DELTA = "offset_delta";
+    private static final String MSGKEY_OFFSET_DELTA= "msg_attr_stack_map_frame__all__offset_delta";
+    private static final String MSGKEY_VTI = "msg_attr_verification_type_info";
 
     /**
-     * Gives the number of {@link StackMapFrame} entries in the {@link #entries}
-     * table.
+     * Gives the number of {@link stack_map_frame} entries in the
+     * {@link #entries} table.
      */
     public final u2 number_of_entries;
     /**
@@ -48,16 +54,16 @@ public class StackMapTable_attribute extends attribute_info {
      * the method. The order of the stack map frames in the entries table is
      * significant.
      */
-    public final StackMapFrame[] entries;
+    public final stack_map_frame[] entries;
 
     StackMapTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
         this.number_of_entries = new u2(posDataInputStream);
         if (this.number_of_entries.value > 0) {
-            this.entries = new StackMapFrame[this.number_of_entries.value];
+            this.entries = new stack_map_frame[this.number_of_entries.value];
             for (int i = 0; i < this.number_of_entries.value; i++) {
-                this.entries[i] = new StackMapFrame(posDataInputStream);
+                this.entries[i] = new stack_map_frame(posDataInputStream);
             }
         } else {
             this.entries = null;
@@ -68,241 +74,35 @@ public class StackMapTable_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 6,
                 2,
-                "number_of_entries: " + this.number_of_entries.value
-        )));
+                "number_of_entries",
+                this.number_of_entries.value,
+                "msg_attr_StackMapTable__number_of_entries",
+                Icons.Counter
+        );
 
         if (this.number_of_entries.value > 0) {
             DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getLength() - 8,
-                    "entries[" + this.number_of_entries.value + "]"
+                    "entries[" + this.number_of_entries.value + "]",
+                    MESSAGES.getString("msg_attr_StackMapTable__entries")
             ));
             parentNode.add(entriesNode);
 
             for (int i = 0; i < this.number_of_entries.value; i++) {
-                DefaultMutableTreeNode entry = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode entry = this.addNode(entriesNode,
                         this.entries[i].getStartPos(),
                         this.entries[i].getLength(),
-                        String.format("%s.entry [%d]", this.getName(), i)
-                ));
-
-                entriesNode.add(entry);
-                this.generateSubnode(entry, this.entries[i], (ClassFile)classFile);
+                        String.format("entry %d", i + 1),
+                        this.entries[i].getFrameTypeName(),
+                        this.entries[i].getFrameMessageKey(),
+                        Icons.Stack
+                );
+                this.entries[i].generateTreeNode(entry, classFile);
             }
-        }
-    }
-
-    /**
-     * Generate Tree Node for {@link StackMapFrame}.
-     *
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
-     * </pre>
-     */
-    @SuppressWarnings("java:S3776")
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final StackMapFrame smf, final ClassFile classFile) {
-        int startPosMoving = smf.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                1,
-                "frame_type: " + smf.frame_type.value + " - " + StackMapFrame.FrameTypeEnum.getUnionName(smf.frame_type.value)
-        )));
-        startPosMoving += 1;
-
-        if (smf.union_same_locals_1_stack_item_frame != null) {
-
-            DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    smf.union_same_locals_1_stack_item_frame.stack[0].getLength(),
-                    "stack[1]"
-            ));
-            rootNode.add(stacks);
-
-            DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    smf.union_same_locals_1_stack_item_frame.stack[0].getStartPos(),
-                    smf.union_same_locals_1_stack_item_frame.stack[0].getLength(),
-                    "stack 0"
-            ));
-            stacks.add(stack);
-            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame.stack[0], classFile);
-
-        } else if (smf.union_same_locals_1_stack_item_frame_extended != null) {
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    MESSAGE_OFFSET_DELTA + smf.union_same_locals_1_stack_item_frame_extended.offset_delta.value
-            )));
-            startPosMoving += 2;
-
-            DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getLength(),
-                    "stack[1]"
-            ));
-            rootNode.add(stacks);
-
-            DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getStartPos(),
-                    smf.union_same_locals_1_stack_item_frame_extended.stack[0].getLength(),
-                    "stack 0"
-            ));
-            stacks.add(stack);
-            this.generateSubnode(stack, smf.union_same_locals_1_stack_item_frame_extended.stack[0], classFile);
-
-        } else if (smf.union_chop_frame != null) {
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    MESSAGE_OFFSET_DELTA + smf.union_chop_frame.offset_delta.value
-            )));
-            // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
-
-        } else if (smf.union_same_frame_extended != null) {
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    MESSAGE_OFFSET_DELTA + smf.union_same_frame_extended.offset_delta.value
-            )));
-            // startPosMoving += 2;   // Not needed for now, keep here in case the StackMapTable struture could be extended later
-
-        } else if (smf.union_append_frame != null) {
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    MESSAGE_OFFSET_DELTA + smf.union_append_frame.offset_delta.value
-            )));
-            startPosMoving += 2;
-
-            int sizeLocals = 0;
-            if (smf.union_append_frame.locals.length > 0) {
-                for (VerificationTypeInfo local : smf.union_append_frame.locals) {
-                    sizeLocals += local.getLength();
-                }
-                DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        sizeLocals,
-                        "locals[" + smf.union_append_frame.locals.length + "]"
-                ));
-                // startPosMoving += size_locals;  // Not needed for now, keep here in case the StackMapTable struture could be extended later
-                rootNode.add(locals);
-
-                for (int i = 0; i < smf.union_append_frame.locals.length; i++) {
-                    DefaultMutableTreeNode local = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            smf.union_append_frame.locals[i].getStartPos(),
-                            smf.union_append_frame.locals[i].getLength(),
-                            "local " + (i + 1)
-                    ));
-                    locals.add(local);
-                    this.generateSubnode(local, smf.union_append_frame.locals[i], classFile);
-                }
-            }
-
-        } else if (smf.union_full_frame != null) {
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    MESSAGE_OFFSET_DELTA + smf.union_full_frame.offset_delta.value
-            )));
-            startPosMoving += u2.LENGTH;
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    "number_of_locals: " + smf.union_full_frame.number_of_locals.value
-            )));
-            startPosMoving += u2.LENGTH;
-
-            int sizeLocals = 0;
-            if (smf.union_full_frame.number_of_locals.value > 0) {
-                for (int i = 0; i < smf.union_full_frame.number_of_locals.value; i++) {
-                    sizeLocals += smf.union_full_frame.locals[i].getLength();
-                }
-                DefaultMutableTreeNode locals = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        sizeLocals,
-                        "locals[" + smf.union_full_frame.number_of_locals.value + "]"
-                ));
-                startPosMoving += sizeLocals;
-                rootNode.add(locals);
-
-                for (int i = 0; i < smf.union_full_frame.locals.length; i++) {
-                    DefaultMutableTreeNode local = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            smf.union_full_frame.locals[i].getStartPos(),
-                            smf.union_full_frame.locals[i].getLength(),
-                            "local " + (i + 1)
-                    ));
-                    locals.add(local);
-                    this.generateSubnode(local, smf.union_full_frame.locals[i], classFile);
-                }
-            }
-
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    "number_of_stack_items: " + smf.union_full_frame.number_of_stack_items.value
-            )));
-            startPosMoving += 2;
-
-            int sizeStack = 0;
-            if (smf.union_full_frame.number_of_stack_items.value > 0) {
-                for (int i = 0; i < smf.union_full_frame.number_of_stack_items.value; i++) {
-                    sizeStack += smf.union_full_frame.stack[i].getLength();
-                }
-
-                DefaultMutableTreeNode stacks = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        sizeStack,
-                        "stack[" + smf.union_full_frame.number_of_stack_items.value + "]"
-                ));
-                rootNode.add(stacks);
-
-                for (int i = 0; i < smf.union_full_frame.stack.length; i++) {
-                    DefaultMutableTreeNode stack = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            smf.union_full_frame.stack[i].getStartPos(),
-                            smf.union_full_frame.stack[i].getLength(),
-                            "stack " + (i + 1)
-                    ));
-                    stacks.add(stack);
-                    this.generateSubnode(stack, smf.union_full_frame.stack[i], classFile);
-                }
-            }
-        } // End union_full_frame
-    }
-
-    /**
-     * Generate Tree Node for {@link VerificationTypeInfo}.
-     */
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final VerificationTypeInfo vti, final ClassFile classFile) {
-
-        int startPosMoving = vti.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                1,
-                "tag: " + vti.tag.value + " - " + VerificationTypeInfo.TagEnum.getTagName(vti.tag.value)
-        )));
-        startPosMoving += 1;
-
-        if (vti.union_Object_variable_info != null) {
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    "cpool_index: " + vti.union_Object_variable_info.cpool_index.value + " - " + classFile.getCPDescription(vti.union_Object_variable_info.cpool_index.value)
-            )));
-        } else if (vti.union_Uninitialized_variable_info != null) {
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    2,
-                    "offset: " + vti.union_Uninitialized_variable_info.offset.value
-            )));
         }
     }
 
@@ -311,15 +111,102 @@ public class StackMapTable_attribute extends attribute_info {
         return "msg_attr_StackMapTable";
     }
 
-    public static final class StackMapFrame extends FileComponent {
+    public enum FrameTypeEnum {
 
+        SAME(0, 63, "same_frame", "msg_attr_stack__same_frame", null),
+        SAME_LOCALS_1_STACK_ITEM(64, 127, "same_locals_1_stack_item_frame", "msg_attr_stack__same_locals_1_stack_item_frame", stack_map_frame.same_locals_1_stack_item_frame.class),
+        /**
+         * Tags in the range [128-246] are reserved for future use.
+         */
+        RESERVED(128, 246, "RESERVED", "msg_attr_stack__reserved", null),
+        SAME_LOCALS_1_STACK_ITEM_EXTENDED(247, 247, "same_locals_1_stack_item_frame_extended", "msg_attr_stack__same_locals_1_stack_item_frame_extended", stack_map_frame.same_locals_1_stack_item_frame_extended.class),
+        CHOP(248, 250, "chop_frame", "msg_attr_stack__chop_frame", stack_map_frame.chop_frame.class),
+        SAME_FRAME_EXTENDED(251, 251, "same_frame_extended", "msg_attr_stack__same_frame_extended", stack_map_frame.same_frame_extended.class),
+        APPEND(252, 254, "append_frame", "msg_attr_stack__append_frame", stack_map_frame.append_frame.class),
+        FULL_FRAME(255, 255, "full_frame", "msg_attr_stack__full_frame", stack_map_frame.full_frame.class);
+
+        public final short low;
+        public final short high;
+        public final String unionName;
+        public final String messageKey;
+
+        /**
+         * The Java class representing to the frame.
+         */
+        final Class<?> clazz;
+
+        FrameTypeEnum(int l, int h, String name, String msgKey, Class<?> type) {
+            this.low = (short) l;
+            this.high = (short) h;
+            this.unionName = name;
+            this.messageKey = msgKey;
+            this.clazz = type;
+        }
+
+        /**
+         * Check if the <code>value</code> is in the value range or not.
+         *
+         * @param value The test value
+         * @return   <code>true</code> if it is in range, else <code>false</code>
+         */
+        public boolean inRange(short value) {
+            return value >= this.low && value <= this.high;
+        }
+
+        /**
+         * Get the corresponding enum item for <code>value</code>.
+         *
+         * @param value The {@link stack_map_frame#frame_type} value
+         * @return The corresponding {@link FrameTypeEnum} of <code>value</code>
+         */
+        public static FrameTypeEnum valueOf(short value) {
+            for (FrameTypeEnum item : FrameTypeEnum.values()) {
+                if (item.inRange(value)) {
+                    return item;
+                }
+            }
+
+            throw new IllegalArgumentException("Unregnized enum value " + value + " for " + FrameTypeEnum.class.getName());
+        }
+    }
+
+    public abstract static class stack_frame extends FileComponent implements GenerateTreeNodeClassFile {
+        /**
+         * Get the calculated <code>offset_delta</code>.
+         */
+        public abstract int getOffsetDelta();
+    }
+
+    /**
+     * A stack map frame is represented by a discriminated union,
+     * <code>stack_map_frame</code>, which consists of a one-byte tag,
+     * indicating which item of the union is in use, followed by zero or more
+     * bytes, giving more information about the tag.
+     *
+     * <pre>
+     * union stack_map_frame {
+     *     same_frame;
+     *     same_locals_1_stack_item_frame;
+     *     same_locals_1_stack_item_frame_extended;
+     *     chop_frame;
+     *     same_frame_extended;
+     *     append_frame;
+     *     full_frame;
+     * }
+     * </pre>
+     */
+    public static final class stack_map_frame extends FileComponent implements GenerateTreeNodeClassFile {
         public final u1 frame_type;
-        public final SameLocals1StackItemFrame union_same_locals_1_stack_item_frame;
-        public final SameLocals1StackItemFrameExtended union_same_locals_1_stack_item_frame_extended;
-        public final ChopFrame union_chop_frame;
-        public final SameFrameExtended union_same_frame_extended;
-        public final AppendFrame union_append_frame;
-        public final FullFrame union_full_frame;
+
+        /**
+         * One of: - {@link same_locals_1_stack_item_frame}
+         * - {@link same_locals_1_stack_item_frame_extended}
+         * - {@link chop_frame}
+         * - {@link same_frame_extended}
+         * - {@link append_frame}
+         * - {@link full_frame}
+         */
+        public final stack_frame union_stack_frame;
 
         /**
          * <pre>
@@ -327,157 +214,394 @@ public class StackMapTable_attribute extends attribute_info {
          * </pre>
          */
         @SuppressWarnings("java:S1871")
-        private StackMapFrame(final PosDataInputStream posDataInputStream) throws IOException {
+        private stack_map_frame(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super.startPos = posDataInputStream.getPos();
 
             this.frame_type = new u1(posDataInputStream, true);
-            if (FrameTypeEnum.SAME.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.SAME_LOCALS_1_STACK_ITEM.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = new SameLocals1StackItemFrame(posDataInputStream);
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.SAME_LOCALS_1_STACK_ITEM_EXTENDED.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = new SameLocals1StackItemFrameExtended(posDataInputStream);
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.CHOP.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = new ChopFrame(posDataInputStream);
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.SAME_FRAME_EXTENDED.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = new SameFrameExtended(posDataInputStream);
-                this.union_append_frame = null;
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.APPEND.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = new AppendFrame(posDataInputStream, this.frame_type.value);
-                this.union_full_frame = null;
-            } else if (FrameTypeEnum.FULL_FRAME.inRange(this.frame_type.value)) {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = new FullFrame(posDataInputStream);
+
+            Class<?> clazz = FrameTypeEnum.valueOf(this.frame_type.value).clazz;
+            if (clazz != null) {
+                try {
+                    // There is only 1 constructor for sure
+                    Constructor<?> cons = clazz.getDeclaredConstructors()[0];
+                    switch (cons.getParameterCount()) {
+                        case 1:
+                            this.union_stack_frame = (stack_frame) (clazz.getDeclaredConstructors()[0].newInstance(posDataInputStream));
+                            break;
+                        case 2:
+                            this.union_stack_frame = (stack_frame) (clazz.getDeclaredConstructors()[0].newInstance(posDataInputStream, this.frame_type.value));
+                            break;
+                        default:
+                            throw new UnsupportedOperationException(String.format("Coding Problem: unrecognized contructor paramter count found = %s / %d", clazz.getName(), cons.getParameterCount()));
+                    }
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    // Print stack trace is needed to extract InvocationTargetException
+                    //  - https://stackoverflow.com/questions/6020719/
+                    ex.printStackTrace();
+
+                    throw new FileFormatException(String.format("Failed to parse the JVM stack_map_frame at position 0x%08X", posDataInputStream.getPos() - 1), ex);
+                }
             } else {
-                this.union_same_locals_1_stack_item_frame = null;
-                this.union_same_locals_1_stack_item_frame_extended = null;
-                this.union_chop_frame = null;
-                this.union_same_frame_extended = null;
-                this.union_append_frame = null;
-                this.union_full_frame = null;
+                this.union_stack_frame = null;
             }
 
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public static final class SameLocals1StackItemFrame extends FileComponent {
+        @SuppressWarnings("java:S3776") // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            this.addNode(rootNode,
+                    this.getStartPos(),
+                    u1.LENGTH,
+                    "frame_type",
+                    this.frame_type.value + " - " + this.getFrameTypeName(),
+                    "msg_attr_stack_map_frame__frame_type",
+                    Icons.Kind
+            );
 
-            public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
-
-            private SameLocals1StackItemFrame(final PosDataInputStream posDataInputStream)
-                    throws IOException {
-                super.startPos = posDataInputStream.getPos();
-                this.stack[0] = new VerificationTypeInfo(posDataInputStream);
-                super.length = posDataInputStream.getPos() - super.startPos;
+            if (this.union_stack_frame != null) {
+                this.union_stack_frame.generateTreeNode(rootNode, fileFormat);
             }
         }
 
-        public static final class SameLocals1StackItemFrameExtended extends FileComponent {
+        /**
+         * Get message key for the corresponding {@link #union_stack_frame}.
+         *
+         * @return {@link #union_stack_frame} message key, or <code>null</code> if {@link #union_stack_frame} is null
+         */
+        public String getFrameMessageKey () {
+            return FrameTypeEnum.valueOf(this.frame_type.value).messageKey;
+        }
+
+        /**
+         * Get the union name of {@link #frame_type}.
+         *
+         * @return {@link #frame_type} union name
+         */
+        public String getFrameTypeName() {
+            return FrameTypeEnum.valueOf(this.frame_type.value).unionName;
+        }
+
+        /**
+         * Get the calculated <code>offset_delta</code>.
+         */
+        public int getOffsetDelta() {
+            FrameTypeEnum type = FrameTypeEnum.valueOf(this.frame_type.value);
+            switch (type) {
+                case SAME:
+                    return this.frame_type.value;
+
+                case SAME_LOCALS_1_STACK_ITEM:
+                    return this.frame_type.value - 64;
+
+                case SAME_LOCALS_1_STACK_ITEM_EXTENDED:
+                case CHOP:
+                case SAME_FRAME_EXTENDED:
+                case APPEND:
+                case FULL_FRAME:
+                    return this.union_stack_frame.getOffsetDelta();
+
+                default:
+                    throw new UnsupportedOperationException("Unsupported offset_value for frame type: " + type.name());
+            }
+        }
+
+        /**
+         * The frame type <code>same_locals_1_stack_item_frame</code> is
+         * represented by tags in the range <code>[64, 127]</code>. This frame
+         * type indicates that the frame has exactly the same local variables as
+         * the previous frame and that the operand stack has one entry.
+         *
+         * <pre>
+         * same_locals_1_stack_item_frame {
+         *     u1 frame_type = SAME_LOCALS_1_STACK_ITEM;   // 64-127
+         *     verification_type_info stack[1];
+         * }
+         * </pre>
+         */
+        public static final class same_locals_1_stack_item_frame extends stack_frame {
+
+            public final verification_type_info[] stack = new verification_type_info[1];
+
+            same_locals_1_stack_item_frame(final PosDataInputStream posDataInputStream) throws IOException {
+                super.startPos = posDataInputStream.getPos();
+                this.stack[0] = new verification_type_info(posDataInputStream);
+                super.length = posDataInputStream.getPos() - super.startPos;
+            }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+                DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        this.stack[0].getLength(),
+                        "stack[1]"
+                ));
+                rootNode.add(stacksNode);
+
+                DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
+                        this.stack[0].getStartPos(),
+                        this.stack[0].getLength(),
+                        "stack 1",
+                        this.stack[0].getTagName(),
+                        MSGKEY_VTI,
+                        Icons.Verification
+                );
+                this.stack[0].generateTreeNode(stackNode, fileFormat);
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                throw new UnsupportedOperationException("Not supported for " + this.getClass().getName());
+            }
+        }
+
+        /**
+         * The frame type <code>same_locals_1_stack_item_frame_extended</code>
+         * is represented by the tag <code>247</code>. This frame type indicates
+         * that the frame has exactly the same local variables as the previous
+         * frame and that the operand stack has one entry.
+         *
+         * <pre>
+         * same_locals_1_stack_item_frame_extended {
+         *     u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED;   // 247
+         *     u2 offset_delta;
+         *     verification_type_info stack[1];
+         * }
+         * </pre>
+         */
+        public static final class same_locals_1_stack_item_frame_extended extends stack_frame {
 
             public final u2 offset_delta;
-            public final VerificationTypeInfo[] stack = new VerificationTypeInfo[1];
+            public final verification_type_info[] stack = new verification_type_info[1];
 
-            private SameLocals1StackItemFrameExtended(final PosDataInputStream posDataInputStream)
+            same_locals_1_stack_item_frame_extended(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset_delta = new u2(posDataInputStream);
-                this.stack[0] = new VerificationTypeInfo(posDataInputStream);
+                this.stack[0] = new verification_type_info(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
+            }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+
+                this.addNode(rootNode,
+                        startPosMoving, u2.LENGTH,
+                        FIELD_OFFSET_DELTA, this.offset_delta.value,
+                        MSGKEY_OFFSET_DELTA, Icons.Offset
+                );
+                startPosMoving += u2.LENGTH;
+
+                DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        this.stack[0].getLength(),
+                        "stack[1]"
+                ));
+                rootNode.add(stacksNode);
+
+                DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
+                        this.stack[0].getStartPos(),
+                        this.stack[0].getLength(),
+                        "stack 1",
+                        this.stack[0].getTagName(),
+                        MSGKEY_VTI,
+                        Icons.Verification
+                );
+                this.stack[0].generateTreeNode(stackNode, fileFormat);
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                return this.offset_delta.value;
             }
         }
 
-        public static final class ChopFrame extends FileComponent {
+        /**
+         * The frame type <code>chop_frame</code> is represented by tags in the
+         * range <code>[248-250]</code>. This frame type indicates that the
+         * frame has the same local variables as the previous frame except that
+         * the last k local variables are absent, and that the operand stack is
+         * empty.
+         *
+         * <pre>
+         * chop_frame {
+         *     u1 frame_type = CHOP;   // 248-250
+         *     u2 offset_delta;
+         * }
+         * </pre>
+         */
+        public static final class chop_frame extends stack_frame {
 
             public final u2 offset_delta;
 
-            private ChopFrame(final PosDataInputStream posDataInputStream)
-                    throws IOException {
+            chop_frame(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset_delta = new u2(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                this.addNode(rootNode,
+                        this.getStartPos(), u2.LENGTH,
+                        FIELD_OFFSET_DELTA, this.offset_delta.value,
+                        MSGKEY_OFFSET_DELTA, Icons.Offset
+                );
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                return this.offset_delta.value;
+            }
         }
 
-        public static final class SameFrameExtended extends FileComponent {
+        /**
+         * The frame type <code>same_frame_extended</code> is represented by the
+         * tag <code>251</code>. This frame type indicates that the frame has
+         * exactly the same local variables as the previous frame and that the
+         * operand stack is empty.
+         *
+         * <pre>
+         * same_frame_extended {
+         *     u1 frame_type = SAME_FRAME_EXTENDED;   // 251
+         *     u2 offset_delta;
+         * }
+         * </pre>
+         */
+        public static final class same_frame_extended extends stack_frame {
 
             public final u2 offset_delta;
 
-            private SameFrameExtended(final PosDataInputStream posDataInputStream)
-                    throws IOException {
+            same_frame_extended(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset_delta = new u2(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                this.addNode(rootNode,
+                        this.getStartPos(), u2.LENGTH,
+                        FIELD_OFFSET_DELTA, this.offset_delta.value,
+                        MSGKEY_OFFSET_DELTA, Icons.Offset
+                );
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                return this.offset_delta.value;
+            }
         }
 
-        public static final class AppendFrame extends FileComponent {
+        /**
+         * The frame type <code>append_frame</code> is represented by tags in
+         * the range <code>[252-254]</code>. This frame type indicates that the
+         * frame has the same locals as the previous frame except that k
+         * additional locals are defined, and that the operand stack is empty.
+         *
+         * <pre>
+         * append_frame {
+         *     u1 frame_type = APPEND;   // 252-254
+         *     u2 offset_delta;
+         *     verification_type_info locals[frame_type - 251];
+         * }
+         * </pre>
+         */
+        public static final class append_frame extends stack_frame {
 
             public final u2 offset_delta;
-            public final VerificationTypeInfo[] locals;
+            public final verification_type_info[] locals;
 
-            private AppendFrame(final PosDataInputStream posDataInputStream, short frameType)
-                    throws IOException {
+            append_frame(final PosDataInputStream posDataInputStream, short frameType) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset_delta = new u2(posDataInputStream);
                 int size = frameType - 251;
-                this.locals = new VerificationTypeInfo[size];
+                this.locals = new verification_type_info[size];
                 for (int i = 0; i < size; i++) {
-                    this.locals[i] = new VerificationTypeInfo(posDataInputStream);
+                    this.locals[i] = new verification_type_info(posDataInputStream);
                 }
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+
+                this.addNode(rootNode,
+                        startPosMoving, u2.LENGTH,
+                        FIELD_OFFSET_DELTA, this.offset_delta.value,
+                        MSGKEY_OFFSET_DELTA, Icons.Offset
+                );
+                startPosMoving += u2.LENGTH;
+
+                int sizeLocals = 0;
+                if (this.locals.length > 0) {
+                    for (verification_type_info local : this.locals) {
+                        sizeLocals += local.getLength();
+                    }
+                    DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPosMoving,
+                            sizeLocals,
+                            "locals[" + this.locals.length + "]",
+                            MESSAGES.getString("msg_attr_stack__append_frame__locals")
+                    ));
+                    rootNode.add(localsNode);
+
+                    for (int i = 0; i < this.locals.length; i++) {
+                        DefaultMutableTreeNode localNode = this.addNode(localsNode,
+                                this.locals[i].getStartPos(),
+                                this.locals[i].getLength(),
+                                "local " + (i + 1),
+                                this.locals[i].getTagName(),
+                                MSGKEY_VTI,
+                                Icons.Verification
+                        );
+                        this.locals[i].generateTreeNode(localNode, fileFormat);
+                    }
+                }
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                return this.offset_delta.value;
+            }
         }
 
-        public static final class FullFrame extends FileComponent {
+        /**
+         * The frame type <code>full_frame</code> is represented by the tag
+         * <code>255</code>.
+         *
+         * <pre>
+         * full_frame {
+         *     u1 frame_type = FULL_FRAME;    // 255
+         *     u2 offset_delta;
+         *     u2 number_of_locals;
+         *     verification_type_info locals[number_of_locals];
+         *     u2 number_of_stack_items;
+         *     verification_type_info stack[number_of_stack_items];
+         * }
+         * </pre>
+         */
+        public static final class full_frame extends stack_frame {
 
             public final u2 offset_delta;
             public final u2 number_of_locals;
-            public final VerificationTypeInfo[] locals;
+            public final verification_type_info[] locals;
             public final u2 number_of_stack_items;
-            public final VerificationTypeInfo[] stack;
+            public final verification_type_info[] stack;
 
-            private FullFrame(final PosDataInputStream posDataInputStream)
-                    throws IOException {
+            full_frame(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
 
                 this.offset_delta = new u2(posDataInputStream);
                 this.number_of_locals = new u2(posDataInputStream);
                 if (this.number_of_locals.value > 0) {
-                    this.locals = new VerificationTypeInfo[this.number_of_locals.value];
+                    this.locals = new verification_type_info[this.number_of_locals.value];
                     for (int i = 0; i < this.number_of_locals.value; i++) {
-                        this.locals[i] = new VerificationTypeInfo(posDataInputStream);
+                        this.locals[i] = new verification_type_info(posDataInputStream);
                     }
                 } else {
                     this.locals = null;
@@ -485,9 +609,9 @@ public class StackMapTable_attribute extends attribute_info {
 
                 this.number_of_stack_items = new u2(posDataInputStream);
                 if (this.number_of_stack_items.value > 0) {
-                    this.stack = new VerificationTypeInfo[this.number_of_stack_items.value];
+                    this.stack = new verification_type_info[this.number_of_stack_items.value];
                     for (int i = 0; i < this.number_of_stack_items.value; i++) {
-                        this.stack[i] = new VerificationTypeInfo(posDataInputStream);
+                        this.stack[i] = new verification_type_info(posDataInputStream);
                     }
                 } else {
                     this.stack = null;
@@ -495,79 +619,111 @@ public class StackMapTable_attribute extends attribute_info {
 
                 super.length = posDataInputStream.getPos() - super.startPos;
             }
-        }
 
-        public enum FrameTypeEnum {
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
 
-            SAME(0, 63, "same_frame"),
-            SAME_LOCALS_1_STACK_ITEM(64, 127, "same_locals_1_stack_item_frame"),
-            SAME_LOCALS_1_STACK_ITEM_EXTENDED(247, 247, "same_locals_1_stack_item_frame_extended"),
-            CHOP(248, 250, "chop_frame"),
-            SAME_FRAME_EXTENDED(251, 251, "same_frame_extended"),
-            APPEND(252, 254, "append_frame"),
-            FULL_FRAME(255, 255, "full_frame");
+                this.addNode(rootNode,
+                        startPosMoving, u2.LENGTH,
+                        FIELD_OFFSET_DELTA, this.offset_delta.value,
+                        MSGKEY_OFFSET_DELTA, Icons.Offset
+                );
+                startPosMoving += u2.LENGTH;
 
-            public final short low;
-            public final short high;
-            public final String unionName;
-            public static final String UNIONNAME_UNRECOGNIZED = "Unrecognized union name";
+                this.addNode(rootNode,
+                        startPosMoving, u2.LENGTH,
+                        "number_of_locals", this.number_of_locals.value,
+                        "msg_attr_stack__full_frame__number_of_locals", Icons.Counter
+                );
+                startPosMoving += u2.LENGTH;
 
-            FrameTypeEnum(int l, int h, String name) {
-                this.low = (short) l;
-                this.high = (short) h;
-                this.unionName = name;
-            }
+                int sizeLocals = 0;
+                if (this.number_of_locals.value > 0) {
+                    for (int i = 0; i < this.number_of_locals.value; i++) {
+                        sizeLocals += this.locals[i].getLength();
+                    }
+                    DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPosMoving,
+                            sizeLocals,
+                            "locals[" + this.number_of_locals.value + "]",
+                            MESSAGES.getString("msg_attr_stack__full_frame__locals")
+                    ));
+                    startPosMoving += sizeLocals;
+                    rootNode.add(localsNode);
 
-            /**
-             * Check if the <code>value</code> is in the value range or not.
-             *
-             * @param value The test value
-             * @return   <code>true</code> if it is in range, else
-             * <code>false</code>
-             */
-            public boolean inRange(short value) {
-                return value >= this.low && value <= this.high;
-            }
-
-            /**
-             * Get the corresponding union name of the <code>value</code>.
-             *
-             * @param value The {@link StackMapFrame#frame_type} value
-             * @return The corresponding {@link #unionName} of
-             * <code>value</code>
-             */
-            public static String getUnionName(short value) {
-                String result = UNIONNAME_UNRECOGNIZED;
-                for (FrameTypeEnum item : FrameTypeEnum.values()) {
-                    if (item.inRange(value)) {
-                        result = item.unionName;
-                        break;
+                    for (int i = 0; i < this.locals.length; i++) {
+                        DefaultMutableTreeNode localNode = this.addNode(localsNode,
+                                this.locals[i].getStartPos(),
+                                this.locals[i].getLength(),
+                                "local " + (i + 1),
+                                this.locals[i].getTagName(),
+                                MSGKEY_VTI,
+                                Icons.Verification
+                        );
+                        this.locals[i].generateTreeNode(localNode, fileFormat);
                     }
                 }
 
-                return result;
+                this.addNode(rootNode,
+                        startPosMoving, u2.LENGTH,
+                        "number_of_stack_items", this.number_of_stack_items.value,
+                        "msg_attr_stack__full_frame__number_of_stack_items", Icons.Counter
+                );
+                startPosMoving += u2.LENGTH;
+
+                int sizeStack = 0;
+                if (this.number_of_stack_items.value > 0) {
+                    for (int i = 0; i < this.number_of_stack_items.value; i++) {
+                        sizeStack += this.stack[i].getLength();
+                    }
+
+                    DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPosMoving,
+                            sizeStack,
+                            "stack[" + this.number_of_stack_items.value + "]",
+                            MESSAGES.getString("msg_attr_stack__full_frame__stack")
+                    ));
+                    rootNode.add(stacksNode);
+
+                    for (int i = 0; i < this.stack.length; i++) {
+                        DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
+                                this.stack[i].getStartPos(),
+                                this.stack[i].getLength(),
+                                "stack " + (i + 1),
+                                this.stack[i].getTagName(),
+                                MSGKEY_VTI,
+                                Icons.Verification
+                        );
+                        this.stack[i].generateTreeNode(stackNode, fileFormat);
+                    }
+                }
+            }
+
+            @Override
+            public int getOffsetDelta() {
+                return this.offset_delta.value;
             }
         }
-
     }
 
-    public static final class VerificationTypeInfo extends FileComponent {
+    public static final class verification_type_info extends FileComponent implements GenerateTreeNodeClassFile {
 
         public final u1 tag;
-        public final ObjectVariableInfo union_Object_variable_info;
-        public final UninitializedVariableInfo union_Uninitialized_variable_info;
+        public final Object_variable_info union_Object_variable_info;
+        public final Uninitialized_variable_info union_Uninitialized_variable_info;
 
-        private VerificationTypeInfo(final PosDataInputStream posDataInputStream)
+        private verification_type_info(final PosDataInputStream posDataInputStream)
                 throws IOException {
             super.startPos = posDataInputStream.getPos();
 
             this.tag = new u1(posDataInputStream, true);
             if (this.tag.value == TagEnum.ITEM_Object.value) {
-                this.union_Object_variable_info = new ObjectVariableInfo(posDataInputStream);
+                this.union_Object_variable_info = new Object_variable_info(posDataInputStream);
                 this.union_Uninitialized_variable_info = null;
             } else if (this.tag.value == TagEnum.ITEM_Uninitialized.value) {
                 this.union_Object_variable_info = null;
-                this.union_Uninitialized_variable_info = new UninitializedVariableInfo(posDataInputStream);
+                this.union_Uninitialized_variable_info = new Uninitialized_variable_info(posDataInputStream);
             } else {
                 this.union_Object_variable_info = null;
                 this.union_Uninitialized_variable_info = null;
@@ -576,11 +732,56 @@ public class StackMapTable_attribute extends attribute_info {
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 
-        public static final class ObjectVariableInfo {
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            ClassFile classFile = (ClassFile) fileFormat;
+            int startPosMoving = this.getStartPos();
+
+            this.addNode(rootNode,
+                    startPosMoving,
+                    1,
+                    "tag",
+                    this.tag.value + " - " + this.getTagName(),
+                    "msg_attr_verification_type_info__tag",
+                    Icons.Tag
+            );
+            startPosMoving += 1;
+
+            if (this.union_Object_variable_info != null) {
+                this.addNode(rootNode,
+                        startPosMoving,
+                        2,
+                        "cpool_index",
+                        this.union_Object_variable_info.cpool_index.value + " - " + classFile.getCPDescription(this.union_Object_variable_info.cpool_index.value),
+                        "msg_attr_verification_type_info__cpool_index",
+                        Icons.Index
+                );
+            } else if (this.union_Uninitialized_variable_info != null) {
+                this.addNode(rootNode,
+                        startPosMoving,
+                        2,
+                        "offset",
+                        this.union_Uninitialized_variable_info.offset.value,
+                        "msg_attr_verification_type_info__offset",
+                        Icons.Offset
+                );
+            }
+        }
+
+        /**
+         * Get name of {@link #tag}.
+         *
+         * @return {@link #tag} name
+         */
+        public String getTagName() {
+            return verification_type_info.TagEnum.getTagName(this.tag.value);
+        }
+
+        public static final class Object_variable_info {
 
             public final u2 cpool_index;
 
-            ObjectVariableInfo(final PosDataInputStream posDataInputStream) throws IOException {
+            Object_variable_info(final PosDataInputStream posDataInputStream) throws IOException {
                 this.cpool_index = new u2(posDataInputStream);
             }
         }
@@ -591,11 +792,11 @@ public class StackMapTable_attribute extends attribute_info {
          * </pre>
          */
         @SuppressWarnings("java:S1104")
-        public static final class UninitializedVariableInfo {
+        public static final class Uninitialized_variable_info {
 
             public u2 offset;
 
-            UninitializedVariableInfo(final PosDataInputStream posDataInputStream) throws IOException {
+            Uninitialized_variable_info(final PosDataInputStream posDataInputStream) throws IOException {
                 this.offset = new u2(posDataInputStream);
             }
         }

@@ -151,7 +151,6 @@ public class Code_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         int i;
         final int codeLength = this.code_length.value;
-        DefaultMutableTreeNode treeNodeExceptionTable;
         DefaultMutableTreeNode treeNodeExceptionTableItem;
         DefaultMutableTreeNode treeNodeAttribute;
         DefaultMutableTreeNode treeNodeAttributeItem;
@@ -199,23 +198,25 @@ public class Code_attribute extends attribute_info {
 
         // Add exception table
         if (this.exception_table_length.value > 0) {
-            treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 14 + codeLength + 2,
                     ExceptionTable.LENGTH * this.exception_table_length.value,
-                    "exception_table[" + this.exception_table_length.value + "]"
+                    "exception_table[" + this.exception_table_length.value + "]",
+                    MESSAGES.getString("msg_attr_exception_table")
             ));
 
             Code_attribute.ExceptionTable et;
             for (i = 0; i < this.exception_table_length.value; i++) {
                 et = this.getExceptionTable(i);
-
-                treeNodeExceptionTableItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                treeNodeExceptionTableItem = this.addNode(treeNodeExceptionTable,
                         et.getStartPos(),
                         et.getLength(),
-                        String.format("exception_table [%d]", i)
-                ));
+                        String.valueOf(i + 1),
+                        "exception_table",
+                        "msg_attr_exception_table",
+                        Icons.Exception
+                );
                 et.generateTreeNode(treeNodeExceptionTableItem, classFile);
-                treeNodeExceptionTable.add(treeNodeExceptionTableItem);
             }
 
             parentNode.add(treeNodeExceptionTable);
@@ -224,11 +225,14 @@ public class Code_attribute extends attribute_info {
         // Add attributes
         final int attrCount = this.attributes_count.value;
         final int attrStartPos = super.startPos + 14 + codeLength + 2 + this.exception_table_length.value * ExceptionTable.LENGTH;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 attrStartPos,
                 2,
-                "attributes_count: " + attrCount
-        )));
+                "attributes_count",
+                attrCount,
+                "msg_attr_Code_attributes_count",
+                Icons.Counter
+        );
         if (attrCount > 0) {
             int attrLength = 0;
             for (attribute_info codeAttr : this.attributes) {
@@ -238,20 +242,21 @@ public class Code_attribute extends attribute_info {
             treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrStartPos + 2,
                     attrLength,
-                    "attributes[" + attrCount + "]"
+                    "attributes[" + attrCount + "]",
+                    MESSAGES.getString("msg_attr_Code_attributes")
             ));
 
             for (i = 0; i < attrCount; i++) {
                 attribute_info attr = this.attributes[i];
-                treeNodeAttributeItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                treeNodeAttributeItem = this.addNode(treeNodeAttribute,
                         attr.getStartPos(),
                         attr.getLength(),
-                        (i + 1) + ". " + attr.getName(),
-                        Icons.Annotations,
-                        MESSAGES.getString(attr.getMessageKey())
-                ));
+                        String.valueOf(i + 1),
+                        attr.getName(),
+                        attr.getMessageKey(),
+                        Icons.Annotations
+                );
                 attr.generateTreeNodeCommon(treeNodeAttributeItem, (ClassFile) classFile);
-                treeNodeAttribute.add(treeNodeAttributeItem);
             }
 
             parentNode.add(treeNodeAttribute);

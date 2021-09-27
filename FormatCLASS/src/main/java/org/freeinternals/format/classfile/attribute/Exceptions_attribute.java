@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CONSTANT_Class_info;
@@ -99,28 +100,34 @@ public class Exceptions_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int i;
         final int numOfExceptions = this.number_of_exceptions.value;
-        DefaultMutableTreeNode treeNodeExceptions;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 startPos + 6,
-                2,
-                "number_of_exceptions: " + numOfExceptions
-        )));
+                u2.LENGTH,
+                "number_of_exceptions",
+                numOfExceptions,
+                "msg_attr_Exceptions__number_of_exceptions",
+                Icons.Counter
+        );
         if (numOfExceptions > 0) {
-            treeNodeExceptions = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode treeNodeExceptions = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
-                    numOfExceptions * 2,
-                    "exceptions"));
+                    numOfExceptions * u2.LENGTH,
+                    String.format("exceptions [%d]", numOfExceptions),
+                    MESSAGES.getString("msg_attr_Exceptions__exception_index_table")
+            ));
 
             for (i = 0; i < numOfExceptions; i++) {
                 int cpIndex = this.getExceptionIndexTableItem(i);
-                treeNodeExceptions.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPos + 10 + i * 2,
-                        2,
-                        String.format("exception_index_table[%d]: cp_index=%d - %s", i, cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex))
-                )));
+                this.addNode(treeNodeExceptions,
+                        startPos + 10 + i * u2.LENGTH,
+                        u2.LENGTH,
+                        String.format("exception_index_table %d", i + 1),
+                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "exception type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                        "msg_attr_Exceptions__exception_index_table",
+                        Icons.Exception
+                );
             }
-
             parentNode.add(treeNodeExceptions);
         }
     }
