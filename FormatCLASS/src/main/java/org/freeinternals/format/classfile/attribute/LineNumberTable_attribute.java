@@ -12,7 +12,9 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -84,16 +86,21 @@ public class LineNumberTable_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         final int lnt_length = this.line_number_table_length.value;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 6,
-                2,
-                "line_number_table_length: " + lnt_length)));
+                u2.LENGTH,
+                "line_number_table_length",
+                lnt_length,
+                "msg_attr_line_number_table_length",
+                Icons.Length
+        );
 
         if (lnt_length > 0) {
             final DefaultMutableTreeNode treeNodeLnt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     lnt_length * 4,
-                    "line_number_table[" + lnt_length + "]"
+                    "line_number_table[" + lnt_length + "]",
+                    MESSAGES.getString("msg_attr_line_number_table")
             ));
 
             DefaultMutableTreeNode treeNodeLntItem;
@@ -101,37 +108,19 @@ public class LineNumberTable_attribute extends attribute_info {
             for (int i = 0; i < lnt_length; i++) {
                 lnt = this.getLineNumberTable(i);
 
-                treeNodeLntItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                treeNodeLntItem = this.addNode(treeNodeLnt,
                         lnt.getStartPos(),
                         lnt.getLength(),
-                        String.format("line_number_table [%d]", i)
-                ));
-                this.generateSubnode(treeNodeLntItem, lnt);
-                treeNodeLnt.add(treeNodeLntItem);
+                        String.valueOf(i + 1),
+                        "line_number_table",
+                        "msg_attr_line_number_table",
+                        Icons.Row
+                );
+                lnt.generateTreeNode(treeNodeLntItem, classFile);
             }
 
             parentNode.add(treeNodeLnt);
         }
-    }
-
-
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final LineNumberTable_attribute.LineNumberTable lnt) {
-        if (lnt == null) {
-            return;
-        }
-
-        final int startPosMoving = lnt.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                2,
-                "start_pc: " + lnt.start_pc.value
-        )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving + 2,
-                2,
-                "line_number: " + lnt.line_number.value
-        )));
     }
 
     @Override
@@ -146,7 +135,7 @@ public class LineNumberTable_attribute extends attribute_info {
      * @author Amos Shi
      * @see LineNumberTable_attribute
      */
-    public static final class LineNumberTable extends FileComponent {
+    public static final class LineNumberTable extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 4;
         public final u2 start_pc;
@@ -158,6 +147,27 @@ public class LineNumberTable_attribute extends attribute_info {
 
             this.start_pc = new u2(posDataInputStream);
             this.line_number = new u2(posDataInputStream);
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            final int startPosMoving = this.getStartPos();
+            this.addNode(parentNode,
+                    startPosMoving,
+                    u2.LENGTH,
+                    "start_pc",
+                    this.start_pc.value,
+                    "msg_attr_line_number_table__start_pc",
+                    Icons.Offset
+            );
+            this.addNode(parentNode,
+                    startPosMoving + u2.LENGTH,
+                    u2.LENGTH,
+                    "line_number",
+                    this.line_number.value,
+                    "msg_attr_line_number_table__line_number",
+                    Icons.Data
+            );
         }
     }
 }

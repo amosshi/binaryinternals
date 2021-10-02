@@ -12,8 +12,10 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -83,84 +85,48 @@ public class LocalVariableTable_attribute extends attribute_info {
 
         return lvt;
     }
-    
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         final int lvt_length = this.local_variable_table_length.value;
-
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 super.startPos + 6,
-                2,
-                "local_variable_table_length: " + lvt_length
-        )));
+                u2.LENGTH,
+                "local_variable_table_length",
+                lvt_length,
+                "msg_attr_local_variable_table_length",
+                Icons.Length
+        );
 
         if (lvt_length > 0) {
             final DefaultMutableTreeNode treeNodeLvt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     lvt_length * LocalVariableTable_attribute.LocalVariableTable.LENGTH,
-                    "local_variable_table[" + lvt_length + "]"
+                    "local_variable_table[" + lvt_length + "]",
+                    MESSAGES.getString("msg_attr_local_variable_table")
             ));
 
-            DefaultMutableTreeNode treeNodeLvtItem;
-            LocalVariableTable_attribute.LocalVariableTable lvt;
             for (int i = 0; i < lvt_length; i++) {
-                lvt = this.getLocalVariableTable(i);
-
-                treeNodeLvtItem = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                LocalVariableTable_attribute.LocalVariableTable lvt = this.getLocalVariableTable(i);
+                DefaultMutableTreeNode treeNodeLvtItem = this.addNode(treeNodeLvt,
                         lvt.getStartPos(),
                         lvt.getLength(),
-                        String.format("local_variable_table [%05d]", i)
-                ));
-                this.generateSubnode(treeNodeLvtItem, lvt, (ClassFile)classFile);
-                treeNodeLvt.add(treeNodeLvtItem);
+                        String.format("[%05d]", i + 1),
+                        "local_variable_table",
+                        "msg_attr_local_variable_table",
+                        Icons.Row
+                );
+                lvt.generateTreeNode(treeNodeLvtItem, classFile);
             }
 
             parentNode.add(treeNodeLvt);
         }
     }
 
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final LocalVariableTable_attribute.LocalVariableTable lvt, final ClassFile classFile) {
-        if (lvt == null) {
-            return;
-        }
-
-        final int pos = lvt.getStartPos();
-        int cpIndex;
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
-                2,
-                "start_pc: " + lvt.start_pc.value
-        )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 2,
-                2,
-                "length: " + lvt.length_code.value
-        )));
-        cpIndex = lvt.name_index.value;
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 4,
-                2,
-                String.format("name_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
-        )));
-        cpIndex = lvt.descriptor_index.value;
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 6,
-                2,
-                String.format("descriptor_index: %d - %s", cpIndex, classFile.getCPDescription(cpIndex))
-        )));
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 8,
-                2,
-                "index: " + lvt.index.value
-        )));
-    }
-
     @Override
     public String getMessageKey() {
         return "msg_attr_LocalVariableTable";
     }
-
 
     /**
      * The {@code local_variable_table} structure in {@code LocalVariableTable}
@@ -169,7 +135,7 @@ public class LocalVariableTable_attribute extends attribute_info {
      * @author Amos Shi
      * @see LocalVariableTable_attribute
      */
-    public static final class LocalVariableTable extends FileComponent {
+    public static final class LocalVariableTable extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 10;
         /**
@@ -213,6 +179,60 @@ public class LocalVariableTable_attribute extends attribute_info {
             this.name_index = new u2(posDataInputStream);
             this.descriptor_index = new u2(posDataInputStream);
             this.index = new u2(posDataInputStream);
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            final int pos = this.getStartPos();
+            final ClassFile classFile = (ClassFile) fileFormat;
+            int cpIndex;
+
+            this.addNode(parentNode,
+                    pos,
+                    u2.LENGTH,
+                    "start_pc",
+                    this.start_pc.value,
+                    "msg_attr_local_variable_table__start_pc_length",
+                    Icons.Offset
+            );
+
+            this.addNode(parentNode,
+                    pos + 2,
+                    u2.LENGTH,
+                    "length",
+                    this.length_code.value,
+                    "msg_attr_local_variable_table__start_pc_length",
+                    Icons.Length
+            );
+
+            cpIndex = this.name_index.value;
+            this.addNode(parentNode,
+                    pos + 4,
+                    u2.LENGTH,
+                    "name_index",
+                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                    "msg_attr_local_variable_table__name_index",
+                    Icons.Name
+            );
+
+            cpIndex = this.descriptor_index.value;
+            this.addNode(parentNode,
+                    pos + 6,
+                    u2.LENGTH,
+                    "descriptor_index",
+                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                    "msg_attr_local_variable_table__descriptor_index",
+                    Icons.Descriptor
+            );
+
+            this.addNode(parentNode,
+                    pos + 8,
+                    u2.LENGTH,
+                    "index",
+                    this.index.value,
+                    "msg_attr_local_variable_table__index",
+                    Icons.Index
+            );
         }
     }
 }

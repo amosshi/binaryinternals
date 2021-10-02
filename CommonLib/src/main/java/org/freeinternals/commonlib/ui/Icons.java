@@ -192,6 +192,12 @@ public enum Icons {
      */
     Return("icons8-return-16.png"),
     /**
+     * Icon for row / line.
+     *
+     * @see <a href="https://icons8.com/icon/3ZQ7JYqlkFtC/row">Row</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Row("icons8-row-16.png"),
+    /**
      * Icon for shortcut.
      *
      * @see <a href="https://icons8.com/icon/i1z7pQ2orcJk/shortcut">Shortcut</a>
