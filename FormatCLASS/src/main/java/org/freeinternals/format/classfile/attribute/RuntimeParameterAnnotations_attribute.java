@@ -100,7 +100,7 @@ public abstract class RuntimeParameterAnnotations_attribute extends attribute_in
                         String.format("annotation %d", i + 1)
                 ));
                 annotations.add(annotationNode);
-                Annotation.generateSubnode(annotationNode, pa.annotations[i], classFile);
+                pa.annotations[i].generateTreeNode(annotationNode, classFile);
             }
         }
     }

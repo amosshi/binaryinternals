@@ -59,7 +59,7 @@ public abstract class RuntimeAnnotations_attribute extends attribute_info {
     // 4.7.17. The RuntimeInvisibleAnnotations Attribute
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        ClassFile classFile = (ClassFile) format;
+        final ClassFile classFile = (ClassFile) format;
         final int startPosMoving = super.startPos;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -83,7 +83,7 @@ public abstract class RuntimeAnnotations_attribute extends attribute_info {
                         String.format("annotation %d: %s", i + 1, classFile.getCPDescription(a.type_index.value))
                 ));
                 annotationsNode.add(annotationNode);
-                Annotation.generateSubnode(annotationNode, a, classFile);
+                a.generateTreeNode(annotationNode, format);
             }
         }
     }

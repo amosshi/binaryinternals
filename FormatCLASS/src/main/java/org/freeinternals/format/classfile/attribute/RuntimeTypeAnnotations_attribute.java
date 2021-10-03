@@ -69,7 +69,7 @@ public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
                         String.format("type_annotation %d", i + 1)
                 ));
                 annotationsNode.add(annotation);
-                this.generateSubnode(annotation, this.annotations[i], (ClassFile)classFile);
+                this.generateSubnode(annotation, this.annotations[i], (ClassFile) classFile);
             }
         }
     }
@@ -222,17 +222,16 @@ public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
         }
 
         // target_path
-        DefaultMutableTreeNode targetPath = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode targetPathNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 ta.target_path.getLength(),
                 "target_path"
         ));
-        startPosMoving += ta.target_path.getLength();
-        rootNode.add(targetPath);
-        this.generateSubnode(targetPath, ta.target_path);
+        rootNode.add(targetPathNode);
+        this.generateSubnode(targetPathNode, ta.target_path);
 
         // Annotation
-        Annotation.generateSubnode(rootNode, ta, startPosMoving, classFile);
+        ta.at.generateTreeNode(rootNode, classFile);
     }
 
     // 4.7.20. localvar_target
@@ -330,7 +329,35 @@ public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
         }
     }
 
-    public static class TypeAnnotation extends Annotation {
+    /**
+     * The <code>type_annotation</code> structure has the following format.
+     *
+     * <pre>
+     * type_annotation {
+     *   u1 target_type;
+     *   union {
+     *     type_parameter_target;
+     *     supertype_target;
+     *     type_parameter_bound_target;
+     *     empty_target;
+     *     formal_parameter_target;
+     *     throws_target;
+     *     localvar_target;
+     *     catch_target;
+     *     offset_target;
+     *     type_argument_target;
+     *   } target_info;
+     *   type_path target_path;
+     *
+     *   u2        type_index;
+     *   u2        num_element_value_pairs;
+     *   {   u2            element_name_index;
+     *       element_value value;
+     *   } element_value_pairs[num_element_value_pairs];
+     * }
+     * </pre>
+     */
+    public static class TypeAnnotation extends FileComponent {
 
         public final u1 target_type;
         public final TypeParameterTarget union_type_parameter_target;
@@ -344,16 +371,22 @@ public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
         public final OffsetTarget union_offset_target;
         public final TypeArgumentTarget union_type_argument_target;
         public final TypePath target_path;
+        /**
+         * The rest fields are the same as {@link Annotation}
+         */
+        public final Annotation at;
 
         /**
          * <pre>
          * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
          * </pre>
+         *
+         * @param posDataInputStream   Input stream
+         * @throws IOException         Read file failed
+         * @throws FileFormatException Invalid file format
          */
         @SuppressWarnings("java:S3776")
         public TypeAnnotation(PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-            super(posDataInputStream, false);
-
             this.target_type = new u1(posDataInputStream);
             if (this.target_type.value == TargetType.VALUE_00.value
                     || this.target_type.value == TargetType.VALUE_01.value) {
@@ -492,7 +525,7 @@ public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
                 this.union_type_argument_target = null;
             }
             this.target_path = new TypePath(posDataInputStream);
-            super.initAnnotation(posDataInputStream);
+            this.at = new Annotation(posDataInputStream);
             super.length = posDataInputStream.getPos() - super.startPos;
         }
 

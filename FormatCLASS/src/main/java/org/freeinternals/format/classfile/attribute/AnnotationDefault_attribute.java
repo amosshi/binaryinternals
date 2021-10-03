@@ -68,8 +68,7 @@ public class AnnotationDefault_attribute extends attribute_info {
                 "default_value"
         ));
         parentNode.add(defaultValueNode);
-
-        Annotation.generateSubnode(defaultValueNode, this.default_value, (ClassFile)classFile);
+        this.default_value.generateTreeNode(defaultValueNode, classFile);
     }
 
     @Override
