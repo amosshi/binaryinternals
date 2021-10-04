@@ -44,16 +44,16 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
 
     public final u2 type_index;
     public final u2 num_element_value_pairs;
-    public final Annotation.ElementValuePair[] element_value_pairs;
+    public final Annotation.element_value_pair[] element_value_pairs;
 
     protected Annotation(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super.startPos = posDataInputStream.getPos();
         this.type_index = new u2(posDataInputStream);
         this.num_element_value_pairs = new u2(posDataInputStream);
         if (this.num_element_value_pairs.value > 0) {
-            this.element_value_pairs = new ElementValuePair[this.num_element_value_pairs.value];
+            this.element_value_pairs = new element_value_pair[this.num_element_value_pairs.value];
             for (int i = 0; i < this.num_element_value_pairs.value; i++) {
-                this.element_value_pairs[i] = new ElementValuePair(posDataInputStream);
+                this.element_value_pairs[i] = new element_value_pair(posDataInputStream);
             }
         } else {
             this.element_value_pairs = null;
@@ -67,8 +67,8 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
      * @param index Index of the num_element_value_pairs item
      * @return The value of {@code num_element_value_pairs}[{@code index}]
      */
-    public Annotation.ElementValuePair getElementvaluePair(final int index) {
-        Annotation.ElementValuePair p = null;
+    public Annotation.element_value_pair getElementvaluePair(final int index) {
+        Annotation.element_value_pair p = null;
         if (this.element_value_pairs != null && index < this.element_value_pairs.length) {
             p = this.element_value_pairs[index];
         }
@@ -102,7 +102,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             parentNode.add(elementValuePairs);
 
             for (int i = 0; i < this.num_element_value_pairs.value; i++) {
-                Annotation.ElementValuePair pair = this.getElementvaluePair(i);
+                Annotation.element_value_pair pair = this.getElementvaluePair(i);
                 DefaultMutableTreeNode elementValuePairNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pair.getStartPos(),
                         pair.getLength(),
@@ -124,7 +124,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
      * VM Spec: The RuntimeVisibleAnnotations Attribute
      * </a>
      */
-    public static final class ElementValuePair extends FileComponent implements GenerateTreeNodeClassFile {
+    public static final class element_value_pair extends FileComponent implements GenerateTreeNodeClassFile {
 
         /**
          * The name of the element of the element-value pair represented by this
@@ -137,7 +137,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
          */
         public final element_value value;
 
-        protected ElementValuePair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
             this.element_name_index = new u2(posDataInputStream);

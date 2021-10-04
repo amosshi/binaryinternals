@@ -250,8 +250,8 @@ public class StackMapTable_attribute extends attribute_info {
 
         @SuppressWarnings("java:S3776") // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
-            this.addNode(rootNode,
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            this.addNode(parentNode,
                     this.getStartPos(),
                     u1.LENGTH,
                     "frame_type",
@@ -261,7 +261,7 @@ public class StackMapTable_attribute extends attribute_info {
             );
 
             if (this.union_stack_frame != null) {
-                this.union_stack_frame.generateTreeNode(rootNode, fileFormat);
+                this.union_stack_frame.generateTreeNode(parentNode, fileFormat);
             }
         }
 
@@ -331,14 +331,14 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
                 DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.stack[0].getLength(),
                         "stack[1]"
                 ));
-                rootNode.add(stacksNode);
+                parentNode.add(stacksNode);
 
                 DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
                         this.stack[0].getStartPos(),
@@ -385,10 +385,10 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
 
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving, u2.LENGTH,
                         FIELD_OFFSET_DELTA, this.offset_delta.value,
                         MSGKEY_OFFSET_DELTA, Icons.Offset
@@ -400,7 +400,7 @@ public class StackMapTable_attribute extends attribute_info {
                         this.stack[0].getLength(),
                         "stack[1]"
                 ));
-                rootNode.add(stacksNode);
+                parentNode.add(stacksNode);
 
                 DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
                         this.stack[0].getStartPos(),
@@ -444,8 +444,8 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
-                this.addNode(rootNode,
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                this.addNode(parentNode,
                         this.getStartPos(), u2.LENGTH,
                         FIELD_OFFSET_DELTA, this.offset_delta.value,
                         MSGKEY_OFFSET_DELTA, Icons.Offset
@@ -482,8 +482,8 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
-                this.addNode(rootNode,
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                this.addNode(parentNode,
                         this.getStartPos(), u2.LENGTH,
                         FIELD_OFFSET_DELTA, this.offset_delta.value,
                         MSGKEY_OFFSET_DELTA, Icons.Offset
@@ -527,10 +527,10 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
 
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving, u2.LENGTH,
                         FIELD_OFFSET_DELTA, this.offset_delta.value,
                         MSGKEY_OFFSET_DELTA, Icons.Offset
@@ -548,7 +548,7 @@ public class StackMapTable_attribute extends attribute_info {
                             "locals[" + this.locals.length + "]",
                             MESSAGES.getString("msg_attr_stack__append_frame__locals")
                     ));
-                    rootNode.add(localsNode);
+                    parentNode.add(localsNode);
 
                     for (int i = 0; i < this.locals.length; i++) {
                         DefaultMutableTreeNode localNode = this.addNode(localsNode,
@@ -621,17 +621,17 @@ public class StackMapTable_attribute extends attribute_info {
             }
 
             @Override
-            public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
 
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving, u2.LENGTH,
                         FIELD_OFFSET_DELTA, this.offset_delta.value,
                         MSGKEY_OFFSET_DELTA, Icons.Offset
                 );
                 startPosMoving += u2.LENGTH;
 
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving, u2.LENGTH,
                         "number_of_locals", this.number_of_locals.value,
                         "msg_attr_stack__full_frame__number_of_locals", Icons.Counter
@@ -650,7 +650,7 @@ public class StackMapTable_attribute extends attribute_info {
                             MESSAGES.getString("msg_attr_stack__full_frame__locals")
                     ));
                     startPosMoving += sizeLocals;
-                    rootNode.add(localsNode);
+                    parentNode.add(localsNode);
 
                     for (int i = 0; i < this.locals.length; i++) {
                         DefaultMutableTreeNode localNode = this.addNode(localsNode,
@@ -665,7 +665,7 @@ public class StackMapTable_attribute extends attribute_info {
                     }
                 }
 
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving, u2.LENGTH,
                         "number_of_stack_items", this.number_of_stack_items.value,
                         "msg_attr_stack__full_frame__number_of_stack_items", Icons.Counter
@@ -684,7 +684,7 @@ public class StackMapTable_attribute extends attribute_info {
                             "stack[" + this.number_of_stack_items.value + "]",
                             MESSAGES.getString("msg_attr_stack__full_frame__stack")
                     ));
-                    rootNode.add(stacksNode);
+                    parentNode.add(stacksNode);
 
                     for (int i = 0; i < this.stack.length; i++) {
                         DefaultMutableTreeNode stackNode = this.addNode(stacksNode,
@@ -733,11 +733,11 @@ public class StackMapTable_attribute extends attribute_info {
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode rootNode, FileFormat fileFormat) {
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
             ClassFile classFile = (ClassFile) fileFormat;
             int startPosMoving = this.getStartPos();
 
-            this.addNode(rootNode,
+            this.addNode(parentNode,
                     startPosMoving,
                     1,
                     "tag",
@@ -748,7 +748,7 @@ public class StackMapTable_attribute extends attribute_info {
             startPosMoving += 1;
 
             if (this.union_Object_variable_info != null) {
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving,
                         2,
                         "cpool_index",
@@ -757,7 +757,7 @@ public class StackMapTable_attribute extends attribute_info {
                         Icons.Index
                 );
             } else if (this.union_Uninitialized_variable_info != null) {
-                this.addNode(rootNode,
+                this.addNode(parentNode,
                         startPosMoving,
                         2,
                         "offset",

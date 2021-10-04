@@ -14,6 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -120,35 +121,9 @@ public class ModuleHashes_attribute extends attribute_info {
                         this.hashes[i].getLength(),
                         "hash [" + i + "]"
                 ));
-                this.generateSubnode(hashNode, this.hashes[i], classFile);
+                this.hashes[i].generateTreeNode(hashNode, format);
                 providesNode.add(hashNode);
             }
-        }
-    }
-    
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final ModuleHashes_attribute.Hashes hash, final ClassFile classFile) {
-        int startPosMoving = hash.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "module_name_index: " + hash.module_name_index.value + " - " + classFile.getCPDescription(hash.module_name_index.value)
-        )));
-        startPosMoving += u2.LENGTH;
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "hash_length: " + hash.hash_length.value
-        )));
-        startPosMoving += u2.LENGTH;
-
-        if (hash.hash_length.value > 0) {
-            rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u1.LENGTH * hash.hash_length.value,
-                    "hash"
-            )));
         }
     }
 
@@ -164,7 +139,7 @@ public class ModuleHashes_attribute extends attribute_info {
      * @since OpenJDK 9
      * @see Module
      */
-    public static final class Hashes extends FileComponent {
+    public static final class Hashes extends FileComponent implements GenerateTreeNodeClassFile {
 
         /**
          * Index to CONSTANT_Module_info structure.
@@ -188,6 +163,33 @@ public class ModuleHashes_attribute extends attribute_info {
             }
 
             this.length = posDataInputStream.getPos() - this.startPos;
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            int startPosMoving = this.getStartPos();
+
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "module_name_index: " + this.module_name_index.value + " - " + ((ClassFile) fileFormat).getCPDescription(this.module_name_index.value)
+            )));
+            startPosMoving += u2.LENGTH;
+
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "hash_length: " + this.hash_length.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+            if (this.hash_length.value > 0) {
+                parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        u1.LENGTH * this.hash_length.value,
+                        "hash"
+                )));
+            }
         }
     }
 

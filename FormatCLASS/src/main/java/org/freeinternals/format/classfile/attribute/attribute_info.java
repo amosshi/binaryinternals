@@ -203,9 +203,9 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         return this.name;
     }
 
-    public void generateTreeNodeCommon(final DefaultMutableTreeNode rootNode, final ClassFile classFile) {
+    public void generateTreeNodeCommon(final DefaultMutableTreeNode parentNode, final ClassFile classFile) {
         int startPosMoving = this.getStartPos();
-        this.addNode(rootNode,
+        this.addNode(parentNode,
                 startPosMoving,
                 u2.LENGTH,
                 "attribute_name_index",
@@ -215,7 +215,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         );
 
         startPosMoving += u2.LENGTH;
-        this.addNode(rootNode,
+        this.addNode(parentNode,
                 startPosMoving,
                 u4.LENGTH,
                 "attribute_length",
@@ -224,7 +224,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
                 Icons.Length
         );
 
-        this.generateTreeNode(rootNode, classFile);
+        this.generateTreeNode(parentNode, classFile);
     }
 
     /**

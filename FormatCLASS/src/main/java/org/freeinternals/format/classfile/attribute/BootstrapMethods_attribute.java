@@ -14,6 +14,7 @@ import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.constant.CONSTANT_MethodHandle_info;
 import org.freeinternals.format.classfile.constant.cp_info.ConstantType;
 import org.freeinternals.format.classfile.u2;
@@ -100,53 +101,13 @@ public class BootstrapMethods_attribute extends attribute_info {
 
             for (int i = 0; i < this.bootstrap_methods.length; i++) {
                 bootstrap_method m = this.bootstrap_methods[i];
-                DefaultMutableTreeNode bootstrapMethod = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode bootstrapMethodNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         m.getStartPos(),
                         m.getLength(),
                         String.format("bootstrap_method %d", i + 1)
                 ));
-                bootstrapMethodsNode.add(bootstrapMethod);
-                this.generateSubnode(bootstrapMethod, m, (ClassFile)classFile);
-            }
-        }
-    }
-
-    /**
-     * Generate tree node for {@link bootstrap_method}.
-     */
-    private void generateSubnode(final DefaultMutableTreeNode rootNode, final bootstrap_method m, final ClassFile classFile) {
-
-        int startPosMoving = m.getStartPos();
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "bootstrap_method_ref: " + m.bootstrap_method_ref.value + " - " + classFile.getCPDescription(m.bootstrap_method_ref.value)
-        )));
-        startPosMoving += u2.LENGTH;
-
-        rootNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "num_bootstrap_arguments: " + m.num_bootstrap_arguments.value
-        )));
-        startPosMoving += u2.LENGTH;
-
-        if (m.bootstrap_arguments != null && m.bootstrap_arguments.length > 0) {
-            DefaultMutableTreeNode bootstrapArguments = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    m.bootstrap_arguments.length * u2.LENGTH,
-                    "bootstrap_arguments"));
-            rootNode.add(bootstrapArguments);
-
-            for (int i = 0; i < m.bootstrap_arguments.length; i++) {
-                DefaultMutableTreeNode bootstrapMethod = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u2.LENGTH,
-                        "argument " + (i + 1) + ": " + m.bootstrap_arguments[i].value + " - " + classFile.getCPDescription(m.bootstrap_arguments[i].value)
-                ));
-                startPosMoving += u2.LENGTH;
-                bootstrapArguments.add(bootstrapMethod);
+                bootstrapMethodsNode.add(bootstrapMethodNode);
+                m.generateTreeNode(parentNode, classFile);
             }
         }
     }
@@ -164,7 +125,7 @@ public class BootstrapMethods_attribute extends attribute_info {
      * </pre>
      */
     @SuppressWarnings({"java:S101", "java:S116"})
-    public static final class bootstrap_method extends FileComponent {
+    public static final class bootstrap_method extends FileComponent implements GenerateTreeNodeClassFile {
 
         /**
          * The value of the {@link #bootstrap_method_ref} item must be a valid
@@ -202,6 +163,44 @@ public class BootstrapMethods_attribute extends attribute_info {
             }
 
             super.length = posDataInputStream.getPos() - super.startPos;
+        }
+
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            final ClassFile classFile = (ClassFile) fileFormat;
+            int startPosMoving = this.getStartPos();
+
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "bootstrap_method_ref: " + this.bootstrap_method_ref.value + " - " + classFile.getCPDescription(this.bootstrap_method_ref.value)
+            )));
+            startPosMoving += u2.LENGTH;
+
+            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    u2.LENGTH,
+                    "num_bootstrap_arguments: " + this.num_bootstrap_arguments.value
+            )));
+            startPosMoving += u2.LENGTH;
+
+            if (this.bootstrap_arguments != null && this.bootstrap_arguments.length > 0) {
+                DefaultMutableTreeNode bootstrapArguments = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        startPosMoving,
+                        this.bootstrap_arguments.length * u2.LENGTH,
+                        "bootstrap_arguments"));
+                parentNode.add(bootstrapArguments);
+
+                for (int i = 0; i < this.bootstrap_arguments.length; i++) {
+                    DefaultMutableTreeNode bootstrapMethod = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPosMoving,
+                            u2.LENGTH,
+                            "argument " + (i + 1) + ": " + this.bootstrap_arguments[i].value + " - " + classFile.getCPDescription(this.bootstrap_arguments[i].value)
+                    ));
+                    startPosMoving += u2.LENGTH;
+                    bootstrapArguments.add(bootstrapMethod);
+                }
+            }
         }
     }
 
