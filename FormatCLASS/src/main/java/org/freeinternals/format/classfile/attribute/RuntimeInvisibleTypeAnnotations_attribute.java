@@ -36,7 +36,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class RuntimeInvisibleTypeAnnotations_attribute extends RuntimeTypeAnnotations_attribute {
+public class RuntimeInvisibleTypeAnnotations_attribute extends RuntimeTypeAnnotations {
 
     public RuntimeInvisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, name, posDataInputStream);

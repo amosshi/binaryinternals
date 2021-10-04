@@ -17,6 +17,7 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u2;
+import static org.freeinternals.format.classfile.attribute.LocalVariableTable_attribute.local_variable_table.LENGTH;
 
 /**
  * The {@code LocalVariableTypeTable} attribute is an optional variable-length
@@ -67,16 +68,16 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
      * Indicates a range of code array offsets within which a local variable has
      * a value.
      */
-    public final LocalVariableTypeTable[] local_variable_type_table;
+    public final local_variable_type_table[] local_variable_type_table;
 
     LocalVariableTypeTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
         this.local_variable_type_table_length = new u2(posDataInputStream);
         if (this.local_variable_type_table_length.value > 0) {
-            this.local_variable_type_table = new LocalVariableTypeTable[this.local_variable_type_table_length.value];
+            this.local_variable_type_table = new local_variable_type_table[this.local_variable_type_table_length.value];
             for (int i = 0; i < this.local_variable_type_table_length.value; i++) {
-                this.local_variable_type_table[i] = new LocalVariableTypeTable(posDataInputStream);
+                this.local_variable_type_table[i] = new local_variable_type_table(posDataInputStream);
             }
         } else {
             this.local_variable_type_table = null;
@@ -100,14 +101,14 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
         if (tableLen > 0) {
             DefaultMutableTreeNode lvttNodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
-                    tableLen * LocalVariableTypeTable.LENGTH,
+                    tableLen * LENGTH,
                     "local_variable_type_table[" + tableLen + "]",
                     MESSAGES.getString(MSG_ATTR_LVTT)
             ));
             parentNode.add(lvttNodes);
 
             for (int i = 0; i < tableLen; i++) {
-                LocalVariableTypeTable item = this.local_variable_type_table[i];
+                local_variable_type_table item = this.local_variable_type_table[i];
                 DefaultMutableTreeNode lvttNode = this.addNode(lvttNodes,
                         item.getStartPos(),
                         item.getLength(),
@@ -133,7 +134,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
      * which that local variable can be found. Each entry must contain the
      * following five items (the 5 instance fields of current class).
      */
-    public static final class LocalVariableTypeTable extends FileComponent implements GenerateTreeNodeClassFile {
+    public static final class local_variable_type_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 10;
         public final u2 start_pc;
@@ -153,7 +154,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
          */
         public final u2 index;
 
-        protected LocalVariableTypeTable(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected local_variable_type_table(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super.startPos = posDataInputStream.getPos();
             super.length = LENGTH;
 

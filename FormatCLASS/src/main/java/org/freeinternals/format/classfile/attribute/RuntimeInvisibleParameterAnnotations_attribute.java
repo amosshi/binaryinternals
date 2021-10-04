@@ -46,7 +46,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class RuntimeInvisibleParameterAnnotations_attribute extends RuntimeParameterAnnotations_attribute {
+public class RuntimeInvisibleParameterAnnotations_attribute extends RuntimeParameterAnnotations {
 
     RuntimeInvisibleParameterAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
@@ -55,5 +55,25 @@ public class RuntimeInvisibleParameterAnnotations_attribute extends RuntimeParam
     @Override
     public String getMessageKey() {
         return "msg_attr_RuntimeInvisibleParameterAnnotations";
+    }
+
+    @Override
+    String getMessageKey_4_num_parameters() {
+        return "msg_attr_RuntimeInvisibleParameterAnnotations__num_parameters";
+    }
+
+    @Override
+    String getMessageKey_4_parameter_annotations() {
+        return "msg_attr_RuntimeInvisibleParameterAnnotations_parameter_annotations";
+    }
+
+    @Override
+    String getMessageKey_4_parameter_annotations__num_annotations() {
+        return "msg_attr_RuntimeInvisibleParameterAnnotations_parameter_annotations__num_annotations";
+    }
+
+    @Override
+    String getMessageKey_4_parameter_annotations__annotations() {
+        return "msg_attr_RuntimeInvisibleParameterAnnotations_parameter_annotations__annotations";
     }
 }

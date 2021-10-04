@@ -43,7 +43,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class RuntimeInvisibleAnnotations_attribute extends RuntimeAnnotations_attribute {
+public class RuntimeInvisibleAnnotations_attribute extends RuntimeAnnotations {
 
     RuntimeInvisibleAnnotations_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
@@ -52,5 +52,15 @@ public class RuntimeInvisibleAnnotations_attribute extends RuntimeAnnotations_at
     @Override
     public String getMessageKey() {
         return "msg_attr_RuntimeInvisibleAnnotations";
+    }
+
+    @Override
+    String getMessageKey_4_annotations() {
+        return "msg_attr_RuntimeInvisibleAnnotations__annotations";
+    }
+
+    @Override
+    String getMessageKey_4_num_annotations() {
+        return "msg_attr_RuntimeInvisibleAnnotations__num_annotations";
     }
 }

@@ -6,6 +6,7 @@
  */
 package org.freeinternals.format.classfile;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -1460,7 +1461,7 @@ public final class Opcode {
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
 
-                parsed.tableSwitch = new TableSwitch(pdis.readInt(), pdis.readInt(), pdis.readInt());
+                parsed.tableSwitch = new tableswitch(pdis.readInt(), pdis.readInt(), pdis.readInt());
                 for (int i = parsed.tableSwitch.lowbyte; i <= parsed.tableSwitch.highbyte; i++) {
                     parsed.tableSwitch.jumpoffsets.put(i, pdis.readInt());
                 }
@@ -1480,7 +1481,7 @@ public final class Opcode {
 
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
 
-                parsed.lookupSwitch = new LookupSwitch(pdis.readInt(), pdis.readInt());
+                parsed.lookupSwitch = new lookupswitch(pdis.readInt(), pdis.readInt());
                 for (int i = 0; i < parsed.lookupSwitch.npairs; i++) {
                     parsed.lookupSwitch.mapoffsets.put(pdis.readInt(), pdis.readInt());
                 }
@@ -2088,13 +2089,14 @@ public final class Opcode {
      *
      * @see Instruction#lookupswitch
      */
-    public static class LookupSwitch {
+    @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+    public static class lookupswitch {
 
         public final int defaultbyte;
         public final int npairs;
         public final Map<Integer, Integer> mapoffsets = new LinkedHashMap<>();
 
-        LookupSwitch(int defaultByte, int nPairs) {
+        lookupswitch(int defaultByte, int nPairs) {
             this.defaultbyte = defaultByte;
             this.npairs = nPairs;
         }
@@ -2120,14 +2122,15 @@ public final class Opcode {
      * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-6.html#jvms-6.5.tableswitch">VM
      * Spec: The Java Virtual Machine Instruction Set</a>
      */
-    public static class TableSwitch {
+    @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+    public static class tableswitch {
 
         public final int defaultbyte;
         public final int lowbyte;
         public final int highbyte;
         public final Map<Integer, Integer> jumpoffsets = new LinkedHashMap<>();
 
-        TableSwitch(int defaultByte, int lowByte, int highByte) {
+        tableswitch(int defaultByte, int lowByte, int highByte) {
             this.defaultbyte = defaultByte;
             this.lowbyte = lowByte;
             this.highbyte = highByte;
@@ -2278,14 +2281,14 @@ public final class Opcode {
          *
          * @see Instruction#lookupswitch
          */
-        protected LookupSwitch lookupSwitch = null;
+        protected lookupswitch lookupSwitch = null;
 
         /**
          * Parsed data for {@link Instruction#tableswitch}.
          *
          * @see Instruction#tableswitch
          */
-        protected TableSwitch tableSwitch = null;
+        protected tableswitch tableSwitch = null;
 
         InstructionParsed(int curPos, int opcode) {
             this.offset = curPos;
@@ -2350,7 +2353,7 @@ public final class Opcode {
          * @return {@link #lookupSwitch} value. <code>null</code> if current
          * instruction is not {@link Instruction#lookupswitch}
          */
-        public LookupSwitch getLookupSwitch() {
+        public lookupswitch getLookupSwitch() {
             return this.lookupSwitch;
         }
 
@@ -2369,7 +2372,7 @@ public final class Opcode {
          * @return {@link #tableSwitch} value. <code>null</code> if current
          * instruction is not {@link Instruction#tableswitch}
          */
-        public TableSwitch getTableSwitch() {
+        public tableswitch getTableSwitch() {
             return this.tableSwitch;
         }
 

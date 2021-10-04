@@ -66,6 +66,8 @@ import org.freeinternals.format.classfile.u4;
 public class Code_attribute extends attribute_info {
 
     public static final String ATTRIBUTE_CODE_NODE = "code";
+    public static final String ATTRIBUTE_CODE_VALUE = "byte codes";
+    public static final String ATTRIBUTE_CODE_TEXT = String.format("%s: %s", ATTRIBUTE_CODE_NODE, ATTRIBUTE_CODE_VALUE);
 
     public final u2 max_stack;
     public final u2 max_locals;
@@ -80,7 +82,7 @@ public class Code_attribute extends attribute_info {
     public final u4 code_length;
     public final byte[] code;
     public final u2 exception_table_length;
-    public ExceptionTable[] exceptionTable;
+    public exception_table[] exceptionTable;
     public final u2 attributes_count;
     public final attribute_info[] attributes;
 
@@ -100,9 +102,9 @@ public class Code_attribute extends attribute_info {
 
         this.exception_table_length = new u2(posDataInputStream);
         if (this.exception_table_length.value > 0) {
-            this.exceptionTable = new ExceptionTable[this.exception_table_length.value];
+            this.exceptionTable = new exception_table[this.exception_table_length.value];
             for (i = 0; i < this.exception_table_length.value; i++) {
-                this.exceptionTable[i] = new ExceptionTable(posDataInputStream);
+                this.exceptionTable[i] = new exception_table(posDataInputStream);
             }
         }
 
@@ -139,8 +141,8 @@ public class Code_attribute extends attribute_info {
      * @param index Index of the exception table
      * @return The value of {@code exception_table}[{@code index}]
      */
-    public ExceptionTable getExceptionTable(final int index) {
-        ExceptionTable et = null;
+    public exception_table getExceptionTable(final int index) {
+        exception_table et = null;
         if (this.exceptionTable != null) {
             et = this.exceptionTable[index];
         }
@@ -183,7 +185,7 @@ public class Code_attribute extends attribute_info {
                 super.startPos + 14,
                 codeLength,
                 ATTRIBUTE_CODE_NODE,
-                "byte codes",
+                ATTRIBUTE_CODE_VALUE,
                 "msg_attr_Code__code",
                 Icons.Data
         );
@@ -200,12 +202,12 @@ public class Code_attribute extends attribute_info {
         if (this.exception_table_length.value > 0) {
             DefaultMutableTreeNode treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 14 + codeLength + 2,
-                    ExceptionTable.LENGTH * this.exception_table_length.value,
+                    exception_table.LENGTH * this.exception_table_length.value,
                     "exception_table[" + this.exception_table_length.value + "]",
                     MESSAGES.getString("msg_attr_exception_table")
             ));
 
-            Code_attribute.ExceptionTable et;
+            Code_attribute.exception_table et;
             for (i = 0; i < this.exception_table_length.value; i++) {
                 et = this.getExceptionTable(i);
                 treeNodeExceptionTableItem = this.addNode(treeNodeExceptionTable,
@@ -224,7 +226,7 @@ public class Code_attribute extends attribute_info {
 
         // Add attributes
         final int attrCount = this.attributes_count.value;
-        final int attrStartPos = super.startPos + 14 + codeLength + 2 + this.exception_table_length.value * ExceptionTable.LENGTH;
+        final int attrStartPos = super.startPos + 14 + codeLength + 2 + this.exception_table_length.value * exception_table.LENGTH;
         this.addNode(parentNode,
                 attrStartPos,
                 2,
@@ -273,7 +275,7 @@ public class Code_attribute extends attribute_info {
      *
      * @author Amos Shi
      */
-    public static final class ExceptionTable extends FileComponent implements GenerateTreeNodeClassFile {
+    public static final class exception_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 8;
         public final u2 start_pc;
@@ -293,7 +295,7 @@ public class Code_attribute extends attribute_info {
          */
         public final u2 catch_type;
 
-        private ExceptionTable(final PosDataInputStream posDataInputStream) throws IOException {
+        private exception_table(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
             this.length = LENGTH;
 

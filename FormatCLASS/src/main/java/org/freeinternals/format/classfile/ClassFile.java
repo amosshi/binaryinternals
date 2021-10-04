@@ -486,7 +486,7 @@ public class ClassFile extends FileFormat {
     public void treeSelectionChanged(final JTreeNodeFileComponent tnfc, final JTabbedPane tabs) {
         super.treeSelectionChanged(tnfc, tabs);
 
-        if (Code_attribute.ATTRIBUTE_CODE_NODE.equals(tnfc.getText())) {
+        if (Code_attribute.ATTRIBUTE_CODE_TEXT.equals(tnfc.getText())) {
             final byte[] data = this.getFileByteArray(tnfc.getStartPos(), tnfc.getLength());
             StringBuilder sb = this.getJTreeAdapter().generateOpcodeParseResult(data);
             JTextPane pane = super.tabAddTextPane(tabs, "Opcode");

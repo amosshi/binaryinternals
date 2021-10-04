@@ -49,16 +49,16 @@ import org.freeinternals.format.classfile.u2;
 public class LineNumberTable_attribute extends attribute_info {
 
     public final u2 line_number_table_length;
-    public final LineNumberTable[] lineNumberTable;
+    public final line_number_table[] lineNumberTable;
 
     LineNumberTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
         this.line_number_table_length = new u2(posDataInputStream);
         if (this.line_number_table_length.value > 0) {
-            this.lineNumberTable = new LineNumberTable[this.line_number_table_length.value];
+            this.lineNumberTable = new line_number_table[this.line_number_table_length.value];
             for (int i = 0; i < this.line_number_table_length.value; i++) {
-                this.lineNumberTable[i] = new LineNumberTable(posDataInputStream);
+                this.lineNumberTable[i] = new line_number_table(posDataInputStream);
             }
         } else {
             this.lineNumberTable = null;
@@ -73,8 +73,8 @@ public class LineNumberTable_attribute extends attribute_info {
      * @param index Index of the line number table
      * @return The value of {@code line_number_table}[{@code index}]
      */
-    public LineNumberTable getLineNumberTable(final int index) {
-        LineNumberTable lnt = null;
+    public line_number_table getLineNumberTable(final int index) {
+        line_number_table lnt = null;
         if (this.lineNumberTable != null && this.lineNumberTable.length > index) {
             lnt = this.lineNumberTable[index];
         }
@@ -104,7 +104,7 @@ public class LineNumberTable_attribute extends attribute_info {
             ));
 
             DefaultMutableTreeNode treeNodeLntItem;
-            LineNumberTable_attribute.LineNumberTable lnt;
+            LineNumberTable_attribute.line_number_table lnt;
             for (int i = 0; i < lnt_length; i++) {
                 lnt = this.getLineNumberTable(i);
 
@@ -135,13 +135,13 @@ public class LineNumberTable_attribute extends attribute_info {
      * @author Amos Shi
      * @see LineNumberTable_attribute
      */
-    public static final class LineNumberTable extends FileComponent implements GenerateTreeNodeClassFile {
+    public static final class line_number_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 4;
         public final u2 start_pc;
         public final u2 line_number;
 
-        private LineNumberTable(final PosDataInputStream posDataInputStream) throws IOException {
+        private line_number_table(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
             this.length = LENGTH;
 

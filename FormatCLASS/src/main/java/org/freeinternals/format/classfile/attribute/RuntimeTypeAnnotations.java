@@ -23,12 +23,12 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S5993"})
-public abstract class RuntimeTypeAnnotations_attribute extends attribute_info {
+public abstract class RuntimeTypeAnnotations extends attribute_info {
 
     public final u2 num_annotations;
     public final type_annotation[] annotations;
 
-    public RuntimeTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, name, posDataInputStream);
 
         this.num_annotations = new u2(posDataInputStream);
