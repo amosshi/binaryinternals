@@ -26,6 +26,12 @@ public interface GenerateTreeNodeFileFormat {
      */
     static final int TREENODE_STRING_MAXLEN = 64;
 
+    /**
+     * Generate JTree nodes for the current file component.
+     *
+     * @param parentNode The parent JTree node
+     * @param fileFormat The current {@link FileFormat} object
+     */
     void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
     /**

@@ -46,8 +46,6 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    // 4.7.18. The RuntimeVisibleParameterAnnotations Attribute
-    // 4.7.19. The RuntimeInvisibleParameterAnnotations Attribute
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         int startPosMoving = super.startPos;
@@ -71,7 +69,6 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
             parentNode.add(parameterAnnotationsNode);
 
             for (int i = 0; i < this.parameter_annotations.length; i++) {
-
                 DefaultMutableTreeNode parameterAnnotation = this.addNode(parameterAnnotationsNode,
                         this.parameter_annotations[i].getStartPos(),
                         this.parameter_annotations[i].getLength(),
@@ -89,6 +86,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
      * Get message key for {@link #num_parameters}.
      *
      * @return Message key for {@link #num_parameters}
+     *
+     * @see RuntimeVisibleParameterAnnotations_attribute
+     * @see RuntimeInvisibleParameterAnnotations_attribute
      */
     abstract String getMessageKey_4_num_parameters();
 
@@ -96,6 +96,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
      * Get message key for {@link #parameter_annotations}.
      *
      * @return Message key for {@link #parameter_annotations}
+     *
+     * @see RuntimeVisibleParameterAnnotations_attribute
+     * @see RuntimeInvisibleParameterAnnotations_attribute
      */
     abstract String getMessageKey_4_parameter_annotations();
 
@@ -103,6 +106,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
      * Get message key for {@link parameter_annotations#num_annotations}.
      *
      * @return Message key for {@link parameter_annotations#num_annotations}
+     *
+     * @see RuntimeVisibleParameterAnnotations_attribute
+     * @see RuntimeInvisibleParameterAnnotations_attribute
      */
     abstract String getMessageKey_4_parameter_annotations__num_annotations();
 
@@ -110,6 +116,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
      * Get message key for {@link parameter_annotations#annotations}0.
      *
      * @return Message key for {@link parameter_annotations#annotations}
+     *
+     * @see RuntimeVisibleParameterAnnotations_attribute
+     * @see RuntimeInvisibleParameterAnnotations_attribute
      */
     abstract String getMessageKey_4_parameter_annotations__annotations();
 

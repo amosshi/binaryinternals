@@ -46,4 +46,14 @@ public class RuntimeInvisibleTypeAnnotations_attribute extends RuntimeTypeAnnota
     public String getMessageKey() {
         return "msg_attr_RuntimeInvisibleTypeAnnotations";
     }
+
+    @Override
+    String getMessageKey_4_annotations() {
+        return "msg_attr_RuntimeInvisibleTypeAnnotations__annotations";
+    }
+
+    @Override
+    String getMessageKey_4_num_annotations() {
+        return "msg_attr_RuntimeInvisibleTypeAnnotations__num_annotations";
+    }
 }

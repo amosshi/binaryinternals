@@ -6,6 +6,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
@@ -18,11 +19,12 @@ import org.freeinternals.format.classfile.u2;
  * @author Amos Shi
  *
  * <pre>
+ * java:S100 - Method names should comply with a naming convention --- We respect the name from JVM spec instead
  * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
  * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
  * </pre>
  */
-@SuppressWarnings({"java:S101", "java:S116", "java:S5993"})
+@SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S5993"})
 public abstract class RuntimeTypeAnnotations extends attribute_info {
 
     public final u2 num_annotations;
@@ -44,32 +46,56 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    // 4.7.20. The RuntimeVisibleTypeAnnotations Attribute
-    // 4.7.21. The RuntimeInvisibleTypeAnnotations Attribute
+    /**
+     * Get message key for {@link #annotations}.
+     *
+     * @return Message key for {@link #annotations}
+     *
+     * @see RuntimeVisibleTypeAnnotations_attribute
+     * @see RuntimeInvisibleTypeAnnotations_attribute
+     */
+    abstract String getMessageKey_4_annotations();
+
+    /**
+     * Get message key for {@link #num_annotations}.
+     *
+     * @return Message key for {@link #num_annotations}
+     *
+     * @see RuntimeVisibleTypeAnnotations_attribute
+     * @see RuntimeInvisibleTypeAnnotations_attribute
+     */
+    abstract String getMessageKey_4_num_annotations();
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
         int startPosMoving = super.startPos;
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        this.addNode(parentNode,
                 startPosMoving + 6,
                 u2.LENGTH,
-                "num_annotations: " + this.num_annotations.value
-        )));
+                "num_annotations",
+                this.num_annotations.value,
+                this.getMessageKey_4_num_annotations(),
+                Icons.Counter
+        );
 
         if (this.annotations != null && this.annotations.length > 0) {
             DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    "annotations"
+                    "annotations[" + this.annotations.length + "]",
+                    MESSAGES.getString(this.getMessageKey_4_annotations())
             ));
             parentNode.add(annotationsNode);
 
             for (int i = 0; i < this.annotations.length; i++) {
-                DefaultMutableTreeNode typeAnnotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode typeAnnotationNode = this.addNode(annotationsNode,
                         this.annotations[i].getStartPos(),
                         this.annotations[i].getLength(),
-                        String.format("type_annotation %d", i + 1)
-                ));
-                annotationsNode.add(typeAnnotationNode);
+                        String.valueOf(i + 1),
+                        "type_annotation",
+                        this.getMessageKey_4_annotations(),
+                        Icons.Annotations
+                );
                 this.annotations[i].generateTreeNode(typeAnnotationNode, classFile);
             }
         }
@@ -279,154 +305,171 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
             final ClassFile classFile = (ClassFile) fileFormat;
             int startPosMoving = this.getStartPos();
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+            this.addNode(parentNode,
                     startPosMoving,
                     u1.LENGTH,
-                    "target_type: 0x" + String.format("%02X", this.target_type.value)
-            )));
+                    "target_type",
+                    String.format("0x%02X", this.target_type.value),
+                    "msg_attr_type_annotation__target_type",
+                    Icons.Tag
+            );
             startPosMoving += u1.LENGTH;
 
             if (this.union_type_parameter_target != null) {
                 DefaultMutableTreeNode typeParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_type_parameter_target.getLength(),
-                        type_annotation.type_parameter_target.UNION_NAME));
+                        type_annotation.type_parameter_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__type_parameter_target"
+                ));
                 parentNode.add(typeParameterTarget);
-                typeParameterTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+                this.addNode(typeParameterTarget,
                         startPosMoving,
                         u1.LENGTH,
-                        "type_parameter_index: " + this.union_type_parameter_target.type_parameter_index.value
-                )));
+                        "type_parameter_index",
+                        this.union_type_parameter_target.type_parameter_index.value,
+                        "msg_attr_type_annotation__target_info__type_parameter_target__type_parameter_index",
+                        Icons.Index
+                );
                 startPosMoving += u1.LENGTH;
 
             } else if (this.union_supertype_target != null) {
                 DefaultMutableTreeNode supertypeTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_supertype_target.getLength(),
-                        type_annotation.supertype_target.UNION_NAME
+                        type_annotation.supertype_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__supertype_target"
                 ));
                 parentNode.add(supertypeTarget);
-                supertypeTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+                this.addNode(supertypeTarget,
                         startPosMoving,
                         u2.LENGTH,
-                        "supertype_index: " + this.union_supertype_target.supertype_index.value
-                )));
+                        "supertype_index",
+                        this.union_supertype_target.supertype_index.value,
+                        "msg_attr_type_annotation__target_info__supertype_target__supertype_index",
+                        Icons.Index
+                );
                 startPosMoving += u2.LENGTH;
 
             } else if (this.union_type_parameter_bound_target != null) {
                 DefaultMutableTreeNode typeParameterBoundTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_type_parameter_bound_target.getLength(),
-                        type_annotation.type_parameter_bound_target.UNION_NAME
+                        type_annotation.type_parameter_bound_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__type_parameter_bound_target"
                 ));
                 parentNode.add(typeParameterBoundTarget);
-                typeParameterBoundTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u1.LENGTH,
-                        "type_parameter_index: " + this.union_type_parameter_bound_target.type_parameter_index.value
-                )));
-                startPosMoving += u1.LENGTH;
-                typeParameterBoundTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u1.LENGTH,
-                        "bound_index: " + this.union_type_parameter_bound_target.bound_index.value
-                )));
-                startPosMoving += u1.LENGTH;
+                this.union_type_parameter_bound_target.generateTreeNode(typeParameterBoundTarget, fileFormat);
+
+                startPosMoving += type_parameter_bound_target.LENGTH;
 
             } else if (this.union_empty_target != null) {
                 // Do nothing since it is empty
+
             } else if (this.union_method_formal_parameter_target != null) {
                 DefaultMutableTreeNode formalParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_method_formal_parameter_target.getLength(),
-                        "formal_parameter_target"
+                        type_annotation.formal_parameter_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__formal_parameter_target"
                 ));
                 parentNode.add(formalParameterTarget);
-                formalParameterTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+                this.addNode(formalParameterTarget,
                         startPosMoving,
                         u1.LENGTH,
-                        "formal_parameter_index: " + this.union_method_formal_parameter_target.formal_parameter_index.value
-                )));
+                        "formal_parameter_index",
+                        this.union_method_formal_parameter_target.formal_parameter_index.value,
+                        "msg_attr_type_annotation__target_info__formal_parameter_target__formal_parameter_index",
+                        Icons.Index
+                );
                 startPosMoving += u1.LENGTH;
 
             } else if (this.union_throws_target != null) {
                 DefaultMutableTreeNode throwsTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_throws_target.getLength(),
-                        type_annotation.throws_target.UNION_NAME
+                        type_annotation.throws_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__throws_target"
                 ));
                 parentNode.add(throwsTarget);
-                throwsTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u2.LENGTH,
-                        "throws_type_index: " + this.union_throws_target.throws_type_index.value
-                )));
+
+                this.addNode(throwsTarget,
+                        startPosMoving, u2.LENGTH,
+                        "throws_type_index", this.union_throws_target.throws_type_index.value,
+                        "msg_attr_type_annotation__target_info__throws_target__throws_type_index",
+                        Icons.Index
+                );
                 startPosMoving += u2.LENGTH;
 
             } else if (this.union_localvar_target != null) {
                 DefaultMutableTreeNode localvarTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_localvar_target.getLength(),
-                        type_annotation.localvar_target.UNION_NAME
+                        type_annotation.localvar_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__localvar_target"
                 ));
                 startPosMoving += this.union_localvar_target.getLength();
                 parentNode.add(localvarTargetNode);
+
                 this.union_localvar_target.generateTreeNode(localvarTargetNode, fileFormat);
 
             } else if (this.union_catch_target != null) {
                 DefaultMutableTreeNode catchTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_catch_target.getLength(),
-                        type_annotation.catch_target.UNION_NAME
+                        type_annotation.catch_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__catch_target"
                 ));
                 parentNode.add(catchTarget);
-                catchTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u2.LENGTH,
-                        "exception_table_index: " + this.union_catch_target.exception_table_index.value
-                )));
+
+                this.addNode(catchTarget,
+                        startPosMoving, u2.LENGTH,
+                        "exception_table_index", this.union_catch_target.exception_table_index.value,
+                        "msg_attr_type_annotation__target_info__catch_target__exception_table_index",
+                        Icons.Index
+                );
                 startPosMoving += u2.LENGTH;
 
             } else if (this.union_offset_target != null) {
                 DefaultMutableTreeNode offsetTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_offset_target.getLength(),
-                        type_annotation.offset_target.UNION_NAME
+                        type_annotation.offset_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__offset_target"
                 ));
                 parentNode.add(offsetTarget);
-                offsetTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u2.LENGTH,
-                        "offset: " + this.union_offset_target.offset.value
-                )));
+
+                this.addNode(offsetTarget,
+                        startPosMoving, u2.LENGTH,
+                        "offset", this.union_offset_target.offset.value,
+                        "msg_attr_type_annotation__target_info__offset_target__offset",
+                        Icons.Offset
+                );
                 startPosMoving += u2.LENGTH;
 
             } else if (this.union_type_argument_target != null) {
-                DefaultMutableTreeNode typeArgumentTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode typeArgumentTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.union_type_argument_target.getLength(),
-                        type_annotation.type_argument_target.UNION_NAME
+                        type_annotation.type_argument_target.UNION_NAME,
+                        "msg_attr_type_annotation__target_info__type_argument_target"
                 ));
-                parentNode.add(typeArgumentTarget);
-                typeArgumentTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u2.LENGTH,
-                        "offset: " + this.union_type_argument_target.offset.value
-                )));
-                startPosMoving += u2.LENGTH;
-                typeArgumentTarget.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u1.LENGTH,
-                        "type_argument_index: " + this.union_type_argument_target.type_argument_index.value
-                )));
-                startPosMoving += u1.LENGTH;
+                startPosMoving += this.union_type_argument_target.getLength();
+                parentNode.add(typeArgumentTargetNode);
+
+                this.union_type_argument_target.generateTreeNode(typeArgumentTargetNode, fileFormat);
             }
 
             // target_path
             DefaultMutableTreeNode targetPathNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     this.target_path.getLength(),
-                    "target_path"
+                    "target_path",
+                    MESSAGES.getString("msg_attr_type_annotation__target_path")
             ));
             parentNode.add(targetPathNode);
             this.target_path.generateTreeNode(targetPathNode, fileFormat);
@@ -666,8 +709,9 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
-        public static final class type_parameter_bound_target extends FileComponent {
+        public static final class type_parameter_bound_target extends FileComponent implements GenerateTreeNodeClassFile {
 
+            public static final int LENGTH = u1.LENGTH + u1.LENGTH;
             public static final String UNION_NAME = "type_parameter_bound_target";
             public final u1 type_parameter_index;
             public final u1 bound_index;
@@ -677,6 +721,30 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 this.type_parameter_index = new u1(posDataInputStream);
                 this.bound_index = new u1(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
+            }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+
+                this.addNode(parentNode,
+                        startPosMoving,
+                        u1.LENGTH,
+                        "type_parameter_index",
+                        this.type_parameter_index.value,
+                        "msg_attr_type_annotation__target_info__type_parameter_bound_target__type_parameter_index",
+                        Icons.Index
+                );
+                startPosMoving += u1.LENGTH;
+
+                this.addNode(parentNode,
+                        startPosMoving,
+                        u1.LENGTH,
+                        "bound_index",
+                        this.bound_index.value,
+                        "msg_attr_type_annotation__target_info__type_parameter_bound_target__bound_index",
+                        Icons.Index
+                );
             }
         }
 
@@ -692,7 +760,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
 
         public static final class formal_parameter_target extends FileComponent {
 
-            public static final String UNION_NAME = "method_formal_parameter_target";
+            public static final String UNION_NAME = "formal_parameter_target";
             public final u1 formal_parameter_index;
 
             protected formal_parameter_target(final PosDataInputStream posDataInputStream) throws IOException {
@@ -752,54 +820,42 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             @Override
             public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
-                parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+
+                this.addNode(parentNode,
                         startPosMoving,
                         u2.LENGTH,
-                        "table_length: " + this.table_length.value
-                )));
+                        "table_length",
+                        this.table_length.value,
+                        "msg_attr_type_annotation__target_info__localvar_target__table_length",
+                        Icons.Length
+                );
                 startPosMoving += u2.LENGTH;
 
                 if (this.table == null || this.table.length < 1) {
                     return;
                 }
 
-                DefaultMutableTreeNode tables = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode tablesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.getLength() - u2.LENGTH,
-                        String.format("table[%d]", this.table.length)
+                        "table[" + this.table.length + "]",
+                        MESSAGES.getString("msg_attr_type_annotation__target_info__localvar_target__table")
                 ));
-                parentNode.add(tables);
+                parentNode.add(tablesNode);
                 for (int i = 0; i < this.table.length; i++) {
-                    startPosMoving = this.table[i].getStartPos();
-                    DefaultMutableTreeNode tableNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
+                    DefaultMutableTreeNode tableNode = this.addNode(tablesNode,
+                            this.table[i].getStartPos(),
                             this.table[i].getLength(),
-                            String.format("table %d", i + 1)
-                    ));
-                    tables.add(tableNode);
-
-                    tableNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            u2.LENGTH,
-                            "start_pc: " + this.table[i].start_pc.value
-                    )));
-                    startPosMoving += u2.LENGTH;
-                    tableNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            u2.LENGTH,
-                            "length: " + this.table[i].length_code.value
-                    )));
-                    startPosMoving += u2.LENGTH;
-                    tableNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            u2.LENGTH,
-                            "index: " + this.table[i].index.value
-                    )));
+                            String.valueOf(i + 1),
+                            "table",
+                            "msg_attr_type_annotation__target_info__localvar_target__table",
+                            Icons.Data
+                    );
+                    this.table[i].generateTreeNode(tableNode, fileFormat);
                 }
-
             }
 
-            public static final class Table extends FileComponent {
+            public static final class Table extends FileComponent implements GenerateTreeNodeClassFile {
 
                 public final u2 start_pc;
                 public final u2 length_code;
@@ -813,6 +869,32 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                     super.length = posDataInputStream.getPos() - super.startPos;
                 }
 
+                @Override
+                public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                    int startPosMoving = this.getStartPos();
+                    this.addNode(parentNode,
+                            startPosMoving, u2.LENGTH,
+                            "start_pc", this.start_pc.value,
+                            "msg_attr_type_annotation__target_info__localvar_target__table__start_pc_length",
+                            Icons.Offset
+                    );
+                    startPosMoving += u2.LENGTH;
+
+                    this.addNode(parentNode,
+                            startPosMoving, u2.LENGTH,
+                            "length", this.length_code.value,
+                            "msg_attr_type_annotation__target_info__localvar_target__table__start_pc_length",
+                            Icons.Length
+                    );
+                    startPosMoving += u2.LENGTH;
+
+                    this.addNode(parentNode,
+                            startPosMoving, u2.LENGTH,
+                            "index", this.index.value,
+                            "msg_attr_type_annotation__target_info__localvar_target__table__index",
+                            Icons.Index
+                    );
+                } // End of generateTreeNode()
             }
         }
 
@@ -840,7 +922,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
-        public static final class type_argument_target extends FileComponent {
+        public static final class type_argument_target extends FileComponent implements GenerateTreeNodeClassFile {
 
             public static final String UNION_NAME = "type_argument_target";
             public final u2 offset;
@@ -851,6 +933,26 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 this.offset = new u2(posDataInputStream);
                 this.type_argument_index = new u1(posDataInputStream);
                 super.length = posDataInputStream.getPos() - super.startPos;
+            }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+
+                this.addNode(parentNode,
+                        startPosMoving, u2.LENGTH,
+                        "offset", this.offset.value,
+                        "msg_attr_type_annotation__target_info__type_argument_target__offset",
+                        Icons.Offset
+                );
+                startPosMoving += u2.LENGTH;
+
+                this.addNode(parentNode,
+                        startPosMoving, u1.LENGTH,
+                        "type_argument_index", this.type_argument_index.value,
+                        "msg_attr_type_annotation__target_info__type_argument_target__type_argument_index",
+                        Icons.Index
+                );
             }
         }
 
@@ -876,48 +978,44 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             @Override
             public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
                 int startPosMoving = this.getStartPos();
-                parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u1.LENGTH,
-                        "path_length: " + this.path_length.value
-                )));
+
+                this.addNode(parentNode,
+                        startPosMoving, u1.LENGTH,
+                        "path_length", this.path_length.value,
+                        "msg_attr_type_path__path_length",
+                        Icons.Length
+                );
                 startPosMoving += u1.LENGTH;
 
                 if (this.path == null || this.path.length < 1) {
                     return;
                 }
 
-                DefaultMutableTreeNode paths = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode pathsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.getLength() - u1.LENGTH,
-                        String.format("path[%d]", this.path.length)
+                        String.format("path [%d]", this.path.length),
+                        "msg_attr_type_path__path"
                 ));
-                parentNode.add(paths);
+                parentNode.add(pathsNode);
                 for (int i = 0; i < this.path.length; i++) {
-                    startPosMoving = this.path[i].getStartPos();
-                    DefaultMutableTreeNode pathNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
+                    DefaultMutableTreeNode pathNode = this.addNode(pathsNode,
+                            this.path[i].getStartPos(),
                             this.path[i].getLength(),
-                            String.format("path[%d]", i + 1)
-                    ));
-                    paths.add(pathNode);
-
-                    pathNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            u1.LENGTH,
-                            "type_path_kind: " + this.path[i].type_path_kind.value
-                    )));
-                    startPosMoving += u1.LENGTH;
-                    pathNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            u1.LENGTH,
-                            "type_argument_index: " + this.path[i].type_argument_index.value
-                    )));
+                            String.valueOf(i + 1),
+                            "path",
+                            "msg_attr_type_path__path",
+                            Icons.Data
+                    );
+                    this.path[i].generateTreeNode(pathNode, fileFormat);
                 }
             }
 
-            public static final class Path extends FileComponent {
+            public static final class Path extends FileComponent implements GenerateTreeNodeClassFile {
 
+                /**
+                 * @see TypePathKind
+                 */
                 public final u1 type_path_kind;
                 public final u1 type_argument_index;
 
@@ -926,6 +1024,29 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                     this.type_path_kind = new u1(posDataInputStream);
                     this.type_argument_index = new u1(posDataInputStream);
                     super.length = posDataInputStream.getPos() - super.startPos;
+                }
+
+                @Override
+                public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                    int startPosMoving = this.getStartPos();
+
+                    short pathKind = this.type_path_kind.value;
+                    this.addNode(parentNode,
+                            startPosMoving, u1.LENGTH,
+                            "type_path_kind",
+                            pathKind + " + " + TypePathKind.getDescription(pathKind),
+                            "msg_attr_type_path__type_path_kind",
+                            Icons.Kind
+                    );
+                    startPosMoving += u1.LENGTH;
+
+                    this.addNode(parentNode,
+                            startPosMoving, u1.LENGTH,
+                            "type_argument_index",
+                            this.type_argument_index.value,
+                            "msg_attr_type_path__type_argument_index",
+                            Icons.Index
+                    );
                 }
             }
 

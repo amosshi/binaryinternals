@@ -43,8 +43,6 @@ public abstract class RuntimeAnnotations extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    // 4.7.16. The RuntimeVisibleAnnotations Attribute
-    // 4.7.17. The RuntimeInvisibleAnnotations Attribute
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
         final ClassFile classFile = (ClassFile) format;
@@ -87,6 +85,9 @@ public abstract class RuntimeAnnotations extends attribute_info {
      * Get message key for {@link #annotations}.
      *
      * @return Message key for {@link #annotations}
+     *
+     * @see RuntimeVisibleAnnotations_attribute
+     * @see RuntimeInvisibleAnnotations_attribute
      */
     abstract String getMessageKey_4_annotations();
 
@@ -94,6 +95,9 @@ public abstract class RuntimeAnnotations extends attribute_info {
      * Get message key for {@link #num_annotations}.
      *
      * @return Message key for {@link #num_annotations}
+     *
+     * @see RuntimeVisibleAnnotations_attribute
+     * @see RuntimeInvisibleAnnotations_attribute
      */
     abstract String getMessageKey_4_num_annotations();
 }

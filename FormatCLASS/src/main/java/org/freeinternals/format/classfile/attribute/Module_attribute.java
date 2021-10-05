@@ -13,10 +13,12 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
+import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -200,19 +202,24 @@ public class Module_attribute extends attribute_info {
         int startPosMoving = super.startPos + 6;
 
         // module_name_index
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "module_name_index: " + this.module_name_index.value + " - " + classFile.getCPDescription(this.module_name_index.value)
-        )));
+        int moduleNameCpIndex = this.module_name_index.value;
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "module_name_index",
+                String.format(TEXT_CPINDEX_VALUE, moduleNameCpIndex, "module name", classFile.getCPDescription(moduleNameCpIndex)),
+                "msg_attr_module_name_index",
+                Icons.Name
+        );
         startPosMoving += u2.LENGTH;
 
         // module_flags
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "module_flags: " + BytesTool.getBinaryString(this.module_flags.value) + " " + this.getModuleFlags()
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "module_flags",
+                BytesTool.getBinaryString(this.module_flags.value) + " - " + this.getModuleFlags(),
+                "msg_attr_module_flags",
+                Icons.AccessFlag
+        );
         startPosMoving += u2.LENGTH;
 
         // module_version_index
@@ -220,21 +227,23 @@ public class Module_attribute extends attribute_info {
                 ? "no version information"
                 : classFile.getCPDescription(this.module_version_index.value);
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "module_version_index: " + this.module_version_index.value + " - " + moduleVersion
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "module_version_index",
+                this.module_version_index.value + " - " + moduleVersion,
+                "msg_attr_module_version_index",
+                Icons.Versions
+        );
         startPosMoving += u2.LENGTH;
 
         //
         // requires
         //
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "requires_count: " + this.requires_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "requires_count", this.requires_count.value,
+                "msg_attr_requires_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.requires_count.value > 0) {
@@ -264,11 +273,11 @@ public class Module_attribute extends attribute_info {
         //
         // exports
         //
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "exports_count: " + this.exports_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "exports_count", this.exports_count.value,
+                "msg_attr_exports_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.exports_count.value > 0) {
@@ -297,11 +306,11 @@ public class Module_attribute extends attribute_info {
         //
         // opens
         //
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "opens_count: " + this.opens_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "opens_count", this.opens_count.value,
+                "msg_attr_opens_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.opens_count.value > 0) {
@@ -330,11 +339,11 @@ public class Module_attribute extends attribute_info {
         //
         // uses
         //
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "uses_count: " + this.uses_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "uses_count", this.uses_count.value,
+                "msg_attr_uses_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.uses_count.value > 0) {
@@ -360,11 +369,11 @@ public class Module_attribute extends attribute_info {
         //
         // provides
         //
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "provides_count: " + this.provides_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "provides_count", this.provides_count.value,
+                "msg_attr_provides_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.provides_count.value > 0) {

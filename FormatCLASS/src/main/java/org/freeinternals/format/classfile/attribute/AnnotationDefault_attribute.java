@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.u2;
 
 /**
@@ -61,12 +61,14 @@ public class AnnotationDefault_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        DefaultMutableTreeNode defaultValueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode defaultValueNode = this.addNode(parentNode,
                 super.startPos + 6,
                 this.getLength() - 6,
-                "default_value"
-        ));
-        parentNode.add(defaultValueNode);
+                "default_value",
+                "the default value of the annotation interface element represented by the method_info structure enclosing this AnnotationDefault attribute",
+                "msg_attr_AnnotationDefault__default_value",
+                Icons.Data
+        );
         this.default_value.generateTreeNode(defaultValueNode, classFile);
     }
 

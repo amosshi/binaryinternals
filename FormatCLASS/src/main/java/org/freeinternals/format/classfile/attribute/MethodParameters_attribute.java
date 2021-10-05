@@ -13,9 +13,11 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.AccessFlag;
 import org.freeinternals.format.classfile.ClassFile;
+import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.freeinternals.format.classfile.u1;
 import org.freeinternals.format.classfile.u2;
 
@@ -85,11 +87,13 @@ public class MethodParameters_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u1.LENGTH,
-                "parameters_count: " + this.parameters_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u1.LENGTH,
+                "parameters_count",
+                this.parameters_count.value,
+                "msg_attr_MethodParameters__parameters_count",
+                Icons.Counter
+        );
         startPosMoving += u1.LENGTH;
 
         if (this.parameters == null || this.parameters.length < 1) {
@@ -98,34 +102,22 @@ public class MethodParameters_attribute extends attribute_info {
 
         DefaultMutableTreeNode parametersNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
-                this.getStartPos() + this.getLength() - startPosMoving,
-                String.format("parameters[%d]", this.parameters.length)
+                this.parameters.length * Parameter.LENGTH,
+                String.format("parameters [%d]", this.parameters.length),
+                MESSAGES.getString("msg_attr_MethodParameters__parameters_count")
         ));
         parentNode.add(parametersNode);
 
         for (int i = 0; i < this.parameters.length; i++) {
-            DefaultMutableTreeNode parameter = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode parameterNode = this.addNode(parametersNode,
                     startPosMoving,
-                    this.parameters[i].getLength(),
-                    "parameter " + (i + 1)
-            ));
-            parametersNode.add(parameter);
-
-            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "name_index: "
-                    + this.parameters[i].name_index.value + " - "
-                    + ((ClassFile)classFile).getCPDescription(this.parameters[i].name_index.value)
-            )));
-            startPosMoving += u2.LENGTH;
-            parameter.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "access_flags: " + BytesTool.getBinaryString(this.parameters[i].access_flags.value)
-                    + " - " + this.parameters[i].getAccessFlagsText()
-            )));
-            startPosMoving += u2.LENGTH;
+                    Parameter.LENGTH,
+                    String.format("paramter %d", i + 1),
+                    ((ClassFile) classFile).getCPDescription(this.parameters[i].name_index.value),
+                    "msg_attr_parameters",
+                    Icons.Parameter
+            );
+            this.parameters[i].generateTreeNode(parameterNode, classFile);
         }
     }
 
@@ -134,7 +126,9 @@ public class MethodParameters_attribute extends attribute_info {
         return "msg_attr_MethodParameters";
     }
 
-    public static final class Parameter extends FileComponent {
+    public static final class Parameter extends FileComponent implements GenerateTreeNodeClassFile {
+
+        public static final int LENGTH = u2.LENGTH + u2.LENGTH;
 
         /**
          * The value of the name_index item must either be zero or a valid index
@@ -164,6 +158,29 @@ public class MethodParameters_attribute extends attribute_info {
         public String getAccessFlagsText() {
             return AccessFlag.getMethodParametersModifier(this.access_flags.value);
         }
-    }
 
+        @Override
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            final ClassFile classFile = (ClassFile) fileFormat;
+            int startPosMoving = this.getStartPos();
+
+            int nameCpIndex = this.name_index.value;
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "name_index",
+                    String.format(TEXT_CPINDEX_VALUE, nameCpIndex, "name", classFile.getCPDescription(nameCpIndex)),
+                    "msg_attr_parameters__name_index",
+                    Icons.Name
+            );
+            startPosMoving += u2.LENGTH;
+
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "access_flags",
+                    BytesTool.getBinaryString(this.access_flags.value) + " - " + this.getAccessFlagsText(),
+                    "msg_attr_parameters__access_flags",
+                    Icons.AccessFlag
+            );
+        }
+    }
 }

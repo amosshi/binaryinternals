@@ -343,27 +343,16 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                         "msg_attr_element_value__const_value_index",
                         Icons.Constant
                 );
-            } else if (this.union_enum_const_value != null) {
-                int cpIndex = this.union_enum_const_value.type_name_index.value;
-                this.addNode(parentNode,
-                        startPosMoving,
-                        u2.LENGTH,
-                        "type_name_index",
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "type name", classFile.getCPDescription(cpIndex)),
-                        "msg_attr_element_value__enum_const_value__type_name_index",
-                        Icons.Name
-                );
-                startPosMoving += u2.LENGTH;
 
-                cpIndex = this.union_enum_const_value.const_name_index.value;
-                this.addNode(parentNode,
-                        startPosMoving,
-                        u2.LENGTH,
-                        "const_name_index",
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "const name", classFile.getCPDescription(cpIndex)),
-                        "msg_attr_element_value__enum_const_value__const_name_index",
-                        Icons.Name
-                );
+            } else if (this.union_enum_const_value != null) {
+                DefaultMutableTreeNode unionConstNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    enum_const_value.LENGTH,
+                    enum_const_value.class.getSimpleName(),
+                    MESSAGES.getString("msg_attr_element_value__enum_const_value")
+                ));
+                this.union_enum_const_value.generateTreeNode(unionConstNode, fileFormat);
+
             } else if (this.union_class_info_index != null) {
                 int classInfoIndex = this.union_class_info_index.value;
                 this.addNode(parentNode,
@@ -374,42 +363,24 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                         "msg_attr_element_value__class_info_index",
                         Icons.Name
                 );
+
             } else if (this.union_annotation_value != null) {
-                this.union_annotation_value.generateTreeNode(parentNode, classFile);
+                DefaultMutableTreeNode unionAnnotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    this.union_annotation_value.getLength(),
+                    "annotation_value",
+                    MESSAGES.getString("msg_attr_element_value__annotation_value")
+                ));
+                this.union_annotation_value.generateTreeNode(unionAnnotationNode, classFile);
+
             } else if (this.union_array_value != null) {
-                int numValues = this.union_array_value.num_values.value;
-
-                this.addNode(parentNode,
-                        startPosMoving,
-                        u2.LENGTH,
-                        "num_values",
-                        numValues,
-                        "msg_attr_element_value__array_value__num_values",
-                        Icons.Counter
-                );
-                startPosMoving += u2.LENGTH;
-
-                if (this.union_array_value.values != null && this.union_array_value.values.length > 0) {
-                    DefaultMutableTreeNode valuesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            this.getLength() - 3,
-                            "values[" + numValues + "]",
-                            MESSAGES.getString("msg_attr_element_value__array_value__values")
-                    ));
-                    parentNode.add(valuesNode);
-
-                    for (int i = 0; i < this.union_array_value.values.length; i++) {
-                        DefaultMutableTreeNode valueNode = this.addNode(valuesNode,
-                                this.union_array_value.values[i].getStartPos(),
-                                this.union_array_value.values[i].getLength(),
-                                String.valueOf(i + 1),
-                                "value",
-                                "msg_attr_element_value__array_value",
-                                Icons.Data
-                        );
-                        this.union_array_value.values[i].generateTreeNode(valueNode, fileFormat);
-                    }
-                }
+                DefaultMutableTreeNode unionArrayValueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    this.union_array_value.getLength(),
+                    array_value.class.getSimpleName(),
+                    MESSAGES.getString("msg_attr_element_value__array_value")
+                ));
+                this.union_array_value.generateTreeNode(unionArrayValueNode, fileFormat);
             }
         }
 
@@ -519,7 +490,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             }
         }
 
-        public static final class enum_const_value extends FileComponent {
+        public static final class enum_const_value extends FileComponent implements GenerateTreeNodeClassFile {
 
             public static final int LENGTH = 4;
             public final u2 type_name_index;
@@ -532,9 +503,36 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 this.type_name_index = new u2(posDataInputStream);
                 this.const_name_index = new u2(posDataInputStream);
             }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                final ClassFile classFile = (ClassFile) fileFormat;
+                int startPosMoving = this.getStartPos();
+
+                int cpIndex = this.type_name_index.value;
+                this.addNode(parentNode,
+                        startPosMoving,
+                        u2.LENGTH,
+                        "type_name_index",
+                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "type name", classFile.getCPDescription(cpIndex)),
+                        "msg_attr_element_value__enum_const_value__type_name_index",
+                        Icons.Name
+                );
+                startPosMoving += u2.LENGTH;
+
+                cpIndex = this.const_name_index.value;
+                this.addNode(parentNode,
+                        startPosMoving,
+                        u2.LENGTH,
+                        "const_name_index",
+                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "const name", classFile.getCPDescription(cpIndex)),
+                        "msg_attr_element_value__enum_const_value__const_name_index",
+                        Icons.Name
+                );
+            }
         }
 
-        public static final class array_value extends FileComponent {
+        public static final class array_value extends FileComponent implements GenerateTreeNodeClassFile {
 
             public final u2 num_values;
             public final element_value[] values;
@@ -554,6 +552,44 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 }
                 this.length = posDataInputStream.getPos() - this.startPos;
             }
+
+            @Override
+            public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+                int startPosMoving = this.getStartPos();
+
+                int numValues = this.num_values.value;
+                this.addNode(parentNode,
+                        startPosMoving,
+                        u2.LENGTH,
+                        "num_values",
+                        numValues,
+                        "msg_attr_element_value__array_value__num_values",
+                        Icons.Counter
+                );
+                startPosMoving += u2.LENGTH;
+
+                if (this.values != null && this.values.length > 0) {
+                    DefaultMutableTreeNode valuesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPosMoving,
+                            this.getLength() - 3,
+                            "values[" + numValues + "]",
+                            MESSAGES.getString("msg_attr_element_value__array_value__values")
+                    ));
+                    parentNode.add(valuesNode);
+
+                    for (int i = 0; i < this.values.length; i++) {
+                        DefaultMutableTreeNode valueNode = this.addNode(valuesNode,
+                                this.values[i].getStartPos(),
+                                this.values[i].getLength(),
+                                String.valueOf(i + 1),
+                                "value",
+                                "msg_attr_element_value__array_value",
+                                Icons.Data
+                        );
+                        this.values[i].generateTreeNode(valueNode, fileFormat);
+                    }
+                }
+            } // End of generateTreeNode()
         }
     }
 }

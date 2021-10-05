@@ -48,4 +48,14 @@ public class RuntimeVisibleTypeAnnotations_attribute extends RuntimeTypeAnnotati
     public String getMessageKey() {
         return "msg_attr_RuntimeVisibleTypeAnnotations";
     }
+
+    @Override
+    String getMessageKey_4_annotations() {
+        return "msg_attr_RuntimeVisibleTypeAnnotations__annotations";
+    }
+
+    @Override
+    String getMessageKey_4_num_annotations() {
+        return "msg_attr_RuntimeVisibleTypeAnnotations__num_annotations";
+    }
 }
