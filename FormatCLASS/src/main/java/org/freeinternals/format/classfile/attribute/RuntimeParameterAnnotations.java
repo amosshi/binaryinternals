@@ -51,12 +51,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
         int startPosMoving = super.startPos;
 
         this.addNode(parentNode,
-                startPosMoving + 6,
-                1,
-                "num_parameters",
-                this.num_parameters.value,
-                this.getMessageKey_4_num_parameters(),
-                Icons.Counter
+                startPosMoving + 6, 1,
+                "num_parameters", this.num_parameters.value,
+                this.getMessageKey_4_num_parameters(), Icons.Counter
         );
 
         if (this.parameter_annotations != null && this.parameter_annotations.length > 0) {
@@ -149,12 +146,9 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
             int startPosMoving = this.getStartPos();
 
             this.addNode(parentNode,
-                    startPosMoving,
-                    u2.LENGTH,
-                    "num_annotations",
-                    RuntimeParameterAnnotations.this.getMessageKey_4_parameter_annotations__num_annotations(),
-                    "msg_version",
-                    Icons.Counter
+                    startPosMoving, u2.LENGTH,
+                    "num_annotations", RuntimeParameterAnnotations.this.getMessageKey_4_parameter_annotations__num_annotations(),
+                    "msg_version", Icons.Counter
             );
 
             if (this.annotations != null && this.annotations.length > 0) {

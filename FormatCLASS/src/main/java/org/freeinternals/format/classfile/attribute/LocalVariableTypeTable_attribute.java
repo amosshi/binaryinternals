@@ -90,12 +90,9 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
         final int tableLen = this.local_variable_type_table_length.value;
         this.addNode(parentNode,
-                super.startPos + 6,
-                u2.LENGTH,
-                "local_variable_type_table_length",
-                tableLen,
-                "msg_attr_local_variable_type_table_length",
-                Icons.Length
+                super.startPos + 6, u2.LENGTH,
+                "local_variable_type_table_length", tableLen,
+                "msg_attr_local_variable_type_table_length", Icons.Length
         );
 
         if (tableLen > 0) {

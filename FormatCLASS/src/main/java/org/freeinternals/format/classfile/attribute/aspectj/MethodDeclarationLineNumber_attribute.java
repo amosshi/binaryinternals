@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.attribute.*;
 import org.freeinternals.format.classfile.u2;
@@ -97,14 +98,16 @@ public class MethodDeclarationLineNumber_attribute extends attribute_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 PosDataInputStream.LENGTH_INT,
-                "line_number: " + this.line_number
+                "line_number: " + this.line_number,
+                Icons.Row
         )));
         floatPos += PosDataInputStream.LENGTH_INT;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 PosDataInputStream.LENGTH_INT,
-                "offset: " + this.offset
+                "offset: " + this.offset,
+                Icons.Offset
         )));
     }
 

@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.attribute.attribute_info;
 import org.freeinternals.format.classfile.u2;
@@ -93,21 +94,24 @@ public class ScalaSig_attribute extends attribute_info {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 PosDataInputStream.LENGTH_BYTE,
-                "major_version: " + this.major_version
+                "major_version: " + this.major_version,
+                Icons.Versions
         )));
         floatPos += PosDataInputStream.LENGTH_BYTE;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 PosDataInputStream.LENGTH_BYTE,
-                "minor_version: " + this.minor_version
+                "minor_version: " + this.minor_version,
+                Icons.Versions
         )));
         floatPos += PosDataInputStream.LENGTH_BYTE;
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 PosDataInputStream.LENGTH_BYTE,
-                "number_of_entries: " + this.number_of_entries
+                "number_of_entries: " + this.number_of_entries,
+                Icons.Counter
         )));
     }
 
