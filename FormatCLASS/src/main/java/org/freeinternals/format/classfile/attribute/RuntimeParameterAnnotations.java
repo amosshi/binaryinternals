@@ -63,7 +63,7 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
             DefaultMutableTreeNode parameterAnnotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 7,
                     this.getLength() - 7,
-                    "parameter_annotations[" + this.parameter_annotations.length + "]",
+                    String.format("parameter_annotations [%d]", this.parameter_annotations.length),
                     MESSAGES.getString(this.getMessageKey_4_parameter_annotations())
             ));
             parentNode.add(parameterAnnotationsNode);
@@ -161,7 +161,7 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
                 DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + 2,
                         this.getLength() - 2,
-                        "annotations[" + this.annotations.length + "]",
+                        String.format("annotations [%d]", this.annotations.length),
                         MESSAGES.getString(RuntimeParameterAnnotations.this.getMessageKey_4_parameter_annotations__annotations())
                 ));
                 parentNode.add(annotationsNode);

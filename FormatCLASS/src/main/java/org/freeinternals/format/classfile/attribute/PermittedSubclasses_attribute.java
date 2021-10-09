@@ -39,7 +39,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class PermittedSubclasses_attribute extends Classes_attribute {
+public class PermittedSubclasses_attribute extends ClassesCount {
 
     public PermittedSubclasses_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
@@ -48,5 +48,15 @@ public class PermittedSubclasses_attribute extends Classes_attribute {
     @Override
     public String getMessageKey() {
         return "msg_attr_PermittedSubclasses";
+    }
+
+    @Override
+    String getMessageKey_4_classes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    String getMessageKey_4_number_of_classes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

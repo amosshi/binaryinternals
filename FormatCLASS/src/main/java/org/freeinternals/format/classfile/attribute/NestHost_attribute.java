@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u2;
 
@@ -63,11 +63,12 @@ public class NestHost_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "host_class_index: " + this.host_class_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.host_class_index.value)
-        )));
+        int cpIndex = this.host_class_index.value;
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "host_class_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "host class", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "msg_attr_NestHost__host_class_index", Icons.Class
+        );
     }
 
     @Override

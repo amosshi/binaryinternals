@@ -18,6 +18,7 @@ import org.freeinternals.commonlib.ui.GenerateTreeNodeFileFormat;
  */
 public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {
     static final String FIELD_ACCESS_FLAGS = "access_flags";
+    static final String FIELD_ATTRS = "attributes [%d]";
     static final String FIELD_ATTR_COUNT = "attributes_count";
 
     static final String TEXT_CPINDEX_PUREVALUE = "constant pool index = %d, %s";

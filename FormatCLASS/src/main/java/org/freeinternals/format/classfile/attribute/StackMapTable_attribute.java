@@ -87,7 +87,7 @@ public class StackMapTable_attribute extends attribute_info {
             DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getLength() - 8,
-                    "entries[" + this.number_of_entries.value + "]",
+                    String.format("entries [%d]", this.number_of_entries.value),
                     MESSAGES.getString("msg_attr_StackMapTable__entries")
             ));
             parentNode.add(entriesNode);
@@ -545,7 +545,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeLocals,
-                            "locals[" + this.locals.length + "]",
+                            String.format("locals [%d]", this.locals.length),
                             MESSAGES.getString("msg_attr_stack__append_frame__locals")
                     ));
                     parentNode.add(localsNode);
@@ -646,7 +646,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeLocals,
-                            "locals[" + this.number_of_locals.value + "]",
+                            String.format("locals [%d]", this.number_of_locals.value),
                             MESSAGES.getString("msg_attr_stack__full_frame__locals")
                     ));
                     startPosMoving += sizeLocals;
@@ -681,7 +681,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeStack,
-                            "stack[" + this.number_of_stack_items.value + "]",
+                            String.format("stack [%d]", this.number_of_stack_items.value),
                             MESSAGES.getString("msg_attr_stack__full_frame__stack")
                     ));
                     parentNode.add(stacksNode);

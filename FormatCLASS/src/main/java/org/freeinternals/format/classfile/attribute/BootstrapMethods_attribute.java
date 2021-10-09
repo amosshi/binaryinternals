@@ -210,7 +210,7 @@ public class BootstrapMethods_attribute extends attribute_info {
                     this.addNode(bootstrapArguments,
                             startPosMoving,
                             u2.LENGTH,
-                            "argument " + String.valueOf(i + 1),
+                            String.format("argument %d", i + 1),
                             String.format(TEXT_CPINDEX_VALUE, argCpIndex, "argument value", classFile.getCPDescription(argCpIndex)),
                             "msg_attr_annotation__element_value_pairs",
                             Icons.Parameter

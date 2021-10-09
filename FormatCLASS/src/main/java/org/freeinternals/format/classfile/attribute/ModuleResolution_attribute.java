@@ -59,7 +59,7 @@ public class ModuleResolution_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos + 6,
-                2,
+                u2.LENGTH,
                 "resolution_flags: " + BytesTool.getBinaryString(this.resolution_flags.value)
         )));
     }

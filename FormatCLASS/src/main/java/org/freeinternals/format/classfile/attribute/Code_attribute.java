@@ -203,7 +203,7 @@ public class Code_attribute extends attribute_info {
             DefaultMutableTreeNode treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 14 + codeLength + 2,
                     exception_table.LENGTH * this.exception_table_length.value,
-                    "exception_table[" + this.exception_table_length.value + "]",
+                    String.format("exception_table [%d]", this.exception_table_length.value),
                     MESSAGES.getString("msg_attr_exception_table")
             ));
 
@@ -230,7 +230,7 @@ public class Code_attribute extends attribute_info {
         this.addNode(parentNode,
                 attrStartPos,
                 2,
-                "attributes_count",
+                FIELD_ATTR_COUNT,
                 attrCount,
                 "msg_attr_Code_attributes_count",
                 Icons.Counter
@@ -244,7 +244,7 @@ public class Code_attribute extends attribute_info {
             treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrStartPos + 2,
                     attrLength,
-                    "attributes[" + attrCount + "]",
+                    String.format(FIELD_ATTRS, attrCount),
                     MESSAGES.getString("msg_attr_Code_attributes")
             ));
 

@@ -12,6 +12,7 @@ import org.freeinternals.commonlib.core.FileComponent;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.GenerateTreeNodeClassFile;
@@ -88,23 +89,23 @@ public class ModuleHashes_attribute extends attribute_info {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat format) {
-        ClassFile classFile = (ClassFile) format;
+    public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat fileFormat) {
+        ClassFile classFile = (ClassFile) fileFormat;
         int startPosMoving = super.startPos + 6;
 
-        // TODO
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "algorithm_index: " + this.algorithm_index.value + " - " + classFile.getCPDescription(this.algorithm_index.value)
-        )));
+        int cpIndex = this.algorithm_index.value;
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "algorithm_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "algorithm name", classFile.getCPDescription(cpIndex)),
+                "msg_attr_ModuleHashes_algorithm_index", Icons.Name
+        );
         startPosMoving += u2.LENGTH;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "hashes_count: " + this.hashes_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "hashes_count", this.hashes_count.value,
+                "msg_attr_ModuleHashes_hashes_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.hashes_count.value > 0) {
@@ -112,18 +113,20 @@ public class ModuleHashes_attribute extends attribute_info {
             final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     hashLastItem.getStartPos() + hashLastItem.getLength() - startPosMoving,
-                    "hashes[" + this.hashes_count.value + "]"
+                    String.format("hashes [%d]", this.hashes_count.value)
             ));
             parentNode.add(providesNode);
 
             for (int i = 0; i < this.hashes.length; i++) {
-                DefaultMutableTreeNode hashNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                DefaultMutableTreeNode hashNode = this.addNode(providesNode,
                         this.hashes[i].getStartPos(),
                         this.hashes[i].getLength(),
-                        "hash [" + i + "]"
-                ));
-                this.hashes[i].generateTreeNode(hashNode, format);
-                providesNode.add(hashNode);
+                        String.format("hash %d", i + 1),
+                        classFile.getCPDescription(this.hashes[i].module_name_index.value),
+                        "msg_attr_ModuleHashes_hashes",
+                        Icons.Data
+                );
+                this.hashes[i].generateTreeNode(hashNode, fileFormat);
             }
         }
     }
@@ -168,28 +171,30 @@ public class ModuleHashes_attribute extends attribute_info {
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
+            ClassFile classFile = (ClassFile) fileFormat;
             int startPosMoving = this.getStartPos();
 
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "module_name_index: " + this.module_name_index.value + " - " + ((ClassFile) fileFormat).getCPDescription(this.module_name_index.value)
-            )));
+            int cpIndex = this.module_name_index.value;
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "module_name_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "module name", classFile.getCPDescription(cpIndex)),
+                    "msg_attr_ModuleHashes_module_name_index", Icons.Name
+            );
             startPosMoving += u2.LENGTH;
 
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "hash_length: " + this.hash_length.value
-            )));
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "hash_length", this.hash_length.value,
+                    "msg_attr_ModuleHashes_hash_length", Icons.Length
+            );
             startPosMoving += u2.LENGTH;
 
             if (this.hash_length.value > 0) {
-                parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        startPosMoving,
-                        u1.LENGTH * this.hash_length.value,
-                        "hash"
-                )));
+                this.addNode(parentNode,
+                        startPosMoving, u1.LENGTH * this.hash_length.value,
+                        "hash", "raw hash data",
+                        "msg_attr_ModuleHashes_hash", Icons.Checksum
+                );
             }
         }
     }

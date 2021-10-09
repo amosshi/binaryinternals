@@ -106,7 +106,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             DefaultMutableTreeNode elementValuePairsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     currentPos,
                     this.getStartPos() + this.getLength() - currentPos,
-                    "element_value_pairs",
+                    String.format("element_value_pairs [%d]", this.num_element_value_pairs.value),
                     MESSAGES.getString("msg_attr_annotation__element_value_pairs")
             ));
             parentNode.add(elementValuePairsNode);

@@ -58,6 +58,11 @@ public enum Icons {
      * Mark</a> icon by <a href="https://icons8.com">Icons8</a>
      */
     Checksum("icons8-check-mark-16.png"),
+
+    /**
+     * Icon for Java Class.
+     */
+    Class("icons8-java-16.png"),
     /**
      * Icon for Constant value.
      *
@@ -153,6 +158,12 @@ public enum Icons {
      */
     Method("icons8-mechanistic-analysis-16.png"),
     /**
+     * Icon for Module.
+     *
+     * @see <a href="https://icons8.com/icon/6OXjREBZeUan/module">Module</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Module("icons8-module-16.png"),
+    /**
      * Icon for Name.
      *
      * @see <a href="https://icons8.com/icon/zbNHwSyrej7I/name-tag">Name Tag</a>
@@ -166,6 +177,12 @@ public enum Icons {
      * icon by <a href="https://icons8.com">Icons8</a>
      */
     Offset("icons8-map-pin-16.png"),
+    /**
+     * Icon for package.
+     *
+     * @see <a href="https://icons8.com/icon/t81YhQKj04X8/package">Package</a> icon by <a href="https://icons8.com">Icons8</a>
+     */
+    Package("icons8-package-16.png"),
     /**
      * Icon for parameter, of a method.
      *

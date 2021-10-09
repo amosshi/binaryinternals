@@ -38,7 +38,7 @@ import org.freeinternals.format.classfile.u2;
  * </pre>
  */
 @SuppressWarnings("java:S101")
-public class NestMembers_attribute extends Classes_attribute {
+public class NestMembers_attribute extends ClassesCount {
 
     public NestMembers_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
@@ -47,5 +47,15 @@ public class NestMembers_attribute extends Classes_attribute {
     @Override
     public String getMessageKey() {
         return "msg_attr_NestMembers";
+    }
+
+    @Override
+    String getMessageKey_4_classes() {
+        return "msg_attr_NestMembers__classes";
+    }
+
+    @Override
+    String getMessageKey_4_number_of_classes() {
+        return "msg_attr_NestMembers__number_of_classes";
     }
 }

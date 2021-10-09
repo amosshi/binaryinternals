@@ -11,6 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CONSTANT_Package_info;
@@ -81,28 +82,32 @@ public class ModulePackages_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "package_count: " + this.package_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "package_count", this.package_count.value,
+                "msg_attr_ModulePackages__package_count", Icons.Counter
+        );
         startPosMoving += u2.LENGTH;
 
         if (this.package_count.value > 0) {
             final DefaultMutableTreeNode packageIndexesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH * this.package_count.value,
-                    "package_index[" + this.package_count.value + "]"
+                    String.format("package_index [%d]", this.package_count.value),
+                    MESSAGES.getString("msg_attr_ModulePackages__package_index")
             ));
             parentNode.add(packageIndexesNode);
 
             for (int i = 0; i < this.package_index.length; i++) {
                 int packageIndex = this.package_index[i].value;
-                packageIndexesNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.addNode(packageIndexesNode,
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        "package_index [" + i + "]: " + packageIndex + " - " + ((ClassFile)classFile).getCPDescription(packageIndex)
-                )));
+                        String.format("package_index %d", i + 1),
+                        String.format(TEXT_CPINDEX_VALUE, packageIndex, "package", ((ClassFile)classFile).getCPDescription(packageIndex)),
+                        "msg_attr_ModulePackages__package_index",
+                        Icons.Package
+                );
             }
         }
     }

@@ -102,7 +102,7 @@ public class LocalVariableTable_attribute extends attribute_info {
             final DefaultMutableTreeNode treeNodeLvt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     lvt_length * LocalVariableTable_attribute.local_variable_table.LENGTH,
-                    "local_variable_table[" + lvt_length + "]",
+                    "local_variable_table [" + lvt_length + "]",
                     MESSAGES.getString("msg_attr_local_variable_table")
             ));
 
@@ -111,7 +111,7 @@ public class LocalVariableTable_attribute extends attribute_info {
                 DefaultMutableTreeNode treeNodeLvtItem = this.addNode(treeNodeLvt,
                         lvt.getStartPos(),
                         lvt.getLength(),
-                        String.format("[%05d]", i + 1),
+                        String.format("%05d", i + 1),
                         "local_variable_table",
                         "msg_attr_local_variable_table",
                         Icons.Row

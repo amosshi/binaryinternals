@@ -103,7 +103,7 @@ public class InnerClasses_attribute extends attribute_info {
             treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getClass(numOfClasses - 1).getStartPos() + this.getClass(numOfClasses - 1).getLength() - (startPos + 8),
-                    String.format("classes[%d]", numOfClasses),
+                    String.format("classes [%d]", numOfClasses),
                     MESSAGES.getString("msg_attr_classes")
             ));
 

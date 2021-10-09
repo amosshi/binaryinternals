@@ -184,7 +184,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 this.addNode(interfacesNode,
                         interfaces[i].getStartPos(),
                         interfaces[i].getLength(),
-                        "interface " + (i + 1),
+                        String.format("interface %d", i + 1),
                         String.format(TEXT_CPINDEX_VALUE, interfaces[i].getValue(), "name", this.classFile.getCPDescription(interfaces[i].getValue())),
                         "msg_interfaces_item", Icons.Name);
             }
@@ -276,7 +276,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
             final DefaultMutableTreeNode attrsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrs[0].getStartPos(),
                     attrs[attrCount - 1].getStartPos() + attrs[attrCount - 1].getLength() - attrs[0].getStartPos(),
-                    "attributes[" + attrCount + "]",
+                    String.format(FIELD_ATTRS, attrCount),
                     MESSAGES.getString("msg_attributes_table")
             ));
             this.root.add(attrsNode);

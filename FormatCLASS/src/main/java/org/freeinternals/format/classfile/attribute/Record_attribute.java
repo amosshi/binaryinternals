@@ -85,11 +85,11 @@ public class Record_attribute extends attribute_info {
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
         int startPosMoving = super.startPos + 6;
 
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "components_count: " + this.components_count.value
-        )));
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "components_count", this.components_count.value,
+                "msg_attr_Record__components_count", Icons.Counter
+        );
 
         if (this.components_count.value < 1) {
             return;
@@ -98,20 +98,22 @@ public class Record_attribute extends attribute_info {
         DefaultMutableTreeNode compsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 super.length - 6 - 2,
-                String.format("components[%d]", this.components_count.value)
+                String.format("components [%d]", this.components_count.value),
+                MESSAGES.getString("msg_attr_record_component_info")
         ));
         parentNode.add(compsNode);
 
         for (int i = 0; i < this.components_count.value; i++) {
             record_component_info info = this.components[i];
-            DefaultMutableTreeNode infoNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            DefaultMutableTreeNode infoNode = this.addNode(compsNode,
                     info.getStartPos(),
                     info.getLength(),
                     String.format("component %d", i + 1),
-                    MESSAGES.getString("msg_attr_record_component_info")
-            ));
+                    ((ClassFile)classFile).getCPDescription(info.name_index.value),
+                    "msg_attr_record_component_info",
+                    Icons.Data
+            );
             info.generateTreeNode(infoNode, (ClassFile)classFile);
-            compsNode.add(infoNode);
         }
     }
 
@@ -194,25 +196,27 @@ public class Record_attribute extends attribute_info {
             ClassFile classFile = (ClassFile) format;
             int startPosMoving = super.getStartPos();
 
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "name_index: " + this.name_index.value + " - " + classFile.getCPDescription(this.name_index.value)
-            )));
+            int cpIndex = this.name_index.value;
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "name_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                    "msg_attr_record_component_info__name_index", Icons.Name
+            );
             startPosMoving += u2.LENGTH;
 
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "descriptor_index: " + this.descriptor_index.value + " - " + classFile.getCPDescription(this.descriptor_index.value)
-            )));
+            cpIndex = this.descriptor_index.value;
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    "descriptor_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                    "msg_attr_record_component_info__descriptor_index", Icons.Descriptor
+            );
             startPosMoving += u2.LENGTH;
 
-            parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    u2.LENGTH,
-                    "attributes_count: " + this.attributes_count.value
-            )));
+            this.addNode(parentNode,
+                    startPosMoving, u2.LENGTH,
+                    FIELD_ATTR_COUNT, this.attributes_count.value,
+                    "msg_attr_record_component_info__attributes_count", Icons.Counter
+            );
             startPosMoving += u2.LENGTH;
 
             if (this.attributes_count.value > 0) {
@@ -224,7 +228,8 @@ public class Record_attribute extends attribute_info {
                 DefaultMutableTreeNode treeNodeAttributes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         attrLength,
-                        "attributes[" + this.attributes_count.value + "]"
+                        String.format(FIELD_ATTRS, this.attributes_count.value),
+                        MESSAGES.getString("msg_attr_record_component_info__attributes")
                 ));
 
                 for (int i = 0; i < this.attributes_count.value; i++) {

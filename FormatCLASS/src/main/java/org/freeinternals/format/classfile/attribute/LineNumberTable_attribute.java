@@ -99,7 +99,7 @@ public class LineNumberTable_attribute extends attribute_info {
             final DefaultMutableTreeNode treeNodeLnt = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     lnt_length * 4,
-                    "line_number_table[" + lnt_length + "]",
+                    "line_number_table [" + lnt_length + "]",
                     MESSAGES.getString("msg_attr_line_number_table")
             ));
 

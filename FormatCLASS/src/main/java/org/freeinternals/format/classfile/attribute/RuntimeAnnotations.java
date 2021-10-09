@@ -49,19 +49,16 @@ public abstract class RuntimeAnnotations extends attribute_info {
         final int startPosMoving = super.startPos;
 
         this.addNode(parentNode,
-                startPosMoving + 6,
-                u2.LENGTH,
-                "num_annotations",
-                this.num_annotations.value,
-                this.getMessageKey_4_num_annotations(),
-                Icons.Counter
+                startPosMoving + 6, u2.LENGTH,
+                "num_annotations", this.num_annotations.value,
+                this.getMessageKey_4_num_annotations(), Icons.Counter
         );
 
         if (this.num_annotations.value > 0) {
             DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    "annotations[" + this.num_annotations.value + "]",
+                    String.format("annotations [%d]", this.num_annotations.value),
                     MESSAGES.getString(this.getMessageKey_4_annotations())
             ));
             parentNode.add(annotationsNode);

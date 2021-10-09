@@ -82,7 +82,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    "annotations[" + this.annotations.length + "]",
+                    String.format("annotations [%d]", this.annotations.length),
                     MESSAGES.getString(this.getMessageKey_4_annotations())
             ));
             parentNode.add(annotationsNode);
@@ -838,7 +838,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 DefaultMutableTreeNode tablesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.getLength() - u2.LENGTH,
-                        "table[" + this.table.length + "]",
+                        String.format("table [%d]", this.table.length),
                         MESSAGES.getString("msg_attr_type_annotation__target_info__localvar_target__table")
                 ));
                 parentNode.add(tablesNode);

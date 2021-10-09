@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.freeinternals.format.classfile.u2;
@@ -57,11 +57,12 @@ public class ModuleTarget_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + 6,
-                u2.LENGTH,
-                "os_arch_index: " + this.os_arch_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.os_arch_index.value)
-        )));
+        int cpIndex = this.os_arch_index.value;
+        this.addNode(parentNode,
+                super.startPos + 6, u2.LENGTH,
+                "os_arch_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "type name", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "msg_attr_ModuleTarget_os_arch_index", Icons.Name
+        );
     }
 
     @Override

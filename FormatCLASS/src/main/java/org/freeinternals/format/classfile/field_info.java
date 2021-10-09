@@ -195,7 +195,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                     new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     floatPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - floatPos - 8,
-                    String.format("attributes[%d]", attributesCount),
+                    String.format(FIELD_ATTRS, attributesCount),
                     MESSAGES.getString("msg_field_info__attributes")
             ));
 

@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;
 import org.freeinternals.commonlib.core.PosDataInputStream;
-import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.freeinternals.commonlib.ui.Icons;
 import org.freeinternals.format.classfile.ClassFile;
 import org.freeinternals.format.classfile.u2;
 
@@ -63,11 +63,12 @@ public class ModuleMainClass_attribute extends attribute_info {
 
         // TODO - Find a test case to verify this attribute type is working or not
         System.out.println("Congratulations. We verified the tree ndoe for ConstantDynamicInfo is working. We can delete this log output now.");
-        parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                startPosMoving,
-                u2.LENGTH,
-                "main_class_index: " + this.main_class_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.main_class_index.value)
-        )));
+        int cpIndex = this.main_class_index.value;
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "main_class_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "main class", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "msg_attr_ModuleMainClass__main_class_index", Icons.Class
+        );
     }
 
     @Override
