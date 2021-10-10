@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.freeinternals</groupId>
     <artifactId>freeinternals</artifactId>
-    <version>3.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Free Internals</name>
@@ -43,8 +43,8 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spotbugs.version>4.4.1</spotbugs.version>
-        
-        <commonlib.version>2.0</commonlib.version>
+
+        <revision>3.5</revision>
     </properties>
 
     <dependencies>

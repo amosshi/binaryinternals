@@ -4,12 +4,13 @@
     <parent>
         <groupId>org.freeinternals</groupId>
         <artifactId>freeinternals</artifactId>
-        <version>3.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>BinaryInternalsViewer</artifactId>
-    <name>freeinternals :: BinaryInternalsViewer</name>
     <packaging>jar</packaging>
+
+    <name>freeinternals :: BinaryInternalsViewer</name>
 
     <dependencies>
         <dependency>
@@ -100,5 +101,4 @@
 
         </plugins>
     </build>
-
 </project>

@@ -16,3 +16,12 @@ mvn  javadoc:aggregate
 mvn  jdeps:jdkinternals
 mvn  versions:display-dependency-updates
 
+# Package
+cd BinaryInternalsViewer/target && pwd
+# - Get current git revision
+git log -1 --format='%H %aI' > version.log
+# - Create Package
+zip   -r "BinaryInternalsViewer-3.5_$(date '+%Y-%m-%d_%H.%M.%S').zip" BinaryInternalsViewer-3.5.jar libs/ version.log
+
+echo  "$0 Finished"
+

@@ -12,41 +12,42 @@ Supported Formats
 * [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) file
 * [ZIP](https://en.wikipedia.org/wiki/ZIP_(file_format)) file
   * [The structure of a PKZip file](https://users.cs.jmu.edu/buchhofp/forensics/formats/pkzip.html)
-
-Will supported formats
-
-* [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
-* [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
-* [PE](https://en.wikipedia.org/wiki/Portable_Executable) file for Windows (todo)
-
-Legacy note
-
-* The orignal *Java Class Viewer* has been retired, and merged into *Binary Internals Viewer* since Apr 2021
+* Will supported formats
+  * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
+  * [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
+  * [PE](https://en.wikipedia.org/wiki/Portable_Executable) file for Windows (todo)
  
 Build the Source Code
 
-* We require the maven command line `mvn` has been installed
+* Java Version: `openjdk version "11.0.11" 2021-04-20`
+  * You may choose to use `Java 8` to re-build if still in Java 8
+* Build Tool: `Apache Maven 3.6.3`
+  * Maven `3.5` or higher is needed because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}`
 * Edit `build.sh` file for the `JAVA_HOME` location, if needed
-* Run Either build scripts
+  * Curent script running on Ubuntu so using the folder `export JAVA_HOME=/usr/lib/jvm/default-java`
+* Build scripts
   * `./build.sh` Do a quickly build, to get an running application
-  * `./build-full-lifecycle.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
-
-Test Case
+  * `./full-lifecycle-build.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
 * Test case for Java/JVM `.class` format
   * `./masstest-format-class.sh` Parse all `.class` files in current Ubuntu linux system `default-java` folder
+  * We can edit the `JAVA_FOLDER` variable if want to test with other Java versions
 
 Download
 
 * Download Application: https://github.com/amosshi/freeinternals/releases
 
-Usage guide
+User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.0.jar`
+  * `java -jar BinaryInternalsViewer-3.5.jar`
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
 
 Dependency
 
 * This application do not rely on any 3rd party libraries, easy to add it to your project
+
+Legacy note
+
+* The orignal *Java Class Viewer* has been retired, and merged into *Binary Internals Viewer* since Apr 2021
 
