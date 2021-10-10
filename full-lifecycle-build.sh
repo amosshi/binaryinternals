@@ -3,8 +3,9 @@
 # Build with all targets
 #
 
+./build.sh
 
-./build-quick.sh
+export JAVA_HOME=/usr/lib/jvm/default-java
 
 mvn  source:jar
 mvn  source:aggregate
