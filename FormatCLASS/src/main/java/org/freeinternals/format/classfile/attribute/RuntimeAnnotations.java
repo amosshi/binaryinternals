@@ -25,7 +25,7 @@ import org.freeinternals.format.classfile.u2;
 public abstract class RuntimeAnnotations extends attribute_info {
 
     public final u2 num_annotations;
-    private final Annotation[] annotations;
+    public final Annotation[] annotations;
 
     RuntimeAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);

@@ -296,6 +296,15 @@ public enum AccessFlag {
     }
 
     /**
+     * Get <code>int</code> value of {@link #value}.
+     *
+     * @return <code>int</code> value of {@link #value}
+     */
+    public int intValue() {
+        return Math.toIntExact(this.value);
+    }
+
+    /**
      * Check if the the <code>accFlags</code> matches the access flag or not.
      *
      * @param accFlags the access flags value
