@@ -95,12 +95,12 @@ public class Chunk_tRNS extends Chunk {
      * For color type 3 (indexed color), the <span>tRNS</span> chunk contains
      * a series of one-byte alpha values, corresponding to entries in the
      * <span>PLTE</span> chunk:
+     * </p>
      * <pre>
      *    Alpha for palette index 0:  1 byte
      *    Alpha for palette index 1:  1 byte
      *    ...etc...
      * </pre>
-     * </p>
      * <p>
      * Each entry indicates that pixels of the corresponding palette index must
      * be treated as having the specified alpha value.

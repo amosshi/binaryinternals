@@ -56,14 +56,14 @@ public class Identification extends FileComponent implements GenerateTreeNode {
     /**
      * Magic number of ELF file: <code>0x7F454C46</code>.
      *
-     * @see {@link #MAGIC_NUMBER}
+     * @see #MAGIC_NUMBER
      */
     public final int EI_MAG;
 
     /**
      * ELF classification: 32- or 64-bit.
      *
-     * @see {@link ElfClass}
+     * @see ElfClass
      */
     public final ElfClass EI_CLASS;
 
@@ -75,7 +75,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
     /**
      * Little or big endianness.
      *
-     * @see {@link Endianness}
+     * @see Endianness
      */
     public final Endianness EI_DATA;
 

@@ -40,7 +40,7 @@ public class IFD extends FileComponent {
      * @param startPosTiff
      * @param byteArrayTiff
      * @throws IOException
-     * @throws JPEGFileFormatException 
+     * @throws FileFormatException
      */
     protected IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff, byte[] byteArrayTiff) throws IOException, FileFormatException {
         super.startPos = pDIS.getPos() - 4;

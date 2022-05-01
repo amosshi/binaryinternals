@@ -27,10 +27,10 @@ public class Chunk_pHYs extends Chunk {
     public final int AxisY;
     /**
      * Unit specifier.
-     * <p><pre>
+     * <pre>
      * 0: unit is unknown
      * 1: unit is the meter
-     * </pre></p>
+     * </pre>
      */
     public final int Unit;
 

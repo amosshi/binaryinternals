@@ -102,7 +102,7 @@ public class Analysis {
      * /BitsPerComponent 4
      * /Length 347
      * /Filter 8 0 R
-     * </pre> </p> When we found the '
+     * </pre> When we found the '
      * <code>R</code>', we need to merge the former
      * <code>8</code> and
      * <code>0</code> together with the

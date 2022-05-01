@@ -7,9 +7,12 @@
 
 # System default java on Ubuntu LTS Linux
 export JAVA_HOME=/usr/lib/jvm/default-java
+#export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
 # System default java on openSUSE Linux
 #export JAVA_HOME=/usr/lib64/jvm/java
+
+java -version
 
 mvn  clean package install
 mvn  javadoc:aggregate
