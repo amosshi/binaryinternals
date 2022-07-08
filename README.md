@@ -15,7 +15,6 @@ Supported Formats
 * Will supported formats
   * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
   * [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
-  * [PE](https://en.wikipedia.org/wiki/Portable_Executable) file for Windows (todo)
  
 Build the Source Code
 
