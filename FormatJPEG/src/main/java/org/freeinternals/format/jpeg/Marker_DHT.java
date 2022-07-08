@@ -19,20 +19,26 @@ import org.freeinternals.commonlib.ui.JTreeNodeFileComponent;
  */
 public class Marker_DHT extends Marker {
 
-    /** Table class. 0 = DC table or lossless table; 1 = AC table. */
+    /**
+     * Table class. 0 = DC table or lossless table; 1 = AC table.
+     */
     private int Tc;                      // TODO - Set all attributes as final
-    /** Huffman table destination identifier. */
+    /**
+     * Huffman table destination identifier.
+     */
     private int Th;
-    /** Number of Huffman codes of length <code>i</code>. */
+    /**
+     * Number of Huffman codes of length <code>i</code>.
+     */
     private int[] Li = new int[16];
-    /** Value associated with each Huffman code.
-     *  Specifies, for each <code>i</code>, the value associated with each 
-     * Huffman code of length <code>i</code>.
-     * The meaning of each value is determined by the Huffman coding model.
-     * The Vi,j’s are the elements of the list <code>HUFFVAL</code>.
+    /**
+     * Value associated with each Huffman code. Specifies, for each
+     * <code>i</code>, the value associated with each Huffman code of length
+     * <code>i</code>. The meaning of each value is determined by the Huffman
+     * coding model. The Vi,j’s are the elements of the list
+     * <code>HUFFVAL</code>.
      */
     private FileComponenPlaceHolder Vij;
-
 
     Marker_DHT(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
         super(pDIS, marker_code);
@@ -58,13 +64,8 @@ public class Marker_DHT extends Marker {
         this.Vij = new FileComponenPlaceHolder(pDisMarker, super.marker_length - 19);
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Interface Methods
-
     /**
-     *
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

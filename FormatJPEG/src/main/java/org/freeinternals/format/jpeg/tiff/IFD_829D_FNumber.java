@@ -27,8 +27,7 @@ public class IFD_829D_FNumber extends IFD_RATIONAL_COUNT1 {
     }
 
     /**
-     *
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

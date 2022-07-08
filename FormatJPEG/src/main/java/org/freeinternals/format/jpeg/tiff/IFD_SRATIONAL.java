@@ -57,11 +57,6 @@ public class IFD_SRATIONAL extends IFD {
         this.generateTreeNode_SRATIONAL(parentNode, ShortText.getString(ShortText.KEY_Type_SRational));
     }
 
-    /**
-     *
-     * @param parentNode
-     * @param description
-     */
     void generateTreeNode_SRATIONAL(DefaultMutableTreeNode parentNode, String description) {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);

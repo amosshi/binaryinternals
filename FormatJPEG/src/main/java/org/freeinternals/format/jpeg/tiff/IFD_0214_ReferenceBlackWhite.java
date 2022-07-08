@@ -28,8 +28,7 @@ public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
     }
 
     /**
-     *
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

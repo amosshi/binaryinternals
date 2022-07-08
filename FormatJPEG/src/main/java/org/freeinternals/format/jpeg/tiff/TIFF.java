@@ -54,7 +54,7 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
         this.tiffHeader.generateTreeNode(nodeTiffHeader);
 
         // TIFF Data
-        ConcurrentSkipListMap<Integer, RefItem> sortedMap = new ConcurrentSkipListMap<Integer, RefItem>();
+        ConcurrentSkipListMap<Integer, RefItem> sortedMap = new ConcurrentSkipListMap<>();
         int lastEnd = this.tiffHeader.getStartPos() + TIFFHeader.SIZE;          // Absolute position
         int diff;
 

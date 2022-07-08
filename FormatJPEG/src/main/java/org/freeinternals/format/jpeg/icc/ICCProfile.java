@@ -63,7 +63,7 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
         lastPos = lastPos + 4;
 
-        ConcurrentSkipListMap<Long, RefItem> sortedMap = new ConcurrentSkipListMap<Long, RefItem>();
+        ConcurrentSkipListMap<Long, RefItem> sortedMap = new ConcurrentSkipListMap<>();
         for (int i = 0; i < this.tagTable.length; i++) {
             parentNode.add(nodeTagTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos + Tag.LENGTH * i,

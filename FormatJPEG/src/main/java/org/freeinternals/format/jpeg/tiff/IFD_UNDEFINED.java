@@ -21,16 +21,6 @@ public class IFD_UNDEFINED extends IFD {
 
     public final byte[] value;
 
-    /**
-     *
-     * @param pDIS
-     * @param byteOrder
-     * @param tag
-     * @param startPosTiff
-     * @param byteArrayTiff
-     * @throws IOException
-     * @throws FileFormatException
-     */
     public IFD_UNDEFINED(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, IFDType.UNDEFINED, startPosTiff, byteArrayTiff);

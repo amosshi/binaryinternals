@@ -26,8 +26,8 @@ public class TagData_measurementType extends TagData {
 
     /**
      *
-     * @param input
-     * @throws IOException
+     * @param input Input stream of the file
+     * @throws IOException Parse file failed
      */
     public TagData_measurementType(final PosDataInputStream input) throws IOException {
         super(input);

@@ -57,11 +57,6 @@ public class IFD_RATIONAL extends IFD {
         this.generateTreeNode_RATIONAL(parentNode, ShortText.getString(ShortText.KEY_Type_Rational));
     }
 
-    /**
-     *
-     * @param parentNode
-     * @param description 
-     */
     void generateTreeNode_RATIONAL(DefaultMutableTreeNode parentNode, String description) {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);

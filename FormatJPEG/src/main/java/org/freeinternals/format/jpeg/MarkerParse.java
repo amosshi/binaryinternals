@@ -20,8 +20,8 @@ public class MarkerParse {
      *
      * @param pDisFile Data Input Stream for <code>file</code> byte array
      * @return The generated proper marker instance
-     * @throws IOException
-     * @throws FileFormatException
+     * @throws IOException Parse file failed
+     * @throws FileFormatException Parse file failed
      */
     public static Marker parse(final PosDataInputStream pDisFile) throws IOException, FileFormatException {
         Marker marker;

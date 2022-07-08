@@ -113,7 +113,7 @@ public class MarkerCode {
     }
 
     /**
-     * The marker is stands alone or not. <br/>
+     * The marker is stands alone or not.
      * When a marker is stands alone, it is not the start of a marker segment.
      *
      * @param code Marker code value

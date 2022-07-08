@@ -41,8 +41,8 @@ public class TagType {
 
     /**
      *
-     * @param sig
-     * @return
+     * @param sig Type Signature value in number
+     * @return Type Signature string
      */
     public static String getTypeSignature(int sig) {
         StringBuilder sb = new StringBuilder(5);

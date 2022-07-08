@@ -452,7 +452,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
      * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
      *
      * <pre>
-     * java:S115 - Constant names should comply with a naming convention --> We respect the name from ELF Spec instead
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
      * </pre>
      */
     @SuppressWarnings("java:S115")

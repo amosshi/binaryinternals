@@ -30,7 +30,7 @@ public class PhotoshopImageResource extends FileComponent {
         super.length = input.getBuf().length;
 
         this.rawData = input.getBuf();
-        this.irb_8bim = new ArrayList<IRB_8BIM>(100);
+        this.irb_8bim = new ArrayList<>(100);
 
         StringBuilder sb = new StringBuilder(5);
         sb.append((char)this.rawData[0]);

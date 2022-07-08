@@ -26,8 +26,7 @@ public class IFD_011B_YResolution extends IFD_RATIONAL_COUNT1 {
     }
 
     /**
-     *
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

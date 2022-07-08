@@ -50,11 +50,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.pe</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>freeinternals.format.png</artifactId>
             <version>1.0</version>
         </dependency>

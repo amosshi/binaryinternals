@@ -247,7 +247,6 @@
         <!-- Libs still in development -->
         <module>FormatDEX</module>
         <module>FormatELF</module>
-        <module>FormatPE</module>
 
         <!-- Libs on hold -->
         <module>FormatPDF</module>

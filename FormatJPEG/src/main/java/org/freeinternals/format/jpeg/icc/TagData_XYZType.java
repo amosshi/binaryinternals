@@ -21,8 +21,8 @@ public class TagData_XYZType extends TagData {
 
     /**
      *
-     * @param input
-     * @throws IOException
+     * @param input Input stream of the file
+     * @throws IOException Parse file failed
      */
     public TagData_XYZType(final PosDataInputStream input) throws IOException {
         super(input);

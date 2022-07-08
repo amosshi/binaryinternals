@@ -22,8 +22,8 @@ public class TagData_signatureType extends TagData {
 
     /**
      *
-     * @param input
-     * @throws IOException
+     * @param input Input stream of the file
+     * @throws IOException Parse file failed
      */
     public TagData_signatureType(final PosDataInputStream input) throws IOException {
         super(input);

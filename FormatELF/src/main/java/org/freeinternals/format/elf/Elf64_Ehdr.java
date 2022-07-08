@@ -179,7 +179,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
      * and Linkable Format</a>
      *
      * <pre>
-     * java:S115 - Constant names should comply with a naming convention --> We respect the name from ELF Spec instead
+     * java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
      * </pre>
      */
     @SuppressWarnings("java:S115")

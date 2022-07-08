@@ -24,8 +24,7 @@ public class IFD_9205_MaxApertureValue extends IFD_RATIONAL_COUNT1 {
     }
 
     /**
-     *
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

@@ -49,11 +49,6 @@ public class IFD_SHORT extends IFD {
         }
     }
 
-    /**
-     * 
-     * @param parentNode
-     * @param description 
-     */
     void generateTreeNode_SHORT(DefaultMutableTreeNode parentNode, String description) {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);

@@ -24,8 +24,7 @@ public class IFD_0106_PhotometricInterpretation extends IFD_SHORT_COUNT1 {
     }
 
     /**
-     * 
-     * @param parentNode
+     * {@inheritDoc}
      */
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

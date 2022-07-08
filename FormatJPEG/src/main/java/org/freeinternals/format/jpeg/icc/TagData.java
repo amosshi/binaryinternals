@@ -25,7 +25,7 @@ public class TagData extends FileComponent implements GenerateTreeNode {
     /**
      * 
      * @param input The input stream for this Tag Data only
-     * @throws IOException
+     * @throws IOException Parse file failed
      */
     public TagData(final PosDataInputStream input) throws IOException {
         super.startPos = input.getPos();
