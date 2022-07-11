@@ -532,8 +532,7 @@ public class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
 
         /**
-         * 
-         * @param node
+         * {@inheritDoc}
          */
         @Override
         public void generateTreeNode(DefaultMutableTreeNode node) {

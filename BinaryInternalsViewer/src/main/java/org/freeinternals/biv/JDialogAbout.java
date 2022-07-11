@@ -13,7 +13,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.util.Map.Entry;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -34,11 +33,6 @@ class JDialogAbout extends JDialog {
 
     private static final long serialVersionUID = 4876543219876500000L;
 
-    /**
-     *
-     * @param owner
-     * @param title
-     */
     JDialogAbout(final Frame owner, final String title) {
         super(owner, title);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

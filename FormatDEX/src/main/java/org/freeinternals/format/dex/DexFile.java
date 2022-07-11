@@ -15,7 +15,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeinternals.commonlib.core.BytesTool;
 import org.freeinternals.commonlib.core.FileComponent;
@@ -100,9 +99,9 @@ public final class DexFile extends FileFormat {
      * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
      * </pre>
      *
-     * @param file
-     * @throws IOException
-     * @throws FileFormatException
+     * @param file Input file
+     * @throws IOException Read file failed
+     * @throws FileFormatException Invalid file format
      */
     @SuppressWarnings("java:S3776")
     public DexFile(File file) throws IOException, FileFormatException {

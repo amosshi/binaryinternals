@@ -31,11 +31,6 @@ class JDialogIcons extends JDialog {
 
     private static final long serialVersionUID = 4876543219876500000L;
 
-    /**
-     *
-     * @param owner
-     * @param title
-     */
     JDialogIcons(final Frame owner, final String title) {
         super(owner, title);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

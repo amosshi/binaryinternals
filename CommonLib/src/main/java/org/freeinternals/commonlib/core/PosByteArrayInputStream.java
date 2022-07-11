@@ -16,7 +16,7 @@ public final class PosByteArrayInputStream extends ByteArrayInputStream {
 
     /**
      * Creates a new instance of PosByteArrayInputStream
-     * @param buf 
+     * @param buf Buffer pool
      */
     public PosByteArrayInputStream(final byte[] buf) {
         super(buf);

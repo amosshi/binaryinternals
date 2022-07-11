@@ -137,7 +137,7 @@ public interface DataInputEx {
     /**
      * Reads until <code>b</code>, or the end of the buffer as an ASCII String.
      *
-     * @param end
+     * @param end Ending character
      * @return the <code>String</code> value read.
      * @throws IOException I/O Error
      */
@@ -146,7 +146,7 @@ public interface DataInputEx {
     /**
      * Read until a null terminator, or the end of the buffer as binary.
      *
-     * @return
+     * @return Binary byte array data
      * @throws IOException I/O Error
      */
     byte[] readBinary() throws IOException;

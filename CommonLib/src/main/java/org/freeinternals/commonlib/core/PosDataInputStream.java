@@ -376,12 +376,12 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * Read current byte array as ASCII string until <code>byte</code>
      * <code>end</code>.
      *
-     * @param end
-     * @throws IOException
-     *
      * <pre>
      * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- We need it in this method
      * </pre>
+     *
+     * @param end End character
+     * @throws IOException Read failed
      */
     @Override
     @SuppressWarnings("java:S135")
@@ -444,8 +444,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * Read current byte array as ASCII string until a {@link #NEWLINE_CR} /
      * {@link #NEWLINE_LF} flag found.
      *
-     * @return
-     * @throws IOException
+     * @return ASCII Line
+     * @throws IOException Read failed
      */
     public ASCIILine readASCIILine() throws IOException {
         int nlLen = 1;
@@ -567,7 +567,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * This method supports {@link PosByteArrayInputStream} only as input stream
      * only, otherwise <code>-1</code> is returned.
      *
-     * @param b
+     * @param b Target byte
      * @see PosByteArrayInputStream
      * @return the new position, or -1 if <code>b</code> not found
      */

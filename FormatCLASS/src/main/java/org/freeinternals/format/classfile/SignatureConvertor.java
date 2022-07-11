@@ -98,7 +98,7 @@ public final class SignatureConvertor {
      *
      * @param returnType Return type in binary format
      * @return Method return type in Java Programming language format
-     * @throws FileFormatException
+     * @throws FileFormatException Invalid signature string found
      */
     public static SignatureResult methodReturnTypeJLS(final String returnType) throws FileFormatException {
         SignatureResult returnValue;

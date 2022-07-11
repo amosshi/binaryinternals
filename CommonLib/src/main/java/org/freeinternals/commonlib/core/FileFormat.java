@@ -66,8 +66,8 @@ public abstract class FileFormat {
      * Parse a byte array (in memory) as a file.
      *
      * @param bytes Contents in bytes
-     * @param fileName
-     * @param filePath
+     * @param fileName File name
+     * @param filePath File path
      */
     protected FileFormat(final byte[] bytes, final String fileName, final String filePath) {
         final String inMemory = "In Memory Bytes data";

@@ -45,13 +45,13 @@ public class JSplitPaneFile extends JSplitPane {
     /**
      * Creates a split panel from a Java class file byte array.
      *
-     * @param file
-     * @param frame
-     * @throws FileFormatException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @param file File name
+     * @param frame Parent frame
+     * @throws FileFormatException File Format Exception
+     * @throws NoSuchMethodException Plugin Exception
+     * @throws InstantiationException Plugin Exception
+     * @throws IllegalAccessException Plugin Exception
+     * @throws InvocationTargetException Plugin Exception
      */
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, NoSuchMethodException, SecurityException, InstantiationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {

@@ -37,11 +37,6 @@ class JDialogPlugins extends JDialog {
 
     private static final long serialVersionUID = 4876543219876500000L;
 
-    /**
-     *
-     * @param owner
-     * @param title
-     */
     JDialogPlugins(final Frame owner, final String title) {
         super(owner, title);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
