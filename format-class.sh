@@ -11,4 +11,4 @@ java -version
 mvn  --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
 
 cd BinaryInternalsViewer/target/
-java -jar BinaryInternalsViewer-3.0.jar
+java -jar BinaryInternalsViewer-3.5.jar

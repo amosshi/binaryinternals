@@ -36,7 +36,8 @@ public enum JavaSEVersion {
     VERSION_14("14", 14, false, LocalDate.of(2020, Month.MARCH, 1)),
     VERSION_15("15", 15, false, LocalDate.of(2020, Month.SEPTEMBER, 1)),
     VERSION_16("16", 16, false, LocalDate.of(2021, Month.MARCH, 1)),
-    VERSION_17("17", 17, true, LocalDate.of(2021, Month.SEPTEMBER, 1));
+    VERSION_17("17", 17, true, LocalDate.of(2021, Month.SEPTEMBER, 1)),
+    VERSION_18("18", 18, false, LocalDate.of(2022, Month.MARCH, 1));
 
     /**
      * Version name.
