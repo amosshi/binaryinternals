@@ -1,4 +1,4 @@
-## `freeinternals`: Binary Internals Viewer
+## `freeinternals` Binary Internals Viewer
 
 An application to show binary file internals visually & interactively for the meaning of every byte.
 
@@ -16,21 +16,6 @@ Supported Formats
   * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
   * [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
  
-Build the Source Code
-
-* Java Version: `openjdk version "11.0.11" 2021-04-20`
-  * You may choose to use `Java 8` to re-build if still in Java 8
-* Build Tool: `Apache Maven 3.6.3`
-  * Maven `3.5` or higher is needed because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}`
-* Edit `build.sh` file for the `JAVA_HOME` location, if needed
-  * Curent script running on Ubuntu so using the folder `export JAVA_HOME=/usr/lib/jvm/default-java`
-* Build scripts
-  * `./build.sh` Do a quickly build, to get an running application
-  * `./full-lifecycle-build.sh` Do a full build, via execute all targets like checkstyle, spotbugs, etc.
-* Test case for Java/JVM `.class` format
-  * `./masstest-format-class.sh` Parse all `.class` files in current Ubuntu linux system `default-java` folder
-  * We can edit the `JAVA_FOLDER` variable if want to test with other Java versions
-
 Download
 
 * Download Application: https://github.com/amosshi/freeinternals/releases
@@ -44,9 +29,23 @@ User guide
 
 Dependency
 
-* This application do not rely on any 3rd party libraries, easy to add it to your project
+* This application do not rely on any 3rd party libraries other than JDK, easy to add it to your project
+
+Build the Source Code
+
+* Prerequisite
+  * Java Version: `OpenJDK version 11` or higher
+  * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
+  * Set `JAVA_HOME` environment variable
+* Build scripts
+  * Linux/MacOS: `./build.sh` Do a quickly build, or `./full-lifecycle-build.sh` do a full build via execute all targets like checkstyle, spotbugs, etc.
+    * Curent script running on Ubuntu so using the folder `export JAVA_HOME=/usr/lib/jvm/default-java`
+    * Try to change the `JAVA_HOME` variable for different systems
+  * Windows: `build.cmd`
+* Test Case for Java `.class` format
+  * `./masstest-format-class.sh` Parse all `.class` files in Ubuntu linux system `default-java` folder
+  * We can edit the `JAVA_FOLDER` variable in the script if want to test with other Java versions
 
 Legacy note
 
-* The orignal *Java Class Viewer* has been retired, and merged into *Binary Internals Viewer* since Apr 2021
-
+* The original `Java Class Viewer` has been retired and merged into `Binary Internals Viewer` since Apr 2021
