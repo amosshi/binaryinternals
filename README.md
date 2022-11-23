@@ -37,13 +37,12 @@ Build the Source Code
   * Java Version: `OpenJDK version 11` or higher
   * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
   * Set `JAVA_HOME` environment variable
+    * If not set use the export statements in the `build.sh` script
 * Build scripts
   * Linux/MacOS: `./build.sh` Do a quickly build, or `./full-lifecycle-build.sh` do a full build via execute all targets like checkstyle, spotbugs, etc.
-    * Curent script running on Ubuntu so using the folder `export JAVA_HOME=/usr/lib/jvm/default-java`
-    * Try to change the `JAVA_HOME` variable for different systems
   * Windows: `build.cmd`
 * Test Case for Java `.class` format
-  * `./masstest-format-class.sh` Parse all `.class` files in Ubuntu linux system `default-java` folder
+  * `./format-class-masstest.sh` Parse all `.class` files in Ubuntu linux system `default-java` folder
   * We can edit the `JAVA_FOLDER` variable in the script if want to test with other Java versions
 
 Legacy note

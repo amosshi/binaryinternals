@@ -5,8 +5,6 @@
 
 ./build.sh
 
-export JAVA_HOME=/usr/lib/jvm/default-java
-
 mvn  source:jar
 mvn  source:aggregate
 
@@ -28,6 +26,3 @@ mvn  spotbugs:spotbugs
 mvn  site
 mvn  site:deploy
 mvn  site:jar
-
-#mvn deploy:deploy
-

@@ -8,4 +8,5 @@ FormatJPEG/target/
 FormatPDF/target/
 FormatPNG/target/
 FormatZIP/target/
+dist/
 target/
