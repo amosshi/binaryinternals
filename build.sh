@@ -15,21 +15,18 @@
 # Set java home on MacOS
 #JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.0.3.1.jdk/Contents/Home
 
+# Set java home on Windows
+# - Reference: https://www.theserverside.com/feature/How-to-set-JAVA_HOME-in-Windows-and-echo-the-result
+# - Example value: JAVA_HOME=C:\data\tools\jdk
+
 java -version
+
+git log -1 --format='%H %aI' > BinaryInternalsViewer/VERSION.log
 
 mvn  clean package install
 mvn  javadoc:aggregate
 mvn  jdeps:jdkinternals
 mvn  versions:display-dependency-updates
 
-# Package
-#   Add git revision info to version.log
-#   Save to dist folder
-
-mkdir -p dist
-cd  BinaryInternalsViewer/target && pwd
-git log -1 --format='%H %aI' > version.log
-zip -r "../../dist/BinaryInternalsViewer-3.5_$(date '+%Y-%m-%d_%H.%M.%S').zip" BinaryInternalsViewer-3.5.jar libs/ version.log
-
 echo  "$0 Finished"
-
+LTS

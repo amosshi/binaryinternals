@@ -41,10 +41,11 @@
     <properties>
         <maven.compiler.release>11</maven.compiler.release>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+        <maven-assembly-plugin.version>3.4.2</maven-assembly-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spotbugs.version>4.7.3</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
-
         <revision>3.5</revision>
+        <git-commit-id-maven-plugin.version>5.0.0</git-commit-id-maven-plugin.version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
     </properties>
 
     <dependencies>
@@ -80,7 +81,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.4</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
+                        <version>10.5.0</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -133,7 +134,7 @@
                 </executions>
             </plugin>
 
-            <!-- Javadoc and Source -->
+            <!-- Generate Javadocs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -160,6 +161,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Creates a jar archive of the source files of the current project -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

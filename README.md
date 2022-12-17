@@ -23,13 +23,10 @@ Download
 User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.5.jar`
+  * `java -jar BinaryInternalsViewer-3.5-gitcommitid.jar`
+    * Where `gitcommitid` is the auto-generated `git` commit id
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
-
-Dependency
-
-* This application do not rely on any 3rd party libraries other than JDK, easy to add it to your project
 
 Build the Source Code
 
@@ -39,11 +36,17 @@ Build the Source Code
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
 * Build scripts
-  * Linux/MacOS: `./build.sh` Do a quickly build, or `./full-lifecycle-build.sh` do a full build via execute all targets like checkstyle, spotbugs, etc.
-  * Windows: `build.cmd`
+  * Linux/MacOS/Windows Git Bash:
+    * `./build.sh` Do a quickly build, or
+    * `./full-lifecycle-build.sh` do a full build via execute all targets like checkstyle, spotbugs, etc.
+  * Windows CMD: `build.cmd`
 * Test Case for Java `.class` format
   * `./format-class-masstest.sh` Parse all `.class` files in Ubuntu linux system `default-java` folder
   * We can edit the `JAVA_FOLDER` variable in the script if want to test with other Java versions
+
+Dependency
+
+* This application do not rely on 3rd party libraries other than JDK, easy to add it to your project
 
 Legacy note
 
