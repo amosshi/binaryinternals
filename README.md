@@ -36,7 +36,8 @@ Build the Source Code
     * If not set use the export statements in the `build.sh` script
   * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
 * Build
-  * `mvn  clean package install`
+  * Build via maven command
+    * `mvn clean package install`
   * Build with Script
     * `./build.sh` (Linux/MacOS/Windows Git Bash)
     * `build.cmd` (Windows CMD)

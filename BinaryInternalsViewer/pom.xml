@@ -64,50 +64,6 @@
 
         <plugins>
 
-            <!-- Git revision -->
-            <plugin>
-                <groupId>io.github.git-commit-id</groupId>
-                <artifactId>git-commit-id-maven-plugin</artifactId>
-                <version>${git-commit-id-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>get-the-git-infos</id>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-                    <includeOnlyProperties>
-                        <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
-                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
-                    </includeOnlyProperties>
-                    <commitIdGenerationMode>full</commitIdGenerationMode>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>${buildnumber-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                    <attach>true</attach>
-                    <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
-                </configuration>
-            </plugin>
-
             <!-- Copy dependencies libraries to Target folder -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -141,20 +97,6 @@
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>org.freeinternals.biv.Main</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <Build-Time>${maven.build.timestamp}</Build-Time>
-                        </manifestEntries>
-
-                        <manifestSections>
-                            <manifestSection>
-                                <name>Versions</name>
-                                <manifestEntries>
-                                    <Implementation-Version>${project.version}</Implementation-Version>
-                                    <Implementation-SCM-Revision>${buildNumber}</Implementation-SCM-Revision>
-                                    <Implementation-SCM-Branch>${scmBranch}</Implementation-SCM-Branch>
-                                </manifestEntries>
-                            </manifestSection>
-                        </manifestSections>
                     </archive>
                 </configuration>
             </plugin>
