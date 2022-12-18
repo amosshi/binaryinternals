@@ -4,6 +4,9 @@
 #   This script is trying to test on all the .class files in the JAVA_HOME/jmods/*.jmod files
 #   This script is designed to execute on Ubuntu Linux
 #
+# Parameter
+#   We can edit the JAVA_FOLDER variable in the script if want to test with other Java versions
+#
 
 # Java folder location, in Ubunut linux
 JAVA_FOLDER="/usr/lib/jvm/default-java"
@@ -31,7 +34,7 @@ find "$JAVA_FOLDER/jmods/" -iname *.jmod | while read jmodfilename; do
 
   # Processing each .class file
   find $jmodfilename_short -iname *.class | while read classfilename; do
-    echo "timeout 5 java -Dorg.freeinternals.masstestmode=true -jar ../../BinaryInternalsViewer/target/BinaryInternalsViewer-3.0.jar '$classfilename'" >> masstest.cmds
+    echo "timeout 5 java -Dorg.freeinternals.masstestmode=true -jar ../../BinaryInternalsViewer/target/BinaryInternalsViewer-3.5.jar '$classfilename'" >> masstest.cmds
   done
 
   # Clean up .jmod file

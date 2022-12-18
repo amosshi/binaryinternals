@@ -5,31 +5,31 @@
  * Use is subject to license terms.
  */
 
-package org.freeinternals.biv.plugin.png;
+package org.freeinternals.biv.plugin;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.format.png.PNGFile;
+import org.freeinternals.format.zip.ZIPFile;
 
 /**
  *
  * @author Amos Shi
  */
-public class PluginDescriptorPNG implements PluginDescriptor{
+public class PluginDescriptorZIP implements PluginDescriptor{
 
     @Override
     public String getExtensionDescription() {
-        return "Portable Network Graphic (*.png)";
+        return "ZIP file (*.jar, *.zip)";
     }
 
     @Override
     public String[] getExtensions() {
-        return new String[]{"png"};
+        return new String[]{"jar", "zip"};
     }
 
     @Override
     public Class<? extends FileFormat> getFileFormatClass() {
-        return PNGFile.class;
+        return ZIPFile.class;
     }
 
 }

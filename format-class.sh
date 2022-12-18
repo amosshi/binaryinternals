@@ -9,6 +9,3 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 java -version
 
 mvn  --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
-
-cd BinaryInternalsViewer/target/
-java -jar BinaryInternalsViewer-3.5.jar

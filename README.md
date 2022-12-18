@@ -23,8 +23,8 @@ Download
 User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.5-gitcommitid.jar`
-    * Where `gitcommitid` is the auto-generated `git` commit id
+  * `java -jar BinaryInternalsViewer-3.5-timestamp.jar`
+    * Where `timestamp` is the auto-generated build timestamp
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
 
@@ -32,21 +32,23 @@ Build the Source Code
 
 * Prerequisite
   * Java Version: `OpenJDK version 11` or higher
-  * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
-* Build scripts
-  * Linux/MacOS/Windows Git Bash:
-    * `./build.sh` Do a quickly build, or
-    * `./full-lifecycle-build.sh` do a full build via execute all targets like checkstyle, spotbugs, etc.
-  * Windows CMD: `build.cmd`
-* Test Case for Java `.class` format
-  * `./format-class-masstest.sh` Parse all `.class` files in Ubuntu linux system `default-java` folder
-  * We can edit the `JAVA_FOLDER` variable in the script if want to test with other Java versions
+  * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
+* Build
+  * `mvn  clean package install`
+  * Build with Script
+    * `./build.sh` (Linux/MacOS/Windows Git Bash)
+    * `build.cmd` (Windows CMD)
 
-Dependency
+Structure
 
-* This application do not rely on 3rd party libraries other than JDK, easy to add it to your project
+* This application does not have 3rd party dependency other than JDK, easy to add it to your existing project
+* Project Structure
+  * `mvn dependency:tree`
+  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.freeinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs` - this command needs `dot` command from [Graphviz](https://graphviz.org/)
+
+![Dependency Graph](docs/dependency-graph.png)
 
 Legacy note
 

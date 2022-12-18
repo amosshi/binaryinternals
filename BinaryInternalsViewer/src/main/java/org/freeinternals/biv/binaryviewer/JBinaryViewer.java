@@ -4,7 +4,7 @@
  * Copyright  2007, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.binaryviewer;
+package org.freeinternals.biv.binaryviewer;
 
 import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;

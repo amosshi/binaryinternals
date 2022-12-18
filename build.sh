@@ -21,12 +21,8 @@
 
 java -version
 
-git log -1 --format='%H %aI' > BinaryInternalsViewer/VERSION.log
-
-mvn  clean package install
-mvn  javadoc:aggregate
-mvn  jdeps:jdkinternals
+mvn  clean package install 
+mvn  source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
 mvn  versions:display-dependency-updates
-
-echo  "$0 Finished"
-LTS
+#mvn jdeps:jdkinternals
+#mvn spotbugs:gui

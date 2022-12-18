@@ -23,7 +23,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.freeinternals.binaryviewer.JBinaryViewer;
+import org.freeinternals.biv.binaryviewer.JBinaryViewer;
 import org.freeinternals.biv.plugin.PluginManager;
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.FileFormatException;

@@ -5,32 +5,31 @@
  * Use is subject to license terms.
  */
 
-package org.freeinternals.biv.plugin.dex;
+package org.freeinternals.biv.plugin;
 
 import org.freeinternals.biv.plugin.PluginDescriptor;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.format.dex.DexFile;
-
+import org.freeinternals.format.jpeg.JPEGFile;
 
 /**
  *
  * @author Amos Shi
  */
-public class PluginDescriptorDEX implements PluginDescriptor{
+public class PluginDescriptorJPEG implements PluginDescriptor{
 
     @Override
     public String getExtensionDescription() {
-        return "Android DEX File (*.dex)";
+        return "JPEG Image (*.jpg,*jpeg)";
     }
 
     @Override
     public String[] getExtensions() {
-        return new String[]{"dex"};
+        return new String[]{"jpeg", "jpg"};
     }
 
     @Override
     public Class<? extends FileFormat> getFileFormatClass() {
-        return DexFile.class;
+        return JPEGFile.class;
     }
 
 }

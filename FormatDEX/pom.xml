@@ -37,7 +37,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.biv.plugin.dex.PluginDescriptorDEX</biv-plugin>
+                            <biv-plugin>org.freeinternals.biv.plugin.PluginDescriptorDEX</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

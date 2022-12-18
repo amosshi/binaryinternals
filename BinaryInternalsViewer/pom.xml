@@ -60,45 +60,9 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}-${maven.build.timestamp}</finalName>
+        <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
 
         <plugins>
-
-            <!-- Copy dependencies libraries to Target folder -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/libs
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Add main-class manifest -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>org.freeinternals.biv.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
 
             <!-- Git revision -->
             <plugin>
@@ -122,6 +86,76 @@
                         <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
                     </includeOnlyProperties>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>${buildnumber-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                    <attach>true</attach>
+                    <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
+                </configuration>
+            </plugin>
+
+            <!-- Copy dependencies libraries to Target folder -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/libs
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Add manifest -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>libs/</classpathPrefix>
+                            <mainClass>org.freeinternals.biv.Main</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                        </manifestEntries>
+
+                        <manifestSections>
+                            <manifestSection>
+                                <name>Versions</name>
+                                <manifestEntries>
+                                    <Implementation-Version>${project.version}</Implementation-Version>
+                                    <Implementation-SCM-Revision>${buildNumber}</Implementation-SCM-Revision>
+                                    <Implementation-SCM-Branch>${scmBranch}</Implementation-SCM-Branch>
+                                </manifestEntries>
+                            </manifestSection>
+                        </manifestSections>
+                    </archive>
                 </configuration>
             </plugin>
 

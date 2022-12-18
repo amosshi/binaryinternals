@@ -4,7 +4,7 @@
  * Copyright  2019, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.binaryviewer;
+package org.freeinternals.biv.binaryviewer;
 
 import javax.swing.JTextPane;
 
