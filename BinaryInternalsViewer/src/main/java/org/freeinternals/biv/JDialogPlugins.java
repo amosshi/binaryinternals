@@ -26,7 +26,7 @@ import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import org.freeinternals.biv.plugin.PluginDescriptor;
+import org.freeinternals.commonlib.core.PluginDescriptor;
 import org.freeinternals.biv.plugin.PluginManager;
 
 /**

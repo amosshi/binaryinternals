@@ -4,7 +4,7 @@
  * Copyright 2011, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.biv.plugin;
+package org.freeinternals.commonlib.core;
 
 import org.freeinternals.commonlib.core.FileFormat;
 

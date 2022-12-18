@@ -7,8 +7,8 @@
 
 package org.freeinternals.biv.plugin;
 
-import org.freeinternals.biv.plugin.PluginDescriptor;
 import org.freeinternals.commonlib.core.FileFormat;
+import org.freeinternals.commonlib.core.PluginDescriptor;
 import org.freeinternals.format.dex.DexFile;
 
 
