@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -60,7 +61,6 @@ public class Main extends JFrame {
     private static final float POPUP_RATIO = 0.8f;
     private static final String URI_HOMEPAGE = "https://github.com/amosshi/freeinternals";
     private static final String TITLE = "Binary Internals Viewer ";
-    private static final String TITLE_EXT = " - " + TITLE;
     private static final String MASS_TEST_MODE_PROPERTY = "org.freeinternals.masstestmode";
 
     private final JPanel filedropPanel = new JPanel();
@@ -265,7 +265,9 @@ public class Main extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-        this.setTitle(file.getName() + TITLE_EXT);
+        StringJoiner joiner = new StringJoiner(" - ");
+        joiner.add(file.getName()).add(file.getAbsolutePath()).add(this.contentPane.getFileFormatName()).add(TITLE);
+        this.setTitle(joiner.toString());
         this.filedropPanel.add(this.contentPane, BorderLayout.CENTER);
 
         // Resize after adding new content

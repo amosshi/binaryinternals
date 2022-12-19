@@ -59,6 +59,15 @@ public class JSplitPaneFile extends JSplitPane {
         this.topLevelFrame = frame;
         this.createAndShowGUI();
     }
+
+    /**
+     * Getter {@link #file} name.
+     *
+     * @return {@link #file} name
+     */
+    public String getFileFormatName(){
+        return this.file.getClass().getSimpleName();
+    }
     
     private int calcDividerLocation(){
         final double width = this.topLevelFrame.getWidth() * 0.4;

@@ -76,7 +76,7 @@ class JDialogAbout extends JDialog {
         listPane.add(Box.createRigidArea(new Dimension(0, 20)));
         listPane.add(this.getLine("Watch binary file internals visually & interactively for the meaning of every byte"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(this.getLine("Version: 3.0"));
+        listPane.add(this.getLine("Version: 3.5"));
         listPane.add(Box.createRigidArea(new Dimension(0, 5)));
         listPane.add(this.getLine("Author: Amos Shi"));
 

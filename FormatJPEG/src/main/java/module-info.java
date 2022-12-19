@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-module org.freeinternals.formatclass {
+module org.freeinternals.formatjpeg {
     requires static com.github.spotbugs.annotations;
     requires static org.freeinternals.commonlib;
-
-    exports org.freeinternals.format.classfile;
-    exports org.freeinternals.format.classfile.attribute;
-    exports org.freeinternals.format.classfile.attribute.aspectj;
-    exports org.freeinternals.format.classfile.attribute.scala;
-    exports org.freeinternals.format.classfile.constant;
 }
