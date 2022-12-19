@@ -208,8 +208,10 @@ public class Main extends JFrame {
             public synchronized void drop(DropTargetDropEvent evt) {
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
-                    List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    openFile(droppedFiles.get(0));
+                    Object drops = evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    if (drops instanceof List) {
+                        openFile(((List<File>) drops).get(0));
+                    }
                 } catch (UnsupportedFlavorException | IOException e) {
                     LOGGER.warning(e.getMessage());
                 }

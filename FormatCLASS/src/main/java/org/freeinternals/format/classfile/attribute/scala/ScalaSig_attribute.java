@@ -69,7 +69,7 @@ public class ScalaSig_attribute extends attribute_info {
      */
     public final int minor_version;
     /**
-     * The number of entries, which is always equal to <code>“0”</code> (as the
+     * The number of entries, which is always equal to <code>0</code> (as the
      * actual entries are defined in the <code>ScalaSignature</code>
      * annotation).
      */

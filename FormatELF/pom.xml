@@ -32,7 +32,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.biv.plugin.PluginDescriptorELF</biv-plugin>
+                            <biv-plugin>org.freeinternals.format.elf.PluginDescriptorELF</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

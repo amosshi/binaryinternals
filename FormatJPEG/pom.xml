@@ -32,7 +32,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.biv.plugin.PluginDescriptorJPEG</biv-plugin>
+                            <biv-plugin>org.freeinternals.format.jpeg.PluginDescriptorJPEG</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

@@ -1,0 +1,33 @@
+digraph "freeinternals" {
+  node [shape="box",style="rounded",fontname="Helvetica",fontsize="14"]
+  edge [fontsize="10",fontname="Helvetica"]
+
+  // Node Definitions:
+  "org.freeinternals:freeinternals.format.class:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.class<font point-size="10"><br/>17.0</font>>]
+  "org.freeinternals:freeinternals.commonlib:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.commonlib<font point-size="10"><br/>3.5</font>>]
+  "org.freeinternals:freeinternals.format.bmp:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.bmp<font point-size="10"><br/>1.0</font>>]
+  "org.freeinternals:freeinternals.format.jpeg:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.jpeg<font point-size="10"><br/>2.0</font>>]
+  "org.freeinternals:freeinternals.format.zip:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.zip<font point-size="10"><br/>0.7</font>>]
+  "org.freeinternals:freeinternals.format.pdf:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.pdf<font point-size="10"><br/>0.5</font>>]
+  "org.freeinternals:freeinternals.format.dex:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.dex<font point-size="10"><br/>0.7</font>>]
+  "org.freeinternals:freeinternals.format.elf:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.elf<font point-size="10"><br/>0.2</font>>]
+  "org.freeinternals:freeinternals.format.png:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>freeinternals.format.png<font point-size="10"><br/>1.0</font>>]
+  "org.freeinternals:BinaryInternalsViewer:jar:compile"[label=<<font point-size="10">org.freeinternals</font><br/>BinaryInternalsViewer<font point-size="10"><br/>3.5</font>>]
+
+  // Edge Definitions:
+  "org.freeinternals:freeinternals.format.class:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.bmp:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.jpeg:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.zip:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.pdf:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.dex:jar:compile" -> "org.freeinternals:freeinternals.format.class:jar:compile"
+  "org.freeinternals:freeinternals.format.elf:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:freeinternals.format.png:jar:compile" -> "org.freeinternals:freeinternals.commonlib:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.bmp:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.jpeg:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.zip:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.pdf:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.dex:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.elf:jar:compile"
+  "org.freeinternals:BinaryInternalsViewer:jar:compile" -> "org.freeinternals:freeinternals.format.png:jar:compile"
+}

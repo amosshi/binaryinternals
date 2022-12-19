@@ -1,3 +1,4 @@
+*.flattened-pom.xml
 BinaryInternalsViewer/target/
 CommonLib/target/
 FormatBMP/target/

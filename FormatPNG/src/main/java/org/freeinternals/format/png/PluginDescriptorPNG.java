@@ -5,11 +5,10 @@
  * Use is subject to license terms.
  */
 
-package org.freeinternals.biv.plugin;
+package org.freeinternals.format.png;
 
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PluginDescriptor;
-import org.freeinternals.format.png.PNGFile;
 
 /**
  *

@@ -346,7 +346,7 @@
     <distributionManagement>
         <site>
             <id>site-local</id>
-            <url>file:docs</url>
+            <url>file:target/site-local</url>
         </site>
     </distributionManagement>
 

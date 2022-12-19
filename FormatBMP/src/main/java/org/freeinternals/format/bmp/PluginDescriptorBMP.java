@@ -1,35 +1,34 @@
 /*
- * PluginDescriptor.java    Apr 16, 2011, 20:14
+ * PluginDescriptorBMP.java    Apr 16, 2011, 20:14
  *
  * Copyright 2011, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
 
-package org.freeinternals.biv.plugin;
+package org.freeinternals.format.bmp;
 
-import org.freeinternals.commonlib.core.PluginDescriptor;
 import org.freeinternals.commonlib.core.FileFormat;
-import org.freeinternals.format.jpeg.JPEGFile;
+import org.freeinternals.commonlib.core.PluginDescriptor;
 
 /**
  *
  * @author Amos Shi
  */
-public class PluginDescriptorJPEG implements PluginDescriptor{
+public class PluginDescriptorBMP implements PluginDescriptor{
 
     @Override
     public String getExtensionDescription() {
-        return "JPEG Image (*.jpg,*jpeg)";
+        return "Bitmap Images (*.bmp)";
     }
 
     @Override
     public String[] getExtensions() {
-        return new String[]{"jpeg", "jpg"};
+        return new String[]{"bmp"};
     }
 
     @Override
     public Class<? extends FileFormat> getFileFormatClass() {
-        return JPEGFile.class;
+        return BMPFile.class;
     }
 
 }

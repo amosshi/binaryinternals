@@ -32,7 +32,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.biv.plugin.PluginDescriptorClass</biv-plugin>
+                            <biv-plugin>org.freeinternals.format.classfile.PluginDescriptorClass</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

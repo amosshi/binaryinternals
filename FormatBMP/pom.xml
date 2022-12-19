@@ -31,7 +31,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.biv.plugin.PluginDescriptorBMP</biv-plugin>
+                            <biv-plugin>org.freeinternals.format.bmp.PluginDescriptorBMP</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

@@ -4,11 +4,10 @@
  * Copyright 2015, FreeInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.freeinternals.biv.plugin;
+package org.freeinternals.format.elf;
 
 import org.freeinternals.commonlib.core.FileFormat;
 import org.freeinternals.commonlib.core.PluginDescriptor;
-import org.freeinternals.format.elf.ElfFile;
 
 /**
  *
