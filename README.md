@@ -16,6 +16,13 @@ Supported Formats
   * [DEX](https://en.wikipedia.org/wiki/Dalvik_(software)) file for Android (in progress)
   * [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) file for `*nix` systems (in progress)
  
+Sample
+
+* Here is a screen shot opening `java.lang.String.class` file
+
+![Sample Class](docs/sample-class-string.png)
+
+
 Download
 
 * Download Application: https://github.com/amosshi/freeinternals/releases
