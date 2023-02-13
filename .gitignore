@@ -1,13 +1,4 @@
 *.flattened-pom.xml
-BinaryInternalsViewer/target/
-CommonLib/target/
-FormatBMP/target/
-FormatCLASS/target/
-FormatDEX/target/
-FormatELF/target/
-FormatJPEG/target/
-FormatPDF/target/
-FormatPNG/target/
-FormatZIP/target/
+.DS_Store
 dist/
 target/
