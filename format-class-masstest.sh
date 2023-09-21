@@ -34,7 +34,7 @@ find "$JAVA_FOLDER/jmods/" -iname *.jmod | while read jmodfilename; do
 
   # Processing each .class file
   find $jmodfilename_short -iname *.class | while read classfilename; do
-    echo "timeout 5 java -Dorg.binaryinternals.masstestmode=true -jar ../../BinaryInternalsViewer/target/BinaryInternalsViewer-3.5.jar '$classfilename'" >> masstest.cmds
+    echo "timeout 5 java -Dorg.binaryinternals.masstestmode=true -jar ../../BinaryInternalsViewer/target/BinaryInternalsViewer-3.6.jar '$classfilename'" >> masstest.cmds
   done
 
   # Clean up .jmod file

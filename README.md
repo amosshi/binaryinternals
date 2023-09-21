@@ -30,7 +30,7 @@ Download
 User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.5-timestamp.jar`
+  * `java -jar BinaryInternalsViewer-3.6-timestamp.jar`
     * Where `timestamp` is the auto-generated build timestamp
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
@@ -41,7 +41,7 @@ Build the Source Code
   * Java Version: `OpenJDK version 11` or higher
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
-  * Build Tool: `Apache Maven 3.5` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
+  * Build Tool: `Apache Maven 3.6` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
 * Build
   * Build via maven command
     * `mvn clean package install`
