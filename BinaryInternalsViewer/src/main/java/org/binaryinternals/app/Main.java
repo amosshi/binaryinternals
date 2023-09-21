@@ -159,10 +159,10 @@ public class Main extends JFrame {
 
         // File --> Exit
         final JMenuItem menuItemFileExit = new JMenuItem("Exit", UIManager.getIcon("Table.ascendingSortIcon"));
-        menuItemFileExit.setMnemonic(KeyEvent.VK_X);
+        menuItemFileExit.setMnemonic(KeyEvent.VK_E);
         menuItemFileExit.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_X,
-                ActionEvent.ALT_MASK));
+                KeyEvent.VK_E,
+                ActionEvent.CTRL_MASK));
         menuItemFileExit.addActionListener((final ActionEvent e)
                 -> Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)))
         );

@@ -24,7 +24,7 @@ import org.binaryinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 5
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.9">
+ * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.9">
  * VM Spec: The Signature Attribute
  * </a>
  *
@@ -71,7 +71,7 @@ public class Signature_attribute extends attribute_info {
      * A primitive type of the Java programming language.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-BaseType">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-BaseType">
      * VM Spec: BaseType
      * </a>
      */
@@ -163,7 +163,7 @@ public class Signature_attribute extends attribute_info {
      * variable, or an array type.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.9.1">
+     * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.9.1">
      * VM Spec: Reference Type Signature
      * </a>
      *

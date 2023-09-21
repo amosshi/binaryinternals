@@ -50,7 +50,7 @@ public enum AccessFlag {
     /**
      * Indicates that this module ({@link Module_attribute}) is open.
      */
-    ACC_OPEN(0x0010, JavaLangSpec.RestrictedKeyword.OPEN.keyword),
+    ACC_OPEN(0x0010, JavaLangSpec.ContextualKeyword.OPEN.keyword),
     /**
      * Treat superclass methods specially when invoked by the
      * <code>invokespecial</code> instruction.
@@ -65,7 +65,7 @@ public enum AccessFlag {
      * Indicates that any module which depends on the current module, implicitly
      * declares a dependence on the module indicated by this entry.
      */
-    ACC_TRANSITIVE(0x0020, JavaLangSpec.RestrictedKeyword.TRANSITIVE.keyword),
+    ACC_TRANSITIVE(0x0020, JavaLangSpec.ContextualKeyword.TRANSITIVE.keyword),
     /**
      * Declared <code>volatile</code>; cannot be cached.
      */
@@ -131,7 +131,7 @@ public enum AccessFlag {
     /**
      * Is a module, not a class or interface.
      */
-    ACC_MODULE(0x8000, JavaLangSpec.RestrictedKeyword.MODULE.keyword),
+    ACC_MODULE(0x8000, JavaLangSpec.ContextualKeyword.MODULE.keyword),
     /**
      * Indicates that the formal parameter was implicitly declared in source
      * code, according to the specification of the language in which the source

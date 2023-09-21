@@ -54,7 +54,7 @@ import org.binaryinternals.format.classfile.constant.cp_info.ConstantType;
  *
  * @author Amos Shi
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html">
+ * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html">
  * VM Spec: The ClassFile Structure </a>
  *
  * <pre>
@@ -79,7 +79,7 @@ public class ClassFile extends FileFormat {
      * {@code ClassFile} structure.
      *
      * @see ClassFile#getVersion()
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -100,7 +100,7 @@ public class ClassFile extends FileFormat {
      *
      * @see ClassFile#getVersion()
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -114,7 +114,7 @@ public class ClassFile extends FileFormat {
      * {@code constant_pool_count} in {@code ClassFile} structure.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -146,7 +146,7 @@ public class ClassFile extends FileFormat {
      *
      * @see ClassFile#getThisClassName()
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -158,7 +158,7 @@ public class ClassFile extends FileFormat {
      *
      * @see ClassFile#getSuperClassName()
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -169,7 +169,7 @@ public class ClassFile extends FileFormat {
      * {@code interfaces_count} in {@code ClassFile} structure.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -184,7 +184,7 @@ public class ClassFile extends FileFormat {
      * {@code fields_count} in {@code ClassFile} structure.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -200,7 +200,7 @@ public class ClassFile extends FileFormat {
      *
      * @see ClassFile#methods_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */
@@ -216,7 +216,7 @@ public class ClassFile extends FileFormat {
      *
      * @see ClassFile#attributes_count
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">
      * VM Spec: The ClassFile Structure
      * </a>
      */

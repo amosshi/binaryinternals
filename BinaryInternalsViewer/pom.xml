@@ -20,7 +20,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.class</artifactId>
-            <version>17.0</version>
+            <version>21.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

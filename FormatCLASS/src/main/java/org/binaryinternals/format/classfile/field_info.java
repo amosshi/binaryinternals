@@ -34,7 +34,7 @@ import org.binaryinternals.format.classfile.constant.cp_info;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.5">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.5">
  * VM Spec: Fields
  * </a>
  *

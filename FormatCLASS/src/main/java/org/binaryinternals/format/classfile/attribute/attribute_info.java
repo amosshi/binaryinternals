@@ -48,7 +48,7 @@ import org.binaryinternals.format.classfile.u4;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7">
  * VM Spec: Attributes
  * </a>
  *
@@ -195,7 +195,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
      *
      * @return A string of the attribute name
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes
      * </a>
      */
@@ -231,7 +231,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
      * Attributes in Java <code>classfile</code>.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7">
      * VM Spec: Attributes </a>
      *
      * <pre>
@@ -245,7 +245,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code ConstantValue} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.2">
          * VM Spec: The ConstantValue Attribute
          * </a>
          */
@@ -254,7 +254,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Code} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.3">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.3">
          * VM Spec: The Code Attribute
          * </a>
          */
@@ -263,7 +263,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code StackMapTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.4">
          * VM Spec: The StackMapTable Attribute
          * </a>
          */
@@ -272,7 +272,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Exceptions} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.5">
          * VM Spec: The Exceptions Attribute
          * </a>
          */
@@ -281,7 +281,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code InnerClasses} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.6">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.6">
          * VM Spec: The InnerClasses Attribute
          * </a>
          */
@@ -290,7 +290,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code EnclosingMethod} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.7">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.7">
          * VM Spec: The EnclosingMethod Attribute
          * </a>
          */
@@ -299,7 +299,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Synthetic} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.8">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.8">
          * VM Spec: The Synthetic Attribute
          * </a>
          */
@@ -308,7 +308,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Signature} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.9">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.9">
          * VM Spec: The Signature Attribute
          * </a>
          */
@@ -317,7 +317,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code SourceFile} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.10">
          * VM Spec: The SourceFile Attribute
          * </a>
          */
@@ -326,7 +326,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code SourceDebugExtension} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.11">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.11">
          * VM Spec: The SourceDebugExtension Attribute
          * </a>
          */
@@ -335,7 +335,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code LineNumberTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.12">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.12">
          * VM Spec: The LineNumberTable Attribute
          * </a>
          */
@@ -344,7 +344,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code LocalVariableTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.13">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.13">
          * VM Spec: The LocalVariableTable Attribute
          * </a>
          */
@@ -353,7 +353,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code LocalVariableTypeTable} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.14">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.14">
          * VM Spec: The LocalVariableTypeTable Attribute
          * </a>
          */
@@ -362,7 +362,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Deprecated} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.15">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.15">
          * VM Spec: The Deprecated Attribute
          * </a>
          */
@@ -371,7 +371,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code RuntimeVisibleAnnotations } attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.16">
          * VM Spec: The RuntimeVisibleAnnotations Attribute
          * </a>
          */
@@ -380,7 +380,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code RuntimeInvisibleAnnotations } attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.17">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.17">
          * VM Spec: The RuntimeInvisibleAnnotations Attribute
          * </a>
          */
@@ -390,7 +390,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.18">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.18">
          * VM Spec: The RuntimeVisibleParameterAnnotations Attribute
          * </a>
          */
@@ -400,7 +400,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.19">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.19">
          * VM Spec: The RuntimeInvisibleParameterAnnotations Attribute
          * </a>
          */
@@ -409,7 +409,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code RuntimeVisibleTypeAnnotations} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.20">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.20">
          * VM Spec: The RuntimeVisibleTypeAnnotations Attribute
          * </a>
          */
@@ -418,7 +418,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code RuntimeInvisibleTypeAnnotations} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.21">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.21">
          * VM Spec: The RuntimeInvisibleTypeAnnotations Attribute
          * </a>
          */
@@ -427,7 +427,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code AnnotationDefault} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.22">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.22">
          * VM Spec: The AnnotationDefault Attribute
          * </a>
          */
@@ -436,7 +436,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code BootstrapMethods} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.23">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.23">
          * VM Spec: The BootstrapMethods Attribute
          * </a>
          */
@@ -445,7 +445,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code MethodParameters} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.24">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.24">
          * VM Spec: The MethodParameters Attribute
          * </a>
          */
@@ -454,7 +454,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Module} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.25">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.25">
          * VM Spec: The Module Attribute
          * </a>
          */
@@ -463,7 +463,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code ModulePackages} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.26">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.26">
          * VM Spec: The ModuModulePackages Attribute
          * </a>
          */
@@ -472,7 +472,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code ModuleMainClass} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.27">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.27">
          * VM Spec: The ModuleMainClass Attribute
          * </a>
          */
@@ -499,7 +499,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code NestHost} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.28">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.28">
          * VM Spec: The NestHost Attribute
          * </a>
          */
@@ -508,7 +508,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code NestMembers} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.29">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.29">
          * VM Spec: The NestMembers Attribute
          * </a>
          */
@@ -522,7 +522,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          * The name for {@code Record} attribute type.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.30">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.30">
          * VM Spec: The Record Attribute
          * </a>
          */

@@ -28,7 +28,7 @@ import org.binaryinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 6
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.4">
+ * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.4">
  * VM Spec: The StackMapTable Attribute
  * </a>
  *

@@ -13,7 +13,7 @@ import java.time.Month;
  * Java SE platform version.
  *
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.1">The
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1">The
  * ClassFile Structure</a>
  * @author Amos Shi
  */
@@ -37,8 +37,10 @@ public enum JavaSEVersion {
     VERSION_15("15", 15, false, LocalDate.of(2020, Month.SEPTEMBER, 1)),
     VERSION_16("16", 16, false, LocalDate.of(2021, Month.MARCH, 1)),
     VERSION_17("17", 17, true, LocalDate.of(2021, Month.SEPTEMBER, 1)),
-    VERSION_18("18", 18, false, LocalDate.of(2022, Month.MARCH, 1));
-
+    VERSION_18("18", 18, false, LocalDate.of(2022, Month.MARCH, 1)),
+    VERSION_19("19", 19, false, LocalDate.of(2022, Month.SEPTEMBER, 1)),
+    VERSION_20("20", 20, false, LocalDate.of(2023, Month.MARCH, 1)),
+    VERSION_21("21", 21, true, LocalDate.of(2023, Month.SEPTEMBER, 1));
     /**
      * Version name.
      */

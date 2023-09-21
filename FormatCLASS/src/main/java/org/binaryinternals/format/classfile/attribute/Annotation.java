@@ -31,7 +31,7 @@ import org.binaryinternals.format.classfile.u2;
  *
  * @author Amos Shi
  * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16">
+ * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.16">
  * VM Spec: annotation structure
  * </a>
  *
@@ -133,7 +133,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
      * <code>annotation</code> structure.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16">
+     * href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.16">
      * VM Spec: The RuntimeVisibleAnnotations Attribute
      * </a>
      *
@@ -220,7 +220,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
      * </pre>
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.16.1">
      * VM Spec: The element_value structure
      * </a>
      */
@@ -388,7 +388,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
          * The valid characters for the <code>tag</code> item.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se17/html/jvms-4.html#jvms-4.7.16.1-130">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.16.1-130">
          * VM Spec: The element_value structure
          * </a>
          *

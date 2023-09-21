@@ -17,8 +17,8 @@ package org.binaryinternals.format.classfile;
 public class JavaLangSpec {
 
     /**
-     * 50 character sequences, formed from ASCII letters, are reserved for use
-     * as keywords and cannot be used as identifiers.
+     * 51 character sequences, formed from ASCII characters, are reserved for
+     * use as keywords and cannot be used as identifiers.
      *
      * <p>
      * The keywords <code>const</code> and <code>goto</code> are reserved, even
@@ -28,11 +28,13 @@ public class JavaLangSpec {
      * </p>
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.9">
+     * href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
      * Keywords
      * </a>
      */
     public enum Keyword {
+
+        // ReservedKeyword
 
         ABSTRACT("abstract"),
         ASSERT("assert"),
@@ -83,7 +85,8 @@ public class JavaLangSpec {
         TRY("try"),
         VOID("void"),
         VOLATILE("volatile"),
-        WHILE("while");
+        WHILE("while"),
+        UNDERSCORE("_");
 
         public final String text;
 
@@ -93,49 +96,23 @@ public class JavaLangSpec {
     }
 
     /**
-     * The identifiers <code>var</code> and <code>yield</code> are restricted
-     * identifiers because they are not allowed in some contexts.
+     * 17 character sequences, also formed from ASCII characters, may be
+     * interpreted as keywords or as other tokens, depending on the context in
+     * which they appear.
      *
      * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.8">
+     * href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
      * Keywords
      * </a>
      */
-    public enum RestrictedIdentifier {
-
-        PERMITS("permits"),
-        RECORD("record"),
-        SEALED("sealed"),
-        VAR("var"),
-        YIELD("yield");
-
-        public final String identifier;
-
-        private RestrictedIdentifier(String id) {
-            this.identifier = id;
-        }
-    }
-
-    /**
-     * A further ten character sequences are restricted keywords: open, module,
-     * requires, transitive, exports, opens, to, uses, provides, and with.
-     *
-     * These character sequences are tokenized as keywords solely where they
-     * appear as terminals in the ModuleDeclaration, ModuleDirective, and
-     * RequiresModifier productions.
-     *
-     * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se17/html/jls-3.html#jls-3.9">
-     * Keywords
-     * </a>
-     */
-    public enum RestrictedKeyword {
+    public enum ContextualKeyword {
 
         EXPORTS("exports"),
         MODULE("module"),
         NON_SEALED("non-sealed"),
         OPEN("open"),
         OPENS("opens"),
+        PERMITS("permits"),
         PROVIDES("provides"),
         RECORD("record"),
         REQUIRES("requires"),
@@ -144,12 +121,13 @@ public class JavaLangSpec {
         TRANSITIVE("transitive"),
         USES("uses"),
         VAR("var"),
+        WHEN("when"),
         WITH("with"),
         YIELD("yield");
 
         public final String keyword;
 
-        private RestrictedKeyword(String k) {
+        private ContextualKeyword(String k) {
             this.keyword = k;
         }
     }
