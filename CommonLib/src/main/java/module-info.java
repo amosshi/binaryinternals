@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Free Internals.
+ * Copyright 2022 Binary Internals.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 /**
  * @author Amos SHI
  */
-module org.freeinternals.commonlib {
+module org.binaryinternals.commonlib {
     requires java.base;
     requires transitive java.desktop;
     requires transitive java.logging;
     requires static com.github.spotbugs.annotations;
     
-    exports org.freeinternals.commonlib.core;
-    exports org.freeinternals.commonlib.ui;
+    exports org.binaryinternals.commonlib.core;
+    exports org.binaryinternals.commonlib.ui;
 }

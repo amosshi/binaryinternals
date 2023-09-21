@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Free Internals.
+ * Copyright 2022 Binary Internals.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-module org.freeinternals.formatdex {
-    requires static org.freeinternals.commonlib;
-    requires static org.freeinternals.formatclass;
+module org.binaryinternals.formatdex {
+    requires static org.binaryinternals.commonlib;
+    requires static org.binaryinternals.formatclass;
 }

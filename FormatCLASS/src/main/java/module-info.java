@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Free Internals.
+ * Copyright 2022 Binary Internals.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-module org.freeinternals.formatclass {
+module org.binaryinternals.formatclass {
     requires static com.github.spotbugs.annotations;
-    requires static org.freeinternals.commonlib;
+    requires static org.binaryinternals.commonlib;
 
-    exports org.freeinternals.format.classfile;
-    exports org.freeinternals.format.classfile.attribute;
-    exports org.freeinternals.format.classfile.attribute.aspectj;
-    exports org.freeinternals.format.classfile.attribute.scala;
-    exports org.freeinternals.format.classfile.constant;
+    exports org.binaryinternals.format.classfile;
+    exports org.binaryinternals.format.classfile.attribute;
+    exports org.binaryinternals.format.classfile.attribute.aspectj;
+    exports org.binaryinternals.format.classfile.attribute.scala;
+    exports org.binaryinternals.format.classfile.constant;
 }

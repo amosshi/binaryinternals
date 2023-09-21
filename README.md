@@ -1,6 +1,6 @@
-## `freeinternals` Binary Internals Viewer
+## Binary Internals Viewer
 
-An application to show binary file internals visually & interactively for the meaning of every byte.
+An application to show binary file internals visually & interactively for the meaning of every bit.
 
 Supported Formats
 
@@ -25,7 +25,7 @@ Sample
 
 Download
 
-* Download Application: https://github.com/amosshi/freeinternals/releases
+* Download Application: https://github.com/amosshi/binaryinternals/releases
 
 User guide
 
@@ -54,7 +54,7 @@ Structure
 * This application does not have 3rd party dependency other than JDK, easy to add it to your existing project
 * Project Structure
   * `mvn dependency:tree`
-  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.freeinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs` - this command needs `dot` command from [Graphviz](https://graphviz.org/)
+  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs` - this command needs `dot` command from [Graphviz](https://graphviz.org/)
 
 ![Dependency Graph](docs/dependency-graph.png)
 

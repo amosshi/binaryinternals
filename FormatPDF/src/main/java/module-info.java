@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Free Internals.
+ * Copyright 2022 Binary Internals.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-module org.freeinternals.formatpdf {
-    requires static org.freeinternals.commonlib;
+module org.binaryinternals.formatpdf {
+    requires static org.binaryinternals.commonlib;
 }

@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.freeinternals</groupId>
-        <artifactId>freeinternals</artifactId>
+        <groupId>org.binaryinternals</groupId>
+        <artifactId>binaryinternals</artifactId>
         <version>${revision}</version>
     </parent>
 
     <artifactId>BinaryInternalsViewer</artifactId>
     <packaging>jar</packaging>
 
-    <name>freeinternals :: BinaryInternalsViewer</name>
+    <name>binaryinternals :: BinaryInternalsViewer</name>
 
     <properties>
         <maven.build.timestamp.format>yyyyMMdd.HHmmss</maven.build.timestamp.format>
@@ -19,42 +19,42 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.class</artifactId>
+            <artifactId>binaryinternals.format.class</artifactId>
             <version>17.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.bmp</artifactId>
+            <artifactId>binaryinternals.format.bmp</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.jpeg</artifactId>
+            <artifactId>binaryinternals.format.jpeg</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.zip</artifactId>
+            <artifactId>binaryinternals.format.zip</artifactId>
             <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.pdf</artifactId>
+            <artifactId>binaryinternals.format.pdf</artifactId>
             <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.dex</artifactId>
+            <artifactId>binaryinternals.format.dex</artifactId>
             <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.elf</artifactId>
+            <artifactId>binaryinternals.format.elf</artifactId>
             <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.format.png</artifactId>
+            <artifactId>binaryinternals.format.png</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
@@ -95,7 +95,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>org.freeinternals.biv.Main</mainClass>
+                            <mainClass>org.binaryinternals.app.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

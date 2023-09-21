@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.freeinternals</groupId>
-        <artifactId>freeinternals</artifactId>
+        <groupId>org.binaryinternals</groupId>
+        <artifactId>binaryinternals</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>freeinternals.commonlib</artifactId>
+    <artifactId>binaryinternals.commonlib</artifactId>
     <packaging>jar</packaging>
 
-    <name>freeinternals :: CommonLib</name>
+    <name>binaryinternals :: CommonLib</name>
     <description>Common library for Binary File Format parsers</description>
 
     <build>
@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Automatic-Module-Name>org.freeinternals.commonlib</Automatic-Module-Name>
+                            <Automatic-Module-Name>org.binaryinternals.commonlib</Automatic-Module-Name>
                         </manifestEntries>
                     </archive>
                 </configuration>

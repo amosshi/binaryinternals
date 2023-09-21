@@ -2,22 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.freeinternals</groupId>
-        <artifactId>freeinternals</artifactId>
+        <groupId>org.binaryinternals</groupId>
+        <artifactId>binaryinternals</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>freeinternals.format.png</artifactId>
+    <artifactId>binaryinternals.format.png</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>freeinternals :: FormatPNG</name>
+    <name>binaryinternals :: FormatPNG</name>
     <description>Portable Network Graphics (PNG) is a raster-graphics file format that supports lossless data compression.</description>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>freeinternals.commonlib</artifactId>
+            <artifactId>binaryinternals.commonlib</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
@@ -32,7 +32,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <biv-plugin>org.freeinternals.format.png.PluginDescriptorPNG</biv-plugin>
+                            <biv-plugin>org.binaryinternals.format.png.PluginDescriptorPNG</biv-plugin>
                         </manifestEntries>
                     </archive>
                 </configuration>

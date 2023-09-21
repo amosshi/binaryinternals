@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.freeinternals</groupId>
-    <artifactId>freeinternals</artifactId>
+    <groupId>org.binaryinternals</groupId>
+    <artifactId>binaryinternals</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
-    <name>Free Internals</name>
-    <description>Free Tools to show binary file internals visually and interactively for the meaning of every byte</description>
-    <url>http://www.freeinternals.org</url>
+    <name>Binary Internals</name>
+    <description>Show binary file internals visually and interactively for the meaning of every bit</description>
+    <url>http://www.binaryinternals.org</url>
 
     <licenses>
         <license>
@@ -20,8 +20,8 @@
     </licenses>
 
     <organization>
-        <name>Free Internals</name>
-        <url>http://www.freeinternals.org</url>
+        <name>Binary Internals</name>
+        <url>http://www.binaryinternals.org</url>
     </organization>
 
     <developers>
@@ -33,8 +33,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/amosshi/freeinternals.git</connection>
-        <url>https://github.com/amosshi/freeinternals</url>
+        <connection>scm:git:git://github.com/amosshi/binaryinternals.git</connection>
+        <url>https://github.com/amosshi/binaryinternals</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -198,7 +198,6 @@
                         <id>spotbugs</id>
                         <phase>validate</phase>
                         <configuration>
-                            <failOnViolation>true</failOnViolation>
                             <xmlOutput>true</xmlOutput>
                         </configuration>
                         <goals>
@@ -236,11 +235,10 @@
                 <configuration>
                     <additionalJOption>-J-Xmx4g </additionalJOption>
                     <additionalOptions>-html5</additionalOptions>
-                    <aggregate>true</aggregate>
                     <detectJavaApiLink>true</detectJavaApiLink>
                     <detectLinks>true</detectLinks>
                     <doclint>all,-missing</doclint><!-- Ignore Javadoc warning as of now -->
-                    <header>Free Internals &lt;br&gt; Free Tools to View Internals of Binary File</header>
+                    <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
                     <show>private</show>
                     <links>
                         <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
