@@ -21,8 +21,11 @@
 
 java -version
 
-mvn  clean package install
-mvn  dependency:tree versions:display-dependency-updates
+mvn  clean
+mvn  package
+mvn  install
+mvn  dependency:tree
+mvn  versions:display-dependency-updates
 #mvn source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
 #mvn jdeps:jdkinternals
 #mvn spotbugs:gui

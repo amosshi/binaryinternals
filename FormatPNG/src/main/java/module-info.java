@@ -16,4 +16,6 @@
 
 module org.binaryinternals.formatpng {
     requires static org.binaryinternals.commonlib;
+
+    exports org.binaryinternals.format.png;
 }

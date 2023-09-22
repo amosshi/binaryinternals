@@ -16,4 +16,7 @@
 
 module org.binaryinternals.formatpdf {
     requires static org.binaryinternals.commonlib;
+
+    exports org.binaryinternals.format.pdf;
+    exports org.binaryinternals.format.pdf.basicobj;
 }

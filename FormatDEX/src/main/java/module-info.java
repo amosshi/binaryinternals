@@ -17,4 +17,6 @@
 module org.binaryinternals.formatdex {
     requires static org.binaryinternals.commonlib;
     requires static org.binaryinternals.formatclass;
+
+    exports org.binaryinternals.format.dex;
 }

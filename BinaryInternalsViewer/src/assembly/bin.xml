@@ -32,5 +32,4 @@
             </includes>
         </fileSet>
     </fileSets>
-    <!-- TODO change output directory -->
 </assembly>

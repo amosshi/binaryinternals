@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>binaryinternals.format.pdf</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
     <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatPDF</name>

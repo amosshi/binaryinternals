@@ -44,7 +44,11 @@ Build the Source Code
   * Build Tool: `Apache Maven 3.6` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
 * Build
   * Build via maven command
-    * `mvn clean package install`
+    * `mvn clean`
+    * `mvn package`
+    * `mvn install`
+    * `mvn site:site`
+    * `mvn site:stage`
   * Build with Script
     * `./build.sh` (Linux/MacOS/Windows Git Bash)
     * `build.cmd` (Windows CMD)
@@ -61,3 +65,8 @@ Structure
 Legacy note
 
 * The original `Java Class Viewer` has been retired and merged into `Binary Internals Viewer` since Apr 2021
+
+
+## Standalone Libs
+
+The `FormatXXXX.jar` files can be used in your project when needed.

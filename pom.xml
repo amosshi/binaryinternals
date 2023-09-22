@@ -39,17 +39,22 @@
     </scm>
 
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>3.6</revision>
 
         <buildnumber-maven-plugin.version>3.2.0</buildnumber-maven-plugin.version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/buildnumber-maven-plugin -->
         <git-commit-id-maven-plugin.version>6.0.0</git-commit-id-maven-plugin.version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
         <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
         <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
         <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jxr-plugin -->
         <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+        <maven-surefire-report-plugin.version>3.1.2</maven-surefire-report-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
         <spotbugs-maven-plugin.version>4.7.3.5</spotbugs-maven-plugin.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
         <spotbugs.version>4.7.3</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
     </properties>
@@ -241,7 +246,7 @@
                     <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
                     <show>private</show>
                     <links>
-                        <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
+                        <link>https://docs.oracle.com/en/java/javase/17/docs/api</link>
                     </links>
                 </configuration>
                 <executions>
@@ -258,7 +263,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+                <version>3.3.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -378,13 +383,39 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${maven-jxr-plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>                
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
                     <xmlOutput>true</xmlOutput>
-                    <!-- Optional directory to put spotbugs xdoc xml report -->
-                    <xmlOutputDirectory>target/site</xmlOutputDirectory>
                 </configuration>
             </plugin>
 
@@ -414,6 +445,11 @@
                 </reportSets>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+            </plugin>
         </plugins>
     </reporting>
 

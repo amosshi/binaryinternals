@@ -25,37 +25,37 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.bmp</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.jpeg</artifactId>
-            <version>2.0</version>
+            <version>2.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.zip</artifactId>
-            <version>0.7</version>
+            <version>0.8</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.pdf</artifactId>
-            <version>0.5</version>
+            <version>0.6</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.dex</artifactId>
-            <version>0.7</version>
+            <version>0.8</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.elf</artifactId>
-            <version>0.2</version>
+            <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.png</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 

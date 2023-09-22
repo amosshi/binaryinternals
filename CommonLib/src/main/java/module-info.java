@@ -22,7 +22,7 @@ module org.binaryinternals.commonlib {
     requires transitive java.desktop;
     requires transitive java.logging;
     requires static com.github.spotbugs.annotations;
-    
+
     exports org.binaryinternals.commonlib.core;
     exports org.binaryinternals.commonlib.ui;
 }

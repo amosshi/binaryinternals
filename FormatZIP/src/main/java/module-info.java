@@ -16,4 +16,6 @@
 
 module org.binaryinternals.formatzip {
     requires static org.binaryinternals.commonlib;
+
+    exports org.binaryinternals.format.zip;
 }

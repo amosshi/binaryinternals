@@ -16,4 +16,6 @@
 
 module org.binaryinternals.formatelf {
     requires static org.binaryinternals.commonlib;
+
+    exports org.binaryinternals.format.elf;
 }

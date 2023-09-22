@@ -17,4 +17,10 @@
 module org.binaryinternals.formatjpeg {
     requires static com.github.spotbugs.annotations;
     requires static org.binaryinternals.commonlib;
+
+    exports org.binaryinternals.format.jpeg;
+    exports org.binaryinternals.format.jpeg.icc;
+    exports org.binaryinternals.format.jpeg.ps;
+    exports org.binaryinternals.format.jpeg.tiff;
+    exports org.binaryinternals.format.jpeg.xmp;
 }
