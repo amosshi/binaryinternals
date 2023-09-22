@@ -56,9 +56,11 @@ Build the Source Code
 Structure
 
 * This application does not have 3rd party dependency other than JDK, easy to add it to your existing project
-* Project Structure
+* Show dependency tree for this project
   * `mvn dependency:tree`
-  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs` - this command needs `dot` command from [Graphviz](https://graphviz.org/)
+* Graph of all dependencies aggregated
+  *  Make sure [Graphviz](https://graphviz.org/) has been installed, `dot` command is available
+  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs`
 
 ![Dependency Graph](docs/dependency-graph.png)
 
