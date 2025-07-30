@@ -39,24 +39,24 @@
     </scm>
 
     <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>3.6</revision>
 
-        <buildnumber-maven-plugin.version>3.2.0</buildnumber-maven-plugin.version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/buildnumber-maven-plugin -->
-        <git-commit-id-maven-plugin.version>6.0.0</git-commit-id-maven-plugin.version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
-        <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
-        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
-        <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-        <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
-        <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jxr-plugin -->
-        <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
-        <maven-surefire-report-plugin.version>3.1.2</maven-surefire-report-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
-        <spotbugs-maven-plugin.version>4.7.3.5</spotbugs-maven-plugin.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
-        <spotbugs.version>4.7.3</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
+        <buildnumber-maven-plugin.version>3.2.1</buildnumber-maven-plugin.version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/buildnumber-maven-plugin -->
+        <git-commit-id-maven-plugin.version>9.0.2</git-commit-id-maven-plugin.version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jxr-plugin -->
+        <maven-pmd-plugin.version>3.27.0</maven-pmd-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+        <maven-surefire-report-plugin.version>3.5.3</maven-surefire-report-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
+        <spotbugs-maven-plugin.version>4.9.3.2</spotbugs-maven-plugin.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
+        <spotbugs.version>4.9.3</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
     </properties>
 
     <dependencies>
@@ -143,7 +143,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+                <version>3.14.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
@@ -155,12 +155,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.3.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+                <version>3.6.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.12.3</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
+                        <version>10.26.1</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -263,7 +263,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+                <version>3.3.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -277,7 +277,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pdf-plugin</artifactId>
-                <version>1.6.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pdf-plugin -->
+                <version>1.6.2</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pdf-plugin -->
                 <executions>
                     <execution>
                         <id>pdf</id>
@@ -297,13 +297,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.12.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
+                <version>3.21.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
+                <version>3.1.4</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-deploy-plugin -->
                 <executions>
                     <execution>
                         <id>default-deploy</id>
@@ -319,7 +319,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.5.0</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/flatten-maven-plugin -->
+                <version>1.7.2</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/flatten-maven-plugin -->
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>
@@ -357,7 +357,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.5</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+                <version>3.9.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
                 <reportSets>
                     <reportSet>
                         <reports><!-- select reports -->
