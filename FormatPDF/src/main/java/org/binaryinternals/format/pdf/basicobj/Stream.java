@@ -25,7 +25,7 @@ public class Stream extends FileComponent implements GenerateTreeNode {
      * The signature length.
      */
     public final int signatureLen;
-    public ASCIILine signatureEnd = null;
+    private ASCIILine signatureEnd = null;
 
     public Stream(PosDataInputStream stream, PosDataInputStream.ASCIILine line) throws IOException, FileFormatException {
         this.signatureLen = SIGNATURE_START.length() + line.newLineLength;
@@ -66,6 +66,10 @@ public class Stream extends FileComponent implements GenerateTreeNode {
      */
     public int getStreamLength() {
         return this.length - this.signatureLen - 1 - this.signatureEnd.length();
+    }
+
+    public ASCIILine getSignatureEnd() {
+        return this.signatureEnd;
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {

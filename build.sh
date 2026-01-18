@@ -6,13 +6,13 @@
 # Please change the JAVA_HOME according to the current system settings
 
 # Set java home on Ubuntu LTS Linux
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64
 
 # Set java home on openSUSE Linux
 #export JAVA_HOME=/usr/lib64/jvm/java
 
 # Set java home on MacOS
-#JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.0.3.1.jdk/Contents/Home
+#JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25.1.jdk/Contents/Home
 
 # Set java home on Windows
 # - Reference: https://www.theserverside.com/feature/How-to-set-JAVA_HOME-in-Windows-and-echo-the-result

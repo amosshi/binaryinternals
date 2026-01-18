@@ -613,7 +613,6 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
          *
          * @return Value of {@link #clazz}
          */
-        @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "We need it")
         public Class<?> getClassType() {
             return this.clazz;
         }

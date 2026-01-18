@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author Amos Shi
  */
-public class FileComponenPlaceHolder extends FileComponent {
+public final class FileComponenPlaceHolder extends FileComponent {
 
     FileComponenPlaceHolder() {
         super();
