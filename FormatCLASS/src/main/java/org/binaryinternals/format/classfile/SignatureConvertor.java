@@ -18,7 +18,7 @@ import org.binaryinternals.format.classfile.attribute.Signature_attribute.Refere
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.2">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.2">
  * VM Spec: The Internal Form of Names
  * </a>
  *
@@ -30,7 +30,7 @@ import org.binaryinternals.format.classfile.attribute.Signature_attribute.Refere
 public final class SignatureConvertor {
 
     /**
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.2.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.2.1">
      * VM Spec: Binary Class and Interface Names
      * </a>
      */
@@ -39,20 +39,20 @@ public final class SignatureConvertor {
     /**
      * The ASCII periods (.) that normally separate the identifiers in in JLS (Java Language Specification).
      * 
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.2.1">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.2.1">
      * VM Spec: Binary Class and Interface Names
      * </a>
      */
     public static final char JLS_NAME_SEPARATOR = '.';
 
     /**
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.3.3">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
      */
     public static final char METHODDESCRIPTOR_LEFT = '(';
     /**
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.3.3">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
      */
@@ -71,7 +71,7 @@ public final class SignatureConvertor {
      * @param signature Method signature in JVM internal format
      * @return Method return type in Java Programming language format
      * @throws FileFormatException Invalid signature string found
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.3.3">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.3.3">
      * VM Spec: Method Descriptors
      * </a>
      */
@@ -215,7 +215,7 @@ public final class SignatureConvertor {
      * @return Signature Parse result
      * @throws FileFormatException Invalid signature string found
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.3.2">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.3.2">
      * VM Spec: Field Descriptors
      * </a>
      */

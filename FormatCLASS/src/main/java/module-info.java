@@ -16,7 +16,8 @@
 
 module org.binaryinternals.formatclass {
     requires static com.github.spotbugs.annotations;
-    requires static org.binaryinternals.commonlib;
+    requires transitive java.desktop;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.classfile;
     exports org.binaryinternals.format.classfile.attribute;

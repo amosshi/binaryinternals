@@ -29,7 +29,7 @@ import org.binaryinternals.format.classfile.u2;
  * @author Amos Shi
  * @since Java 9
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.12">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.12">
  * VM Spec: The CONSTANT_Package_info Structure
  * </a>
  *

@@ -648,7 +648,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
          * generic interface, generic method, or generic constructor.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.20.1">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.20.1">
          * VM Spec: The target_info union - type_parameter_target
          * </a>
          */
@@ -676,7 +676,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
          * declaration.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.20.1">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.20.1">
          * VM Spec: The target_info union - supertype_target
          * </a>
          */

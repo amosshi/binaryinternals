@@ -28,7 +28,7 @@ import org.binaryinternals.commonlib.ui.Icons;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.5">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
  * VM Spec: The CONSTANT_Double_info Structure</a>
  *
  * <pre>

@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.classfile.constant;
 
+import java.lang.classfile.constantpool.PoolEntry;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ import org.binaryinternals.format.classfile.u1;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4">
  * VM Spec: The Constant Pool
  * </a>
  *
@@ -93,7 +94,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
      * Constant pool tags.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4">
      * VM Spec: The Constant Pool
      * </a>
      *
@@ -108,160 +109,160 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * The value for constant type {@code CONSTANT_Utf8}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.7">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
          * VM Spec: The CONSTANT_Utf8_info Structure
          * </a>
          */
-        CONSTANT_Utf8(1, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Utf8_info.class),
+        CONSTANT_Utf8(PoolEntry.TAG_UTF8, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Utf8_info.class),
         /**
          * The value for constant type {@code CONSTANT_Integer}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
-        CONSTANT_Integer(3, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Integer_info.class),
+        CONSTANT_Integer(PoolEntry.TAG_INTEGER, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Integer_info.class),
         /**
          * The value for constant type {@code CONSTANT_Float}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.4">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
          * VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
          * </a>
          */
-        CONSTANT_Float(4, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Float_info.class),
+        CONSTANT_Float(PoolEntry.TAG_FLOAT, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Float_info.class),
         /**
          * The value for constant type {@code CONSTANT_Long}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
-        CONSTANT_Long(5, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Long_info.class),
+        CONSTANT_Long(PoolEntry.TAG_LONG, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Long_info.class),
         /**
          * The value for constant type {@code CONSTANT_Double}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.5">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
          * VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
          * </a>
          */
-        CONSTANT_Double(6, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Double_info.class),
+        CONSTANT_Double(PoolEntry.TAG_DOUBLE, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Double_info.class),
         /**
          * The value for constant type {@code CONSTANT_Class}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.1">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.1">
          * VM Spec: The CONSTANT_Class_info Structure
          * </a>
          */
-        CONSTANT_Class(7, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Class_info.class),
+        CONSTANT_Class(PoolEntry.TAG_CLASS, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_Class_info.class),
         /**
          * The value for constant type {@code CONSTANT_String}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.3">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.3">
          * VM Spec: The CONSTANT_String_info Structure
          * </a>
          */
-        CONSTANT_String(8, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_String_info.class),
+        CONSTANT_String(PoolEntry.TAG_STRING, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, true, CONSTANT_String_info.class),
         /**
          * The value for constant type {@code CONSTANT_Fieldref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_Fieldref(9, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Fieldref_info.class),
+        CONSTANT_Fieldref(PoolEntry.TAG_FIELDREF, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Fieldref_info.class),
         /**
          * The value for constant type {@code CONSTANT_Methodref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_Methodref(10, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Methodref_info.class),
+        CONSTANT_Methodref(PoolEntry.TAG_METHODREF, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_Methodref_info.class),
         /**
          * The value for constant type {@code CONSTANT_InterfaceMethodref}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.2">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
          * VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
          * CONSTANT_InterfaceMethodref_info Structures
          * </a>
          */
-        CONSTANT_InterfaceMethodref(11, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_InterfaceMethodref_info.class),
+        CONSTANT_InterfaceMethodref(PoolEntry.TAG_INTERFACE_METHODREF, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_InterfaceMethodref_info.class),
         /**
          * The value for constant type {@code CONSTANT_NameAndType}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.6">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.6">
          * VM Spec: The CONSTANT_NameAndType_info Structure
          * </a>
          */
-        CONSTANT_NameAndType(12, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_NameAndType_info.class),
+        CONSTANT_NameAndType(PoolEntry.TAG_NAME_AND_TYPE, ClassFile.FormatVersion.FORMAT_45_3, JavaSEVersion.VERSION_1_0_2, false, CONSTANT_NameAndType_info.class),
         /**
          * The value for constant type {@code CONSTANT_MethodHandle}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.8">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.8">
          * VM Spec: The CONSTANT_MethodHandle_info Structure
          * </a>
          */
-        CONSTANT_MethodHandle(15, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, CONSTANT_MethodHandle_info.class),
+        CONSTANT_MethodHandle(PoolEntry.TAG_METHOD_HANDLE, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, CONSTANT_MethodHandle_info.class),
         /**
          * The value for constant type {@code CONSTANT_MethodType}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.9">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.9">
          * VM Spec: The CONSTANT_MethodType_info Structure
          * </a>
          */
-        CONSTANT_MethodType(16, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, CONSTANT_MethodType_info.class),
+        CONSTANT_MethodType(PoolEntry.TAG_METHOD_TYPE, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, true, CONSTANT_MethodType_info.class),
         /**
          * The value for constant type {@code CONSTANT_Dynamic}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.10">
          * VM Spec: The CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info
          * Structures
          * </a>
          */
-        CONSTANT_Dynamic(17, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11, true, CONSTANT_Dynamic_info.class),
+        CONSTANT_Dynamic(PoolEntry.TAG_DYNAMIC, ClassFile.FormatVersion.FORMAT_55, JavaSEVersion.VERSION_11, true, CONSTANT_Dynamic_info.class),
         /**
          * The value for constant type {@code CONSTANT_InvokeDynamic}.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.10">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.10">
          * VM Spec: The CONSTANT_InvokeDynamic Structure
          * </a>
          */
-        CONSTANT_InvokeDynamic(18, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, false, CONSTANT_InvokeDynamic_info.class),
+        CONSTANT_InvokeDynamic(PoolEntry.TAG_INVOKE_DYNAMIC, ClassFile.FormatVersion.FORMAT_51, JavaSEVersion.VERSION_7, false, CONSTANT_InvokeDynamic_info.class),
         /**
          * The CONSTANT_Module_info structure is used to represent a module.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.11">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.11">
          * VM Spec: The CONSTANT_Module_info Structure
          * </a>
          */
-        CONSTANT_Module(19, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, CONSTANT_Module_info.class),
+        CONSTANT_Module(PoolEntry.TAG_MODULE, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, CONSTANT_Module_info.class),
         /**
          * The CONSTANT_Package_info structure is used to represent a package
          * exported or opened by a module.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.12">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.12">
          * VM Spec: The CONSTANT_Package_info Structure
          * </a>
          */
-        CONSTANT_Package(20, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, CONSTANT_Package_info.class);
+        CONSTANT_Package(PoolEntry.TAG_PACKAGE, ClassFile.FormatVersion.FORMAT_53, JavaSEVersion.VERSION_9, false, CONSTANT_Package_info.class);
 
         private static final Logger Log = Logger.getLogger(ConstantType.class.getName());
 
@@ -286,7 +287,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
          * enable further computation.
          *
          * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4-310">
+         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4-310">
          * VM Spec: Table 4.4-C. Loadable constant pool tags
          * </a>
          */

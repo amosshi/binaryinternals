@@ -52,7 +52,7 @@ import org.binaryinternals.format.classfile.u4;
  * @author Amos Shi
  * @since Java 1.0.2
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.7.3">
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.3">
  * VM Spec: The Code Attribute
  * </a>
  *

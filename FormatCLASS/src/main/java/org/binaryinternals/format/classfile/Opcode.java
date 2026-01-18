@@ -24,7 +24,7 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
  *
  * @author Amos Shi
  * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html">VM
+ * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html">VM
  * Spec: The Java Virtual Machine Instruction Set</a>
  *
  * <pre>
@@ -52,7 +52,7 @@ public final class Opcode {
      * The Java Virtual Machine Instruction Set.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html#jvms-6.5">
      * VM Spec: Instructions
      * </a>
      *
@@ -66,11 +66,11 @@ public final class Opcode {
         /**
          * Do nothing.
          */
-        nop(0),
+        nop(java.lang.classfile.Opcode.NOP.bytecode()),
         /**
          * Push null. Push the null object reference onto the operand stack.
          */
-        aconst_null(1),
+        aconst_null(java.lang.classfile.Opcode.ACONST_NULL.bytecode()),
         /**
          * Push int constant -1.
          *
@@ -81,75 +81,75 @@ public final class Opcode {
          * Push the int constant <code>i</code> (-1, 0, 1, 2, 3, 4 or 5) onto
          * the operand stack.
          */
-        iconst_m1(2),
+        iconst_m1(java.lang.classfile.Opcode.ICONST_M1.bytecode()),
         /**
          * Push int constant 0.
          */
-        iconst_0(3),
+        iconst_0(java.lang.classfile.Opcode.ICONST_0.bytecode()),
         /**
          * Push int constant 1.
          */
-        iconst_1(4),
+        iconst_1(java.lang.classfile.Opcode.ICONST_1.bytecode()),
         /**
          * Push int constant 2.
          */
-        iconst_2(5),
+        iconst_2(java.lang.classfile.Opcode.ICONST_2.bytecode()),
         /**
          * Push int constant 3.
          */
-        iconst_3(6),
+        iconst_3(java.lang.classfile.Opcode.ICONST_3.bytecode()),
         /**
          * Push int constant 4.
          */
-        iconst_4(7),
+        iconst_4(java.lang.classfile.Opcode.ICONST_4.bytecode()),
         /**
          * Push int constant 5.
          */
-        iconst_5(8),
+        iconst_5(java.lang.classfile.Opcode.ICONST_5.bytecode()),
         /**
          * Push long constant 0.
          *
          * Push the long constant <code>l</code> (0 or 1) onto the operand
          * stack.
          */
-        lconst_0(9),
+        lconst_0(java.lang.classfile.Opcode.LCONST_0.bytecode()),
         /**
          * Push long constant 1.
          */
-        lconst_1(10),
+        lconst_1(java.lang.classfile.Opcode.LCONST_1.bytecode()),
         /**
          * Push float 0.0.
          *
          * Push the float constant <code>f</code> (0.0, 1.0, or 2.0) onto the
          * operand stack.
          */
-        fconst_0(11),
+        fconst_0(java.lang.classfile.Opcode.FCONST_0.bytecode()),
         /**
          * Push float 1.0.
          */
-        fconst_1(12),
+        fconst_1(java.lang.classfile.Opcode.FCONST_1.bytecode()),
         /**
          * Push float 2.0.
          */
-        fconst_2(13),
+        fconst_2(java.lang.classfile.Opcode.FCONST_2.bytecode()),
         /**
          * Push double 0.0.
          *
          * Push the double constant <code>d</code> (0.0 or 1.0) onto the operand
          * stack.
          */
-        dconst_0(14),
+        dconst_0(java.lang.classfile.Opcode.DCONST_0.bytecode()),
         /**
          * Push double 1.0.
          */
-        dconst_1(15),
+        dconst_1(java.lang.classfile.Opcode.DCONST_1.bytecode()),
         /**
          * Push the immediate byte value.
          *
          * The immediate byte is sign-extended to an int value. That value is
          * pushed onto the operand stack.
          */
-        bipush(16) {
+        bipush(java.lang.classfile.Opcode.BIPUSH.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -167,7 +167,7 @@ public final class Opcode {
          * The intermediate value is then sign-extended to an int value. That
          * value is pushed onto the operand stack.
          */
-        sipush(17) {
+        sipush(java.lang.classfile.Opcode.SIPUSH.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -182,7 +182,7 @@ public final class Opcode {
          * The index is an unsigned byte that must be a valid index into the
          * runtime constant pool of the current class.
          */
-        ldc(18) {
+        ldc(java.lang.classfile.Opcode.LDC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -199,7 +199,7 @@ public final class Opcode {
          * The index must be a valid index into the run-time constant pool of
          * the current class.
          */
-        ldc_w(19) {
+        ldc_w(java.lang.classfile.Opcode.LDC_W.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -214,7 +214,7 @@ public final class Opcode {
          * The unsigned indexbyte1 and indexbyte2 are assembled into an unsigned
          * 16-bit index into the run-time constant pool of the current class.
          */
-        ldc2_w(20) {
+        ldc2_w(java.lang.classfile.Opcode.LDC2_W.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -231,7 +231,7 @@ public final class Opcode {
          * index must contain an int. The value of the local variable at index
          * is pushed onto the operand stack.
          */
-        iload(21) {
+        iload(java.lang.classfile.Opcode.ILOAD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -245,7 +245,7 @@ public final class Opcode {
          * The local variable at index must contain a long. The value of the
          * local variable at index is pushed onto the operand stack.
          */
-        lload(22) {
+        lload(java.lang.classfile.Opcode.LLOAD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -259,7 +259,7 @@ public final class Opcode {
          * index must contain a float. The value of the local variable at index
          * is pushed onto the operand stack.
          */
-        fload(23) {
+        fload(java.lang.classfile.Opcode.FLOAD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -273,7 +273,7 @@ public final class Opcode {
          * The local variable at index must contain a double. The value of the
          * local variable at index is pushed onto the operand stack.
          */
-        dload(24) {
+        dload(java.lang.classfile.Opcode.DLOAD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -287,7 +287,7 @@ public final class Opcode {
          * index must contain a reference. The objectref in the local variable
          * at index is pushed onto the operand stack.
          */
-        aload(25) {
+        aload(java.lang.classfile.Opcode.ALOAD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -305,25 +305,25 @@ public final class Opcode {
          * @see #iload_2
          * @see #iload_3
          */
-        iload_0(26),
+        iload_0(java.lang.classfile.Opcode.ILOAD_0.bytecode()),
         /**
          * Load int from local variable at index 1.
          *
          * @see #iload_0
          */
-        iload_1(27),
+        iload_1(java.lang.classfile.Opcode.ILOAD_1.bytecode()),
         /**
          * Load int from local variable at index 2.
          *
          * @see #iload_0
          */
-        iload_2(28),
+        iload_2(java.lang.classfile.Opcode.ILOAD_2.bytecode()),
         /**
          * Load int from local variable at index 3.
          *
          * @see #iload_0
          */
-        iload_3(29),
+        iload_3(java.lang.classfile.Opcode.ILOAD_3.bytecode()),
         /**
          * Load long from local variable at index 0.
          *
@@ -336,25 +336,25 @@ public final class Opcode {
          * @see #lload_2
          * @see #lload_3
          */
-        lload_0(30),
+        lload_0(java.lang.classfile.Opcode.LLOAD_0.bytecode()),
         /**
          * Load long from local variable at index 1.
          *
          * @see #lload_0
          */
-        lload_1(31),
+        lload_1(java.lang.classfile.Opcode.LLOAD_1.bytecode()),
         /**
          * Load long from local variable at index 2.
          *
          * @see #lload_0
          */
-        lload_2(32),
+        lload_2(java.lang.classfile.Opcode.LLOAD_2.bytecode()),
         /**
          * Load long from local variable at index 3.
          *
          * @see #lload_0
          */
-        lload_3(33),
+        lload_3(java.lang.classfile.Opcode.LLOAD_3.bytecode()),
         /**
          * Load float from local variable at index 0.
          *
@@ -367,25 +367,25 @@ public final class Opcode {
          * @see #fload_2
          * @see #fload_3
          */
-        fload_0(34),
+        fload_0(java.lang.classfile.Opcode.FLOAD_0.bytecode()),
         /**
          * Load float from local variable at index 1.
          *
          * @see #fload_0
          */
-        fload_1(35),
+        fload_1(java.lang.classfile.Opcode.FLOAD_1.bytecode()),
         /**
          * Load float from local variable at index 2.
          *
          * @see #fload_0
          */
-        fload_2(36),
+        fload_2(java.lang.classfile.Opcode.FLOAD_2.bytecode()),
         /**
          * Load float from local variable at index 3.
          *
          * @see #fload_0
          */
-        fload_3(37),
+        fload_3(java.lang.classfile.Opcode.FLOAD_3.bytecode()),
         /**
          * Load double from local variable at index 0.
          *
@@ -398,25 +398,25 @@ public final class Opcode {
          * @see #dload_2
          * @see #dload_3
          */
-        dload_0(38),
+        dload_0(java.lang.classfile.Opcode.DLOAD_0.bytecode()),
         /**
          * Load double from local variable at index 1.
          *
          * @see #dload_0
          */
-        dload_1(39),
+        dload_1(java.lang.classfile.Opcode.DLOAD_1.bytecode()),
         /**
          * Load double from local variable at index 2.
          *
          * @see #dload_0
          */
-        dload_2(40),
+        dload_2(java.lang.classfile.Opcode.DLOAD_2.bytecode()),
         /**
          * Load double from local variable at index 3.
          *
          * @see #dload_0
          */
-        dload_3(41),
+        dload_3(java.lang.classfile.Opcode.DLOAD_3.bytecode()),
         /**
          * Load reference from local variable at index 0.
          *
@@ -429,25 +429,25 @@ public final class Opcode {
          * @see #aload_2
          * @see #aload_3
          */
-        aload_0(42),
+        aload_0(java.lang.classfile.Opcode.ALOAD_0.bytecode()),
         /**
          * Load reference from local variable at index 1.
          *
          * @see #aload_0
          */
-        aload_1(43),
+        aload_1(java.lang.classfile.Opcode.ALOAD_1.bytecode()),
         /**
          * Load reference from local variable at index 2.
          *
          * @see #aload_0
          */
-        aload_2(44),
+        aload_2(java.lang.classfile.Opcode.ALOAD_2.bytecode()),
         /**
          * Load reference from local variable at index 3.
          *
          * @see #aload_0
          */
-        aload_3(45),
+        aload_3(java.lang.classfile.Opcode.ALOAD_3.bytecode()),
         /**
          * Load int from array.
          *
@@ -457,7 +457,7 @@ public final class Opcode {
          * in the component of the array at index is retrieved and pushed onto
          * the operand stack.
          */
-        iaload(46),
+        iaload(java.lang.classfile.Opcode.IALOAD.bytecode()),
         /**
          * Load long from array.
          *
@@ -467,7 +467,7 @@ public final class Opcode {
          * value in the component of the array at index is retrieved and pushed
          * onto the operand stack.
          */
-        laload(47),
+        laload(java.lang.classfile.Opcode.LALOAD.bytecode()),
         /**
          * Load float from array.
          *
@@ -477,7 +477,7 @@ public final class Opcode {
          * value in the component of the array at index is retrieved and pushed
          * onto the operand stack.
          */
-        faload(48),
+        faload(java.lang.classfile.Opcode.FALOAD.bytecode()),
         /**
          * Load double from array.
          *
@@ -487,7 +487,7 @@ public final class Opcode {
          * value in the component of the array at index is retrieved and pushed
          * onto the operand stack.
          */
-        daload(49),
+        daload(java.lang.classfile.Opcode.DALOAD.bytecode()),
         /**
          * Load reference from array.
          *
@@ -497,7 +497,7 @@ public final class Opcode {
          * reference value in the component of the array at index is retrieved
          * and pushed onto the operand stack.
          */
-        aaload(50),
+        aaload(java.lang.classfile.Opcode.AALOAD.bytecode()),
         /**
          * Load byte or boolean from array.
          *
@@ -507,7 +507,7 @@ public final class Opcode {
          * reference value in the component of the array at index is retrieved
          * and pushed onto the operand stack.
          */
-        baload(51),
+        baload(java.lang.classfile.Opcode.BALOAD.bytecode()),
         /**
          * Load char from array.
          *
@@ -518,7 +518,7 @@ public final class Opcode {
          * retrieved, sign-extended to an int value, and pushed onto the top of
          * the operand stack.
          */
-        caload(52),
+        caload(java.lang.classfile.Opcode.CALOAD.bytecode()),
         /**
          * Load short from array.
          *
@@ -528,7 +528,7 @@ public final class Opcode {
          * component of the array at index is retrieved and sign-extended to an
          * int value. That value is pushed onto the operand stack.
          */
-        saload(53),
+        saload(java.lang.classfile.Opcode.SALOAD.bytecode()),
         /**
          * Store int into local variable at <code>index</code>.
          *
@@ -538,7 +538,7 @@ public final class Opcode {
          * operand stack, and the value of the local variable at index is set to
          * value.
          */
-        istore(54) {
+        istore(java.lang.classfile.Opcode.ISTORE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -554,7 +554,7 @@ public final class Opcode {
          * local variables at <code>index</code> and <code>index+1</code> are
          * set to value.
          */
-        lstore(55) {
+        lstore(java.lang.classfile.Opcode.LSTORE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -569,7 +569,7 @@ public final class Opcode {
          * operand stack and undergoes value set conversion, resulting in value.
          * The value of the local variable at index is set to value.
          */
-        fstore(56) {
+        fstore(java.lang.classfile.Opcode.FSTORE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -586,7 +586,7 @@ public final class Opcode {
          * variables at <code>index</code> and <code>index+1</code> are set to
          * value.
          */
-        dstore(57) {
+        dstore(java.lang.classfile.Opcode.DSTORE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -601,7 +601,7 @@ public final class Opcode {
          * reference. It is popped from the operand stack, and the value of the
          * local variable at <code>index</code> is set to objectref.
          */
-        astore(58) {
+        astore(java.lang.classfile.Opcode.ASTORE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -619,25 +619,25 @@ public final class Opcode {
          * @see #istore_2
          * @see #istore_3
          */
-        istore_0(59),
+        istore_0(java.lang.classfile.Opcode.ISTORE_0.bytecode()),
         /**
          * Store int into local variable at index 1.
          *
          * @see #istore_0
          */
-        istore_1(60),
+        istore_1(java.lang.classfile.Opcode.ISTORE_1.bytecode()),
         /**
          * Store int into local variable at index 2.
          *
          * @see #istore_0
          */
-        istore_2(61),
+        istore_2(java.lang.classfile.Opcode.ISTORE_2.bytecode()),
         /**
          * Store int into local variable at index 3.
          *
          * @see #istore_0
          */
-        istore_3(62),
+        istore_3(java.lang.classfile.Opcode.ISTORE_3.bytecode()),
         /**
          * Store long into local variable at index 0.
          *
@@ -651,25 +651,25 @@ public final class Opcode {
          * @see #lstore_2
          * @see #lstore_3
          */
-        lstore_0(63),
+        lstore_0(java.lang.classfile.Opcode.LSTORE_0.bytecode()),
         /**
          * Store long into local variable at index 1.
          *
          * @see #lstore_0
          */
-        lstore_1(64),
+        lstore_1(java.lang.classfile.Opcode.LSTORE_1.bytecode()),
         /**
          * Store long into local variable at index 2.
          *
          * @see #lstore_0
          */
-        lstore_2(65),
+        lstore_2(java.lang.classfile.Opcode.LSTORE_2.bytecode()),
         /**
          * Store long into local variable at index 3.
          *
          * @see #lstore_0
          */
-        lstore_3(66),
+        lstore_3(java.lang.classfile.Opcode.LSTORE_3.bytecode()),
         /**
          * Store float into local variable at index 0.
          *
@@ -683,25 +683,25 @@ public final class Opcode {
          * @see #fstore_2
          * @see #fstore_3
          */
-        fstore_0(67),
+        fstore_0(java.lang.classfile.Opcode.FSTORE_0.bytecode()),
         /**
          * Store float into local variable at index 1.
          *
          * @see #fstore_0
          */
-        fstore_1(68),
+        fstore_1(java.lang.classfile.Opcode.FSTORE_1.bytecode()),
         /**
          * Store float into local variable at index 2.
          *
          * @see #fstore_0
          */
-        fstore_2(69),
+        fstore_2(java.lang.classfile.Opcode.FSTORE_2.bytecode()),
         /**
          * Store float into local variable at index 3.
          *
          * @see #fstore_0
          */
-        fstore_3(70),
+        fstore_3(java.lang.classfile.Opcode.FSTORE_3.bytecode()),
         /**
          * Store double into local variable at index 0.
          *
@@ -716,25 +716,25 @@ public final class Opcode {
          * @see #dstore_2
          * @see #dstore_3
          */
-        dstore_0(71),
+        dstore_0(java.lang.classfile.Opcode.DSTORE_0.bytecode()),
         /**
          * Store double into local variable at index 1.
          *
          * @see #dstore_0
          */
-        dstore_1(72),
+        dstore_1(java.lang.classfile.Opcode.DSTORE_1.bytecode()),
         /**
          * Store double into local variable at index 2.
          *
          * @see #dstore_0
          */
-        dstore_2(73),
+        dstore_2(java.lang.classfile.Opcode.DSTORE_2.bytecode()),
         /**
          * Store double into local variable at index 3.
          *
          * @see #dstore_0
          */
-        dstore_3(74),
+        dstore_3(java.lang.classfile.Opcode.DSTORE_3.bytecode()),
         /**
          * Store reference into local variable at index 0.
          *
@@ -748,25 +748,25 @@ public final class Opcode {
          * @see #astore_2
          * @see #astore_3
          */
-        astore_0(75),
+        astore_0(java.lang.classfile.Opcode.ASTORE_0.bytecode()),
         /**
          * Store reference into local variable at index 1.
          *
          * @see #astore_0
          */
-        astore_1(76),
+        astore_1(java.lang.classfile.Opcode.ASTORE_1.bytecode()),
         /**
          * Store reference into local variable at index 2.
          *
          * @see #astore_0
          */
-        astore_2(77),
+        astore_2(java.lang.classfile.Opcode.ASTORE_2.bytecode()),
         /**
          * Store reference into local variable at index 3.
          *
          * @see #astore_0
          */
-        astore_3(78),
+        astore_3(java.lang.classfile.Opcode.ASTORE_3.bytecode()),
         /**
          * Store into int array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
@@ -777,86 +777,86 @@ public final class Opcode {
          * <code>value</code> are popped from the operand stack. The int value
          * is stored as the component of the array indexed by index.
          */
-        iastore(79),
+        iastore(java.lang.classfile.Opcode.IASTORE.bytecode()),
         /**
          * Store into long array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        lastore(80),
+        lastore(java.lang.classfile.Opcode.LASTORE.bytecode()),
         /**
          * Store into float array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        fastore(81),
+        fastore(java.lang.classfile.Opcode.FASTORE.bytecode()),
         /**
          * Store into double array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        dastore(82),
+        dastore(java.lang.classfile.Opcode.DASTORE.bytecode()),
         /**
          * Store into reference array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        aastore(83),
+        aastore(java.lang.classfile.Opcode.AASTORE.bytecode()),
         /**
          * Store into byte or boolean array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        bastore(84),
+        bastore(java.lang.classfile.Opcode.BASTORE.bytecode()),
         /**
          * Store into char array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        castore(85),
+        castore(java.lang.classfile.Opcode.CASTORE.bytecode()),
         /**
          * Store into short array in current Operand Stack
          * <code>..., arrayref, index, value</code>.
          */
-        sastore(86),
+        sastore(java.lang.classfile.Opcode.SASTORE.bytecode()),
         /**
          * Pop the top value from the operand stack.
          */
-        pop(87),
+        pop(java.lang.classfile.Opcode.POP.bytecode()),
         /**
          * Pop the top one or two values from the operand stack.
          */
-        pop2(88),
+        pop2(java.lang.classfile.Opcode.POP2.bytecode()),
         /**
          * Duplicate the top value on the operand stack and push the duplicated
          * value onto the operand stack.
          */
-        dup(89),
+        dup(java.lang.classfile.Opcode.DUP.bytecode()),
         /**
          * Duplicate the top value on the operand stack and insert the
          * duplicated value two values down in the operand stack.
          */
-        dup_x1(90),
+        dup_x1(java.lang.classfile.Opcode.DUP_X1.bytecode()),
         /**
          * Duplicate the top value on the operand stack and insert the
          * duplicated value two or three values down in the operand stack.
          */
-        dup_x2(91),
+        dup_x2(java.lang.classfile.Opcode.DUP_X2.bytecode()),
         /**
          * Duplicate the top one or two values on the operand stack and push the
          * duplicated value or values back onto the operand stack in the
          * original order.
          */
-        dup2(92),
+        dup2(java.lang.classfile.Opcode.DUP2.bytecode()),
         /**
          * Duplicate the top one or two values on the operand stack and insert
          * the duplicated values, in the original order, one value beneath the
          * original value or values in the operand stack.
          */
-        dup2_x1(93),
+        dup2_x1(java.lang.classfile.Opcode.DUP2_X1.bytecode()),
         /**
          * Duplicate the top one or two values on the operand stack and insert
          * the duplicated values, in the original order, into the operand stack.
          */
-        dup2_x2(94),
+        dup2_x2(java.lang.classfile.Opcode.DUP2_X2.bytecode()),
         /**
          * Swap the top two values on the operand stack.
          */
-        swap(95),
+        swap(java.lang.classfile.Opcode.SWAP.bytecode()),
         /**
          * Add int in current Operand Stack <code>..., value1, value2</code>.
          *
@@ -868,25 +868,25 @@ public final class Opcode {
          * @see #fadd
          * @see #dadd
          */
-        iadd(96),
+        iadd(java.lang.classfile.Opcode.IADD.bytecode()),
         /**
          * Add long in current Operand Stack <code>..., value1, value2</code>.
          *
          * @see #iadd
          */
-        ladd(97),
+        ladd(java.lang.classfile.Opcode.LADD.bytecode()),
         /**
          * Add float in current Operand Stack <code>..., value1, value2</code>.
          *
          * @see #iadd
          */
-        fadd(98),
+        fadd(java.lang.classfile.Opcode.FADD.bytecode()),
         /**
          * Add double in current Operand Stack <code>..., value1, value2</code>.
          *
          * @see #iadd
          */
-        dadd(99),
+        dadd(java.lang.classfile.Opcode.DADD.bytecode()),
         /**
          * Subtract int in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -899,7 +899,7 @@ public final class Opcode {
          * @see #fsub
          * @see #dsub
          */
-        isub(100),
+        isub(java.lang.classfile.Opcode.ISUB.bytecode()),
         /**
          * Subtract long in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -910,19 +910,19 @@ public final class Opcode {
          *
          * @see #isub
          */
-        lsub(101),
+        lsub(java.lang.classfile.Opcode.LSUB.bytecode()),
         /**
          * Subtract float.
          *
          * @see #isub
          */
-        fsub(102),
+        fsub(java.lang.classfile.Opcode.FSUB.bytecode()),
         /**
          * Subtract double.
          *
          * @see #isub
          */
-        dsub(103),
+        dsub(java.lang.classfile.Opcode.DSUB.bytecode()),
         /**
          * Multiply int in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -935,25 +935,25 @@ public final class Opcode {
          * @see #fmul
          * @see #dmul
          */
-        imul(104),
+        imul(java.lang.classfile.Opcode.IMUL.bytecode()),
         /**
          * Multiply long.
          *
          * @see #imul
          */
-        lmul(105),
+        lmul(java.lang.classfile.Opcode.LMUL.bytecode()),
         /**
          * Multiply float.
          *
          * @see #imul
          */
-        fmul(106),
+        fmul(java.lang.classfile.Opcode.FMUL.bytecode()),
         /**
          * Multiply double.
          *
          * @see #imul
          */
-        dmul(107),
+        dmul(java.lang.classfile.Opcode.DMUL.bytecode()),
         /**
          * Divide int in current Operand Stack <code>..., value1, value2</code>.
          *
@@ -966,25 +966,25 @@ public final class Opcode {
          * @see #fdiv
          * @see #ddiv
          */
-        idiv(108),
+        idiv(java.lang.classfile.Opcode.IDIV.bytecode()),
         /**
          * Divide long.
          *
          * @see #idiv
          */
-        ldiv(109),
+        ldiv(java.lang.classfile.Opcode.LDIV.bytecode()),
         /**
          * Divide float.
          *
          * @see #idiv
          */
-        fdiv(110),
+        fdiv(java.lang.classfile.Opcode.FDIV.bytecode()),
         /**
          * Divide double.
          *
          * @see #idiv
          */
-        ddiv(111),
+        ddiv(java.lang.classfile.Opcode.DDIV.bytecode()),
         /**
          * Remainder int in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -998,25 +998,25 @@ public final class Opcode {
          * @see #frem
          * @see #drem
          */
-        irem(112),
+        irem(java.lang.classfile.Opcode.IREM.bytecode()),
         /**
          * Remainder long.
          *
          * @see #irem
          */
-        lrem(113),
+        lrem(java.lang.classfile.Opcode.LREM.bytecode()),
         /**
          * Remainder float.
          *
          * @see #irem
          */
-        frem(114),
+        frem(java.lang.classfile.Opcode.FREM.bytecode()),
         /**
          * Remainder double.
          *
          * @see #irem
          */
-        drem(115),
+        drem(java.lang.classfile.Opcode.DREM.bytecode()),
         /**
          * Negate int in current Operand Stack <code>..., value</code>.
          *
@@ -1028,25 +1028,25 @@ public final class Opcode {
          * @see #fneg
          * @see #dneg
          */
-        ineg(116),
+        ineg(java.lang.classfile.Opcode.INEG.bytecode()),
         /**
          * Negate long.
          *
          * @see #ineg
          */
-        lneg(117),
+        lneg(java.lang.classfile.Opcode.LNEG.bytecode()),
         /**
          * Negate float.
          *
          * @see #ineg
          */
-        fneg(118),
+        fneg(java.lang.classfile.Opcode.FNEG.bytecode()),
         /**
          * Negate double.
          *
          * @see #ineg
          */
-        dneg(119),
+        dneg(java.lang.classfile.Opcode.DNEG.bytecode()),
         /**
          * Shift left int in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1058,13 +1058,13 @@ public final class Opcode {
          *
          * @see #lshl
          */
-        ishl(120),
+        ishl(java.lang.classfile.Opcode.ISHL.bytecode()),
         /**
          * Shift left long.
          *
          * @see #ishl
          */
-        lshl(121),
+        lshl(java.lang.classfile.Opcode.LSHL.bytecode()),
         /**
          * Arithmetic shift right int, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1077,13 +1077,13 @@ public final class Opcode {
          *
          * @see #lshr
          */
-        ishr(122),
+        ishr(java.lang.classfile.Opcode.ISHR.bytecode()),
         /**
          * Arithmetic shift right long.
          *
          * @see #ishr
          */
-        lshr(123),
+        lshr(java.lang.classfile.Opcode.LSHR.bytecode()),
         /**
          * Logical shift right int, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1096,13 +1096,13 @@ public final class Opcode {
          *
          * @see #lushr
          */
-        iushr(124),
+        iushr(java.lang.classfile.Opcode.IUSHR.bytecode()),
         /**
          * Logical shift right long.
          *
          * @see #iushr
          */
-        lushr(125),
+        lushr(java.lang.classfile.Opcode.LUSHR.bytecode()),
         /**
          * Boolean AND int, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1114,13 +1114,13 @@ public final class Opcode {
          *
          * @see #land
          */
-        iand(126),
+        iand(java.lang.classfile.Opcode.IAND.bytecode()),
         /**
          * Boolean AND long.
          *
          * @see #iand
          */
-        land(127),
+        land(java.lang.classfile.Opcode.LAND.bytecode()),
         /**
          * Boolean OR int, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1132,13 +1132,13 @@ public final class Opcode {
          *
          * @see #lor
          */
-        ior(128),
+        ior(java.lang.classfile.Opcode.IOR.bytecode()),
         /**
          * Boolean OR long.
          *
          * @see #ior
          */
-        lor(129),
+        lor(java.lang.classfile.Opcode.LOR.bytecode()),
         /**
          * Boolean XOR int, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1150,13 +1150,13 @@ public final class Opcode {
          *
          * @see #lxor
          */
-        ixor(130),
+        ixor(java.lang.classfile.Opcode.IXOR.bytecode()),
         /**
          * Boolean XOR long.
          *
          * @see #ixor
          */
-        lxor(131),
+        lxor(java.lang.classfile.Opcode.LXOR.bytecode()),
         /**
          * Increment local variable by constant.
          *
@@ -1166,7 +1166,7 @@ public final class Opcode {
          * const is first sign-extended to an int, and then the local variable
          * at index is incremented by that amount.
          */
-        iinc(132) {
+        iinc(java.lang.classfile.Opcode.IINC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1184,19 +1184,19 @@ public final class Opcode {
          * popped from the operand stack and sign-extended to a long result.
          * That result is pushed onto the operand stack.
          */
-        i2l(133),
+        i2l(java.lang.classfile.Opcode.I2L.bytecode()),
         /**
          * Convert int to float.
          *
          * @see #i2l
          */
-        i2f(134),
+        i2f(java.lang.classfile.Opcode.I2F.bytecode()),
         /**
          * Convert int to double.
          *
          * @see #i2l
          */
-        i2d(135),
+        i2d(java.lang.classfile.Opcode.I2D.bytecode()),
         /**
          * Convert long to int, in current Operand Stack
          * <code>..., value</code>.
@@ -1206,7 +1206,7 @@ public final class Opcode {
          * taking the low-order 32 bits of the long value and discarding the
          * high-order 32 bits. The result is pushed onto the operand stack.
          */
-        l2i(136),
+        l2i(java.lang.classfile.Opcode.L2I.bytecode()),
         /**
          * Convert long to float, in current Operand Stack
          * <code>..., value</code>.
@@ -1215,7 +1215,7 @@ public final class Opcode {
          * lose precision because values of type float have only 24 significand
          * bits.
          */
-        l2f(137),
+        l2f(java.lang.classfile.Opcode.L2F.bytecode()),
         /**
          * Convert long to double, in current Operand Stack
          * <code>..., value</code>.
@@ -1225,49 +1225,49 @@ public final class Opcode {
          * IEEE 754 round to nearest mode. The result is pushed onto the operand
          * stack.
          */
-        l2d(138),
+        l2d(java.lang.classfile.Opcode.L2D.bytecode()),
         /**
          * Convert float to int, in current Operand Stack
          * <code>..., value</code>.
          */
-        f2i(139),
+        f2i(java.lang.classfile.Opcode.F2I.bytecode()),
         /**
          * Convert float to long, in current Operand Stack
          * <code>..., value</code>.
          */
-        f2l(140),
+        f2l(java.lang.classfile.Opcode.F2L.bytecode()),
         /**
          * Convert float to double, in current Operand Stack
          * <code>..., value</code>.
          */
-        f2d(141),
+        f2d(java.lang.classfile.Opcode.F2D.bytecode()),
         /**
          * Convert double to int, in current Operand Stack
          * <code>..., value</code>.
          */
-        d2i(142),
+        d2i(java.lang.classfile.Opcode.D2I.bytecode()),
         /**
          * Convert double to long, in current Operand Stack
          * <code>..., value</code>.
          */
-        d2l(143),
+        d2l(java.lang.classfile.Opcode.D2L.bytecode()),
         /**
          * Convert double to float, in current Operand Stack
          * <code>..., value</code>.
          */
-        d2f(144),
+        d2f(java.lang.classfile.Opcode.D2F.bytecode()),
         /**
          * Convert int to byte.
          */
-        i2b(145),
+        i2b(java.lang.classfile.Opcode.I2B.bytecode()),
         /**
          * Convert int to char.
          */
-        i2c(146),
+        i2c(java.lang.classfile.Opcode.I2C.bytecode()),
         /**
          * Convert int to short.
          */
-        i2s(147),
+        i2s(java.lang.classfile.Opcode.I2S.bytecode()),
         /**
          * Compare long, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1281,7 +1281,7 @@ public final class Opcode {
          * pushed onto the operand stack. If value1 is less than value2, the int
          * value -1 is pushed onto the operand stack.
          */
-        lcmp(148),
+        lcmp(java.lang.classfile.Opcode.LCMP.bytecode()),
         /**
          * Compare float, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1289,7 +1289,7 @@ public final class Opcode {
          * @see #lcmp
          * @see #fcmpg
          */
-        fcmpl(149),
+        fcmpl(java.lang.classfile.Opcode.FCMPL.bytecode()),
         /**
          * Compare float, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1300,7 +1300,7 @@ public final class Opcode {
          * @see #lcmp
          * @see #fcmpl
          */
-        fcmpg(150),
+        fcmpg(java.lang.classfile.Opcode.FCMPG.bytecode()),
         /**
          * Compare double, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1308,7 +1308,7 @@ public final class Opcode {
          * @see #lcmp
          * @see #dcmpg
          */
-        dcmpl(151),
+        dcmpl(java.lang.classfile.Opcode.DCMPL.bytecode()),
         /**
          * Compare double, in current Operand Stack
          * <code>..., value1, value2</code>.
@@ -1319,91 +1319,91 @@ public final class Opcode {
          * @see #lcmp
          * @see #dcmpl
          */
-        dcmpg(152),
+        dcmpg(java.lang.classfile.Opcode.DCMPG.bytecode()),
         /**
          * Branch if int comparison with zero succeeds.
          *
          * ifeq succeeds if and only if value = 0.
          */
-        ifeq(153) {
+        ifeq(java.lang.classfile.Opcode.IFEQ.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        ifne(154) {
+        ifne(java.lang.classfile.Opcode.IFNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        iflt(155) {
+        iflt(java.lang.classfile.Opcode.IFLT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        ifge(156) {
+        ifge(java.lang.classfile.Opcode.IFGE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        ifgt(157) {
+        ifgt(java.lang.classfile.Opcode.IFGT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        ifle(158) {
+        ifle(java.lang.classfile.Opcode.IFLE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmpeq(159) {
+        if_icmpeq(java.lang.classfile.Opcode.IF_ICMPEQ.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmpne(160) {
+        if_icmpne(java.lang.classfile.Opcode.IF_ICMPNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmplt(161) {
+        if_icmplt(java.lang.classfile.Opcode.IF_ICMPLT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmpge(162) {
+        if_icmpge(java.lang.classfile.Opcode.IF_ICMPGE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmpgt(163) {
+        if_icmpgt(java.lang.classfile.Opcode.IF_ICMPGT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_icmple(164) {
+        if_icmple(java.lang.classfile.Opcode.IF_ICMPLE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_acmpeq(165) {
+        if_acmpeq(java.lang.classfile.Opcode.IF_ACMPEQ.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
-        if_acmpne(166) {
+        if_acmpne(java.lang.classfile.Opcode.IF_ACMPNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
@@ -1417,7 +1417,7 @@ public final class Opcode {
          *
          * @see #getName()
          */
-        goto_(167) {
+        goto_(java.lang.classfile.Opcode.GOTO.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1429,7 +1429,7 @@ public final class Opcode {
         /**
          * Jump subroutine.
          */
-        jsr(168) {
+        jsr(java.lang.classfile.Opcode.JSR.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
@@ -1444,7 +1444,7 @@ public final class Opcode {
          * the Java Virtual Machine's pc register, and execution continues
          * there.
          */
-        ret(169) {
+        ret(java.lang.classfile.Opcode.RET.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseLvindexUnsignedByte(curPos, pdis);
@@ -1453,7 +1453,7 @@ public final class Opcode {
         /**
          * Access jump table by index and jump.
          */
-        tableswitch(170) {
+        tableswitch(java.lang.classfile.Opcode.TABLESWITCH.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 // 0-3 byte pad, when needed
@@ -1473,7 +1473,7 @@ public final class Opcode {
         /**
          * Access jump table by key match and jump.
          */
-        lookupswitch(171) {
+        lookupswitch(java.lang.classfile.Opcode.LOOKUPSWITCH.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 // 0-3 byte pad, when needed
@@ -1501,7 +1501,7 @@ public final class Opcode {
          * exited as if by execution of a {@link #monitorexit} instruction in
          * the current thread.
          */
-        ireturn(172),
+        ireturn(java.lang.classfile.Opcode.IRETURN.bytecode()),
         /**
          * Return long from method.
          *
@@ -1510,7 +1510,7 @@ public final class Opcode {
          *
          * @see #ireturn
          */
-        lreturn(173),
+        lreturn(java.lang.classfile.Opcode.LRETURN.bytecode()),
         /**
          * Return float from method.
          *
@@ -1519,7 +1519,7 @@ public final class Opcode {
          *
          * @see #ireturn
          */
-        freturn(174),
+        freturn(java.lang.classfile.Opcode.FRETURN.bytecode()),
         /**
          * Return double from method.
          *
@@ -1528,7 +1528,7 @@ public final class Opcode {
          *
          * @see #ireturn
          */
-        dreturn(175),
+        dreturn(java.lang.classfile.Opcode.DRETURN.bytecode()),
         /**
          * Return reference from method.
          *
@@ -1539,7 +1539,7 @@ public final class Opcode {
          * @see #ireturn
          * @see method_info#getDeclaration()
          */
-        areturn(176),
+        areturn(java.lang.classfile.Opcode.ARETURN.bytecode()),
         /**
          * Return void from method.
          *
@@ -1551,7 +1551,7 @@ public final class Opcode {
          * @see #ireturn
          * @see #getName()
          */
-        return_(177) {
+        return_(java.lang.classfile.Opcode.RETURN.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1565,7 +1565,7 @@ public final class Opcode {
          * The value of the class or interface field is fetched and pushed onto
          * the operand stack.
          */
-        getstatic(178) {
+        getstatic(java.lang.classfile.Opcode.GETSTATIC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1578,7 +1578,7 @@ public final class Opcode {
          * declared the resolved field is initialized if that class or interface
          * has not already been initialized.
          */
-        putstatic(179) {
+        putstatic(java.lang.classfile.Opcode.PUTSTATIC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1587,7 +1587,7 @@ public final class Opcode {
         /**
          * Fetch field from object.
          */
-        getfield(180) {
+        getfield(java.lang.classfile.Opcode.GETFIELD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1596,7 +1596,7 @@ public final class Opcode {
         /**
          * Set field in object.
          */
-        putfield(181) {
+        putfield(java.lang.classfile.Opcode.PUTFIELD.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1605,7 +1605,7 @@ public final class Opcode {
         /**
          * Invoke instance method; dispatch based on class.
          */
-        invokevirtual(182) {
+        invokevirtual(java.lang.classfile.Opcode.INVOKEVIRTUAL.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1615,7 +1615,7 @@ public final class Opcode {
          * Invoke instance method; direct invocation of instance initialization
          * methods and methods of the current class and its super types.
          */
-        invokespecial(183) {
+        invokespecial(java.lang.classfile.Opcode.INVOKESPECIAL.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1624,7 +1624,7 @@ public final class Opcode {
         /**
          * Invoke a class (static) method.
          */
-        invokestatic(184) {
+        invokestatic(java.lang.classfile.Opcode.INVOKESTATIC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1633,7 +1633,7 @@ public final class Opcode {
         /**
          * Invoke interface method.
          */
-        invokeinterface(185) {
+        invokeinterface(java.lang.classfile.Opcode.INVOKEINTERFACE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1648,7 +1648,7 @@ public final class Opcode {
         /**
          * Invoke a dynamically-computed call site.
          */
-        invokedynamic(186) {
+        invokedynamic(java.lang.classfile.Opcode.INVOKEDYNAMIC.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1668,7 +1668,7 @@ public final class Opcode {
          *
          * @see #getName()
          */
-        new_(187) {
+        new_(java.lang.classfile.Opcode.NEW.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1684,7 +1684,7 @@ public final class Opcode {
          * must take one of the following values in {@link NewarrayType}.
          *
          */
-        newarray(188) {
+        newarray(java.lang.classfile.Opcode.NEWARRAY.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1700,7 +1700,7 @@ public final class Opcode {
          * dimension of an array of object references or part of a
          * multidimensional array.
          */
-        anewarray(189) {
+        anewarray(java.lang.classfile.Opcode.ANEWARRAY.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1709,15 +1709,15 @@ public final class Opcode {
         /**
          * Get length of array.
          */
-        arraylength(190),
+        arraylength(java.lang.classfile.Opcode.ARRAYLENGTH.bytecode()),
         /**
          * Throw exception or error.
          */
-        athrow(191),
+        athrow(java.lang.classfile.Opcode.ATHROW.bytecode()),
         /**
          * Check whether object is of given type.
          */
-        checkcast(192) {
+        checkcast(java.lang.classfile.Opcode.CHECKCAST.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseCpindexUnsignedShort(curPos, pdis);
@@ -1731,7 +1731,7 @@ public final class Opcode {
          *
          * @see #getName()
          */
-        instanceof_(193) {
+        instanceof_(java.lang.classfile.Opcode.INSTANCEOF.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1750,7 +1750,7 @@ public final class Opcode {
          * {@link #monitorenter} attempts to gain ownership of the monitor
          * associated with objectref,
          */
-        monitorenter(194),
+        monitorenter(java.lang.classfile.Opcode.MONITORENTER.bytecode()),
         /**
          * Exit monitor for object.
          *
@@ -1759,7 +1759,7 @@ public final class Opcode {
          * The thread that executes {@link #monitorexit} must be the owner of
          * the monitor associated with the instance referenced by objectref.
          */
-        monitorexit(195),
+        monitorexit(java.lang.classfile.Opcode.MONITOREXIT.bytecode()),
         /**
          * Extend local variable index by additional bytes.
          */
@@ -1808,7 +1808,7 @@ public final class Opcode {
         /**
          * Create new multidimensional array.
          */
-        multianewarray(197) {
+        multianewarray(java.lang.classfile.Opcode.MULTIANEWARRAY.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1821,7 +1821,7 @@ public final class Opcode {
         /**
          * Branch if reference is null.
          */
-        ifnull(198) {
+        ifnull(java.lang.classfile.Opcode.IFNULL.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1833,7 +1833,7 @@ public final class Opcode {
         /**
          * Branch if reference not null.
          */
-        ifnonnull(199) {
+        ifnonnull(java.lang.classfile.Opcode.IFNONNULL.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1845,7 +1845,7 @@ public final class Opcode {
         /**
          * Branch always (wide index).
          */
-        goto_w(200) {
+        goto_w(java.lang.classfile.Opcode.GOTO_W.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1857,7 +1857,7 @@ public final class Opcode {
         /**
          * Jump subroutine (wide index).
          */
-        jsr_w(201) {
+        jsr_w(java.lang.classfile.Opcode.JSR_W.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -2015,7 +2015,7 @@ public final class Opcode {
      * Data types used by {@link Instruction#newarray}.
      *
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.newarray">
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html#jvms-6.5.newarray">
      * VM Spec: Table 6.5.newarray-A. Array type codes
      * </a>
      */
@@ -2119,7 +2119,7 @@ public final class Opcode {
      *
      * @see Instruction#tableswitch
      * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.tableswitch">VM
+     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html#jvms-6.5.tableswitch">VM
      * Spec: The Java Virtual Machine Instruction Set</a>
      */
     @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
