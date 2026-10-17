@@ -8,12 +8,12 @@
 
     <name>Binary Internals</name>
     <description>Show binary file internals visually and interactively for the meaning of every bit</description>
-    <url>http://www.binaryinternals.org</url>
+    <url>https://www.binaryinternals.org</url>
 
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
             <comments>A business-friendly OSS license</comments>
         </license>
@@ -21,7 +21,7 @@
 
     <organization>
         <name>Binary Internals</name>
-        <url>http://www.binaryinternals.org</url>
+        <url>https://www.binaryinternals.org</url>
     </organization>
 
     <developers>
@@ -40,9 +40,10 @@
 
     <properties>
         <maven.compiler.release>25</maven.compiler.release>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.outputTimestamp>2026-10-17T00:00:00Z</project.build.outputTimestamp><!-- reproducible builds; update on each release -->
+        <checkstyle.failOnViolation>true</checkstyle.failOnViolation><!-- override with -Dcheckstyle.failOnViolation=false -->
+        <spotbugs.failOnError>true</spotbugs.failOnError><!-- override with -Dspotbugs.failOnError=false -->
         <revision>3.6</revision>
         <format.class.version>25.0</format.class.version><!-- keep in sync with the version in FormatCLASS/pom.xml -->
 
@@ -50,6 +51,7 @@
         <git-commit-id-maven-plugin.version>10.0.1</git-commit-id-maven-plugin.version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
         <maven-assembly-plugin.version>3.8.0</maven-assembly-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+        <maven-enforcer-plugin.version>3.6.3</maven-enforcer-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
         <maven-dependency-plugin.version>3.11.0</maven-dependency-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
         <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
         <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
@@ -71,6 +73,32 @@
 
     <build>
         <plugins>
+
+            <!-- Fail fast on unsupported Maven or JDK -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.9.0,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>[${maven.compiler.release},)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Generate git.properties -->
             <plugin>
@@ -97,7 +125,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Add SCM versiont to manifest -->
+            <!-- Add SCM version to manifest -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
@@ -123,7 +151,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Build-Time>${maven.build.timestamp}</Build-Time>
+                            <Build-Time>${project.build.outputTimestamp}</Build-Time>
                         </manifestEntries>
 
                         <manifestSections>
@@ -148,7 +176,9 @@
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <compilerArgs>
+                        <arg>-Xlint:unchecked</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -177,7 +207,7 @@
                         <id>checkstyle</id>
                         <phase>validate</phase>
                         <configuration>
-                            <failOnViolation>true</failOnViolation>
+                            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -192,7 +222,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
-                    <excludeFilterFile>${project.parent.basedir}/spotbugs-exclude-filter.xml</excludeFilterFile>
+                    <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude-filter.xml</excludeFilterFile>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -205,9 +235,10 @@
                 <executions>
                     <execution>
                         <id>spotbugs</id>
-                        <phase>validate</phase>
+                        <phase>verify</phase><!-- needs compiled classes -->
                         <configuration>
                             <xmlOutput>true</xmlOutput>
+                            <failOnError>${spotbugs.failOnError}</failOnError>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -397,7 +428,7 @@
                             <report>aggregate</report>
                         </reports>
                     </reportSet>
-                </reportSets>                
+                </reportSets>
             </plugin>
 
             <plugin>
