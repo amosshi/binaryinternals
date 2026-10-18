@@ -9,8 +9,6 @@ package org.binaryinternals.app;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,38 +22,31 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.binaryinternals.binaryviewer.JBinaryViewer;
-import org.binaryinternals.plugin.PluginManager;
 import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
- * A split panel created from a class file byte array.
+ * A split panel showing the tree and the binary content of a parsed file.
  *
  * @author Amos Shi
  */
 public class JSplitPaneFile extends JSplitPane {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500003L;
     private final JFrame topLevelFrame;
     private final FileFormat file;
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JBinaryViewer binaryViewer = new JBinaryViewer();
 
     /**
-     * Creates a split panel from a Java class file byte array.
+     * Creates a split panel from an already parsed file.
      *
-     * @param file File name
+     * @param fileFormat Parsed file
      * @param frame Parent frame
-     * @throws FileFormatException File Format Exception
-     * @throws NoSuchMethodException Plugin Exception
-     * @throws InstantiationException Plugin Exception
-     * @throws IllegalAccessException Plugin Exception
-     * @throws InvocationTargetException Plugin Exception
      */
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
-    public JSplitPaneFile(final File file, final JFrame frame) throws FileFormatException, NoSuchMethodException, SecurityException, InstantiationException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        this.file = PluginManager.getFile(file);
+    public JSplitPaneFile(final FileFormat fileFormat, final JFrame frame) {
+        this.file = fileFormat;
         this.topLevelFrame = frame;
         this.createAndShowGUI();
     }
@@ -65,22 +56,14 @@ public class JSplitPaneFile extends JSplitPane {
      *
      * @return {@link #file} name
      */
-    public String getFileFormatName(){
+    public String getFileFormatName() {
         return this.file.getClass().getSimpleName();
     }
-    
-    private int calcDividerLocation(){
-        final double width = this.topLevelFrame.getWidth() * 0.4;
-        if (width < 260) {
-            return 260;
-        } else if (width > 1200) {
-            return 1200;
-        } else {
-            return (int) Math.floor(width);
-        }
+
+    private int calcDividerLocation() {
+        return (int) Math.clamp(this.topLevelFrame.getWidth() * 0.4, 260, 1200);
     }
 
-    @SuppressWarnings("java:S3776") // Cognitive Complexity of methods should not be too high
     private void createAndShowGUI() {
 
         final DefaultMutableTreeNode root = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -103,8 +86,7 @@ public class JSplitPaneFile extends JSplitPane {
                         sel, expanded, leaf, row,
                         hasFocus);
 
-                if (value instanceof DefaultMutableTreeNode && ((DefaultMutableTreeNode) value).getUserObject() instanceof JTreeNodeFileComponent) {
-                    JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) ((DefaultMutableTreeNode) value).getUserObject();
+                if (value instanceof DefaultMutableTreeNode node && node.getUserObject() instanceof JTreeNodeFileComponent fileComp) {
                     final Icon icon = fileComp.getIcon();
                     if (icon != null) {
                         this.setIcon(icon);
@@ -127,17 +109,11 @@ public class JSplitPaneFile extends JSplitPane {
             @Override
             public void mousePressed(MouseEvent e) {
                 TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-                if (selPath != null) {
-                    Object obj = selPath.getLastPathComponent();
-                    if (obj instanceof DefaultMutableTreeNode) {
-                        final DefaultMutableTreeNode objDmtn = (DefaultMutableTreeNode) obj;
-                        if (objDmtn.getUserObject() instanceof JTreeNodeFileComponent) {
-                            JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) objDmtn.getUserObject();
-                            if (fileComp.isDetailAvailable() && e.getClickCount() == 2) {
-                                treeDoubleClickPopup(fileComp.getDetailPanel(), fileComp.getText());
-                            }
-                        }
-                    }
+                if (selPath != null
+                        && selPath.getLastPathComponent() instanceof DefaultMutableTreeNode node
+                        && node.getUserObject() instanceof JTreeNodeFileComponent fileComp
+                        && fileComp.isDetailAvailable() && e.getClickCount() == 2) {
+                    treeDoubleClickPopup(fileComp.getDetailPanel(), fileComp.getText());
                 }
             }
         });
@@ -145,8 +121,7 @@ public class JSplitPaneFile extends JSplitPane {
         final JPanelForTree panel = new JPanelForTree(tree, this.topLevelFrame);
 
         this.binaryViewer.setData(this.file.fileByteArray);
-        JScrollPane binaryViewerView = new JScrollPane(this.binaryViewer);
-        binaryViewerView.getVerticalScrollBar().setValue(0);
+        final JScrollPane binaryViewerView = new JScrollPane(this.binaryViewer);
         this.tabbedPane.add(this.file.getContentTabName(), binaryViewerView);
 
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -159,15 +134,10 @@ public class JSplitPaneFile extends JSplitPane {
     }
 
     private void treeSelectionChanged(final TreeSelectionEvent evt) {
-        Object obj = evt.getPath().getLastPathComponent();
-        if (obj instanceof DefaultMutableTreeNode) {
-            final DefaultMutableTreeNode objDmtn = (DefaultMutableTreeNode) obj;
-            obj = objDmtn.getUserObject();
-            if (obj instanceof JTreeNodeFileComponent) {
-                final JTreeNodeFileComponent objTnfc = (JTreeNodeFileComponent) obj;
-                this.binaryViewer.setSelection(objTnfc.getStartPos(), objTnfc.getLength());
-                this.file.treeSelectionChanged(objTnfc, this.tabbedPane);
-            }
+        if (evt.getPath().getLastPathComponent() instanceof DefaultMutableTreeNode node
+                && node.getUserObject() instanceof JTreeNodeFileComponent objTnfc) {
+            this.binaryViewer.setSelection(objTnfc.getStartPos(), objTnfc.getLength());
+            this.file.treeSelectionChanged(objTnfc, this.tabbedPane);
         }
     }
 

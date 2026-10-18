@@ -6,12 +6,13 @@
  */
 package org.binaryinternals.app;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -24,14 +25,15 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringJoiner;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -42,8 +44,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.plugin.PluginManager;
 
 /**
@@ -53,7 +57,7 @@ import org.binaryinternals.plugin.PluginManager;
  */
 public class Main extends JFrame {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500001L;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     /**
      * Size ratio of the pop-up window and its parent.
@@ -62,54 +66,68 @@ public class Main extends JFrame {
     private static final String URI_HOMEPAGE = "https://github.com/amosshi/binaryinternals";
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String MASS_TEST_MODE_PROPERTY = "org.binaryinternals.masstestmode";
+    private static final int RECENT_FILES_MAX = 10;
 
     private final JPanel filedropPanel = new JPanel();
-    private final Set<File> recentFiles = new HashSet<>();
+    private final transient Set<Path> recentFiles = new LinkedHashSet<>();
     private final JMenu menuFileRecentFile = new JMenu("Recent Files");
+    private final JFileChooser fileChooser = new JFileChooser();
     private JSplitPaneFile contentPane = null;
+    private transient SwingWorker<FileFormat, Void> loader = null;
 
-    @SuppressWarnings("LeakingThisInConstructor")
-    @SuppressFBWarnings(value = "DM_EXIT", justification = "This is desigend for mass test mode")
-    private Main(final String[] args) {
+    private Main() {
         this.setTitle(TITLE + PluginManager.getPlugedExtensions());
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        PluginManager.initChooseFilters(this.fileChooser);
         this.centerJFrame();
         this.createMenu();
         this.filedropPanel.setBackground(Color.WHITE);
         this.filedropPanel.setLayout(new BorderLayout());
         this.add(this.filedropPanel, BorderLayout.CENTER);
 
-        this.enalbeFileDrop(this.filedropPanel);
-        this.enalbeFileDrop(this.getJMenuBar());
-        this.setVisible(true);
-
-        // Accept file name at command line
-        if (args.length > 0) {
-            final String fileName = args[0];
-            final File file = new File(fileName);
-            if (file.exists()) {
-                try {
-                    this.openFile(file);
-                } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, String.format("Failed to open the file. filename=%s", fileName), e);
-                }
-            } else {
-                LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
-            }
-
-            // Exit immediately for mass test mode
-            if (Boolean.TRUE.equals(Boolean.valueOf(System.getProperty(Main.MASS_TEST_MODE_PROPERTY, "false")))) {
-                System.exit(0);
-            }
-        }
+        this.enableFileDrop(this.filedropPanel);
+        this.enableFileDrop(this.getJMenuBar());
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main(args).setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            final Main main = new Main();
+            main.setVisible(true);
+            if (args.length > 0) {
+                main.openCommandLineFile(args[0]);
+            }
+        });
+    }
+
+    /**
+     * Accept file name at command line.
+     */
+    private void openCommandLineFile(final String fileName) {
+        Path file = null;
+        try {
+            file = Path.of(fileName);
+        } catch (InvalidPathException ex) {
+            LOGGER.log(Level.WARNING, "The provided file name is invalid: filename={0}", fileName);
+        }
+        if (file != null && Files.exists(file)) {
+            this.openFile(file, Main::exitIfMassTestMode);
+        } else {
+            LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
+            exitIfMassTestMode();
+        }
+    }
+
+    /**
+     * Exit immediately for mass test mode.
+     */
+    private static void exitIfMassTestMode() {
+        if (Boolean.getBoolean(MASS_TEST_MODE_PROPERTY)) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -117,7 +135,8 @@ public class Main extends JFrame {
      */
     private void centerJFrame() {
         // Set main window size
-        final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        // The usable area, excluding the taskbar and the menu bar
+        final Rectangle d = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         this.setSize(
                 (int) (d.getWidth() * POPUP_RATIO),
                 (int) (d.getHeight() * POPUP_RATIO));
@@ -140,7 +159,7 @@ public class Main extends JFrame {
         menuItemFileOpen.setMnemonic(KeyEvent.VK_O);
         menuItemFileOpen.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O,
-                ActionEvent.CTRL_MASK));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         menuItemFileOpen.addActionListener((final ActionEvent e) -> menuFileOpen());
         menuFile.add(menuItemFileOpen);
 
@@ -158,11 +177,11 @@ public class Main extends JFrame {
         menuFile.addSeparator();
 
         // File --> Exit
-        final JMenuItem menuItemFileExit = new JMenuItem("Exit", UIManager.getIcon("Table.ascendingSortIcon"));
+        final JMenuItem menuItemFileExit = new JMenuItem("Exit");
         menuItemFileExit.setMnemonic(KeyEvent.VK_E);
         menuItemFileExit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_E,
-                ActionEvent.CTRL_MASK));
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         menuItemFileExit.addActionListener((final ActionEvent e)
                 -> Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)))
         );
@@ -170,7 +189,7 @@ public class Main extends JFrame {
 
         // Help
         final JMenu menuHelp = new JMenu("Help");
-        menuFile.setMnemonic(KeyEvent.VK_H);
+        menuHelp.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menuHelp);
 
         // Help --> Homepage
@@ -187,7 +206,7 @@ public class Main extends JFrame {
 
         // Help --> Plugins
         final JMenuItem menuItemHelpIcons = new JMenuItem("Icons");
-        menuItemHelpIcons.setMnemonic(KeyEvent.VK_P);
+        menuItemHelpIcons.setMnemonic(KeyEvent.VK_I);
         menuItemHelpIcons.addActionListener((final ActionEvent e) -> menuHelpIcons());
         menuHelp.add(menuItemHelpIcons);
 
@@ -202,79 +221,141 @@ public class Main extends JFrame {
      * Support drag and drop. Only the 1st file are handled, if more than 1 file
      * are dropped.
      */
-    private void enalbeFileDrop(Component c) {
+    private void enableFileDrop(Component c) {
         c.setDropTarget(new DropTarget() {
             @Override
             public synchronized void drop(DropTargetDropEvent evt) {
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
-                    Object drops = evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    if (drops instanceof List) {
-                        openFile(((List<File>) drops).get(0));
+                    final Object drops = evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    if (drops instanceof List<?> list && !list.isEmpty() && list.get(0) instanceof File dropped) {
+                        openFile(dropped.toPath());
+                        evt.dropComplete(true);
+                    } else {
+                        evt.dropComplete(false);
                     }
                 } catch (UnsupportedFlavorException | IOException e) {
                     LOGGER.warning(e.getMessage());
+                    evt.dropComplete(false);
                 }
             }
         });
     }
 
     private void menuFileOpen() {
-        final JFileChooser chooser = new JFileChooser();
-        PluginManager.initChooseFilters(chooser);
-
-        final int returnVal = chooser.showOpenDialog(this);
+        // The chooser is reused, so it remembers the last folder
+        final int returnVal = this.fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            this.openFile(chooser.getSelectedFile());
+            this.openFile(this.fileChooser.getSelectedFile().toPath());
         }
     }
 
     /**
-     * <pre>
-     * java:S1181 - Throwable and Error should not be caught  --- We need to cache all exception here
-     * </pre>
+     * Open the file in the background.
      */
-    @SuppressWarnings("java:S1181")
-    private void openFile(final File file) {
+    private void openFile(final Path file) {
+        this.openFile(file, () -> { });
+    }
+
+    /**
+     * Parse the file in the background, then show it on the event thread.
+     *
+     * @param path File to open
+     * @param onFinished Called on the event thread when the open succeeded or failed
+     */
+    private void openFile(final Path path, final Runnable onFinished) {
+        final Path file = path.toAbsolutePath().normalize();
         // Close any open file first if exists
         this.closeFile();
-
-        // Update Recent files menu item
-        this.menuFileRecentFile.removeAll();
-        this.recentFiles.add(file);
-        this.recentFiles.forEach(recent
-                -> this.menuFileRecentFile.add(new JMenuItem(new AbstractAction(recent.getAbsolutePath()) {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        openFile(recent);
-                    }
-                }))
-        );
-
-        // Add the file to UI
-        try {
-            this.contentPane = new JSplitPaneFile(file, this);
-        } catch (Throwable ex) {
-            String message = ex.getMessage();
-            if (message == null || message.trim().length() < 1) {
-                message = ex.getCause() != null ? ex.getCause().getMessage() : "";
-            }
-            LOGGER.log(Level.SEVERE, message, ex);
-            JOptionPane.showMessageDialog(
-                    this,
-                    message,
-                    this.getTitle(),
-                    JOptionPane.ERROR_MESSAGE);
+        if (this.loader != null) {
+            this.loader.cancel(true);
         }
 
-        StringJoiner joiner = new StringJoiner(" - ");
-        joiner.add(file.getName()).add(file.getAbsolutePath()).add(this.contentPane.getFileFormatName()).add(TITLE);
-        this.setTitle(joiner.toString());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        final SwingWorker<FileFormat, Void> worker = new SwingWorker<>() {
+            @Override
+            protected FileFormat doInBackground() throws Exception {
+                return PluginManager.getFile(file);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    if (!isCancelled()) {
+                        showFile(file, get());
+                    }
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                } catch (ExecutionException ex) {
+                    showOpenError(file, ex.getCause());
+                } catch (RuntimeException | LinkageError ex) {
+                    showOpenError(file, ex);
+                } finally {
+                    if (loader == this) {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                    onFinished.run();
+                }
+            }
+        };
+        this.loader = worker;
+        worker.execute();
+    }
+
+    private void showFile(final Path file, final FileFormat format) {
+        this.contentPane = new JSplitPaneFile(format, this);
+        this.updateRecentFiles(file);
+
+        this.setTitle(String.join(" - ", fileName(file), file.toString(), this.contentPane.getFileFormatName(), TITLE));
         this.filedropPanel.add(this.contentPane, BorderLayout.CENTER);
 
         // Resize after adding new content
-        this.setSize(this.getWidth() + 2, this.getHeight());
-        this.setSize(this.getWidth() - 2, this.getHeight());
+        this.revalidate();
+        this.repaint();
+    }
+
+    private static String fileName(final Path file) {
+        return String.valueOf(file.getFileName());
+    }
+
+    private void showOpenError(final Path file, final Throwable ex) {
+        this.recentFiles.remove(file);
+        this.refreshRecentFilesMenu();
+
+        String message;
+        if (ex instanceof OutOfMemoryError) {
+            message = "Out of memory while opening " + fileName(file);
+        } else {
+            message = ex.getMessage();
+            if (message == null || message.isBlank()) {
+                message = ex.getCause() != null ? ex.getCause().getMessage() : "";
+            }
+        }
+        LOGGER.log(Level.SEVERE, message, ex);
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                this.getTitle(),
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void updateRecentFiles(final Path file) {
+        // Re-adding moves the file to the most recent position
+        this.recentFiles.remove(file);
+        this.recentFiles.add(file);
+        while (this.recentFiles.size() > RECENT_FILES_MAX) {
+            this.recentFiles.remove(this.recentFiles.iterator().next());
+        }
+        this.refreshRecentFilesMenu();
+    }
+
+    private void refreshRecentFilesMenu() {
+        this.menuFileRecentFile.removeAll();
+        this.recentFiles.forEach(recent -> {
+            final JMenuItem item = new JMenuItem(recent.toString());
+            item.addActionListener((final ActionEvent e) -> openFile(recent));
+            this.menuFileRecentFile.add(item);
+        });
     }
 
     private void closeFile() {
@@ -286,8 +367,9 @@ public class Main extends JFrame {
         }
         this.contentPane = null;
 
-        // Refersh the view
-        this.setSize(this.getWidth() - 1, this.getHeight());
+        // Refresh the view
+        this.revalidate();
+        this.repaint();
     }
 
     private void menuHelpAbout() {
@@ -298,8 +380,11 @@ public class Main extends JFrame {
 
     private void menuHelpHomepage() {
         try {
-            Desktop.getDesktop().browse(new URI(URI_HOMEPAGE));
-        } catch (URISyntaxException | IOException ex) {
+            if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                throw new UnsupportedOperationException("Opening a browser is not supported: " + URI_HOMEPAGE);
+            }
+            Desktop.getDesktop().browse(URI.create(URI_HOMEPAGE));
+        } catch (UnsupportedOperationException | IOException ex) {
             JOptionPane.showMessageDialog(
                     this,
                     ex.getMessage(),
@@ -333,9 +418,10 @@ public class Main extends JFrame {
         }
 
         final JDialog popup = new JDialog(frame, title);
+        popup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         popup.setSize(
-                (int) Math.floor(frame.getWidth() * POPUP_RATIO),
-                (int) Math.floor(frame.getHeight() * POPUP_RATIO));
+                (int) (frame.getWidth() * POPUP_RATIO),
+                (int) (frame.getHeight() * POPUP_RATIO));
         popup.setLayout(new BorderLayout());
         popup.add(panel, BorderLayout.CENTER);
         popup.setLocationRelativeTo(frame);

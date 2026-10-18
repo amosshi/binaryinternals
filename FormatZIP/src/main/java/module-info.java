@@ -18,4 +18,6 @@ module org.binaryinternals.formatzip {
     requires static org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.zip;
+
+    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.zip.PluginDescriptorZIP;
 }

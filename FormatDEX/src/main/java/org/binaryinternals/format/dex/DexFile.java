@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.dex;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -104,7 +104,7 @@ public final class DexFile extends FileFormat {
      * @throws FileFormatException Invalid file format
      */
     @SuppressWarnings("java:S3776")
-    public DexFile(File file) throws IOException, FileFormatException {
+    public DexFile(final Path file) throws IOException, FileFormatException {
         super(file);
 
         // Check the file signature

@@ -8,16 +8,26 @@ package org.binaryinternals.plugin;
 
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 import org.binaryinternals.commonlib.core.FileFormat;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -30,14 +40,12 @@ import org.binaryinternals.commonlib.core.FileFormatException;
  */
 public class PluginManager {
 
-    public static final String MANIFEST_ATTR_NAME = "biv-plugin";
-    public static final String PLUGIN_DIR = System.getProperty("user.dir")
-            + System.getProperty("file.separator")
-            + "libs";
+    private static final Logger LOGGER = Logger.getLogger(PluginManager.class.getName());
+    public static final String PLUGIN_DIR = resolvePluginDir();
     /**
      * Jar file name and the plug-in descriptor.
      */
-    static final Map<String, PluginDescriptor> PLUGINS = new HashMap<>(10);
+    static final Map<String, PluginDescriptor> PLUGINS = new TreeMap<>();
 
     static {
         loadPlugins();
@@ -47,73 +55,81 @@ public class PluginManager {
     }
 
     /**
-     * <pre>
-     * java:S135 - Loops should not contain more than a single "break" or "continue" statement --- multiple "continue" make code more readable
-     * java:S3776 - Cognitive Complexity of methods should not be too high
-     * </pre>
+     * The "libs" folder next to the running jar, so it works wherever the
+     * process is launched from (e.g. a double-click). Falls back to the
+     * working directory when not running from a jar.
      */
-    @SuppressWarnings({"java:S135", "java:S3776"}) 
-    private static void loadPlugins() {
-        File pluginFolder = new File(PLUGIN_DIR);
-        String pluginDescClassName;
-
-        if (!pluginFolder.exists()) {
-            // The plugin folder does not exist
-            return;
-        }
-
-        File[] pluginFiles = pluginFolder.listFiles();
-        if (pluginFiles == null) {
-            return;
-        }
-
-        for (File plguinFile : pluginFiles) {
-            if (plguinFile.isFile() && plguinFile.getName().toLowerCase().endsWith(".jar")) {
-                try (JarFile jar = new JarFile(plguinFile)) {
-                    Manifest mf = jar.getManifest();
-                    if (mf == null) {
-                        continue;
-                    }
-
-                    pluginDescClassName = mf.getMainAttributes().getValue(MANIFEST_ATTR_NAME);
-                    if (pluginDescClassName == null || pluginDescClassName.length() == 0) {
-                        continue;
-                    }
-
-                    loadPlugin(plguinFile, pluginDescClassName);
-                } catch (Exception ex) {
-                    Logger.getLogger(PluginManager.class.getName()).log(Level.SEVERE, null, ex);
+    private static String resolvePluginDir() {
+        try {
+            final CodeSource source = PluginManager.class.getProtectionDomain().getCodeSource();
+            if (source != null) {
+                final Path location = Path.of(source.getLocation().toURI());
+                final Path parent = location.getParent();
+                if (Files.isRegularFile(location) && parent != null) {
+                    return parent.resolve("libs").toString();
                 }
+            }
+        } catch (URISyntaxException | RuntimeException e) {
+            LOGGER.log(Level.FINE, "Cannot locate the jar, use the working directory", e);
+        }
+        return Path.of(System.getProperty("user.dir"), "libs").toString();
+    }
+
+    /**
+     * The class loader is intentionally kept open, because the plug-in classes
+     * are loaded lazily from the jars for as long as the application runs.
+     */
+    @SuppressWarnings("resource")
+    private static void loadPlugins() {
+        final Path pluginFolder = Path.of(PLUGIN_DIR);
+        final List<URL> urls = new ArrayList<>();
+        if (Files.isDirectory(pluginFolder)) {
+            try (DirectoryStream<Path> jars = Files.newDirectoryStream(pluginFolder, "*.{jar,JAR}")) {
+                for (Path jarPath : jars) {
+                    urls.add(jarPath.toUri().toURL());
+                }
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, "Failed to list the plugin folder " + PLUGIN_DIR, ex);
+            }
+        }
+
+        final ClassLoader parent = PluginManager.class.getClassLoader();
+        final ClassLoader loader = urls.isEmpty() ? parent : new URLClassLoader(urls.toArray(URL[]::new), parent);
+
+        final Iterator<ServiceLoader.Provider<PluginDescriptor>> providers =
+                ServiceLoader.load(PluginDescriptor.class, loader).stream().iterator();
+        while (providers.hasNext()) {
+            try {
+                final ServiceLoader.Provider<PluginDescriptor> provider = providers.next();
+                PLUGINS.put(jarName(provider.type()), provider.get());
+            } catch (ServiceConfigurationError | RuntimeException ex) {
+                LOGGER.log(Level.SEVERE, "Failed to load a plugin", ex);
             }
         }
     }
 
-    private static void loadPlugin(File pluginFile, String pluginDescClassName) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        URL url = pluginFile.toURI().toURL();
-        try (URLClassLoader loader = new URLClassLoader(new URL[]{url})) {
-            Class<?> cls = loader.loadClass(pluginDescClassName);
-            if (cls == null) {
-                return;
+    private static String jarName(final Class<?> type) {
+        final CodeSource source = type.getProtectionDomain().getCodeSource();
+        if (source != null) {
+            try {
+                final Path fileName = Path.of(source.getLocation().toURI()).getFileName();
+                if (fileName != null) {
+                    return fileName.toString();
+                }
+            } catch (URISyntaxException | RuntimeException e) {
+                LOGGER.log(Level.FINE, "Cannot locate the plugin jar", e);
             }
-
-            PLUGINS.put(pluginFile.getName(), (PluginDescriptor) cls.getDeclaredConstructor().newInstance());
         }
+        return type.getName();
     }
 
     public static String getPlugedExtensions() {
-        StringBuilder builder = new StringBuilder(16);
-        if (!PLUGINS.isEmpty()) {
-            builder.append(" - ");
-            PLUGINS.values().stream().map(plugin -> plugin.getExtensions()).forEachOrdered(exts -> {
-                for (String ext : exts) {
-                    builder.append(ext);
-                    builder.append(", ");
-                }
-            });
-            builder.append(" ...");
+        if (PLUGINS.isEmpty()) {
+            return "";
         }
-
-        return builder.toString();
+        return PLUGINS.values().stream()
+                .flatMap(plugin -> Arrays.stream(plugin.getExtensions()))
+                .collect(Collectors.joining(", ", " - ", ", ..."));
     }
 
     public static void initChooseFilters(JFileChooser chooser) {
@@ -126,37 +142,30 @@ public class PluginManager {
         }
     }
 
-    public static FileFormat getFile(final File file) throws FileFormatException, NoSuchMethodException,
+    public static FileFormat getFile(final Path file) throws FileFormatException, NoSuchMethodException,
             SecurityException, IllegalArgumentException, InstantiationException, IllegalAccessException,
             InvocationTargetException {
         Class<? extends FileFormat> fileFormatClass = null;
-        String ext = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+        final String name = String.valueOf(file.getFileName());
+        final int dot = name.lastIndexOf('.');
+        final String ext = dot < 0 ? "" : name.substring(dot + 1);
 
         for (PluginDescriptor plugin : PLUGINS.values()) {
             if (isContain(plugin.getExtensions(), ext)) {
                 fileFormatClass = plugin.getFileFormatClass();
+                break;
             }
         }
         if (fileFormatClass == null) {
             fileFormatClass = DefaultFileFormat.class;
         }
 
-        Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(File.class);
+        Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(Path.class);
         return c.newInstance(file);
     }
 
     static boolean isContain(String[] exts, String ext) {
-        boolean result = false;
-        if (exts != null && exts.length != 0) {
-            for (String item : exts) {
-                if (item.equalsIgnoreCase(ext)) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-
-        return result;
+        return exts != null && Arrays.stream(exts).anyMatch(ext::equalsIgnoreCase);
     }
 
     /**
@@ -164,8 +173,7 @@ public class PluginManager {
      *
      * @return Loaded plug-ins
      */
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "MS_EXPOSE_REP", justification = "We need it")
     public static Map<String, PluginDescriptor> getPlugins() {
-        return PLUGINS;
+        return Collections.unmodifiableMap(PLUGINS);
     }
 }

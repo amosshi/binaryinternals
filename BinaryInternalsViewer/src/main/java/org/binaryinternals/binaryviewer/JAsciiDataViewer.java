@@ -22,35 +22,9 @@ final class JAsciiDataViewer extends DataViewer {
     public static final int WIDTH_VALUE = 231;
 
     @Override
-    protected void updateContent() {
-        this.setText(null);
-        byte[] data = super.getData();
-        if (data == null) {
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.START);
-
-        final int dataLength = data.length;
-        int breakCounter = 0;
-        for (int i = 0; i < dataLength; i++) {
-            if (this.getSelectedLength() > 0
-                    && i >= this.getSelectedStartIndex()
-                    && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
-                sb.append(HTMLKit.span(HTMLKit.getByteText(data[i]), HTMLKit.FONT_COLOR_YELLOW));
-            } else {
-                sb.append(HTMLKit.span(HTMLKit.getByteText(data[i])));
-            }
-            breakCounter++;
-
-            if (breakCounter > JBinaryViewer.ROW_ITEM_MAX_INDEX) {
-                sb.append(HTMLKit.NEW_LINE);
-                breakCounter = 0;
-            }
-        }
-
-        sb.append(HTMLKit.END);
-        this.setText(sb.toString());
+    protected String formatByte(final byte value, final boolean selected) {
+        return selected
+                ? HTMLKit.span(HTMLKit.getByteText(value), HTMLKit.FONT_COLOR_YELLOW)
+                : HTMLKit.span(HTMLKit.getByteText(value));
     }
 }

@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.png;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -82,7 +82,7 @@ public class PNGFile extends FileFormat {
         ChunkTypes.add(Chunk_zTXt.class);
     }
 
-    public PNGFile(final File file) throws IOException, FileFormatException {
+    public PNGFile(final Path file) throws IOException, FileFormatException {
         super(file);
 
         // Load the chunk types

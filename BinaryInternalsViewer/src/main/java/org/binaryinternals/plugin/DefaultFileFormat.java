@@ -7,8 +7,8 @@
 package org.binaryinternals.plugin;
 
 import org.binaryinternals.commonlib.core.FileFormat;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.ui.Icons;
@@ -20,7 +20,7 @@ import org.binaryinternals.commonlib.ui.Icons;
 public class DefaultFileFormat extends FileFormat{
 
 
-    public DefaultFileFormat(final File file) throws IOException, FileFormatException {
+    public DefaultFileFormat(final Path file) throws IOException, FileFormatException {
         super(file);
     }
 

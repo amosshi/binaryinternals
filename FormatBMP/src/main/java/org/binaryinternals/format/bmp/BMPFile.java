@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.bmp;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -26,7 +26,7 @@ public class BMPFile extends FileFormat{
     public final ColorTable colorTable;
     public final PixelArray pixelArray;
 
-    public BMPFile(final File file) throws IOException, FileFormatException {
+    public BMPFile(final Path file) throws IOException, FileFormatException {
         super(file);
 
         // Parse

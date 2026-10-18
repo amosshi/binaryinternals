@@ -24,4 +24,6 @@ module org.binaryinternals.formatclass {
     exports org.binaryinternals.format.classfile.attribute.aspectj;
     exports org.binaryinternals.format.classfile.attribute.scala;
     exports org.binaryinternals.format.classfile.constant;
+
+    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.classfile.PluginDescriptorClass;
 }

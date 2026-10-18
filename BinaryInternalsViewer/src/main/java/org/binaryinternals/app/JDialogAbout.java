@@ -8,8 +8,6 @@ package org.binaryinternals.app;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -31,12 +29,11 @@ import javax.swing.WindowConstants;
  */
 class JDialogAbout extends JDialog {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500004L;
 
     JDialogAbout(final Frame owner, final String title) {
-        super(owner, title);
+        super(owner, title, true);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.setModal(true);
 
         this.initComponents();
         this.pack();
@@ -47,15 +44,20 @@ class JDialogAbout extends JDialog {
         this.setVisible(false);
     }
 
-    private JTextField getLine(String label){
+    private JTextField getLine(String label) {
         JTextField field = new JTextField(label);
         field.setEditable(false);
         field.setBorder(BorderFactory.createEmptyBorder());
         return field;
     }
 
+    private static String getVersion() {
+        final String version = JDialogAbout.class.getPackage().getImplementationVersion();
+        return version == null ? "development" : version;
+    }
+
     private void initComponents() {
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BorderLayout());
 
         final JButton buttonClose = new JButton("Close");
         buttonClose.addActionListener((final ActionEvent e) -> buttonOKClicked());
@@ -68,21 +70,21 @@ class JDialogAbout extends JDialog {
         label.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         listPane.add(label);
 
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        listPane.add(Box.createVerticalStrut(5));
         listPane.add(new JLabelHyperLink(
                 "https://github.com/amosshi/binaryinternals",
                 "https://github.com/amosshi/binaryinternals"));
 
-        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
+        listPane.add(Box.createVerticalStrut(20));
         listPane.add(this.getLine("Watch binary file internals visually & interactively for the meaning of every bit"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-        listPane.add(this.getLine("Version: 3.6"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        listPane.add(Box.createVerticalStrut(5));
+        listPane.add(this.getLine("Version: " + getVersion()));
+        listPane.add(Box.createVerticalStrut(5));
         listPane.add(this.getLine("Author: Amos Shi"));
 
-        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
+        listPane.add(Box.createVerticalStrut(20));
         listPane.add(this.getLine("System Properties:"));
-        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        listPane.add(Box.createVerticalStrut(5));
         JTextArea sysinfo = new JTextArea(8, 40);
         System.getProperties().forEach((key, value) -> sysinfo.append(key + ": " + value + System.lineSeparator()));
         sysinfo.setCaretPosition(0);
@@ -90,8 +92,11 @@ class JDialogAbout extends JDialog {
         sysinfo.setLineWrap(true);
         listPane.add(new JScrollPane(sysinfo));
 
-        listPane.add(Box.createRigidArea(new Dimension(0, 20)));
-        listPane.add(this.getLine("Icons are freely provided by https://icons8.com/"));
+        listPane.add(Box.createVerticalStrut(20));
+        listPane.add(this.getLine("Icons are freely provided by icons8, see license:"));
+        listPane.add(new JLabelHyperLink(
+                "https://icons8.com/license",
+                "https://icons8.com/license"));
 
         listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

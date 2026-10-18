@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -25,7 +24,7 @@ import javax.swing.JLabel;
  */
 public class JLabelHyperLink extends JLabel {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500005L;
 
     /**
      * Text of the label.
@@ -38,7 +37,7 @@ public class JLabelHyperLink extends JLabel {
     /**
      * Flag indicates whether current JVM support browser or not.
      */
-    private boolean isSupported;
+    private final boolean isSupported;
 
     /**
      * Create a new Hyper Link enabled JLabel.
@@ -50,11 +49,7 @@ public class JLabelHyperLink extends JLabel {
         this.text = txt;
         this.url = link;
 
-        try {
-            this.isSupported = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
-        } catch (Exception e) {
-            this.isSupported = false;
-        }
+        this.isSupported = isBrowseSupported();
 
         this.setText(false);
         this.addMouseListener(new MouseAdapter() {
@@ -63,7 +58,7 @@ public class JLabelHyperLink extends JLabel {
             public void mouseEntered(final MouseEvent e) {
                 setText(isSupported);
                 if (isSupported) {
-                    setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
             }
 
@@ -75,12 +70,22 @@ public class JLabelHyperLink extends JLabel {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 try {
-                    Desktop.getDesktop().browse(new URI(JLabelHyperLink.this.url));
-                } catch (IOException | URISyntaxException ex) {
+                    if (isSupported) {
+                        Desktop.getDesktop().browse(URI.create(JLabelHyperLink.this.url));
+                    }
+                } catch (IOException | RuntimeException ex) {
                     Logger.getLogger(JLabelHyperLink.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+    }
+
+    private static boolean isBrowseSupported() {
+        try {
+            return Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     private void setText(final boolean b) {

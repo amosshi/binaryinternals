@@ -8,6 +8,7 @@ package org.binaryinternals.binaryviewer;
 
 import org.binaryinternals.commonlib.ui.HTMLKit;
 import java.awt.Component;
+import java.util.HexFormat;
 import javax.swing.JTextPane;
 
 /**
@@ -17,11 +18,12 @@ import javax.swing.JTextPane;
  */
 class JRowViewer extends JTextPane {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500008L;
     /**
      * Width of the row viewer.
      */
     public static final int WIDTH_VALUE = 110;
+    private static final HexFormat HEX = HexFormat.of().withUpperCase();
 
     /**
      * Constructor.
@@ -58,7 +60,7 @@ class JRowViewer extends JTextPane {
         int rowValue = rowStart * JBinaryViewer.ROW_ITEM_MAX;
         for (int i = 0; i < rowCount; i++) {
             if ((rowStart + i) < rowMax) {
-                sb.append(HTMLKit.span(String.format("%08Xh", rowValue)));
+                sb.append(HTMLKit.span(HEX.toHexDigits(rowValue) + "h"));
                 sb.append(HTMLKit.NEW_LINE);
                 rowValue += JBinaryViewer.ROW_ITEM_MAX;
             }

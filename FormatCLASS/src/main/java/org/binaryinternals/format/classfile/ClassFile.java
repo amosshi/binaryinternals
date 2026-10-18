@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.classfile;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -232,8 +232,10 @@ public class ClassFile extends FileFormat {
      * @throws IOException Error happened when reading the byte array
      * @throws FileFormatException Invalid class file format
      */
-    public ClassFile(final File classFile) throws IOException, FileFormatException {
-        this(Files.readAllBytes(classFile.toPath()), classFile.getName(), classFile.getCanonicalPath());
+    public ClassFile(final Path classFile) throws IOException, FileFormatException {
+        this(Files.readAllBytes(classFile),
+                String.valueOf(classFile.getFileName()),
+                classFile.toRealPath().toString());
     }
 
     public ClassFile(final byte[] classFileBytes) throws IOException, FileFormatException {

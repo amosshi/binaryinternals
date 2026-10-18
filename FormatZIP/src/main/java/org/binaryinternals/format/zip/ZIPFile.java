@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.zip;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -65,7 +65,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
     CentralDirectoryStructure[] cds = null;
     LocalFileHeader[] lfh = null;
 
-    public ZIPFile(final File file) throws IOException, FileFormatException {
+    public ZIPFile(final Path file) throws IOException, FileFormatException {
         super(file);
 
         // Check the file length

@@ -15,8 +15,12 @@
  */
 
 module org.binaryinternals.app {
+    requires java.desktop;
+    requires java.logging;
     requires static com.github.spotbugs.annotations;
-    requires static org.binaryinternals.commonlib;
+    requires org.binaryinternals.commonlib;
+
+    uses org.binaryinternals.commonlib.core.PluginDescriptor;
 
     exports org.binaryinternals.app;
     exports org.binaryinternals.binaryviewer;

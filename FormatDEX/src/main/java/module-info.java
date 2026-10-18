@@ -19,4 +19,6 @@ module org.binaryinternals.formatdex {
     requires static org.binaryinternals.formatclass;
 
     exports org.binaryinternals.format.dex;
+
+    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.dex.PluginDescriptorDEX;
 }

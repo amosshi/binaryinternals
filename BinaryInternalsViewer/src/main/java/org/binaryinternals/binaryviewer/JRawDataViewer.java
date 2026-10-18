@@ -7,6 +7,7 @@
 package org.binaryinternals.binaryviewer;
 
 import org.binaryinternals.commonlib.ui.HTMLKit;
+import java.util.HexFormat;
 
 /**
  * Display binary data as HEX text.
@@ -15,44 +16,18 @@ import org.binaryinternals.commonlib.ui.HTMLKit;
  */
 final class JRawDataViewer extends DataViewer {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500009L;
     /**
      * Width of the raw data viewer section.
      */
     public static final int WIDTH_VALUE = 460;
+    private static final HexFormat HEX = HexFormat.of().withUpperCase();
 
     @Override
-    protected void updateContent() {
-        this.setText(null);
-
-        byte[] data = super.getData();
-        if (data == null) {
-            return;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(HTMLKit.START);
-
-        final int dataLength = data.length;
-        int breakCounter = 0;
-        for (int i = 0; i < dataLength; i++) {
-            sb.append(HTMLKit.SPACE);
-            if (this.getSelectedLength() > 0
-                    && i >= this.getSelectedStartIndex()
-                    && i < this.getSelectedStartIndex() + this.getSelectedLength()) {
-                sb.append(HTMLKit.span(String.format("%02X", data[i]), HTMLKit.FONT_COLOR_ORANGE));
-            } else {
-                sb.append(HTMLKit.span(String.format("%02X", data[i])));
-            }
-            breakCounter++;
-
-            if (breakCounter > JBinaryViewer.ROW_ITEM_MAX_INDEX) {
-                sb.append(HTMLKit.NEW_LINE);
-                breakCounter = 0;
-            }
-        }
-
-        sb.append(HTMLKit.END);
-        this.setText(sb.toString());
+    protected String formatByte(final byte value, final boolean selected) {
+        final String hex = HEX.toHexDigits(value);
+        return HTMLKit.SPACE + (selected
+                ? HTMLKit.span(hex, HTMLKit.FONT_COLOR_ORANGE)
+                : HTMLKit.span(hex));
     }
 }

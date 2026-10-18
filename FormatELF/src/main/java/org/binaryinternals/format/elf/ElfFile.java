@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.elf;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -32,7 +32,7 @@ public class ElfFile extends FileFormat {
     public final Identification ident;
     public final Elf64_Ehdr header;
 
-    public ElfFile(File file) throws IOException, FileFormatException {
+    public ElfFile(final Path file) throws IOException, FileFormatException {
         super(file);
 
         PosDataInputStream input = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));

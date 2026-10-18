@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.pdf;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -24,7 +24,7 @@ import org.binaryinternals.commonlib.core.FileFormatException;
  */
 public class PDFFile extends FileFormat {
 
-    public PDFFile(final File file) throws IOException, FileFormatException {
+    public PDFFile(final Path file) throws IOException, FileFormatException {
         super(file);
         this.parse();
     }

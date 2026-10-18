@@ -10,10 +10,10 @@ import java.awt.BorderLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.SpringLayout;
@@ -86,24 +86,58 @@ public final class JBinaryViewer extends JPanel {
     /**
      * Start index to be high-lighted.
      *
-     * @see DataViewer#selectedStartIndex
      */
     private int selectedStartIndex = 0;
 
     /**
      * Length to be high-lighted.
      *
-     * @see DataViewer#selectedLength
      */
     private int selectedLength = 0;
+
+    /**
+     * Guards {@link #updateViewContent()} against re-entry from scroll bar events.
+     */
+    private boolean updating = false;
+
+    /**
+     * Fraction of a wheel step not yet applied, for high-resolution wheels.
+     */
+    private double wheelRemainder = 0;
+
+    /**
+     * Keyboard navigation shared by the data viewers.
+     */
+    private final transient KeyListener keyboard = new KeyAdapter() {
+        @Override
+        public void keyPressed(final KeyEvent e) {
+            final JScrollBar bar = JBinaryViewer.this.vBar;
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_HOME -> bar.setValue(bar.getMinimum());
+                case KeyEvent.VK_END -> bar.setValue(bar.getMaximum());
+                case KeyEvent.VK_UP -> bar.setValue(bar.getValue() - 1);
+                case KeyEvent.VK_DOWN -> bar.setValue(bar.getValue() + 1);
+                case KeyEvent.VK_LEFT, KeyEvent.VK_PAGE_UP -> bar.setValue(bar.getValue() - bar.getVisibleAmount());
+                case KeyEvent.VK_RIGHT, KeyEvent.VK_PAGE_DOWN -> bar.setValue(bar.getValue() + bar.getVisibleAmount());
+                default -> {
+                    // Other keys are ignored
+                }
+            }
+        }
+    };
 
     /**
      * Constructor.
      */
     public JBinaryViewer() {
         this.setLayout(new BorderLayout());
-        this.addComponentListener(new ComponentResizedAdapter());
-        this.addMouseWheelListener(new MouseWheelAdapter());
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(final ComponentEvent e) {
+                updateViewContent();
+            }
+        });
+        this.addMouseWheelListener(this::mouseWheelMoved);
 
         // Vertical Bar
         this.vBar = new JScrollBar();
@@ -122,9 +156,9 @@ public final class JBinaryViewer extends JPanel {
 
         this.rowViewer = new JRowViewer();
         this.rawViewer = new JRawDataViewer();
-        this.rawViewer.addKeyListener(new KeyboardAdapter());
+        this.rawViewer.addKeyListener(this.keyboard);
         this.asciiViewer = new JAsciiDataViewer();
-        this.asciiViewer.addKeyListener(new KeyboardAdapter());
+        this.asciiViewer.addKeyListener(this.keyboard);
 
         panel.add(this.rowViewer);
         panel.add(this.rawViewer);
@@ -153,16 +187,18 @@ public final class JBinaryViewer extends JPanel {
     }
 
     /**
-     * Set the binary data to be displayed.
+     * Set the binary data to be displayed. The array is shared, not copied, and
+     * must not be modified while it is displayed.
      *
      * @param bytes Binary data to be displayed
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Avoid copying a large file")
     public void setData(final byte[] bytes) {
         if (bytes == null) {
             return;
         }
 
-        this.data = bytes.clone();
+        this.data = bytes;
 
         // Calc the max row count
         this.rowMax = this.getRowMax();
@@ -185,54 +221,56 @@ public final class JBinaryViewer extends JPanel {
      * @return 1-based row number
      */
     private int getRowCount(final int number) {
-        int count = 0;
-        int max = number;
-        while (max > 0) {
-            count++;
-            max -= ROW_ITEM_MAX;
-        }
-        return count;
+        return number > 0 ? Math.ceilDiv(number, ROW_ITEM_MAX) : 0;
     }
 
     private int getExtent() {
-        return (int) Math.ceil(this.getSize().getHeight() / ITEM_HEIGHT);
+        return Math.ceilDiv(this.getHeight(), ITEM_HEIGHT);
     }
 
     private void updateViewContent() {
+        if (this.updating) {
+            return;
+        }
+        this.updating = true;
+        try {
+            this.doUpdateViewContent();
+        } finally {
+            this.updating = false;
+        }
+    }
+
+    private void doUpdateViewContent() {
         // Update Extent
-        int extent = this.getExtent();
+        final int extent = this.getExtent();
         if (extent <= 0) {
             return;                                                             // The window Hight is (nearly) zero
         }
         this.vBar.setVisibleAmount(extent);
 
         if ((extent + this.vBar.getValue()) > (this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT)) {
-            int diff = (this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT) - extent;
-            diff = (diff > 0) ? diff : 0;
-            this.vBar.setValue(diff);
+            final int diff = (this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT) - extent;
+            this.vBar.setValue(Math.max(diff, 0));
         }
         this.vBar.setVisible(extent < this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT);
 
         // Revise row viewer, raw data viewer, ASCII data viewer
         this.rowViewer.setData(this.vBar.getValue(), extent, this.rowMax);
-        if (this.data != null && this.data.length > 0) {
-            // Calc the buffer data
-            int startPos = this.vBar.getValue() * JBinaryViewer.ROW_ITEM_MAX;
-            int dataSize = extent * JBinaryViewer.ROW_ITEM_MAX;
 
-            dataSize = Math.min(dataSize, this.data.length - startPos);
-            if (dataSize > 0) {
-                byte[] buf = new byte[dataSize];
-                System.arraycopy(this.data, startPos, buf, 0, dataSize);
-
-                // Set the buffer
-                this.rawViewer.setData(buf);
-                this.asciiViewer.setData(buf);
-            }
+        int startPos = 0;
+        int dataSize = 0;
+        if (this.data != null) {
+            startPos = this.vBar.getValue() * JBinaryViewer.ROW_ITEM_MAX;
+            dataSize = Math.min(extent * JBinaryViewer.ROW_ITEM_MAX, this.data.length - startPos);
         }
 
-        // Revise selection
-        this.updateSelection();
+        // Selection relative to the window, limited to the window for performance
+        final int windowSelStart = this.selectedStartIndex - startPos;
+        final int selStart = Math.max(windowSelStart, 0);
+        final int selLength = Math.clamp((long) windowSelStart + this.selectedLength - selStart, 0, Math.max(dataSize, 0));
+
+        this.rawViewer.setContent(this.data, startPos, dataSize, selStart, selLength);
+        this.asciiViewer.setContent(this.data, startPos, dataSize, selStart, selLength);
     }
 
     /**
@@ -245,33 +283,16 @@ public final class JBinaryViewer extends JPanel {
         if ((this.data == null) || (selectionStart < 0)) {
             return;
         }
-        if (this.data.length < (selectionStart + length - 1)) {
+        if (this.data.length < (long) selectionStart + length) {
             return;
         }
 
         this.selectedStartIndex = selectionStart;
         this.selectedLength = length;
 
-        this.ensureVisible(selectionStart);
-        this.updateSelection();
-    }
-
-    private void updateSelection() {
-        final int startPos = this.selectedStartIndex - this.vBar.getValue() * JBinaryViewer.ROW_ITEM_MAX;
-        final int lengtgMax = this.getExtent() * JBinaryViewer.ROW_ITEM_MAX;
-        int length;
-
-        if (startPos > 0) {
-            length = Math.min(this.selectedLength, lengtgMax);                  // Improve Performance
-            this.rawViewer.setSelection(startPos, length);
-            this.asciiViewer.setSelection(startPos, length);
-        } else if ((startPos + this.selectedLength) > 0) {
-            length = Math.min(startPos + this.selectedLength, lengtgMax);       // Improve Performance
-            this.rawViewer.setSelection(0, length);
-            this.asciiViewer.setSelection(0, length);
-        } else {
-            this.rawViewer.setSelection(0, 0);
-            this.asciiViewer.setSelection(0, 0);
+        // Moving the scroll bar already refreshes the view
+        if (!this.ensureVisible(selectionStart)) {
+            this.updateViewContent();
         }
     }
 
@@ -279,94 +300,31 @@ public final class JBinaryViewer extends JPanel {
      * Ensure the byte at <code>startPos</code> is visible.
      *
      * @param startPos the start position of the byte(s) to be visible
+     * @return true if the scroll bar was moved, which refreshes the view
      */
-    private void ensureVisible(final int startPos) {
-        if ((this.data == null) || (startPos < 0) || (this.data.length < (startPos - 1))) {
-            return;
+    private boolean ensureVisible(final int startPos) {
+        if ((this.data == null) || (startPos < 0) || (this.data.length <= startPos)) {
+            return false;
         }
 
-        int rowId = this.getRowCount(startPos) - 1;
+        final int rowId = startPos / ROW_ITEM_MAX;
         int low = this.vBar.getValue();
         int high = low + this.getExtent() - 1;
         if (rowId < low || rowId > high) {
             this.vBar.setValue(rowId);
+            return this.vBar.getValue() != low;
         }
+        return false;
     }
 
-    @SuppressWarnings("PackageVisibleInnerClass")
-    class ComponentResizedAdapter extends ComponentAdapter {
-
-        @Override
-        public void componentResized(final ComponentEvent e) {
-            super.componentResized(e);
-            updateViewContent();
-        }
-    }
-
-    @SuppressWarnings("PackageVisibleInnerClass")
-    class MouseWheelAdapter implements MouseWheelListener {
-
-        @Override
-        public void mouseWheelMoved(final MouseWheelEvent e) {
-            switch (e.getScrollType()) {
-                case MouseWheelEvent.WHEEL_UNIT_SCROLL:
-                    JBinaryViewer.this.vBar.setValue(
-                            JBinaryViewer.this.vBar.getValue()
-                            + e.getUnitsToScroll());
-                    break;
-                case MouseWheelEvent.WHEEL_BLOCK_SCROLL:
-                    break;
-                default:
-                    break;
+    private void mouseWheelMoved(final MouseWheelEvent e) {
+        if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+            this.wheelRemainder += e.getPreciseWheelRotation() * e.getScrollAmount();
+            final int steps = (int) this.wheelRemainder;
+            if (steps != 0) {
+                this.wheelRemainder -= steps;
+                this.vBar.setValue(this.vBar.getValue() + steps);
             }
-        }
-    }
-
-    @SuppressWarnings("PackageVisibleInnerClass")
-    class KeyboardAdapter implements KeyListener {
-
-        @Override
-        @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
-        public void keyTyped(final KeyEvent e) {
-        }
-
-        @Override
-        public void keyPressed(final KeyEvent e) {
-
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_HOME:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getMinimum());
-                    break;
-
-                case KeyEvent.VK_END:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getMaximum());
-                    break;
-
-                case KeyEvent.VK_UP:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getValue() - 1);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getValue() + 1);
-                    break;
-
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_PAGE_UP:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getValue() - JBinaryViewer.this.vBar.getVisibleAmount());
-                    break;
-
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_PAGE_DOWN:
-                    JBinaryViewer.this.vBar.setValue(JBinaryViewer.this.vBar.getValue() + JBinaryViewer.this.vBar.getVisibleAmount());
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        @Override
-        @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
-        public void keyReleased(final KeyEvent e) {
         }
     }
 }

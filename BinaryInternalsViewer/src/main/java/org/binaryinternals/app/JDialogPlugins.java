@@ -6,121 +6,52 @@
  */
 package org.binaryinternals.app;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.WindowConstants;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 import org.binaryinternals.plugin.PluginManager;
 
 /**
+ * Shows the loaded plug-ins.
  *
  * @author Amos Shi
  */
-class JDialogPlugins extends JDialog {
+class JDialogPlugins extends JDialogTable {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500006L;
 
     JDialogPlugins(final Frame owner, final String title) {
-        super(owner, title);
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.setModal(true);
-
-        this.initComponents();
-        this.pack();
-        this.setResizable(true);
-    }
-
-    private void initComponents() {
-        this.setLayout(new BorderLayout());
-
-        final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> buttonOKClicked());
-
-        // Lay out the labels from top to bottom.
-        final JTable table = new JTable(new PluginsModel());
-        resizeColumnWidth(table);
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-        table.setFillsViewportHeight(true);
-        JScrollPane scrollPane = new JScrollPane(table);
-        final JPanel treePane = new JPanel();
-        treePane.setLayout(new BorderLayout());
-        treePane.add(scrollPane, BorderLayout.CENTER);
-        treePane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Lay out the buttons from left to right.
-        final JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-        buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        buttonPane.add(Box.createHorizontalGlue());
-        buttonPane.add(buttonClose);
-
-        // Put everything together, using the content pane's BorderLayout.
-        final Container contentPane = this.getContentPane();
-        contentPane.add(treePane, BorderLayout.CENTER);
-        contentPane.add(buttonPane, BorderLayout.PAGE_END);
-    }
-
-    private void buttonOKClicked() {
-        this.setVisible(false);
-    }
-
-    protected static void resizeColumnWidth(JTable table) {
-        final TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int width = 50; // Min width
-            for (int row = 0; row < table.getRowCount(); row++) {
-                TableCellRenderer renderer = table.getCellRenderer(row, column);
-                Component comp = table.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width, width);
-            }
-            columnModel.getColumn(column).setPreferredWidth(width + 10);
-        }
+        super(owner, title, new PluginsModel());
     }
 
     public static class PluginsModel extends AbstractTableModel {
 
-        transient List<String> columnNames = new LinkedList<>();
-        transient List<List<String>> rowData = new LinkedList<>();
+        final transient List<String> columnNames = List.of("Jar file", "Format Class", "Extension Description");
+        final transient List<Row> rowData = new ArrayList<>();
+
+        /**
+         * One table row.
+         */
+        record Row(String jar, String formatClass, String description) {
+        }
 
         PluginsModel() {
-            Map<String, PluginDescriptor> plugins = PluginManager.getPlugins();
-
-            // Column Names
-            this.columnNames.add("Jar file");
-            this.columnNames.add("Format Class");
-            this.columnNames.add("Extension Description");
-
             // Row Data
-            for (Map.Entry<String, PluginDescriptor> pair : plugins.entrySet()) {
-                PluginDescriptor value = (PluginDescriptor) pair.getValue();
-                List<String> row = new LinkedList<>();
-                row.add(pair.getKey());
-                row.add(value.getFileFormatClass().getName());
-                row.add(value.getExtensionDescription());
-                this.rowData.add(row);
+            for (Map.Entry<String, PluginDescriptor> pair : PluginManager.getPlugins().entrySet()) {
+                final PluginDescriptor value = pair.getValue();
+                this.rowData.add(new Row(
+                        pair.getKey(),
+                        value.getFileFormatClass().getName(),
+                        value.getExtensionDescription()));
             }
         }
 
         @Override
         public int getRowCount() {
-            return this.rowData.size() + 1;
+            return this.rowData.size();
         }
 
         @Override
@@ -135,11 +66,13 @@ class JDialogPlugins extends JDialog {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            if (rowIndex < this.rowData.size()) {
-                return this.rowData.get(rowIndex).get(columnIndex);
-            } else {
-                return "";
-            }
+            final Row row = this.rowData.get(rowIndex);
+            return switch (columnIndex) {
+                case 0 -> row.jar();
+                case 1 -> row.formatClass();
+                case 2 -> row.description();
+                default -> throw new IllegalArgumentException("Invalid column " + columnIndex);
+            };
         }
     }
 }

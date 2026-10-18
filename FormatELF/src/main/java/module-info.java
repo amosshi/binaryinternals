@@ -18,4 +18,6 @@ module org.binaryinternals.formatelf {
     requires static org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.elf;
+
+    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.elf.PluginDescriptorELF;
 }

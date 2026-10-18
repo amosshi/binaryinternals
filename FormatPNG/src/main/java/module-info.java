@@ -18,4 +18,6 @@ module org.binaryinternals.formatpng {
     requires static org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.png;
+
+    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.png.PluginDescriptorPNG;
 }

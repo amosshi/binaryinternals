@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.jpeg;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -23,7 +23,7 @@ import org.binaryinternals.commonlib.ui.GenerateTreeNode;
  */
 public class JPEGFile extends FileFormat {
 
-    public JPEGFile(File file) throws IOException, FileFormatException {
+    public JPEGFile(final Path file) throws IOException, FileFormatException {
         super(file);
         this.parse();
     }

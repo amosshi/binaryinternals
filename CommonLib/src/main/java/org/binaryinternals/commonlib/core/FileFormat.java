@@ -7,9 +7,9 @@
 package org.binaryinternals.commonlib.core;
 
 import java.awt.Component;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,21 +48,21 @@ public abstract class FileFormat {
     protected final SortedMap<Long, FileComponent> components = new TreeMap<>();
 
     /**
-     * Parse the content from a {@link File} object.
+     * Parse the content from a {@link Path} object.
      *
-     * @param file {@link File} object
+     * @param file {@link Path} object
      * @throws IOException Failed to Read file
      * @throws FileFormatException The file is empty
      */
-    protected FileFormat(final File file) throws IOException, FileFormatException {
-        this.fileName = file.getName();
-        this.filePath = file.getCanonicalPath();
+    protected FileFormat(final Path file) throws IOException, FileFormatException {
+        this.fileName = Objects.requireNonNull(file.getFileName(), "The path has no file name").toString();
+        this.filePath = file.toRealPath().toString();
+        this.fileByteArray = Files.readAllBytes(file);
 
-        if (file.length() == 0) {
+        if (this.fileByteArray.length == 0) {
             throw new FileFormatException(
-                    String.format("The file content is empty. name = %s", file.getPath()));
+                    "The file content is empty. name = %s".formatted(file));
         }
-        this.fileByteArray = Files.readAllBytes(file.toPath());
     }
 
     /**

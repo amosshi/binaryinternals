@@ -6,8 +6,6 @@
  */
 package org.binaryinternals.app;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.Box;
@@ -31,7 +29,7 @@ import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
  */
 public final class JPanelForTree extends JPanel {
 
-    private static final long serialVersionUID = 4876543219876500000L;
+    private static final long serialVersionUID = 4876543219876500002L;
     /**
      * Default editor size.
      */
@@ -95,9 +93,7 @@ public final class JPanelForTree extends JPanel {
         panelToolbar.setLayout(new BoxLayout(panelToolbar, BoxLayout.X_AXIS));
         panelToolbar.add(this.toolbar);
 
-        final Component glue = Box.createGlue();
-        glue.setMaximumSize(new Dimension(Short.MAX_VALUE, this.toolbar.getHeight()));
-        panelToolbar.add(glue);
+        panelToolbar.add(Box.createHorizontalGlue());
 
         final JPanel panelToolbarTree = new JPanel();
         panelToolbarTree.setLayout(new BoxLayout(panelToolbarTree, BoxLayout.Y_AXIS));
@@ -113,7 +109,7 @@ public final class JPanelForTree extends JPanel {
         splitPane.setTopComponent(panelToolbarTree);
         splitPane.setBottomComponent(new JScrollPane(this.editorPaneDescription));
         splitPane.setResizeWeight(1.0);
-        this.add(splitPane, BorderLayout.CENTER);
+        this.add(splitPane);
     }
 
     private void initToolbar() {
@@ -136,26 +132,13 @@ public final class JPanelForTree extends JPanel {
     }
 
     private void toolbarExpandAll() {
-        if (this.tree == null) {
-            return;
+        // Rows appended by an expansion are visited in the same pass
+        for (int i = 0; i < this.tree.getRowCount(); i++) {
+            this.tree.expandRow(i);
         }
-
-        int old = 0;
-        int now = 0;
-        do {
-            old = this.tree.getRowCount();
-            for (int i = 0; i < old; i++) {
-                this.tree.expandRow(i);
-            }
-            now = this.tree.getRowCount();
-        } while (now > old);
     }
 
     private void toolbarCollapseAll() {
-        if (this.tree == null) {
-            return;
-        }
-
         this.tree.collapseRow(0);
     }
 
@@ -170,21 +153,16 @@ public final class JPanelForTree extends JPanel {
         this.detailsPanel = null;
         this.detailsTitle = null;
 
-        Object obj = e.getPath().getLastPathComponent();
-        if (obj instanceof DefaultMutableTreeNode) {
-            final DefaultMutableTreeNode objDmtn = (DefaultMutableTreeNode) obj;
-            obj = objDmtn.getUserObject();
-            if (obj instanceof JTreeNodeFileComponent) {
-                JTreeNodeFileComponent fileComp = (JTreeNodeFileComponent) obj;
-                String s = fileComp.getDescription();
-                if (s != null && s.length() > 0) {
-                    this.editorPaneDescription.setText(s);
-                }
-                if (fileComp.isDetailAvailable()) {
-                    this.toolbarbtnDetails.setVisible(true);
-                    this.detailsPanel = fileComp.getDetailPanel();
-                    this.detailsTitle = fileComp.getText();
-                }
+        if (e.getPath().getLastPathComponent() instanceof DefaultMutableTreeNode node
+                && node.getUserObject() instanceof JTreeNodeFileComponent fileComp) {
+            String s = fileComp.getDescription();
+            if (s != null && !s.isEmpty()) {
+                this.editorPaneDescription.setText(s);
+            }
+            if (fileComp.isDetailAvailable()) {
+                this.toolbarbtnDetails.setVisible(true);
+                this.detailsPanel = fileComp.getDetailPanel();
+                this.detailsTitle = fileComp.getText();
             }
         }
     }

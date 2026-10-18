@@ -7,26 +7,14 @@
 package org.binaryinternals.binaryviewer;
 
 import javax.swing.JTextPane;
+import org.binaryinternals.commonlib.ui.HTMLKit;
 
 /**
  * Display binary data.
  *
  * @author Amos Shi
  */
-public abstract class DataViewer extends JTextPane {
-
-    /**
-     * Binary data will be displayed.
-     */
-    private byte[] data = null;
-    /**
-     * Start index to be high-lighted.
-     */
-    private int selectedStartIndex = 0;
-    /**
-     * Length to be high-lighted.
-     */
-    private int selectedLength = 0;
+public abstract sealed class DataViewer extends JTextPane permits JRawDataViewer, JAsciiDataViewer {
 
     /**
      * Constructor.
@@ -39,58 +27,45 @@ public abstract class DataViewer extends JTextPane {
     }
 
     /**
-     * Set the binary data to be displayed.
+     * Render a window of the data as HTML in one pass,
+     * {@link JBinaryViewer#ROW_ITEM_MAX} bytes per row. The data is not copied.
      *
-     * @param bin Binary data.
+     * @param data Binary data, or null to clear the view
+     * @param offset First byte of the window
+     * @param length Number of bytes in the window
+     * @param selectedStart Start of the high-lighted part, relative to the window
+     * @param selectedLength Length of the high-lighted part
      */
-    public void setData(final byte[] bin) {
-        if (bin == null) {
-            this.data = null;
-        } else {
-            this.data = bin.clone();
+    public void setContent(final byte[] data, final int offset, final int length,
+            final int selectedStart, final int selectedLength) {
+        if (data == null || length <= 0) {
+            this.setText(null);
+            return;
         }
 
-        this.updateContent();
+        final StringBuilder sb = new StringBuilder();
+        sb.append(HTMLKit.START);
+
+        final int selectedEnd = selectedStart + selectedLength;
+        for (int i = 0; i < length; i++) {
+            final boolean selected = selectedLength > 0 && i >= selectedStart && i < selectedEnd;
+            sb.append(this.formatByte(data[offset + i], selected));
+
+            if ((i + 1) % JBinaryViewer.ROW_ITEM_MAX == 0) {
+                sb.append(HTMLKit.NEW_LINE);
+            }
+        }
+
+        sb.append(HTMLKit.END);
+        this.setText(sb.toString());
     }
 
     /**
-     * Set the selection part to be high-lighted.
+     * Format one byte as HTML.
      *
-     * @param startIndex Start index to be high-lighted
-     * @param length Length to be high-lighted
+     * @param value The byte
+     * @param selected Whether the byte is high-lighted
+     * @return HTML of the byte
      */
-    public void setSelection(final int startIndex, final int length) {
-        this.selectedStartIndex = startIndex;
-        this.selectedLength = length;
-        this.updateContent();
-    }
-
-    /**
-     * Return value of {@link #data}.
-     *
-     * @return Value of {@link #data}
-     */
-    protected byte[] getData() {
-        return this.data;
-    }
-
-    /**
-     * Return value of {@link #selectedStartIndex}.
-     *
-     * @return Value of {@link #selectedStartIndex}
-     */
-    protected int getSelectedStartIndex() {
-        return this.selectedStartIndex;
-    }
-
-    /**
-     * Return value of {@link #selectedLength}.
-     *
-     * @return Value of {@link #selectedLength}
-     */
-    protected int getSelectedLength() {
-        return this.selectedLength;
-    }
-
-    protected abstract void updateContent();
+    protected abstract String formatByte(byte value, boolean selected);
 }
