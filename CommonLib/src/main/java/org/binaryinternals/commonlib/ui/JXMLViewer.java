@@ -8,6 +8,7 @@ package org.binaryinternals.commonlib.ui;
 
 import java.awt.BorderLayout;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -34,14 +35,8 @@ public class JXMLViewer extends JPanel {
      */
     public JXMLViewer(final InputStream xml) {
         this.tabbedPane = new JTabbedPane();
-        if (xml instanceof PosDataInputStream) {
-            byte[] buf = ((PosDataInputStream) xml).getBuf();
-            StringBuilder sb = new StringBuilder(buf.length + 1);
-            for (byte b : buf) {
-                sb.append((char) b);
-            }
-
-            JTextArea textPlainText = new JTextArea(sb.toString());
+        if (xml instanceof PosDataInputStream posStream) {
+            JTextArea textPlainText = new JTextArea(new String(posStream.getBuf(), StandardCharsets.ISO_8859_1));
             textPlainText.setLineWrap(true);
             textPlainText.setEditable(false);
             tabbedPane.addTab("XML Plain Text", new JScrollPane(textPlainText));

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,6 @@ import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileFormatException;
 
 /**
@@ -97,13 +97,13 @@ public class PNGFile extends FileFormat {
         // Check the file signature
         byte[] magic = new byte[MAGIC.length];
         System.arraycopy(this.fileByteArray, 0, magic, 0, MAGIC.length);
-        if (BytesTool.isByteArraySame(MAGIC, magic) == false) {
+        if (Arrays.equals(MAGIC, magic) == false) {
             throw new FileFormatException("This is not a valid PNG file, because the PNG file signature does not exist at the beginning of this file.");
         }
 
         // Parse Chunks
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
-        BytesTool.skip(stream, PNGFile.MAGIC.length);
+        stream.skipNBytes(PNGFile.MAGIC.length);
 
         while (stream.getPos() < this.fileByteArray.length) {
             super.addFileComponent(this.parseChunk(stream));
@@ -127,24 +127,24 @@ public class PNGFile extends FileFormat {
 
         // Skip Chunk Data
         if (length > 0) {
-            BytesTool.skip(stream, length);
+            stream.skipNBytes(length);
         }
 
         // Skip CRC
-        BytesTool.skip(stream, 4);
+        stream.skipNBytes(4);
 
         // GetChunkType
         Method mtd;
         byte[] type;
 
         PosDataInputStream streamChunk = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
-        BytesTool.skip(streamChunk, stream.getPos() - length - 12);
+        streamChunk.skipNBytes(stream.getPos() - length - 12);
 
         for (Class<?> cls : ChunkTypes) {
             try {
                 mtd = cls.getDeclaredMethod("GetChunkType");
                 type = (byte[]) mtd.invoke(null);
-                if (BytesTool.isByteArraySame(chunkType, type) == true) {
+                if (Arrays.equals(chunkType, type) == true) {
                     Constructor c = cls.getConstructor(PosDataInputStream.class, PNGFile.class);
                     chunk = (Chunk) c.newInstance(streamChunk, this);
                     break;   // End the loop

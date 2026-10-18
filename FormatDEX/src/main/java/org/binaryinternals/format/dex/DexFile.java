@@ -10,13 +10,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.FileFormatException;
@@ -113,7 +113,7 @@ public final class DexFile extends FileFormat {
         System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.length);
         System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.length);
 
-        if (!BytesTool.isByteArraySame(DEX_FILE_MAGIC1, magic1)
+        if (!Arrays.equals(DEX_FILE_MAGIC1, magic1)
                 || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
             throw new FileFormatException("This is not a valid DEX file, because the DEX file signature does not exist at the beginning of this file.");
         }
@@ -121,12 +121,12 @@ public final class DexFile extends FileFormat {
         // Parse section by section
         PosDataInputStream parseEndian = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
-        BytesTool.skip(parseEndian, DEX_FILE_MAGIC1.length);
-        BytesTool.skip(parseEndian, DEX_FILE_MAGIC2.length);
-        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // checksum
-        BytesTool.skip(parseEndian, 20);                         // signature
-        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // file_size
-        BytesTool.skip(parseEndian, Type_uint.LENGTH);           // header_size
+        parseEndian.skipNBytes(DEX_FILE_MAGIC1.length);
+        parseEndian.skipNBytes(DEX_FILE_MAGIC2.length);
+        parseEndian.skipNBytes(Type_uint.LENGTH);           // checksum
+        parseEndian.skipNBytes(20);                         // signature
+        parseEndian.skipNBytes(Type_uint.LENGTH);           // file_size
+        parseEndian.skipNBytes(Type_uint.LENGTH);           // header_size
 
         int i1 = parseEndian.readUnsignedByte();
         int i2 = parseEndian.readUnsignedByte();
@@ -150,8 +150,8 @@ public final class DexFile extends FileFormat {
         SortedMap<Long, Class<?>> todoData = new TreeMap<>();
 
         // Header
-        BytesTool.skip(stream, DEX_FILE_MAGIC1.length);
-        BytesTool.skip(stream, DEX_FILE_MAGIC2.length);
+        stream.skipNBytes(DEX_FILE_MAGIC1.length);
+        stream.skipNBytes(DEX_FILE_MAGIC2.length);
         this.header = new header_item(stream);
 
         // string_ids

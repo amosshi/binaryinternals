@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.ps;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -48,7 +47,7 @@ public class IRB_8BIM extends FileComponent {
         // skip for name
         this.data_skip1byte = ((this.size & 1) != 0);
         if (this.data_skip1byte) {
-            BytesTool.skip(input, 1);
+            input.skipNBytes(1);
         }
 
         // data
@@ -64,7 +63,7 @@ public class IRB_8BIM extends FileComponent {
         // skip for name
         this.name_skip1byte = ((this.size & 1) != 0);  // true for odd value; false for even
         if (this.name_skip1byte) {
-            BytesTool.skip(input, 1);
+            input.skipNBytes(1);
         }
 
         // total length

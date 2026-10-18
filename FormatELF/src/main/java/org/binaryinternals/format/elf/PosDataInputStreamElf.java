@@ -46,7 +46,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
         this.endian = e;
 
         // Skip the ELF file Identification
-        BytesTool.skip(this, Identification.EI_NIDENT);
+        this.skipNBytes(Identification.EI_NIDENT);
     }
 
     /**

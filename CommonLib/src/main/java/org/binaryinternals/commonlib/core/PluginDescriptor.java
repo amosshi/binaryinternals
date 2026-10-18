@@ -6,8 +6,6 @@
  */
 package org.binaryinternals.commonlib.core;
 
-import org.binaryinternals.commonlib.core.FileFormat;
-
 /**
  *
  * @author Amos Shi

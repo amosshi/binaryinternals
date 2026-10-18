@@ -6,8 +6,10 @@
  */
 package org.binaryinternals.commonlib.ui;
 
-import java.util.HashMap;
+import java.net.URL;
+import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -277,20 +279,22 @@ public enum Icons {
      */
     ZIP("icons8-zip-16.png");
 
-    private static final Map<String, Icon> iconCache = new HashMap<>();
+    private static final Map<Icons, Icon> ICON_CACHE = new EnumMap<>(Icons.class);
+    private static final Object CACHE_LOCK = new Object();
 
     private final String filename;
 
-    private Icons(String filename) {
+    Icons(String filename) {
         this.filename = filename;
     }
 
     public Icon getIcon() {
-        return icon(this.filename);
-    }
-
-    private static Icon icon(String url) {
-        return iconCache.computeIfAbsent(url, k -> new ImageIcon(Icons.class.getResource("/image/" + url)));
+        synchronized (CACHE_LOCK) {
+            return ICON_CACHE.computeIfAbsent(this, k -> {
+                final URL url = Icons.class.getResource("/image/" + this.filename);
+                return new ImageIcon(Objects.requireNonNull(url, "Missing icon resource: /image/" + this.filename));
+            });
+        }
     }
 
 }

@@ -18,7 +18,6 @@
  * @author Amos SHI
  */
 module org.binaryinternals.commonlib {
-    requires java.base;
     requires transitive java.desktop;
     requires transitive java.logging;
     requires static com.github.spotbugs.annotations;

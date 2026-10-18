@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -82,7 +81,7 @@ public class IFD extends FileComponent {
             throw new ArrayIndexOutOfBoundsException("TIFF IFD: the data ending offset is bigger than tiff buffer length");
         }
 
-        BytesTool.skip(reader, this.ifd_value_offset);
+        reader.skipNBytes((int) this.ifd_value_offset);
         return reader;
     }
 

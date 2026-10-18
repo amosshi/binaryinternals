@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -33,7 +32,7 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
         final PosDataInputStream reader = new PosDataInputStream(
                 new PosByteArrayInputStream(this.tiff_ByteArray),
                 super.tiff_StartPos);
-        BytesTool.skip(reader, super.value[0]);
+        reader.skipNBytes((int) super.value[0]);
         this.ifd_number = super.readUnsignedShort(reader);
         if (this.ifd_number > 0) {
             this.ifd_sub = new IFD[this.ifd_number];

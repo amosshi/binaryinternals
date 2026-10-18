@@ -8,6 +8,8 @@ package org.binaryinternals.format.classfile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -231,7 +233,7 @@ public class ClassFile extends FileFormat {
      * @throws FileFormatException Invalid class file format
      */
     public ClassFile(final File classFile) throws IOException, FileFormatException {
-        this(BytesTool.readFileAsBytes(classFile), classFile.getName(), classFile.getCanonicalPath());
+        this(Files.readAllBytes(classFile.toPath()), classFile.getName(), classFile.getCanonicalPath());
     }
 
     public ClassFile(final byte[] classFileBytes) throws IOException, FileFormatException {

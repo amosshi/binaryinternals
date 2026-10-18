@@ -10,6 +10,9 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  *
@@ -162,12 +165,11 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * is not <code>PosByteArrayInputStream</code>.
      */
     public int getPos() {
-        int pos = -1;
-        if (this.in instanceof PosByteArrayInputStream) {
-            pos = ((PosByteArrayInputStream) this.in).getPos() + this.offset;
+        if (this.in instanceof PosByteArrayInputStream posIn) {
+            return posIn.getPos() + this.offset;
         }
 
-        return pos;
+        return -1;
     }
 
     /**
@@ -176,8 +178,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      * @return the byte array
      */
     public byte[] getBuf() {
-        if (this.in instanceof PosByteArrayInputStream) {
-            return ((PosByteArrayInputStream) this.in).getBuf();
+        if (this.in instanceof PosByteArrayInputStream posIn) {
+            return posIn.getBuf();
         } else {
             throw new UnsupportedOperationException("This method is called in incorrect context");
         }
@@ -195,138 +197,41 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
             throw new IllegalArgumentException("startIndex or length is not valid. startIndex = " + startPos + ", length = " + length);
         }
 
-        byte[] bufFull = this.getBuf();
-        if (startPos + length - 1 > bufFull.length) {
-            throw new ArrayIndexOutOfBoundsException("The last item index is bigger than class byte array size.");
-        }
-
-        final byte[] bufPart = new byte[length];
-        System.arraycopy(bufFull, startPos, bufPart, 0, length);
-        return bufPart;
+        final byte[] bufFull = this.getBuf();
+        Objects.checkFromIndexSize(startPos, length, bufFull.length);
+        return Arrays.copyOfRange(bufFull, startPos, startPos + length);
     }
 
     ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public short readShortInLittleEndian() throws IOException {
-        int ch1 = this.in.read();
-        int ch2 = this.in.read();
-        if ((ch1 | ch2) < 0) {
-            throw new EOFException();
-        }
-        return (short) ((ch2 << SHIFT_8) + (ch1));
+        return Short.reverseBytes(this.readShort());
     }
 
     @Override
     public int readUnsignedShortInLittleEndian() throws IOException {
-        int ch1 = this.in.read();
-        int ch2 = this.in.read();
-        if ((ch1 | ch2) < 0) {
-            throw new EOFException();
-        }
-        return (ch2 << SHIFT_8) + (ch1);
+        return Short.toUnsignedInt(this.readShortInLittleEndian());
     }
 
-    /**
-     * @throws IOException
-     *
-     * <pre>
-     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
-     * </pre>
-     */
     @Override
-    @SuppressWarnings("java:S1110")
     public int readIntInLittleEndian() throws IOException {
-        int ch1 = this.in.read();
-        int ch2 = this.in.read();
-        int ch3 = this.in.read();
-        int ch4 = this.in.read();
-        if ((ch1 | ch2 | ch3 | ch4) < 0) {
-            throw new EOFException();
-        }
-        return (((ch4 << SHIFT_24) + (ch3 << SHIFT_16) + (ch2 << SHIFT_8) + (ch1)));
+        return Integer.reverseBytes(this.readInt());
     }
 
-    /**
-     * @throws IOException
-     *
-     * <pre>
-     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
-     * </pre>
-     */
     @Override
-    @SuppressWarnings("java:S1110")
     public long readUnsignedInt() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-
-        super.readFully(readBuffer, BYTE_LENGTH_4, BYTE_LENGTH_4);
-        readBuffer[BYTE_OFFSET_0] = 0;
-        readBuffer[BYTE_OFFSET_1] = 0;
-        readBuffer[BYTE_OFFSET_2] = 0;
-        readBuffer[BYTE_OFFSET_3] = 0;
-
-        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
-                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
-                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
-                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
-                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
-                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
-                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
-                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
+        return Integer.toUnsignedLong(this.readInt());
     }
 
-    /**
-     * @throws IOException
-     *
-     * <pre>
-     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
-     * </pre>
-     */
     @Override
-    @SuppressWarnings("java:S1110")
     public long readUnsignedIntInLittleEndian() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-
-        super.readFully(readBuffer, 0, BYTE_LENGTH_4);
-        readBuffer[BYTE_OFFSET_7] = readBuffer[BYTE_OFFSET_0];
-        readBuffer[BYTE_OFFSET_6] = readBuffer[BYTE_OFFSET_1];
-        readBuffer[BYTE_OFFSET_5] = readBuffer[BYTE_OFFSET_2];
-        readBuffer[BYTE_OFFSET_4] = readBuffer[BYTE_OFFSET_3];
-        readBuffer[BYTE_OFFSET_0] = 0;
-        readBuffer[BYTE_OFFSET_1] = 0;
-        readBuffer[BYTE_OFFSET_2] = 0;
-        readBuffer[BYTE_OFFSET_3] = 0;
-
-        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
-                + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
-                + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
-                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
-                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
-                + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
-                + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
-                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
+        return Integer.toUnsignedLong(this.readIntInLittleEndian());
     }
 
-    /**
-     * @throws IOException
-     *
-     * <pre>
-     * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
-     * </pre>
-     */
     @Override
-    @SuppressWarnings("java:S1110")
     public long readLongInLittleEndian() throws IOException {
-        final byte[] readBuffer = new byte[BYTE_LENGTH_8];
-        super.readFully(readBuffer, 0, 8);
-        return (((long) readBuffer[BYTE_OFFSET_7] << SHIFT_56)
-                + ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
-                + ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
-                + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
-                + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
-                + ((readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
-                + ((readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                + ((readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+        return Long.reverseBytes(this.readLong());
     }
 
     /**
@@ -360,11 +265,9 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                     String.format("Parameter length should be greater than 0. (length = %d)", length));
         }
 
-        StringBuilder sb = new StringBuilder(length + 1);
-        for (int i = 0; i < length; i++) {
-            sb.append((char) this.readByte());
-        }
-        return sb.toString();
+        final byte[] bytes = new byte[length];
+        this.readFully(bytes);
+        return new String(bytes, StandardCharsets.ISO_8859_1);
     }
 
     @Override
@@ -395,7 +298,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                 if (b == end) {
                     break;
                 }
-                sb.append((char) b);
+                sb.append((char) (b & BYTE_MAX_255));
             } catch (EOFException eof) {
                 break;
             }
@@ -431,7 +334,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
                 if (this.contains(b, end)) {
                     break;
                 }
-                sb.append((char) b);
+                sb.append((char) (b & BYTE_MAX_255));
             } catch (EOFException eof) {
                 break;
             }
@@ -463,14 +366,12 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     }
 
     private boolean contains(final byte v, final byte[] list) {
-        boolean result = false;
-        for (int i = 0; i < list.length; i++) {
-            if (list[i] == v) {
-                result = true;
-                break;
+        for (byte item : list) {
+            if (item == v) {
+                return true;
             }
         }
-        return result;
+        return false;
     }
 
     /**
@@ -500,9 +401,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         } while (true);
 
         if (bigCounter > 0) {
-            byte[] result = new byte[bigCounter];
-            System.arraycopy(big, 0, result, 0, bigCounter);
-            return result;
+            return Arrays.copyOf(big, bigCounter);
         } else {
             return EMPTY_BYTE_ARRAY;
         }
@@ -520,11 +419,9 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     public int backward(final int i) {
         int result = -1;
 
-        if (this.in instanceof PosByteArrayInputStream) {
-            PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
-            int currentPos = posIn.getPos();
-            result = ((currentPos - i) > 0) ? (currentPos - i) : 0;
-            ((PosByteArrayInputStream) this.in).setPos(result);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
+            result = Math.max(posIn.getPos() - i, 0);
+            posIn.setPos(result);
         }
 
         return result;
@@ -543,10 +440,9 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     public int backwardTo(final byte b) {
         int result = -1;
 
-        if (this.in instanceof PosByteArrayInputStream) {
-            PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
             byte[] buf = posIn.getBuf();
-            for (int i = posIn.getPos(); i > -1; i--) {
+            for (int i = Math.min(posIn.getPos(), buf.length - 1); i > -1; i--) {
                 if (buf[i] == b) {
                     result = i;
                     break;
@@ -574,8 +470,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     public int forwardTo(final byte b) {
         int result = -1;
 
-        if (this.in instanceof PosByteArrayInputStream) {
-            PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
             byte[] buf = posIn.getBuf();
             for (int i = posIn.getPos(); i < buf.length; i++) {
                 if (buf[i] == b) {
@@ -608,8 +503,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
             throw new IllegalArgumentException("Parameter b is null or empty.");
         }
 
-        if (this.in instanceof PosByteArrayInputStream) {
-            PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
             byte[] buf = posIn.getBuf();
             for (int i = posIn.getPos() - b.length; i > -1; i--) {
                 if (BytesTool.isByteArraySame(b, buf, i)) {
@@ -636,8 +530,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      */
     @Override
     public void skipToEnd() throws IOException {
-        if (this.in instanceof PosByteArrayInputStream) {
-            PosByteArrayInputStream posIn = ((PosByteArrayInputStream) this.in);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
             posIn.setPos(0);
             posIn.skip(posIn.getBuf().length);
         }
@@ -653,8 +546,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
      */
     @Override
     public void flyTo(final int position) {
-        if (this.in instanceof PosByteArrayInputStream) {
-            ((PosByteArrayInputStream) this.in).setPos(position);
+        if (this.in instanceof PosByteArrayInputStream posIn) {
+            posIn.setPos(position);
         }
     }
 

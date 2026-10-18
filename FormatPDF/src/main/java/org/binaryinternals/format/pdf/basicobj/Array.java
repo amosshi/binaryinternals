@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
@@ -37,7 +36,7 @@ public class Array extends FileComponent implements GenerateTreeNode {
 
     private void parse(PosDataInputStream stream) throws IOException {
         // The '[' sign
-        BytesTool.skip(stream, 1);
+        stream.skipNBytes(1);
 
         FileComponent comp;
         Analysis analysis = new Analysis();

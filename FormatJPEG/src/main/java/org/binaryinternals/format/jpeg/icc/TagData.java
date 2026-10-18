@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
@@ -34,7 +33,7 @@ public class TagData extends FileComponent implements GenerateTreeNode {
         this.tagType = input.readInt();
 
         // Reserved bytes
-        BytesTool.skip(input, 4);
+        input.skipNBytes(4);
     }
 
     public String getTagType() {

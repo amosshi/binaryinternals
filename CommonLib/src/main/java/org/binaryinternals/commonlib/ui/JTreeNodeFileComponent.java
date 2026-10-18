@@ -60,7 +60,7 @@ public final class JTreeNodeFileComponent {
             throw new IllegalArgumentException("Length cannot be less than zero; it is '" + nodeLength + "'.");
         }
 
-        if ((nodeText == null) || (nodeText.length() == 0)) {
+        if (nodeText == null || nodeText.isEmpty()) {
             throw new IllegalArgumentException("Text cannot be null or empty.");
         }
 

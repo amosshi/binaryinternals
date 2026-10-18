@@ -71,7 +71,7 @@ public final class HTMLKit {
      * @return HTML code of span
      */
     public static String span(final String text) {
-        return String.format("<span style=\"font-size:%dpx; font-family:%s;\">%s</span>",
+        return "<span style=\"font-size:%dpx; font-family:%s;\">%s</span>".formatted(
                 FONT.getSize() - 2,
                 FONT.getFamily(),
                 text);
@@ -85,7 +85,7 @@ public final class HTMLKit {
      * @return HTML code of span
      */
     public static String span(final String text, final String color) {
-        return String.format("<span style=\"background-color:%s; font-size:%dpx; font-family:%s;\">%s</span>",
+        return "<span style=\"background-color:%s; font-size:%dpx; font-family:%s;\">%s</span>".formatted(
                 color,
                 FONT.getSize() - 2,
                 FONT.getFamily(),
@@ -113,18 +113,19 @@ public final class HTMLKit {
     }
 
     /**
-     * Escape HTML special character &lt; and &gt;.
+     * Escape HTML special characters &amp;, &lt;, &gt; and &quot;.
      *
      * @param text Input text to process
      * @return Escaped result
      */
     public static String escapeFilter(final String text) {
-        String result = null;
-        if (text != null) {
-            result = text.replace("<", "&lt;");
-            result = result.replace(">", "&gt;");
+        if (text == null) {
+            return null;
         }
 
-        return result;
+        return text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;");
     }
 }

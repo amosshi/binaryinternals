@@ -8,6 +8,7 @@ package org.binaryinternals.format.zip;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -288,7 +289,7 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
             if (readBytes != this.Signature.length) {
                 throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
             }
-            if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
+            if (Arrays.equals(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
                 throw new FileFormatException("Signature does not match for 'central file header signature' at 0x" + Integer.toHexString(stream.getPos()) + ": found =" + BytesTool.getByteDataHexView(this.Signature) + ", expected =" + BytesTool.getByteDataHexView(ZIPFile.CENTRAL_FILE_HEADER));
             }
 

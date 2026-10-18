@@ -2,7 +2,6 @@ package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
@@ -54,7 +53,7 @@ class StringLiteral extends FileComponent implements GenerateTreeNode {
                 // Escape 
                 case REVERSE_SOLIDUS:
                     // Skip the charactor after REVERSE SOLIDUS
-                    BytesTool.skip(stream, 1);
+                    stream.skipNBytes(1);
                     break;
                 case PDFStatics.DelimiterCharacter.LP:
                     parentheseLevel++;

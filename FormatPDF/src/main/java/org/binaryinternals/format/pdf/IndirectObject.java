@@ -78,7 +78,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         this.objectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
         this.generationNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
         this.numberLen = stream.getPos() - super.startPos;
-        BytesTool.skip(stream, SIGNATURE_START.length());
+        stream.skipNBytes(SIGNATURE_START.length());
         byte b1 = stream.readByte();
         byte b2 = stream.readByte();
         if (b1 == PDFStatics.WhiteSpace.CR && b2 == PDFStatics.WhiteSpace.LF) {

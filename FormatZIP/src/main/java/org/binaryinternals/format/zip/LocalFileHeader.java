@@ -8,6 +8,7 @@ package org.binaryinternals.format.zip;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -119,7 +120,7 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
             throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
         }
 
-        if (BytesTool.isByteArraySame(this.Signature, ZIPFile.LOCAL_FILE_HEADER) == false) {
+        if (Arrays.equals(this.Signature, ZIPFile.LOCAL_FILE_HEADER) == false) {
             throw new FileFormatException("Signature does not match for 'local file header signature'.");
         }
 

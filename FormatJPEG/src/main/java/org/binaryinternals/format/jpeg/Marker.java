@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -47,7 +46,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
             this.marker_length = pDIS.readUnsignedShort();
             super.length = this.marker_length + 2;
             long skip = this.marker_length - 2;
-            BytesTool.skip(pDIS, skip);
+            pDIS.skipNBytes(skip);
         } else {
             this.marker_length = 0;
             super.length = MarkerCode.MARKER_CODE_BYTES_COUNT;
@@ -60,7 +59,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     protected void parseInitSkip(final PosDataInputStream pDisMarker) throws IOException {
         // Skip the marker code and length field
         long skip = MarkerCode.MARKER_CODE_BYTES_COUNT + MarkerCode.MARKER_LENGTH_BYTES_COUNT;
-        BytesTool.skip(pDisMarker, skip);
+        pDisMarker.skipNBytes(skip);
     }
 
     protected String parseIdentifier(final PosDataInputStream pDisMarker) throws IOException {

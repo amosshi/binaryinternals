@@ -7,10 +7,10 @@
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
 import org.binaryinternals.commonlib.ui.Icons;
@@ -62,7 +62,7 @@ public class EndOfCentralDirectoryRecord extends FileComponent implements Genera
             throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
         }
 
-        if (BytesTool.isByteArraySame(this.Signature, ZIPFile.CENTRAL_END) == false) {
+        if (Arrays.equals(this.Signature, ZIPFile.CENTRAL_END) == false) {
             throw new FileFormatException("Signature does not match for 'end of central directory signature'.");
         }
         this.DiskNumber = stream.readUnsignedShortInLittleEndian();

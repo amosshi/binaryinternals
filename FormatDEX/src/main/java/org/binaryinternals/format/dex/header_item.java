@@ -8,7 +8,6 @@ package org.binaryinternals.format.dex;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.ui.Icons;
@@ -99,7 +98,7 @@ public class header_item extends FileComponent implements GenerateTreeNodeDexFil
             this.signature[i] = stream.Dex_ubyte();
         }
         this.file_size = stream.Dex_uint();
-        BytesTool.skip(stream, Type_uint.LENGTH);
+        stream.skipNBytes(Type_uint.LENGTH);
         this.endian_tag = new Type_uint(stream.readUnsignedInt()); // Always read from left to right
         this.link_size = stream.Dex_uint();
         this.link_off = stream.Dex_uint();

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream.ASCIILine;
@@ -157,11 +156,11 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
             super.length = LENGTH;
 
             this.Offset = Integer.parseInt(stream.readASCII(OFFSET_LENGTH));
-            BytesTool.skip(stream, 1);
+            stream.skipNBytes(1);
             this.GenerationNumber = Integer.parseInt(stream.readASCII(GENERATIONNUMBER_LENGTH));
-            BytesTool.skip(stream, 1);
+            stream.skipNBytes(1);
             this.Type = (char) stream.readByte();
-            BytesTool.skip(stream, 2);
+            stream.skipNBytes(2);
         }
 
         /**

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.FileFormatException;
@@ -98,7 +97,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
 
         // File header of central directory structure.
         stream.reset();
-        BytesTool.skip(stream, this.cde.CentralDirectoryOffset);
+        stream.skipNBytes(this.cde.CentralDirectoryOffset);
         this.cds = new CentralDirectoryStructure[this.cde.EntryTotalNumber];
         for (int i = 0; i < this.cds.length; i++) {
             this.cds[i] = new CentralDirectoryStructure(stream);
@@ -110,7 +109,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
         this.lfh = new LocalFileHeader[this.cds.length];
         for (int i = 0; i < this.cds.length; i++) {
             stream.reset();
-            BytesTool.skip(stream, this.cds[i].header.RelativeOffsetOfLocalHeader);
+            stream.skipNBytes(this.cds[i].header.RelativeOffsetOfLocalHeader);
             this.lfh[i] = new LocalFileHeader(stream);
 
             super.components.put(Long.valueOf(this.lfh[i].getStartPos()), this.lfh[i]);

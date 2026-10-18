@@ -9,7 +9,6 @@ package org.binaryinternals.format.elf;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
@@ -40,7 +39,7 @@ public class ElfFile extends FileFormat {
         this.ident = new Identification(input);
 
         PosDataInputStreamElf inputElf = new PosDataInputStreamElf(new PosByteArrayInputStream(this.fileByteArray), this.ident.EI_DATA);
-        BytesTool.skip(input, Identification.EI_NIDENT);
+        input.skipNBytes(Identification.EI_NIDENT);
         this.header = new Elf64_Ehdr(inputElf);
     }
 

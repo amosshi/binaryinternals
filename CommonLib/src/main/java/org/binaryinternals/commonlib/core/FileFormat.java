@@ -9,8 +9,11 @@ package org.binaryinternals.commonlib.core;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.swing.JScrollPane;
@@ -59,7 +62,7 @@ public abstract class FileFormat {
             throw new FileFormatException(
                     String.format("The file content is empty. name = %s", file.getPath()));
         }
-        this.fileByteArray = BytesTool.readFileAsBytes(file);
+        this.fileByteArray = Files.readAllBytes(file.toPath());
     }
 
     /**
@@ -112,13 +115,8 @@ public abstract class FileFormat {
         if ((startIndex < 0) || (length < 1)) {
             throw new IllegalArgumentException("startIndex or length is not valid. startIndex = " + startIndex + ", length = " + length);
         }
-        if (startIndex + length - 1 > this.fileByteArray.length) {
-            throw new ArrayIndexOutOfBoundsException("The last item index is bigger than class byte array size.");
-        }
-
-        byte[] data = new byte[length];
-        System.arraycopy(this.fileByteArray, startIndex, data, 0, length);
-        return data;
+        Objects.checkFromIndexSize(startIndex, length, this.fileByteArray.length);
+        return Arrays.copyOfRange(this.fileByteArray, startIndex, startIndex + length);
     }
 
     /**

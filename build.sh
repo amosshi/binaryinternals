@@ -25,14 +25,13 @@ if [ -z "$JAVA_HOME" ] || [ ! -x "$JAVA_HOME/bin/java" ]; then
 fi
 
 java -version
+mvn --version
 
-# mvn dependency:purge-local-repository -DreResolve=true
+rm -rf dist
+mvn dependency:purge-local-repository -DreResolve=true
 
-mvn  clean
-mvn  package
-mvn  install
+mvn  clean install
 mvn  dependency:tree
 mvn  versions:display-dependency-updates
 #mvn source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
-#mvn jdeps:jdkinternals
 #mvn spotbugs:gui

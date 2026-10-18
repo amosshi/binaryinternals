@@ -9,11 +9,9 @@ package org.binaryinternals.commonlib.core;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -33,8 +31,8 @@ public final class BytesTool {
      * @param i Integer value to convert
      * @return  Binary string with leading zero
      */
-    public static String getBinaryString(int i){
-        return String.format("%16s", Integer.toBinaryString(i)).replace(' ', '0');
+    public static String getBinaryString(int i) {
+        return padZero(Integer.toBinaryString(i), 16);
     }
 
     /**
@@ -43,8 +41,12 @@ public final class BytesTool {
      * @param l Long value to convert
      * @return  Binary string with leading zero
      */
-    public static String getBinaryString(long l){
-        return String.format("%32s", Long.toBinaryString(l)).replace(' ', '0');
+    public static String getBinaryString(long l) {
+        return padZero(Long.toBinaryString(l), 32);
+    }
+
+    private static String padZero(final String s, final int width) {
+        return "0".repeat(Math.max(0, width - s.length())) + s;
     }
 
     /**
@@ -61,12 +63,13 @@ public final class BytesTool {
             return "";
         }
 
-        final StringBuilder sb = new StringBuilder(data.length * 5);
+        final HexFormat hex = HexFormat.of().withUpperCase();
+        final StringBuilder sb = new StringBuilder(data.length * 4);
         final int length = data.length;
         int i;
         int lineBreakCounter = 0;
         for (i = 0; i < length; i++) {
-            sb.append(String.format(" %02X", data[i]));
+            sb.append(' ').append(hex.toHexDigits(data[i]));
             lineBreakCounter++;
             if (lineBreakCounter == 16) {
                 sb.append('\n');
@@ -95,40 +98,6 @@ public final class BytesTool {
     }
 
     /**
-     * Compares if the contents of two byte array are the same.
-     * <p>
-     * When either <code>bin1</code> or <code>bin2</code> is <code>null</code>,
-     * <code>false</code> will be returned. When either <code>bin1</code> or
-     * <code>bin2</code> is empty, <code>false</code> will be returned.
-     * </p>
-     *
-     * @param bin1 The first byte array
-     * @param bin2 The second byte array
-     * @return  <code>true</code> if the content are the same, else false
-     */
-    public static boolean isByteArraySame(final byte[] bin1, final byte[] bin2) {
-        if (bin1 == null || bin2 == null) {
-            return false;
-        }
-        if (bin1.length == 0 || bin2.length == 0) {
-            return false;
-        }
-        if (bin1.length != bin2.length) {
-            return false;
-        }
-
-        boolean same = true;
-        for (int i = 0; i < bin1.length; i++) {
-            if (bin1[i] != bin2[i]) {
-                same = false;
-                break;
-            }
-        }
-
-        return same;
-    }
-
-    /**
      * Checks if the byte array <code>bigBin</code> starts from
      * <code>start</code> is the same as <code>sampleBin</code>.
      *
@@ -151,33 +120,7 @@ public final class BytesTool {
             return false;
         }
 
-        boolean same = true;
-        for (int i = 0; i < bin1.length; i++) {
-            if (bin1[i] != bin2[start + i]) {
-                same = false;
-                break;
-            }
-        }
-
-        return same;
-    }
-
-    /**
-     * Returns byte array from the {@code file}
-     *
-     * @param file The file
-     * @return Byte array of the {@code file}, or {@code null} if error
-     * happened.
-     */
-    public static byte[] readFileAsBytes(final File file) {
-        byte[] fileBytes = null;
-        try {
-            fileBytes = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-        } catch (IOException ex) {
-            Logger.getLogger(BytesTool.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        }
-
-        return fileBytes;
+        return Arrays.equals(bin1, 0, bin1.length, bin2, start, start + bin1.length);
     }
 
     /**
@@ -185,7 +128,7 @@ public final class BytesTool {
      *
      * @param zipFile The {@code jar} or {@code zip} file
      * @param zipEntry The entry to be read
-     * @return Byte array of the class file, or {@code null} if error happened.
+     * @return Byte array of the zip entry
      * @throws IOException Error happened when reading the zip file
      */
     public static byte[] readZipEntryAsBytes(final ZipFile zipFile, final ZipEntry zipEntry) throws IOException {
@@ -197,39 +140,20 @@ public final class BytesTool {
         }
 
         final long fileSize = zipEntry.getSize();
-        final byte[] contents = new byte[(int) fileSize];
-        ByteBuffer byteBuf = ByteBuffer.allocate(contents.length);
-        InputStream is;
-        int bytesRead;
-        int bytesAll = 0;
-
-        is = zipFile.getInputStream(zipEntry);
-        while (true) {
-            bytesRead = is.read(contents);
-            if (bytesRead != -1) {
-                byteBuf.put(contents, 0, bytesRead);
-                bytesAll += bytesRead;
-            } else {
-                break;
-            }
+        final byte[] contents;
+        try (InputStream is = zipFile.getInputStream(zipEntry)) {
+            contents = is.readAllBytes();
         }
 
-        if (bytesAll == fileSize) {
-            return byteBuf.array();
-        } else {
+        // The size is -1 when unknown, so only verify it when it is recorded
+        if (fileSize >= 0 && contents.length != fileSize) {
             throw new IOException(String.format(
                     "File read error: expected = %d bytes, result = %d bytes. zipFile = %s, zipEntry = %s",
                     fileSize,
-                    byteBuf.array().length,
+                    contents.length,
                     zipFile.getName(),
                     zipEntry.getName()));
         }
-    }
-
-    public static void skip(final InputStream is, final long skip) throws IOException {
-        long skippedBytes = is.skip(skip);
-        if (skippedBytes != skip) {
-            throw new IOException(String.format("Failed to skip %d bytes, actual bytes skipped %d", skip, skippedBytes));
-        }
+        return contents;
     }
 }

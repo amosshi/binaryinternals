@@ -2,7 +2,6 @@ package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
@@ -27,7 +26,7 @@ public final class Name extends FileComponent implements GenerateTreeNode {
 
     Name(PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        BytesTool.skip(stream, 1);
+        stream.skipNBytes(1);
         this.RawName = stream.readASCIIUntil(
                 PDFStatics.WhiteSpace.SP,
                 PDFStatics.WhiteSpace.LF,

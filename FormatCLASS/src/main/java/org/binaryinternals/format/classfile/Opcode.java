@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 
@@ -1639,7 +1638,7 @@ public final class Opcode {
                 InstructionParsed parsed = new InstructionParsed(curPos, this.code);
                 parsed.cpIndex = pdis.readUnsignedShort();
                 parsed.nArgs = pdis.readUnsignedByte();
-                BytesTool.skip(pdis, 1);
+                pdis.skipNBytes(1);
 
                 parsed.opCodeText = String.format("%s interface=%d, nargs=%d", this.name(), parsed.cpIndex, parsed.nArgs);
                 return parsed;
@@ -1655,7 +1654,7 @@ public final class Opcode {
                 parsed.cpIndex = pdis.readUnsignedShort();
 
                 // Skip 2 zero bytes
-                BytesTool.skip(pdis, 2);
+                pdis.skipNBytes(2);
                 parsed.opCodeText = this.name();
                 return parsed;
             }
@@ -2005,7 +2004,7 @@ public final class Opcode {
             int skip = pdis.getPos() % 4;
             skip = (skip > 0) ? 4 - skip : skip;
             if (skip > 0) {
-                BytesTool.skip(pdis, skip);
+                pdis.skipNBytes(skip);
             }
         }
 

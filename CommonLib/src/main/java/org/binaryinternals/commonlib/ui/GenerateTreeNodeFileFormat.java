@@ -17,14 +17,14 @@ import org.binaryinternals.commonlib.core.FileFormat;
  */
 public interface GenerateTreeNodeFileFormat {
 
-    static final String FORMAT_STRING_STRING = "%s - %s";
+    String FORMAT_STRING_STRING = "%s - %s";
 
     /**
      * Max length for tree node string.
      *
      * @see #left(String)
      */
-    static final int TREENODE_STRING_MAXLEN = 64;
+    int TREENODE_STRING_MAXLEN = 64;
 
     /**
      * Generate JTree nodes for the current file component.
@@ -58,7 +58,7 @@ public interface GenerateTreeNodeFileFormat {
         JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
                 startPos,
                 len,
-                fieldName + ": " + value.toString()
+                fieldName + ": " + value
         );
         if (msgkey != null) {
             fileComp.setDescription(getMessages().getString(msgkey));
