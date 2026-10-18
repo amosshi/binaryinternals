@@ -8,7 +8,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponenPlaceHolder;
+import org.binaryinternals.commonlib.core.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -21,7 +21,7 @@ public class Marker_DQT extends Marker {
 
     private int Pq;
     private int Tq;
-    private FileComponenPlaceHolder Qk;
+    private FileComponentPlaceHolder Qk;
 
     Marker_DQT(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
         super(pDIS, marker_code);
@@ -53,8 +53,8 @@ public class Marker_DQT extends Marker {
         // Qk
 
         // This should be corret, but in testing, we find that when Pq is 0, it is still has 16-bit Pq.
-        //this.Qk = new FileComponenPlaceHolder(pDisMarker, (this.Pq + 1) * 64);
-        this.Qk = new FileComponenPlaceHolder(pDisMarker, this.length - 1 - 2 - 2);
+        //this.Qk = new FileComponentPlaceHolder(pDisMarker, (this.Pq + 1) * 64);
+        this.Qk = new FileComponentPlaceHolder(pDisMarker, this.length - 1 - 2 - 2);
     }
 
     ///////////////////////////////////////////////////////////////////////////

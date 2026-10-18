@@ -7,6 +7,7 @@
 
 package org.binaryinternals.format.zip;
 
+import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 
@@ -22,8 +23,8 @@ public class PluginDescriptorZIP implements PluginDescriptor{
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"jar", "zip"};
+    public List<String> getExtensions() {
+        return List.of("jar", "zip");
     }
 
     @Override

@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.pdf;
 
+import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 
@@ -21,8 +22,8 @@ public class PluginDescriptorPDF implements PluginDescriptor {
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"pdf"};
+    public List<String> getExtensions() {
+        return List.of("pdf");
     }
 
     @Override

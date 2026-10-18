@@ -43,7 +43,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
         ASCIILine line;
         do {
             line = stream.readASCIILine();
-            if (Trailer.SIGNATURE.equalsIgnoreCase(line.line)) {
+            if (Trailer.SIGNATURE.equalsIgnoreCase(line.line())) {
                 stream.backward(line.length());
                 break;
             }
@@ -63,12 +63,12 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
         int pos = this.startPos;
         nodeCRT.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.line.length(),
+                this.HeaderLine.line().length(),
                 Texts.Signature + SIGNATURE)));
-        pos += this.HeaderLine.line.length();
+        pos += this.HeaderLine.line().length();
         nodeCRT.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.HeaderLine.newLineLength,
+                this.HeaderLine.newLineLength(),
                 "New Line")));
 
         for (Subsection subsection : Subsections) {
@@ -99,7 +99,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
             super.startPos = stream.getPos() - line.length();
             this.HeaderLine = line;
 
-            String[] subsection_header = line.line.split(" ");
+            String[] subsection_header = line.line().split(" ");
             if (subsection_header.length < 2) {
                 throw new FileFormatException(String.format(
                         "This is not a valid Cross Reerence Table Subsection header. Postion [%d], text [%s].",
@@ -126,12 +126,12 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
 
             nodeSS.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos,
-                    this.HeaderLine.line.length(),
+                    this.HeaderLine.line().length(),
                     String.format("Header '%s'", this.HeaderLine))));
-            pos += this.HeaderLine.line.length();
+            pos += this.HeaderLine.line().length();
             nodeSS.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos,
-                    this.HeaderLine.newLineLength,
+                    this.HeaderLine.newLineLength(),
                     "New Line")));
 
             for (Entry entry : Entries) {

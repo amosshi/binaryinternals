@@ -28,7 +28,7 @@ public class Stream extends FileComponent implements GenerateTreeNode {
     private ASCIILine signatureEnd = null;
 
     public Stream(PosDataInputStream stream, PosDataInputStream.ASCIILine line) throws IOException, FileFormatException {
-        this.signatureLen = SIGNATURE_START.length() + line.newLineLength;
+        this.signatureLen = SIGNATURE_START.length() + line.newLineLength();
         super.startPos = stream.getPos() - this.signatureLen;
         this.parse(stream);
         this.length = stream.getPos() - super.startPos;
@@ -38,7 +38,7 @@ public class Stream extends FileComponent implements GenerateTreeNode {
         ASCIILine line;
         while (stream.hasNext()) {
             line = stream.readASCIILine();
-            if (line.line.endsWith(Stream.SIGNATURE_END)) {
+            if (line.line().endsWith(Stream.SIGNATURE_END)) {
                 this.signatureEnd = line;
             }
         }
@@ -107,13 +107,13 @@ public class Stream extends FileComponent implements GenerateTreeNode {
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.signatureEnd.line.length(),
+                this.signatureEnd.line().length(),
                 Texts.Signature + SIGNATURE_END)));
-        pos += this.signatureEnd.line.length();
+        pos += this.signatureEnd.line().length();
 
         nodeStream.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                this.signatureEnd.newLineLength,
+                this.signatureEnd.newLineLength(),
                 Texts.NewLine)));
 
         parentNode.add(nodeStream);

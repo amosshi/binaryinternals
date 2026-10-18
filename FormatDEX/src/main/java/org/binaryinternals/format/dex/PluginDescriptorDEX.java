@@ -7,6 +7,7 @@
 
 package org.binaryinternals.format.dex;
 
+import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 
@@ -23,8 +24,8 @@ public class PluginDescriptorDEX implements PluginDescriptor{
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"dex"};
+    public List<String> getExtensions() {
+        return List.of("dex");
     }
 
     @Override

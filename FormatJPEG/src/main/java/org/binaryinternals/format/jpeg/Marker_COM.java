@@ -8,7 +8,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponenPlaceHolder;
+import org.binaryinternals.commonlib.core.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -20,7 +20,7 @@ import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 public class Marker_COM extends Marker {
 
     /** Comment byte. */
-    private FileComponenPlaceHolder Cm;
+    private FileComponentPlaceHolder Cm;
 
 
     Marker_COM(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
@@ -34,7 +34,7 @@ public class Marker_COM extends Marker {
 
         super.parseInitSkip(pDisMarker);
 
-        this.Cm = new FileComponenPlaceHolder(pDisMarker, super.getMarkerLength() - 2);
+        this.Cm = new FileComponentPlaceHolder(pDisMarker, super.getMarkerLength() - 2);
     }
 
     ///////////////////////////////////////////////////////////////////////////

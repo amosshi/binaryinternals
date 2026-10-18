@@ -9,6 +9,7 @@ package org.binaryinternals.format.zip;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
@@ -122,8 +123,8 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
     }
 
     @Override
-    public Icons getIcon() {
-        return Icons.ZIP;
+    public Optional<Icons> getIcon() {
+        return Optional.of(Icons.ZIP);
     }
 
     @Override

@@ -8,6 +8,7 @@
 package org.binaryinternals.format.classfile;
 
 import org.binaryinternals.commonlib.core.PluginDescriptor;
+import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 
 /**
@@ -22,8 +23,8 @@ public class PluginDescriptorClass implements PluginDescriptor{
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"class"};
+    public List<String> getExtensions() {
+        return List.of("class");
     }
 
     @Override

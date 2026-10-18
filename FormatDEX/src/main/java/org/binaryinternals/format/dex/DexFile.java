@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -275,8 +276,8 @@ public final class DexFile extends FileFormat {
     }
 
     @Override
-    public Icons getIcon() {
-        return Icons.Dex;
+    public Optional<Icons> getIcon() {
+        return Optional.of(Icons.Dex);
     }
 
     /**

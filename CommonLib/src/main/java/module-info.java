@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-/**
- * @author Amos SHI
- */
+/// @author Amos SHI
 module org.binaryinternals.commonlib {
     requires transitive java.desktop;
     requires transitive java.logging;

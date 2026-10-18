@@ -177,7 +177,7 @@
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
-                        <arg>-Xlint:unchecked</arg>
+                        <arg>-Xlint:all,-requires-automatic</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>

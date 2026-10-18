@@ -8,16 +8,11 @@ package org.binaryinternals.commonlib.core;
 
 import java.io.ByteArrayInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public final class PosByteArrayInputStream extends ByteArrayInputStream {
 
-    /**
-     * Creates a new instance of PosByteArrayInputStream
-     * @param buf Buffer pool
-     */
+    /// Creates a new instance of PosByteArrayInputStream
+    /// @param buf Buffer pool
     public PosByteArrayInputStream(final byte[] buf) {
         super(buf);
     }

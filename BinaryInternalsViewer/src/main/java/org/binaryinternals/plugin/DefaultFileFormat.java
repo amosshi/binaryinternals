@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.plugin;
 
+import java.util.Optional;
 import org.binaryinternals.commonlib.core.FileFormat;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,7 +36,7 @@ public class DefaultFileFormat extends FileFormat{
     }
 
     @Override
-    public Icons getIcon() {
-        return Icons.BinaryFile;
+    public Optional<Icons> getIcon() {
+        return Optional.of(Icons.BinaryFile);
     }
 }

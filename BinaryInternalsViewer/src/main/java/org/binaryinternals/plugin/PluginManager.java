@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -136,7 +135,7 @@ public class PluginManager {
             return "";
         }
         return PLUGINS.values().stream()
-                .flatMap(plugin -> Arrays.stream(plugin.getExtensions()))
+                .flatMap(plugin -> plugin.getExtensions().stream())
                 .collect(Collectors.joining(", ", " - ", ", ..."));
     }
 
@@ -145,7 +144,7 @@ public class PluginManager {
         for (PluginDescriptor plugin : PLUGINS.values()) {
             filter = new FileNameExtensionFilter(
                     plugin.getExtensionDescription(),
-                    plugin.getExtensions());
+                    plugin.getExtensions().toArray(String[]::new));
             chooser.addChoosableFileFilter(filter);
         }
     }
@@ -182,8 +181,8 @@ public class PluginManager {
         }
     }
 
-    static boolean isContain(String[] exts, String ext) {
-        return exts != null && Arrays.stream(exts).anyMatch(ext::equalsIgnoreCase);
+    static boolean isContain(List<String> exts, String ext) {
+        return exts != null && exts.stream().anyMatch(ext::equalsIgnoreCase);
     }
 
     /**

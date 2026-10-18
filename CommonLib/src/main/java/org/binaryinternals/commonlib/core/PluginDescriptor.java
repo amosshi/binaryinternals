@@ -6,15 +6,14 @@
  */
 package org.binaryinternals.commonlib.core;
 
-/**
- *
- * @author Amos Shi
- */
+import java.util.List;
+
+/// @author Amos Shi
 public interface PluginDescriptor {
 
     String getExtensionDescription();
 
-    String[] getExtensions();
+    List<String> getExtensions();
 
     Class<? extends FileFormat> getFileFormatClass();
 }

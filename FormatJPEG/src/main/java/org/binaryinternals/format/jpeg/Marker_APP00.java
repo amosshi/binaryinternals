@@ -8,7 +8,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponenPlaceHolder;
+import org.binaryinternals.commonlib.core.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.GenerateTreeNode;
@@ -90,7 +90,7 @@ public class Marker_APP00 extends Marker {
         private final int Ydensity;
         private final int Xthumbnail;
         private final int Ythumbnail;
-        private final FileComponenPlaceHolder RGBn;
+        private final FileComponentPlaceHolder RGBn;
 
         JFIF(final PosDataInputStream pDIS) throws IOException, FileFormatException {
             // Version
@@ -108,7 +108,7 @@ public class Marker_APP00 extends Marker {
             this.Xthumbnail = pDIS.readUnsignedByte();
             this.Ythumbnail = pDIS.readUnsignedByte();
             final int thumbnail_size = this.Xthumbnail * this.Ythumbnail;
-            this.RGBn = new FileComponenPlaceHolder(pDIS, thumbnail_size * 3);
+            this.RGBn = new FileComponentPlaceHolder(pDIS, thumbnail_size * 3);
         }
 
         public void generateTreeNode(DefaultMutableTreeNode parentNode) {

@@ -71,7 +71,7 @@ public final class JSplitPaneFile extends JSplitPane {
                 0,
                 this.file.fileByteArray.length,
                 this.file.fileName,
-                this.file.getIcon(),
+                this.file.getIcon().orElse(null),
                 this.file.filePath));
         this.file.generateTreeNode(root);
         final JTree tree = new JTree(new DefaultTreeModel(root));

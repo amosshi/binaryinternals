@@ -9,6 +9,7 @@ package org.binaryinternals.format.classfile;
 import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Optional;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
@@ -468,8 +469,8 @@ public class ClassFile extends FileFormat {
     }
 
     @Override
-    public Icons getIcon() {
-        return Icons.Java;
+    public Optional<Icons> getIcon() {
+        return Optional.of(Icons.Java);
     }
 
     // Lazy creation of JTreeClassFile

@@ -14,32 +14,28 @@ import java.util.HexFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-/**
- * Utility Class for bytes array (binary data).
- *
- * @author Amos Shi
- */
+/// Utility Class for bytes array (binary data).
+///
+/// @author Amos Shi
 public final class BytesTool {
 
     private BytesTool() {
     }
 
-    /**
-     * Get binary string with leading zero.
-     *
-     * @param i Integer value to convert
-     * @return  Binary string with leading zero
-     */
+    /// Get binary string of an unsigned 16-bit (`u2`) value, padded with
+    /// leading zero to 16 digits.
+    ///
+    /// @param i Integer value holding an unsigned 16-bit value
+    /// @return  Binary string with leading zero
     public static String getBinaryString(int i) {
         return padZero(Integer.toBinaryString(i), 16);
     }
 
-    /**
-     * Get binary string with leading zero.
-     *
-     * @param l Long value to convert
-     * @return  Binary string with leading zero
-     */
+    /// Get binary string of an unsigned 32-bit (`u4`) value, padded with
+    /// leading zero to 32 digits.
+    ///
+    /// @param l Long value holding an unsigned 32-bit value
+    /// @return  Binary string with leading zero
     public static String getBinaryString(long l) {
         return padZero(Long.toBinaryString(l), 32);
     }
@@ -48,12 +44,10 @@ public final class BytesTool {
         return "0".repeat(Math.max(0, width - s.length())) + s;
     }
 
-    /**
-     * Get a string for the {@code hex} view of byte array {@code data}.
-     *
-     * @param data Byte array
-     * @return A string representing the {@code hex} version of {@code data}
-     */
+    /// Get a string for the `hex` view of byte array `data`.
+    ///
+    /// @param data Byte array
+    /// @return A string representing the `hex` version of `data`
     public static String getByteDataHexView(final byte[] data) {
         if (data == null) {
             return "";
@@ -80,31 +74,37 @@ public final class BytesTool {
         return sb.toString();
     }
 
+    /// Checks if the `length` bytes of `buff` starting from
+    /// `startPos` are all `0x00`, or all `0xFF`.
+    ///
+    /// @param buff The byte array
+    /// @param startPos The start position to check
+    /// @param length Number of bytes to check
+    /// @return `true` if the bytes are all `0x00` or all `0xFF`
     public static boolean isByteArrayEmpty(final byte[] buff, final int startPos, final int length) {
-        boolean result = false;
-
-        if (buff[startPos] == 0x00 || buff[startPos] == ((byte) 0xFF)) {
-            result = true;
-            for (int i = 1; i <= length; i++) {
-                if (buff[startPos + i] != buff[startPos]) {
-                    result = false;
-                    break;
-                }
-            }
+        if (length < 1) {
+            return false;
         }
 
-        return result;
+        final byte first = buff[startPos];
+        if (first != 0x00 && first != (byte) 0xFF) {
+            return false;
+        }
+        for (int i = startPos + 1; i < startPos + length; i++) {
+            if (buff[i] != first) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    /**
-     * Checks if the byte array <code>bigBin</code> starts from
-     * <code>start</code> is the same as <code>sampleBin</code>.
-     *
-     * @param bin1 The first byte array
-     * @param bin2 The second byte array
-     * @param start The start position for compare
-     * @return  <code>true</code> if the content are the same, else false
-     */
+    /// Checks if the byte array `bigBin` starts from
+    /// `start` is the same as `sampleBin`.
+    ///
+    /// @param bin1 The first byte array
+    /// @param bin2 The second byte array
+    /// @param start The start position for compare
+    /// @return  `true` if the content are the same, else false
     public static boolean isByteArraySame(final byte[] bin1, final byte[] bin2, final int start) {
         if (bin1 == null || bin2 == null) {
             return false;
@@ -122,14 +122,12 @@ public final class BytesTool {
         return Arrays.equals(bin1, 0, bin1.length, bin2, start, start + bin1.length);
     }
 
-    /**
-     * Read byte array from {@code zipFile} of entry {@code zipEntry}
-     *
-     * @param zipFile The {@code jar} or {@code zip} file
-     * @param zipEntry The entry to be read
-     * @return Byte array of the zip entry
-     * @throws IOException Error happened when reading the zip file
-     */
+    /// Read byte array from `zipFile` of entry `zipEntry`
+    ///
+    /// @param zipFile The `jar` or `zip` file
+    /// @param zipEntry The entry to be read
+    /// @return Byte array of the zip entry
+    /// @throws IOException Error happened when reading the zip file
     public static byte[] readZipEntryAsBytes(final ZipFile zipFile, final ZipEntry zipEntry) throws IOException {
         if (zipFile == null) {
             throw new IllegalArgumentException("Parameter 'zipFile' is null.");
@@ -146,8 +144,8 @@ public final class BytesTool {
 
         // The size is -1 when unknown, so only verify it when it is recorded
         if (fileSize >= 0 && contents.length != fileSize) {
-            throw new IOException(String.format(
-                    "File read error: expected = %d bytes, result = %d bytes. zipFile = %s, zipEntry = %s",
+            throw new IOException(
+                    "File read error: expected = %d bytes, result = %d bytes. zipFile = %s, zipEntry = %s".formatted(
                     fileSize,
                     contents.length,
                     zipFile.getName(),

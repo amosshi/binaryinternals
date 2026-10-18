@@ -8,7 +8,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponenPlaceHolder;
+import org.binaryinternals.commonlib.core.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
@@ -38,7 +38,7 @@ public class Marker_DHT extends Marker {
      * coding model. The Vi,j’s are the elements of the list
      * <code>HUFFVAL</code>.
      */
-    private FileComponenPlaceHolder Vij;
+    private FileComponentPlaceHolder Vij;
 
     Marker_DHT(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
         super(pDIS, marker_code);
@@ -61,7 +61,7 @@ public class Marker_DHT extends Marker {
         }
 
         // Vij
-        this.Vij = new FileComponenPlaceHolder(pDisMarker, super.marker_length - 19);
+        this.Vij = new FileComponentPlaceHolder(pDisMarker, super.marker_length - 19);
     }
 
     /**

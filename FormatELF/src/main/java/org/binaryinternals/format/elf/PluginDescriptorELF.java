@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.elf;
 
+import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 
@@ -21,8 +22,8 @@ public class PluginDescriptorELF implements PluginDescriptor {
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"axf", "bin", "elf", "o", "prx", "puff", "so"};
+    public List<String> getExtensions() {
+        return List.of("axf", "bin", "elf", "o", "prx", "puff", "so");
     }
 
     @Override

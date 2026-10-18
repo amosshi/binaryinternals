@@ -15,24 +15,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 
-/**
- * Panel based XML data viewer.
- *
- * @author Amos Shi
- */
-public class JXMLViewer extends JPanel {
+/// Panel based XML data viewer.
+///
+/// @author Amos Shi
+public final class JXMLViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
-    /**
-     * Tabbed Pane for "XML View" and "XML Plain Text".
-     */
+    /// Tabbed Pane for "XML View" and "XML Plain Text".
     private final JTabbedPane tabbedPane;
 
-    /**
-     * Constructor.
-     *
-     * @param xml XML data to be displayed
-     */
+    /// Constructor.
+    ///
+    /// @param xml XML data to be displayed
     public JXMLViewer(final InputStream xml) {
         this.tabbedPane = new JTabbedPane();
         if (xml instanceof PosDataInputStream posStream) {

@@ -10,50 +10,40 @@ import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
 
-/**
- * Interface for generating children tree nodes.
- *
- * @author Amos Shi
- */
+/// Interface for generating children tree nodes.
+///
+/// @author Amos Shi
 public interface GenerateTreeNodeFileFormat {
 
     String FORMAT_STRING_STRING = "%s - %s";
 
-    /**
-     * Max length for tree node string.
-     *
-     * @see #left(String)
-     */
+    /// Max length for tree node string.
+    ///
+    /// @see #left(String)
     int TREENODE_STRING_MAXLEN = 64;
 
-    /**
-     * Generate JTree nodes for the current file component.
-     *
-     * @param parentNode The parent JTree node
-     * @param fileFormat The current {@link FileFormat} object
-     */
+    /// Generate JTree nodes for the current file component.
+    ///
+    /// @param parentNode The parent JTree node
+    /// @param fileFormat The current {@link FileFormat} object
     void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
-    /**
-     * Get the messages resource of current file format.
-     *
-     * @return {@link ResourceBundle} for messages, or <code>null</code> if not
-     * exist
-     */
+    /// Get the messages resource of current file format.
+    ///
+    /// @return {@link ResourceBundle} for messages, or `null` if not
+    /// exist
     ResourceBundle getMessages();
 
-    /**
-     * Add a child node.
-     *
-     * @param parentNode Parent tree node
-     * @param startPos Start position
-     * @param len Length
-     * @param fieldName Field name
-     * @param value Node value
-     * @param msgkey Display message key
-     * @param icon Node icon
-     * @return The new added tree node
-     */
+    /// Add a child node.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param startPos Start position
+    /// @param len Length
+    /// @param fieldName Field name
+    /// @param value Node value
+    /// @param msgkey Display message key
+    /// @param icon Node icon
+    /// @return The new added tree node
     default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String fieldName, Object value, String msgkey, Icons icon) {
         JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
                 startPos,
@@ -72,23 +62,19 @@ public interface GenerateTreeNodeFileFormat {
         return node;
     }
 
-    /**
-     * Get left part of string for tree node.
-     *
-     * @param s The String to get left part
-     * @return Left part of string
-     */
+    /// Get left part of string for tree node.
+    ///
+    /// @param s The String to get left part
+    /// @return Left part of string
     default String left(String s) {
         return left(s, TREENODE_STRING_MAXLEN);
     }
 
-    /**
-     * Get left part of string.
-     *
-     * @param s The String to get left part
-     * @param length Length to get
-     * @return Left part of string
-     */
+    /// Get left part of string.
+    ///
+    /// @param s The String to get left part
+    /// @param length Length to get
+    /// @return Left part of string
     default String left(String s, int length) {
         if (s == null) {
             return s;
