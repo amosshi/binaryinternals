@@ -14,12 +14,12 @@ import java.awt.Desktop;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -30,8 +30,9 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.SequencedSet;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -67,16 +68,22 @@ public class Main extends JFrame {
     private static final String TITLE = "Binary Internals Viewer ";
     private static final String MASS_TEST_MODE_PROPERTY = "org.binaryinternals.masstestmode";
     private static final int RECENT_FILES_MAX = 10;
+    private static final int EXIT_OK = 0;
+    private static final int EXIT_FAILED = 1;
+    /**
+     * Name of the detail popup windows, to find them among the owned windows.
+     */
+    private static final String POPUP_NAME = "detailPopup";
 
     private final JPanel filedropPanel = new JPanel();
-    private final transient Set<Path> recentFiles = new LinkedHashSet<>();
+    private final transient SequencedSet<Path> recentFiles = new LinkedHashSet<>();
     private final JMenu menuFileRecentFile = new JMenu("Recent Files");
     private final JFileChooser fileChooser = new JFileChooser();
     private JSplitPaneFile contentPane = null;
     private transient SwingWorker<FileFormat, Void> loader = null;
 
     private Main() {
-        this.setTitle(TITLE + PluginManager.getPlugedExtensions());
+        this.setTitle(TITLE + PluginManager.getPluggedExtensions());
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         PluginManager.initChooseFilters(this.fileChooser);
@@ -110,24 +117,30 @@ public class Main extends JFrame {
         Path file = null;
         try {
             file = Path.of(fileName);
-        } catch (InvalidPathException ex) {
+        } catch (InvalidPathException _) {
             LOGGER.log(Level.WARNING, "The provided file name is invalid: filename={0}", fileName);
         }
         if (file != null && Files.exists(file)) {
-            this.openFile(file, Main::exitIfMassTestMode);
+            this.openFile(file, succeeded -> exitIfMassTestMode(succeeded ? EXIT_OK : EXIT_FAILED));
         } else {
             LOGGER.log(Level.WARNING, "The provided file does not exist: filename={0}", fileName);
-            exitIfMassTestMode();
+            exitIfMassTestMode(EXIT_FAILED);
         }
     }
 
     /**
      * Exit immediately for mass test mode.
+     *
+     * @param status Exit status, non-zero when the file failed to open
      */
-    private static void exitIfMassTestMode() {
-        if (Boolean.getBoolean(MASS_TEST_MODE_PROPERTY)) {
-            System.exit(0);
+    private static void exitIfMassTestMode(final int status) {
+        if (isMassTestMode()) {
+            System.exit(status);
         }
+    }
+
+    private static boolean isMassTestMode() {
+        return Boolean.getBoolean(MASS_TEST_MODE_PROPERTY);
     }
 
     /**
@@ -160,13 +173,13 @@ public class Main extends JFrame {
         menuItemFileOpen.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_O,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        menuItemFileOpen.addActionListener((final ActionEvent e) -> menuFileOpen());
+        menuItemFileOpen.addActionListener(_ -> menuFileOpen());
         menuFile.add(menuItemFileOpen);
 
         // File --> Close
         final JMenuItem menuItemFileClose = new JMenuItem("Close", UIManager.getIcon("InternalFrame.iconifyIcon"));
         menuItemFileClose.setMnemonic(KeyEvent.VK_C);
-        menuItemFileClose.addActionListener((final ActionEvent e) -> closeFile());
+        menuItemFileClose.addActionListener(_ -> closeFile());
         menuFile.add(menuItemFileClose);
 
         menuFile.addSeparator();
@@ -182,9 +195,7 @@ public class Main extends JFrame {
         menuItemFileExit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_E,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-        menuItemFileExit.addActionListener((final ActionEvent e)
-                -> Main.this.dispatchEvent((new WindowEvent(Main.this, WindowEvent.WINDOW_CLOSING)))
-        );
+        menuItemFileExit.addActionListener(_ -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         menuFile.add(menuItemFileExit);
 
         // Help
@@ -195,25 +206,25 @@ public class Main extends JFrame {
         // Help --> Homepage
         final JMenuItem menuItemHelpHomepage = new JMenuItem("Homepage", UIManager.getIcon("FileView.computerIcon"));
         menuItemHelpHomepage.setMnemonic(KeyEvent.VK_H);
-        menuItemHelpHomepage.addActionListener((final ActionEvent e) -> menuHelpHomepage());
+        menuItemHelpHomepage.addActionListener(_ -> menuHelpHomepage());
         menuHelp.add(menuItemHelpHomepage);
 
         // Help --> Plugins
         final JMenuItem menuItemHelpPlugins = new JMenuItem("Plug-ins");
         menuItemHelpPlugins.setMnemonic(KeyEvent.VK_P);
-        menuItemHelpPlugins.addActionListener((final ActionEvent e) -> menuHelpPlugins());
+        menuItemHelpPlugins.addActionListener(_ -> menuHelpPlugins());
         menuHelp.add(menuItemHelpPlugins);
 
         // Help --> Plugins
         final JMenuItem menuItemHelpIcons = new JMenuItem("Icons");
         menuItemHelpIcons.setMnemonic(KeyEvent.VK_I);
-        menuItemHelpIcons.addActionListener((final ActionEvent e) -> menuHelpIcons());
+        menuItemHelpIcons.addActionListener(_ -> menuHelpIcons());
         menuHelp.add(menuItemHelpIcons);
 
         // Help --> About
         final JMenuItem menuItemHelpAbout = new JMenuItem("About");
         menuItemHelpAbout.setMnemonic(KeyEvent.VK_A);
-        menuItemHelpAbout.addActionListener((final ActionEvent e) -> menuHelpAbout());
+        menuItemHelpAbout.addActionListener(_ -> menuHelpAbout());
         menuHelp.add(menuItemHelpAbout);
     }
 
@@ -225,6 +236,10 @@ public class Main extends JFrame {
         c.setDropTarget(new DropTarget() {
             @Override
             public synchronized void drop(DropTargetDropEvent evt) {
+                if (!evt.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    evt.rejectDrop();
+                    return;
+                }
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     final Object drops = evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
@@ -254,22 +269,19 @@ public class Main extends JFrame {
      * Open the file in the background.
      */
     private void openFile(final Path file) {
-        this.openFile(file, () -> { });
+        this.openFile(file, _ -> { });
     }
 
     /**
      * Parse the file in the background, then show it on the event thread.
      *
      * @param path File to open
-     * @param onFinished Called on the event thread when the open succeeded or failed
+     * @param onFinished Called on the event thread with whether the file is shown
      */
-    private void openFile(final Path path, final Runnable onFinished) {
+    private void openFile(final Path path, final Consumer<Boolean> onFinished) {
         final Path file = path.toAbsolutePath().normalize();
-        // Close any open file first if exists
+        // Close any open or loading file first
         this.closeFile();
-        if (this.loader != null) {
-            this.loader.cancel(true);
-        }
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         final SwingWorker<FileFormat, Void> worker = new SwingWorker<>() {
@@ -280,21 +292,28 @@ public class Main extends JFrame {
 
             @Override
             protected void done() {
+                // A newer open superseded this one, possibly after it already completed
+                final boolean current = loader == this;
+                boolean succeeded = false;
                 try {
-                    if (!isCancelled()) {
+                    if (current && !isCancelled()) {
                         showFile(file, get());
+                        succeeded = true;
                     }
-                } catch (InterruptedException ex) {
+                } catch (InterruptedException _) {
                     Thread.currentThread().interrupt();
                 } catch (ExecutionException ex) {
                     showOpenError(file, ex.getCause());
-                } catch (RuntimeException | LinkageError ex) {
+                } catch (RuntimeException | LinkageError | StackOverflowError ex) {
+                    // Building the tree of a deeply nested file can overflow the stack
                     showOpenError(file, ex);
                 } finally {
-                    if (loader == this) {
+                    if (current) {
+                        // Release the result, the shown file is held by the content pane
+                        loader = null;
                         setCursor(Cursor.getDefaultCursor());
                     }
-                    onFinished.run();
+                    onFinished.accept(succeeded);
                 }
             }
         };
@@ -327,11 +346,18 @@ public class Main extends JFrame {
             message = "Out of memory while opening " + fileName(file);
         } else {
             message = ex.getMessage();
+            if ((message == null || message.isBlank()) && ex.getCause() != null) {
+                message = ex.getCause().getMessage();
+            }
             if (message == null || message.isBlank()) {
-                message = ex.getCause() != null ? ex.getCause().getMessage() : "";
+                message = ex.toString();
             }
         }
         LOGGER.log(Level.SEVERE, message, ex);
+        if (isMassTestMode()) {
+            // A modal dialog would block the exit until the test times out
+            return;
+        }
         JOptionPane.showMessageDialog(
                 this,
                 message,
@@ -340,11 +366,10 @@ public class Main extends JFrame {
     }
 
     private void updateRecentFiles(final Path file) {
-        // Re-adding moves the file to the most recent position
-        this.recentFiles.remove(file);
-        this.recentFiles.add(file);
+        // Re-adding moves the file to the most recent position, which is listed first
+        this.recentFiles.addFirst(file);
         while (this.recentFiles.size() > RECENT_FILES_MAX) {
-            this.recentFiles.remove(this.recentFiles.iterator().next());
+            this.recentFiles.removeLast();
         }
         this.refreshRecentFilesMenu();
     }
@@ -353,13 +378,27 @@ public class Main extends JFrame {
         this.menuFileRecentFile.removeAll();
         this.recentFiles.forEach(recent -> {
             final JMenuItem item = new JMenuItem(recent.toString());
-            item.addActionListener((final ActionEvent e) -> openFile(recent));
+            item.addActionListener(_ -> openFile(recent));
             this.menuFileRecentFile.add(item);
         });
     }
 
     private void closeFile() {
-        this.setTitle(TITLE + PluginManager.getPlugedExtensions());
+        // Stop any file still loading, so it does not show up after closing
+        if (this.loader != null) {
+            this.loader.cancel(true);
+            this.loader = null;
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+
+        this.setTitle(TITLE + PluginManager.getPluggedExtensions());
+        // Detail popups show parts of the closed file
+        for (Window window : this.getOwnedWindows()) {
+            if (POPUP_NAME.equals(window.getName())) {
+                window.dispose();
+            }
+        }
+
         // Clear Content
         if (this.contentPane != null) {
             this.filedropPanel.remove(this.contentPane);
@@ -406,7 +445,8 @@ public class Main extends JFrame {
     }
 
     /**
-     * Show a popup window with given message.
+     * Show a popup window with given message. A panel can be in only one
+     * window, so the popup already showing the panel is reused.
      *
      * @param frame Parent window
      * @param panel Content in panel
@@ -417,7 +457,14 @@ public class Main extends JFrame {
             return;
         }
 
+        if (SwingUtilities.getWindowAncestor(panel) instanceof JDialog shown
+                && POPUP_NAME.equals(shown.getName()) && shown.isDisplayable()) {
+            shown.toFront();
+            return;
+        }
+
         final JDialog popup = new JDialog(frame, title);
+        popup.setName(POPUP_NAME);
         popup.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         popup.setSize(
                 (int) (frame.getWidth() * POPUP_RATIO),

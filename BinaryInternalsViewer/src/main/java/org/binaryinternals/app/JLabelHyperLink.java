@@ -16,13 +16,14 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import org.binaryinternals.commonlib.ui.HTMLKit;
 
 /**
  * Hyper Link enabled JLabel.
  *
  * @author Amos Shi
  */
-public class JLabelHyperLink extends JLabel {
+public final class JLabelHyperLink extends JLabel {
 
     private static final long serialVersionUID = 4876543219876500005L;
 
@@ -46,17 +47,17 @@ public class JLabelHyperLink extends JLabel {
      * @param link Target Link URL
      */
     public JLabelHyperLink(final String txt, final String link) {
-        this.text = txt;
+        this.text = HTMLKit.escapeFilter(txt);
         this.url = link;
 
         this.isSupported = isBrowseSupported();
 
-        this.setText(false);
+        this.setHover(false);
         this.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseEntered(final MouseEvent e) {
-                setText(isSupported);
+                setHover(isSupported);
                 if (isSupported) {
                     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
@@ -64,7 +65,7 @@ public class JLabelHyperLink extends JLabel {
 
             @Override
             public void mouseExited(final MouseEvent e) {
-                setText(false);
+                setHover(false);
             }
 
             @Override
@@ -74,7 +75,7 @@ public class JLabelHyperLink extends JLabel {
                         Desktop.getDesktop().browse(URI.create(JLabelHyperLink.this.url));
                     }
                 } catch (IOException | RuntimeException ex) {
-                    Logger.getLogger(JLabelHyperLink.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(JLabelHyperLink.class.getName()).log(Level.SEVERE, "Failed to open " + JLabelHyperLink.this.url, ex);
                 }
             }
         });
@@ -83,16 +84,12 @@ public class JLabelHyperLink extends JLabel {
     private static boolean isBrowseSupported() {
         try {
             return Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException _) {
             return false;
         }
     }
 
-    private void setText(final boolean b) {
-        if (!b) {
-            setText("<html><font color=blue><u>" + text);
-        } else {
-            setText("<html><font color=red><u>" + text);
-        }
+    private void setHover(final boolean hover) {
+        this.setText("<html><font color=" + (hover ? "red" : "blue") + "><u>" + this.text);
     }
 }

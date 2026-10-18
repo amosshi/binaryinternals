@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -49,7 +48,7 @@ abstract class JDialogTable extends JDialog {
         this.setLayout(new BorderLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> this.setVisible(false));
+        buttonClose.addActionListener(_ -> this.dispose());
 
         final JTable table = new JTable(model);
         resizeColumnWidth(table);

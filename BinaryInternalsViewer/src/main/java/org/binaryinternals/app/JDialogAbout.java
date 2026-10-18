@@ -10,7 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
+import java.util.Properties;
+import java.util.TreeSet;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -41,7 +42,7 @@ class JDialogAbout extends JDialog {
     }
 
     private void buttonOKClicked() {
-        this.setVisible(false);
+        this.dispose();
     }
 
     private JTextField getLine(String label) {
@@ -60,7 +61,7 @@ class JDialogAbout extends JDialog {
         this.setLayout(new BorderLayout());
 
         final JButton buttonClose = new JButton("Close");
-        buttonClose.addActionListener((final ActionEvent e) -> buttonOKClicked());
+        buttonClose.addActionListener(_ -> buttonOKClicked());
 
         // Lay out the labels from top to bottom.
         final JPanel listPane = new JPanel();
@@ -86,7 +87,10 @@ class JDialogAbout extends JDialog {
         listPane.add(this.getLine("System Properties:"));
         listPane.add(Box.createVerticalStrut(5));
         JTextArea sysinfo = new JTextArea(8, 40);
-        System.getProperties().forEach((key, value) -> sysinfo.append(key + ": " + value + System.lineSeparator()));
+        // Sorted by key, for easier reading
+        final Properties properties = System.getProperties();
+        new TreeSet<>(properties.stringPropertyNames()).forEach(
+                key -> sysinfo.append(key + ": " + properties.getProperty(key) + System.lineSeparator()));
         sysinfo.setCaretPosition(0);
         sysinfo.setEditable(false);
         sysinfo.setLineWrap(true);

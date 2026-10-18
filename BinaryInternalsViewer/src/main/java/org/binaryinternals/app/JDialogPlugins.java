@@ -1,5 +1,5 @@
 /*
- * JDialogAbout.java    Apr 12, 2011, 10:50
+ * JDialogPlugins.java    Apr 12, 2011, 10:50
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -9,7 +9,6 @@ package org.binaryinternals.app;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 import org.binaryinternals.commonlib.core.PluginDescriptor;
 import org.binaryinternals.plugin.PluginManager;
@@ -27,7 +26,9 @@ class JDialogPlugins extends JDialogTable {
         super(owner, title, new PluginsModel());
     }
 
-    public static class PluginsModel extends AbstractTableModel {
+    static class PluginsModel extends AbstractTableModel {
+
+        private static final long serialVersionUID = 4876543219876500013L;
 
         final transient List<String> columnNames = List.of("Jar file", "Format Class", "Extension Description");
         final transient List<Row> rowData = new ArrayList<>();
@@ -40,12 +41,11 @@ class JDialogPlugins extends JDialogTable {
 
         PluginsModel() {
             // Row Data
-            for (Map.Entry<String, PluginDescriptor> pair : PluginManager.getPlugins().entrySet()) {
-                final PluginDescriptor value = pair.getValue();
+            for (PluginDescriptor plugin : PluginManager.getPlugins().values()) {
                 this.rowData.add(new Row(
-                        pair.getKey(),
-                        value.getFileFormatClass().getName(),
-                        value.getExtensionDescription()));
+                        PluginManager.getJarName(plugin.getClass()),
+                        plugin.getFileFormatClass().getName(),
+                        plugin.getExtensionDescription()));
             }
         }
 

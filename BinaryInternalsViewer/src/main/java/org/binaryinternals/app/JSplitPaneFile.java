@@ -23,6 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.binaryinternals.binaryviewer.JBinaryViewer;
 import org.binaryinternals.commonlib.core.FileFormat;
+import org.binaryinternals.commonlib.ui.HTMLKit;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
@@ -30,11 +31,11 @@ import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
  *
  * @author Amos Shi
  */
-public class JSplitPaneFile extends JSplitPane {
+public final class JSplitPaneFile extends JSplitPane {
 
     private static final long serialVersionUID = 4876543219876500003L;
     private final JFrame topLevelFrame;
-    private final FileFormat file;
+    private final transient FileFormat file;
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JBinaryViewer binaryViewer = new JBinaryViewer();
 
@@ -93,7 +94,7 @@ public class JSplitPaneFile extends JSplitPane {
                     }
 
                     if (fileComp.isDetailAvailable()) {
-                        this.setText("<html><font color=blue><u>" + fileComp.getText());
+                        this.setText("<html><font color=blue><u>" + HTMLKit.escapeFilter(fileComp.getText()));
                     } else {
                         this.setText(fileComp.getText());
                     }
@@ -134,10 +135,16 @@ public class JSplitPaneFile extends JSplitPane {
     }
 
     private void treeSelectionChanged(final TreeSelectionEvent evt) {
-        if (evt.getPath().getLastPathComponent() instanceof DefaultMutableTreeNode node
+        // The new selection, not evt.getPath() which can be a deselected path
+        final TreePath path = evt.getNewLeadSelectionPath();
+        if (path != null
+                && path.getLastPathComponent() instanceof DefaultMutableTreeNode node
                 && node.getUserObject() instanceof JTreeNodeFileComponent objTnfc) {
             this.binaryViewer.setSelection(objTnfc.getStartPos(), objTnfc.getLength());
             this.file.treeSelectionChanged(objTnfc, this.tabbedPane);
+        } else if (path == null) {
+            // Nothing selected any more, e.g. the only node was ctrl-clicked
+            this.binaryViewer.clearSelection();
         }
     }
 

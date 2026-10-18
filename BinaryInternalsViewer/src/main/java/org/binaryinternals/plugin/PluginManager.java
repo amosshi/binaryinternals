@@ -1,5 +1,5 @@
 /*
- * Plugin.java    Apr 12, 2011, 13:04
+ * PluginManager.java    Apr 12, 2011, 13:04
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -43,7 +43,9 @@ public class PluginManager {
     private static final Logger LOGGER = Logger.getLogger(PluginManager.class.getName());
     public static final String PLUGIN_DIR = resolvePluginDir();
     /**
-     * Jar file name and the plug-in descriptor.
+     * Plug-in descriptor class name and the plug-in descriptor. Keyed by class
+     * rather than jar, since several plug-ins can share a location, e.g.
+     * {@code target/classes} directories when running from an IDE.
      */
     static final Map<String, PluginDescriptor> PLUGINS = new TreeMap<>();
 
@@ -101,14 +103,20 @@ public class PluginManager {
         while (providers.hasNext()) {
             try {
                 final ServiceLoader.Provider<PluginDescriptor> provider = providers.next();
-                PLUGINS.put(jarName(provider.type()), provider.get());
+                PLUGINS.put(provider.type().getName(), provider.get());
             } catch (ServiceConfigurationError | RuntimeException ex) {
                 LOGGER.log(Level.SEVERE, "Failed to load a plugin", ex);
             }
         }
     }
 
-    private static String jarName(final Class<?> type) {
+    /**
+     * Get the jar file name where a class is loaded from.
+     *
+     * @param type The class
+     * @return Jar file name, or the class name if the location is unknown
+     */
+    public static String getJarName(final Class<?> type) {
         final CodeSource source = type.getProtectionDomain().getCodeSource();
         if (source != null) {
             try {
@@ -123,7 +131,7 @@ public class PluginManager {
         return type.getName();
     }
 
-    public static String getPlugedExtensions() {
+    public static String getPluggedExtensions() {
         if (PLUGINS.isEmpty()) {
             return "";
         }
@@ -142,9 +150,8 @@ public class PluginManager {
         }
     }
 
-    public static FileFormat getFile(final Path file) throws FileFormatException, NoSuchMethodException,
-            SecurityException, IllegalArgumentException, InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+    public static FileFormat getFile(final Path file) throws IOException, FileFormatException,
+            ReflectiveOperationException {
         Class<? extends FileFormat> fileFormatClass = null;
         final String name = String.valueOf(file.getFileName());
         final int dot = name.lastIndexOf('.');
@@ -160,8 +167,19 @@ public class PluginManager {
             fileFormatClass = DefaultFileFormat.class;
         }
 
-        Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(Path.class);
-        return c.newInstance(file);
+        final Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(Path.class);
+        try {
+            return c.newInstance(file);
+        } catch (InvocationTargetException ex) {
+            // Surface what the plug-in actually threw, e.g. OutOfMemoryError
+            switch (ex.getCause()) {
+                case Error e -> throw e;
+                case RuntimeException e -> throw e;
+                case IOException e -> throw e;
+                case FileFormatException e -> throw e;
+                case null, default -> throw ex;
+            }
+        }
     }
 
     static boolean isContain(String[] exts, String ext) {

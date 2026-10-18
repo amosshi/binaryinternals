@@ -15,10 +15,10 @@
  */
 
 module org.binaryinternals.app {
-    requires java.desktop;
+    requires transitive java.desktop;
     requires java.logging;
     requires static com.github.spotbugs.annotations;
-    requires org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     uses org.binaryinternals.commonlib.core.PluginDescriptor;
 

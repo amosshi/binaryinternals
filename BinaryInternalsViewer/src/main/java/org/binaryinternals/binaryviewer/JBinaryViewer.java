@@ -7,7 +7,6 @@
 package org.binaryinternals.binaryviewer;
 
 import java.awt.BorderLayout;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
@@ -141,7 +140,7 @@ public final class JBinaryViewer extends JPanel {
 
         // Vertical Bar
         this.vBar = new JScrollBar();
-        this.vBar.addAdjustmentListener((final AdjustmentEvent e) -> updateViewContent());
+        this.vBar.addAdjustmentListener(_ -> updateViewContent());
         this.vBar.setVisible(false);
 
         this.add(this.vBar, BorderLayout.EAST);
@@ -190,20 +189,24 @@ public final class JBinaryViewer extends JPanel {
      * Set the binary data to be displayed. The array is shared, not copied, and
      * must not be modified while it is displayed.
      *
-     * @param bytes Binary data to be displayed
+     * @param bytes Binary data to be displayed, or null to clear the view
      */
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Avoid copying a large file")
     public void setData(final byte[] bytes) {
-        if (bytes == null) {
-            return;
-        }
-
         this.data = bytes;
+        this.selectedStartIndex = 0;
+        this.selectedLength = 0;
 
         // Calc the max row count
         this.rowMax = this.getRowMax();
-        this.vBar.setMaximum(this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT);
-        this.vBar.setValue(0);
+        // Suppress the refresh from each scroll bar change, then refresh once
+        this.updating = true;
+        try {
+            this.vBar.setMaximum(this.rowMax + JBinaryViewer.ROW_EMPTYROW_COUNT);
+            this.vBar.setValue(0);
+        } finally {
+            this.updating = false;
+        }
 
         this.updateViewContent();
     }
@@ -297,6 +300,15 @@ public final class JBinaryViewer extends JPanel {
     }
 
     /**
+     * Remove the high-lighting, without scrolling.
+     */
+    public void clearSelection() {
+        this.selectedStartIndex = 0;
+        this.selectedLength = 0;
+        this.updateViewContent();
+    }
+
+    /**
      * Ensure the byte at <code>startPos</code> is visible.
      *
      * @param startPos the start position of the byte(s) to be visible
@@ -318,13 +330,15 @@ public final class JBinaryViewer extends JPanel {
     }
 
     private void mouseWheelMoved(final MouseWheelEvent e) {
-        if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
-            this.wheelRemainder += e.getPreciseWheelRotation() * e.getScrollAmount();
-            final int steps = (int) this.wheelRemainder;
-            if (steps != 0) {
-                this.wheelRemainder -= steps;
-                this.vBar.setValue(this.vBar.getValue() + steps);
-            }
+        // Block scroll is the "one screen at a time" setting, e.g. on Windows
+        this.wheelRemainder += e.getPreciseWheelRotation() * switch (e.getScrollType()) {
+            case MouseWheelEvent.WHEEL_BLOCK_SCROLL -> this.vBar.getVisibleAmount();
+            default -> e.getScrollAmount();
+        };
+        final int steps = (int) this.wheelRemainder;
+        if (steps != 0) {
+            this.wheelRemainder -= steps;
+            this.vBar.setValue(this.vBar.getValue() + steps);
         }
     }
 }

@@ -7,7 +7,6 @@
 package org.binaryinternals.app;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,6 +19,7 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /**
@@ -74,6 +74,7 @@ public final class JPanelForTree extends JPanel {
         if (jTree == null) {
             throw new IllegalArgumentException("[tree] cannot be null.");
         }
+        super();
 
         this.tree = jTree;
         this.topLevelFrame = frame;
@@ -117,17 +118,17 @@ public final class JPanelForTree extends JPanel {
 
         // Button: Expand All
         final JButton buttonExpandAll = new JButton("Expand All");
-        buttonExpandAll.addActionListener((final ActionEvent e) -> toolbarExpandAll());
+        buttonExpandAll.addActionListener(_ -> toolbarExpandAll());
         this.toolbar.add(buttonExpandAll);
 
         // Button: Collapse All
         final JButton buttonCollapseAll = new JButton("Collapse All");
-        buttonCollapseAll.addActionListener((final ActionEvent e) -> toolbarCollapseAll());
+        buttonCollapseAll.addActionListener(_ -> toolbarCollapseAll());
         this.toolbar.add(buttonCollapseAll);
 
         // Button: Details
         this.toolbarbtnDetails.setVisible(false);
-        this.toolbarbtnDetails.addActionListener((final ActionEvent e) -> toolbarShowDetails());
+        this.toolbarbtnDetails.addActionListener(_ -> toolbarShowDetails());
         this.toolbar.add(this.toolbarbtnDetails);
     }
 
@@ -139,7 +140,10 @@ public final class JPanelForTree extends JPanel {
     }
 
     private void toolbarCollapseAll() {
-        this.tree.collapseRow(0);
+        // Bottom-up, so collapsing a row never hides rows not yet visited
+        for (int i = this.tree.getRowCount() - 1; i >= 0; i--) {
+            this.tree.collapseRow(i);
+        }
     }
 
     private void toolbarShowDetails() {
@@ -153,7 +157,10 @@ public final class JPanelForTree extends JPanel {
         this.detailsPanel = null;
         this.detailsTitle = null;
 
-        if (e.getPath().getLastPathComponent() instanceof DefaultMutableTreeNode node
+        // The new selection, not e.getPath() which can be a deselected path
+        final TreePath path = e.getNewLeadSelectionPath();
+        if (path != null
+                && path.getLastPathComponent() instanceof DefaultMutableTreeNode node
                 && node.getUserObject() instanceof JTreeNodeFileComponent fileComp) {
             String s = fileComp.getDescription();
             if (s != null && !s.isEmpty()) {

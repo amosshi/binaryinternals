@@ -1,5 +1,5 @@
 /*
- * JAsciiDataViewer.java    September 08, 2019, 19:17 PM
+ * DataViewer.java    September 08, 2019, 19:17 PM
  *
  * Copyright  2019, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.ui.HTMLKit;
  * @author Amos Shi
  */
 public abstract sealed class DataViewer extends JTextPane permits JRawDataViewer, JAsciiDataViewer {
+
+    private static final long serialVersionUID = 4876543219876500012L;
 
     /**
      * Constructor.

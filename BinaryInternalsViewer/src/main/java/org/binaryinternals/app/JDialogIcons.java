@@ -8,7 +8,7 @@ package org.binaryinternals.app;
 
 import java.awt.Frame;
 import javax.swing.Icon;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 import org.binaryinternals.commonlib.ui.Icons;
 
 /**
@@ -22,45 +22,54 @@ class JDialogIcons extends JDialogTable {
     private static final Icons[] ICONS = Icons.values();
 
     JDialogIcons(final Frame owner, final String title) {
-        super(owner, title, getIconsTableModel());
+        super(owner, title, new IconsModel());
     }
 
     /**
-     * Prepare data model for table.
+     * Data model for table.
      *
      * @see <a href="https://stackoverflow.com/questions/4941372/">How to Insert Image into JTable Cell</a>
      */
-    private static DefaultTableModel getIconsTableModel() {
+    static class IconsModel extends AbstractTableModel {
 
-        String[] columnNames = {"Icon", "Name"};
-        return new DefaultTableModel(columnNames, ICONS.length) {
-            /**
-             * Returning the Class of each column will allow different renderers to be used based on Class.
-             */
-            @Override
-            public Class<?> getColumnClass(int column) {
-                return switch (column) {
-                    case 0 -> Icon.class;
-                    case 1 -> String.class;
-                    default -> throw new IllegalArgumentException(String.format("The column=%d do not exist", column));
-                };
-            }
+        private static final long serialVersionUID = 4876543219876500011L;
+        private static final String[] COLUMN_NAMES = {"Icon", "Name"};
 
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
+        @Override
+        public int getRowCount() {
+            return ICONS.length;
+        }
 
-            @Override
-            public Object getValueAt(int row, int column) {
-                final Icons item = ICONS[row];
-                return switch (column) {
-                    case 0 -> item.getIcon();
-                    case 1 -> item.name();
-                    default -> throw new IllegalArgumentException(String.format("The row=%d column=%d do not exist", row, column));
-                };
-            }
+        @Override
+        public int getColumnCount() {
+            return COLUMN_NAMES.length;
+        }
 
-        };
+        @Override
+        public String getColumnName(int column) {
+            return COLUMN_NAMES[column];
+        }
+
+        /**
+         * Returning the Class of each column will allow different renderers to be used based on Class.
+         */
+        @Override
+        public Class<?> getColumnClass(int column) {
+            return switch (column) {
+                case 0 -> Icon.class;
+                case 1 -> String.class;
+                default -> throw new IllegalArgumentException("Invalid column " + column);
+            };
+        }
+
+        @Override
+        public Object getValueAt(int row, int column) {
+            final Icons item = ICONS[row];
+            return switch (column) {
+                case 0 -> item.getIcon();
+                case 1 -> item.name();
+                default -> throw new IllegalArgumentException("Invalid column " + column);
+            };
+        }
     }
 }
