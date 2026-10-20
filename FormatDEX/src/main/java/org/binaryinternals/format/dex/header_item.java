@@ -7,6 +7,7 @@
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
+import java.nio.ByteOrder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -240,6 +241,16 @@ public class header_item extends FileComponent implements GenerateTreeNodeDexFil
             this.byte2 = (i << 8) >> 24;
             this.byte3 = (i << 16) >> 24;
             this.byte4 = (i << 24) >> 24;
+        }
+
+        /**
+         * Map to {@link ByteOrder}. The existing parser reads
+         * {@link #ENDIAN_CONSTANT} as {@link ByteOrder#BIG_ENDIAN}.
+         *
+         * @return the matching byte order
+         */
+        public ByteOrder toByteOrder() {
+            return this == ENDIAN_CONSTANT ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
         }
 
         public boolean equals(int i1, int i2, int i3, int i4) {

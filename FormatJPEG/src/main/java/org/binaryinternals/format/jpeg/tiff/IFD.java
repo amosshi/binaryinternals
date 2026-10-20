@@ -128,11 +128,7 @@ public class IFD extends FileComponent {
     }
 
     protected final long readUnsignedInt(final PosDataInputStream pDIS) throws IOException {
-        if (this.byte_order == TIFFHeader.BYTEORDER_BIGENDIAN) {
-            return pDIS.readUnsignedInt();
-        } else {
-            return pDIS.readUnsignedIntInLittleEndian();
-        }
+        return IFDParse.readUnsignedInt(pDIS, this.byte_order);
     }
 
     void setTagSpace(TagSpace ts) {

@@ -8,6 +8,7 @@ package org.binaryinternals.format.dex;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.core.FileFormatException;
@@ -45,14 +46,18 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      */
     protected final header_item.Endian endian;
 
+    private final ByteOrder byteOrder;
+
     public PosDataInputStreamDex(PosByteArrayInputStream in) {
         super(in);
         this.endian = Endian.ENDIAN_CONSTANT;
+        this.byteOrder = this.endian.toByteOrder();
     }
 
     public PosDataInputStreamDex(PosByteArrayInputStream in, header_item.Endian e) {
         super(in);
         this.endian = e;
+        this.byteOrder = e.toByteOrder();
     }
 
     /**
@@ -82,11 +87,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_short Dex_short() throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            return new Type_short(this.readShort());
-        } else {
-            return new Type_short(this.readShortInLittleEndian());
-        }
+        return new Type_short(this.readShort(this.byteOrder));
     }
 
     /**
@@ -96,11 +97,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_ushort Dex_ushort() throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            return new Type_ushort(this.readUnsignedShort());
-        } else {
-            return new Type_ushort(this.readUnsignedShortInLittleEndian());
-        }
+        return new Type_ushort(this.readUnsignedShort(this.byteOrder));
     }
 
     /**
@@ -110,11 +107,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_int Dex_int() throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            return new Type_int(this.readInt());
-        } else {
-            return new Type_int(this.readIntInLittleEndian());
-        }
+        return new Type_int(this.readInt(this.byteOrder));
     }
 
     /**
@@ -138,11 +131,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_uint Dex_uint() throws IOException {
-        if (this.endian.value == header_item.Endian.ENDIAN_CONSTANT.value) {
-            return new Type_uint(this.readUnsignedInt());
-        } else {
-            return new Type_uint(this.readUnsignedIntInLittleEndian());
-        }
+        return new Type_uint(this.readUnsignedInt(this.byteOrder));
     }
 
     /**
@@ -166,11 +155,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_long Dex_long() throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            return new Type_long(this.readLong());
-        } else {
-            return new Type_long(this.readLongInLittleEndian());
-        }
+        return new Type_long(this.readLong(this.byteOrder));
     }
 
     /**
@@ -213,11 +198,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws IOException I/O Error
      */
     public Type_ulong Dex_ulong() throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            return new Type_ulong(this.readUnsignedLong());
-        } else {
-            return new Type_ulong(this.readUnsignedLongInLittleEndian());
-        }
+        return new Type_ulong(this.readUnsignedLong(this.byteOrder));
     }
 
     /**

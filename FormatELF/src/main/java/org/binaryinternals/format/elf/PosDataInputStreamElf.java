@@ -8,6 +8,7 @@ package org.binaryinternals.format.elf;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.ByteOrder;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Addr;
@@ -34,6 +35,8 @@ public class PosDataInputStreamElf extends PosDataInputStream {
 
     protected final Endianness endian;
 
+    private final ByteOrder byteOrder;
+
     PosDataInputStreamElf(PosByteArrayInputStream in, Endianness e) throws IOException {
         super(in);
 
@@ -43,6 +46,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
             throw new IllegalArgumentException("Invalid Endianness in ELF file. value=" + e);
         }
         this.endian = e;
+        this.byteOrder = e == Endianness.ELFDATA2LSB ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;
 
         // Skip the ELF file Identification
         this.skipNBytes(Identification.EI_NIDENT);
@@ -55,9 +59,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Addr read_Elf64_Addr() throws IOException {
-        BigInteger value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readUnsignedLongInLittleEndian()
-                : this.readUnsignedLong();
+        BigInteger value = this.readUnsignedLong(this.byteOrder);
         return new Elf64_Addr(value);
     }
 
@@ -69,9 +71,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Half read_Elf64_Half() throws IOException {
-        int value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readUnsignedShortInLittleEndian()
-                : this.readUnsignedShort();
+        int value = this.readUnsignedShort(this.byteOrder);
         return new Elf64_Half(value);
     }
 
@@ -82,9 +82,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Off read_Elf64_Off() throws IOException {
-        BigInteger value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readUnsignedLongInLittleEndian()
-                : this.readUnsignedLong();
+        BigInteger value = this.readUnsignedLong(this.byteOrder);
         return new Elf64_Off(value);
     }
 
@@ -96,9 +94,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_SHalf read_Elf64_SHalf() throws IOException {
-        short value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readShortInLittleEndian()
-                : this.readShort();
+        short value = this.readShort(this.byteOrder);
         return new Elf64_SHalf(value);
     }
 
@@ -110,9 +106,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Sword read_Elf64_Sword() throws IOException {
-        int value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readIntInLittleEndian()
-                : this.readInt();
+        int value = this.readInt(this.byteOrder);
         return new Elf64_Sword(value);
     }
 
@@ -124,9 +118,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Sxword read_Elf64_Sxword() throws IOException {
-        long value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readLongInLittleEndian()
-                : this.readLong();
+        long value = this.readLong(this.byteOrder);
         return new Elf64_Sxword(value);
     }
 
@@ -138,9 +130,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Word read_Elf64_Word() throws IOException {
-        long value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readUnsignedIntInLittleEndian()
-                : this.readUnsignedInt();
+        long value = this.readUnsignedInt(this.byteOrder);
         return new Elf64_Word(value);
     }
 
@@ -152,9 +142,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
      * @throws IOException Read data failed
      */
     public Elf64_Xword read_Elf64_Xword() throws IOException {
-        BigInteger value = (Endianness.ELFDATA2LSB.value == this.endian.value)
-                ? this.readUnsignedLongInLittleEndian()
-                : this.readUnsignedLong();
+        BigInteger value = this.readUnsignedLong(this.byteOrder);
         return new Elf64_Xword(value);
     }
 

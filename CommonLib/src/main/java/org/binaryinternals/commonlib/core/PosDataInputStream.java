@@ -9,6 +9,7 @@ package org.binaryinternals.commonlib.core;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
@@ -189,6 +190,60 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     @Override
     public BigInteger readUnsignedLongInLittleEndian() throws IOException {
         return toUnsignedBigInteger(this.readLongInLittleEndian());
+    }
+
+    /// Reads a `short` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the `short` value
+    /// @throws IOException Read failed
+    public short readShort(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readShortInLittleEndian() : this.readShort();
+    }
+
+    /// Reads an unsigned `short` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the unsigned value as `int`
+    /// @throws IOException Read failed
+    public int readUnsignedShort(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedShortInLittleEndian() : this.readUnsignedShort();
+    }
+
+    /// Reads an `int` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the `int` value
+    /// @throws IOException Read failed
+    public int readInt(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readIntInLittleEndian() : this.readInt();
+    }
+
+    /// Reads an unsigned `int` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the unsigned value as `long`
+    /// @throws IOException Read failed
+    public long readUnsignedInt(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedIntInLittleEndian() : this.readUnsignedInt();
+    }
+
+    /// Reads a `long` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the `long` value
+    /// @throws IOException Read failed
+    public long readLong(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readLongInLittleEndian() : this.readLong();
+    }
+
+    /// Reads an unsigned `long` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the unsigned value as {@link BigInteger}
+    /// @throws IOException Read failed
+    public BigInteger readUnsignedLong(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedLongInLittleEndian() : this.readUnsignedLong();
     }
 
     private static BigInteger toUnsignedBigInteger(final long value) {

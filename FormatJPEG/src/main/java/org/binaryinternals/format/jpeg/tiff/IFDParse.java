@@ -227,27 +227,15 @@ public class IFDParse {
     }
 
     public static int readUnsignedShort(final PosDataInputStream pDIS, int byteOrder) throws IOException {
-        if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
-            return pDIS.readUnsignedShort();
-        } else {
-            return pDIS.readUnsignedShortInLittleEndian();
-        }
+        return pDIS.readUnsignedShort(TIFFHeader.toByteOrder(byteOrder));
     }
 
     public static int readInt(final PosDataInputStream pDIS, int byteOrder) throws IOException {
-        if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
-            return pDIS.readInt();
-        } else {
-            return pDIS.readIntInLittleEndian();
-        }
+        return pDIS.readInt(TIFFHeader.toByteOrder(byteOrder));
     }
 
     static long readUnsignedInt(final PosDataInputStream pDIS, int byteOrder) throws IOException {
-        if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
-            return pDIS.readUnsignedInt();
-        } else {
-            return pDIS.readUnsignedIntInLittleEndian();
-        }
+        return pDIS.readUnsignedInt(TIFFHeader.toByteOrder(byteOrder));
     }
 
     static PosDataInputStream getTiffOffsetReader(final byte[] tiffByteArray, int valueOffset, int dataSize) throws IOException {

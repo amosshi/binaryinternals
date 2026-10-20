@@ -7,6 +7,7 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
+import java.nio.ByteOrder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -37,15 +38,24 @@ public class TIFFHeader extends FileComponent {
         super.startPos = pDisMarker.getPos();
         super.length = SIZE;
         this.byte_order = pDisMarker.readUnsignedShort();
-        if (this.byte_order == TIFFHeader.BYTEORDER_BIGENDIAN) {
-            this.arbitray_number = pDisMarker.readUnsignedShort();
-            this.offset_0ifd = pDisMarker.readInt();
-        } else if (this.byte_order == TIFFHeader.BYTEORDER_LITTLEENDIAN) {
-            this.arbitray_number = pDisMarker.readUnsignedShortInLittleEndian();
-            this.offset_0ifd = pDisMarker.readIntInLittleEndian();
+        if (this.byte_order == TIFFHeader.BYTEORDER_BIGENDIAN
+                || this.byte_order == TIFFHeader.BYTEORDER_LITTLEENDIAN) {
+            final ByteOrder order = toByteOrder(this.byte_order);
+            this.arbitray_number = pDisMarker.readUnsignedShort(order);
+            this.offset_0ifd = pDisMarker.readInt(order);
         } else {
             throw new FileFormatException(String.format("Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.", TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
         }
+    }
+
+    /**
+     * Convert the TIFF byte order value to {@link ByteOrder}.
+     *
+     * @param byteOrder {@link #BYTEORDER_BIGENDIAN} or {@link #BYTEORDER_LITTLEENDIAN}
+     * @return {@link ByteOrder#BIG_ENDIAN} for "MM", otherwise {@link ByteOrder#LITTLE_ENDIAN}
+     */
+    public static ByteOrder toByteOrder(final int byteOrder) {
+        return byteOrder == BYTEORDER_BIGENDIAN ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
     }
 
     public String getByteOrderName() {
