@@ -346,31 +346,31 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         public enum TagEnum {
 
             /// Type `byte`.
-            B('B', "byte"),
+            B(java.lang.classfile.AnnotationValue.TAG_BYTE, "byte"),
             /// Type `char`.
-            C('C', "char"),
+            C(java.lang.classfile.AnnotationValue.TAG_CHAR, "char"),
             /// Type `double`.
-            D('D', "double"),
+            D(java.lang.classfile.AnnotationValue.TAG_DOUBLE, "double"),
             /// Type `float`.
-            F('F', "float"),
+            F(java.lang.classfile.AnnotationValue.TAG_FLOAT, "float"),
             /// Type `int`.
-            I('I', "int"),
+            I(java.lang.classfile.AnnotationValue.TAG_INT, "int"),
             /// Type `long`.
-            J('J', "long"),
+            J(java.lang.classfile.AnnotationValue.TAG_LONG, "long"),
             /// Type `short`.
-            S('S', "short"),
+            S(java.lang.classfile.AnnotationValue.TAG_SHORT, "short"),
             /// Type `boolean`.
-            Z('Z', "boolean"),
+            Z(java.lang.classfile.AnnotationValue.TAG_BOOLEAN, "boolean"),
             /// Type `String`.
-            s('s', "String"),
+            s(java.lang.classfile.AnnotationValue.TAG_STRING, "String"),
             /// Type `Enum type`.
-            e('e', "Enum type"),
+            e(java.lang.classfile.AnnotationValue.TAG_ENUM, "Enum type"),
             /// Type `Class`.
-            c('c', "Class"),
+            c(java.lang.classfile.AnnotationValue.TAG_CLASS, "Class"),
             /// Type `Annotation type`.
-            at('@', "Annotation type"),
+            at(java.lang.classfile.AnnotationValue.TAG_ANNOTATION, "Annotation type"),
             /// Type `Array type`.
-            array_type('[', "Array type");
+            array_type(java.lang.classfile.AnnotationValue.TAG_ARRAY, "Array type");
 
             /// Internal value of the enum.
             public final char value;
@@ -380,8 +380,8 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             /// `Table 4.7.16.1-A. Interpretation of tag values as types.`
             public final String Type;
 
-            TagEnum(char v, String type) {
-                this.value = v;
+            TagEnum(int v, String type) {
+                this.value = (char) v;
                 this.Type = type;
             }
 

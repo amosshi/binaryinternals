@@ -3,7 +3,7 @@ package org.binaryinternals.format.classfile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Map;
-import org.binaryinternals.format.classfile.attribute.RuntimeTypeAnnotations.type_annotation.TargetType;
+import org.binaryinternals.format.classfile.attribute.RuntimeTypeAnnotations.type_annotation;
 import org.junit.jupiter.api.Test;
 
 class TargetTypeTest {
@@ -25,7 +25,7 @@ class TargetTypeTest {
     @Test
     void unionNames() {
         for (int v = 0; v <= 0xFF; v++) {
-            assertEquals(UNIONS.getOrDefault(v, "Un-recognized"), TargetType.getTargetUnionName((short) v), "0x%02X".formatted(v));
+            assertEquals(UNIONS.getOrDefault(v, "Un-recognized"), type_annotation.getTargetUnionName((short) v), "0x%02X".formatted(v));
         }
     }
 }

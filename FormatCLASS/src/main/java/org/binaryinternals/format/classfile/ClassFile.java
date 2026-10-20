@@ -69,9 +69,6 @@ import org.binaryinternals.format.classfile.constant.cp_info.ConstantType;
 @SuppressWarnings("java:S116")
 public class ClassFile extends FileFormat {
 
-    /// Magic number of `class` file.
-    public static final int FORMAT_MAGIC_NUMBER = 0xCAFEBABE;
-
     public final u4 magic;
 
     //
@@ -234,7 +231,7 @@ public class ClassFile extends FileFormat {
 
         // magic number
         this.magic = new u4(posDataInputStream);
-        if (this.magic.value != ClassFile.FORMAT_MAGIC_NUMBER) {
+        if (this.magic.value != java.lang.classfile.ClassFile.MAGIC_NUMBER) {
             throw new FileFormatException("The magic number of the byte array is not 0xCAFEBABE");
         }
 
@@ -414,9 +411,15 @@ public class ClassFile extends FileFormat {
             return "unknown Java SE version";
         }
 
-        final String release = JavaSEVersion.of(version.get())
-                .map(v -> v.versionName)
-                .orElseGet(() -> String.valueOf(version.get().runtimeVersion().feature()));
+        final String release = switch (version.get()) {
+            case RELEASE_0 -> "1.0.2";
+            case RELEASE_1 -> "1.1";
+            case RELEASE_2 -> "1.2";
+            case RELEASE_3 -> "1.3";
+            case RELEASE_4 -> "1.4";
+            case RELEASE_5 -> "5.0";
+            default -> String.valueOf(version.get().runtimeVersion().feature());
+        };
         return "Java SE " + release + (this.isPreview() ? ", preview features" : "");
     }
 

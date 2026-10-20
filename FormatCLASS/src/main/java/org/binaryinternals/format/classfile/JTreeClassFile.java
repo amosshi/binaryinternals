@@ -43,7 +43,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 0,
                 u4.LENGTH,
                 "magic",
-                Integer.toHexString(ClassFile.FORMAT_MAGIC_NUMBER).toUpperCase(),
+                Integer.toHexString(java.lang.classfile.ClassFile.MAGIC_NUMBER).toUpperCase(),
                 "msg_magic",
                 Icons.Magic
         );

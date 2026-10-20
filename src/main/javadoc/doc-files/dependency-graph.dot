@@ -3,7 +3,7 @@ digraph "binaryinternals" {
   edge [fontsize="10",fontname="Helvetica"]
 
   // Node Definitions:
-  "org.binaryinternals:binaryinternals.format.class:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.class<font point-size="10"><br/>21.0</font>>]
+  "org.binaryinternals:binaryinternals.format.class:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.class<font point-size="10"><br/>25.0</font>>]
   "org.binaryinternals:binaryinternals.commonlib:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.commonlib<font point-size="10"><br/>3.6</font>>]
   "org.binaryinternals:binaryinternals.format.bmp:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.bmp<font point-size="10"><br/>1.1</font>>]
   "org.binaryinternals:binaryinternals.format.jpeg:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.jpeg<font point-size="10"><br/>2.1</font>>]

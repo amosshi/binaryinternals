@@ -7,6 +7,7 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import java.lang.classfile.Attributes;
 import java.lang.reflect.ClassFileFormatVersion;
 import java.util.Arrays;
 import java.util.Map;
@@ -22,7 +23,6 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.Icons;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
-import org.binaryinternals.format.classfile.JavaSEVersion;
 import org.binaryinternals.format.classfile.attribute.aspectj.AjSynthetic_attribute;
 import org.binaryinternals.format.classfile.attribute.aspectj.MethodDeclarationLineNumber_attribute;
 import org.binaryinternals.format.classfile.attribute.aspectj.WeaverVersion_attribute;
@@ -250,112 +250,112 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.2">
         /// VM Spec: The ConstantValue Attribute
         /// </a>
-        ConstantValue(ConstantValue_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        ConstantValue(ConstantValue_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_CONSTANT_VALUE),
         /// The name for `Code` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.3">
         /// VM Spec: The Code Attribute
         /// </a>
-        Code(Code_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        Code(Code_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_CODE),
         /// The name for `StackMapTable` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.4">
         /// VM Spec: The StackMapTable Attribute
         /// </a>
-        StackMapTable(StackMapTable_attribute.class, ClassFileFormatVersion.RELEASE_6, JavaSEVersion.VERSION_6),
+        StackMapTable(StackMapTable_attribute.class, ClassFileFormatVersion.RELEASE_6, Attributes.NAME_STACK_MAP_TABLE),
         /// The name for `Exceptions` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.5">
         /// VM Spec: The Exceptions Attribute
         /// </a>
-        Exceptions(Exceptions_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        Exceptions(Exceptions_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_EXCEPTIONS),
         /// The name for `InnerClasses` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.6">
         /// VM Spec: The InnerClasses Attribute
         /// </a>
-        InnerClasses(InnerClasses_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_1),
+        InnerClasses(InnerClasses_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_INNER_CLASSES),
         /// The name for `EnclosingMethod` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.7">
         /// VM Spec: The EnclosingMethod Attribute
         /// </a>
-        EnclosingMethod(EnclosingMethod_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        EnclosingMethod(EnclosingMethod_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_ENCLOSING_METHOD),
         /// The name for `Synthetic` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.8">
         /// VM Spec: The Synthetic Attribute
         /// </a>
-        Synthetic(Synthetic_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_1),
+        Synthetic(Synthetic_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_SYNTHETIC),
         /// The name for `Signature` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.9">
         /// VM Spec: The Signature Attribute
         /// </a>
-        Signature(Signature_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        Signature(Signature_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_SIGNATURE),
         /// The name for `SourceFile` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.10">
         /// VM Spec: The SourceFile Attribute
         /// </a>
-        SourceFile(SourceFile_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        SourceFile(SourceFile_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_SOURCE_FILE),
         /// The name for `SourceDebugExtension` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.11">
         /// VM Spec: The SourceDebugExtension Attribute
         /// </a>
-        SourceDebugExtension(SourceDebugExtension_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        SourceDebugExtension(SourceDebugExtension_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_SOURCE_DEBUG_EXTENSION),
         /// The name for `LineNumberTable` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.12">
         /// VM Spec: The LineNumberTable Attribute
         /// </a>
-        LineNumberTable(LineNumberTable_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        LineNumberTable(LineNumberTable_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_LINE_NUMBER_TABLE),
         /// The name for `LocalVariableTable` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.13">
         /// VM Spec: The LocalVariableTable Attribute
         /// </a>
-        LocalVariableTable(LocalVariableTable_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2),
+        LocalVariableTable(LocalVariableTable_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_LOCAL_VARIABLE_TABLE),
         /// The name for `LocalVariableTypeTable` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.14">
         /// VM Spec: The LocalVariableTypeTable Attribute
         /// </a>
-        LocalVariableTypeTable(LocalVariableTypeTable_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        LocalVariableTypeTable(LocalVariableTypeTable_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_LOCAL_VARIABLE_TYPE_TABLE),
         /// The name for `Deprecated` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.15">
         /// VM Spec: The Deprecated Attribute
         /// </a>
-        Deprecated(Deprecated_attribute.class, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_1),
+        Deprecated(Deprecated_attribute.class, ClassFileFormatVersion.RELEASE_1, Attributes.NAME_DEPRECATED),
         /// The name for `RuntimeVisibleAnnotations ` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16">
         /// VM Spec: The RuntimeVisibleAnnotations Attribute
         /// </a>
-        RuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        RuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_VISIBLE_ANNOTATIONS),
         /// The name for `RuntimeInvisibleAnnotations ` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.17">
         /// VM Spec: The RuntimeInvisibleAnnotations Attribute
         /// </a>
-        RuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        RuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_INVISIBLE_ANNOTATIONS),
         /// The name for `RuntimeVisibleParameterAnnotations ` attribute
         /// type.
         ///
@@ -363,7 +363,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.18">
         /// VM Spec: The RuntimeVisibleParameterAnnotations Attribute
         /// </a>
-        RuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        RuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS),
         /// The name for `RuntimeInvisibleParameterAnnotations` attribute
         /// type.
         ///
@@ -371,101 +371,101 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.19">
         /// VM Spec: The RuntimeInvisibleParameterAnnotations Attribute
         /// </a>
-        RuntimeInvisibleParameterAnnotations(RuntimeInvisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        RuntimeInvisibleParameterAnnotations(RuntimeInvisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS),
         /// The name for `RuntimeVisibleTypeAnnotations` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.20">
         /// VM Spec: The RuntimeVisibleTypeAnnotations Attribute
         /// </a>
-        RuntimeVisibleTypeAnnotations(RuntimeVisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, JavaSEVersion.VERSION_8),
+        RuntimeVisibleTypeAnnotations(RuntimeVisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, Attributes.NAME_RUNTIME_VISIBLE_TYPE_ANNOTATIONS),
         /// The name for `RuntimeInvisibleTypeAnnotations` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.21">
         /// VM Spec: The RuntimeInvisibleTypeAnnotations Attribute
         /// </a>
-        RuntimeInvisibleTypeAnnotations(RuntimeInvisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, JavaSEVersion.VERSION_8),
+        RuntimeInvisibleTypeAnnotations(RuntimeInvisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, Attributes.NAME_RUNTIME_INVISIBLE_TYPE_ANNOTATIONS),
         /// The name for `AnnotationDefault` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.22">
         /// VM Spec: The AnnotationDefault Attribute
         /// </a>
-        AnnotationDefault(AnnotationDefault_attribute.class, ClassFileFormatVersion.RELEASE_5, JavaSEVersion.VERSION_5_0),
+        AnnotationDefault(AnnotationDefault_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_ANNOTATION_DEFAULT),
         /// The name for `BootstrapMethods` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.23">
         /// VM Spec: The BootstrapMethods Attribute
         /// </a>
-        BootstrapMethods(BootstrapMethods_attribute.class, ClassFileFormatVersion.RELEASE_7, JavaSEVersion.VERSION_7),
+        BootstrapMethods(BootstrapMethods_attribute.class, ClassFileFormatVersion.RELEASE_7, Attributes.NAME_BOOTSTRAP_METHODS),
         /// The name for `MethodParameters` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.24">
         /// VM Spec: The MethodParameters Attribute
         /// </a>
-        MethodParameters(MethodParameters_attribute.class, ClassFileFormatVersion.RELEASE_8, JavaSEVersion.VERSION_8),
+        MethodParameters(MethodParameters_attribute.class, ClassFileFormatVersion.RELEASE_8, Attributes.NAME_METHOD_PARAMETERS),
         /// The name for `Module` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.25">
         /// VM Spec: The Module Attribute
         /// </a>
-        Module(Module_attribute.class, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9),
+        Module(Module_attribute.class, ClassFileFormatVersion.RELEASE_9, Attributes.NAME_MODULE),
         /// The name for `ModulePackages` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.26">
         /// VM Spec: The ModuModulePackages Attribute
         /// </a>
-        ModulePackages(ModulePackages_attribute.class, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9),
+        ModulePackages(ModulePackages_attribute.class, ClassFileFormatVersion.RELEASE_9, Attributes.NAME_MODULE_PACKAGES),
         /// The name for `ModuleMainClass` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.27">
         /// VM Spec: The ModuleMainClass Attribute
         /// </a>
-        ModuleMainClass(ModuleMainClass_attribute.class, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9),
+        ModuleMainClass(ModuleMainClass_attribute.class, ClassFileFormatVersion.RELEASE_9, Attributes.NAME_MODULE_MAIN_CLASS),
         /// The name for `ModuleHashes` attribute type. This is a OpenJDK
         /// specific attribute and do not exist in Oracle JDK.
         ///
         /// @see
         /// <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">
         /// OpenJDK specific attribute specifications</a>
-        ModuleHashes(ModuleHashes_attribute.class, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9),
+        ModuleHashes(ModuleHashes_attribute.class, ClassFileFormatVersion.RELEASE_9, Attributes.NAME_MODULE_HASHES),
         /// The name for `ModuleTarget` attribute type. This is a OpenJDK
         /// specific attribute and do not exist in Oracle JDK.
         ///
         /// @see
         /// <a href="https://openjdk.java.net/jeps/261"> JEP 261: Module
         /// System</a>
-        ModuleTarget(ModuleTarget_attribute.class, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9),
+        ModuleTarget(ModuleTarget_attribute.class, ClassFileFormatVersion.RELEASE_9, Attributes.NAME_MODULE_TARGET),
         /// The name for `NestHost` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.28">
         /// VM Spec: The NestHost Attribute
         /// </a>
-        NestHost(NestHost_attribute.class, ClassFileFormatVersion.RELEASE_11, JavaSEVersion.VERSION_11),
+        NestHost(NestHost_attribute.class, ClassFileFormatVersion.RELEASE_11, Attributes.NAME_NEST_HOST),
         /// The name for `NestMembers` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.29">
         /// VM Spec: The NestMembers Attribute
         /// </a>
-        NestMembers(NestMembers_attribute.class, ClassFileFormatVersion.RELEASE_11, JavaSEVersion.VERSION_11),
+        NestMembers(NestMembers_attribute.class, ClassFileFormatVersion.RELEASE_11, Attributes.NAME_NEST_MEMBERS),
         /// The name for `Bridge` attribute type.
         /// This is a none-JVM-Spec attribute.
-        Bridge(Bridge_attribute.class, ClassFileFormatVersion.RELEASE_4, JavaSEVersion.VERSION_1_4),
+        Bridge(Bridge_attribute.class, ClassFileFormatVersion.RELEASE_4),
         /// The name for `Record` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.30">
         /// VM Spec: The Record Attribute
         /// </a>
-        Record(Record_attribute.class, ClassFileFormatVersion.RELEASE_16, JavaSEVersion.VERSION_16),
+        Record(Record_attribute.class, ClassFileFormatVersion.RELEASE_16, Attributes.NAME_RECORD),
         /// The name for `PermittedSubclasses` attribute type.
         ///
         /// @see
@@ -474,7 +474,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// </a>
         /// @see <a href="https://openjdk.java.net/jeps/360"> JEP 360</a>
         /// @see <a href="https://openjdk.java.net/jeps/409"> JEP 409</a>
-        PermittedSubclasses(PermittedSubclasses_attribute.class, ClassFileFormatVersion.RELEASE_17, JavaSEVersion.VERSION_17),
+        PermittedSubclasses(PermittedSubclasses_attribute.class, ClassFileFormatVersion.RELEASE_17, Attributes.NAME_PERMITTED_SUBCLASSES),
         /// The name for `ModuleResolution` attribute type.
         ///
         /// This attribute is found in the following openJDK 17 .class files:
@@ -482,7 +482,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         ///   openjdk-17/jmods/jdk.incubator.foreign.jmod/classes/module-info.class
         ///   openjdk-17/jmods/jdk.incubator.vector.jmod/classes/module-info.class
         /// ```
-        ModuleResolution(ModuleResolution_attribute.class, ClassFileFormatVersion.RELEASE_17, JavaSEVersion.VERSION_17),
+        ModuleResolution(ModuleResolution_attribute.class, ClassFileFormatVersion.RELEASE_17, Attributes.NAME_MODULE_RESOLUTION),
         /// The name for `Scala` attribute type.
         /// This is a none-JVM-Spec attribute.
         Scala(Scala_attribute.class),
@@ -509,26 +509,22 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// Class file format.
         public final ClassFileFormatVersion format;
 
-        /// Java SE platform version.
-        public final JavaSEVersion javaSE;
-
-        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format, JavaSEVersion javaSE, String name) {
+        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format, String name) {
             this.clazz = clazz;
             this.format = format;
-            this.javaSE = javaSE;
             this.fullname = name;
         }
 
-        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format, JavaSEVersion javaSE) {
-            this(clazz, format, javaSE, null);
+        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format) {
+            this(clazz, format, null);
         }
 
         AttributeTypes(Class<?> clazz, String name) {
-            this(clazz, null, null, name);
+            this(clazz, null, name);
         }
 
         AttributeTypes(Class<?> clazz) {
-            this(clazz, null, null, null);
+            this(clazz, null, null);
         }
 
         private static final Map<String, AttributeTypes> BY_NAME = Arrays.stream(values())

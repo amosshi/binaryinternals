@@ -1,6 +1,8 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import java.lang.classfile.TypeAnnotation;
+import java.lang.classfile.TypeAnnotation.TargetType;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -142,17 +144,18 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         public type_annotation(PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super.startPos = posDataInputStream.getPos();
             this.target_type = new u1(posDataInputStream);
-            this.union_target_info = switch (TargetType.of(this.target_type.value).orElse(null)) {
-                case VALUE_HEX_00, VALUE_HEX_01 -> new type_parameter_target(posDataInputStream);
-                case VALUE_HEX_10 -> new supertype_target(posDataInputStream);
-                case VALUE_HEX_11, VALUE_HEX_12 -> new type_parameter_bound_target(posDataInputStream);
-                case VALUE_HEX_13, VALUE_HEX_14, VALUE_HEX_15 -> new empty_target(posDataInputStream);
-                case VALUE_HEX_16 -> new formal_parameter_target(posDataInputStream);
-                case VALUE_HEX_17 -> new throws_target(posDataInputStream);
-                case VALUE_HEX_40, VALUE_HEX_41 -> new localvar_target(posDataInputStream);
-                case VALUE_HEX_42 -> new catch_target(posDataInputStream);
-                case VALUE_HEX_43, VALUE_HEX_44, VALUE_HEX_45, VALUE_HEX_46 -> new offset_target(posDataInputStream);
-                case VALUE_HEX_47, VALUE_HEX_48, VALUE_HEX_49, VALUE_HEX_4A, VALUE_HEX_4B -> new type_argument_target(posDataInputStream);
+            this.union_target_info = switch (targetTypeOf(this.target_type.value).orElse(null)) {
+                case CLASS_TYPE_PARAMETER, METHOD_TYPE_PARAMETER -> new type_parameter_target(posDataInputStream);
+                case CLASS_EXTENDS -> new supertype_target(posDataInputStream);
+                case CLASS_TYPE_PARAMETER_BOUND, METHOD_TYPE_PARAMETER_BOUND -> new type_parameter_bound_target(posDataInputStream);
+                case FIELD, METHOD_RETURN, METHOD_RECEIVER -> new empty_target(posDataInputStream);
+                case METHOD_FORMAL_PARAMETER -> new formal_parameter_target(posDataInputStream);
+                case THROWS -> new throws_target(posDataInputStream);
+                case LOCAL_VARIABLE, RESOURCE_VARIABLE -> new localvar_target(posDataInputStream);
+                case EXCEPTION_PARAMETER -> new catch_target(posDataInputStream);
+                case INSTANCEOF, NEW, CONSTRUCTOR_REFERENCE, METHOD_REFERENCE -> new offset_target(posDataInputStream);
+                case CAST, CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT, METHOD_INVOCATION_TYPE_ARGUMENT,
+                        CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT, METHOD_REFERENCE_TYPE_ARGUMENT -> new type_argument_target(posDataInputStream);
                 // Unrecognized: go through, since the attribute length is checked later
                 case null -> null;
             };
@@ -336,97 +339,33 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             this.at.generateTreeNode(parentNode, classFile);
         }
 
-        public enum TargetType {
+        /// Get the {@link TargetType} of a `target_type` value.
+        ///
+        /// @param v The `target_type` value
+        /// @return The target type, or empty for an unrecognized value
+        public static Optional<TargetType> targetTypeOf(short v) {
+            return Arrays.stream(TargetType.values()).filter(t -> t.targetTypeValue() == v).findFirst();
+        }
 
-            /// type parameter declaration of generic class or interface.
-            VALUE_HEX_00(0x00),
-            /// type parameter declaration of generic method or constructor.
-            VALUE_HEX_01(0x01),
-            /// type in extends or implements clause of class declaration
-            /// (including the direct superclass or direct superinterface of an
-            /// anonymous class declaration), or in extends clause of interface
-            /// declaration.
-            VALUE_HEX_10(0x10),
-            /// type in bound of type parameter declaration of generic class or
-            /// interface.
-            VALUE_HEX_11(0x11),
-            /// type in bound of type parameter declaration of generic method or
-            /// constructor.
-            VALUE_HEX_12(0x12),
-            /// type in field declaration.
-            VALUE_HEX_13(0x13),
-            /// return type of method, or type of newly constructed object.
-            VALUE_HEX_14(0x14),
-            /// receiver type of method or constructor.
-            VALUE_HEX_15(0x15),
-            /// type in formal parameter declaration of method, constructor, or
-            /// lambda expression.
-            VALUE_HEX_16(0x16),
-            /// type in throws clause of method or constructor.
-            VALUE_HEX_17(0x17),
-            /// type in local variable declaration.
-            VALUE_HEX_40(0x40),
-            /// type in resource variable declaration.
-            VALUE_HEX_41(0x41),
-            /// type in exception parameter declaration.
-            VALUE_HEX_42(0x42),
-            /// type in instanceof expression.
-            VALUE_HEX_43(0x43),
-            /// type in new expression.
-            VALUE_HEX_44(0x44),
-            /// type in method reference expression using ::new.
-            VALUE_HEX_45(0x45),
-            /// type in method reference expression using ::Identifier.
-            VALUE_HEX_46(0x46),
-            /// type in cast expression.
-            VALUE_HEX_47(0x47),
-            /// type argument for generic constructor in new expression or
-            /// explicit constructor invocation statement.
-            VALUE_HEX_48(0x48),
-            /// type argument for generic method in method invocation expression.
-            VALUE_HEX_49(0x49),
-            /// type argument for generic constructor in method reference
-            /// expression using ::new.
-            VALUE_HEX_4A(0x4A),
-            /// type argument for generic method in method reference expression
-            /// using ::Identifier.
-            VALUE_HEX_4B(0x4B);
-
-            /// Internal value of the enum.
-            public final short value;
-
-            TargetType(Integer v) {
-                this.value = v.shortValue();
-            }
-
-            /// Get the enum of a `target_type` value.
-            ///
-            /// @param v The `target_type` value
-            /// @return The enum, or empty for an unrecognized value
-            public static Optional<TargetType> of(short v) {
-                return Arrays.stream(values()).filter(t -> t.value == v).findFirst();
-            }
-
-            /// Get union name in `type_annotation` structure.
-            ///
-            /// @param v {@link #value} of {@link TargetType}
-            /// @return `type_annotation` structure union name
-            public static String getTargetUnionName(short v) {
-                return switch (of(v).orElse(null)) {
-                    case VALUE_HEX_00, VALUE_HEX_01 -> type_parameter_target.UNION_NAME;
-                    case VALUE_HEX_10 -> supertype_target.UNION_NAME;
-                    case VALUE_HEX_11, VALUE_HEX_12 -> type_parameter_bound_target.UNION_NAME;
-                    case VALUE_HEX_13, VALUE_HEX_14, VALUE_HEX_15 -> empty_target.UNION_NAME;
-                    case VALUE_HEX_16 -> formal_parameter_target.UNION_NAME;
-                    case VALUE_HEX_17 -> throws_target.UNION_NAME;
-                    case VALUE_HEX_40, VALUE_HEX_41 -> localvar_target.UNION_NAME;
-                    case VALUE_HEX_42 -> catch_target.UNION_NAME;
-                    case VALUE_HEX_43, VALUE_HEX_44, VALUE_HEX_45, VALUE_HEX_46 -> offset_target.UNION_NAME;
-                    case VALUE_HEX_47, VALUE_HEX_48, VALUE_HEX_49, VALUE_HEX_4A, VALUE_HEX_4B -> type_argument_target.UNION_NAME;
-                    case null -> "Un-recognized";
-                };
-            }
-
+        /// Get union name in `type_annotation` structure.
+        ///
+        /// @param v The `target_type` value
+        /// @return `type_annotation` structure union name
+        public static String getTargetUnionName(short v) {
+            return switch (targetTypeOf(v).orElse(null)) {
+                case CLASS_TYPE_PARAMETER, METHOD_TYPE_PARAMETER -> type_parameter_target.UNION_NAME;
+                case CLASS_EXTENDS -> supertype_target.UNION_NAME;
+                case CLASS_TYPE_PARAMETER_BOUND, METHOD_TYPE_PARAMETER_BOUND -> type_parameter_bound_target.UNION_NAME;
+                case FIELD, METHOD_RETURN, METHOD_RECEIVER -> empty_target.UNION_NAME;
+                case METHOD_FORMAL_PARAMETER -> formal_parameter_target.UNION_NAME;
+                case THROWS -> throws_target.UNION_NAME;
+                case LOCAL_VARIABLE, RESOURCE_VARIABLE -> localvar_target.UNION_NAME;
+                case EXCEPTION_PARAMETER -> catch_target.UNION_NAME;
+                case INSTANCEOF, NEW, CONSTRUCTOR_REFERENCE, METHOD_REFERENCE -> offset_target.UNION_NAME;
+                case CAST, CONSTRUCTOR_INVOCATION_TYPE_ARGUMENT, METHOD_INVOCATION_TYPE_ARGUMENT,
+                        CONSTRUCTOR_REFERENCE_TYPE_ARGUMENT, METHOD_REFERENCE_TYPE_ARGUMENT -> type_argument_target.UNION_NAME;
+                case null -> "Un-recognized";
+            };
         }
 
         /// The `target_info` union of a {@link type_annotation}.
@@ -836,22 +775,22 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             public enum TypePathKind {
 
                 /// Annotation is deeper in an array type.
-                VALUE_0(0, "Annotation is deeper in an array type"),
+                VALUE_0(TypeAnnotation.TypePathComponent.Kind.ARRAY.tag(), "Annotation is deeper in an array type"),
                 /// Annotation is deeper in a nested type.
-                VALUE_1(1, "Annotation is deeper in a nested type"),
+                VALUE_1(TypeAnnotation.TypePathComponent.Kind.INNER_TYPE.tag(), "Annotation is deeper in a nested type"),
                 /// Annotation is on the bound of a wildcard type argument of a
                 /// parameterized type.
-                VALUE_2(2, "Annotation is on the bound of a wildcard type argument of a parameterized type"),
+                VALUE_2(TypeAnnotation.TypePathComponent.Kind.WILDCARD.tag(), "Annotation is on the bound of a wildcard type argument of a parameterized type"),
                 /// Annotation is on a type argument of a parameterized type.
-                VALUE_3(3, "Annotation is on a type argument of a parameterized type");
+                VALUE_3(TypeAnnotation.TypePathComponent.Kind.TYPE_ARGUMENT.tag(), "Annotation is on a type argument of a parameterized type");
 
                 /// Internal value of the type path kind.
                 public final short value;
                 /// Description of the type path kind.
                 public final String description;
 
-                TypePathKind(Integer v, String d) {
-                    this.value = v.shortValue();
+                TypePathKind(int v, String d) {
+                    this.value = (short) v;
                     this.description = d;
                 }
 

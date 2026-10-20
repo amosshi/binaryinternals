@@ -7,6 +7,7 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import java.lang.classfile.attribute.StackMapFrameInfo.VerificationTypeInfo;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -730,15 +731,15 @@ public class StackMapTable_attribute extends attribute_info {
         @SuppressWarnings("java:S115")
         public enum TagEnum {
 
-            ITEM_Top(0),
-            ITEM_Integer(1),
-            ITEM_Float(2),
-            ITEM_Double(3),
-            ITEM_Long(4),
-            ITEM_Null(5),
-            ITEM_UninitializedThis(6),
-            ITEM_Object(7),
-            ITEM_Uninitialized(8);
+            ITEM_Top(VerificationTypeInfo.ITEM_TOP),
+            ITEM_Integer(VerificationTypeInfo.ITEM_INTEGER),
+            ITEM_Float(VerificationTypeInfo.ITEM_FLOAT),
+            ITEM_Double(VerificationTypeInfo.ITEM_DOUBLE),
+            ITEM_Long(VerificationTypeInfo.ITEM_LONG),
+            ITEM_Null(VerificationTypeInfo.ITEM_NULL),
+            ITEM_UninitializedThis(VerificationTypeInfo.ITEM_UNINITIALIZED_THIS),
+            ITEM_Object(VerificationTypeInfo.ITEM_OBJECT),
+            ITEM_Uninitialized(VerificationTypeInfo.ITEM_UNINITIALIZED);
 
             public final short value;
             public static final String TAGNAME_UNRECOGNIZED = "Unrecognized";

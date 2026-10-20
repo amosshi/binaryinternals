@@ -30,7 +30,10 @@ mvn --version
 rm -rf dist
 mvn dependency:purge-local-repository -DreResolve=true
 
-mvn  clean install javadoc:aggregate-no-fork
+mvn  clean install
+# Dependency graph, shown in the README and the Javadoc overview page
+mvn  com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=src/main/javadoc/doc-files
+mvn  javadoc:aggregate-no-fork
 mvn  dependency:tree versions:display-dependency-updates
 #mvn source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
 #mvn spotbugs:gui

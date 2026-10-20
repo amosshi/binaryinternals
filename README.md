@@ -45,6 +45,7 @@ Build the Source Code
 * MacOS need to install the Linux style commands
   * `brew install coreutils`
   * `brew install parallel`
+  * `brew install graphviz`
 * Build
   * Build via maven command
     * `mvn clean`
@@ -63,9 +64,9 @@ Structure
   * `mvn dependency:tree`
 * Graph of all dependencies aggregated
   *  Make sure [Graphviz](https://graphviz.org/) has been installed, `dot` command is available
-  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs`
+  * `mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=src/main/javadoc/doc-files`
 
-![Dependency Graph](docs/dependency-graph.png)
+![Dependency Graph](src/main/javadoc/doc-files/dependency-graph.png)
 
 Legacy note
 

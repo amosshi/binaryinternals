@@ -7,6 +7,7 @@
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandleInfo;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.FileFormatException;
@@ -115,15 +116,15 @@ public class CONSTANT_MethodHandle_info extends cp_info {
     @SuppressWarnings("java:S115")
     public enum ReferenceKind {
 
-        REF_getField(1),
-        REF_getStatic(2),
-        REF_putField(3),
-        REF_putStatic(4),
-        REF_invokeVirtual(5),
-        REF_invokeStatic(6),
-        REF_invokeSpecial(7),
-        REF_newInvokeSpecial(8),
-        REF_invokeInterface(9);
+        REF_getField(MethodHandleInfo.REF_getField),
+        REF_getStatic(MethodHandleInfo.REF_getStatic),
+        REF_putField(MethodHandleInfo.REF_putField),
+        REF_putStatic(MethodHandleInfo.REF_putStatic),
+        REF_invokeVirtual(MethodHandleInfo.REF_invokeVirtual),
+        REF_invokeStatic(MethodHandleInfo.REF_invokeStatic),
+        REF_invokeSpecial(MethodHandleInfo.REF_invokeSpecial),
+        REF_newInvokeSpecial(MethodHandleInfo.REF_newInvokeSpecial),
+        REF_invokeInterface(MethodHandleInfo.REF_invokeInterface);
 
         /// ID of the {@link ReferenceKind}.
         public final int value;

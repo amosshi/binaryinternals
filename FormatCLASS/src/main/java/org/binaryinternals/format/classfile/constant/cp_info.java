@@ -14,7 +14,6 @@ import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
-import org.binaryinternals.format.classfile.JavaSEVersion;
 import org.binaryinternals.format.classfile.u1;
 
 /// The super class for constant pool items in class file. All constant pool
@@ -104,49 +103,49 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
         /// VM Spec: The CONSTANT_Utf8_info Structure
         /// </a>
-        CONSTANT_Utf8(PoolEntry.TAG_UTF8, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, false),
+        CONSTANT_Utf8(PoolEntry.TAG_UTF8, ClassFileFormatVersion.RELEASE_1, false),
         /// The value for constant type `CONSTANT_Integer`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
         /// VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
         /// </a>
-        CONSTANT_Integer(PoolEntry.TAG_INTEGER, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_Integer(PoolEntry.TAG_INTEGER, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_Float`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
         /// VM Spec: The CONSTANT_Integer_info and CONSTANT_Float_info Structures
         /// </a>
-        CONSTANT_Float(PoolEntry.TAG_FLOAT, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_Float(PoolEntry.TAG_FLOAT, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_Long`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
         /// VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
         /// </a>
-        CONSTANT_Long(PoolEntry.TAG_LONG, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_Long(PoolEntry.TAG_LONG, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_Double`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
         /// VM Spec: The CONSTANT_Long_info and CONSTANT_Double_info Structures
         /// </a>
-        CONSTANT_Double(PoolEntry.TAG_DOUBLE, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_Double(PoolEntry.TAG_DOUBLE, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_Class`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.1">
         /// VM Spec: The CONSTANT_Class_info Structure
         /// </a>
-        CONSTANT_Class(PoolEntry.TAG_CLASS, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_Class(PoolEntry.TAG_CLASS, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_String`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.3">
         /// VM Spec: The CONSTANT_String_info Structure
         /// </a>
-        CONSTANT_String(PoolEntry.TAG_STRING, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, true),
+        CONSTANT_String(PoolEntry.TAG_STRING, ClassFileFormatVersion.RELEASE_1, true),
         /// The value for constant type `CONSTANT_Fieldref`.
         ///
         /// @see
@@ -154,7 +153,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
         /// CONSTANT_InterfaceMethodref_info Structures
         /// </a>
-        CONSTANT_Fieldref(PoolEntry.TAG_FIELDREF, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, false),
+        CONSTANT_Fieldref(PoolEntry.TAG_FIELDREF, ClassFileFormatVersion.RELEASE_1, false),
         /// The value for constant type `CONSTANT_Methodref`.
         ///
         /// @see
@@ -162,7 +161,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
         /// CONSTANT_InterfaceMethodref_info Structures
         /// </a>
-        CONSTANT_Methodref(PoolEntry.TAG_METHODREF, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, false),
+        CONSTANT_Methodref(PoolEntry.TAG_METHODREF, ClassFileFormatVersion.RELEASE_1, false),
         /// The value for constant type `CONSTANT_InterfaceMethodref`.
         ///
         /// @see
@@ -170,28 +169,28 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// VM Spec: The CONSTANT_Fieldref_info, CONSTANT_Methodref_info, and
         /// CONSTANT_InterfaceMethodref_info Structures
         /// </a>
-        CONSTANT_InterfaceMethodref(PoolEntry.TAG_INTERFACE_METHODREF, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, false),
+        CONSTANT_InterfaceMethodref(PoolEntry.TAG_INTERFACE_METHODREF, ClassFileFormatVersion.RELEASE_1, false),
         /// The value for constant type `CONSTANT_NameAndType`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.6">
         /// VM Spec: The CONSTANT_NameAndType_info Structure
         /// </a>
-        CONSTANT_NameAndType(PoolEntry.TAG_NAME_AND_TYPE, ClassFileFormatVersion.RELEASE_1, JavaSEVersion.VERSION_1_0_2, false),
+        CONSTANT_NameAndType(PoolEntry.TAG_NAME_AND_TYPE, ClassFileFormatVersion.RELEASE_1, false),
         /// The value for constant type `CONSTANT_MethodHandle`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.8">
         /// VM Spec: The CONSTANT_MethodHandle_info Structure
         /// </a>
-        CONSTANT_MethodHandle(PoolEntry.TAG_METHOD_HANDLE, ClassFileFormatVersion.RELEASE_7, JavaSEVersion.VERSION_7, true),
+        CONSTANT_MethodHandle(PoolEntry.TAG_METHOD_HANDLE, ClassFileFormatVersion.RELEASE_7, true),
         /// The value for constant type `CONSTANT_MethodType`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.9">
         /// VM Spec: The CONSTANT_MethodType_info Structure
         /// </a>
-        CONSTANT_MethodType(PoolEntry.TAG_METHOD_TYPE, ClassFileFormatVersion.RELEASE_7, JavaSEVersion.VERSION_7, true),
+        CONSTANT_MethodType(PoolEntry.TAG_METHOD_TYPE, ClassFileFormatVersion.RELEASE_7, true),
         /// The value for constant type `CONSTANT_Dynamic`.
         ///
         /// @see
@@ -199,21 +198,21 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// VM Spec: The CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info
         /// Structures
         /// </a>
-        CONSTANT_Dynamic(PoolEntry.TAG_DYNAMIC, ClassFileFormatVersion.RELEASE_11, JavaSEVersion.VERSION_11, true),
+        CONSTANT_Dynamic(PoolEntry.TAG_DYNAMIC, ClassFileFormatVersion.RELEASE_11, true),
         /// The value for constant type `CONSTANT_InvokeDynamic`.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.10">
         /// VM Spec: The CONSTANT_InvokeDynamic Structure
         /// </a>
-        CONSTANT_InvokeDynamic(PoolEntry.TAG_INVOKE_DYNAMIC, ClassFileFormatVersion.RELEASE_7, JavaSEVersion.VERSION_7, false),
+        CONSTANT_InvokeDynamic(PoolEntry.TAG_INVOKE_DYNAMIC, ClassFileFormatVersion.RELEASE_7, false),
         /// The CONSTANT_Module_info structure is used to represent a module.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.11">
         /// VM Spec: The CONSTANT_Module_info Structure
         /// </a>
-        CONSTANT_Module(PoolEntry.TAG_MODULE, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9, false),
+        CONSTANT_Module(PoolEntry.TAG_MODULE, ClassFileFormatVersion.RELEASE_9, false),
         /// The CONSTANT_Package_info structure is used to represent a package
         /// exported or opened by a module.
         ///
@@ -221,16 +220,13 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.12">
         /// VM Spec: The CONSTANT_Package_info Structure
         /// </a>
-        CONSTANT_Package(PoolEntry.TAG_PACKAGE, ClassFileFormatVersion.RELEASE_9, JavaSEVersion.VERSION_9, false);
+        CONSTANT_Package(PoolEntry.TAG_PACKAGE, ClassFileFormatVersion.RELEASE_9, false);
 
         /// Value of tag.
         public final short tag;
 
         /// Class file format.
         public final ClassFileFormatVersion format;
-
-        /// Java SE platform version.
-        public final JavaSEVersion javaSE;
 
         /// Some entries in the constant_pool table are loadable because they
         /// represent entities that can be pushed onto the stack at run time to
@@ -242,10 +238,9 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// </a>
         public final boolean loadable;
 
-        private ConstantType(int tag, ClassFileFormatVersion format, JavaSEVersion javaSE, boolean loadable) {
+        private ConstantType(int tag, ClassFileFormatVersion format, boolean loadable) {
             this.tag = (short) tag;
             this.format = format;
-            this.javaSE = javaSE;
             this.loadable = loadable;
         }
 
