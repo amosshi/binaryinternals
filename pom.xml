@@ -60,6 +60,7 @@
         <maven-surefire-report-plugin.version>3.6.0</maven-surefire-report-plugin.version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
         <spotbugs-maven-plugin.version>4.10.5.0</spotbugs-maven-plugin.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
         <spotbugs.version>4.10.5</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
+        <umldoclet.version>2.3.2</umldoclet.version><!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
     </properties>
 
     <dependencies>
@@ -282,6 +283,14 @@
                     <links>
                         <link>https://docs.oracle.com/en/java/javase/25/docs/api</link>
                     </links>
+                    <!-- Generate UML diagrams into the Javadoc -->
+                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>nl.talsmasoftware</groupId>
+                        <artifactId>umldoclet</artifactId>
+                        <version>${umldoclet.version}</version>
+                    </docletArtifact>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
                 </configuration>
                 <executions>
                     <execution>
@@ -405,6 +414,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <!-- Generate UML diagrams into the Javadoc -->
+                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>nl.talsmasoftware</groupId>
+                        <artifactId>umldoclet</artifactId>
+                        <version>${umldoclet.version}</version>
+                    </docletArtifact>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
+                </configuration>
                 <reportSets>
                     <reportSet><!-- aggregate reportSet, to define in poms having modules -->
                         <id>aggregate</id>
