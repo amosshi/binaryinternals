@@ -1,4 +1,5 @@
 *.flattened-pom.xml
 .DS_Store
+.vscode/
 dist/
 target/

@@ -15,31 +15,29 @@ import org.binaryinternals.commonlib.ui.Icons;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code SourceFile} attribute. The {@code SourceFile}
- * attribute has the following format:
- *
- * <pre>
- *    SourceFile_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 sourcefile_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.10">
- * VM Spec: The SourceFile Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `SourceFile` attribute. The `SourceFile`
+/// attribute has the following format:
+///
+/// ```
+///    SourceFile_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 sourcefile_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.10">
+/// VM Spec: The SourceFile Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class SourceFile_attribute extends attribute_info {
 
@@ -49,7 +47,7 @@ public class SourceFile_attribute extends attribute_info {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != 2) {
-            throw new FileFormatException(String.format("The attribute_length of AttributeSourceFile is not 2, it is %d.", this.attribute_length.value));
+            throw new FileFormatException("The attribute_length of AttributeSourceFile is not 2, it is %d.".formatted(this.attribute_length.value));
         }
 
         this.sourcefile_index = new u2(posDataInputStream);
@@ -62,7 +60,7 @@ public class SourceFile_attribute extends attribute_info {
         int cpIndex = this.sourcefile_index.value;
         this.addNode(parentNode,
                 super.startPos + 6, u2.LENGTH,
-                "sourcefile_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "source file", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "sourcefile_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "source file", ((ClassFile)classFile).getCPDescription(cpIndex)),
                 "msg_attr_SourceFile__sourcefile_index", Icons.Name
         );
     }

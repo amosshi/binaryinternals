@@ -1,6 +1,8 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -12,34 +14,31 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The {@code annotation} structure in {@code RuntimeVisibleAnnotations}
- * attribute.
- * <p>
- * It has the following format:
- * </p>
- *
- * <pre>
- * annotation {
- *   u2 type_index;
- *   u2 num_element_value_pairs;
- *   {   u2            element_name_index;
- *       element_value value;
- *   } element_value_pairs[num_element_value_pairs];
- * }
- * </pre>
- *
- * @author Amos Shi
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16">
- * VM Spec: annotation structure
- * </a>
- *
- * <pre>
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The `annotation` structure in `RuntimeVisibleAnnotations`
+/// attribute.
+///
+/// It has the following format:
+///
+///
+/// ```
+/// annotation {
+///   u2 type_index;
+///   u2 num_element_value_pairs;
+///   {   u2            element_name_index;
+///       element_value value;
+///   } element_value_pairs[num_element_value_pairs];
+/// }
+/// ```
+///
+/// @author Amos Shi
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16">
+/// VM Spec: annotation structure
+/// </a>
+///
+/// ```
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S1104", "java:S116"})
 public class Annotation extends FileComponent implements GenerateTreeNodeClassFile {
 
@@ -62,12 +61,10 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         super.length = posDataInputStream.getPos() - super.startPos;
     }
 
-    /**
-     * Get the value of {@code num_element_value_pairs}[{@code index}].
-     *
-     * @param index Index of the num_element_value_pairs item
-     * @return The value of {@code num_element_value_pairs}[{@code index}]
-     */
+    /// Get the value of `num_element_value_pairs`[`index`].
+    ///
+    /// @param index Index of the num_element_value_pairs item
+    /// @return The value of `num_element_value_pairs`[`index`]
     public Annotation.element_value_pair getElementvaluePair(final int index) {
         Annotation.element_value_pair p = null;
         if (this.element_value_pairs != null && index < this.element_value_pairs.length) {
@@ -86,7 +83,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 currentPos,
                 u2.LENGTH,
                 "type_index",
-                String.format(TEXT_CPINDEX_VALUE, cpIndex, "type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "type", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_attr_annotation__type_index",
                 Icons.Kind
         );
@@ -106,7 +103,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             DefaultMutableTreeNode elementValuePairsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     currentPos,
                     this.getStartPos() + this.getLength() - currentPos,
-                    String.format("element_value_pairs [%d]", this.num_element_value_pairs.value),
+                    "element_value_pairs [%d]".formatted(this.num_element_value_pairs.value),
                     MESSAGES.getString("msg_attr_annotation__element_value_pairs")
             ));
             parentNode.add(elementValuePairsNode);
@@ -127,32 +124,25 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         }
     }
 
-    /**
-     * Each value of the {@link Annotation#element_value_pairs} table represents
-     * a single element-value pair in the annotation represented by this
-     * <code>annotation</code> structure.
-     *
-     * @see <a
-     * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16">
-     * VM Spec: The RuntimeVisibleAnnotations Attribute
-     * </a>
-     *
-     * <pre>
-     * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
-     * </pre>
-     */
+    /// Each value of the {@link Annotation#element_value_pairs} table represents
+    /// a single element-value pair in the annotation represented by this
+    /// `annotation` structure.
+    ///
+    /// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16">
+    /// VM Spec: The RuntimeVisibleAnnotations Attribute
+    /// </a>
+    ///
+    /// ```
+    /// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+    /// ```
     @SuppressWarnings({"java:S101"})
     public static final class element_value_pair extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * The name of the element of the element-value pair represented by this
-         * {@link Annotation#element_value_pairs} entry.
-         */
+        /// The name of the element of the element-value pair represented by this
+        /// {@link Annotation#element_value_pairs} entry.
         public final u2 element_name_index;
-        /**
-         * Represents the value of the element-value pair represented by this
-         * {@link Annotation#element_value_pairs} entry.
-         */
+        /// Represents the value of the element-value pair represented by this
+        /// {@link Annotation#element_value_pairs} entry.
         public final element_value value;
 
         protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
@@ -174,7 +164,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                     startPosMoving,
                     u2.LENGTH,
                     "element_name_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "element name", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "element name", classFile.getCPDescription(cpIndex)),
                     "msg_attr_annotation__element_value_pairs_element_name_index",
                     Icons.Name
             );
@@ -191,129 +181,63 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         }
     }
 
-    /**
-     * The element_value structure is a discriminated union representing the
-     * value of an element-value pair.
-     *
-     * <p>
-     * It has the following format:
-     * </p>
-     * <pre>
-     * element_value {
-     *     u1 tag;
-     *     union {
-     *         u2 const_value_index;
-     *
-     *         {   u2 type_name_index;
-     *             u2 const_name_index;
-     *         } enum_const_value;
-     *
-     *         u2 class_info_index;
-     *
-     *         annotation annotation_value;
-     *
-     *         {   u2            num_values;
-     *             element_value values[num_values];
-     *         } array_value;
-     *     } value;
-     * }
-     * </pre>
-     *
-     * @see
-     * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16.1">
-     * VM Spec: The element_value structure
-     * </a>
-     */
+    /// The element_value structure is a discriminated union representing the
+    /// value of an element-value pair.
+    ///
+    ///
+    /// It has the following format:
+    ///
+    /// ```
+    /// element_value {
+    ///     u1 tag;
+    ///     union {
+    ///         u2 const_value_index;
+    ///
+    ///         {   u2 type_name_index;
+    ///             u2 const_name_index;
+    ///         } enum_const_value;
+    ///
+    ///         u2 class_info_index;
+    ///
+    ///         annotation annotation_value;
+    ///
+    ///         {   u2            num_values;
+    ///             element_value values[num_values];
+    ///         } array_value;
+    ///     } value;
+    /// }
+    /// ```
+    ///
+    /// @see
+    /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16.1">
+    /// VM Spec: The element_value structure
+    /// </a>
     @SuppressWarnings({"java:S101"})
     public static final class element_value extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * The <code>tag</code> item uses a single ASCII character to indicate
-         * the type of the value of the element-value pair.
-         *
-         * @see TagEnum
-         */
+        /// The `tag` item uses a single ASCII character to indicate
+        /// the type of the value of the element-value pair.
+        ///
+        /// @see TagEnum
         public final char tag;
-        /**
-         * The value of {@link #union_const_value_index} might be null depending
-         * on the {@link #tag} value
-         */
-        public final u2 union_const_value_index;
-        /**
-         * The value of {@link #union_enum_const_value} might be null depending
-         * on the {@link #tag} value
-         */
-        public final enum_const_value union_enum_const_value;
-        /**
-         * The value of {@link #union_class_info_index} might be null depending
-         * on the {@link #tag} value
-         */
-        public final u2 union_class_info_index;
-        /**
-         * The value of {@link #union_annotation_value} might be null depending
-         * on the {@link #tag} value
-         */
-        public final Annotation union_annotation_value;
-        /**
-         * The value of {@link #union_array_value} might be null depending on
-         * the {@link #tag} value
-         */
-        public final array_value union_array_value;
+        /// The `value` union, its type is determined by the
+        /// {@link #tag}.
+        public final Value value;
 
         protected element_value(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             this.startPos = posDataInputStream.getPos();
 
-            this.tag = (char) posDataInputStream.read(); // Read 1 byte only
-            if (this.tag == TagEnum.B.value
-                    || this.tag == TagEnum.C.value
-                    || this.tag == TagEnum.D.value
-                    || this.tag == TagEnum.F.value
-                    || this.tag == TagEnum.I.value
-                    || this.tag == TagEnum.J.value
-                    || this.tag == TagEnum.S.value
-                    || this.tag == TagEnum.Z.value
-                    || this.tag == TagEnum.s.value) {
-                this.union_const_value_index = new u2(posDataInputStream);
-                this.union_enum_const_value = null;
-                this.union_class_info_index = null;
-                this.union_annotation_value = null;
-                this.union_array_value = null;
-
-            } else if (this.tag == TagEnum.e.value) {
-                this.union_const_value_index = null;
-                this.union_enum_const_value = new enum_const_value(posDataInputStream);
-                this.union_class_info_index = null;
-                this.union_annotation_value = null;
-                this.union_array_value = null;
-
-            } else if (this.tag == TagEnum.c.value) {
-                this.union_const_value_index = null;
-                this.union_enum_const_value = null;
-                this.union_class_info_index = new u2(posDataInputStream);
-                this.union_annotation_value = null;
-                this.union_array_value = null;
-
-            } else if (this.tag == TagEnum.at.value) {
-                this.union_const_value_index = null;
-                this.union_enum_const_value = null;
-                this.union_class_info_index = null;
-                this.union_annotation_value = new Annotation(posDataInputStream);
-                this.union_array_value = null;
-
-            } else if (this.tag == TagEnum.array_type.value) {
-                this.union_const_value_index = null;
-                this.union_enum_const_value = null;
-                this.union_class_info_index = null;
-                this.union_annotation_value = null;
-                this.union_array_value = new array_value(posDataInputStream);
-
-            } else {
-                throw new FileFormatException(String.format(
-                        "Un-recognized tag value in strcutrue element_value. tag=%c (%02X), offset=%d (%08X)",
-                        this.tag, (int) this.tag,
-                        posDataInputStream.getPos(), posDataInputStream.getPos()
-                ));
-            }
+            this.tag = (char) posDataInputStream.readUnsignedByte();
+            final TagEnum tagEnum = TagEnum.of(this.tag).orElseThrow(() -> new FileFormatException(
+                    "Un-recognized tag value in structure element_value. tag=%c (%02X), offset=%d (%08X)".formatted(
+                            this.tag, (int) this.tag, this.startPos, this.startPos)));
+            this.value = switch (tagEnum) {
+                case B, C, D, F, I, J, S, Z, s -> new ConstValue(new u2(posDataInputStream));
+                case e -> new enum_const_value(posDataInputStream);
+                case c -> new ClassInfo(new u2(posDataInputStream));
+                case at -> new AnnotationValue(new Annotation(posDataInputStream));
+                case array_type -> new array_value(posDataInputStream);
+            };
 
             this.length = posDataInputStream.getPos() - this.startPos;
         }
@@ -321,148 +245,139 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
             final ClassFile classFile = (ClassFile) fileFormat;
-            int startPosMoving = this.getStartPos();
+            final int unionPos = this.getStartPos() + 1;
 
             this.addNode(parentNode,
-                    startPosMoving,
+                    this.getStartPos(),
                     1,
                     "tag",
                     this.tag + " - " + element_value.TagEnum.getType(this.tag),
                     "msg_attr_element_value__tag",
                     Icons.Tag
             );
-            startPosMoving += 1;
 
-            if (this.union_const_value_index != null) {
-                final int constValueIndex = this.union_const_value_index.value;
-                this.addNode(parentNode,
-                        startPosMoving,
+            switch (this.value) {
+                case ConstValue(u2 constValueIndex) -> this.addNode(parentNode,
+                        unionPos,
                         u2.LENGTH,
                         "const_value_index",
-                        String.format(TEXT_CPINDEX_VALUE, constValueIndex, "const value", classFile.getCPDescription(constValueIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(constValueIndex.value, "const value", classFile.getCPDescription(constValueIndex.value)),
                         "msg_attr_element_value__const_value_index",
                         Icons.Constant
                 );
-
-            } else if (this.union_enum_const_value != null) {
-                DefaultMutableTreeNode unionConstNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    enum_const_value.LENGTH,
-                    enum_const_value.class.getSimpleName(),
-                    MESSAGES.getString("msg_attr_element_value__enum_const_value")
-                ));
-                this.union_enum_const_value.generateTreeNode(unionConstNode, fileFormat);
-
-            } else if (this.union_class_info_index != null) {
-                int classInfoIndex = this.union_class_info_index.value;
-                this.addNode(parentNode,
-                        startPosMoving,
+                case enum_const_value enumConstValue -> {
+                    final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            unionPos,
+                            enum_const_value.LENGTH,
+                            enum_const_value.class.getSimpleName(),
+                            MESSAGES.getString("msg_attr_element_value__enum_const_value")
+                    ));
+                    parentNode.add(node);
+                    enumConstValue.generateTreeNode(node, fileFormat);
+                }
+                case ClassInfo(u2 classInfoIndex) -> this.addNode(parentNode,
+                        unionPos,
                         u2.LENGTH,
                         "class_info_index",
-                        String.format(TEXT_CPINDEX_VALUE, classInfoIndex, "class info", classFile.getCPDescription(classInfoIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(classInfoIndex.value, "class info", classFile.getCPDescription(classInfoIndex.value)),
                         "msg_attr_element_value__class_info_index",
                         Icons.Name
                 );
-
-            } else if (this.union_annotation_value != null) {
-                DefaultMutableTreeNode unionAnnotationNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    this.union_annotation_value.getLength(),
-                    "annotation_value",
-                    MESSAGES.getString("msg_attr_element_value__annotation_value")
-                ));
-                this.union_annotation_value.generateTreeNode(unionAnnotationNode, classFile);
-
-            } else if (this.union_array_value != null) {
-                DefaultMutableTreeNode unionArrayValueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    this.union_array_value.getLength(),
-                    array_value.class.getSimpleName(),
-                    MESSAGES.getString("msg_attr_element_value__array_value")
-                ));
-                this.union_array_value.generateTreeNode(unionArrayValueNode, fileFormat);
+                case AnnotationValue(Annotation annotation) -> {
+                    final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            unionPos,
+                            annotation.getLength(),
+                            "annotation_value",
+                            MESSAGES.getString("msg_attr_element_value__annotation_value")
+                    ));
+                    parentNode.add(node);
+                    annotation.generateTreeNode(node, classFile);
+                }
+                case array_value arrayValue -> {
+                    final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            unionPos,
+                            arrayValue.getLength(),
+                            array_value.class.getSimpleName(),
+                            MESSAGES.getString("msg_attr_element_value__array_value")
+                    ));
+                    parentNode.add(node);
+                    arrayValue.generateTreeNode(node, fileFormat);
+                }
             }
         }
 
-        /**
-         * The valid characters for the <code>tag</code> item.
-         *
-         * @see
-         * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16.1-130">
-         * VM Spec: The element_value structure
-         * </a>
-         *
-         * <pre>
-         * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
-         * </pre>
-         */
+        /// The `value` union of an {@link element_value}.
+        public sealed interface Value permits ConstValue, enum_const_value, ClassInfo, AnnotationValue, array_value {
+        }
+
+        /// The `const_value_index` item, for the {@link #tag}
+        /// `B C D F I J S Z s`.
+        ///
+        /// @param const_value_index Index of a constant in the constant pool
+        public record ConstValue(u2 const_value_index) implements Value {
+        }
+
+        /// The `class_info_index` item, for the {@link #tag}
+        /// `c`.
+        ///
+        /// @param class_info_index Index of a return descriptor in the constant
+        /// pool
+        public record ClassInfo(u2 class_info_index) implements Value {
+        }
+
+        /// The `annotation_value` item, for the {@link #tag}
+        /// `@`.
+        ///
+        /// @param annotation_value The nested annotation
+        public record AnnotationValue(Annotation annotation_value) implements Value {
+        }
+
+        /// The valid characters for the `tag` item.
+        ///
+        /// @see
+        /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.16.1-130">
+        /// VM Spec: The element_value structure
+        /// </a>
+        ///
+        /// ```
+        /// java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+        /// ```
         @SuppressWarnings("java:S115")
         public enum TagEnum {
 
-            /**
-             * Type <code>byte</code>.
-             */
+            /// Type `byte`.
             B('B', "byte"),
-            /**
-             * Type <code>char</code>.
-             */
+            /// Type `char`.
             C('C', "char"),
-            /**
-             * Type <code>double</code>.
-             */
+            /// Type `double`.
             D('D', "double"),
-            /**
-             * Type <code>float</code>.
-             */
+            /// Type `float`.
             F('F', "float"),
-            /**
-             * Type <code>int</code>.
-             */
+            /// Type `int`.
             I('I', "int"),
-            /**
-             * Type <code>long</code>.
-             */
+            /// Type `long`.
             J('J', "long"),
-            /**
-             * Type <code>short</code>.
-             */
+            /// Type `short`.
             S('S', "short"),
-            /**
-             * Type <code>boolean</code>.
-             */
+            /// Type `boolean`.
             Z('Z', "boolean"),
-            /**
-             * Type <code>String</code>.
-             */
+            /// Type `String`.
             s('s', "String"),
-            /**
-             * Type <code>Enum type</code>.
-             */
+            /// Type `Enum type`.
             e('e', "Enum type"),
-            /**
-             * Type <code>Class</code>.
-             */
+            /// Type `Class`.
             c('c', "Class"),
-            /**
-             * Type <code>Annotation type</code>.
-             */
+            /// Type `Annotation type`.
             at('@', "Annotation type"),
-            /**
-             * Type <code>Array type</code>.
-             */
+            /// Type `Array type`.
             array_type('[', "Array type");
 
-            /**
-             * Internal value of the enum.
-             */
+            /// Internal value of the enum.
             public final char value;
-            /**
-             * The type name for a enumeration type.
-             * <p>
-             * See table
-             * <code>Table 4.7.16.1-A. Interpretation of tag values as types.</code>
-             * </p>
-             */
+            /// The type name for a enumeration type.
+            ///
+            /// See table
+            /// `Table 4.7.16.1-A. Interpretation of tag values as types.`
             public final String Type;
 
             TagEnum(char v, String type) {
@@ -470,35 +385,33 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 this.Type = type;
             }
 
-            /**
-             * Get the type name for a enumeration {@link #value}.
-             *
-             * @param v a enumeration {@link #value}
-             * @return Corresponding {@link #Type} for the enumeration
-             * {@link #value}, or <code>Un-recognized</code> if it is not a
-             * valid enumeration value
-             */
+            /// Get the type name for a enumeration {@link #value}.
+            ///
+            /// @param v a enumeration {@link #value}
+            /// @return Corresponding {@link #Type} for the enumeration
+            /// {@link #value}, or `Un-recognized` if it is not a
+            /// valid enumeration value
             public static String getType(char v) {
-                String result = "Un-recognized";
-                for (TagEnum e : TagEnum.values()) {
-                    if (e.value == v) {
-                        result = e.Type;
-                        break;
-                    }
-                }
-                return result;
+                return of(v).map(e -> e.Type).orElse("Un-recognized");
+            }
+
+            /// Get the enumeration of a {@link #value}.
+            ///
+            /// @param v a enumeration {@link #value}
+            /// @return The enumeration, or empty if it is not a valid value
+            public static Optional<TagEnum> of(char v) {
+                return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
             }
         }
 
-        public static final class enum_const_value extends FileComponent implements GenerateTreeNodeClassFile {
+        public static final class enum_const_value extends FileComponent implements GenerateTreeNodeClassFile, Value {
 
             public static final int LENGTH = 4;
             public final u2 type_name_index;
             public final u2 const_name_index;
 
             protected enum_const_value(final PosDataInputStream posDataInputStream) throws IOException {
-                this.startPos = posDataInputStream.getPos();
-                this.length = LENGTH;
+                super(posDataInputStream.getPos(), LENGTH);
 
                 this.type_name_index = new u2(posDataInputStream);
                 this.const_name_index = new u2(posDataInputStream);
@@ -514,7 +427,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                         startPosMoving,
                         u2.LENGTH,
                         "type_name_index",
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "type name", classFile.getCPDescription(cpIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(cpIndex, "type name", classFile.getCPDescription(cpIndex)),
                         "msg_attr_element_value__enum_const_value__type_name_index",
                         Icons.Name
                 );
@@ -525,14 +438,14 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                         startPosMoving,
                         u2.LENGTH,
                         "const_name_index",
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "const name", classFile.getCPDescription(cpIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(cpIndex, "const name", classFile.getCPDescription(cpIndex)),
                         "msg_attr_element_value__enum_const_value__const_name_index",
                         Icons.Name
                 );
             }
         }
 
-        public static final class array_value extends FileComponent implements GenerateTreeNodeClassFile {
+        public static final class array_value extends FileComponent implements GenerateTreeNodeClassFile, Value {
 
             public final u2 num_values;
             public final element_value[] values;
@@ -571,7 +484,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 if (this.values != null && this.values.length > 0) {
                     DefaultMutableTreeNode valuesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
-                            this.getLength() - 3,
+                            this.getLength() - u2.LENGTH,
                             "values[" + numValues + "]",
                             MESSAGES.getString("msg_attr_element_value__array_value__values")
                     ));

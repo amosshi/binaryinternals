@@ -6,7 +6,10 @@
  */
 package org.binaryinternals.format.classfile.constant;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -15,39 +18,35 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.Icons;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code CONSTANT_Utf8_info} structure in constant pool. The
- * {@code CONSTANT_Utf8_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Utf8_info {
- *        u1 tag;
- *
- *        u2 length;
- *        u1 bytes[length];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
- * VM Spec: The CONSTANT_Utf8_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Utf8_info` structure in constant pool. The
+/// `CONSTANT_Utf8_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Utf8_info {
+///        u1 tag;
+///
+///        u2 length;
+///        u1 bytes[length];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
+/// VM Spec: The CONSTANT_Utf8_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_Utf8_info extends cp_info {
 
     public final u2 length_utf8;
     public final byte[] bytes;
 
-    /**
-     * Buffer for {@link #getValue()}.
-     */
+    /// Buffer for {@link #getValue()}.
     private String value = null;
 
     CONSTANT_Utf8_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
@@ -55,9 +54,8 @@ public class CONSTANT_Utf8_info extends cp_info {
         super.startPos = posDataInputStream.getPos() - 1;
 
         this.length_utf8 = new u2(posDataInputStream);
-        this.bytes = new byte[this.length_utf8.value];
-        final int bytesRead = posDataInputStream.read(this.bytes);
-        if (bytesRead != this.length_utf8.value) {
+        this.bytes = posDataInputStream.readNBytes(this.length_utf8.value);
+        if (this.bytes.length != this.length_utf8.value) {
             throw new FileFormatException("Read bytes for CONSTANT_Utf8 error.");
         }
 
@@ -66,7 +64,7 @@ public class CONSTANT_Utf8_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: [%s].", this.getName(), this.startPos, super.length, this.getValue());
+        return "%s: Start Position: [%d], length: [%d], value: [%s].".formatted(this.getName(), this.startPos, super.length, this.getValue());
     }
 
     @Override
@@ -79,18 +77,35 @@ public class CONSTANT_Utf8_info extends cp_info {
         return ConstantType.CONSTANT_Utf8.name();
     }
 
-    /**
-     * Get the {@link #bytes} value as a String, using platform's default
-     * charset.
-     *
-     * @return The content as String
-     */
+    /// Get the {@link #bytes} value as a String, using platform's default
+    /// charset.
+    ///
+    /// @return The content as String
     public String getValue() {
         if (this.value == null) {
-            this.value = new String(this.bytes, StandardCharsets.UTF_8);
+            this.value = decodeModifiedUtf8(this.bytes);
         }
 
         return this.value;
+    }
+
+    /// Decode the "modified UTF-8" bytes of a `CONSTANT_Utf8_info`, where
+    /// U+0000 is encoded in two bytes and supplementary characters are
+    /// encoded as surrogate pairs.
+    ///
+    /// @param bytes The modified UTF-8 bytes
+    /// @return The decoded string; malformed bytes are decoded as standard UTF-8
+    /// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
+    /// VM Spec: The CONSTANT_Utf8_info Structure</a>
+    static String decodeModifiedUtf8(final byte[] bytes) {
+        final ByteBuffer withLength = ByteBuffer.allocate(u2.LENGTH + bytes.length)
+                .putShort((short) bytes.length)
+                .put(bytes);
+        try {
+            return new DataInputStream(new ByteArrayInputStream(withLength.array())).readUTF();
+        } catch (IOException _) {
+            return new String(bytes, StandardCharsets.UTF_8);
+        }
     }
 
     @Override

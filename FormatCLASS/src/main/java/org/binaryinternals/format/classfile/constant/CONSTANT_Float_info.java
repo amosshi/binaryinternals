@@ -13,28 +13,26 @@ import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.Icons;
 
-/**
- * The class for the {@code CONSTANT_Float_info} structure in constant pool. The
- * {@code CONSTANT_Float_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Float_info {
- *        u1 tag;
- *        u4 bytes;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
- * VM Spec: The CONSTANT_Float_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Float_info` structure in constant pool. The
+/// `CONSTANT_Float_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Float_info {
+///        u1 tag;
+///        u4 bytes;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.4">
+/// VM Spec: The CONSTANT_Float_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class CONSTANT_Float_info extends cp_info {
 
@@ -44,9 +42,7 @@ public class CONSTANT_Float_info extends cp_info {
     public final Float floatValue;
 
     CONSTANT_Float_info(final PosDataInputStream posDataInputStream) throws IOException {
-        super(cp_info.ConstantType.CONSTANT_Float.tag);
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
+        super(cp_info.ConstantType.CONSTANT_Float.tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.rawData = posDataInputStream.getBuf(posDataInputStream.getPos(), RAW_DATA_SIZE);
         this.floatValue = posDataInputStream.readFloat();
@@ -54,7 +50,7 @@ public class CONSTANT_Float_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: [%f].",
+        return "%s: Start Position: [%d], length: [%d], value: [%f].".formatted(
                 this.getName(), this.startPos, this.length, this.floatValue);
     }
 

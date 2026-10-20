@@ -19,55 +19,48 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u1;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- *
- * The class for the {@code ModuleHashes} attribute. The
- * {@code AttributeModulePackages} attribute has the following format:
- *
- * <pre>
- *    ModuleHashes_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        // index to CONSTANT_utf8_info structure with algorithm name
- *        u2 algorithm_index;
- *
- *        // the number of entries in the hashes table
- *        u2 hashes_count;
- *        {   u2 module_name_index (index to CONSTANT_Module_info structure)
- *            u2 hash_length;
- *            u1 hash[hash_length];
- *        } hashes[hashes_count];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since OpenJDK 9
- *
- * @see
- * <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">
- * OpenJDK specific attribute specifications</a>
- * @see
- * <a href="https://hg.openjdk.java.net/jdk9/dev/jdk/file/65464a307408/src/java.base/share/classes/jdk/internal/module/ClassFileAttributes.java">
- * ModuleHashes attribute.</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `ModuleHashes` attribute. The
+/// `AttributeModulePackages` attribute has the following format:
+///
+/// ```
+///    ModuleHashes_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        // index to CONSTANT_utf8_info structure with algorithm name
+///        u2 algorithm_index;
+///
+///        // the number of entries in the hashes table
+///        u2 hashes_count;
+///        {   u2 module_name_index (index to CONSTANT_Module_info structure)
+///            u2 hash_length;
+///            u1 hash[hash_length];
+///        } hashes[hashes_count];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since OpenJDK 9
+///
+/// @see
+/// <a href="http://mail.openjdk.java.net/pipermail/jigsaw-dev/2017-February/011262.html">
+/// OpenJDK specific attribute specifications</a>
+/// @see
+/// <a href="https://hg.openjdk.java.net/jdk9/dev/jdk/file/65464a307408/src/java.base/share/classes/jdk/internal/module/ClassFileAttributes.java">
+/// ModuleHashes attribute.</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class ModuleHashes_attribute extends attribute_info {
 
-    /**
-     * Index to CONSTANT_utf8_info structure with algorithm name.
-     */
+    /// Index to CONSTANT_utf8_info structure with algorithm name.
     public final u2 algorithm_index;
 
-    /**
-     * The value of the {@link #hashes_count} item indicates the number of
-     * entries in the {@link #hashes} table.
-     */
+    /// The value of the {@link #hashes_count} item indicates the number of
+    /// entries in the {@link #hashes} table.
     public final u2 hashes_count;
     public final Hashes[] hashes;
 
@@ -96,7 +89,7 @@ public class ModuleHashes_attribute extends attribute_info {
         int cpIndex = this.algorithm_index.value;
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
-                "algorithm_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "algorithm name", classFile.getCPDescription(cpIndex)),
+                "algorithm_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "algorithm name", classFile.getCPDescription(cpIndex)),
                 "msg_attr_ModuleHashes_algorithm_index", Icons.Name
         );
         startPosMoving += u2.LENGTH;
@@ -113,7 +106,7 @@ public class ModuleHashes_attribute extends attribute_info {
             final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     hashLastItem.getStartPos() + hashLastItem.getLength() - startPosMoving,
-                    String.format("hashes [%d]", this.hashes_count.value)
+                    "hashes [%d]".formatted(this.hashes_count.value)
             ));
             parentNode.add(providesNode);
 
@@ -121,7 +114,7 @@ public class ModuleHashes_attribute extends attribute_info {
                 DefaultMutableTreeNode hashNode = this.addNode(providesNode,
                         this.hashes[i].getStartPos(),
                         this.hashes[i].getLength(),
-                        String.format("hash %d", i + 1),
+                        "hash %d".formatted(i + 1),
                         classFile.getCPDescription(this.hashes[i].module_name_index.value),
                         "msg_attr_ModuleHashes_hashes",
                         Icons.Data
@@ -136,18 +129,14 @@ public class ModuleHashes_attribute extends attribute_info {
         return "msg_attr_ModuleHashes";
     }
 
-    /**
-     * The {@code hashes} structure in {@code ModuleHashes} attribute.
-     *
-     * @author Amos Shi
-     * @since OpenJDK 9
-     * @see Module
-     */
+    /// The `hashes` structure in `ModuleHashes` attribute.
+    ///
+    /// @author Amos Shi
+    /// @since OpenJDK 9
+    /// @see Module
     public static final class Hashes extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * Index to CONSTANT_Module_info structure.
-         */
+        /// Index to CONSTANT_Module_info structure.
         public final u2 module_name_index;
         public final u2 hash_length;
         public final u1[] hash;
@@ -177,7 +166,7 @@ public class ModuleHashes_attribute extends attribute_info {
             int cpIndex = this.module_name_index.value;
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
-                    "module_name_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "module name", classFile.getCPDescription(cpIndex)),
+                    "module_name_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "module name", classFile.getCPDescription(cpIndex)),
                     "msg_attr_ModuleHashes_module_name_index", Icons.Name
             );
             startPosMoving += u2.LENGTH;

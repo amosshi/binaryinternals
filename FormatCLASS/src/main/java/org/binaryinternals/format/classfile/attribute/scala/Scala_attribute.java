@@ -14,41 +14,39 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code Scala} attribute.
- * 
- * We found this attribute in Scala generated .class files, like:
- * <pre>
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/AssemblyBuilderFactory$.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$$anonfun$Emit$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$ExceptionStack.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anon$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$addPrimitive$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseILGenerator$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseOpCode$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseTypeBuilder$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$hasControlChars$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$pad$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printAssemblyBoilerplate$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printAttributes$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printHeader$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printSignature$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printSignature$2.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printTypeParams$1$$anonfun$apply$mcVI$sp$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printTypeParams$1.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$.class
- *   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/Label$.class
- * </pre>
- * 
- * Per current findings, this attribute's length is always <code>0</code>.
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Scala` attribute.
+///
+/// We found this attribute in Scala generated .class files, like:
+/// ```
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/AssemblyBuilderFactory$.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$$anonfun$Emit$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILGenerator$ExceptionStack.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anon$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$addPrimitive$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseILGenerator$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseOpCode$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$caseTypeBuilder$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$hasControlChars$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$pad$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printAssemblyBoilerplate$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printAttributes$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printHeader$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printSignature$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printSignature$2.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printTypeParams$1$$anonfun$apply$mcVI$sp$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$$anonfun$printTypeParams$1.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/ILPrinterVisitor$.class
+///   scala-2.9.3/lib/scala-compiler.jar/ch/epfl/lamp/compiler/msil/emit/Label$.class
+/// ```
+///
+/// Per current findings, this attribute's length is always `0`.
+///
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class Scala_attribute extends attribute_info {
 
@@ -56,7 +54,7 @@ public class Scala_attribute extends attribute_info {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != 0) {
-            throw new FileFormatException(String.format("The attribute_length of Scala is not 0, it is %d.", this.attribute_length.value));
+            throw new FileFormatException("The attribute_length of Scala is not 0, it is %d.".formatted(this.attribute_length.value));
         }
 
         super.checkSize(posDataInputStream.getPos());

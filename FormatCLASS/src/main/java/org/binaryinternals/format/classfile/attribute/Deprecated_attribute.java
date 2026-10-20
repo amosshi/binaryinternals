@@ -13,28 +13,26 @@ import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code Deprecated} attribute. The {@code Deprecated}
- * attribute has the following format:
- *
- * <pre>
- *    Deprecated_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.1
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.15">
- * VM Spec: The Deprecated Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Deprecated` attribute. The `Deprecated`
+/// attribute has the following format:
+///
+/// ```
+///    Deprecated_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.1
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.15">
+/// VM Spec: The Deprecated Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class Deprecated_attribute extends attribute_info {
 
@@ -44,7 +42,7 @@ public class Deprecated_attribute extends attribute_info {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {
-            throw new FileFormatException(String.format("The attribute_length of Deprecated is not %d, it is %d.", LENGTH, this.attribute_length.value));
+            throw new FileFormatException("The attribute_length of Deprecated is not %d, it is %d.".formatted(LENGTH, this.attribute_length.value));
         }
 
         super.checkSize(posDataInputStream.getPos());

@@ -15,28 +15,26 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code CONSTANT_Class_info} structure in constant pool. The
- * {@code CONSTANT_Class_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Class_info {
- *        u1 tag;
- *        u2 name_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.1">
- * VM Spec: The CONSTANT_Class_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Class_info` structure in constant pool. The
+/// `CONSTANT_Class_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Class_info {
+///        u1 tag;
+///        u2 name_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.1">
+/// VM Spec: The CONSTANT_Class_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_Class_info extends cp_info {
 
@@ -44,10 +42,7 @@ public class CONSTANT_Class_info extends cp_info {
     public final u2 name_index;
 
     CONSTANT_Class_info(final PosDataInputStream posDataInputStream) throws IOException {
-        super(cp_info.ConstantType.CONSTANT_Class.tag);
-
-        this.startPos = posDataInputStream.getPos() - 1;
-        this.length = LENGTH;
+        super(cp_info.ConstantType.CONSTANT_Class.tag, posDataInputStream.getPos() - 1, LENGTH);
         this.name_index = new u2(posDataInputStream);
     }
 
@@ -58,7 +53,7 @@ public class CONSTANT_Class_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: name_index = [%d].",
+        return "%s: Start Position: [%d], length: [%d], value: name_index = [%d].".formatted(
                 this.getName(), this.startPos, this.length, this.name_index.value);
     }
 
@@ -77,7 +72,7 @@ public class CONSTANT_Class_info extends cp_info {
                 super.startPos + 1,
                 2,
                 "name_index",
-                String.format(TEXT_CPINDEX_VALUE, cpIndex, "class name", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "class name", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_const_class_name_index",
                 Icons.Name);
     }

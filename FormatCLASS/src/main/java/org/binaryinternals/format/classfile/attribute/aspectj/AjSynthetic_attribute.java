@@ -14,45 +14,43 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code org.aspectj.weaver.AjSynthetic} attribute.
- *
- * The attribute has the following format:
- *
- * <pre>
- *    WeaverVersion_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *    }
- * </pre>
- *
- * The following classes has this attribute:
- * <pre>
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AbstractDependencyInjectionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AbstractInterfaceDrivenDependencyInjectionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AnnotationBeanConfigurerAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/GenericInterfaceDrivenDependencyInjectionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/AbstractCacheAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/AnnotationCacheAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/JCacheCacheAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/scheduling/aspectj/AbstractAsyncExecutionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/scheduling/aspectj/AnnotationAsyncExecutionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/AbstractTransactionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/AnnotationTransactionAspect.class
- *   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/JtaAnnotationTransactionAspect.class
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://github.com/eclipse/org.aspectj/blob/V1_9_7/org.aspectj.matcher/src/main/java/org/aspectj/weaver/AjAttribute.java">AjAttribute</a>
- * @see
- * <a href="https://github.com/eclipse/org.aspectj/blob/V1_9_7/org.aspectj.matcher/src/main/java/org/aspectj/weaver/AjAttribute.java#L152">AjSynthetic</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from Source Code instead
- * </pre>
- */
+/// The class for the `org.aspectj.weaver.AjSynthetic` attribute.
+///
+/// The attribute has the following format:
+///
+/// ```
+///    WeaverVersion_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///    }
+/// ```
+///
+/// The following classes has this attribute:
+/// ```
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AbstractDependencyInjectionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AbstractInterfaceDrivenDependencyInjectionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/AnnotationBeanConfigurerAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/beans/factory/aspectj/GenericInterfaceDrivenDependencyInjectionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/AbstractCacheAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/AnnotationCacheAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/cache/aspectj/JCacheCacheAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/scheduling/aspectj/AbstractAsyncExecutionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/scheduling/aspectj/AnnotationAsyncExecutionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/AbstractTransactionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/AnnotationTransactionAspect.class
+///   spring-aspects-5.2.8.RELEASE.jar/org/springframework/transaction/aspectj/JtaAnnotationTransactionAspect.class
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://github.com/eclipse/org.aspectj/blob/V1_9_7/org.aspectj.matcher/src/main/java/org/aspectj/weaver/AjAttribute.java">AjAttribute</a>
+/// @see
+/// <a href="https://github.com/eclipse/org.aspectj/blob/V1_9_7/org.aspectj.matcher/src/main/java/org/aspectj/weaver/AjAttribute.java#L152">AjSynthetic</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from Source Code instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class AjSynthetic_attribute extends attribute_info {
 
@@ -63,7 +61,7 @@ public class AjSynthetic_attribute extends attribute_info {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {
-            throw new FileFormatException(String.format("The attribute_length of %s is not %d, it is %d.", FULLNAME, LENGTH, this.attribute_length.value));
+            throw new FileFormatException("The attribute_length of %s is not %d, it is %d.".formatted(FULLNAME, LENGTH, this.attribute_length.value));
         }
 
         super.checkSize(posDataInputStream.getPos());

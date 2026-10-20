@@ -11,11 +11,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.binaryinternals.commonlib.ui.GenerateTreeNodeFileFormat;
 
-/**
- * Interface for generating tree node for {@link ClassFile}.
- *
- * @author Amos Shi
- */
+/// Interface for generating tree node for {@link ClassFile}.
+///
+/// @author Amos Shi
 public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {
     static final String FIELD_ACCESS_FLAGS = "access_flags";
     static final String FIELD_ATTRS = "attributes [%d]";

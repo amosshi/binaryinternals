@@ -12,29 +12,27 @@ import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 
-/**
- * The class for the {@code CONSTANT_Methodref_info} structure in constant pool.
- * The {@code CONSTANT_Methodref_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Methodref_info {
- *        u1 tag;
- *
- *        u2 class_index;
- *        u2 name_and_type_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
- * VM Spec: The CONSTANT_Methodref_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Methodref_info` structure in constant pool.
+/// The `CONSTANT_Methodref_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Methodref_info {
+///        u1 tag;
+///
+///        u2 class_index;
+///        u2 name_and_type_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
+/// VM Spec: The CONSTANT_Methodref_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class CONSTANT_Methodref_info extends CONSTANT_Ref {
 

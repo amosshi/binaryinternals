@@ -17,34 +17,32 @@ import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code LineNumberTable} attribute. The
- * {@code LineNumberTable} attribute has the following format:
- *
- * <pre>
- *    LineNumberTable_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 line_number_table_length;
- *        {  u2 start_pc;
- *           u2 line_number;
- *        } line_number_table[line_number_table_length];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.12">
- * VM Spec: The LineNumberTable Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `LineNumberTable` attribute. The
+/// `LineNumberTable` attribute has the following format:
+///
+/// ```
+///    LineNumberTable_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 line_number_table_length;
+///        {  u2 start_pc;
+///           u2 line_number;
+///        } line_number_table[line_number_table_length];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.12">
+/// VM Spec: The LineNumberTable Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class LineNumberTable_attribute extends attribute_info {
 
@@ -67,12 +65,10 @@ public class LineNumberTable_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get the value of {@code line_number_table}[{@code index}].
-     *
-     * @param index Index of the line number table
-     * @return The value of {@code line_number_table}[{@code index}]
-     */
+    /// Get the value of `line_number_table`[`index`].
+    ///
+    /// @param index Index of the line number table
+    /// @return The value of `line_number_table`[`index`]
     public line_number_table getLineNumberTable(final int index) {
         line_number_table lnt = null;
         if (this.lineNumberTable != null && this.lineNumberTable.length > index) {
@@ -128,13 +124,11 @@ public class LineNumberTable_attribute extends attribute_info {
         return "msg_attr_LineNumberTable";
     }
 
-    /**
-     * The {@code line_number_table} structure in {@code LineNumberTable}
-     * attribute.
-     *
-     * @author Amos Shi
-     * @see LineNumberTable_attribute
-     */
+    /// The `line_number_table` structure in `LineNumberTable`
+    /// attribute.
+    ///
+    /// @author Amos Shi
+    /// @see LineNumberTable_attribute
     public static final class line_number_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 4;
@@ -142,8 +136,7 @@ public class LineNumberTable_attribute extends attribute_info {
         public final u2 line_number;
 
         private line_number_table(final PosDataInputStream posDataInputStream) throws IOException {
-            this.startPos = posDataInputStream.getPos();
-            this.length = LENGTH;
+            super(posDataInputStream.getPos(), LENGTH);
 
             this.start_pc = new u2(posDataInputStream);
             this.line_number = new u2(posDataInputStream);

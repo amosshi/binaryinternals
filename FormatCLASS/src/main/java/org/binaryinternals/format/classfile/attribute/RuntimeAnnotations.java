@@ -10,17 +10,15 @@ import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The Runtime(In)VisibleAnnotations Attribute.
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from JVM spec instead
- * java:S101 - Class names should comply with a naming convention  --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention  --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The Runtime(In)VisibleAnnotations Attribute.
+///
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from JVM spec instead
+/// java:S101 - Class names should comply with a naming convention  --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention  --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeAnnotations extends attribute_info {
 
@@ -58,7 +56,7 @@ public abstract class RuntimeAnnotations extends attribute_info {
             DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    String.format("annotations [%d]", this.num_annotations.value),
+                    "annotations [%d]".formatted(this.num_annotations.value),
                     MESSAGES.getString(this.getMessageKey_4_annotations())
             ));
             parentNode.add(annotationsNode);
@@ -78,23 +76,19 @@ public abstract class RuntimeAnnotations extends attribute_info {
         }
     }
 
-    /**
-     * Get message key for {@link #annotations}.
-     *
-     * @return Message key for {@link #annotations}
-     *
-     * @see RuntimeVisibleAnnotations_attribute
-     * @see RuntimeInvisibleAnnotations_attribute
-     */
+    /// Get message key for {@link #annotations}.
+    ///
+    /// @return Message key for {@link #annotations}
+    ///
+    /// @see RuntimeVisibleAnnotations_attribute
+    /// @see RuntimeInvisibleAnnotations_attribute
     abstract String getMessageKey_4_annotations();
 
-    /**
-     * Get message key for {@link #num_annotations}.
-     *
-     * @return Message key for {@link #num_annotations}
-     *
-     * @see RuntimeVisibleAnnotations_attribute
-     * @see RuntimeInvisibleAnnotations_attribute
-     */
+    /// Get message key for {@link #num_annotations}.
+    ///
+    /// @return Message key for {@link #num_annotations}
+    ///
+    /// @see RuntimeVisibleAnnotations_attribute
+    /// @see RuntimeInvisibleAnnotations_attribute
     abstract String getMessageKey_4_num_annotations();
 }

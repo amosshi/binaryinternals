@@ -6,32 +6,27 @@
  */
 package org.binaryinternals.format.classfile;
 
-/**
- * Java Language specification constants.
- *
- * @see <a href="http://docs.oracle.com/javase/specs/index.html">
- * The Java Language Specification
- * </a>
- * @author Amos Shi
- */
+/// Java Language specification constants.
+///
+/// @see <a href="http://docs.oracle.com/javase/specs/index.html">
+/// The Java Language Specification
+/// </a>
+/// @author Amos Shi
 public class JavaLangSpec {
 
-    /**
-     * 51 character sequences, formed from ASCII characters, are reserved for
-     * use as keywords and cannot be used as identifiers.
-     *
-     * <p>
-     * The keywords <code>const</code> and <code>goto</code> are reserved, even
-     * though they are not currently used. This may allow a Java compiler to
-     * produce better error messages if these C++ keywords incorrectly appear in
-     * programs.
-     * </p>
-     *
-     * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
-     * Keywords
-     * </a>
-     */
+    /// 51 character sequences, formed from ASCII characters, are reserved for
+    /// use as keywords and cannot be used as identifiers.
+    ///
+    ///
+    /// The keywords `const` and `goto` are reserved, even
+    /// though they are not currently used. This may allow a Java compiler to
+    /// produce better error messages if these C++ keywords incorrectly appear in
+    /// programs.
+    ///
+    ///
+    /// @see <a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
+    /// Keywords
+    /// </a>
     public enum Keyword {
 
         // ReservedKeyword
@@ -95,16 +90,13 @@ public class JavaLangSpec {
         }
     }
 
-    /**
-     * 17 character sequences, also formed from ASCII characters, may be
-     * interpreted as keywords or as other tokens, depending on the context in
-     * which they appear.
-     *
-     * @see <a
-     * href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
-     * Keywords
-     * </a>
-     */
+    /// 17 character sequences, also formed from ASCII characters, may be
+    /// interpreted as keywords or as other tokens, depending on the context in
+    /// which they appear.
+    ///
+    /// @see <a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9">
+    /// Keywords
+    /// </a>
     public enum ContextualKeyword {
 
         EXPORTS("exports"),

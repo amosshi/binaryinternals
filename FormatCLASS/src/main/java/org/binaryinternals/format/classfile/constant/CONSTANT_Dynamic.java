@@ -15,49 +15,39 @@ import org.binaryinternals.commonlib.ui.Icons;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * Parent of The {@code CONSTANT_Dynamic_info} and
- * {@code CONSTANT_InvokeDynamic_info} structures.
- *
- * @author Amos Shi
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.10">
- * VM Spec: he CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info Structures
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// Parent of The `CONSTANT_Dynamic_info` and
+/// `CONSTANT_InvokeDynamic_info` structures.
+///
+/// @author Amos Shi
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.10">
+/// VM Spec: he CONSTANT_Dynamic_info and CONSTANT_InvokeDynamic_info Structures
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public abstract class CONSTANT_Dynamic extends cp_info {
 
     public static final int LENGTH = 5;
 
-    /**
-     * The value of the {@link #name_and_type_index} item must be a valid index
-     * into the bootstrap_methods array of the bootstrap method table of this
-     * class file.
-     */
+    /// The value of the {@link #name_and_type_index} item must be a valid index
+    /// into the bootstrap_methods array of the bootstrap method table of this
+    /// class file.
     public final u2 bootstrap_method_attr_index;
 
-    /**
-     * The value of the {@link #name_and_type_index} item must be a valid index
-     * into the {@link ClassFile#constant_pool} table. The {@code constant_pool}
-     * entry at that index must be a {@code CONSTANT_NameAndType_info} structure
-     * representing a method name and method descriptor.
-     *
-     * In a {@code CONSTANT_Dynamic_info} structure, the indicated descriptor
-     * must be a field descriptor.
-     */
+    /// The value of the {@link #name_and_type_index} item must be a valid index
+    /// into the {@link ClassFile#constant_pool} table. The `constant_pool`
+    /// entry at that index must be a `CONSTANT_NameAndType_info` structure
+    /// representing a method name and method descriptor.
+    ///
+    /// In a `CONSTANT_Dynamic_info` structure, the indicated descriptor
+    /// must be a field descriptor.
     public final u2 name_and_type_index;
 
     CONSTANT_Dynamic(final short tag, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
-        super(tag);
-
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
+        super(tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.bootstrap_method_attr_index = new u2(posDataInputStream);
         this.name_and_type_index = new u2(posDataInputStream);
@@ -65,7 +55,7 @@ public abstract class CONSTANT_Dynamic extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ",
+        return "%s: Start Position: [%d], length: [%d], bootstrap_method_attr_index: [%d], name_and_type_index: [%d]. ".formatted(
                 this.getName(),
                 this.startPos,
                 super.length,
@@ -80,7 +70,7 @@ public abstract class CONSTANT_Dynamic extends cp_info {
 
     @Override
     public String toString(cp_info[] constantPool) {
-        return String.format("bootstrap_method_attr_index=%d name_and_type_index=%s",
+        return "bootstrap_method_attr_index=%d name_and_type_index=%s".formatted(
                 this.bootstrap_method_attr_index.value,
                 constantPool[this.name_and_type_index.value].toString(constantPool));
     }
@@ -101,7 +91,7 @@ public abstract class CONSTANT_Dynamic extends cp_info {
                 startPos + 3,
                 2,
                 "name_and_type_index",
-                String.format(TEXT_CPINDEX_PUREVALUE, cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_PUREVALUE.formatted(cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex)),
                 "msg_const_dynamic_name_and_type_index",
                 Icons.Offset
         );

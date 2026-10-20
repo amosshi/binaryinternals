@@ -13,28 +13,26 @@ import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code SourceFile} attribute. The {@code SourceFile}
- * attribute has the following format:
- *
- * <pre>
- *    Synthetic_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.1
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.8">
- * VM Spec: The Synthetic Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `SourceFile` attribute. The `SourceFile`
+/// attribute has the following format:
+///
+/// ```
+///    Synthetic_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.1
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.8">
+/// VM Spec: The Synthetic Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class Synthetic_attribute extends attribute_info {
 
@@ -42,7 +40,7 @@ public class Synthetic_attribute extends attribute_info {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != 0) {
-            throw new FileFormatException(String.format("The attribute_length of AttributeSynthetic is not 0, it is %d.", this.attribute_length.value));
+            throw new FileFormatException("The attribute_length of AttributeSynthetic is not 0, it is %d.".formatted(this.attribute_length.value));
         }
 
         super.checkSize(posDataInputStream.getPos());

@@ -18,39 +18,34 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The {@code CONSTANT_MethodHandle_info} structure is used to represent a
- * method handle.
- *
- * <pre>
- *    CONSTANT_MethodType_info {
- *        u1 tag;
- * 
- *        u2 descriptor_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.9">
- * VM Spec: The CONSTANT_MethodType_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The `CONSTANT_MethodHandle_info` structure is used to represent a
+/// method handle.
+///
+/// ```
+///    CONSTANT_MethodType_info {
+///        u1 tag;
+///
+///        u2 descriptor_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.9">
+/// VM Spec: The CONSTANT_MethodType_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_MethodType_info extends cp_info {
 
     public static final int LENGTH = 3;
-    /**
-     * The value of the {@code descriptor_index} item must be a valid index into
-     * the {@code constant_pool} table. The {@code constant_pool} entry at that
-     * index must be a {@code CONSTANT_Utf8_info} structure representing a
-     * method descriptor.
-     */
+    /// The value of the `descriptor_index` item must be a valid index into
+    /// the `constant_pool` table. The `constant_pool` entry at that
+    /// index must be a `CONSTANT_Utf8_info` structure representing a
+    /// method descriptor.
     public final u2 descriptor_index;
 
     CONSTANT_MethodType_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
@@ -62,7 +57,7 @@ public class CONSTANT_MethodType_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], descriptor_index: [%d]. ",
+        return "%s: Start Position: [%d], length: [%d], descriptor_index: [%d]. ".formatted(
                 this.getName(), this.startPos, super.length, this.descriptor_index.value);
     }
     
@@ -96,7 +91,7 @@ public class CONSTANT_MethodType_info extends cp_info {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + descriptor, ex);
         }
 
-        return String.format("%s : %s", parameters, returnType);
+        return "%s : %s".formatted(parameters, returnType);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class CONSTANT_MethodType_info extends cp_info {
                 startPos + 1,
                 2,
                 "descriptor_index",
-                String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "descriptor", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_const_methodtype_descriptor_index",
                 Icons.Descriptor
         );

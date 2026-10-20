@@ -42,6 +42,9 @@ Build the Source Code
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
   * Build Tool: `Apache Maven 3.6` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
+* MacOS need to install the Linux style commands
+  * `brew install coreutils`
+  * `brew install parallel`
 * Build
   * Build via maven command
     * `mvn clean`

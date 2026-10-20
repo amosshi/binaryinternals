@@ -14,31 +14,29 @@ import org.binaryinternals.commonlib.ui.Icons;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code CONSTANT_NameAndType_info} structure in constant
- * pool. The {@code CONSTANT_NameAndType_info} structure has the following
- * format:
- *
- * <pre>
- *    CONSTANT_NameAndType_info {
- *        u1 tag;
- * 
- *        u2 name_index;
- *        u2 descriptor_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.6">
- * VM Spec: The CONSTANT_NameAndType_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_NameAndType_info` structure in constant
+/// pool. The `CONSTANT_NameAndType_info` structure has the following
+/// format:
+///
+/// ```
+///    CONSTANT_NameAndType_info {
+///        u1 tag;
+///
+///        u2 name_index;
+///        u2 descriptor_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.6">
+/// VM Spec: The CONSTANT_NameAndType_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_NameAndType_info extends cp_info {
 
@@ -47,9 +45,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
     public final u2 descriptor_index;
 
     CONSTANT_NameAndType_info(final PosDataInputStream posDataInputStream) throws IOException {
-        super(cp_info.ConstantType.CONSTANT_NameAndType.tag);
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
+        super(cp_info.ConstantType.CONSTANT_NameAndType.tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.name_index = new u2(posDataInputStream);
         this.descriptor_index = new u2(posDataInputStream);
@@ -57,7 +53,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: name_index=[%d], descriptor_index=[%d].",
+        return "%s: Start Position: [%d], length: [%d], value: name_index=[%d], descriptor_index=[%d].".formatted(
                 this.getName(), this.startPos, this.length, this.name_index.value, this.descriptor_index.value);
     }
 
@@ -76,7 +72,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
         String nameStr = constantPool[this.name_index.value].toString(constantPool);
         String typeStr = constantPool[this.descriptor_index.value].toString(constantPool);
 
-        return String.format("name=%s, type=%s", nameStr, typeStr);
+        return "name=%s, type=%s".formatted(nameStr, typeStr);
     }
 
     @Override
@@ -88,7 +84,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
                 super.startPos + 1,
                 2,
                 "name_index",
-                String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "name", classFile.getCPDescription(cpIndex)),
                 "msg_const_nameandtype_name_index",
                 Icons.Name
         );
@@ -98,7 +94,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
                 super.startPos + 3,
                 2,
                 "descriptor_index",
-                String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
                 "msg_const_nameandtype_descriptor_index",
                 Icons.Descriptor
         );

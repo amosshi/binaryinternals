@@ -23,62 +23,58 @@ import org.binaryinternals.format.classfile.constant.cp_info;
 import org.binaryinternals.format.classfile.u2;
 import org.binaryinternals.format.classfile.u4;
 
-/**
- * The class for the {@code Code} attribute. The {@code Code} attribute has the
- * following format:
- *
- * <pre>
- *    Code_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 max_stack;
- *        u2 max_locals;
- *        u4 code_length;
- *        u1 code[code_length];
- *        u2 exception_table_length;
- *        {
- *                u2 start_pc;
- *                u2 end_pc;
- *                u2 handler_pc;
- *                u2 catch_type;
- *        } exception_table[exception_table_length];
- *        u2 attributes_count;
- *        attribute_info attributes[attributes_count];
- *    }
- * </pre>
- *
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.3">
- * VM Spec: The Code Attribute
- * </a>
- *
- * <pre>
- * java:S101  - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Code` attribute. The `Code` attribute has the
+/// following format:
+///
+/// ```
+///    Code_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 max_stack;
+///        u2 max_locals;
+///        u4 code_length;
+///        u1 code[code_length];
+///        u2 exception_table_length;
+///        {
+///                u2 start_pc;
+///                u2 end_pc;
+///                u2 handler_pc;
+///                u2 catch_type;
+///        } exception_table[exception_table_length];
+///        u2 attributes_count;
+///        attribute_info attributes[attributes_count];
+///    }
+/// ```
+///
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.3">
+/// VM Spec: The Code Attribute
+/// </a>
+///
+/// ```
+/// java:S101  - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// java:S116  - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S1104", "java:S116"})
 public class Code_attribute extends attribute_info {
 
     public static final String ATTRIBUTE_CODE_NODE = "code";
     public static final String ATTRIBUTE_CODE_VALUE = "byte codes";
-    public static final String ATTRIBUTE_CODE_TEXT = String.format("%s: %s", ATTRIBUTE_CODE_NODE, ATTRIBUTE_CODE_VALUE);
+    public static final String ATTRIBUTE_CODE_TEXT = "%s: %s".formatted(ATTRIBUTE_CODE_NODE, ATTRIBUTE_CODE_VALUE);
 
     public final u2 max_stack;
     public final u2 max_locals;
 
-    /**
-     * The value of the {@link #code_length} item gives the number of bytes in
-     * the code array for this method.
-     *
-     * The value of {@link #code_length} must be greater than <code>zero</code>
-     * (as the code array must not be empty) and less than <code>65536</code>.
-     */
+    /// The value of the {@link #code_length} item gives the number of bytes in
+    /// the code array for this method.
+    ///
+    /// The value of {@link #code_length} must be greater than `zero`
+    /// (as the code array must not be empty) and less than `65536`.
     public final u4 code_length;
     public final byte[] code;
     public final u2 exception_table_length;
@@ -97,7 +93,7 @@ public class Code_attribute extends attribute_info {
         this.code = new byte[this.code_length.value];
         int readBytes = posDataInputStream.read(this.code);
         if (readBytes != this.code_length.value) {
-            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.code_length.value, readBytes));
+            throw new IOException("Failed to read %d bytes, actual bytes read %d".formatted(this.code_length.value, readBytes));
         }
 
         this.exception_table_length = new u2(posDataInputStream);
@@ -121,12 +117,10 @@ public class Code_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get the {@link #code} parse result. This method will return an empty list
-     * if {@link #code} is <code>null</code>.
-     *
-     * @return Parsed {@link Opcode} list
-     */
+    /// Get the {@link #code} parse result. This method will return an empty list
+    /// if {@link #code} is `null`.
+    ///
+    /// @return Parsed {@link Opcode} list
     public List<Opcode.InstructionParsed> parseCode() {
         if (this.code != null && this.code.length > 0) {
             return Opcode.parseCode(this.code);
@@ -135,12 +129,10 @@ public class Code_attribute extends attribute_info {
         }
     }
 
-    /**
-     * Get the value of {@code exception_table}[{@code index}].
-     *
-     * @param index Index of the exception table
-     * @return The value of {@code exception_table}[{@code index}]
-     */
+    /// Get the value of `exception_table`[`index`].
+    ///
+    /// @param index Index of the exception table
+    /// @return The value of `exception_table`[`index`]
     public exception_table getExceptionTable(final int index) {
         exception_table et = null;
         if (this.exceptionTable != null) {
@@ -203,7 +195,7 @@ public class Code_attribute extends attribute_info {
             DefaultMutableTreeNode treeNodeExceptionTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 14 + codeLength + 2,
                     exception_table.LENGTH * this.exception_table_length.value,
-                    String.format("exception_table [%d]", this.exception_table_length.value),
+                    "exception_table [%d]".formatted(this.exception_table_length.value),
                     MESSAGES.getString("msg_attr_exception_table")
             ));
 
@@ -244,7 +236,7 @@ public class Code_attribute extends attribute_info {
             treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrStartPos + 2,
                     attrLength,
-                    String.format(FIELD_ATTRS, attrCount),
+                    FIELD_ATTRS.formatted(attrCount),
                     MESSAGES.getString("msg_attr_Code_attributes")
             ));
 
@@ -270,11 +262,9 @@ public class Code_attribute extends attribute_info {
         return "msg_attr_Code";
     }
 
-    /**
-     * The {@code exception_table} structure in {@code Code} attribute.
-     *
-     * @author Amos Shi
-     */
+    /// The `exception_table` structure in `Code` attribute.
+    ///
+    /// @author Amos Shi
     public static final class exception_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 8;
@@ -282,22 +272,19 @@ public class Code_attribute extends attribute_info {
         public final u2 end_pc;
         public final u2 handler_pc;
 
-        /**
-         * If the value of the catch_type item is nonzero, it must be a valid
-         * index into the constant_pool table. The constant_pool entry at that
-         * index must be a CONSTANT_Class_info structure representing a class of
-         * exceptions that this exception handler is designated to catch. The
-         * exception handler will be called only if the thrown exception is an
-         * instance of the given class or one of its subclasses.
-         *
-         * If the value of the catch_type item is zero, this exception handler
-         * is called for all exceptions.
-         */
+        /// If the value of the catch_type item is nonzero, it must be a valid
+        /// index into the constant_pool table. The constant_pool entry at that
+        /// index must be a CONSTANT_Class_info structure representing a class of
+        /// exceptions that this exception handler is designated to catch. The
+        /// exception handler will be called only if the thrown exception is an
+        /// instance of the given class or one of its subclasses.
+        ///
+        /// If the value of the catch_type item is zero, this exception handler
+        /// is called for all exceptions.
         public final u2 catch_type;
 
         private exception_table(final PosDataInputStream posDataInputStream) throws IOException {
-            this.startPos = posDataInputStream.getPos();
-            this.length = LENGTH;
+            super(posDataInputStream.getPos(), LENGTH);
 
             this.start_pc = new u2(posDataInputStream);
             this.end_pc = new u2(posDataInputStream);

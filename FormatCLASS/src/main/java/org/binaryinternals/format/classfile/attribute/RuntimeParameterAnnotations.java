@@ -13,17 +13,15 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u1;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The Runtime(In)VisibleParameterAnnotations Attribute.
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from JVM spec instead
- * java:S101 - Class names should comply with a naming convention  --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention  --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The Runtime(In)VisibleParameterAnnotations Attribute.
+///
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from JVM spec instead
+/// java:S101 - Class names should comply with a naming convention  --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention  --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeParameterAnnotations extends attribute_info {
 
@@ -60,7 +58,7 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
             DefaultMutableTreeNode parameterAnnotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 7,
                     this.getLength() - 7,
-                    String.format("parameter_annotations [%d]", this.parameter_annotations.length),
+                    "parameter_annotations [%d]".formatted(this.parameter_annotations.length),
                     MESSAGES.getString(this.getMessageKey_4_parameter_annotations())
             ));
             parentNode.add(parameterAnnotationsNode);
@@ -79,44 +77,36 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
         }
     }
 
-    /**
-     * Get message key for {@link #num_parameters}.
-     *
-     * @return Message key for {@link #num_parameters}
-     *
-     * @see RuntimeVisibleParameterAnnotations_attribute
-     * @see RuntimeInvisibleParameterAnnotations_attribute
-     */
+    /// Get message key for {@link #num_parameters}.
+    ///
+    /// @return Message key for {@link #num_parameters}
+    ///
+    /// @see RuntimeVisibleParameterAnnotations_attribute
+    /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_num_parameters();
 
-    /**
-     * Get message key for {@link #parameter_annotations}.
-     *
-     * @return Message key for {@link #parameter_annotations}
-     *
-     * @see RuntimeVisibleParameterAnnotations_attribute
-     * @see RuntimeInvisibleParameterAnnotations_attribute
-     */
+    /// Get message key for {@link #parameter_annotations}.
+    ///
+    /// @return Message key for {@link #parameter_annotations}
+    ///
+    /// @see RuntimeVisibleParameterAnnotations_attribute
+    /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations();
 
-    /**
-     * Get message key for {@link parameter_annotations#num_annotations}.
-     *
-     * @return Message key for {@link parameter_annotations#num_annotations}
-     *
-     * @see RuntimeVisibleParameterAnnotations_attribute
-     * @see RuntimeInvisibleParameterAnnotations_attribute
-     */
+    /// Get message key for {@link parameter_annotations#num_annotations}.
+    ///
+    /// @return Message key for {@link parameter_annotations#num_annotations}
+    ///
+    /// @see RuntimeVisibleParameterAnnotations_attribute
+    /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations__num_annotations();
 
-    /**
-     * Get message key for {@link parameter_annotations#annotations}0.
-     *
-     * @return Message key for {@link parameter_annotations#annotations}
-     *
-     * @see RuntimeVisibleParameterAnnotations_attribute
-     * @see RuntimeInvisibleParameterAnnotations_attribute
-     */
+    /// Get message key for {@link parameter_annotations#annotations}0.
+    ///
+    /// @return Message key for {@link parameter_annotations#annotations}
+    ///
+    /// @see RuntimeVisibleParameterAnnotations_attribute
+    /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations__annotations();
 
     public class parameter_annotations extends FileComponent implements GenerateTreeNodeClassFile {
@@ -155,7 +145,7 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
                 DefaultMutableTreeNode annotationsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving + 2,
                         this.getLength() - 2,
-                        String.format("annotations [%d]", this.annotations.length),
+                        "annotations [%d]".formatted(this.annotations.length),
                         MESSAGES.getString(RuntimeParameterAnnotations.this.getMessageKey_4_parameter_annotations__annotations())
                 ));
                 parentNode.add(annotationsNode);

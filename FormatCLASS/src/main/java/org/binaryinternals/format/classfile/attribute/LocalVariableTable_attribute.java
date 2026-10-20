@@ -18,37 +18,35 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code LocalVariableTable} attribute. The
- * {@code LocalVariableTable} attribute has the following format:
- *
- * <pre>
- *    LocalVariableTable_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 local_variable_table_length;
- *        {   u2 start_pc;
- *            u2 length;
- *            u2 name_index;
- *            u2 descriptor_index;
- *            u2 index;
- *        } local_variable_table[local_variable_table_length];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.13">
- * VM Spec: The LocalVariableTable Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `LocalVariableTable` attribute. The
+/// `LocalVariableTable` attribute has the following format:
+///
+/// ```
+///    LocalVariableTable_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 local_variable_table_length;
+///        {   u2 start_pc;
+///            u2 length;
+///            u2 name_index;
+///            u2 descriptor_index;
+///            u2 index;
+///        } local_variable_table[local_variable_table_length];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.13">
+/// VM Spec: The LocalVariableTable Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class LocalVariableTable_attribute extends attribute_info {
 
@@ -71,12 +69,10 @@ public class LocalVariableTable_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get the value of {@code local_variable_table}[{@code index}].
-     *
-     * @param index Index of the local variable table
-     * @return The value of {@code local_variable_table}[{@code index}]
-     */
+    /// Get the value of `local_variable_table`[`index`].
+    ///
+    /// @param index Index of the local variable table
+    /// @return The value of `local_variable_table`[`index`]
     public local_variable_table getLocalVariableTable(final int index) {
         local_variable_table lvt = null;
         if (this.localVariableTable != null && this.localVariableTable.length > 0) {
@@ -111,7 +107,7 @@ public class LocalVariableTable_attribute extends attribute_info {
                 DefaultMutableTreeNode treeNodeLvtItem = this.addNode(treeNodeLvt,
                         lvt.getStartPos(),
                         lvt.getLength(),
-                        String.format("%05d", i + 1),
+                        "%05d".formatted(i + 1),
                         "local_variable_table",
                         "msg_attr_local_variable_table",
                         Icons.Row
@@ -128,51 +124,37 @@ public class LocalVariableTable_attribute extends attribute_info {
         return "msg_attr_LocalVariableTable";
     }
 
-    /**
-     * The {@code local_variable_table} structure in {@code LocalVariableTable}
-     * attribute.
-     *
-     * @author Amos Shi
-     * @see LocalVariableTable_attribute
-     */
+    /// The `local_variable_table` structure in `LocalVariableTable`
+    /// attribute.
+    ///
+    /// @author Amos Shi
+    /// @see LocalVariableTable_attribute
     public static final class local_variable_table extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 10;
-        /**
-         * The given local variable must have a value at indices into the
-         * {@link Code_attribute#code} array in the interval
-         * <code>[start_pc, start_pc + length)</code>, that is, between
-         * <code>start_pc</code> inclusive and <code>start_pc + length</code>
-         * exclusive.
-         */
+        /// The given local variable must have a value at indices into the
+        /// {@link Code_attribute#code} array in the interval
+        /// `[start_pc, start_pc + length)`, that is, between
+        /// `start_pc` inclusive and `start_pc + length`
+        /// exclusive.
         public final u2 start_pc;
-        /**
-         * See {@link local_variable_table#start_pc}.
-         */
+        /// See {@link local_variable_table#start_pc}.
         public final u2 length_code;
-        /**
-         * Representing a valid unqualified name denoting a local variable.
-         */
+        /// Representing a valid unqualified name denoting a local variable.
         public final u2 name_index;
-        /**
-         * Representing a field descriptor which encodes the type of a local
-         * variable in the source program.
-         */
+        /// Representing a field descriptor which encodes the type of a local
+        /// variable in the source program.
         public final u2 descriptor_index;
-        /**
-         * The given local variable must be at {@link #index} in the local
-         * variable array of the current frame.
-         * <p>
-         * If the local variable at {@link #index} is of type
-         * <code>double</code> or <code>long</code>, it occupies both
-         * <code>index</code> and <code>index + 1</code>.
-         * </p>
-         */
+        /// The given local variable must be at {@link #index} in the local
+        /// variable array of the current frame.
+        ///
+        /// If the local variable at {@link #index} is of type
+        /// `double` or `long`, it occupies both
+        /// `index` and `index + 1`.
         public final u2 index;
 
         private local_variable_table(final PosDataInputStream posDataInputStream) throws IOException {
-            super.startPos = posDataInputStream.getPos();
-            super.length = LENGTH;
+            super(posDataInputStream.getPos(), LENGTH);
 
             this.start_pc = new u2(posDataInputStream);
             this.length_code = new u2(posDataInputStream);
@@ -210,7 +192,7 @@ public class LocalVariableTable_attribute extends attribute_info {
                     pos + 4,
                     u2.LENGTH,
                     "name_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "name", classFile.getCPDescription(cpIndex)),
                     "msg_attr_local_variable_table__name_index",
                     Icons.Name
             );
@@ -220,7 +202,7 @@ public class LocalVariableTable_attribute extends attribute_info {
                     pos + 6,
                     u2.LENGTH,
                     "descriptor_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
                     "msg_attr_local_variable_table__descriptor_index",
                     Icons.Descriptor
             );

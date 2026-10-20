@@ -20,67 +20,65 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code Module} attribute.
- *
- * The {@code Module} attribute is a variable-length attribute in the attributes
- * table of a {@code ClassFile} structure. The {@code Module} attribute
- * indicates the modules required by a module; the packages exported and opened
- * by a module; and the services used and provided by a module.
- *
- * The {@code Module} attribute has the following format:
- *
- * <pre>
- * Module_attribute {
- *     u2 attribute_name_index;
- *     u4 attribute_length;
- *
- *     u2 module_name_index;
- *     u2 module_flags;
- *     u2 module_version_index;
- *
- *     u2 requires_count;
- *     {   u2 requires_index;
- *         u2 requires_flags;
- *         u2 requires_version_index;
- *     } requires[requires_count];
- *
- *     u2 exports_count;
- *     {   u2 exports_index;
- *         u2 exports_flags;
- *         u2 exports_to_count;
- *         u2 exports_to_index[exports_to_count];
- *     } exports[exports_count];
- *
- *     u2 opens_count;
- *     {   u2 opens_index;
- *         u2 opens_flags;
- *         u2 opens_to_count;
- *         u2 opens_to_index[opens_to_count];
- *     } opens[opens_count];
- *
- *     u2 uses_count;
- *     u2 uses_index[uses_count];
- *
- *     u2 provides_count;
- *     {   u2 provides_index;
- *         u2 provides_with_count;
- *         u2 provides_with_index[provides_with_count];
- *     } provides[provides_count];
- * }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 9
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.25">
- * VM Spec: The Module Attribute</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Module` attribute.
+///
+/// The `Module` attribute is a variable-length attribute in the attributes
+/// table of a `ClassFile` structure. The `Module` attribute
+/// indicates the modules required by a module; the packages exported and opened
+/// by a module; and the services used and provided by a module.
+///
+/// The `Module` attribute has the following format:
+///
+/// ```
+/// Module_attribute {
+///     u2 attribute_name_index;
+///     u4 attribute_length;
+///
+///     u2 module_name_index;
+///     u2 module_flags;
+///     u2 module_version_index;
+///
+///     u2 requires_count;
+///     {   u2 requires_index;
+///         u2 requires_flags;
+///         u2 requires_version_index;
+///     } requires[requires_count];
+///
+///     u2 exports_count;
+///     {   u2 exports_index;
+///         u2 exports_flags;
+///         u2 exports_to_count;
+///         u2 exports_to_index[exports_to_count];
+///     } exports[exports_count];
+///
+///     u2 opens_count;
+///     {   u2 opens_index;
+///         u2 opens_flags;
+///         u2 opens_to_count;
+///         u2 opens_to_index[opens_to_count];
+///     } opens[opens_count];
+///
+///     u2 uses_count;
+///     u2 uses_index[uses_count];
+///
+///     u2 provides_count;
+///     {   u2 provides_index;
+///         u2 provides_with_count;
+///         u2 provides_with_index[provides_with_count];
+///     } provides[provides_count];
+/// }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 9
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.25">
+/// VM Spec: The Module Attribute</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Module_attribute extends attribute_info {
 
@@ -103,11 +101,7 @@ public class Module_attribute extends attribute_info {
     public final u2 provides_count;
     public final Provides[] provides;
 
-    /**
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
-     * </pre>
-     */
+    // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
     @SuppressWarnings("java:S3776")
     Module_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
@@ -175,23 +169,19 @@ public class Module_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get extracted {@link #module_flags}.
-     *
-     * @return Extracted {@link #module_flags}
-     */
+    /// Get extracted {@link #module_flags}.
+    ///
+    /// @return Extracted {@link #module_flags}
     public String getModuleFlags() {
         return AccessFlag.getModifier(this.module_flags.value, AccessFlag.ForModule);
     }
 
-    /**
-     * @param parentNode Parent JTree node
-     * @param format Current class file object
-     *
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
-     * </pre>
-     */
+    /// @param parentNode Parent JTree node
+    /// @param format Current class file object
+    ///
+    /// ```
+    /// java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+    /// ```
     @Override
     @SuppressWarnings("java:S3776")
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat format) {
@@ -203,7 +193,7 @@ public class Module_attribute extends attribute_info {
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
                 "module_name_index",
-                String.format(TEXT_CPINDEX_VALUE, moduleNameCpIndex, "module name", classFile.getCPDescription(moduleNameCpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(moduleNameCpIndex, "module name", classFile.getCPDescription(moduleNameCpIndex)),
                 "msg_attr_module_name_index",
                 Icons.Module
         );
@@ -247,7 +237,7 @@ public class Module_attribute extends attribute_info {
             final DefaultMutableTreeNode requiresNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     Module_attribute.Requires.LENGTH * this.requires_count.value,
-                    String.format("requires [%d]", this.requires_count.value),
+                    "requires [%d]".formatted(this.requires_count.value),
                     MESSAGES.getString("msg_attr_requires")
             ));
             parentNode.add(requiresNode);
@@ -256,7 +246,7 @@ public class Module_attribute extends attribute_info {
                 DefaultMutableTreeNode requireNode = this.addNode(requiresNode,
                         this.requires[i].getStartPos(),
                         this.requires[i].getLength(),
-                        String.format("requires %d", i + 1),
+                        "requires %d".formatted(i + 1),
                         classFile.getCPDescription(this.requires[i].requires_index.value),
                         "msg_attr_requires",
                         Icons.Data
@@ -284,7 +274,7 @@ public class Module_attribute extends attribute_info {
             final DefaultMutableTreeNode exportsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     exporstLastItem.getStartPos() + exporstLastItem.getLength() - startPosMoving,
-                    String.format("exports [%d]", this.exports_count.value),
+                    "exports [%d]".formatted(this.exports_count.value),
                     MESSAGES.getString("msg_attr_exports")
             ));
             parentNode.add(exportsNode);
@@ -293,7 +283,7 @@ public class Module_attribute extends attribute_info {
                 DefaultMutableTreeNode exportNode = this.addNode(exportsNode,
                         this.exports[i].getStartPos(),
                         this.exports[i].getLength(),
-                        String.format("export %d", i + 1), classFile.getCPDescription(this.exports[i].exports_index.value),
+                        "export %d".formatted(i + 1), classFile.getCPDescription(this.exports[i].exports_index.value),
                         "msg_attr_exports", Icons.Data
                 );
                 this.exports[i].generateTreeNode(exportNode, format);
@@ -318,7 +308,7 @@ public class Module_attribute extends attribute_info {
             final DefaultMutableTreeNode opensNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     opensLastItem.getStartPos() + opensLastItem.getLength() - startPosMoving,
-                    String.format("opens [%d]", this.opens_count.value),
+                    "opens [%d]".formatted(this.opens_count.value),
                     MESSAGES.getString("msg_attr_opens")
             ));
             parentNode.add(opensNode);
@@ -327,7 +317,7 @@ public class Module_attribute extends attribute_info {
                 DefaultMutableTreeNode openNode = this.addNode(opensNode,
                         this.opens[i].getStartPos(),
                         this.opens[i].getLength(),
-                        String.format("open %d", i + 1), classFile.getCPDescription(this.opens[i].opens_index.value),
+                        "open %d".formatted(i + 1), classFile.getCPDescription(this.opens[i].opens_index.value),
                         "msg_attr_opens", Icons.Data
                 );
                 this.opens[i].generateTreeNode(openNode, format);
@@ -352,7 +342,7 @@ public class Module_attribute extends attribute_info {
             final DefaultMutableTreeNode usesCountNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     uses_count_length,
-                    String.format("uses_index [%d]", this.uses_count.value),
+                    "uses_index [%d]".formatted(this.uses_count.value),
                     MESSAGES.getString("msg_attr_uses_index")
             ));
             parentNode.add(usesCountNode);
@@ -362,8 +352,8 @@ public class Module_attribute extends attribute_info {
                 this.addNode(usesCountNode,
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        String.format("uses_index %d", i + 1),
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "uses class", classFile.getCPDescription(cpIndex)),
+                        "uses_index %d".formatted(i + 1),
+                        TEXT_CPINDEX_VALUE.formatted(cpIndex, "uses class", classFile.getCPDescription(cpIndex)),
                         "msg_attr_uses_index",
                         Icons.Class
                 );
@@ -387,7 +377,7 @@ public class Module_attribute extends attribute_info {
             final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     provideLastItem.getStartPos() + provideLastItem.getLength() - startPosMoving,
-                    String.format("provides [%d]", this.provides_count.value),
+                    "provides [%d]".formatted(this.provides_count.value),
                     MESSAGES.getString("msg_attr_provides")
             ));
             parentNode.add(providesNode);
@@ -396,7 +386,7 @@ public class Module_attribute extends attribute_info {
                 DefaultMutableTreeNode provideNode = this.addNode(providesNode,
                         this.provides[i].getStartPos(),
                         this.provides[i].getLength(),
-                        String.format("provide %d", i + 1), classFile.getCPDescription(this.provides[i].provides_index.value),
+                        "provide %d".formatted(i + 1), classFile.getCPDescription(this.provides[i].provides_index.value),
                         "msg_attr_provides", Icons.Data
                 );
                 this.provides[i].generateTreeNode(provideNode, format);
@@ -409,13 +399,11 @@ public class Module_attribute extends attribute_info {
         return "msg_attr_Module";
     }
 
-    /**
-     * The {@code requires} structure in {@code Module} attribute.
-     *
-     * @author Amos Shi
-     * @since Java 9
-     * @see Module
-     */
+    /// The `requires` structure in `Module` attribute.
+    ///
+    /// @author Amos Shi
+    /// @since Java 9
+    /// @see Module
     public static final class Requires extends FileComponent implements GenerateTreeNodeClassFile {
 
         public static final int LENGTH = 6;
@@ -425,8 +413,7 @@ public class Module_attribute extends attribute_info {
 
         private Requires(final PosDataInputStream posDataInputStream)
                 throws IOException {
-            this.startPos = posDataInputStream.getPos();
-            this.length = LENGTH;
+            super(posDataInputStream.getPos(), LENGTH);
 
             this.requires_index = new u2(posDataInputStream);
             this.requires_flags = new u2(posDataInputStream);
@@ -443,7 +430,7 @@ public class Module_attribute extends attribute_info {
                     startPosMoving,
                     u2.LENGTH,
                     "requires_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "requires module", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "requires module", classFile.getCPDescription(cpIndex)),
                     "msg_attr_requires_index",
                     Icons.Name
             );
@@ -473,23 +460,19 @@ public class Module_attribute extends attribute_info {
             );
         }
 
-        /**
-         * Get extracted {@link #requires_flags}.
-         *
-         * @return Extracted {@link #requires_flags}
-         */
+        /// Get extracted {@link #requires_flags}.
+        ///
+        /// @return Extracted {@link #requires_flags}
         public String getRequiresFlags() {
             return AccessFlag.getModifier(this.requires_flags.value, AccessFlag.ForModuleRequires);
         }
     }
 
-    /**
-     * The {@code exports} structure in {@code Module} attribute.
-     *
-     * @author Amos Shi
-     * @since Java 9
-     * @see Module
-     */
+    /// The `exports` structure in `Module` attribute.
+    ///
+    /// @author Amos Shi
+    /// @since Java 9
+    /// @see Module
     public static final class Exports extends FileComponent implements GenerateTreeNodeClassFile {
 
         public final u2 exports_index;
@@ -525,7 +508,7 @@ public class Module_attribute extends attribute_info {
                     startPosMoving,
                     u2.LENGTH,
                     "exports_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "exports package", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "exports package", classFile.getCPDescription(cpIndex)),
                     "msg_attr_exports_index",
                     Icons.Package
             );
@@ -555,7 +538,7 @@ public class Module_attribute extends attribute_info {
                 final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         u2.LENGTH * this.exports_to_count.value,
-                        String.format("exports_to_index [%d]", this.exports_to_count.value),
+                        "exports_to_index [%d]".formatted(this.exports_to_count.value),
                         MESSAGES.getString("msg_attr_exports_to_index")
                 ));
                 parentNode.add(exportsToIndexNode);
@@ -565,8 +548,8 @@ public class Module_attribute extends attribute_info {
                     this.addNode(exportsToIndexNode,
                             startPosMoving + i * u2.LENGTH,
                             u2.LENGTH,
-                            String.format("exports_to_index %d", i + 1),
-                            String.format(TEXT_CPINDEX_VALUE, cpIndex, "exports to index", classFile.getCPDescription(cpIndex)),
+                            "exports_to_index %d".formatted(i + 1),
+                            TEXT_CPINDEX_VALUE.formatted(cpIndex, "exports to index", classFile.getCPDescription(cpIndex)),
                             "msg_attr_exports_to_index",
                             Icons.Module
                     );
@@ -574,23 +557,19 @@ public class Module_attribute extends attribute_info {
             }
         }
 
-        /**
-         * Get extracted {@link #exports_flags}.
-         *
-         * @return Extracted {@link #exports_flags}
-         */
+        /// Get extracted {@link #exports_flags}.
+        ///
+        /// @return Extracted {@link #exports_flags}
         public String getExportFlags() {
             return AccessFlag.getModifier(this.exports_flags.value, AccessFlag.ForModuleExports);
         }
     }
 
-    /**
-     * The {@code opens} structure in {@code Module} attribute.
-     *
-     * @author Amos Shi
-     * @since Java 9
-     * @see Module
-     */
+    /// The `opens` structure in `Module` attribute.
+    ///
+    /// @author Amos Shi
+    /// @since Java 9
+    /// @see Module
     public static final class Opens extends FileComponent implements GenerateTreeNodeClassFile {
 
         public final u2 opens_index;
@@ -624,7 +603,7 @@ public class Module_attribute extends attribute_info {
             int cpIndex = this.opens_index.value;
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
-                    "opens_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "opens package", classFile.getCPDescription(cpIndex)),
+                    "opens_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "opens package", classFile.getCPDescription(cpIndex)),
                     "msg_attr_opens_index", Icons.Package
             );
             startPosMoving += u2.LENGTH;
@@ -647,8 +626,8 @@ public class Module_attribute extends attribute_info {
                 final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         u2.LENGTH * this.opens_to_count.value,
-                        String.format("opens_to_index [%d]", this.opens_to_count.value),
-                        "msg_attr_opens_to_index"
+                        "opens_to_index [%d]".formatted(this.opens_to_count.value),
+                        MESSAGES.getString("msg_attr_opens_to_index")
                 ));
                 parentNode.add(exportsToIndexNode);
 
@@ -657,8 +636,8 @@ public class Module_attribute extends attribute_info {
                     this.addNode(exportsToIndexNode,
                             startPosMoving + i * u2.LENGTH,
                             u2.LENGTH,
-                            String.format("opens_to_index %d", i + 1),
-                            String.format(TEXT_CPINDEX_VALUE, cpIndex, "opens module", classFile.getCPDescription(cpIndex)),
+                            "opens_to_index %d".formatted(i + 1),
+                            TEXT_CPINDEX_VALUE.formatted(cpIndex, "opens module", classFile.getCPDescription(cpIndex)),
                             "msg_attr_opens_to_index",
                             Icons.Module
                     );
@@ -666,23 +645,19 @@ public class Module_attribute extends attribute_info {
             }
         }
 
-        /**
-         * Get extracted {@link #opens_flags}.
-         *
-         * @return Extracted {@link #opens_flags}
-         */
+        /// Get extracted {@link #opens_flags}.
+        ///
+        /// @return Extracted {@link #opens_flags}
         public String getOpenFlags() {
             return AccessFlag.getModifier(this.opens_flags.value, AccessFlag.ForModuleOpens);
         }
     }
 
-    /**
-     * The {@code provides} structure in {@code Module} attribute.
-     *
-     * @author Amos Shi
-     * @since Java 9
-     * @see Module
-     */
+    /// The `provides` structure in `Module` attribute.
+    ///
+    /// @author Amos Shi
+    /// @since Java 9
+    /// @see Module
     public static final class Provides extends FileComponent implements GenerateTreeNodeClassFile {
 
         public final u2 provides_index;
@@ -714,7 +689,7 @@ public class Module_attribute extends attribute_info {
             int cpIndex = this.provides_index.value;
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
-                    "provides_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "provides class", classFile.getCPDescription(cpIndex)),
+                    "provides_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "provides class", classFile.getCPDescription(cpIndex)),
                     "msg_attr_provides_index", Icons.Class
             );
             startPosMoving += u2.LENGTH;
@@ -730,7 +705,7 @@ public class Module_attribute extends attribute_info {
                 final DefaultMutableTreeNode exportsToIndexNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         u2.LENGTH * this.provides_with_count.value,
-                        String.format("provides_with_index [%d]", this.provides_with_count.value),
+                        "provides_with_index [%d]".formatted(this.provides_with_count.value),
                         MESSAGES.getString("msg_attr_provides_with_index")
                 ));
                 parentNode.add(exportsToIndexNode);
@@ -739,8 +714,8 @@ public class Module_attribute extends attribute_info {
                     this.addNode(exportsToIndexNode,
                             startPosMoving + i * u2.LENGTH,
                             u2.LENGTH,
-                            String.format("provides_with_index %d", i + 1),
-                            String.format(TEXT_CPINDEX_VALUE, cpIndex, "provides class", classFile.getCPDescription(cpIndex)),
+                            "provides_with_index %d".formatted(i + 1),
+                            TEXT_CPINDEX_VALUE.formatted(cpIndex, "provides class", classFile.getCPDescription(cpIndex)),
                             "msg_attr_provides_with_index",
                             Icons.Class
                     );

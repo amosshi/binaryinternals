@@ -21,36 +21,34 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Class_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code InnerClasses} attribute. The {@code InnerClasses}
- * attribute has the following format:
- *
- * <pre>
- *    InnerClasses_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 number_of_classes;
- *        {  u2 inner_class_info_index;
- *           u2 outer_class_info_index;
- *           u2 inner_name_index;
- *           u2 inner_class_access_flags;
- *        } classes[number_of_classes];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.1
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.6">
- * VM Spec: The InnerClasses Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `InnerClasses` attribute. The `InnerClasses`
+/// attribute has the following format:
+///
+/// ```
+///    InnerClasses_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 number_of_classes;
+///        {  u2 inner_class_info_index;
+///           u2 outer_class_info_index;
+///           u2 inner_name_index;
+///           u2 inner_class_access_flags;
+///        } classes[number_of_classes];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.1
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.6">
+/// VM Spec: The InnerClasses Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class InnerClasses_attribute extends attribute_info {
 
@@ -73,12 +71,10 @@ public class InnerClasses_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get the value of {@code classes}[{@code index}].
-     *
-     * @param index Index of the classes
-     * @return The value of {@code classes}[{@code index}]
-     */
+    /// Get the value of `classes`[`index`].
+    ///
+    /// @param index Index of the classes
+    /// @return The value of `classes`[`index`]
     public Class getClass(final int index) {
         Class cls = null;
         if (this.classes != null && this.classes.length > index) {
@@ -103,7 +99,7 @@ public class InnerClasses_attribute extends attribute_info {
             treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getClass(numOfClasses - 1).getStartPos() + this.getClass(numOfClasses - 1).getLength() - (startPos + 8),
-                    String.format("classes [%d]", numOfClasses),
+                    "classes [%d]".formatted(numOfClasses),
                     MESSAGES.getString("msg_attr_classes")
             ));
 
@@ -114,7 +110,7 @@ public class InnerClasses_attribute extends attribute_info {
                 DefaultMutableTreeNode treeNodeInnerClassItem = this.addNode(treeNodeInnerClass,
                         cls.getStartPos(),
                         cls.getLength(),
-                        String.format("inner class %d", i + 1),
+                        "inner class %d".formatted(i + 1),
                         ((ClassFile)classFile).getCPDescription(cls.inner_class_info_index.value),
                         "msg_attr_classes",
                         Icons.Kind
@@ -131,54 +127,43 @@ public class InnerClasses_attribute extends attribute_info {
         return "msg_attr_InnerClasses";
     }
 
-    /**
-     * The {@code classes} structure in {@code InnerClasses} attribute.
-     *
-     * @author Amos Shi
-     */
+    /// The `classes` structure in `InnerClasses` attribute.
+    ///
+    /// @author Amos Shi
     public static final class Class extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * The length of current component.
-         */
+        /// The length of current component.
         public static final int LENGTH = 8;
 
-        /**
-         * The value of the {@link inner_class_info_index} item must be a valid
-         * index into the {@link ClassFile#constant_pool} table. The
-         * {@link ClassFile#constant_pool} entry at that index must be a
-         * {@link CONSTANT_Class_info} structure representing <code>C</code>.
-         */
+        /// The value of the {@link inner_class_info_index} item must be a valid
+        /// index into the {@link ClassFile#constant_pool} table. The
+        /// {@link ClassFile#constant_pool} entry at that index must be a
+        /// {@link CONSTANT_Class_info} structure representing `C`.
         public final u2 inner_class_info_index;
-        /**
-         * If C is not a member of a class or an interface - that is, if C is a
-         * top-level class or interface or a local class or an anonymous class -
-         * then the value of the outer_class_info_index item must be zero.
-         *
-         * Otherwise, the value of the outer_class_info_index item must be a
-         * valid index into the constant_pool table, and the entry at that index
-         * must be a CONSTANT_Class_info structure representing the class or
-         * interface of which C is a member. The value of the
-         * outer_class_info_index item must not equal the the value of the
-         * inner_class_info_index item.
-         */
+        /// If C is not a member of a class or an interface - that is, if C is a
+        /// top-level class or interface or a local class or an anonymous class -
+        /// then the value of the outer_class_info_index item must be zero.
+        ///
+        /// Otherwise, the value of the outer_class_info_index item must be a
+        /// valid index into the constant_pool table, and the entry at that index
+        /// must be a CONSTANT_Class_info structure representing the class or
+        /// interface of which C is a member. The value of the
+        /// outer_class_info_index item must not equal the the value of the
+        /// inner_class_info_index item.
         public final u2 outer_class_info_index;
-        /**
-         * If C is anonymous, the value of the inner_name_index item must be
-         * zero.
-         *
-         * Otherwise, the value of the inner_name_index item must be a valid
-         * index into the constant_pool table, and the entry at that index must
-         * be a CONSTANT_Utf8_info structure that represents the original simple
-         * name of C, as given in the source code from which this class file was
-         * compiled.
-         */
+        /// If C is anonymous, the value of the inner_name_index item must be
+        /// zero.
+        ///
+        /// Otherwise, the value of the inner_name_index item must be a valid
+        /// index into the constant_pool table, and the entry at that index must
+        /// be a CONSTANT_Utf8_info structure that represents the original simple
+        /// name of C, as given in the source code from which this class file was
+        /// compiled.
         public final u2 inner_name_index;
         public final u2 inner_class_access_flags;
 
         private Class(final PosDataInputStream posDataInputStream) throws IOException {
-            this.startPos = posDataInputStream.getPos();
-            this.length = LENGTH;
+            super(posDataInputStream.getPos(), LENGTH);
 
             this.inner_class_info_index = new u2(posDataInputStream);
             this.outer_class_info_index = new u2(posDataInputStream);
@@ -186,12 +171,10 @@ public class InnerClasses_attribute extends attribute_info {
             this.inner_class_access_flags = new u2(posDataInputStream);
         }
 
-        /**
-         * Generate the modifier string from the
-         * {@link #inner_class_access_flags} value.
-         *
-         * @return A string for modifier
-         */
+        /// Generate the modifier string from the
+        /// {@link #inner_class_access_flags} value.
+        ///
+        /// @return A string for modifier
         public String getModifiers() {
             return AccessFlag.getInnerClassModifier(this.inner_class_access_flags.value);
         }
@@ -207,7 +190,7 @@ public class InnerClasses_attribute extends attribute_info {
                     startPosMoving,
                     u2.LENGTH,
                     "inner_class_info_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "inner class type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "inner class type", ((ClassFile) classFile).getCPDescription(cpIndex)),
                     "msg_attr_classes__inner_class_info_index",
                     Icons.Index
             );
@@ -218,7 +201,7 @@ public class InnerClasses_attribute extends attribute_info {
                     startPosMoving + 2,
                     u2.LENGTH,
                     "outer_class_info_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "outer class type", outer_class_info_index_desc),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "outer class type", outer_class_info_index_desc),
                     "msg_attr_classes__outer_class_info_index",
                     Icons.Index
             );
@@ -229,7 +212,7 @@ public class InnerClasses_attribute extends attribute_info {
                     startPosMoving + 4,
                     u2.LENGTH,
                     "inner_name_index",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "inner class name", inner_name_index_desc),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "inner class name", inner_name_index_desc),
                     "msg_attr_classes__inner_name_index",
                     Icons.Name
             );

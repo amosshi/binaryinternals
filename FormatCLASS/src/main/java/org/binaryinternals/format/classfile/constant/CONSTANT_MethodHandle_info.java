@@ -16,50 +16,43 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.u1;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The {@code CONSTANT_MethodHandle_info} structure is used to represent a
- * method handle.
- *
- * <pre>
- *    CONSTANT_MethodHandle_info {
- *        u1 tag;
- *
- *        u1 reference_kind;
- *        u2 reference_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.8">
- * VM Spec: The CONSTANT_MethodHandle_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The `CONSTANT_MethodHandle_info` structure is used to represent a
+/// method handle.
+///
+/// ```
+///    CONSTANT_MethodHandle_info {
+///        u1 tag;
+///
+///        u1 reference_kind;
+///        u2 reference_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.8">
+/// VM Spec: The CONSTANT_MethodHandle_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_MethodHandle_info extends cp_info {
 
     public static final int LENGTH = 5;
-    /**
-     * The value of the {@code reference_kind} item must be in the range 1 to 9.
-     * The value denotes the {@code kind} of this method handle, which
-     * characterizes its byte code behavior.
-     */
+    /// The value of the `reference_kind` item must be in the range 1 to 9.
+    /// The value denotes the `kind` of this method handle, which
+    /// characterizes its byte code behavior.
     public final u1 reference_kind;
-    /**
-     * The value of the {@code reference_index} item must be a valid index into
-     * the {@code constant_pool} table.
-     */
+    /// The value of the `reference_index` item must be a valid index into
+    /// the `constant_pool` table.
     public final u2 reference_index;
 
     CONSTANT_MethodHandle_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(cp_info.ConstantType.CONSTANT_MethodHandle.tag);
         super.startPos = posDataInputStream.getPos() - 1;
-        this.reference_kind = new u1(posDataInputStream, true);
+        this.reference_kind = new u1(posDataInputStream);
         this.reference_index = new u2(posDataInputStream);
         super.length = LENGTH;
     }
@@ -84,7 +77,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
 
     @Override
     public String toString(cp_info[] constantPool) {
-        return String.format("reference_kind=%s reference_index=%s",
+        return "reference_kind=%s reference_index=%s".formatted(
                 ReferenceKind.name(this.reference_kind.value),
                 constantPool[this.reference_index.value].toString(constantPool));
     }
@@ -109,19 +102,16 @@ public class CONSTANT_MethodHandle_info extends cp_info {
         );
     }
 
-    /**
-     * The value denotes the {@code kind} of this method handle, which
-     * characterizes its bytecode behavior.
-     *
-     * @see <a
-     * href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html#jvms-5.4.3.5">
-     * VM Spec: Method Type and Method Handle Resolution
-     * </a>
-     *
-     * <pre>
-     * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
-     * </pre>
-     */
+    /// The value denotes the `kind` of this method handle, which
+    /// characterizes its bytecode behavior.
+    ///
+    /// @see <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-5.html#jvms-5.4.3.5">
+    /// VM Spec: Method Type and Method Handle Resolution
+    /// </a>
+    ///
+    /// ```
+    /// java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+    /// ```
     @SuppressWarnings("java:S115")
     public enum ReferenceKind {
 
@@ -135,22 +125,18 @@ public class CONSTANT_MethodHandle_info extends cp_info {
         REF_newInvokeSpecial(8),
         REF_invokeInterface(9);
 
-        /**
-         * ID of the {@link ReferenceKind}.
-         */
+        /// ID of the {@link ReferenceKind}.
         public final int value;
 
         private ReferenceKind(int value) {
             this.value = value;
         }
 
-        /**
-         * Get the {@link ReferenceKind} name based on its internal
-         * {@link #value}.
-         *
-         * @param value Internal {@link #value}
-         * @return {@link ReferenceKind} name
-         */
+        /// Get the {@link ReferenceKind} name based on its internal
+        /// {@link #value}.
+        ///
+        /// @param value Internal {@link #value}
+        /// @return {@link ReferenceKind} name
         public static String name(int value) {
             String result = "Un-recognized";
             for (ReferenceKind item : ReferenceKind.values()) {

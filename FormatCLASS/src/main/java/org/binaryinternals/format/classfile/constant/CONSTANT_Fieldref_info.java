@@ -16,28 +16,26 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 
-/**
- * The class for the {@code CONSTANT_Fieldref_info} structure in constant pool.
- * The {@code CONSTANT_Fieldref_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Fieldref_info {
- *        u1 tag;
- *        u2 class_index;
- *        u2 name_and_type_index;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
- * VM Spec: The CONSTANT_Fieldref_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Fieldref_info` structure in constant pool.
+/// The `CONSTANT_Fieldref_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Fieldref_info {
+///        u1 tag;
+///        u2 class_index;
+///        u2 name_and_type_index;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.2">
+/// VM Spec: The CONSTANT_Fieldref_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class CONSTANT_Fieldref_info extends CONSTANT_Ref {
 
@@ -73,7 +71,7 @@ public class CONSTANT_Fieldref_info extends CONSTANT_Ref {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the field type: " + type, ex);
         }
 
-        return String.format("%s.%s : %s", clazz, name, typeDesc);
+        return "%s.%s : %s".formatted(clazz, name, typeDesc);
     }
 
     @Override

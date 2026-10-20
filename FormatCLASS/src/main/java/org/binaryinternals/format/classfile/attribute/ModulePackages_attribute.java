@@ -17,49 +17,42 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Package_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- *
- * The class for the {@code ModulePackages} attribute. The
- * {@code ModulePackages} attribute has the following format:
- *
- * <pre>
- *    ModulePackages_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 package_count;
- *        u2 package_index[package_count];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since JDK 9
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.26">
- * VM Spec: The ModulePackages Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `ModulePackages` attribute. The
+/// `ModulePackages` attribute has the following format:
+///
+/// ```
+///    ModulePackages_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 package_count;
+///        u2 package_index[package_count];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since JDK 9
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.26">
+/// VM Spec: The ModulePackages Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class ModulePackages_attribute extends attribute_info {
 
-    /**
-     * The value of the package_count item indicates the number of entries in
-     * the {@link #package_index}table.
-     */
+    /// The value of the package_count item indicates the number of entries in
+    /// the {@link #package_index}table.
     public final u2 package_count;
 
-    /**
-     * The value of each entry in the {@link #package_index} table must be a
-     * valid index into the {@link ClassFile#constant_pool} table. The
-     * {@link ClassFile#constant_pool} entry at that index must be a
-     * {@link CONSTANT_Package_info} structure representing a package in the
-     * current module.
-     */
+    /// The value of each entry in the {@link #package_index} table must be a
+    /// valid index into the {@link ClassFile#constant_pool} table. The
+    /// {@link ClassFile#constant_pool} entry at that index must be a
+    /// {@link CONSTANT_Package_info} structure representing a package in the
+    /// current module.
     public final u2[] package_index;
 
     ModulePackages_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
@@ -93,7 +86,7 @@ public class ModulePackages_attribute extends attribute_info {
             final DefaultMutableTreeNode packageIndexesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving,
                     u2.LENGTH * this.package_count.value,
-                    String.format("package_index [%d]", this.package_count.value),
+                    "package_index [%d]".formatted(this.package_count.value),
                     MESSAGES.getString("msg_attr_ModulePackages__package_index")
             ));
             parentNode.add(packageIndexesNode);
@@ -103,8 +96,8 @@ public class ModulePackages_attribute extends attribute_info {
                 this.addNode(packageIndexesNode,
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
-                        String.format("package_index %d", i + 1),
-                        String.format(TEXT_CPINDEX_VALUE, packageIndex, "package", ((ClassFile)classFile).getCPDescription(packageIndex)),
+                        "package_index %d".formatted(i + 1),
+                        TEXT_CPINDEX_VALUE.formatted(packageIndex, "package", ((ClassFile)classFile).getCPDescription(packageIndex)),
                         "msg_attr_ModulePackages__package_index",
                         Icons.Package
                 );

@@ -21,56 +21,52 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u1;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code MethodParameters} attribute. The
- * {@code MethodParameters} attribute has the following format:
- *
- * Parameter names aren’t compiled into the byte code by default. Hence we have
- * to add a compiler switch to enable named parameters:
- * <pre>
- *   javac -parameters
- * </pre>
- *
- * The MethodParameters attribute has the following format:
- * <pre>
- *    MethodParameters_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u1 parameters_count;
- *        {   u2 name_index;
- *            u2 access_flags;
- *        } parameters[parameters_count];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 8
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.24">
- * VM Spec: The MethodParameters Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `MethodParameters` attribute. The
+/// `MethodParameters` attribute has the following format:
+///
+/// Parameter names aren’t compiled into the byte code by default. Hence we have
+/// to add a compiler switch to enable named parameters:
+/// ```
+///   javac -parameters
+/// ```
+///
+/// The MethodParameters attribute has the following format:
+/// ```
+///    MethodParameters_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u1 parameters_count;
+///        {   u2 name_index;
+///            u2 access_flags;
+///        } parameters[parameters_count];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 8
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.24">
+/// VM Spec: The MethodParameters Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class MethodParameters_attribute extends attribute_info {
 
-    /**
-     * The value of the parameters_count item indicates the number of parameter
-     * descriptors in the method descriptor referenced by the descriptor_index
-     * of the attribute's enclosing method_info structure.
-     */
+    /// The value of the parameters_count item indicates the number of parameter
+    /// descriptors in the method descriptor referenced by the descriptor_index
+    /// of the attribute's enclosing method_info structure.
     public final u1 parameters_count;
     public final Parameter[] parameters;
 
     MethodParameters_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
         super(nameIndex, type, posDataInputStream);
 
-        this.parameters_count = new u1(posDataInputStream, true);
+        this.parameters_count = new u1(posDataInputStream);
         if (this.parameters_count.value > 0) {
             this.parameters = new Parameter[this.parameters_count.value];
             for (int i = 0; i < this.parameters_count.value; i++) {
@@ -103,17 +99,17 @@ public class MethodParameters_attribute extends attribute_info {
         DefaultMutableTreeNode parametersNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 this.parameters.length * Parameter.LENGTH,
-                String.format("parameters [%d]", this.parameters.length),
+                "parameters [%d]".formatted(this.parameters.length),
                 MESSAGES.getString("msg_attr_MethodParameters__parameters_count")
         ));
         parentNode.add(parametersNode);
 
         for (int i = 0; i < this.parameters.length; i++) {
             DefaultMutableTreeNode parameterNode = this.addNode(parametersNode,
-                    startPosMoving,
+                    this.parameters[i].getStartPos(),
                     Parameter.LENGTH,
-                    String.format("paramter %d", i + 1),
-                    ((ClassFile) classFile).getCPDescription(this.parameters[i].name_index.value),
+                    "parameter %d".formatted(i + 1),
+                    this.parameters[i].getName((ClassFile) classFile),
                     "msg_attr_parameters",
                     Icons.Parameter
             );
@@ -130,22 +126,18 @@ public class MethodParameters_attribute extends attribute_info {
 
         public static final int LENGTH = u2.LENGTH + u2.LENGTH;
 
-        /**
-         * The value of the name_index item must either be zero or a valid index
-         * into the constant_pool table. If the value of the name_index item is
-         * zero, then this parameters element indicates a formal parameter with
-         * no name. If the value of the name_index item is nonzero, the
-         * constant_pool entry at that index must be a CONSTANT_Utf8_info
-         * structure representing a valid unqualified name denoting a formal
-         * parameter.
-         */
+        /// The value of the name_index item must either be zero or a valid index
+        /// into the constant_pool table. If the value of the name_index item is
+        /// zero, then this parameters element indicates a formal parameter with
+        /// no name. If the value of the name_index item is nonzero, the
+        /// constant_pool entry at that index must be a CONSTANT_Utf8_info
+        /// structure representing a valid unqualified name denoting a formal
+        /// parameter.
         public final u2 name_index;
-        /**
-         * The value of the access_flags item is as follows: 0x0010 (ACC_FINAL),
-         * 0x1000 (ACC_SYNTHETIC), 0x8000 (ACC_MANDATED).
-         *
-         * @see AccessFlag#ForMethodParameters
-         */
+        /// The value of the access_flags item is as follows: 0x0010 (ACC_FINAL),
+        /// 0x1000 (ACC_SYNTHETIC), 0x8000 (ACC_MANDATED).
+        ///
+        /// @see AccessFlag#ForMethodParameters
         public final u2 access_flags;
 
         private Parameter(final PosDataInputStream posDataInputStream) throws IOException {
@@ -153,6 +145,15 @@ public class MethodParameters_attribute extends attribute_info {
             this.name_index = new u2(posDataInputStream);
             this.access_flags = new u2(posDataInputStream);
             super.length = posDataInputStream.getPos() - super.startPos;
+        }
+
+        /// Get the parameter name.
+        ///
+        /// @param classFile The class file containing the constant pool
+        /// @return The parameter name, or `(no name)` when
+        /// {@link #name_index} is zero
+        public String getName(final ClassFile classFile) {
+            return (this.name_index.value == 0) ? "(no name)" : classFile.getCPDescription(this.name_index.value);
         }
 
         public String getAccessFlagsText() {
@@ -168,7 +169,7 @@ public class MethodParameters_attribute extends attribute_info {
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
                     "name_index",
-                    String.format(TEXT_CPINDEX_VALUE, nameCpIndex, "name", classFile.getCPDescription(nameCpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(nameCpIndex, "name", this.getName(classFile)),
                     "msg_attr_parameters__name_index",
                     Icons.Name
             );

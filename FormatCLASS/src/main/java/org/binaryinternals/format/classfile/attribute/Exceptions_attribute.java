@@ -17,51 +17,45 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Class_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The class for the {@code Exceptions} attribute. The {@code Exceptions}
- * attribute has the following format:
- *
- * <pre>
- *    Exceptions_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 number_of_exceptions;
- *        u2 exception_index_table[number_of_exceptions];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 1.0.2
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.5">
- * VM Spec: The Exceptions Attribute
- * </a>
- *
- * <pre>
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Exceptions` attribute. The `Exceptions`
+/// attribute has the following format:
+///
+/// ```
+///    Exceptions_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 number_of_exceptions;
+///        u2 exception_index_table[number_of_exceptions];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 1.0.2
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.5">
+/// VM Spec: The Exceptions Attribute
+/// </a>
+///
+/// ```
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Exceptions_attribute extends attribute_info {
 
-    /**
-     * The value of the {@link #number_of_exceptions} item indicates the number
-     * of entries in the {@link #exception_index_table}.
-     */
+    /// The value of the {@link #number_of_exceptions} item indicates the number
+    /// of entries in the {@link #exception_index_table}.
     public final u2 number_of_exceptions;
-    /**
-     * Each value in the {@link #exception_index_table} array must be a valid
-     * index into the {@link ClassFile#constant_pool} table. The
-     * {@link ClassFile#constant_pool} entry at that <code>index</code> must be
-     * a {@link CONSTANT_Class_info} structure representing a class type that
-     * this method is declared to throw.
-     */
+    /// Each value in the {@link #exception_index_table} array must be a valid
+    /// index into the {@link ClassFile#constant_pool} table. The
+    /// {@link ClassFile#constant_pool} entry at that `index` must be
+    /// a {@link CONSTANT_Class_info} structure representing a class type that
+    /// this method is declared to throw.
     private final u2[] exception_index_table;
 
     Exceptions_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
@@ -80,13 +74,11 @@ public class Exceptions_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /**
-     * Get the value of {@code exception_index_table}[{@code index}].
-     *
-     * @param index Index of the exception table
-     * @return The value of {@code exception_index_table}[{@code index}] or
-     * <code>-1</code> if <code>index</code> is not valid
-     */
+    /// Get the value of `exception_index_table`[`index`].
+    ///
+    /// @param index Index of the exception table
+    /// @return The value of `exception_index_table`[`index`] or
+    /// `-1` if `index` is not valid
     public int getExceptionIndexTableItem(final int index) {
         int i = -1;
         if (this.exception_index_table != null) {
@@ -113,17 +105,17 @@ public class Exceptions_attribute extends attribute_info {
             DefaultMutableTreeNode treeNodeExceptions = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos + 8,
                     numOfExceptions * u2.LENGTH,
-                    String.format("exceptions [%d]", numOfExceptions),
+                    "exceptions [%d]".formatted(numOfExceptions),
                     MESSAGES.getString("msg_attr_Exceptions__exception_index_table")
             ));
 
             for (i = 0; i < numOfExceptions; i++) {
                 int cpIndex = this.getExceptionIndexTableItem(i);
                 this.addNode(treeNodeExceptions,
-                        startPos + 10 + i * u2.LENGTH,
+                        startPos + 8 + i * u2.LENGTH,
                         u2.LENGTH,
-                        String.format("exception_index_table %d", i + 1),
-                        String.format(TEXT_CPINDEX_VALUE, cpIndex, "exception type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                        "exception_index_table %d".formatted(i + 1),
+                        TEXT_CPINDEX_VALUE.formatted(cpIndex, "exception type", ((ClassFile) classFile).getCPDescription(cpIndex)),
                         "msg_attr_Exceptions__exception_index_table",
                         Icons.Exception
                 );

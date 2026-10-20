@@ -11,10 +11,7 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
 import java.util.List;
 import org.binaryinternals.commonlib.core.FileFormat;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class PluginDescriptorClass implements PluginDescriptor{
 
     @Override

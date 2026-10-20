@@ -21,6 +21,12 @@
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>6.1.3</version><!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

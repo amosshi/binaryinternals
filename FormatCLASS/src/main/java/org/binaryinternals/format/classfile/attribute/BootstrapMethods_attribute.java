@@ -20,51 +20,44 @@ import org.binaryinternals.format.classfile.constant.CONSTANT_MethodHandle_info;
 import org.binaryinternals.format.classfile.constant.cp_info.ConstantType;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The {@code BootstrapMethods} attribute is a variable-length attribute in the
- * {@code attributes} table of a {@code ClassFile} structure. The
- * {@code BootstrapMethods} attribute records bootstrap method specifiers
- * referenced by {@code invokedynamic} instructions.
- *
- * <pre>
- * BootstrapMethods_attribute {
- *     u2 attribute_name_index;
- *     u4 attribute_length;
- *     u2 num_bootstrap_methods;
- *     {   u2 bootstrap_method_ref;
- *         u2 num_bootstrap_arguments;
- *         u2 bootstrap_arguments[num_bootstrap_arguments];
- *     } bootstrap_methods[num_bootstrap_methods];
- * }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 7
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.23">
- * VM Spec: The BootstrapMethods Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The `BootstrapMethods` attribute is a variable-length attribute in the
+/// `attributes` table of a `ClassFile` structure. The
+/// `BootstrapMethods` attribute records bootstrap method specifiers
+/// referenced by `invokedynamic` instructions.
+///
+/// ```
+/// BootstrapMethods_attribute {
+///     u2 attribute_name_index;
+///     u4 attribute_length;
+///     u2 num_bootstrap_methods;
+///     {   u2 bootstrap_method_ref;
+///         u2 num_bootstrap_arguments;
+///         u2 bootstrap_arguments[num_bootstrap_arguments];
+///     } bootstrap_methods[num_bootstrap_methods];
+/// }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 7
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.23">
+/// VM Spec: The BootstrapMethods Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class BootstrapMethods_attribute extends attribute_info {
 
-    /**
-     * Determines the number of bootstrap method specifiers in the
-     * {@link #bootstrap_methods} array.
-     */
+    /// Determines the number of bootstrap method specifiers in the
+    /// {@link #bootstrap_methods} array.
     public final u2 num_bootstrap_methods;
 
-    /**
-     * Each entry in the {@link #bootstrap_methods} table contains an index to a
-     * {@link CONSTANT_MethodHandle_info} structure which specifies a bootstrap
-     * method, and a sequence (perhaps empty) of indexes to static arguments for
-     * the bootstrap method.
-     */
+    /// Each entry in the {@link #bootstrap_methods} table contains an index to a
+    /// {@link CONSTANT_MethodHandle_info} structure which specifies a bootstrap
+    /// method, and a sequence (perhaps empty) of indexes to static arguments for
+    /// the bootstrap method.
     public final bootstrap_method[] bootstrap_methods;
 
     BootstrapMethods_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
@@ -99,8 +92,8 @@ public class BootstrapMethods_attribute extends attribute_info {
             DefaultMutableTreeNode bootstrapMethodsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPosMoving + 8,
                     this.getLength() - 8,
-                    String.format("bootstrap_methods [%d]", this.bootstrap_methods.length),
-                    "msg_attr_bootstrap_methods"
+                    "bootstrap_methods [%d]".formatted(this.bootstrap_methods.length),
+                    MESSAGES.getString("msg_attr_bootstrap_methods")
             ));
             parentNode.add(bootstrapMethodsNode);
 
@@ -124,35 +117,24 @@ public class BootstrapMethods_attribute extends attribute_info {
         return "msg_attr_BootstrapMethods";
     }
 
-    /**
-     *
-     * <pre>
-     * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
-     * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
-     * </pre>
-     */
+    // java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+    // java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
     @SuppressWarnings({"java:S101", "java:S116"})
     public static final class bootstrap_method extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * The value of the {@link #bootstrap_method_ref} item must be a valid
-         * index into the {@link ClassFile#constant_pool} table, the
-         * <code>constant_pool</code> entry at that index must be a
-         * {@link CONSTANT_MethodHandle_info} structure
-         */
+        /// The value of the {@link #bootstrap_method_ref} item must be a valid
+        /// index into the {@link ClassFile#constant_pool} table, the
+        /// `constant_pool` entry at that index must be a
+        /// {@link CONSTANT_MethodHandle_info} structure
         public final u2 bootstrap_method_ref;
 
-        /**
-         * Gives the number of items in the {@link #bootstrap_arguments} array.
-         */
+        /// Gives the number of items in the {@link #bootstrap_arguments} array.
         public final u2 num_bootstrap_arguments;
 
-        /**
-         * Each entry in the {@link #bootstrap_arguments} array must be a valid
-         * index into the {@link ClassFile#constant_pool} table, the
-         * <code>constant_pool</code> entry at that index must be loadable (
-         * {@link ConstantType#loadable} is <code>true</code>) .
-         */
+        /// Each entry in the {@link #bootstrap_arguments} array must be a valid
+        /// index into the {@link ClassFile#constant_pool} table, the
+        /// `constant_pool` entry at that index must be loadable (
+        /// {@link ConstantType#loadable} is `true`) .
         public final u2[] bootstrap_arguments;
 
         private bootstrap_method(final PosDataInputStream posDataInputStream) throws IOException {
@@ -181,7 +163,7 @@ public class BootstrapMethods_attribute extends attribute_info {
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
                     "bootstrap_method_ref",
-                    String.format(TEXT_CPINDEX_VALUE, cpIndex, "bootstrap method ref", classFile.getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "bootstrap method ref", classFile.getCPDescription(cpIndex)),
                     "msg_attr_bootstrap_methods__bootstrap_method_ref",
                     Icons.Offset
             );
@@ -200,7 +182,7 @@ public class BootstrapMethods_attribute extends attribute_info {
                 DefaultMutableTreeNode bootstrapArguments = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         this.bootstrap_arguments.length * u2.LENGTH,
-                        String.format("bootstrap_arguments [%d]", this.bootstrap_arguments.length),
+                        "bootstrap_arguments [%d]".formatted(this.bootstrap_arguments.length),
                         MESSAGES.getString("msg_attr_bootstrap_methods__bootstrap_arguments")
                 ));
                 parentNode.add(bootstrapArguments);
@@ -210,8 +192,8 @@ public class BootstrapMethods_attribute extends attribute_info {
                     this.addNode(bootstrapArguments,
                             startPosMoving,
                             u2.LENGTH,
-                            String.format("argument %d", i + 1),
-                            String.format(TEXT_CPINDEX_VALUE, argCpIndex, "argument value", classFile.getCPDescription(argCpIndex)),
+                            "argument %d".formatted(i + 1),
+                            TEXT_CPINDEX_VALUE.formatted(argCpIndex, "argument value", classFile.getCPDescription(argCpIndex)),
                             "msg_attr_annotation__element_value_pairs",
                             Icons.Parameter
                     );

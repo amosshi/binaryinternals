@@ -7,8 +7,8 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
@@ -21,22 +21,19 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.u1;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * A variable-length attribute in the {@code attributes} table of a {@code Code}
- * attribute.
- *
- * @author Amos Shi
- * @since Java 6
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.4">
- * VM Spec: The StackMapTable Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// A variable-length attribute in the `attributes` table of a `Code`
+/// attribute.
+///
+/// @author Amos Shi
+/// @since Java 6
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.4">
+/// VM Spec: The StackMapTable Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class StackMapTable_attribute extends attribute_info {
 
@@ -44,16 +41,12 @@ public class StackMapTable_attribute extends attribute_info {
     private static final String MSGKEY_OFFSET_DELTA= "msg_attr_stack_map_frame__all__offset_delta";
     private static final String MSGKEY_VTI = "msg_attr_verification_type_info";
 
-    /**
-     * Gives the number of {@link stack_map_frame} entries in the
-     * {@link #entries} table.
-     */
+    /// Gives the number of {@link stack_map_frame} entries in the
+    /// {@link #entries} table.
     public final u2 number_of_entries;
-    /**
-     * Each entry in the {@link #entries} table describes one stack map frame of
-     * the method. The order of the stack map frames in the entries table is
-     * significant.
-     */
+    /// Each entry in the {@link #entries} table describes one stack map frame of
+    /// the method. The order of the stack map frames in the entries table is
+    /// significant.
     public final stack_map_frame[] entries;
 
     StackMapTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
@@ -87,7 +80,7 @@ public class StackMapTable_attribute extends attribute_info {
             DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getLength() - 8,
-                    String.format("entries [%d]", this.number_of_entries.value),
+                    "entries [%d]".formatted(this.number_of_entries.value),
                     MESSAGES.getString("msg_attr_StackMapTable__entries")
             ));
             parentNode.add(entriesNode);
@@ -96,7 +89,7 @@ public class StackMapTable_attribute extends attribute_info {
                 DefaultMutableTreeNode entry = this.addNode(entriesNode,
                         this.entries[i].getStartPos(),
                         this.entries[i].getLength(),
-                        String.format("entry %d", i + 1),
+                        "entry %d".formatted(i + 1),
                         this.entries[i].getFrameTypeName(),
                         this.entries[i].getFrameMessageKey(),
                         Icons.Stack
@@ -113,52 +106,41 @@ public class StackMapTable_attribute extends attribute_info {
 
     public enum FrameTypeEnum {
 
-        SAME(0, 63, "same_frame", "msg_attr_stack__same_frame", null),
-        SAME_LOCALS_1_STACK_ITEM(64, 127, "same_locals_1_stack_item_frame", "msg_attr_stack__same_locals_1_stack_item_frame", stack_map_frame.same_locals_1_stack_item_frame.class),
-        /**
-         * Tags in the range [128-246] are reserved for future use.
-         */
-        RESERVED(128, 246, "RESERVED", "msg_attr_stack__reserved", null),
-        SAME_LOCALS_1_STACK_ITEM_EXTENDED(247, 247, "same_locals_1_stack_item_frame_extended", "msg_attr_stack__same_locals_1_stack_item_frame_extended", stack_map_frame.same_locals_1_stack_item_frame_extended.class),
-        CHOP(248, 250, "chop_frame", "msg_attr_stack__chop_frame", stack_map_frame.chop_frame.class),
-        SAME_FRAME_EXTENDED(251, 251, "same_frame_extended", "msg_attr_stack__same_frame_extended", stack_map_frame.same_frame_extended.class),
-        APPEND(252, 254, "append_frame", "msg_attr_stack__append_frame", stack_map_frame.append_frame.class),
-        FULL_FRAME(255, 255, "full_frame", "msg_attr_stack__full_frame", stack_map_frame.full_frame.class);
+        SAME(0, 63, "same_frame", "msg_attr_stack__same_frame"),
+        SAME_LOCALS_1_STACK_ITEM(64, 127, "same_locals_1_stack_item_frame", "msg_attr_stack__same_locals_1_stack_item_frame"),
+        /// Tags in the range [128-246] are reserved for future use.
+        RESERVED(128, 246, "RESERVED", "msg_attr_stack__reserved"),
+        SAME_LOCALS_1_STACK_ITEM_EXTENDED(247, 247, "same_locals_1_stack_item_frame_extended", "msg_attr_stack__same_locals_1_stack_item_frame_extended"),
+        CHOP(248, 250, "chop_frame", "msg_attr_stack__chop_frame"),
+        SAME_FRAME_EXTENDED(251, 251, "same_frame_extended", "msg_attr_stack__same_frame_extended"),
+        APPEND(252, 254, "append_frame", "msg_attr_stack__append_frame"),
+        FULL_FRAME(255, 255, "full_frame", "msg_attr_stack__full_frame");
 
         public final short low;
         public final short high;
         public final String unionName;
         public final String messageKey;
 
-        /**
-         * The Java class representing to the frame.
-         */
-        final Class<?> clazz;
-
-        FrameTypeEnum(int l, int h, String name, String msgKey, Class<?> type) {
+        /// The Java class representing to the frame.
+        FrameTypeEnum(int l, int h, String name, String msgKey) {
             this.low = (short) l;
             this.high = (short) h;
             this.unionName = name;
             this.messageKey = msgKey;
-            this.clazz = type;
         }
 
-        /**
-         * Check if the <code>value</code> is in the value range or not.
-         *
-         * @param value The test value
-         * @return   <code>true</code> if it is in range, else <code>false</code>
-         */
+        /// Check if the `value` is in the value range or not.
+        ///
+        /// @param value The test value
+        /// @return   `true` if it is in range, else `false`
         public boolean inRange(short value) {
             return value >= this.low && value <= this.high;
         }
 
-        /**
-         * Get the corresponding enum item for <code>value</code>.
-         *
-         * @param value The {@link stack_map_frame#frame_type} value
-         * @return The corresponding {@link FrameTypeEnum} of <code>value</code>
-         */
+        /// Get the corresponding enum item for `value`.
+        ///
+        /// @param value The {@link stack_map_frame#frame_type} value
+        /// @return The corresponding {@link FrameTypeEnum} of `value`
         public static FrameTypeEnum valueOf(short value) {
             for (FrameTypeEnum item : FrameTypeEnum.values()) {
                 if (item.inRange(value)) {
@@ -170,80 +152,54 @@ public class StackMapTable_attribute extends attribute_info {
         }
     }
 
-    public abstract static class stack_frame extends FileComponent implements GenerateTreeNodeClassFile {
-        /**
-         * Get the calculated <code>offset_delta</code>.
-         */
+    public abstract static sealed class stack_frame extends FileComponent implements GenerateTreeNodeClassFile {
+        /// Get the calculated `offset_delta`.
         public abstract int getOffsetDelta();
     }
 
-    /**
-     * A stack map frame is represented by a discriminated union,
-     * <code>stack_map_frame</code>, which consists of a one-byte tag,
-     * indicating which item of the union is in use, followed by zero or more
-     * bytes, giving more information about the tag.
-     *
-     * <pre>
-     * union stack_map_frame {
-     *     same_frame;
-     *     same_locals_1_stack_item_frame;
-     *     same_locals_1_stack_item_frame_extended;
-     *     chop_frame;
-     *     same_frame_extended;
-     *     append_frame;
-     *     full_frame;
-     * }
-     * </pre>
-     */
+    /// A stack map frame is represented by a discriminated union,
+    /// `stack_map_frame`, which consists of a one-byte tag,
+    /// indicating which item of the union is in use, followed by zero or more
+    /// bytes, giving more information about the tag.
+    ///
+    /// ```
+    /// union stack_map_frame {
+    ///     same_frame;
+    ///     same_locals_1_stack_item_frame;
+    ///     same_locals_1_stack_item_frame_extended;
+    ///     chop_frame;
+    ///     same_frame_extended;
+    ///     append_frame;
+    ///     full_frame;
+    /// }
+    /// ```
     public static final class stack_map_frame extends FileComponent implements GenerateTreeNodeClassFile {
         public final u1 frame_type;
 
-        /**
-         * One of: - {@link same_locals_1_stack_item_frame}
-         * - {@link same_locals_1_stack_item_frame_extended}
-         * - {@link chop_frame}
-         * - {@link same_frame_extended}
-         * - {@link append_frame}
-         * - {@link full_frame}
-         */
+        /// The frame data after the {@link #frame_type}, or `null` for `same_frame`. It is one of:
+        ///
+        /// - {@link same_locals_1_stack_item_frame}
+        /// - {@link same_locals_1_stack_item_frame_extended}
+        /// - {@link chop_frame}
+        /// - {@link same_frame_extended}
+        /// - {@link append_frame}
+        /// - {@link full_frame}
         public final stack_frame union_stack_frame;
 
-        /**
-         * <pre>
-         * java:S1871 - Two branches in a conditional structure should not have exactly the same implementation --- We need it to make code more readable
-         * </pre>
-         */
-        @SuppressWarnings("java:S1871")
         private stack_map_frame(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
             super.startPos = posDataInputStream.getPos();
 
-            this.frame_type = new u1(posDataInputStream, true);
+            this.frame_type = new u1(posDataInputStream);
 
-            Class<?> clazz = FrameTypeEnum.valueOf(this.frame_type.value).clazz;
-            if (clazz != null) {
-                try {
-                    // There is only 1 constructor for sure
-                    Constructor<?> cons = clazz.getDeclaredConstructors()[0];
-                    switch (cons.getParameterCount()) {
-                        case 1:
-                            this.union_stack_frame = (stack_frame) (clazz.getDeclaredConstructors()[0].newInstance(posDataInputStream));
-                            break;
-                        case 2:
-                            this.union_stack_frame = (stack_frame) (clazz.getDeclaredConstructors()[0].newInstance(posDataInputStream, this.frame_type.value));
-                            break;
-                        default:
-                            throw new UnsupportedOperationException(String.format("Coding Problem: unrecognized contructor paramter count found = %s / %d", clazz.getName(), cons.getParameterCount()));
-                    }
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    // Print stack trace is needed to extract InvocationTargetException
-                    //  - https://stackoverflow.com/questions/6020719/
-                    ex.printStackTrace();
-
-                    throw new FileFormatException(String.format("Failed to parse the JVM stack_map_frame at position 0x%08X", posDataInputStream.getPos() - 1), ex);
-                }
-            } else {
-                this.union_stack_frame = null;
-            }
+            this.union_stack_frame = switch (FrameTypeEnum.valueOf(this.frame_type.value)) {
+                case SAME, RESERVED -> null;
+                case SAME_LOCALS_1_STACK_ITEM -> new same_locals_1_stack_item_frame(posDataInputStream);
+                case SAME_LOCALS_1_STACK_ITEM_EXTENDED -> new same_locals_1_stack_item_frame_extended(posDataInputStream);
+                case CHOP -> new chop_frame(posDataInputStream);
+                case SAME_FRAME_EXTENDED -> new same_frame_extended(posDataInputStream);
+                case APPEND -> new append_frame(posDataInputStream, this.frame_type.value);
+                case FULL_FRAME -> new full_frame(posDataInputStream);
+            };
 
             super.length = posDataInputStream.getPos() - super.startPos;
         }
@@ -265,61 +221,42 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * Get message key for the corresponding {@link #union_stack_frame}.
-         *
-         * @return {@link #union_stack_frame} message key, or <code>null</code> if {@link #union_stack_frame} is null
-         */
+        /// Get message key for the corresponding {@link #union_stack_frame}.
+        ///
+        /// @return {@link #union_stack_frame} message key, or `null` if {@link #union_stack_frame} is null
         public String getFrameMessageKey () {
             return FrameTypeEnum.valueOf(this.frame_type.value).messageKey;
         }
 
-        /**
-         * Get the union name of {@link #frame_type}.
-         *
-         * @return {@link #frame_type} union name
-         */
+        /// Get the union name of {@link #frame_type}.
+        ///
+        /// @return {@link #frame_type} union name
         public String getFrameTypeName() {
             return FrameTypeEnum.valueOf(this.frame_type.value).unionName;
         }
 
-        /**
-         * Get the calculated <code>offset_delta</code>.
-         */
+        /// Get the calculated `offset_delta`.
         public int getOffsetDelta() {
-            FrameTypeEnum type = FrameTypeEnum.valueOf(this.frame_type.value);
-            switch (type) {
-                case SAME:
-                    return this.frame_type.value;
-
-                case SAME_LOCALS_1_STACK_ITEM:
-                    return this.frame_type.value - 64;
-
-                case SAME_LOCALS_1_STACK_ITEM_EXTENDED:
-                case CHOP:
-                case SAME_FRAME_EXTENDED:
-                case APPEND:
-                case FULL_FRAME:
-                    return this.union_stack_frame.getOffsetDelta();
-
-                default:
-                    throw new UnsupportedOperationException("Unsupported offset_value for frame type: " + type.name());
-            }
+            final FrameTypeEnum type = FrameTypeEnum.valueOf(this.frame_type.value);
+            return switch (type) {
+                case SAME -> this.frame_type.value;
+                case SAME_LOCALS_1_STACK_ITEM -> this.frame_type.value - 64;
+                case SAME_LOCALS_1_STACK_ITEM_EXTENDED, CHOP, SAME_FRAME_EXTENDED, APPEND, FULL_FRAME -> this.union_stack_frame.getOffsetDelta();
+                case RESERVED -> throw new UnsupportedOperationException("Unsupported offset_value for frame type: " + type.name());
+            };
         }
 
-        /**
-         * The frame type <code>same_locals_1_stack_item_frame</code> is
-         * represented by tags in the range <code>[64, 127]</code>. This frame
-         * type indicates that the frame has exactly the same local variables as
-         * the previous frame and that the operand stack has one entry.
-         *
-         * <pre>
-         * same_locals_1_stack_item_frame {
-         *     u1 frame_type = SAME_LOCALS_1_STACK_ITEM;   // 64-127
-         *     verification_type_info stack[1];
-         * }
-         * </pre>
-         */
+        /// The frame type `same_locals_1_stack_item_frame` is
+        /// represented by tags in the range `[64, 127]`. This frame
+        /// type indicates that the frame has exactly the same local variables as
+        /// the previous frame and that the operand stack has one entry.
+        ///
+        /// ```
+        /// same_locals_1_stack_item_frame {
+        ///     u1 frame_type = SAME_LOCALS_1_STACK_ITEM;   // 64-127
+        ///     verification_type_info stack[1];
+        /// }
+        /// ```
         public static final class same_locals_1_stack_item_frame extends stack_frame {
 
             public final verification_type_info[] stack = new verification_type_info[1];
@@ -357,20 +294,18 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * The frame type <code>same_locals_1_stack_item_frame_extended</code>
-         * is represented by the tag <code>247</code>. This frame type indicates
-         * that the frame has exactly the same local variables as the previous
-         * frame and that the operand stack has one entry.
-         *
-         * <pre>
-         * same_locals_1_stack_item_frame_extended {
-         *     u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED;   // 247
-         *     u2 offset_delta;
-         *     verification_type_info stack[1];
-         * }
-         * </pre>
-         */
+        /// The frame type `same_locals_1_stack_item_frame_extended`
+        /// is represented by the tag `247`. This frame type indicates
+        /// that the frame has exactly the same local variables as the previous
+        /// frame and that the operand stack has one entry.
+        ///
+        /// ```
+        /// same_locals_1_stack_item_frame_extended {
+        ///     u1 frame_type = SAME_LOCALS_1_STACK_ITEM_EXTENDED;   // 247
+        ///     u2 offset_delta;
+        ///     verification_type_info stack[1];
+        /// }
+        /// ```
         public static final class same_locals_1_stack_item_frame_extended extends stack_frame {
 
             public final u2 offset_delta;
@@ -419,20 +354,18 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * The frame type <code>chop_frame</code> is represented by tags in the
-         * range <code>[248-250]</code>. This frame type indicates that the
-         * frame has the same local variables as the previous frame except that
-         * the last k local variables are absent, and that the operand stack is
-         * empty.
-         *
-         * <pre>
-         * chop_frame {
-         *     u1 frame_type = CHOP;   // 248-250
-         *     u2 offset_delta;
-         * }
-         * </pre>
-         */
+        /// The frame type `chop_frame` is represented by tags in the
+        /// range `[248-250]`. This frame type indicates that the
+        /// frame has the same local variables as the previous frame except that
+        /// the last k local variables are absent, and that the operand stack is
+        /// empty.
+        ///
+        /// ```
+        /// chop_frame {
+        ///     u1 frame_type = CHOP;   // 248-250
+        ///     u2 offset_delta;
+        /// }
+        /// ```
         public static final class chop_frame extends stack_frame {
 
             public final u2 offset_delta;
@@ -458,19 +391,17 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * The frame type <code>same_frame_extended</code> is represented by the
-         * tag <code>251</code>. This frame type indicates that the frame has
-         * exactly the same local variables as the previous frame and that the
-         * operand stack is empty.
-         *
-         * <pre>
-         * same_frame_extended {
-         *     u1 frame_type = SAME_FRAME_EXTENDED;   // 251
-         *     u2 offset_delta;
-         * }
-         * </pre>
-         */
+        /// The frame type `same_frame_extended` is represented by the
+        /// tag `251`. This frame type indicates that the frame has
+        /// exactly the same local variables as the previous frame and that the
+        /// operand stack is empty.
+        ///
+        /// ```
+        /// same_frame_extended {
+        ///     u1 frame_type = SAME_FRAME_EXTENDED;   // 251
+        ///     u2 offset_delta;
+        /// }
+        /// ```
         public static final class same_frame_extended extends stack_frame {
 
             public final u2 offset_delta;
@@ -496,20 +427,18 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * The frame type <code>append_frame</code> is represented by tags in
-         * the range <code>[252-254]</code>. This frame type indicates that the
-         * frame has the same locals as the previous frame except that k
-         * additional locals are defined, and that the operand stack is empty.
-         *
-         * <pre>
-         * append_frame {
-         *     u1 frame_type = APPEND;   // 252-254
-         *     u2 offset_delta;
-         *     verification_type_info locals[frame_type - 251];
-         * }
-         * </pre>
-         */
+        /// The frame type `append_frame` is represented by tags in
+        /// the range `[252-254]`. This frame type indicates that the
+        /// frame has the same locals as the previous frame except that k
+        /// additional locals are defined, and that the operand stack is empty.
+        ///
+        /// ```
+        /// append_frame {
+        ///     u1 frame_type = APPEND;   // 252-254
+        ///     u2 offset_delta;
+        ///     verification_type_info locals[frame_type - 251];
+        /// }
+        /// ```
         public static final class append_frame extends stack_frame {
 
             public final u2 offset_delta;
@@ -545,7 +474,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeLocals,
-                            String.format("locals [%d]", this.locals.length),
+                            "locals [%d]".formatted(this.locals.length),
                             MESSAGES.getString("msg_attr_stack__append_frame__locals")
                     ));
                     parentNode.add(localsNode);
@@ -570,21 +499,19 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /**
-         * The frame type <code>full_frame</code> is represented by the tag
-         * <code>255</code>.
-         *
-         * <pre>
-         * full_frame {
-         *     u1 frame_type = FULL_FRAME;    // 255
-         *     u2 offset_delta;
-         *     u2 number_of_locals;
-         *     verification_type_info locals[number_of_locals];
-         *     u2 number_of_stack_items;
-         *     verification_type_info stack[number_of_stack_items];
-         * }
-         * </pre>
-         */
+        /// The frame type `full_frame` is represented by the tag
+        /// `255`.
+        ///
+        /// ```
+        /// full_frame {
+        ///     u1 frame_type = FULL_FRAME;    // 255
+        ///     u2 offset_delta;
+        ///     u2 number_of_locals;
+        ///     verification_type_info locals[number_of_locals];
+        ///     u2 number_of_stack_items;
+        ///     verification_type_info stack[number_of_stack_items];
+        /// }
+        /// ```
         public static final class full_frame extends stack_frame {
 
             public final u2 offset_delta;
@@ -646,7 +573,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode localsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeLocals,
-                            String.format("locals [%d]", this.number_of_locals.value),
+                            "locals [%d]".formatted(this.number_of_locals.value),
                             MESSAGES.getString("msg_attr_stack__full_frame__locals")
                     ));
                     startPosMoving += sizeLocals;
@@ -681,7 +608,7 @@ public class StackMapTable_attribute extends attribute_info {
                     DefaultMutableTreeNode stacksNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             startPosMoving,
                             sizeStack,
-                            String.format("stack [%d]", this.number_of_stack_items.value),
+                            "stack [%d]".formatted(this.number_of_stack_items.value),
                             MESSAGES.getString("msg_attr_stack__full_frame__stack")
                     ));
                     parentNode.add(stacksNode);
@@ -710,24 +637,20 @@ public class StackMapTable_attribute extends attribute_info {
     public static final class verification_type_info extends FileComponent implements GenerateTreeNodeClassFile {
 
         public final u1 tag;
-        public final Object_variable_info union_Object_variable_info;
-        public final Uninitialized_variable_info union_Uninitialized_variable_info;
+        /// The `*_variable_info` item of the union, determined by
+        /// the {@link #tag}.
+        public final VariableInfo variable_info;
 
         private verification_type_info(final PosDataInputStream posDataInputStream)
                 throws IOException {
             super.startPos = posDataInputStream.getPos();
 
-            this.tag = new u1(posDataInputStream, true);
-            if (this.tag.value == TagEnum.ITEM_Object.value) {
-                this.union_Object_variable_info = new Object_variable_info(posDataInputStream);
-                this.union_Uninitialized_variable_info = null;
-            } else if (this.tag.value == TagEnum.ITEM_Uninitialized.value) {
-                this.union_Object_variable_info = null;
-                this.union_Uninitialized_variable_info = new Uninitialized_variable_info(posDataInputStream);
-            } else {
-                this.union_Object_variable_info = null;
-                this.union_Uninitialized_variable_info = null;
-            }
+            this.tag = new u1(posDataInputStream);
+            this.variable_info = switch (TagEnum.of(this.tag.value).orElse(null)) {
+                case ITEM_Object -> new Object_variable_info(new u2(posDataInputStream));
+                case ITEM_Uninitialized -> new Uninitialized_variable_info(new u2(posDataInputStream));
+                case null, default -> new Simple_variable_info();
+            };
 
             super.length = posDataInputStream.getPos() - super.startPos;
         }
@@ -735,77 +658,72 @@ public class StackMapTable_attribute extends attribute_info {
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
             ClassFile classFile = (ClassFile) fileFormat;
-            int startPosMoving = this.getStartPos();
+            final int unionPos = this.getStartPos() + 1;
 
             this.addNode(parentNode,
-                    startPosMoving,
+                    this.getStartPos(),
                     1,
                     "tag",
                     this.tag.value + " - " + this.getTagName(),
                     "msg_attr_verification_type_info__tag",
                     Icons.Tag
             );
-            startPosMoving += 1;
 
-            if (this.union_Object_variable_info != null) {
-                this.addNode(parentNode,
-                        startPosMoving,
-                        2,
+            switch (this.variable_info) {
+                case Object_variable_info(u2 cpoolIndex) -> this.addNode(parentNode,
+                        unionPos,
+                        u2.LENGTH,
                         "cpool_index",
-                        this.union_Object_variable_info.cpool_index.value + " - " + classFile.getCPDescription(this.union_Object_variable_info.cpool_index.value),
+                        cpoolIndex.value + " - " + classFile.getCPDescription(cpoolIndex.value),
                         "msg_attr_verification_type_info__cpool_index",
                         Icons.Index
                 );
-            } else if (this.union_Uninitialized_variable_info != null) {
-                this.addNode(parentNode,
-                        startPosMoving,
-                        2,
+                case Uninitialized_variable_info(u2 offset) -> this.addNode(parentNode,
+                        unionPos,
+                        u2.LENGTH,
                         "offset",
-                        this.union_Uninitialized_variable_info.offset.value,
+                        offset.value,
                         "msg_attr_verification_type_info__offset",
                         Icons.Offset
                 );
+                case Simple_variable_info() -> {
+                    // Only the tag
+                }
             }
         }
 
-        /**
-         * Get name of {@link #tag}.
-         *
-         * @return {@link #tag} name
-         */
+        /// Get name of {@link #tag}.
+        ///
+        /// @return {@link #tag} name
         public String getTagName() {
             return verification_type_info.TagEnum.getTagName(this.tag.value);
         }
 
-        public static final class Object_variable_info {
-
-            public final u2 cpool_index;
-
-            Object_variable_info(final PosDataInputStream posDataInputStream) throws IOException {
-                this.cpool_index = new u2(posDataInputStream);
-            }
+        /// The `*_variable_info` union of a
+        /// {@link verification_type_info}.
+        public sealed interface VariableInfo permits Simple_variable_info, Object_variable_info, Uninitialized_variable_info {
         }
 
-        /**
-         * <pre>
-         * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
-         * </pre>
-         */
-        @SuppressWarnings("java:S1104")
-        public static final class Uninitialized_variable_info {
-
-            public u2 offset;
-
-            Uninitialized_variable_info(final PosDataInputStream posDataInputStream) throws IOException {
-                this.offset = new u2(posDataInputStream);
-            }
+        /// The variable info which has the {@link #tag} only, for example
+        /// `Top_variable_info` and `Integer_variable_info`.
+        public record Simple_variable_info() implements VariableInfo {
         }
 
-        /**
-         * <pre>
-         * java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
-         * </pre>
-         */
+        /// The `Object_variable_info` item.
+        ///
+        /// @param cpool_index Index of a `CONSTANT_Class_info` in the
+        /// constant pool
+        public record Object_variable_info(u2 cpool_index) implements VariableInfo {
+        }
+
+        /// The `Uninitialized_variable_info` item.
+        ///
+        /// @param offset Offset of the `new` instruction that created the
+        /// object
+        public record Uninitialized_variable_info(u2 offset) implements VariableInfo {
+        }
+
+        // java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
         @SuppressWarnings("java:S115")
         public enum TagEnum {
 
@@ -826,21 +744,20 @@ public class StackMapTable_attribute extends attribute_info {
                 this.value = (short) value;
             }
 
-            /**
-             * Get get enum name of the value <code>v</code>.
-             *
-             * @param v Value of the tag
-             * @return The corresponding enum name
-             */
+            /// Get get enum name of the value `v`.
+            ///
+            /// @param v Value of the tag
+            /// @return The corresponding enum name
             public static String getTagName(short v) {
-                String result = TAGNAME_UNRECOGNIZED;
-                for (TagEnum e : TagEnum.values()) {
-                    if (e.value == v) {
-                        result = e.name();
-                        break;
-                    }
-                }
-                return result;
+                return of(v).map(TagEnum::name).orElse(TAGNAME_UNRECOGNIZED);
+            }
+
+            /// Get the enum of the value `v`.
+            ///
+            /// @param v Value of the tag
+            /// @return The corresponding enum, or empty if it is not recognized
+            public static Optional<TagEnum> of(short v) {
+                return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
             }
         }
     }

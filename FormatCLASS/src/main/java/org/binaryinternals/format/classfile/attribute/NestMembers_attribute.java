@@ -11,32 +11,29 @@ import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- *
- * The class for the {@code NestMembers} attribute. The {@code NestMembers}
- * attribute has the following format:
- *
- * <pre>
- *    NestMembers_attribute {
- *        u2 attribute_name_index;
- *        u4 attribute_length;
- *
- *        u2 number_of_classes;
- *        u2 classes[number_of_classes];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 11
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.29">
- * VM Spec: The NestMembers Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `NestMembers` attribute. The `NestMembers`
+/// attribute has the following format:
+///
+/// ```
+///    NestMembers_attribute {
+///        u2 attribute_name_index;
+///        u4 attribute_length;
+///
+///        u2 number_of_classes;
+///        u2 classes[number_of_classes];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 11
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.29">
+/// VM Spec: The NestMembers Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class NestMembers_attribute extends ClassesCount {
 

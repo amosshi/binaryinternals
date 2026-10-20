@@ -13,45 +13,39 @@ import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.Icons;
 
-/**
- * The class for the {@code CONSTANT_Long_info} structure in constant pool. The
- * {@code CONSTANT_Long_info} structure has the following format:
- *
- * <pre>
- *    CONSTANT_Long_info {
- *        u1 tag;
- *
- *        u4 high_bytes;
- *        u4 low_bytes;
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
- * VM Spec: The CONSTANT_Long_info Structure
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `CONSTANT_Long_info` structure in constant pool. The
+/// `CONSTANT_Long_info` structure has the following format:
+///
+/// ```
+///    CONSTANT_Long_info {
+///        u1 tag;
+///
+///        u4 high_bytes;
+///        u4 low_bytes;
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.5">
+/// VM Spec: The CONSTANT_Long_info Structure
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class CONSTANT_Long_info extends cp_info {
 
     public static final int RAW_DATA_SIZE = 8;
     public static final int LENGTH = 9;
 
-    /**
-     * In JVM Spec we have two fields: u4 high_bytes and u4 low_bytes.
-     */
+    /// In JVM Spec we have two fields: u4 high_bytes and u4 low_bytes.
     public final byte[] rawData;
     public final long longValue;
 
     CONSTANT_Long_info(final PosDataInputStream posDataInputStream) throws IOException {
-        super(cp_info.ConstantType.CONSTANT_Long.tag);
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
+        super(cp_info.ConstantType.CONSTANT_Long.tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.rawData = posDataInputStream.getBuf(posDataInputStream.getPos(), RAW_DATA_SIZE);
         this.longValue = posDataInputStream.readLong();
@@ -64,7 +58,7 @@ public class CONSTANT_Long_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: [%d].",
+        return "%s: Start Position: [%d], length: [%d], value: [%d].".formatted(
                 this.getName(), this.startPos, this.length, this.longValue);
     }
 

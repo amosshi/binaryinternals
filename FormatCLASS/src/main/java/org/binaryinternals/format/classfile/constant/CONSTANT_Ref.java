@@ -11,15 +11,12 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public abstract class CONSTANT_Ref extends cp_info {
 
@@ -28,10 +25,7 @@ public abstract class CONSTANT_Ref extends cp_info {
     public final u2 name_and_type_index;
 
     protected CONSTANT_Ref(final short tag, final PosDataInputStream posDataInputStream) throws IOException {
-        super(tag);
-
-        super.startPos = posDataInputStream.getPos() - 1;
-        super.length = LENGTH;
+        super(tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.class_index = new u2(posDataInputStream);
         this.name_and_type_index = new u2(posDataInputStream);
@@ -39,16 +33,14 @@ public abstract class CONSTANT_Ref extends cp_info {
 
     @Override
     public String getDescription() {
-        return String.format("%s: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].",
+        return "%s: Start Position: [%d], length: [%d], value: class_index=[%d], name_and_type_index=[%d].".formatted(
                 this.getName(), this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
     }
 
-    /**
-     * Shared {@link #toString(cp_info[])} method for methods.
-     *
-     * @param constantPool Constant pool of current class file.
-     * @return Reader friendly string of current object
-     */
+    /// Shared {@link #toString(cp_info[])} method for methods.
+    ///
+    /// @param constantPool Constant pool of current class file.
+    /// @return Reader friendly string of current object
     protected String toString4Method(cp_info[] constantPool) {
         // Class
         String clazz = constantPool[this.class_index.value].toString(constantPool);
@@ -74,7 +66,7 @@ public abstract class CONSTANT_Ref extends cp_info {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + typeStr, ex);
         }
 
-        return String.format("%s.%s%s : %s", clazz, nameStr, parameters, returnType);
+        return "%s.%s%s : %s".formatted(clazz, nameStr, parameters, returnType);
     }
 
     protected void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile, String classPerfix) {
@@ -83,7 +75,7 @@ public abstract class CONSTANT_Ref extends cp_info {
                 super.startPos + 1,
                 2,
                 "class_index",
-                String.format(TEXT_CPINDEX_VALUE, classIndex, classPerfix, classFile.getCPDescription(classIndex)),
+                TEXT_CPINDEX_VALUE.formatted(classIndex, classPerfix, classFile.getCPDescription(classIndex)),
                 "msg_const_ref_class_index",
                 Icons.Offset);
 
@@ -92,7 +84,7 @@ public abstract class CONSTANT_Ref extends cp_info {
                 super.startPos + 3,
                 2,
                 "name_and_type_index",
-                String.format(TEXT_CPINDEX_PUREVALUE, ntIndex, classFile.getCPDescription(ntIndex)),
+                TEXT_CPINDEX_PUREVALUE.formatted(ntIndex, classFile.getCPDescription(ntIndex)),
                 "msg_const_ref_name_and_type_index",
                 Icons.Offset);
     }

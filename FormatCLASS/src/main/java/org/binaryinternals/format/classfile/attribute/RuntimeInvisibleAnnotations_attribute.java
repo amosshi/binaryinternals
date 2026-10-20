@@ -11,37 +11,34 @@ import org.binaryinternals.commonlib.core.FileFormatException;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- * The {@code RuntimeInvisibleAnnotations} attribute is similar to the
- * {@code RuntimeVisibleAnnotations} attribute, except that the annotations
- * represented by a {@code RuntimeInvisibleAnnotations} attribute must not be
- * made available for return by reflective APIs, unless the Java Virtual Machine
- * has been instructed to retain these annotations via some
- * implementation-specific mechanism such as a command line flag. In the absence
- * of such instructions, the Java Virtual Machine ignores this attribute.
- *
- * The {@code RuntimeInvisibleAnnotations} attribute has the following format:
- * <pre>
- * RuntimeInvisibleAnnotations_attribute {
- *    u2         attribute_name_index;
- *    u4         attribute_length;
- *
- *    u2         num_annotations;
- *    annotation annotations[num_annotations];
- *}
- * </pre>
- *
- * @author Amos Shi
- * @since Java 5
- * @see <a
- * href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.17">
- * VM Spec: The RuntimeInvisibleAnnotations Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The `RuntimeInvisibleAnnotations` attribute is similar to the
+/// `RuntimeVisibleAnnotations` attribute, except that the annotations
+/// represented by a `RuntimeInvisibleAnnotations` attribute must not be
+/// made available for return by reflective APIs, unless the Java Virtual Machine
+/// has been instructed to retain these annotations via some
+/// implementation-specific mechanism such as a command line flag. In the absence
+/// of such instructions, the Java Virtual Machine ignores this attribute.
+///
+/// The `RuntimeInvisibleAnnotations` attribute has the following format:
+/// ```
+/// RuntimeInvisibleAnnotations_attribute {
+///    u2         attribute_name_index;
+///    u4         attribute_length;
+///
+///    u2         num_annotations;
+///    annotation annotations[num_annotations];
+/// }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 5
+/// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.17">
+/// VM Spec: The RuntimeInvisibleAnnotations Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings("java:S101")
 public class RuntimeInvisibleAnnotations_attribute extends RuntimeAnnotations {
 

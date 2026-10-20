@@ -19,50 +19,43 @@ import org.binaryinternals.format.classfile.GenerateTreeNodeClassFile;
 import org.binaryinternals.format.classfile.constant.cp_info;
 import org.binaryinternals.format.classfile.u2;
 
-/**
- *
- * The class for the {@code Record} attribute. The Record attribute indicates
- * that the current class is a record class, and stores information about the
- * record components of the record class. There may be at most one Record
- * attribute in the attributes table of a ClassFile structure.
- *
- * The {@code Record} attribute has the following format:
- *
- * <pre>
- *    Record_attribute {
- *        u2                    attribute_name_index;
- *        u4                    attribute_length;
- *
- *        u2                    components_count;
- *        record_component_info components[components_count];
- *    }
- * </pre>
- *
- * @author Amos Shi
- * @since Java 16
- * @see
- * <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.30">
- * VM Spec: The Record Attribute
- * </a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
- * </pre>
- */
+/// The class for the `Record` attribute. The Record attribute indicates
+/// that the current class is a record class, and stores information about the
+/// record components of the record class. There may be at most one Record
+/// attribute in the attributes table of a ClassFile structure.
+///
+/// The `Record` attribute has the following format:
+///
+/// ```
+///    Record_attribute {
+///        u2                    attribute_name_index;
+///        u4                    attribute_length;
+///
+///        u2                    components_count;
+///        record_component_info components[components_count];
+///    }
+/// ```
+///
+/// @author Amos Shi
+/// @since Java 16
+/// @see
+/// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.30">
+/// VM Spec: The Record Attribute
+/// </a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Record_attribute extends attribute_info {
 
-    /**
-     * The value of the {@link #components_count} item indicates the number of
-     * entries in the {@link #components} table.
-     */
+    /// The value of the {@link #components_count} item indicates the number of
+    /// entries in the {@link #components} table.
     public final u2 components_count;
 
-    /**
-     * Each entry in the {@link #components} table specifies a record component
-     * of the current class, in the order the record components were declared.
-     */
+    /// Each entry in the {@link #components} table specifies a record component
+    /// of the current class, in the order the record components were declared.
     public final record_component_info[] components;
 
     Record_attribute(final u2 nameIndex, final String type, final PosDataInputStream stream, final cp_info[] cp) throws IOException, FileFormatException {
@@ -90,6 +83,7 @@ public class Record_attribute extends attribute_info {
                 "components_count", this.components_count.value,
                 "msg_attr_Record__components_count", Icons.Counter
         );
+        startPosMoving += u2.LENGTH;
 
         if (this.components_count.value < 1) {
             return;
@@ -98,7 +92,7 @@ public class Record_attribute extends attribute_info {
         DefaultMutableTreeNode compsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPosMoving,
                 super.length - 6 - 2,
-                String.format("components [%d]", this.components_count.value),
+                "components [%d]".formatted(this.components_count.value),
                 MESSAGES.getString("msg_attr_record_component_info")
         ));
         parentNode.add(compsNode);
@@ -108,7 +102,7 @@ public class Record_attribute extends attribute_info {
             DefaultMutableTreeNode infoNode = this.addNode(compsNode,
                     info.getStartPos(),
                     info.getLength(),
-                    String.format("component %d", i + 1),
+                    "component %d".formatted(i + 1),
                     ((ClassFile)classFile).getCPDescription(info.name_index.value),
                     "msg_attr_record_component_info",
                     Icons.Data
@@ -122,54 +116,44 @@ public class Record_attribute extends attribute_info {
         return "msg_attr_Record";
     }
 
-    /**
-     * The <code>record_component_info</code> structure has the following
-     * format.
-     *
-     * <pre>
-     *    record_component_info {
-     *        u2             name_index;
-     *        u2             descriptor_index;
-     *        u2             attributes_count;
-     *        attribute_info attributes[attributes_count];
-     *    }
-     * </pre>
-     *
-     * <pre>
-     * java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
-     * </pre>
-     */
+    /// The `record_component_info` structure has the following
+    /// format.
+    ///
+    /// ```
+    ///    record_component_info {
+    ///        u2             name_index;
+    ///        u2             descriptor_index;
+    ///        u2             attributes_count;
+    ///        attribute_info attributes[attributes_count];
+    ///    }
+    /// ```
+    ///
+    /// ```
+    /// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
+    /// ```
     @SuppressWarnings("java:S101")
     public static final class record_component_info extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /**
-         * The value of the name_index item must be a valid index into the
-         * {@link ClassFile#constant_pool} table. The <code>constant_pool</code>
-         * entry at that index must be a <code>CONSTANT_Utf8_info</code>
-         * structure representing a valid unqualified name denoting the record
-         * component.
-         */
+        /// The value of the name_index item must be a valid index into the
+        /// {@link ClassFile#constant_pool} table. The `constant_pool`
+        /// entry at that index must be a `CONSTANT_Utf8_info`
+        /// structure representing a valid unqualified name denoting the record
+        /// component.
         public final u2 name_index;
 
-        /**
-         * The value of the descriptor_index item must be a valid index into the
-         * {@link ClassFile#constant_pool} table. The <code>constant_pool</code>
-         * entry at that index must be a <code>CONSTANT_Utf8_info</code>
-         * structure representing a field descriptor which encodes the type of
-         * the record component.
-         */
+        /// The value of the descriptor_index item must be a valid index into the
+        /// {@link ClassFile#constant_pool} table. The `constant_pool`
+        /// entry at that index must be a `CONSTANT_Utf8_info`
+        /// structure representing a field descriptor which encodes the type of
+        /// the record component.
         public final u2 descriptor_index;
 
-        /**
-         * The value of the attributes_count item indicates the number of
-         * additional attributes of this record component.
-         */
+        /// The value of the attributes_count item indicates the number of
+        /// additional attributes of this record component.
         public final u2 attributes_count;
 
-        /**
-         * A record component can have any number of optional attributes
-         * associated with it.
-         */
+        /// A record component can have any number of optional attributes
+        /// associated with it.
         public final attribute_info[] attributes;
 
         private record_component_info(final PosDataInputStream stream, final cp_info[] cp) throws IOException, FileFormatException {
@@ -199,7 +183,7 @@ public class Record_attribute extends attribute_info {
             int cpIndex = this.name_index.value;
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
-                    "name_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "name", classFile.getCPDescription(cpIndex)),
+                    "name_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "name", classFile.getCPDescription(cpIndex)),
                     "msg_attr_record_component_info__name_index", Icons.Name
             );
             startPosMoving += u2.LENGTH;
@@ -207,7 +191,7 @@ public class Record_attribute extends attribute_info {
             cpIndex = this.descriptor_index.value;
             this.addNode(parentNode,
                     startPosMoving, u2.LENGTH,
-                    "descriptor_index", String.format(TEXT_CPINDEX_VALUE, cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
+                    "descriptor_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "descriptor", classFile.getCPDescription(cpIndex)),
                     "msg_attr_record_component_info__descriptor_index", Icons.Descriptor
             );
             startPosMoving += u2.LENGTH;
@@ -228,7 +212,7 @@ public class Record_attribute extends attribute_info {
                 DefaultMutableTreeNode treeNodeAttributes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         startPosMoving,
                         attrLength,
-                        String.format(FIELD_ATTRS, this.attributes_count.value),
+                        FIELD_ATTRS.formatted(this.attributes_count.value),
                         MESSAGES.getString("msg_attr_record_component_info__attributes")
                 ));
 
