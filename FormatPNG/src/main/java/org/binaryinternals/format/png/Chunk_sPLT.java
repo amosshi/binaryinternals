@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_hIST.java    May 02, 2011, 11:33
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -81,10 +81,10 @@ public class Chunk_sPLT extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_sPLT(PosDataInputStream stream, PNGFile png) throws IOException, FileFormatException {
-        super(stream, png);
+    public Chunk_sPLT(PosDataInputStream stream) throws IOException, FileFormatException {
+        super(stream);
 
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         this.PaletteName = chunkDataStream.readASCII();
         this.SampleDepth = chunkDataStream.read();
         if (this.SampleDepth != 8 && this.SampleDepth != 16) {

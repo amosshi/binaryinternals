@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_tEXt.java    Apr 30, 2011, 23:36
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -80,10 +80,10 @@ public class Chunk_tEXt extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_tEXt(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_tEXt(PosDataInputStream stream) throws IOException {
+        super(stream);
 
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         this.Keyword = chunkDataStream.readASCII();
 
         int rest = this.ChunkData.length - this.Keyword.length() - 1;

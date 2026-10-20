@@ -83,7 +83,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 currentPos,
                 u2.LENGTH,
                 "type_index",
-                TEXT_CPINDEX_VALUE.formatted(cpIndex, "type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_VALUE.formatted(cpIndex, "type", classFile.getCPDescription(cpIndex)),
                 "msg_attr_annotation__type_index",
                 Icons.Kind
         );

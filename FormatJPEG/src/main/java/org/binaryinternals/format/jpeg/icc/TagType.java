@@ -12,6 +12,9 @@ package org.binaryinternals.format.jpeg.icc;
  */
 public class TagType {
 
+    private TagType() {
+    }
+
     public static final int chromaticityType = 0x6368726D;                      // ’chrm’, ICC 4.2.0.0 - 10.2
     public static final int colorantOrderType = 0x636C726F;                     // ‘clro’, ICC 4.2.0.0 - 10.3
     public static final int colorantTableType = 0x636c7274;                     // ‘clrt’, ICC 4.2.0.0 - 10.4

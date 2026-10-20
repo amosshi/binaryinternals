@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/// The Java Virtual Machine `class` file format.
 module org.binaryinternals.formatclass {
     requires static com.github.spotbugs.annotations;
     requires transitive java.desktop;

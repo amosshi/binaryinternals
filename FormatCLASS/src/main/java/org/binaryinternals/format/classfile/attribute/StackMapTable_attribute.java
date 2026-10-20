@@ -153,6 +153,9 @@ public class StackMapTable_attribute extends attribute_info {
     }
 
     public abstract static sealed class stack_frame extends FileComponent implements GenerateTreeNodeClassFile {
+        protected stack_frame() {
+        }
+
         /// Get the calculated `offset_delta`.
         public abstract int getOffsetDelta();
     }

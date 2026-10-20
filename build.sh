@@ -30,8 +30,7 @@ mvn --version
 rm -rf dist
 mvn dependency:purge-local-repository -DreResolve=true
 
-mvn  clean install
-mvn  dependency:tree
-mvn  versions:display-dependency-updates
+mvn  clean install javadoc:aggregate-no-fork
+mvn  dependency:tree versions:display-dependency-updates
 #mvn source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
 #mvn spotbugs:gui

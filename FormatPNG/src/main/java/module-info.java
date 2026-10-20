@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+/// Portable Network Graphics (PNG) image file format, with lossless data compression.
 module org.binaryinternals.formatpng {
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.png;
 

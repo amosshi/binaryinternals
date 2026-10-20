@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/// Desktop viewer which shows the internal structure of binary files, using the file format plug-ins.
 module org.binaryinternals.app {
     requires transitive java.desktop;
     requires java.logging;

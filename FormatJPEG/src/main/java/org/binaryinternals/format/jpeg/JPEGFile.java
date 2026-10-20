@@ -39,7 +39,8 @@ public class JPEGFile extends FileFormat {
                     "File is not started with JPEG SOI. Expected value %x, current value %x.",
                     MarkerCode.SOI, soi));
         }
-        super.addFileComponent(new Marker_SOI(posDataInputStream, soi));
+        final Marker soiMarker = new Marker_SOI(posDataInputStream, soi);
+        super.components.put(Long.valueOf(soiMarker.getStartPos()), soiMarker);
 
         // Markers & File Data
         boolean isCompressedData = false;
@@ -47,15 +48,15 @@ public class JPEGFile extends FileFormat {
         int i;
         int length;
         while (posDataInputStream.getPos() < (this.fileByteArray.length - 1)) {
-            if (MarkerCode.isValid(this.getMarkerCode(posDataInputStream.getPos()))) {
+            if (MarkerCode.isValid(getMarkerCode(this.fileByteArray, posDataInputStream.getPos()))) {
                 marker = MarkerParse.parse(posDataInputStream);
-                super.addFileComponent(marker);
+                super.components.put(Long.valueOf(marker.getStartPos()), marker);
                 isCompressedData = MarkerCode.isCompressedDataFollowed(marker.marker_code);
             } else {
                 // find next marker
                 isNextMarkerFound = false;
                 for (i = posDataInputStream.getPos() + 1; i < this.fileByteArray.length - 1; i++) {
-                    if (MarkerCode.isValid(this.getMarkerCode(i))) {
+                    if (MarkerCode.isValid(getMarkerCode(this.fileByteArray, i))) {
                         isNextMarkerFound = true;
                         break;
                     }
@@ -67,7 +68,8 @@ public class JPEGFile extends FileFormat {
                     length = this.fileByteArray.length - posDataInputStream.getPos();
                 }
                 // Add one component
-                super.addFileComponent(new FileData(posDataInputStream, length, isCompressedData));
+                final FileData fileData = new FileData(posDataInputStream, length, isCompressedData);
+                super.components.put(Long.valueOf(fileData.getStartPos()), fileData);
             }
         }
 
@@ -95,9 +97,9 @@ public class JPEGFile extends FileFormat {
         }
     } // End method parse
 
-    private int getMarkerCode(int markerOffset) {
-        byte[] data = this.getFileByteArray(markerOffset, 2);
-        return ((data[0] & 0x000000FF) << 8) + (data[1] & 0x000000FF);
+    private static int getMarkerCode(byte[] fileByteArray, int markerOffset) {
+        return ((fileByteArray[markerOffset] & 0x000000FF) << 8)
+                + (fileByteArray[markerOffset + 1] & 0x000000FF);
     }
 
     @Override

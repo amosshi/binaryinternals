@@ -1,4 +1,4 @@
-/**
+/*
  * PDFFile.java May 17, 2011, 09:29
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved. 
@@ -9,6 +9,7 @@ package org.binaryinternals.format.pdf;
 import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
@@ -41,7 +42,7 @@ public class PDFFile extends FileFormat {
                     pdfHeader));
         }
         Header header = new Header(stream);
-        super.addFileComponent(header);
+        super.components.put(Long.valueOf(header.getStartPos()), header);
 
         // Read PDF Components
         PosDataInputStream.ASCIILine line;
@@ -49,21 +50,26 @@ public class PDFFile extends FileFormat {
             line = stream.readASCIILine();
 
             if (line.line().equalsIgnoreCase(EndOfFile.SIGNATURE)) {                          // %%EOF
-                super.addFileComponent(new EndOfFile(stream, line));
+                addComponent(new EndOfFile(stream, line));
             } else if (line.line().charAt(0) == PDFStatics.DelimiterCharacter.PS_CHAR) {      // %, Comment line
-                super.addFileComponent(new Comment(stream, line));
+                addComponent(new Comment(stream, line));
             } else if (line.line().matches(IndirectObject.SIGNATURE_START_REGEXP)) {          // 1 0 obj 
-                super.addFileComponent(new IndirectObject(stream, line));
+                addComponent(new IndirectObject(stream, line));
             } else if (line.line().trim().equalsIgnoreCase(CrossReferenceTable.SIGNATURE)) {  // xref
-                super.addFileComponent(new CrossReferenceTable(stream, line));
+                addComponent(new CrossReferenceTable(stream, line));
             } else if (line.line().equalsIgnoreCase(Trailer.SIGNATURE)) {                     // trailer
-                super.addFileComponent(new Trailer(stream, line));
+                addComponent(new Trailer(stream, line));
             } else if (line.line().equalsIgnoreCase(StartXRef.SIGNATURE)) {                   // startxref
-                super.addFileComponent(new StartXRef(stream, line));
+                addComponent(new StartXRef(stream, line));
             } else {
-                super.addFileComponent(new EmptyLine(stream, line));
+                addComponent(new EmptyLine(stream, line));
             }
+
         } // End While
+    }
+
+    private void addComponent(final FileComponent component) {
+        super.components.put(Long.valueOf(component.getStartPos()), component);
     }
 
     @Override

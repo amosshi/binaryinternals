@@ -17,6 +17,9 @@ import org.binaryinternals.commonlib.core.FileFormat;
  */
 public class PluginDescriptorJPEG implements PluginDescriptor{
 
+    public PluginDescriptorJPEG() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "JPEG Image (*.jpg,*jpeg)";

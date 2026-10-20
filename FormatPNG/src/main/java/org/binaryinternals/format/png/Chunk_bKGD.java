@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_bKGD.java    May 01, 2011, 22:37
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -99,10 +99,10 @@ public class Chunk_bKGD extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_bKGD(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_bKGD(PosDataInputStream stream) throws IOException {
+        super(stream);
 
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         switch(this.ChunkData.length) {
             case 1:
                 this.PaletteIndex = chunkDataStream.read();

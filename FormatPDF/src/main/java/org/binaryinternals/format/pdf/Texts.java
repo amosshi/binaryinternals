@@ -10,6 +10,9 @@ import java.util.ResourceBundle;
  */
 public class Texts {
 
+    private Texts() {
+    }
+
     static final ResourceBundle MESSAGES = ResourceBundle.getBundle(Texts.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     public static final String NewLine = "New Line";
     public static final String Signature = "Signature: ";

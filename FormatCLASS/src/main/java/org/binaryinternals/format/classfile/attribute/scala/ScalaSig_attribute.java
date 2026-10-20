@@ -77,7 +77,7 @@ public class ScalaSig_attribute extends attribute_info {
         this.minor_version = posDataInputStream.readByte();
         this.number_of_entries = posDataInputStream.readByte();
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     @Override

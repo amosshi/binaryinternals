@@ -23,7 +23,7 @@ public class IFD_0002_InteroperabilityVersion extends IFD_UNDEFINED {
     public IFD_0002_InteroperabilityVersion(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     public String getVersion() {

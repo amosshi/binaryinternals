@@ -9,7 +9,6 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.core.FileFormatException;
@@ -40,7 +39,7 @@ public class IFD extends FileComponent {
 
         this.ifd_tag = tag;
         this.ifd_type = type;
-        this.ifd_count = this.readInt(pDIS);
+        this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
 
         this.data_size = IFDType.getTypeLength(this.ifd_type) * this.ifd_count;
     }
@@ -54,35 +53,42 @@ public class IFD extends FileComponent {
 
         this.ifd_tag = tag;
         this.ifd_type = type;
-        this.ifd_count = this.readInt(pDIS);
-        this.ifd_value_offset = this.readInt(pDIS);                                 // Maybe value
+        this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
+        this.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                  // Maybe value
 
         this.data_size = IFDType.getTypeLength(this.ifd_type) * this.ifd_count;
     }
 
     protected final void checkIFDCount(int countExpected) throws FileFormatException {
-        if (this.ifd_count != countExpected) {
+        checkIFDCount(this.ifd_tag, this.getTagNameForValidation(), this.ifd_count, countExpected);
+    }
+
+    static void checkIFDCount(int tag, int actualCount, int expectedCount) throws FileFormatException {
+        checkIFDCount(tag, IFDTag.getTagName(tag), actualCount, expectedCount);
+    }
+
+    private static void checkIFDCount(int tag, String tagName, int actualCount, int expectedCount)
+            throws FileFormatException {
+        if (actualCount != expectedCount) {
             throw new FileFormatException(String.format(
                     "IFD %d (%s): ifd count must be %d. current value = %d",
-                    this.ifd_tag,
-                    this.getTagName(),
-                    countExpected,
-                    this.ifd_count));
+                    tag,
+                    tagName,
+                    expectedCount,
+                    actualCount));
         }
     }
 
+    private String getTagNameForValidation() {
+        return switch (this.tag_space) {
+            case DEFAULT -> IFDTag.getTagName(this.ifd_tag);
+            case GPS -> IFDTag.getTagNameGPS(this.ifd_tag);
+            case INTERO -> IFDTag.getTagNameIntero(this.ifd_tag);
+        };
+    }
+
     protected final PosDataInputStream getTiffOffsetReader() throws IOException {
-        final PosDataInputStream reader = new PosDataInputStream(new PosByteArrayInputStream(this.tiff_ByteArray));
-
-        if (this.ifd_value_offset > this.tiff_ByteArray.length) {
-            throw new ArrayIndexOutOfBoundsException("TIFF IFD: the data offset is bigger than tiff buffer length");
-        }
-        if (this.ifd_value_offset + this.data_size > this.tiff_ByteArray.length) {
-            throw new ArrayIndexOutOfBoundsException("TIFF IFD: the data ending offset is bigger than tiff buffer length");
-        }
-
-        reader.skipNBytes((int) this.ifd_value_offset);
-        return reader;
+        return IFDParse.getTiffOffsetReader(this.tiff_ByteArray, this.ifd_value_offset, this.data_size);
     }
 
     // Note: Common tag only, none GPS, none InterO

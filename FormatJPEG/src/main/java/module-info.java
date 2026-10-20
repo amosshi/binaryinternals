@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+/// JPEG image file format, a lossy compression for digital images.
 module org.binaryinternals.formatjpeg {
     requires static com.github.spotbugs.annotations;
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.jpeg;
     exports org.binaryinternals.format.jpeg.icc;

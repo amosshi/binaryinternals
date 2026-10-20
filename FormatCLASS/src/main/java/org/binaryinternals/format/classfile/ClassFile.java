@@ -355,7 +355,7 @@ public class ClassFile extends FileFormat {
                 (cpInfo[cpIndex] == null) ? "empty" : cpInfo[cpIndex].tag.value));
     }
 
-    ///////////////////////////////////////////////////////////////////////////
+    // ----------------------------------------------------------------------
     // Get raw data
     /// Returns a string of the constant pool item at the specified
     /// `index`.

@@ -14,6 +14,9 @@ package org.binaryinternals.format.classfile;
 /// @author Amos Shi
 public class JavaLangSpec {
 
+    private JavaLangSpec() {
+    }
+
     /// 51 character sequences, formed from ASCII characters, are reserved for
     /// use as keywords and cannot be used as identifiers.
     ///

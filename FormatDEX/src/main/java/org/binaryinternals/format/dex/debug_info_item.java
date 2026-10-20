@@ -20,5 +20,8 @@ import org.binaryinternals.commonlib.core.FileComponent;
  */
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public class debug_info_item extends FileComponent{
-    
+
+    public debug_info_item() {
+        super();
+    }
 }

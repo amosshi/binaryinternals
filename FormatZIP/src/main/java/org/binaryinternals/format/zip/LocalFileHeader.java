@@ -1,4 +1,4 @@
-/**
+/*
  * LocalFileHeader.java    May 10, 2011, 22:16
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.

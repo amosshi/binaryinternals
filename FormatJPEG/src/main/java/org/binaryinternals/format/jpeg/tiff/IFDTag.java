@@ -15,6 +15,9 @@ import java.util.ResourceBundle;
  */
 public class IFDTag {
 
+    private IFDTag() {
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     // ITFF-v6
 

@@ -1,4 +1,4 @@
-/**
+/*
  * BMPFile.java    Nov 28, 2010, 21:00
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.
@@ -36,12 +36,12 @@ public class BMPFile extends FileFormat{
         this.dibHeader = new DIBHeader(input);
 
         if (input.getPos() < this.bitmapFileHeader.offset) {
-            this.colorTable = new ColorTable(input, this);
+            this.colorTable = new ColorTable(input, this.dibHeader);
         } else {
             this.colorTable = null;
         }
 
-        this.pixelArray = new PixelArray(this);
+        this.pixelArray = new PixelArray(this.dibHeader, Math.toIntExact(this.bitmapFileHeader.offset));
     }
 
     @Override

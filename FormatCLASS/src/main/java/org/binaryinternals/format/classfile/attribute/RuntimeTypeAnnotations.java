@@ -43,7 +43,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             this.annotations = null;
         }
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     /// Get message key for {@link #annotations}.
@@ -399,10 +399,6 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 this.value = v.shortValue();
             }
 
-            /// Get union name in `type_annotation` structure.
-            ///
-            /// @param v {@link #value} of {@link TargetType}
-            /// @return `type_annotation` structure union name
             /// Get the enum of a `target_type` value.
             ///
             /// @param v The `target_type` value
@@ -411,6 +407,10 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 return Arrays.stream(values()).filter(t -> t.value == v).findFirst();
             }
 
+            /// Get union name in `type_annotation` structure.
+            ///
+            /// @param v {@link #value} of {@link TargetType}
+            /// @return `type_annotation` structure union name
             public static String getTargetUnionName(short v) {
                 return switch (of(v).orElse(null)) {
                     case VALUE_HEX_00, VALUE_HEX_01 -> type_parameter_target.UNION_NAME;

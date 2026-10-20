@@ -8,7 +8,6 @@ package org.binaryinternals.format.elf;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import org.binaryinternals.commonlib.core.BytesTool;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Addr;

@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_IDAT.java    May 02, 2011, 11:23
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -31,8 +31,8 @@ public class Chunk_IDAT extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_IDAT(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_IDAT(PosDataInputStream stream) throws IOException {
+        super(stream);
     }
 
     @Override

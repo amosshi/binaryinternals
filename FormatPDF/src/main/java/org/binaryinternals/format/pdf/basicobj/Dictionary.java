@@ -58,9 +58,9 @@ public class Dictionary extends FileComponent implements GenerateTreeNode {
 
         // Debug Output
         System.out.println(this.toString());
-        Iterator it = this.DictionaryEntries.entrySet().iterator();
+        Iterator<Map.Entry<String, FileComponent>> it = this.DictionaryEntries.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
+            Map.Entry<String, FileComponent> pairs = it.next();
             System.out.println(pairs.getKey() + " = " + pairs.getValue());
             it.remove(); // avoids a ConcurrentModificationException
         } // End while

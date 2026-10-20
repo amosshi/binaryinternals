@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk.java    Apr 21, 2011, 22:46
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -71,7 +71,7 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
      */
     private static final int CRC_SIZE = 4;
 
-    Chunk(PosDataInputStream stream, PNGFile png) throws IOException {
+    Chunk(PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
 
         this.Length = stream.readInt();  // Chunk Length
@@ -117,11 +117,11 @@ public class Chunk extends FileComponent implements GenerateTreeNode {
         }
     }
 
-    protected PosDataInputStream getChunkDataStream() {
-        if (this.ChunkData != null) {
+    static PosDataInputStream getChunkDataStream(byte[] chunkData, int startPos) {
+        if (chunkData != null) {
             return new PosDataInputStream(
-                    new PosByteArrayInputStream(this.ChunkData),
-                    this.startPos + 4 + 4);
+                    new PosByteArrayInputStream(chunkData),
+                    startPos + 4 + 4);
         } else {
             return null;
         }

@@ -14,6 +14,9 @@ import org.binaryinternals.commonlib.core.FileFormat;
 /// @author Amos Shi
 public class PluginDescriptorClass implements PluginDescriptor{
 
+    public PluginDescriptorClass() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Java class File (*.class)";

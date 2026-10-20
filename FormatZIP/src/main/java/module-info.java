@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+/// ZIP archive file format, with lossless data compression.
 module org.binaryinternals.formatzip {
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.zip;
 

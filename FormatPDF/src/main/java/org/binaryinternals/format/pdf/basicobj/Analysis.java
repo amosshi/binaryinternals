@@ -15,6 +15,9 @@ import org.binaryinternals.format.pdf.Texts;
  */
 public class Analysis {
 
+    public Analysis() {
+    }
+
     public FileComponent parseNextObject(PosDataInputStream stream, List<FileComponent> components) throws IOException {
         FileComponent comp;
         byte next1 = stream.readByte();

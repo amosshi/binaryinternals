@@ -12,6 +12,9 @@ package org.binaryinternals.format.jpeg.tiff;
  */
 public class IFDType {
 
+    private IFDType() {
+    }
+
     public static final int UnexpectedType = 0;
     public static final int BYTE = 1;
     public static final int ASCII = 2;

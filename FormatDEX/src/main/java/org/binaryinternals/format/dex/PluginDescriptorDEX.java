@@ -18,6 +18,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorDEX implements PluginDescriptor{
 
+    public PluginDescriptorDEX() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Android DEX File (*.dex)";

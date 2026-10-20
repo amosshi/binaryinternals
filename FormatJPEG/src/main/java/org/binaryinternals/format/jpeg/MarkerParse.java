@@ -16,6 +16,9 @@ import org.binaryinternals.commonlib.core.PosDataInputStream;
  */
 public class MarkerParse {
 
+    private MarkerParse() {
+    }
+
     /**
      *
      * @param pDisFile Data Input Stream for <code>file</code> byte array

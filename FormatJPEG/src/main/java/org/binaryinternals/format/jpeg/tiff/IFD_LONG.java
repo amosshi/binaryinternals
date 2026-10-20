@@ -25,16 +25,16 @@ public class IFD_LONG extends IFD {
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, IFDType.LONG, startPosTiff, byteArrayTiff);
 
-        if (super.isValue()) {
+        if (this.data_size > 0 && this.data_size <= 4) {
             this.value = new long[1];
-            this.value[0] = super.readUnsignedInt(pDIS);
+            this.value[0] = IFDParse.readUnsignedInt(pDIS, byteOrder);
         } else {
-            super.ifd_value_offset = super.readInt(pDIS);                           // Offset
+            super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);             // Offset
 
-            final PosDataInputStream reader = super.getTiffOffsetReader();
+            final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
             this.value = new long[super.ifd_count];
             for (int i = 0; i < super.ifd_count; i++) {
-                this.value[i] = super.readUnsignedInt(reader);
+                this.value[i] = IFDParse.readUnsignedInt(reader, byteOrder);
             }
         }
     }

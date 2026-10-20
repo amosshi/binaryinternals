@@ -65,6 +65,9 @@ public final class Null extends FileComponent implements GenerateTreeNode {
 
     public static class StartByte {
 
+        private StartByte() {
+        }
+
         /**
          * Start byte for
          * <code>null</code>.

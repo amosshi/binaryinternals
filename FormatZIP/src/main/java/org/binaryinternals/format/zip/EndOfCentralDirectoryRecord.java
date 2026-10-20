@@ -1,4 +1,4 @@
-/**
+/*
  * EndOfCentralDirectoryRecord.java    May 08, 2011, 11:24
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.

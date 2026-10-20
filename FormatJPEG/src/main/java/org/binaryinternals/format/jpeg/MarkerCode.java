@@ -12,6 +12,9 @@ package org.binaryinternals.format.jpeg;
  */
 public class MarkerCode {
 
+    private MarkerCode() {
+    }
+
     public static final int MARKER_CODE_BYTES_COUNT = 2;
     public static final int MARKER_LENGTH_BYTES_COUNT = 2;
     public static final int MIN = 0xFF00;

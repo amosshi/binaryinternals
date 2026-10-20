@@ -7,12 +7,18 @@ package org.binaryinternals.format.pdf;
  */
 public class PDFStatics {
 
+    private PDFStatics() {
+    }
+
     /**
      * See
      * <pre>PDF 32000-1:2008</pre>
      * <code>7.2.2</code>: Table 1 – White-space characters.
      */
     public static class WhiteSpace {
+
+        private WhiteSpace() {
+        }
 
         /**
          * Null (NUL). <p>Value
@@ -52,6 +58,9 @@ public class PDFStatics {
      * <code>7.2.2</code>: Table 2 – Delimiter characters.
      */
     public static class DelimiterCharacter {
+
+        private DelimiterCharacter() {
+        }
 
         /**
          * LEFT PARENTHESIS:

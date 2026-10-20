@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+/// Dalvik Executable (DEX) file format of Android.
 module org.binaryinternals.formatdex {
-    requires static org.binaryinternals.commonlib;
-    requires static org.binaryinternals.formatclass;
+    requires transitive org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.formatclass;
 
     exports org.binaryinternals.format.dex;
 

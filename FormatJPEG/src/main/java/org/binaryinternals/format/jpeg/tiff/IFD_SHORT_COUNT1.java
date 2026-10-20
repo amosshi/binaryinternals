@@ -22,7 +22,7 @@ class IFD_SHORT_COUNT1 extends IFD_SHORT {
             throws IOException, FileFormatException {
 
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     @Override

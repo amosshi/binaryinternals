@@ -33,7 +33,7 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
                 new PosByteArrayInputStream(this.tiff_ByteArray),
                 super.tiff_StartPos);
         reader.skipNBytes((int) super.value[0]);
-        this.ifd_number = super.readUnsignedShort(reader);
+        this.ifd_number = IFDParse.readUnsignedShort(reader, byteOrder);
         if (this.ifd_number > 0) {
             this.ifd_sub = new IFD[this.ifd_number];
         } else {

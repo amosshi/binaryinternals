@@ -1,4 +1,4 @@
-/**
+/*
  * ZIPFile.java Apr 19, 2011, 07:58
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -144,7 +144,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
                 lastPos = value.getStartPos() + value.getLength();
 
                 if (value instanceof LocalFileHeader) {
-                    lastPos += ((LocalFileHeader)value).CompressedSize;
+                    lastPos = Math.addExact(lastPos, Math.toIntExact(((LocalFileHeader) value).CompressedSize));
                 }
             }
         }

@@ -1,4 +1,4 @@
-/**
+/*
  * ColorTable.java    Dec 01, 2010, 22:59
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.
@@ -21,9 +21,9 @@ public class ColorTable extends FileComponent implements GenerateTreeNode {
 
     public final Object[] palette;
 
-    ColorTable(final PosDataInputStream input, final BMPFile bmpFile) throws IOException {
+    ColorTable(final PosDataInputStream input, final DIBHeader dibHeader) throws IOException {
 
-        int bpp = bmpFile.dibHeader.getBitCount();
+        int bpp = dibHeader.getBitCount();
 
         if ((bpp < 0) || (bpp > 8)) {
             this.palette = null;
@@ -33,7 +33,7 @@ public class ColorTable extends FileComponent implements GenerateTreeNode {
         this.startPos = input.getPos();
         int size = 2 << (bpp - 1);
 
-        if (bmpFile.dibHeader.data instanceof DIBHeader.BITMAPCOREHEADER) {
+        if (dibHeader.data instanceof DIBHeader.BITMAPCOREHEADER) {
             this.length = size * PixelBGR.LENGTH;
             this.palette = new PixelBGR[size];
             for (int i = 0; i < size; i++) {

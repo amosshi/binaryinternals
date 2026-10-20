@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/// Common library for the binary file format parsers and the viewer.
+///
 /// @author Amos SHI
 module org.binaryinternals.commonlib {
     requires transitive java.desktop;

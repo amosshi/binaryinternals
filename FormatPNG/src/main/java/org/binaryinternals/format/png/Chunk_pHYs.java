@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_pHYs.java    Apr 30, 2011, 23:01
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -41,10 +41,10 @@ public class Chunk_pHYs extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_pHYs(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_pHYs(PosDataInputStream stream) throws IOException {
+        super(stream);
 
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         this.AxisX = chunkDataStream.readInt();
         this.AxisY = chunkDataStream.readInt();
         this.Unit = chunkDataStream.read();

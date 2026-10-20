@@ -17,6 +17,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorZIP implements PluginDescriptor{
 
+    public PluginDescriptorZIP() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "ZIP file (*.jar, *.zip)";

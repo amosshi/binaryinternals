@@ -21,7 +21,7 @@ class IFD_LONG_COUNT1 extends IFD_LONG {
     IFD_LONG_COUNT1(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     @Override

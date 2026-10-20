@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
  */
 public class ShortText{
 
+    private ShortText() {
+    }
+
     private static final ResourceBundle res;
 
     static{

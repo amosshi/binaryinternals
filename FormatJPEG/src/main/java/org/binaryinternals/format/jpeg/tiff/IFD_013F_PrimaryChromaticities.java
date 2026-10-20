@@ -22,7 +22,7 @@ public class IFD_013F_PrimaryChromaticities extends IFD_RATIONAL {
     public IFD_013F_PrimaryChromaticities(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     @Override

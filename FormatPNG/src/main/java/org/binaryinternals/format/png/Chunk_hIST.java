@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_hIST.java    May 02, 2011, 11:33
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -43,13 +43,13 @@ public class Chunk_hIST extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_hIST(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_hIST(PosDataInputStream stream) throws IOException {
+        super(stream);
 
         int count = this.Length / 2;
 
         if (count > 0) {
-            PosDataInputStream chunkDataStream = super.getChunkDataStream();
+            PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
             this.Frequency = new int[count];
             for (int i = 0; i < count; i++) {
                 this.Frequency[i] = chunkDataStream.readUnsignedShort();

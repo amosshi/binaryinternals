@@ -22,7 +22,7 @@ public class IFD_RATIONAL_COUNT1 extends IFD_RATIONAL {
             throws IOException, FileFormatException {
 
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     @Override

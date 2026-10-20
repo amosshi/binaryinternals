@@ -57,7 +57,7 @@ public class Scala_attribute extends attribute_info {
             throw new FileFormatException("The attribute_length of Scala is not 0, it is %d.".formatted(this.attribute_length.value));
         }
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     @Override

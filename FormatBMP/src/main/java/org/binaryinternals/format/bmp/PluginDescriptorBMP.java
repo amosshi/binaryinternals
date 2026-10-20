@@ -17,6 +17,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorBMP implements PluginDescriptor{
 
+    public PluginDescriptorBMP() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Bitmap Images (*.bmp)";

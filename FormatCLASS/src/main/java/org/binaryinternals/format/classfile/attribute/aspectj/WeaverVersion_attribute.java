@@ -70,7 +70,7 @@ public class WeaverVersion_attribute extends attribute_info {
         this.minor_version = posDataInputStream.readShort();
         this.version_time = posDataInputStream.readLong();
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     @Override

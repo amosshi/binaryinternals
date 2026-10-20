@@ -24,9 +24,9 @@ public class IFD_0132_DateTime extends IFD_ASCII {
     public IFD_0132_DateTime(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
 
-        final PosDataInputStream reader = super.getTiffOffsetReader();
+        final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
         final byte[] buf = new byte[IFD_0132_DateTime.COUNT];
         reader.readFully(buf, 0, IFD_0132_DateTime.COUNT);
         this.datetime = IFD_0132_DateTime.buf2calendar(buf);

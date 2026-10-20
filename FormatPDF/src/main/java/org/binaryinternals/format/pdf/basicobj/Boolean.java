@@ -87,6 +87,9 @@ public final class Boolean extends FileComponent implements GenerateTreeNode {
 
     public static class StartByte {
 
+        private StartByte() {
+        }
+
         /**
          * Start byte for
          * <code>true</code>.

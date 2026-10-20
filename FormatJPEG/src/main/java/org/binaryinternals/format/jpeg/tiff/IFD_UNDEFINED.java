@@ -25,16 +25,16 @@ public class IFD_UNDEFINED extends IFD {
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, IFDType.UNDEFINED, startPosTiff, byteArrayTiff);
 
-        if (super.isValue()) {
+        if (this.data_size > 0 && this.data_size <= 4) {
             this.value = new byte[4];
             this.value[0] = pDIS.readByte();
             this.value[1] = pDIS.readByte();
             this.value[2] = pDIS.readByte();
             this.value[3] = pDIS.readByte();
         } else {
-            super.ifd_value_offset = super.readInt(pDIS);                           // Offset
+            super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);             // Offset
 
-            final PosDataInputStream reader = super.getTiffOffsetReader();
+            final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
             this.value = new byte[super.ifd_count];
             for (int i = 0; i < super.ifd_count; i++) {
                 this.value[i] = reader.readByte();

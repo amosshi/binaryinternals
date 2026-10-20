@@ -190,7 +190,7 @@ public class InnerClasses_attribute extends attribute_info {
                     startPosMoving,
                     u2.LENGTH,
                     "inner_class_info_index",
-                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "inner class type", ((ClassFile) classFile).getCPDescription(cpIndex)),
+                    TEXT_CPINDEX_VALUE.formatted(cpIndex, "inner class type", classFile.getCPDescription(cpIndex)),
                     "msg_attr_classes__inner_class_info_index",
                     Icons.Index
             );

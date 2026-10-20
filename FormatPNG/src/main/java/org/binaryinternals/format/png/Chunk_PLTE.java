@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_PLTE .java    May 01, 2011, 15:04
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -42,8 +42,8 @@ public class Chunk_PLTE extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_PLTE(PosDataInputStream stream, PNGFile png) throws IOException, FileFormatException {
-        super(stream, png);
+    public Chunk_PLTE(PosDataInputStream stream) throws IOException, FileFormatException {
+        super(stream);
 
         // A chunk length not divisible by 3 is an error.
         if ((this.Length % 3) != 0) {
@@ -59,7 +59,7 @@ public class Chunk_PLTE extends Chunk {
         }
 
         this.Palette = new PaletteEntry[count];
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         for (int i = 0; i < this.Palette.length; i++) {
             this.Palette[i] = new PaletteEntry(
                     chunkDataStream.read(),

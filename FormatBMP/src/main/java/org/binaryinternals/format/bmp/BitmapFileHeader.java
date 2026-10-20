@@ -1,4 +1,4 @@
-/**
+/*
  * BitmapFileHeader.java    Nov 28, 2010, 21:00
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.

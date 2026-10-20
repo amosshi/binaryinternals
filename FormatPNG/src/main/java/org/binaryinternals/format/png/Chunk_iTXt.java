@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_iEXt.java    May 04, 2011, 16:05
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -92,10 +92,10 @@ public class Chunk_iTXt extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_iTXt(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_iTXt(PosDataInputStream stream) throws IOException {
+        super(stream);
 
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         this.Keyword = chunkDataStream.readASCII();
         this.CompressionFlag = chunkDataStream.read();
         this.CompressionMethod = chunkDataStream.read();

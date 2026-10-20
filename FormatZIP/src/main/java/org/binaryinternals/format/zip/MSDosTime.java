@@ -1,4 +1,4 @@
-/**
+/*
  * MSDosTime.java    May 14, 2011, 12:35
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.

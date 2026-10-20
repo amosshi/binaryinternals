@@ -25,7 +25,7 @@ public class IFD_ASCII extends IFD {
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, IFDType.ASCII, startPosTiff, byteArrayTiff);
 
-        if (super.isValue()) {
+        if (this.data_size > 0 && this.data_size <= 4) {
             final StringBuffer sb = new StringBuffer(5);
             sb.append((char) pDIS.readByte());  // byte 1
             sb.append((char) pDIS.readByte());  // byte 2
@@ -33,9 +33,9 @@ public class IFD_ASCII extends IFD {
             sb.append((char) pDIS.readByte());  // byte 4
             this.value = sb.toString();
         } else {
-            super.ifd_value_offset = super.readInt(pDIS);                           // Offset
+            super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);             // Offset
 
-            final PosDataInputStream reader = super.getTiffOffsetReader();
+            final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
             final StringBuffer sb = new StringBuffer(super.ifd_count + 2);
             for (int i = 0; i < super.ifd_count; i++) {
                 sb.append((char) reader.readByte());

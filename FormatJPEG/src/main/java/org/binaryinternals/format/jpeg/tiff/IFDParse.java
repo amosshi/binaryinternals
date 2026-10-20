@@ -7,6 +7,7 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
+import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.core.FileFormatException;
 
@@ -16,6 +17,9 @@ import org.binaryinternals.commonlib.core.FileFormatException;
  * @author Amos Shi
  */
 public class IFDParse {
+
+    private IFDParse() {
+    }
 
     public static IFD parse(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
             throws IOException, FileFormatException {
@@ -236,5 +240,27 @@ public class IFDParse {
         } else {
             return pDIS.readIntInLittleEndian();
         }
+    }
+
+    static long readUnsignedInt(final PosDataInputStream pDIS, int byteOrder) throws IOException {
+        if (byteOrder == TIFFHeader.BYTEORDER_BIGENDIAN) {
+            return pDIS.readUnsignedInt();
+        } else {
+            return pDIS.readUnsignedIntInLittleEndian();
+        }
+    }
+
+    static PosDataInputStream getTiffOffsetReader(final byte[] tiffByteArray, int valueOffset, int dataSize) throws IOException {
+        final PosDataInputStream reader = new PosDataInputStream(new PosByteArrayInputStream(tiffByteArray));
+
+        if (valueOffset > tiffByteArray.length) {
+            throw new ArrayIndexOutOfBoundsException("TIFF IFD: the data offset is bigger than tiff buffer length");
+        }
+        if (valueOffset + dataSize > tiffByteArray.length) {
+            throw new ArrayIndexOutOfBoundsException("TIFF IFD: the data ending offset is bigger than tiff buffer length");
+        }
+
+        reader.skipNBytes(valueOffset);
+        return reader;
     }
 }

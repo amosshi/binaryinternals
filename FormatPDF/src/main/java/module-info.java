@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+/// Portable Document Format (PDF), standardized as ISO 32000.
 module org.binaryinternals.formatpdf {
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.pdf;
     exports org.binaryinternals.format.pdf.basicobj;

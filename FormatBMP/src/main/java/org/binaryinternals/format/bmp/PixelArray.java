@@ -1,4 +1,4 @@
-/**
+/*
  * PixelArray.java    Dec 03, 2010, 22:19
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.
@@ -19,12 +19,12 @@ import org.binaryinternals.format.bmp.DIBHeader.CompressionMethod;
  */
 public class PixelArray extends FileComponent implements GenerateTreeNode {
 
-    private final BMPFile bmpFile;
+    private final DIBHeader dibHeader;
 
-    PixelArray(final BMPFile bmpFile) throws IOException {
-        this.bmpFile = bmpFile;
-        this.startPos = (int) bmpFile.bitmapFileHeader.offset;
-        this.length = (int) bmpFile.dibHeader.calcImageSize();
+    PixelArray(final DIBHeader dibHeader, final int startPos) throws IOException {
+        this.dibHeader = dibHeader;
+        this.startPos = startPos;
+        this.length = Math.toIntExact(dibHeader.calcImageSize());
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
@@ -38,8 +38,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
         comp.setDescription("The pixel format is defined by the DIB Header. <br/>Each row in the Pixel Array is padded to a multiple of 4 bytes in size.");
         parentNode.add(node = new DefaultMutableTreeNode(comp));
 
-        if (this.bmpFile.dibHeader.getCompressionMethod() == CompressionMethod.BI_RGB.value) {
-            switch (this.bmpFile.dibHeader.getBitCount()) {
+        if (this.dibHeader.getCompressionMethod() == CompressionMethod.BI_RGB.value) {
+            switch (this.dibHeader.getBitCount()) {
                 case 1:
                     this.generateTreeNode_bpp_1(node);
                     break;
@@ -70,8 +70,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 1-bit per pixel (1 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_1(DefaultMutableTreeNode parentNode) {
-        int rowSize = ((this.bmpFile.dibHeader.getWidth() + 31) >> 5) << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = ((this.dibHeader.getWidth() + 31) >> 5) << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,
@@ -81,8 +81,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 4-bit per pixel (4 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_4(DefaultMutableTreeNode parentNode) {
-        int rowSize = ((this.bmpFile.dibHeader.getWidth() + 7) >> 3) << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = ((this.dibHeader.getWidth() + 7) >> 3) << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,
@@ -92,8 +92,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 8-bit per pixel (8 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_8(DefaultMutableTreeNode parentNode) {
-        int rowSize = ((this.bmpFile.dibHeader.getWidth() + 3) >> 2) << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = ((this.dibHeader.getWidth() + 3) >> 2) << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,
@@ -103,8 +103,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 16-bit per pixel (16 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_16(DefaultMutableTreeNode parentNode) {
-        int rowSize = (((this.bmpFile.dibHeader.getWidth() << 1) + 3) >> 2) << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = (((this.dibHeader.getWidth() << 1) + 3) >> 2) << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,
@@ -114,8 +114,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 24-bit per pixel (24 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_24(DefaultMutableTreeNode parentNode) {
-        int rowSize = (((this.bmpFile.dibHeader.getWidth() << 1) + this.bmpFile.dibHeader.getWidth() + 3) >> 2) << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = (((this.dibHeader.getWidth() << 1) + this.dibHeader.getWidth() + 3) >> 2) << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,
@@ -125,8 +125,8 @@ public class PixelArray extends FileComponent implements GenerateTreeNode {
 
     /** Generate tree nodes for 32-bit per pixel (32 <code>bpp</code>) format. */
     private void generateTreeNode_bpp_32(DefaultMutableTreeNode parentNode) {
-        int rowSize = this.bmpFile.dibHeader.getWidth() << 2;
-        for (int i = 0; i < this.bmpFile.dibHeader.getHeight(); i++) {
+        int rowSize = this.dibHeader.getWidth() << 2;
+        for (int i = 0; i < this.dibHeader.getHeight(); i++) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.startPos + rowSize * i,
                     rowSize,

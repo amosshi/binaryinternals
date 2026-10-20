@@ -17,6 +17,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorPNG implements PluginDescriptor{
 
+    public PluginDescriptorPNG() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Portable Network Graphic (*.png)";

@@ -16,6 +16,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorELF implements PluginDescriptor {
 
+    public PluginDescriptorELF() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Executable and Linkable Format (*.axf, *.bin, *.elf, *.o, *.prx, *.puff, *.so)";

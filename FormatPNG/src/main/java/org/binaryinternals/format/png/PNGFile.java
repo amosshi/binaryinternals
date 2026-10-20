@@ -1,4 +1,4 @@
-/**
+/*
  * PNGFile.java    Apr 19, 2011, 07:58
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.FileComponent;
+import org.binaryinternals.commonlib.core.FileFormat;
 import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.core.FileFormatException;
 
@@ -58,7 +57,7 @@ public class PNGFile extends FileFormat {
     /**
      * Chunk type classes.
      */
-    private static List<Class> ChunkTypes;
+    private static List<Class<? extends Chunk>> ChunkTypes;
 
     private static void LoadChunkTypes() {
         ChunkTypes = Collections.synchronizedList(new ArrayList<>(100));
@@ -105,13 +104,17 @@ public class PNGFile extends FileFormat {
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         stream.skipNBytes(PNGFile.MAGIC.length);
 
+        int colorType = -1;
         while (stream.getPos() < this.fileByteArray.length) {
-            super.addFileComponent(this.parseChunk(stream));
+            final Chunk chunk = parseChunk(stream, colorType);
+            super.components.put(Long.valueOf(chunk.getStartPos()), chunk);
+            if (chunk instanceof Chunk_IHDR ihdr) {
+                colorType = ihdr.ColorType;
+            }
         }
-
     }
 
-    private Chunk parseChunk(PosDataInputStream stream) throws IOException, FileFormatException {
+    private static Chunk parseChunk(PosDataInputStream stream, int colorType) throws IOException, FileFormatException {
         Chunk chunk = null;
 
         int length;
@@ -137,16 +140,21 @@ public class PNGFile extends FileFormat {
         Method mtd;
         byte[] type;
 
-        PosDataInputStream streamChunk = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
+        PosDataInputStream streamChunk = new PosDataInputStream(new PosByteArrayInputStream(stream.getBuf()));
         streamChunk.skipNBytes(stream.getPos() - length - 12);
 
-        for (Class<?> cls : ChunkTypes) {
+        for (Class<? extends Chunk> cls : ChunkTypes) {
             try {
                 mtd = cls.getDeclaredMethod("GetChunkType");
                 type = (byte[]) mtd.invoke(null);
                 if (Arrays.equals(chunkType, type) == true) {
-                    Constructor c = cls.getConstructor(PosDataInputStream.class, PNGFile.class);
-                    chunk = (Chunk) c.newInstance(streamChunk, this);
+                    if (cls == Chunk_tRNS.class) {
+                        Constructor<? extends Chunk> constructor = cls.getConstructor(PosDataInputStream.class, int.class);
+                        chunk = constructor.newInstance(streamChunk, colorType);
+                    } else {
+                        Constructor<? extends Chunk> constructor = cls.getConstructor(PosDataInputStream.class);
+                        chunk = constructor.newInstance(streamChunk);
+                    }
                     break;   // End the loop
                 }
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
@@ -155,7 +163,7 @@ public class PNGFile extends FileFormat {
         }
 
         if (chunk == null) {
-            chunk = new Chunk(streamChunk, this);
+            chunk = new Chunk(streamChunk);
         }
 
         return chunk;
@@ -175,15 +183,16 @@ public class PNGFile extends FileFormat {
                 "PNG file signature")));
 
         DefaultMutableTreeNode node;
-        for (FileComponent chunk : super.components.values()) {
-            Chunk ck = (Chunk) chunk;
-            root.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    ck.getStartPos(),
-                    ck.getLength(),
-                    ck.getChunkTypeName()
-            )));
+        for (FileComponent component : super.components.values()) {
+            if (component instanceof Chunk ck) {
+                root.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        ck.getStartPos(),
+                        ck.getLength(),
+                        ck.getChunkTypeName()
+                )));
 
-            ((GenerateTreeNode) chunk).generateTreeNode(node);
+                ck.generateTreeNode(node);
+            }
         } // End while
 
     }

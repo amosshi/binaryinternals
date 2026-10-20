@@ -24,17 +24,17 @@ public class IFD_SRATIONAL extends IFD {
     public IFD_SRATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, IFDType.SRATIONAL, startPosTiff, byteArrayTiff);
-        super.ifd_value_offset = super.readInt(pDIS);                               // Offset
+        super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                 // Offset
 
         // Read the rational values
         if (super.ifd_count > 0) {
             int n, d;
 
-            final PosDataInputStream reader = super.getTiffOffsetReader();
+            final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
             this.value = new SRational[super.ifd_count];
             for (int i = 0; i < super.ifd_count; i++) {
-                n = super.readInt(reader);
-                d = super.readInt(reader);
+                n = IFDParse.readInt(reader, byteOrder);
+                d = IFDParse.readInt(reader, byteOrder);
                 this.value[i] = new SRational(n, d);
             }
         } else {

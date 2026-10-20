@@ -64,7 +64,7 @@ public class AjSynthetic_attribute extends attribute_info {
             throw new FileFormatException("The attribute_length of %s is not %d, it is %d.".formatted(FULLNAME, LENGTH, this.attribute_length.value));
         }
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     @Override

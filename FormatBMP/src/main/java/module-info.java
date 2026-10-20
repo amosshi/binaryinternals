@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+/// Bitmap image, or Device Independent Bitmap (DIB), file format.
 module org.binaryinternals.formatbmp {
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.bmp;
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_IEND.java    Apr 30, 2011, 22:51
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -31,7 +31,7 @@ public class Chunk_IEND extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_IEND(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_IEND(PosDataInputStream stream) throws IOException {
+        super(stream);
     }
 }

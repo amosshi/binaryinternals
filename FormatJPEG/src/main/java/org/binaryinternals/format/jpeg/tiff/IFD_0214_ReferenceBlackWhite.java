@@ -24,7 +24,7 @@ public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
     public IFD_0214_ReferenceBlackWhite(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
     /**

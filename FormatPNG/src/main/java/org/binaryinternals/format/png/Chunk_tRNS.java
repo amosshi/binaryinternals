@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_tRNS.java    Apr 30, 2011, 23:36
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -9,7 +9,6 @@ package org.binaryinternals.format.png;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
 import org.binaryinternals.commonlib.core.PosDataInputStream;
 import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
@@ -127,11 +126,11 @@ public class Chunk_tRNS extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_tRNS(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_tRNS(PosDataInputStream stream, int colorType) throws IOException {
+        super(stream);
 
-        this.ColorType = this.getColorType(png);
-        PosDataInputStream chunkDataStream = super.getChunkDataStream();
+        this.ColorType = colorType;
+        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
         switch (this.ColorType) {
             case 0:
                 this.Gray = chunkDataStream.readUnsignedShort();
@@ -164,18 +163,6 @@ public class Chunk_tRNS extends Chunk {
                 this.Blue = -1;
                 this.Alpha = null;
         }
-    }
-
-    private int getColorType(PNGFile png) {
-        int colorType = -1;
-        for (FileComponent chunk : png.getFileComponents()) {
-            if (chunk instanceof Chunk_IHDR) {
-                colorType = ((Chunk_IHDR) chunk).ColorType;
-                break;
-            }
-        }
-
-        return colorType;
     }
 
     @Override

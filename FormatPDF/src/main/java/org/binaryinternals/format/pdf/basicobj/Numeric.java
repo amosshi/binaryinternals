@@ -67,6 +67,9 @@ public class Numeric extends FileComponent implements GenerateTreeNode {
 
     public static class StartByte {
 
+        private StartByte() {
+        }
+
         /**
          * Sign '+'.
          */

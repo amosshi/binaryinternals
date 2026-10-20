@@ -1,4 +1,4 @@
-/**
+/*
  * PixelRGBA.java    Dec 03, 2010, 21:55
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.

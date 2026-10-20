@@ -174,8 +174,16 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     /// @param endPos Current position
     /// @throws FileFormatException Invalid class file format
     protected void checkSize(final int endPos) throws FileFormatException {
-        if (this.startPos + this.length != endPos) {
-            throw new FileFormatException("Attribute analysis failed. type='%s', startPos=%d, length=%d, endPos=%d".formatted(this.getName(), this.startPos, this.length, endPos));
+        checkAttributeSize(this.name, this.startPos, this.length, endPos);
+    }
+
+    protected static void checkAttributeSize(
+            final String name,
+            final int startPos,
+            final int length,
+            final int endPos) throws FileFormatException {
+        if (startPos + length != endPos) {
+            throw new FileFormatException("Attribute analysis failed. type='%s', startPos=%d, length=%d, endPos=%d".formatted(name, startPos, length, endPos));
         }
     }
 

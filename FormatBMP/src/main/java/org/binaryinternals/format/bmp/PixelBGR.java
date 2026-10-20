@@ -1,4 +1,4 @@
-/**
+/*
  * PixelBGR.java    Apr 05, 2011, 18:38
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.

@@ -16,6 +16,9 @@ import org.binaryinternals.commonlib.core.PluginDescriptor;
  */
 public class PluginDescriptorPDF implements PluginDescriptor {
 
+    public PluginDescriptorPDF() {
+    }
+
     @Override
     public String getExtensionDescription() {
         return "Portable Document Format (*.pdf)";

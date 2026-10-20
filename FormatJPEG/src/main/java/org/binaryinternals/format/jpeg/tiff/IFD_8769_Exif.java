@@ -31,7 +31,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
     public IFD_8769_Exif(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException, FileFormatException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-        super.checkIFDCount(COUNT);
+        IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
 
         // Sub IFD
         final PosDataInputStream reader = new PosDataInputStream(

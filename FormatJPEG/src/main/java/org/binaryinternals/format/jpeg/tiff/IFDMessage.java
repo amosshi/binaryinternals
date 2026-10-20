@@ -15,6 +15,9 @@ import java.util.ResourceBundle;
  */
 public class IFDMessage{
 
+    private IFDMessage() {
+    }
+
     private static final ResourceBundle res;
 
     static{

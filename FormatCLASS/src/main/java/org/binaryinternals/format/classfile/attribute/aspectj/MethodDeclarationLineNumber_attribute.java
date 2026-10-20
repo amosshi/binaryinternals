@@ -87,7 +87,7 @@ public class MethodDeclarationLineNumber_attribute extends attribute_info {
         this.line_number = posDataInputStream.readInt();
         this.offset = posDataInputStream.readInt();
 
-        super.checkSize(posDataInputStream.getPos());
+        checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
     @Override

@@ -1,4 +1,4 @@
-/**
+/*
  * DIBHeader.java    Nov 29, 2010, 12:28
  *
  * Copyright 2010, BinaryInternals.org. All rights reserved.

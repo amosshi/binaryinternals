@@ -1,4 +1,4 @@
-/**
+/*
  * Chunk_sBIT.java    May 01, 2011, 17:06
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
@@ -29,8 +29,8 @@ public class Chunk_sBIT extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_sBIT(PosDataInputStream stream, PNGFile png) throws IOException {
-        super(stream, png);
+    public Chunk_sBIT(PosDataInputStream stream) throws IOException {
+        super(stream);
     }
 
     @Override

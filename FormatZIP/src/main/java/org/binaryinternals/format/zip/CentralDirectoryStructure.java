@@ -1,4 +1,4 @@
-/**
+/*
  * CentralDirectoryStructure.java    May 08, 2011, 09:40
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.

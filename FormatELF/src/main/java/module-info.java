@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+/// Executable and Linkable Format (ELF).
 module org.binaryinternals.formatelf {
-    requires static org.binaryinternals.commonlib;
+    requires transitive org.binaryinternals.commonlib;
 
     exports org.binaryinternals.format.elf;
 
