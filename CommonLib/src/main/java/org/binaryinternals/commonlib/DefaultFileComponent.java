@@ -1,8 +1,6 @@
-package org.binaryinternals.commonlib.core;
+package org.binaryinternals.commonlib;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /// Default implementation for {@link FileComponent}.
 ///

@@ -6,8 +6,8 @@
  */
 package org.binaryinternals.plugin;
 
-import org.binaryinternals.commonlib.core.PluginDescriptor;
-import org.binaryinternals.commonlib.core.FileFormat;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PluginDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.binaryinternals.commonlib.core.FileFormatException;
+import org.binaryinternals.commonlib.FileFormatException;
 
 /**
  *

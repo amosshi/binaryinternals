@@ -8,7 +8,7 @@ package org.binaryinternals.format.classfile;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /// An unsigned four-byte quantity.
 ///

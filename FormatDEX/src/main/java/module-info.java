@@ -21,5 +21,5 @@ module org.binaryinternals.formatdex {
 
     exports org.binaryinternals.format.dex;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.dex.PluginDescriptorDEX;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.dex.PluginDescriptorDEX;
 }

@@ -4,7 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.binaryinternals.commonlib.core;
+package org.binaryinternals.commonlib;
 
 import java.awt.Component;
 import java.io.IOException;
@@ -21,8 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.ui.Icons;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
 
 /// @author Amos Shi
 public abstract class FileFormat {

@@ -8,8 +8,8 @@
 package org.binaryinternals.format.bmp;
 
 import java.util.List;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.PluginDescriptor;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PluginDescriptor;
 
 /**
  *

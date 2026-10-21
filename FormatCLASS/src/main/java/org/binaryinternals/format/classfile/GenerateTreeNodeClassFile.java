@@ -9,7 +9,7 @@ package org.binaryinternals.format.classfile;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.binaryinternals.commonlib.ui.GenerateTreeNodeFileFormat;
+import org.binaryinternals.commonlib.GenerateTreeNodeFileFormat;
 
 /// Interface for generating tree node for {@link ClassFile}.
 ///

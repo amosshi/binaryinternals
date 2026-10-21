@@ -7,9 +7,9 @@
 package org.binaryinternals.format.jpeg.xmp;
 
 import java.util.logging.Logger;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.core.FileFormatException;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 
 /**

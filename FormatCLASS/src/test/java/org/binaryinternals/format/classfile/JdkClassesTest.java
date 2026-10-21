@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.ToIntFunction;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.junit.jupiter.api.Test;
 

@@ -9,10 +9,10 @@ package org.binaryinternals.format.dex;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.ui.Icons;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /**
  * The <code>header_item</code> structure of the DEX file.

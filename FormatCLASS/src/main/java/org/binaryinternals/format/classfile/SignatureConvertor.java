@@ -10,7 +10,7 @@ import java.lang.constant.ClassDesc;
 import java.lang.constant.MethodTypeDesc;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.binaryinternals.commonlib.core.FileFormatException;
+import org.binaryinternals.commonlib.FileFormatException;
 
 /// Convert the Internal Form of Names into java language specification type
 /// names.

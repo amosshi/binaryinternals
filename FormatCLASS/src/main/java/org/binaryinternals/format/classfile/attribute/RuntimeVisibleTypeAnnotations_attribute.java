@@ -1,8 +1,8 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
 /// The RuntimeVisibleTypeAnnotations attribute records run-time visible

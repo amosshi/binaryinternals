@@ -48,7 +48,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import org.binaryinternals.commonlib.core.FileFormat;
+import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.plugin.PluginManager;
 
 /**

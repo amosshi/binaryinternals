@@ -10,7 +10,7 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.binaryinternals.commonlib.core.PluginDescriptor;
+import org.binaryinternals.commonlib.PluginDescriptor;
 import org.binaryinternals.plugin.PluginManager;
 
 /**

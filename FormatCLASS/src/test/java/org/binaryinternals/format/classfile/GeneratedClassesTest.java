@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

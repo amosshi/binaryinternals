@@ -22,9 +22,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import org.binaryinternals.binaryviewer.JBinaryViewer;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.ui.HTMLKit;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.HTMLKit;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /**
  * A split panel showing the tree and the binary content of a parsed file.

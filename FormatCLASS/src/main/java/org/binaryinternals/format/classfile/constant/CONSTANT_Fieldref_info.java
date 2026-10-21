@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 

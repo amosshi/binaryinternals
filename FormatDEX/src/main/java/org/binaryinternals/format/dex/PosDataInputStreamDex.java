@@ -9,9 +9,9 @@ package org.binaryinternals.format.dex;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteOrder;
-import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.core.FileFormatException;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosByteArrayInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 
 /**

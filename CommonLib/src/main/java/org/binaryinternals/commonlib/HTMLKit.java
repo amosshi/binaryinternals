@@ -1,4 +1,4 @@
-package org.binaryinternals.commonlib.ui;
+package org.binaryinternals.commonlib;
 
 import java.awt.Font;
 

@@ -8,11 +8,11 @@ package org.binaryinternals.format.classfile;
 
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.ui.HTMLKit;
-import org.binaryinternals.commonlib.ui.Icons;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.BytesTool;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.HTMLKit;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.constant.cp_info;
 

@@ -20,5 +20,5 @@ module org.binaryinternals.formatbmp {
 
     exports org.binaryinternals.format.bmp;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.bmp.PluginDescriptorBMP;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.bmp.PluginDescriptorBMP;
 }

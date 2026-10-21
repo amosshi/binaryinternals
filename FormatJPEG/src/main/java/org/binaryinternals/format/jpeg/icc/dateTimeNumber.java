@@ -8,7 +8,7 @@ package org.binaryinternals.format.jpeg.icc;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * The type <code>dateTimeNumber</code> defined in ICC Specification

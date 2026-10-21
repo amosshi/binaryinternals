@@ -7,7 +7,7 @@
 package org.binaryinternals.binaryviewer;
 
 import javax.swing.JTextPane;
-import org.binaryinternals.commonlib.ui.HTMLKit;
+import org.binaryinternals.commonlib.HTMLKit;
 
 /**
  * Display binary data.

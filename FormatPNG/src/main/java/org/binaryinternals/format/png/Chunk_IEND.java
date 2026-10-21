@@ -8,7 +8,7 @@ package org.binaryinternals.format.png;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * Image trailer.

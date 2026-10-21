@@ -8,10 +8,10 @@ package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.BytesTool;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /// The class for the `CONSTANT_Integer_info` structure in constant pool.
 /// The `CONSTANT_Integer_info` structure has the following format:

@@ -2,10 +2,10 @@ package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.GenerateTreeNode;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * PDF basic object Null, see

@@ -9,8 +9,8 @@ package org.binaryinternals.format.png;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * The <span>tIME</span> chunk gives the time of the last image

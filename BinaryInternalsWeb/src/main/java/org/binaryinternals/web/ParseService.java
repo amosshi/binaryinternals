@@ -21,11 +21,11 @@ import java.util.ServiceLoader;
 import java.util.regex.Pattern;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PluginDescriptor;
-import org.binaryinternals.commonlib.ui.Icons;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PluginDescriptor;
 
 /// Parse a file with the format plug-ins, and convert the result tree to
 /// JSON.

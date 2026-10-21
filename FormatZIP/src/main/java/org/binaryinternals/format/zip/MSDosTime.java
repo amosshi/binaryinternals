@@ -7,9 +7,9 @@
 package org.binaryinternals.format.zip;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.GenerateTreeNode;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /**
  * A time in the format used by MS-DOS.

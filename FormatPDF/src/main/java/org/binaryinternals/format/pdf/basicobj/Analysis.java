@@ -2,9 +2,9 @@ package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import java.util.List;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.core.DefaultFileComponent;
+import org.binaryinternals.commonlib.DefaultFileComponent;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.pdf.PDFStatics;
 import org.binaryinternals.format.pdf.Texts;
 

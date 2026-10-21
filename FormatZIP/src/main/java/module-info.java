@@ -20,5 +20,5 @@ module org.binaryinternals.formatzip {
 
     exports org.binaryinternals.format.zip;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.zip.PluginDescriptorZIP;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.zip.PluginDescriptorZIP;
 }

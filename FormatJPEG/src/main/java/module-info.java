@@ -25,5 +25,5 @@ module org.binaryinternals.formatjpeg {
     exports org.binaryinternals.format.jpeg.tiff;
     exports org.binaryinternals.format.jpeg.xmp;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.jpeg.PluginDescriptorJPEG;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.jpeg.PluginDescriptorJPEG;
 }

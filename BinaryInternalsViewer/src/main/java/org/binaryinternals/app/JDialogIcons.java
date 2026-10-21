@@ -9,7 +9,7 @@ package org.binaryinternals.app;
 import java.awt.Frame;
 import javax.swing.Icon;
 import javax.swing.table.AbstractTableModel;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.Icons;
 
 /**
  * Shows all the icons.

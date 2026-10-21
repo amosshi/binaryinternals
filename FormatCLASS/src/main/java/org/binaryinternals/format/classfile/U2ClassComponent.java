@@ -7,8 +7,8 @@
 package org.binaryinternals.format.classfile;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /// Super class for all simple components which have only one 16-bit ({@link u2})
 /// field in a `class` file.

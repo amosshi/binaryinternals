@@ -8,10 +8,10 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  *

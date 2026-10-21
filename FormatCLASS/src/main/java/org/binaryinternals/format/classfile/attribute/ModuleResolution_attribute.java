@@ -8,11 +8,11 @@ package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.BytesTool;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.BytesTool;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
 /// The class for the `ModuleResolution` attribute.

@@ -34,8 +34,8 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.Icons;
 
 /// Web server and HTTP API, each request runs on a virtual thread.
 ///

@@ -12,13 +12,13 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.GenerateTreeNode;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.PosByteArrayInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  *

@@ -20,5 +20,5 @@ module org.binaryinternals.formatpng {
 
     exports org.binaryinternals.format.png;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.png.PluginDescriptorPNG;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.png.PluginDescriptorPNG;
 }

@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.binaryviewer;
 
-import org.binaryinternals.commonlib.ui.HTMLKit;
+import org.binaryinternals.commonlib.HTMLKit;
 import java.awt.Component;
 import java.util.HexFormat;
 import javax.swing.JTextPane;

@@ -9,10 +9,10 @@ package org.binaryinternals.format.elf;
 import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosByteArrayInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * File for Executable and Linkable Format (ELF).

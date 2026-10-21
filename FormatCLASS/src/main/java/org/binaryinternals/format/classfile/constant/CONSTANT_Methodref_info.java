@@ -8,8 +8,8 @@ package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 
 /// The class for the `CONSTANT_Methodref_info` structure in constant pool.

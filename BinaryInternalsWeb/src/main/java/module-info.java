@@ -14,7 +14,7 @@ module org.binaryinternals.web {
     requires transitive org.binaryinternals.commonlib;
     requires jdk.httpserver;
 
-    uses org.binaryinternals.commonlib.core.PluginDescriptor;
+    uses org.binaryinternals.commonlib.PluginDescriptor;
 
     exports org.binaryinternals.web;
 }

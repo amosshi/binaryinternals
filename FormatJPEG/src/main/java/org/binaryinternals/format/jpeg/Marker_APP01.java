@@ -8,11 +8,11 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosByteArrayInputStream;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.ui.JXMLViewer;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.JXMLViewer;
+import org.binaryinternals.commonlib.PosByteArrayInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.tiff.TIFF;
 import org.binaryinternals.format.jpeg.xmp.XMP;
 
@@ -107,7 +107,7 @@ public class Marker_APP01 extends Marker {
                     this.xmp.getStartPos(),
                     this.xmp.getLength(),
                     "XMP data");
-            comp.setDetailPanel(new JXMLViewer(new PosDataInputStream(new PosByteArrayInputStream(this.xmp.rawData))));
+            comp.setDetailPanel(new JXMLViewer(this.xmp.rawData));
             markerNode.add(new DefaultMutableTreeNode(comp));
         } else {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

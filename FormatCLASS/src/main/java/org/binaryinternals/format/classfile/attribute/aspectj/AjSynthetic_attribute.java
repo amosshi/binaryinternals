@@ -8,9 +8,9 @@ package org.binaryinternals.format.classfile.attribute.aspectj;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.u2;
 

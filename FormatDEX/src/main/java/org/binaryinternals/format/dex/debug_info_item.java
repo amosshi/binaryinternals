@@ -6,7 +6,7 @@
  */
 package org.binaryinternals.format.dex;
 
-import org.binaryinternals.commonlib.core.FileComponent;
+import org.binaryinternals.commonlib.FileComponent;
 
 /**
  *

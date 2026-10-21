@@ -4,7 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.binaryinternals.commonlib.core;
+package org.binaryinternals.commonlib;
 
 /// @author Amos Shi
 public class FileFormatException extends Exception {

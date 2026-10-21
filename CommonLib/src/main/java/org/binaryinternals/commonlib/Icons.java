@@ -4,7 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
-package org.binaryinternals.commonlib.ui;
+package org.binaryinternals.commonlib;
 
 import java.net.URL;
 import java.util.EnumMap;

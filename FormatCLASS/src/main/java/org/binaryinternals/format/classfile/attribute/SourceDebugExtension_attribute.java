@@ -8,10 +8,10 @@ package org.binaryinternals.format.classfile.attribute;
 
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.Icons;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.binaryinternals.format.classfile.u2;
 

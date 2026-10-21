@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
-import org.binaryinternals.commonlib.ui.HTMLKit;
+import org.binaryinternals.commonlib.HTMLKit;
 
 /**
  * Hyper Link enabled JLabel.

@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /// Shared helpers for the class file parser tests.
 final class TestSupport {

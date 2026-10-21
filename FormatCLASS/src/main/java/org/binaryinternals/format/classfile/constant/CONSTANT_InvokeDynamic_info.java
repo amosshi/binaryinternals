@@ -7,8 +7,8 @@
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /// The `CONSTANT_InvokeDynamic_info` structure is used by an
 /// `invokedynamic` instruction to specify a bootstrap method, the dynamic

@@ -8,10 +8,10 @@ package org.binaryinternals.format.elf;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.GenerateTreeNode;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Addr;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Half;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Off;

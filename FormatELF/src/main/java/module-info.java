@@ -20,5 +20,5 @@ module org.binaryinternals.formatelf {
 
     exports org.binaryinternals.format.elf;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.elf.PluginDescriptorELF;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.elf.PluginDescriptorELF;
 }

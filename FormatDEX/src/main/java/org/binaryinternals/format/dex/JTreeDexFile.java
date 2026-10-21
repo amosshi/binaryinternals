@@ -9,10 +9,10 @@ package org.binaryinternals.format.dex;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileFormat;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
-import org.binaryinternals.commonlib.ui.Icons;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.GenerateTreeNode;
+import org.binaryinternals.commonlib.Icons;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /**
  *

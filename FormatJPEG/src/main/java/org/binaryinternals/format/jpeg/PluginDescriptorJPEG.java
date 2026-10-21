@@ -7,9 +7,9 @@
 
 package org.binaryinternals.format.jpeg;
 
-import org.binaryinternals.commonlib.core.PluginDescriptor;
+import org.binaryinternals.commonlib.PluginDescriptor;
 import java.util.List;
-import org.binaryinternals.commonlib.core.FileFormat;
+import org.binaryinternals.commonlib.FileFormat;
 
 /**
  *

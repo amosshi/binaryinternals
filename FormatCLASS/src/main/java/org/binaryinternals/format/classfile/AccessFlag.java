@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.binaryinternals.commonlib.core.BytesTool;
+import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.format.classfile.attribute.InnerClasses_attribute;
 import org.binaryinternals.format.classfile.attribute.MethodParameters_attribute;
 import org.binaryinternals.format.classfile.attribute.Module_attribute;

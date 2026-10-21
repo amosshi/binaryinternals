@@ -21,5 +21,5 @@ module org.binaryinternals.formatpdf {
     exports org.binaryinternals.format.pdf;
     exports org.binaryinternals.format.pdf.basicobj;
 
-    provides org.binaryinternals.commonlib.core.PluginDescriptor with org.binaryinternals.format.pdf.PluginDescriptorPDF;
+    provides org.binaryinternals.commonlib.PluginDescriptor with org.binaryinternals.format.pdf.PluginDescriptorPDF;
 }

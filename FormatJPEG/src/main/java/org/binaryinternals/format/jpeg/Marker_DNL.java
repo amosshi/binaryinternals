@@ -7,8 +7,8 @@
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  *

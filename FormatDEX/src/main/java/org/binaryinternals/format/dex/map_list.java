@@ -8,9 +8,9 @@ package org.binaryinternals.format.dex;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.FileComponent;
-import org.binaryinternals.commonlib.core.FileFormatException;
-import org.binaryinternals.commonlib.ui.GenerateTreeNode;
+import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
+import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.format.dex.annotation_set_item.annotation_item;
 
 /**

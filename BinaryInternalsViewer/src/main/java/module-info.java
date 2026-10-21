@@ -21,7 +21,7 @@ module org.binaryinternals.app {
     requires static com.github.spotbugs.annotations;
     requires transitive org.binaryinternals.commonlib;
 
-    uses org.binaryinternals.commonlib.core.PluginDescriptor;
+    uses org.binaryinternals.commonlib.PluginDescriptor;
 
     exports org.binaryinternals.app;
     exports org.binaryinternals.binaryviewer;

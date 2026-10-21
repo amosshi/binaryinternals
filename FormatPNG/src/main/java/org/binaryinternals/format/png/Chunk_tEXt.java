@@ -9,8 +9,8 @@ package org.binaryinternals.format.png;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.core.PosDataInputStream;
-import org.binaryinternals.commonlib.ui.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.JTreeNodeFileComponent;
+import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
  * Textual information that the encoder wishes to record with the image can be 
