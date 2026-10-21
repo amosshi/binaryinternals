@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -37,7 +36,7 @@ public class annotations_directory_item extends FileComponent implements Generat
     public final method_annotation[] method_annotations;
     public final parameter_annotation[] parameter_annotations;
 
-    annotations_directory_item(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+    annotations_directory_item(PosDataInputStreamDex stream, DexFile dex) throws IOException {
         super.startPos = stream.getPos();
 
         this.class_annotations_off = stream.Dex_uint();
@@ -217,7 +216,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         public final Type_uint field_idx;
         public final Type_uint annotations_off;
 
-        field_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+        field_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {
             super.startPos = stream.getPos();
 
             this.field_idx = stream.Dex_uint();
@@ -271,7 +270,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         public final Type_uint method_idx;
         public final Type_uint annotations_off;
 
-        method_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+        method_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {
             super.startPos = stream.getPos();
 
             this.method_idx = stream.Dex_uint();
@@ -325,7 +324,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         public final Type_uint method_idx;
         public final Type_uint annotations_off;
 
-        parameter_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+        parameter_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {
             super.startPos = stream.getPos();
             this.method_idx = stream.Dex_uint();
             this.annotations_off = stream.Dex_uint();

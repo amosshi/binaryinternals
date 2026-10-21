@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -103,7 +102,7 @@ public class Module_attribute extends attribute_info {
 
     // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
     @SuppressWarnings("java:S3776")
-    Module_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    Module_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         this.module_name_index = new u2(posDataInputStream);

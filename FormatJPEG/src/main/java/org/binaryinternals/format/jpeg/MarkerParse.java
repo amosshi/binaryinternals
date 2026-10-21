@@ -26,7 +26,7 @@ public class MarkerParse {
      * @throws IOException Parse file failed
      * @throws FileFormatException Parse file failed
      */
-    public static Marker parse(final PosDataInputStream pDisFile) throws IOException, FileFormatException {
+    public static Marker parse(final PosDataInputStream pDisFile) throws IOException {
         Marker marker;
 
         final int marker_code = pDisFile.readUnsignedShort();

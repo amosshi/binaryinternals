@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -47,7 +46,7 @@ public abstract class ClassesCount extends attribute_info {
     /// {@link CONSTANT_Class_info} structure
     public final u2[] classes;
 
-    ClassesCount(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    ClassesCount(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         this.number_of_classes = new u2(posDataInputStream);

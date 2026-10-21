@@ -67,7 +67,7 @@ public class ScalaSig_attribute extends attribute_info {
     /// annotation).
     public final int number_of_entries;
 
-    public ScalaSig_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public ScalaSig_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {

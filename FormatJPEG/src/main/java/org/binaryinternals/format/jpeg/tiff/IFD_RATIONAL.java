@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -22,7 +21,7 @@ public class IFD_RATIONAL extends IFD {
     public final Rational[] value;
 
     public IFD_RATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, IFDType.RATIONAL, startPosTiff, byteArrayTiff);
         super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                 // Offset
 

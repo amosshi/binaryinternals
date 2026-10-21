@@ -34,7 +34,7 @@ public class TIFFHeader extends FileComponent {
     public final int offset_0ifd;
 
     public TIFFHeader(final PosDataInputStream pDisMarker) 
-            throws IOException, FileFormatException {
+            throws IOException {
         super.startPos = pDisMarker.getPos();
         super.length = SIZE;
         this.byte_order = pDisMarker.readUnsignedShort();

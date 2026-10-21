@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -42,7 +41,7 @@ public class string_data_item extends FileComponent implements GenerateTreeNodeD
      */
     public byte[] data;
 
-    string_data_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    string_data_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.utf16_size = stream.Dex_uleb128();
         if (this.utf16_size.value > 0) {

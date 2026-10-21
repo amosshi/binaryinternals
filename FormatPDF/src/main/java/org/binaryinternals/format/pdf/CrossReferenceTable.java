@@ -27,7 +27,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
      */
     public final ASCIILine HeaderLine;
 
-    CrossReferenceTable(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
+    CrossReferenceTable(PosDataInputStream stream, ASCIILine line) throws IOException {
         super.startPos = stream.getPos() - line.length();
         this.HeaderLine = line;
         this.parse(stream);
@@ -39,7 +39,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
         }
     }
 
-    private void parse(PosDataInputStream stream) throws IOException, FileFormatException {
+    private void parse(PosDataInputStream stream) throws IOException {
         ASCIILine line;
         do {
             line = stream.readASCIILine();
@@ -95,7 +95,7 @@ public class CrossReferenceTable extends FileComponent implements GenerateTreeNo
          */
         public final List<Entry> Entries = new ArrayList<Entry>(20);
 
-        Subsection(PosDataInputStream stream, ASCIILine line) throws FileFormatException, IOException {
+        Subsection(PosDataInputStream stream, ASCIILine line) throws IOException {
             super.startPos = stream.getPos() - line.length();
             this.HeaderLine = line;
 

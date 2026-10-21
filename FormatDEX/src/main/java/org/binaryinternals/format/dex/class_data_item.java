@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -44,7 +43,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
      * </pre>
      */
     @SuppressWarnings("java:S3776")
-    class_data_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException, FileFormatException {
+    class_data_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
         super.startPos = stream.getPos();
         this.static_fields_size = stream.Dex_uleb128();
         this.instance_fields_size = stream.Dex_uleb128();
@@ -227,7 +226,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         public final Type_uleb128 field_idx_diff;
         public final Type_uleb128 access_flags;
 
-        encoded_field(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        encoded_field(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.field_idx_diff = stream.Dex_uleb128();
             this.access_flags = stream.Dex_uleb128();
@@ -266,7 +265,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         public final Type_uleb128 access_flags;
         public final Type_uleb128 code_off;
 
-        encoded_method(PosDataInputStreamDex stream, DexFile dexFile) throws IOException, FileFormatException {
+        encoded_method(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
             super.startPos = stream.getPos();
             this.method_idx_diff = stream.Dex_uleb128();
             this.access_flags = stream.Dex_uleb128();

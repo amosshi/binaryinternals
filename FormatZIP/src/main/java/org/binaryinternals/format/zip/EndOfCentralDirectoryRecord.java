@@ -54,7 +54,7 @@ public class EndOfCentralDirectoryRecord extends FileComponent implements Genera
     /** ZIP file comment. <code>null</code> of {@link #ZipFileCommentLength} is zero. */
     public final byte[] ZipFileComment;
 
-    EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException, FileFormatException {
+    EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
 
         int readBytes = stream.read(this.Signature);

@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -63,7 +62,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
     /// a value.
     public final local_variable_type_table[] local_variable_type_table;
 
-    LocalVariableTypeTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    LocalVariableTypeTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException {
         super(nameIndex, type, posDataInputStream);
 
         this.local_variable_type_table_length = new u2(posDataInputStream);
@@ -136,7 +135,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
         /// variable array of the current frame.
         public final u2 index;
 
-        protected local_variable_type_table(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected local_variable_type_table(final PosDataInputStream posDataInputStream) throws IOException {
             super(posDataInputStream.getPos(), LENGTH);
 
             this.start_pc = new u2(posDataInputStream);

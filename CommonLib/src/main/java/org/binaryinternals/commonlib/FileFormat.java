@@ -40,7 +40,7 @@ public abstract class FileFormat {
     /// @param file {@link Path} object
     /// @throws IOException Failed to Read file
     /// @throws FileFormatException The file is empty
-    protected FileFormat(final Path file) throws IOException, FileFormatException {
+    protected FileFormat(final Path file) throws IOException {
         this.fileName = Objects.requireNonNull(file.getFileName(), "The path has no file name").toString();
         this.filePath = file.toRealPath().toString();
         this.fileByteArray = Files.readAllBytes(file);

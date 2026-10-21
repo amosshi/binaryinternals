@@ -7,7 +7,6 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -19,7 +18,7 @@ class IFD_SHORT_COUNT1 extends IFD_SHORT {
     public static final int COUNT = 1;
 
     IFD_SHORT_COUNT1(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
-            throws IOException, FileFormatException {
+            throws IOException {
 
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);

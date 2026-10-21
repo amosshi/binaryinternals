@@ -52,7 +52,7 @@ public class SourceDebugExtension_attribute extends attribute_info {
     /// ({@link CONSTANT_Utf8_info}) with no terminating zero byte.
     public final byte[] debug_extension;
 
-    SourceDebugExtension_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    SourceDebugExtension_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (super.attribute_length.value > 0) {

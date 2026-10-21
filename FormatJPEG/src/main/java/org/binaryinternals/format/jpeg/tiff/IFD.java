@@ -29,7 +29,7 @@ public class IFD extends FileComponent {
     public final int data_size;                                                 // Total size of the IFD data
     private TagSpace tag_space = TagSpace.DEFAULT;
 
-    protected IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff, byte[] byteArrayTiff) throws IOException, FileFormatException {
+    protected IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff, byte[] byteArrayTiff) throws IOException {
         super.startPos = pDIS.getPos() - 4;
         super.length = IFD.SIZE;
 

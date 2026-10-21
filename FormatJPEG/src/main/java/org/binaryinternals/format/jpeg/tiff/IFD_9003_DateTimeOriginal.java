@@ -9,7 +9,6 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.io.IOException;
 import java.util.Calendar;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -23,7 +22,7 @@ public class IFD_9003_DateTimeOriginal extends IFD_ASCII {
     public final Calendar datetime;
 
     public IFD_9003_DateTimeOriginal(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
 

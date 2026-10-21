@@ -53,7 +53,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
     private String descriptor;
     private String name;
 
-    field_info(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException, FileFormatException {
+    field_info(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;
 
@@ -125,7 +125,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
 
         String type;
         try {
-            type = SignatureConvertor.fieldDescriptorExtractor(this.descriptor).toString();
+            type = SignatureConvertor.fieldType(this.descriptor);
         } catch (FileFormatException se) {
             type = "[Unexpected signature type]: " + this.descriptor;
         }

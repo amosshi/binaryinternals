@@ -266,7 +266,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// @return Parsed constant pool info
         /// @throws IOException Failed to read the class file
         /// @throws FileFormatException An invalid class file format encountered
-        public static cp_info parse(final int tag, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        public static cp_info parse(final int tag, final PosDataInputStream posDataInputStream) throws IOException {
             final int tagPos = posDataInputStream.getPos() - 1;
             try {
                 return switch (tag) {

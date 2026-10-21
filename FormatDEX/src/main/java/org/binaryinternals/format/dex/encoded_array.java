@@ -33,7 +33,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
     public final Type_uleb128 size;
     public final encoded_value[] values;
 
-    encoded_array(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    encoded_array(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.size = stream.Dex_uleb128();
         if (this.size.value > 0) {

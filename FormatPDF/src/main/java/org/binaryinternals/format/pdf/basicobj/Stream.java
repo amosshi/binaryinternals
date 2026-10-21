@@ -27,14 +27,14 @@ public class Stream extends FileComponent implements GenerateTreeNode {
     public final int signatureLen;
     private ASCIILine signatureEnd = null;
 
-    public Stream(PosDataInputStream stream, PosDataInputStream.ASCIILine line) throws IOException, FileFormatException {
+    public Stream(PosDataInputStream stream, PosDataInputStream.ASCIILine line) throws IOException {
         this.signatureLen = SIGNATURE_START.length() + line.newLineLength();
         super.startPos = stream.getPos() - this.signatureLen;
         this.parse(stream);
         this.length = stream.getPos() - super.startPos;
     }
 
-    private void parse(PosDataInputStream stream) throws IOException, FileFormatException {
+    private void parse(PosDataInputStream stream) throws IOException {
         ASCIILine line;
         while (stream.hasNext()) {
             line = stream.readASCIILine();

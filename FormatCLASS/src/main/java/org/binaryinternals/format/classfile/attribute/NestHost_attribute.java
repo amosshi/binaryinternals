@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
@@ -48,7 +47,7 @@ public class NestHost_attribute extends attribute_info {
     /// the nest host for the current class or interface.
     public final u2 host_class_index;
 
-    NestHost_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    NestHost_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         this.host_class_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());

@@ -27,7 +27,7 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
 
     public final FileHeader header;
 
-    CentralDirectoryStructure(PosDataInputStream stream) throws IOException, FileFormatException {
+    CentralDirectoryStructure(PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
         this.header = new FileHeader(stream);
         this.length = this.header.calcLength();
@@ -284,7 +284,7 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
          */
         public final byte[] FileComment;
 
-        FileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
+        FileHeader(PosDataInputStream stream) throws IOException {
             int readBytes = stream.read(this.Signature);
             if (readBytes != this.Signature.length) {
                 throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));

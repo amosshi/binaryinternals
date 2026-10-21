@@ -3,7 +3,6 @@ package org.binaryinternals.format.pdf;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
@@ -24,14 +23,14 @@ public class Trailer extends FileComponent implements GenerateTreeNode {
      */
     public final ASCIILine HeaderLine;
 
-    Trailer(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
+    Trailer(PosDataInputStream stream, ASCIILine line) throws IOException {
         this.HeaderLine = line;
         super.startPos = stream.getPos() - line.length();
         this.parse(stream);
         super.length = stream.getPos() - super.startPos;
     }
 
-    private void parse(PosDataInputStream stream) throws IOException, FileFormatException {
+    private void parse(PosDataInputStream stream) throws IOException {
         ASCIILine line;
         do {
             line = stream.readASCIILine();

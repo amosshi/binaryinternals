@@ -41,7 +41,7 @@ public class ModuleResolution_attribute extends attribute_info {
     /// resolution_flags.
     public final u2 resolution_flags;
 
-    ModuleResolution_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    ModuleResolution_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         if (this.attribute_length.value != 2) {
             throw new FileFormatException("The attribute_length of ModuleResolution is not 2, it is %d.".formatted(this.attribute_length.value));

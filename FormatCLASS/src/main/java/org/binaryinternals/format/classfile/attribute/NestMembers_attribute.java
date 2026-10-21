@@ -7,7 +7,6 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
@@ -37,7 +36,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings("java:S101")
 public class NestMembers_attribute extends ClassesCount {
 
-    public NestMembers_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public NestMembers_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
     }
 

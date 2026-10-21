@@ -1,7 +1,6 @@
 package org.binaryinternals.format.classfile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.binaryinternals.commonlib.FileFormatException;
@@ -13,46 +12,43 @@ import org.junit.jupiter.params.provider.ValueSource;
 class SignatureConvertorTest {
 
     @Test
-    void parsePackageKeepsCase() {
-        assertEquals("com.Acme.util", SignatureConvertor.parsePackage("com/Acme/util/Foo"));
-        assertNull(SignatureConvertor.parsePackage("Foo"));
+    void javaName() {
+        assertEquals("java.util.Map$Entry", SignatureConvertor.javaName("java/util/Map$Entry"));
+        assertEquals("Foo", SignatureConvertor.javaName("Foo"));
     }
 
     @Test
     void methodParameters() throws FileFormatException {
-        assertEquals("()", SignatureConvertor.methodParameters2Readable("()V"));
+        assertEquals("()", SignatureConvertor.methodParameters("()V"));
         assertEquals("(int,java.lang.String,long[][],java.util.Map$Entry[])",
-                SignatureConvertor.methodParameters2Readable("(ILjava/lang/String;[[J[Ljava/util/Map$Entry;)V"));
+                SignatureConvertor.methodParameters("(ILjava/lang/String;[[J[Ljava/util/Map$Entry;)V"));
     }
 
     @Test
     void returnType() throws FileFormatException {
-        assertEquals("void", SignatureConvertor.methodReturnTypeExtractor("()V").toString());
-        assertEquals("java.lang.Object[]", SignatureConvertor.methodReturnTypeExtractor("(I)[Ljava/lang/Object;").toString());
-        assertEquals("boolean", SignatureConvertor.methodReturnTypeExtractor("()Z").toString());
+        assertEquals("void", SignatureConvertor.methodReturnType("()V"));
+        assertEquals("java.lang.Object[]", SignatureConvertor.methodReturnType("(I)[Ljava/lang/Object;"));
+        assertEquals("boolean", SignatureConvertor.methodReturnType("()Z"));
     }
 
     @Test
-    void fieldDescriptor() throws FileFormatException {
-        final SignatureConvertor.SignatureResult r = SignatureConvertor.fieldDescriptorExtractor("[[Ljava/lang/String;");
-        assertEquals(2, r.ArrayDimension);
-        assertEquals("java/lang/String", r.TypeBinaryName);
-        assertEquals("java.lang.String", r.TypeJLSName);
-        assertEquals("java.lang", r.TypePackage);
-        assertEquals("java.lang.String[][]", r.toString());
+    void fieldType() throws FileFormatException {
+        assertEquals("java.lang.String[][]", SignatureConvertor.fieldType("[[Ljava/lang/String;"));
+        assertEquals("int", SignatureConvertor.fieldType("I"));
+        assertEquals("java.util.Map$Entry", SignatureConvertor.fieldType("Ljava/util/Map$Entry;"));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "(", "()", "(I", "I)V", "(Q)V", "Q", "L;", "[", "(Ljava/lang/String)V"})
     @Timeout(5)
     void invalidMethodDescriptor(final String descriptor) {
-        assertThrows(FileFormatException.class, () -> SignatureConvertor.methodParameters2Readable(descriptor));
-        assertThrows(FileFormatException.class, () -> SignatureConvertor.methodReturnTypeExtractor(descriptor));
+        assertThrows(FileFormatException.class, () -> SignatureConvertor.methodParameters(descriptor));
+        assertThrows(FileFormatException.class, () -> SignatureConvertor.methodReturnType(descriptor));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "Q", "L;", "Ljava/lang/String", "[", "(I)V"})
     void invalidFieldDescriptor(final String descriptor) {
-        assertThrows(FileFormatException.class, () -> SignatureConvertor.fieldDescriptorExtractor(descriptor));
+        assertThrows(FileFormatException.class, () -> SignatureConvertor.fieldType(descriptor));
     }
 }

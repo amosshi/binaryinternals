@@ -9,7 +9,6 @@ package org.binaryinternals.format.dex;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.format.dex.annotation_set_item.annotation_item;
 
@@ -29,7 +28,7 @@ public class map_list extends FileComponent implements GenerateTreeNode {
     public final Type_uint size;
     public final map_item[] list;
 
-    map_list(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    map_list(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
 
         this.size = stream.Dex_uint();
@@ -66,7 +65,7 @@ public class map_list extends FileComponent implements GenerateTreeNode {
         public final Type_uint size;
         public final Type_uint offset;
 
-        map_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        map_item(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.type = stream.Dex_ushort();
             this.unused = stream.Dex_ushort();

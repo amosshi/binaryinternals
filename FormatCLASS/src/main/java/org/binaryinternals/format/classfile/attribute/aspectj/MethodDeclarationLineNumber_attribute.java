@@ -78,7 +78,7 @@ public class MethodDeclarationLineNumber_attribute extends attribute_info {
     public final int line_number;
     public final int offset;
 
-    public MethodDeclarationLineNumber_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public MethodDeclarationLineNumber_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {

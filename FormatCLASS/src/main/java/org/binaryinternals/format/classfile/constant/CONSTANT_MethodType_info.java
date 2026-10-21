@@ -48,7 +48,7 @@ public class CONSTANT_MethodType_info extends cp_info {
     /// method descriptor.
     public final u2 descriptor_index;
 
-    CONSTANT_MethodType_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    CONSTANT_MethodType_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_MethodType.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.descriptor_index = new u2(posDataInputStream);
@@ -78,14 +78,14 @@ public class CONSTANT_MethodType_info extends cp_info {
         String returnType;
 
         try {
-            parameters = SignatureConvertor.methodParameters2Readable(descriptor);
+            parameters = SignatureConvertor.methodParameters(descriptor);
         } catch (FileFormatException ex) {
             parameters = descriptor + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method parameters: " + descriptor, ex);
         }
 
         try {
-            returnType = SignatureConvertor.methodReturnTypeExtractor(descriptor).toString();
+            returnType = SignatureConvertor.methodReturnType(descriptor);
         } catch (FileFormatException ex) {
             returnType = descriptor + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + descriptor, ex);

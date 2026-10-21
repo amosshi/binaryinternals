@@ -208,7 +208,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_sleb128}
      */
-    public Type_sleb128 Dex_sleb128() throws IOException, FileFormatException {
+    public Type_sleb128 Dex_sleb128() throws IOException {
         int startPos = super.getPos();
         int result = 0;
         int cur;
@@ -240,7 +240,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_uleb128}
      */
-    public Type_uleb128 Dex_uleb128() throws IOException, FileFormatException {
+    public Type_uleb128 Dex_uleb128() throws IOException {
         int startPos = super.getPos();
         int result = 0;
         int cur;
@@ -266,7 +266,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
      * @throws FileFormatException Invalid LEB128 format
      * @return a {@link Type_uleb128p1}
      */
-    public Type_uleb128p1 Dex_uleb128p1() throws IOException, FileFormatException {
+    public Type_uleb128p1 Dex_uleb128p1() throws IOException {
         Type_uleb128 uleb128 = this.Dex_uleb128();
         return new Type_uleb128p1(uleb128.value - 1, uleb128.length);
     }

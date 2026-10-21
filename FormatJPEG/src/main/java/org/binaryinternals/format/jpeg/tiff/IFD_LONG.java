@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -22,7 +21,7 @@ public class IFD_LONG extends IFD {
     public final long[] value;
 
     public IFD_LONG(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, IFDType.LONG, startPosTiff, byteArrayTiff);
 
         if (this.data_size > 0 && this.data_size <= 4) {

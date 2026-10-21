@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
 /// Shared helpers for the class file parser tests.
@@ -46,7 +45,7 @@ final class TestSupport {
         }
     }
 
-    static ClassFile parse(final byte[] bytes) throws IOException, FileFormatException {
+    static ClassFile parse(final byte[] bytes) throws IOException {
         return new ClassFile(bytes, "Test.class", "Test.class");
     }
 

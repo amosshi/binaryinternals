@@ -26,7 +26,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     @SuppressWarnings("ProtectedField")
     protected int marker_length;
 
-    Marker(final PosDataInputStream pDIS, int markerCode) throws IOException, FileFormatException {
+    Marker(final PosDataInputStream pDIS, int markerCode) throws IOException {
 
         // The marker is not valid
         if (!MarkerCode.isValid(markerCode)) {
@@ -53,7 +53,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
         }
     }
 
-    protected void parse(final PosDataInputStream pDisMarker) throws IOException, FileFormatException {
+    protected void parse(final PosDataInputStream pDisMarker) throws IOException {
     }
 
     protected void parseInitSkip(final PosDataInputStream pDisMarker) throws IOException {

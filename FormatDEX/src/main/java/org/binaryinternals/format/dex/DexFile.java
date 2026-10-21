@@ -105,7 +105,7 @@ public final class DexFile extends FileFormat {
      * @throws FileFormatException Invalid file format
      */
     @SuppressWarnings("java:S3776")
-    public DexFile(final Path file) throws IOException, FileFormatException {
+    public DexFile(final Path file) throws IOException {
         super(file);
 
         // Check the file signature
@@ -244,7 +244,7 @@ public final class DexFile extends FileFormat {
         }
     }
 
-    void parseData(Long offset, Class<?> type, PosDataInputStreamDex stream) throws IOException, FileFormatException{
+    void parseData(Long offset, Class<?> type, PosDataInputStreamDex stream) throws IOException{
         int breakPos = stream.getPos();
 
         Constructor<?> cons = type.getDeclaredConstructors()[0];

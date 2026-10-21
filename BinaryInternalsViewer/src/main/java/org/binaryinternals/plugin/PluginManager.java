@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.binaryinternals.commonlib.FileFormatException;
 
 /**
  *
@@ -149,7 +148,7 @@ public class PluginManager {
         }
     }
 
-    public static FileFormat getFile(final Path file) throws IOException, FileFormatException,
+    public static FileFormat getFile(final Path file) throws IOException,
             ReflectiveOperationException {
         Class<? extends FileFormat> fileFormatClass = null;
         final String name = String.valueOf(file.getFileName());
@@ -175,7 +174,6 @@ public class PluginManager {
                 case Error e -> throw e;
                 case RuntimeException e -> throw e;
                 case IOException e -> throw e;
-                case FileFormatException e -> throw e;
                 case null, default -> throw ex;
             }
         }

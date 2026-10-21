@@ -41,7 +41,7 @@ public class Bridge_attribute extends attribute_info {
 
     public static final int LENGTH = 0;
 
-    Bridge_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    Bridge_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {

@@ -112,7 +112,7 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
      */
     public final byte[] ExtraField;
 
-    LocalFileHeader(PosDataInputStream stream) throws IOException, FileFormatException {
+    LocalFileHeader(PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
 
         int readBytes = stream.read(this.Signature);

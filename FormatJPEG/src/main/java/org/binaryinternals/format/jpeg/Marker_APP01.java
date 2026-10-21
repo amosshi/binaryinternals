@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.JXMLViewer;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -28,12 +27,12 @@ public class Marker_APP01 extends Marker {
     private TIFF tiff;
     private XMP xmp;
 
-    Marker_APP01(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_APP01(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 
     @Override
-    protected void parse(final PosDataInputStream pDisMarker) throws IOException, FileFormatException {
+    protected void parse(final PosDataInputStream pDisMarker) throws IOException {
         super.parseInitSkip(pDisMarker);
         this.identifier = super.parseIdentifier(pDisMarker);
 

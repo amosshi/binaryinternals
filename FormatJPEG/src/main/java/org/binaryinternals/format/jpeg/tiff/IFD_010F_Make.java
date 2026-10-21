@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -20,7 +19,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class IFD_010F_Make extends IFD_ASCII {
 
     public IFD_010F_Make(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 

@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.constant;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
@@ -46,7 +45,7 @@ public abstract class CONSTANT_Dynamic extends cp_info {
     /// must be a field descriptor.
     public final u2 name_and_type_index;
 
-    CONSTANT_Dynamic(final short tag, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    CONSTANT_Dynamic(final short tag, final PosDataInputStream posDataInputStream) throws IOException {
         super(tag, posDataInputStream.getPos() - 1, LENGTH);
 
         this.bootstrap_method_attr_index = new u2(posDataInputStream);

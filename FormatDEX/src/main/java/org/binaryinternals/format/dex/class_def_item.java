@@ -11,7 +11,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -113,7 +112,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
      */
     public final Type_uint static_values_off;
 
-    class_def_item(final PosDataInputStreamDex stream, final DexFile dex) throws IOException, FileFormatException {
+    class_def_item(final PosDataInputStreamDex stream, final DexFile dex) throws IOException {
         super.startPos = stream.getPos();
         this.class_idx = stream.Dex_uint();
         this.access_flags = stream.Dex_uint();
@@ -139,7 +138,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
      */
     public String get_class_jls(DexFile dexFile) {
         if (this.clazz_jls == null) {
-            this.clazz_jls = dexFile.type_ids[this.class_idx.intValue()].get_descriptor_jls(dexFile).toString();
+            this.clazz_jls = dexFile.type_ids[this.class_idx.intValue()].get_descriptor_jls(dexFile);
         }
         return this.clazz_jls;
     }
@@ -155,7 +154,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         if (this.superclass_jls == null) {
             this.superclass_jls = (this.superclass_idx.value == DexFile.NO_INDEX)
                     ? ""
-                    : dexFile.type_ids[this.superclass_idx.intValue()].get_descriptor_jls(dexFile).toString();
+                    : dexFile.type_ids[this.superclass_idx.intValue()].get_descriptor_jls(dexFile);
         }
         return this.superclass_jls;
     }

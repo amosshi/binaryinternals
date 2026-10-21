@@ -7,7 +7,6 @@
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -16,7 +15,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
  */
 public class Marker_DNL extends Marker {
 
-    Marker_DNL(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_DNL(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 

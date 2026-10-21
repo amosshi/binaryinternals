@@ -104,7 +104,7 @@ public class proto_id_item extends FileComponent implements GenerateTreeNodeDexF
      */
     public String get_return_type_jls(final DexFile dexFile) {
         if (this.return_type_jls == null) {
-            this.return_type_jls = dexFile.type_ids[return_type_idx.intValue()].get_descriptor_jls(dexFile).toString();
+            this.return_type_jls = dexFile.type_ids[return_type_idx.intValue()].get_descriptor_jls(dexFile);
         }
         return this.return_type_jls;
     }

@@ -32,7 +32,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
     public final u2 num_annotations;
     public final type_annotation[] annotations;
 
-    public RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, name, posDataInputStream);
 
         this.num_annotations = new u2(posDataInputStream);
@@ -141,7 +141,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         /// @param posDataInputStream Input stream
         /// @throws IOException Read file failed
         /// @throws FileFormatException Invalid file format
-        public type_annotation(PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        public type_annotation(PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();
             this.target_type = new u1(posDataInputStream);
             this.union_target_info = switch (targetTypeOf(this.target_type.value).orElse(null)) {

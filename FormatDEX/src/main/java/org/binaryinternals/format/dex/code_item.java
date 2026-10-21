@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
 
@@ -40,7 +39,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
     public final try_item[] tries;
     public final encoded_catch_handler_list handlers;
 
-    code_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    code_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
 
         this.registers_size = stream.Dex_ushort();
@@ -104,7 +103,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         public final Type_ushort insn_count;
         public final Type_ushort handler_off;
 
-        try_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        try_item(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.start_addr = stream.Dex_uint();
             this.insn_count = stream.Dex_ushort();
@@ -123,7 +122,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         public final Type_uleb128 size;
         public final encoded_catch_handler[] list;
 
-        encoded_catch_handler_list(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        encoded_catch_handler_list(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.size = stream.Dex_uleb128();
             if (this.size.value > 0) {
@@ -149,7 +148,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         public final encoded_type_addr_pair[] handlers;
         public final Type_uleb128 catch_all_addr;
 
-        encoded_catch_handler(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        encoded_catch_handler(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
 
             this.size = stream.Dex_sleb128();
@@ -183,7 +182,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         public final Type_uleb128 type_idx;
         public final Type_uleb128 addr;
 
-        encoded_type_addr_pair(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        encoded_type_addr_pair(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.type_idx = stream.Dex_uleb128();
             this.addr = stream.Dex_uleb128();

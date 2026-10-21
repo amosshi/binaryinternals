@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
@@ -44,7 +43,7 @@ public class ModuleTarget_attribute extends attribute_info {
     /// Index to a {@link CONSTANT_Utf8_info} structure.
     public final u2 os_arch_index;
 
-    ModuleTarget_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    ModuleTarget_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         this.os_arch_index = new u2(posDataInputStream);
 

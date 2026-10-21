@@ -49,7 +49,7 @@ public class type_id_item extends FileComponent implements GenerateTreeNodeDexFi
     /**
      * Local cache for the {@link #get_descriptor_jls(DexFile)}.
      */
-    private SignatureConvertor.SignatureResult descriptor_jls = null;
+    private String descriptor_jls = null;
 
     type_id_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
@@ -73,7 +73,7 @@ public class type_id_item extends FileComponent implements GenerateTreeNodeDexFi
      * @param dexFile Current {@link DexFile}
      * @return Parsed descriptor name
      */
-    public SignatureConvertor.SignatureResult get_descriptor_jls(DexFile dexFile) {
+    public String get_descriptor_jls(DexFile dexFile) {
         if (this.descriptor_jls == null) {
             String text = this.get_descriptor(dexFile);
             if (text == null) {
@@ -81,7 +81,7 @@ public class type_id_item extends FileComponent implements GenerateTreeNodeDexFi
                 this.descriptor_jls = null;
             } else {
                 try {
-                    this.descriptor_jls = SignatureConvertor.methodReturnTypeJLS(text);
+                    this.descriptor_jls = SignatureConvertor.fieldType(text);
                 } catch (FileFormatException ex) {
                     // This should never happen
                     this.descriptor_jls = null;

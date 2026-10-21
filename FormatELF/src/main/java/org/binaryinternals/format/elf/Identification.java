@@ -102,7 +102,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
      */
     public final byte[] EI_PAD = new byte[EI_PAD_SIZE];
 
-    Identification(final PosDataInputStream input) throws IOException, FileFormatException {
+    Identification(final PosDataInputStream input) throws IOException {
         this.startPos = input.getPos();
 
         // Magic number

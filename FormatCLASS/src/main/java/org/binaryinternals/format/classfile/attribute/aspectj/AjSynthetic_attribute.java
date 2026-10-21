@@ -57,7 +57,7 @@ public class AjSynthetic_attribute extends attribute_info {
     public static final int LENGTH = 0;
     public static final String FULLNAME = "org.aspectj.weaver.AjSynthetic";
 
-    public AjSynthetic_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public AjSynthetic_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != LENGTH) {

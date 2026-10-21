@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -25,12 +24,12 @@ public class Marker_APP13 extends Marker {
     private String identifier;
     private PhotoshopImageResource psir;
 
-    Marker_APP13(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_APP13(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 
     @Override
-    protected void parse(final PosDataInputStream pDisMarker) throws IOException, FileFormatException {
+    protected void parse(final PosDataInputStream pDisMarker) throws IOException {
         super.parseInitSkip(pDisMarker);
         this.identifier = super.parseIdentifier(pDisMarker);
         if (this.identifier.contains(Marker_APP13.IDENTIFIER_PHOTOSHOP)) {

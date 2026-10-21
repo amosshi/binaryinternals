@@ -208,20 +208,20 @@ public class ClassFile extends FileFormat {
     /// @param classFile Java class file
     /// @throws IOException Error happened when reading the byte array
     /// @throws FileFormatException Invalid class file format
-    public ClassFile(final Path classFile) throws IOException, FileFormatException {
+    public ClassFile(final Path classFile) throws IOException {
         this(Files.readAllBytes(classFile),
                 String.valueOf(classFile.getFileName()),
                 classFile.toRealPath().toString());
     }
 
-    public ClassFile(final byte[] classFileBytes) throws IOException, FileFormatException {
+    public ClassFile(final byte[] classFileBytes) throws IOException {
         this(classFileBytes, null, null);
     }
 
     // java:S127 - "for" loop stop conditions should be invariant --- No we need it because Long/Double type occupies two Constant Pool index
     // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
     @SuppressWarnings({"java:S127", "java:S3776"})
-    public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException, FileFormatException {
+    public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException {
         super(classFileBytes, fileName, filePath);
 
         //
@@ -506,7 +506,7 @@ public class ClassFile extends FileFormat {
             if (root != null && Files.isRegularFile(file) && Files.isSameFile(file, root.resolve(internalName + ".class"))) {
                 return Optional.of(root);
             }
-        } catch (InvalidPathException | IOException | FileFormatException _) {
+        } catch (InvalidPathException | IOException _) {
             // In-memory bytes, or this_class is invalid: no class path
         }
         return Optional.empty();

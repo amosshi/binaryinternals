@@ -42,7 +42,7 @@ public class Chunk_PLTE extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_PLTE(PosDataInputStream stream) throws IOException, FileFormatException {
+    public Chunk_PLTE(PosDataInputStream stream) throws IOException {
         super(stream);
 
         // A chunk length not divisible by 3 is an error.

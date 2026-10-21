@@ -53,7 +53,7 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
     private String descriptor;
     private String name;
 
-    method_info(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException, FileFormatException {
+    method_info(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         this.startPos = posDataInputStream.getPos();
         this.length = -1;
 
@@ -138,12 +138,12 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
         String parameters;
 
         try {
-            returnType = SignatureConvertor.methodReturnTypeExtractor(this.descriptor).toString();
+            returnType = SignatureConvertor.methodReturnType(this.descriptor);
         } catch (FileFormatException se) {
             returnType = "[Unexpected method return type: %s]".formatted(this.descriptor);
         }
         try {
-            parameters = SignatureConvertor.methodParameters2Readable(this.descriptor);
+            parameters = SignatureConvertor.methodParameters(this.descriptor);
         } catch (FileFormatException se) {
             parameters = "[Unexpected method parameters: %s]".formatted(this.descriptor);
         }

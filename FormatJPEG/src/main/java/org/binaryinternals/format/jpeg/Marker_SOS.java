@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -49,14 +48,14 @@ public class Marker_SOS extends Marker {
     /** Successive approximation bit position low or point transform. */
     private int Al;
 
-    Marker_SOS(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_SOS(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 
 
     @Override
     protected void parse(final PosDataInputStream pDisMarker)
-            throws IOException, FileFormatException {
+            throws IOException {
 
         super.parseInitSkip(pDisMarker);
 

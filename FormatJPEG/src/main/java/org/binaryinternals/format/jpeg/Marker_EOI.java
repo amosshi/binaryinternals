@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -18,7 +17,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
  */
 public class Marker_EOI extends Marker {
 
-    Marker_EOI(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_EOI(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 

@@ -6,8 +6,16 @@
  */
 package org.binaryinternals.commonlib;
 
+import java.io.IOException;
+
+/// The file content does not follow its format, for example a corrupted or
+/// truncated file.
+///
+/// It is an {@link IOException}, like {@link java.util.zip.ZipException}:
+/// the file was read, but its bytes cannot be understood.
+///
 /// @author Amos Shi
-public class FileFormatException extends Exception {
+public class FileFormatException extends IOException {
 
     private static final long serialVersionUID = 4876543219876500000L;
 

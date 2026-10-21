@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -20,7 +19,7 @@ public class Marker_APP14 extends Marker {
 
     private String identifier;
 
-    Marker_APP14(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_APP14(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 

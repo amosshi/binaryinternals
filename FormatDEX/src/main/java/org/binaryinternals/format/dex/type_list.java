@@ -12,9 +12,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
-import org.binaryinternals.format.classfile.SignatureConvertor;
 
 /**
  *
@@ -33,7 +31,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
     public final Type_uint size;
     public final type_item[] list;
 
-    type_list(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    type_list(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.size = stream.Dex_uint();
         if (this.size.value > 0) {
@@ -90,7 +88,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
         } else {
             List<String> items = new ArrayList<>();
             for (type_item item : this.list) {
-                items.add(item.get_type_jls(dexFile).toString());
+                items.add(item.get_type_jls(dexFile));
             }
             return String.join(", ", items);
         }
@@ -110,9 +108,9 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
 
         public final Type_ushort type_idx;
         private String type = null;
-        private SignatureConvertor.SignatureResult type_jls = null;
+        private String type_jls = null;
 
-        type_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        type_item(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.type_idx = stream.Dex_ushort();
             super.length = stream.getPos() - super.startPos;
@@ -139,7 +137,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
          * @return {@link #type} parse result for JLS format
          * @see #type
          */
-        public SignatureConvertor.SignatureResult get_type_jls(DexFile dexFile) {
+        public String get_type_jls(DexFile dexFile) {
             if (this.type_jls == null) {
                 this.type_jls = dexFile.type_ids[type_idx.value].get_descriptor_jls(dexFile);
             }

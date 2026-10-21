@@ -1,7 +1,6 @@
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
 
@@ -35,7 +34,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings("java:S101")
 public class RuntimeInvisibleTypeAnnotations_attribute extends RuntimeTypeAnnotations {
 
-    public RuntimeInvisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    public RuntimeInvisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, name, posDataInputStream);
     }
 

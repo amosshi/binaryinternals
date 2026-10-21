@@ -81,7 +81,7 @@ public class PNGFile extends FileFormat {
         ChunkTypes.add(Chunk_zTXt.class);
     }
 
-    public PNGFile(final Path file) throws IOException, FileFormatException {
+    public PNGFile(final Path file) throws IOException {
         super(file);
 
         // Load the chunk types
@@ -114,7 +114,7 @@ public class PNGFile extends FileFormat {
         }
     }
 
-    private static Chunk parseChunk(PosDataInputStream stream, int colorType) throws IOException, FileFormatException {
+    private static Chunk parseChunk(PosDataInputStream stream, int colorType) throws IOException {
         Chunk chunk = null;
 
         int length;

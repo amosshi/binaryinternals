@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -30,7 +29,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
     public final Type_uint size;
     public final annotation_off_item[] entries;
 
-    annotation_set_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException, FileFormatException {
+    annotation_set_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
         super.startPos = stream.getPos();
         this.size = stream.Dex_uint();
         if (this.size.value > 0) {
@@ -107,7 +106,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
         public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotation_off;
 
-        annotation_off_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException, FileFormatException {
+        annotation_off_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
             super.startPos = stream.getPos();
             this.annotation_off = stream.Dex_uint();
             super.length = stream.getPos() - super.startPos;
@@ -121,7 +120,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
         public final Type_ubyte visibility;
         public final encoded_annotation annotation;
 
-        annotation_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        annotation_item(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.visibility = stream.Dex_ubyte();
             this.annotation = new encoded_annotation(stream);

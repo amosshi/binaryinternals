@@ -43,7 +43,7 @@ public class SourceFile_attribute extends attribute_info {
 
     public final u2 sourcefile_index;
 
-    SourceFile_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    SourceFile_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != 2) {

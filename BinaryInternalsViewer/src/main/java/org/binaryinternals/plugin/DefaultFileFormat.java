@@ -11,7 +11,6 @@ import org.binaryinternals.commonlib.FileFormat;
 import java.io.IOException;
 import java.nio.file.Path;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 
 /**
@@ -21,7 +20,7 @@ import org.binaryinternals.commonlib.Icons;
 public class DefaultFileFormat extends FileFormat{
 
 
-    public DefaultFileFormat(final Path file) throws IOException, FileFormatException {
+    public DefaultFileFormat(final Path file) throws IOException {
         super(file);
     }
 

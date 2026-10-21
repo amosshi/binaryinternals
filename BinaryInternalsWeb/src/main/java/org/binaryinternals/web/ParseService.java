@@ -128,7 +128,7 @@ public final class ParseService {
     /// @throws IOException Failed to write or read the temporary file
     /// @throws ReflectiveOperationException The plug-in cannot be created
     public String parse(final byte[] bytes, final String fileName)
-            throws UnsupportedFormatException, FileFormatException, IOException, ReflectiveOperationException {
+            throws UnsupportedFormatException, IOException, ReflectiveOperationException {
         final PluginDescriptor plugin = this.findPlugin(fileName)
                 .orElseThrow(() -> new UnsupportedFormatException("Unsupported file type: " + fileName));
         final String ext = extensionOf(fileName).orElseThrow();
@@ -151,7 +151,7 @@ public final class ParseService {
     }
 
     private static FileFormat newFileFormat(final PluginDescriptor plugin, final Path file)
-            throws FileFormatException, IOException, ReflectiveOperationException {
+            throws IOException, ReflectiveOperationException {
         try {
             return plugin.getFileFormatClass().getConstructor(Path.class).newInstance(file);
         } catch (InvocationTargetException ex) {
@@ -160,7 +160,6 @@ public final class ParseService {
                 case Error e -> throw e;
                 case RuntimeException e -> throw e;
                 case IOException e -> throw e;
-                case FileFormatException e -> throw e;
                 case null, default -> throw ex;
             }
         }

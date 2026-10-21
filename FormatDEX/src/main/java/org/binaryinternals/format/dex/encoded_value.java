@@ -62,7 +62,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
      * </pre>
      */
     @SuppressWarnings({"java:S127", "java:S3776"})
-    encoded_value(final PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    encoded_value(final PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         value_arg_and_type  = stream.Dex_ubyte();
 
@@ -206,7 +206,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
         return this.union_value_bollean;
     }
 
-    private Type_long read_long(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+    private Type_long read_long(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Type_long result = null;
         switch (arg) {
             case 0:
@@ -249,7 +249,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
         return result;
     }
 
-    private Type_short read_short(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+    private Type_short read_short(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Type_short result = null;
         switch (arg) {
             case 0:
@@ -269,7 +269,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
         return result;
     }
 
-    private Type_ushort read_char(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+    private Type_ushort read_char(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Type_ushort result = null;
         switch (arg) {
             case 0:
@@ -290,7 +290,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
 
     }
 
-    private Type_int read_int(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+    private Type_int read_int(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Type_int result = null;
         switch (arg) {
             case 0:
@@ -316,7 +316,7 @@ public class encoded_value extends FileComponent implements GenerateTreeNodeDexF
         return result;
     }
 
-    private Type_uint read_uint(final PosDataInputStreamDex stream, final int arg) throws FileFormatException, IOException{
+    private Type_uint read_uint(final PosDataInputStreamDex stream, final int arg) throws IOException{
         Type_uint result = null;
         switch (arg) {
             case 0:

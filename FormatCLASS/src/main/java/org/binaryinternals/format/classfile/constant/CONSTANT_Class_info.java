@@ -62,7 +62,7 @@ public class CONSTANT_Class_info extends cp_info {
         // The value of the name_index item must be a valid index into the constant_pool table.
         // The constant_pool entry at that index must be a CONSTANT_Utf8_info structure
         // representing a valid fully qualified class or interface name encoded in internal form.
-        return SignatureConvertor.parseClassSignature(((CONSTANT_Utf8_info) constantPool[this.name_index.value]).getValue());
+        return SignatureConvertor.javaName(((CONSTANT_Utf8_info) constantPool[this.name_index.value]).getValue());
     }
 
     @Override

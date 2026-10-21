@@ -25,12 +25,12 @@ import org.binaryinternals.commonlib.PosDataInputStream;
  */
 public class PDFFile extends FileFormat {
 
-    public PDFFile(final Path file) throws IOException, FileFormatException {
+    public PDFFile(final Path file) throws IOException {
         super(file);
         this.parse();
     }
 
-    private void parse() throws IOException, FileFormatException {
+    private void parse() throws IOException {
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         // File Header - Verify if this is an PDF file

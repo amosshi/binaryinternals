@@ -7,7 +7,6 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -22,7 +21,7 @@ public class IFDParse {
     }
 
     public static IFD parse(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);
 
@@ -181,7 +180,7 @@ public class IFDParse {
     }
 
     static IFD parseGPS(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);
 
@@ -208,7 +207,7 @@ public class IFDParse {
     }
 
     static IFD parseIntero(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);
 

@@ -9,7 +9,6 @@ package org.binaryinternals.format.elf;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Addr;
@@ -79,7 +78,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
     public final Elf64_Half e_shnum;
     public final Elf64_Half e_shstrndx;
 
-    Elf64_Ehdr(final PosDataInputStreamElf input) throws IOException, FileFormatException {
+    Elf64_Ehdr(final PosDataInputStreamElf input) throws IOException {
         super.startPos = input.getPos();
 
         this.e_type = input.read_Elf64_Half();

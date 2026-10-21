@@ -35,7 +35,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
     public final Type_uleb128 size;
     public final annotation_element[] elements;
 
-    encoded_annotation(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    encoded_annotation(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.type_idx = stream.Dex_uleb128();
 
@@ -61,7 +61,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
      */
     public String get_type_jls(DexFile dexFile) {
         if (this.type_jls == null) {
-            this.type_jls = dexFile.type_ids[this.type_idx.value].get_descriptor_jls(dexFile).toString();
+            this.type_jls = dexFile.type_ids[this.type_idx.value].get_descriptor_jls(dexFile);
         }
         return this.type_jls;
     }
@@ -135,7 +135,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
         public final Type_uleb128 name_idx;
         public encoded_value value;
 
-        annotation_element(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+        annotation_element(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.name_idx = stream.Dex_uleb128();
 

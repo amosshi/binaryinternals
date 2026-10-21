@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -30,7 +29,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
     public final Type_uint size;
     public final annotation_set_ref_item[] list;
 
-    annotation_set_ref_list(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+    annotation_set_ref_list(PosDataInputStreamDex stream, DexFile dex) throws IOException {
         super.startPos = stream.getPos();
 
         this.size = stream.Dex_uint();
@@ -115,7 +114,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
         public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotations_off;
 
-        annotation_set_ref_item(PosDataInputStreamDex stream, DexFile dex) throws IOException, FileFormatException {
+        annotation_set_ref_item(PosDataInputStreamDex stream, DexFile dex) throws IOException {
             super.startPos = stream.getPos();
             this.annotations_off = stream.Dex_uint();
             if ((this.annotations_off.value != 0) && (!dex.data.keySet().contains(this.annotations_off.value))) {

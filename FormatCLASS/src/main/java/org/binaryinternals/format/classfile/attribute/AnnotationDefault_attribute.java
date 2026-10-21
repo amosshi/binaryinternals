@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
@@ -48,7 +47,7 @@ public class AnnotationDefault_attribute extends attribute_info {
     /// AnnotationDefault attribute.
     public final Annotation.element_value default_value;
 
-    AnnotationDefault_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    AnnotationDefault_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         this.default_value = new Annotation.element_value(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());

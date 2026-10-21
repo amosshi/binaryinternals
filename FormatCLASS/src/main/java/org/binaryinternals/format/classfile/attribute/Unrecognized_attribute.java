@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.u2;
@@ -44,7 +43,7 @@ public class Unrecognized_attribute extends attribute_info {
     private static final Logger LOG = Logger.getLogger(Unrecognized_attribute.class.getName());
     private byte[] rawData;
 
-    Unrecognized_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    Unrecognized_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         LOG.log(Level.WARNING, "Un-recognized Attribute Found !!! Type = {0}", type);
 

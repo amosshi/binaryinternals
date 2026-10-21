@@ -65,7 +65,7 @@ public class CONSTANT_Fieldref_info extends CONSTANT_Ref {
         String typeDesc;
 
         try {
-            typeDesc = SignatureConvertor.fieldDescriptorExtractor(type).toString();
+            typeDesc = SignatureConvertor.fieldType(type);
         } catch (FileFormatException ex) {
             typeDesc = type + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the field type: " + type, ex);

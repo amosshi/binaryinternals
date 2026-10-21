@@ -23,12 +23,12 @@ import org.binaryinternals.commonlib.PosDataInputStream;
  */
 public class JPEGFile extends FileFormat {
 
-    public JPEGFile(final Path file) throws IOException, FileFormatException {
+    public JPEGFile(final Path file) throws IOException {
         super(file);
         this.parse();
     }
 
-    private void parse() throws IOException, FileFormatException {
+    private void parse() throws IOException {
         Marker marker;
         PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
@@ -89,7 +89,7 @@ public class JPEGFile extends FileFormat {
                     System.arraycopy(this.fileByteArray, marker.getStartPos(), markerByteArray, 0, markerByteArraySize);
                     try {
                         marker.parse(new PosDataInputStream(new PosByteArrayInputStream(markerByteArray), marker.getStartPos()));
-                    } catch (IOException | FileFormatException ex) {
+                    } catch (IOException ex) {
                         System.out.println("JPEGFile.parse() - " + marker.getMarkerName() + " - " + ex.toString());
                     }
                 }

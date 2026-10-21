@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -19,7 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
 
     public IFD_920A_FocalLength(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 

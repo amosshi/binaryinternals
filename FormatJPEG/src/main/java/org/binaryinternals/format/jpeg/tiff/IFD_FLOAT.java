@@ -7,7 +7,6 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /**
@@ -17,7 +16,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class IFD_FLOAT extends IFD {
 
     public IFD_FLOAT(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, IFDType.ASCII, startPosTiff, byteArrayTiff);
     }
 }

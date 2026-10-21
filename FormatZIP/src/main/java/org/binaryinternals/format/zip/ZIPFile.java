@@ -66,7 +66,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
     CentralDirectoryStructure[] cds = null;
     LocalFileHeader[] lfh = null;
 
-    public ZIPFile(final Path file) throws IOException, FileFormatException {
+    public ZIPFile(final Path file) throws IOException {
         super(file);
 
         // Check the file length
@@ -78,7 +78,7 @@ public class ZIPFile extends FileFormat implements GenerateTreeNode {
         this.parse();
     }
 
-    private void parse() throws IOException, FileFormatException {
+    private void parse() throws IOException {
         PosDataInputStream stream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         // End of central directory record.

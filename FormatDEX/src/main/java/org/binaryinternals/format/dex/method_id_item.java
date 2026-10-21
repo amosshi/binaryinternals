@@ -85,8 +85,8 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
      */
     public String get_class_jls(DexFile dexFile) {
         if (this.clazz_jls == null) {
-            // The class string could be an array, so we use the TypeJLSName
-            this.clazz_jls = dexFile.type_ids[class_idx.value].get_descriptor_jls(dexFile).TypeJLSName;
+            // The class string could be an array, use its element type
+            this.clazz_jls = dexFile.type_ids[class_idx.value].get_descriptor_jls(dexFile).replace("[]", "");
         }
         return this.clazz_jls;
     }

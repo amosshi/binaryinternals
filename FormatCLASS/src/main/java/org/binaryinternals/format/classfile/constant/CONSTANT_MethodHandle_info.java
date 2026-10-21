@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandleInfo;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
@@ -50,7 +49,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
     /// the `constant_pool` table.
     public final u2 reference_index;
 
-    CONSTANT_MethodHandle_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    CONSTANT_MethodHandle_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_MethodHandle.tag);
         super.startPos = posDataInputStream.getPos() - 1;
         this.reference_kind = new u1(posDataInputStream);

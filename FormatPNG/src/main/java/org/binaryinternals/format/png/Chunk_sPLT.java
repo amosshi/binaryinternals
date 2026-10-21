@@ -81,7 +81,7 @@ public class Chunk_sPLT extends Chunk {
         return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
     }
 
-    public Chunk_sPLT(PosDataInputStream stream) throws IOException, FileFormatException {
+    public Chunk_sPLT(PosDataInputStream stream) throws IOException {
         super(stream);
 
         PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);

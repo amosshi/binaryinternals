@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -60,7 +59,7 @@ public class BootstrapMethods_attribute extends attribute_info {
     /// the bootstrap method.
     public final bootstrap_method[] bootstrap_methods;
 
-    BootstrapMethods_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    BootstrapMethods_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException {
         super(nameIndex, type, posDataInputStream);
 
         this.num_bootstrap_methods = new u2(posDataInputStream);

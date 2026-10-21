@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -24,7 +23,7 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
     ArrayList<IFDGroup> exifGroup = new ArrayList<>();
 
     public TIFF(final PosDataInputStream pDisTiff)
-            throws IOException, FileFormatException {
+            throws IOException {
 
         super.startPos = pDisTiff.getPos();
         super.length = 0; // Not appliable

@@ -9,7 +9,6 @@ package org.binaryinternals.format.classfile.attribute;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
@@ -37,7 +36,7 @@ public class Signature_attribute extends attribute_info {
 
     // java:S1172 - Unused method parameters should be removed --- `cp` is used by children classes
     @SuppressWarnings("java:S1172")
-    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException, FileFormatException {
+    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         super(nameIndex, type, posDataInputStream);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());

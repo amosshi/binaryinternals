@@ -8,7 +8,6 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -28,7 +27,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
     public final int m;
 
     public IFD_A302_CFAPattern(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
-            throws IOException, FileFormatException {
+            throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
 
         final PosDataInputStream reader = new PosDataInputStream(new PosByteArrayInputStream(super.value));

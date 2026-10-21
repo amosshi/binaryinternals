@@ -86,7 +86,7 @@ public class field_id_item extends FileComponent implements GenerateTreeNodeDexF
      */
     public String get_class_jls(DexFile dexFile) {
         if (this.clazz_jls == null) {
-            this.clazz_jls = dexFile.type_ids[class_idx.value].get_descriptor_jls(dexFile).toString();
+            this.clazz_jls = dexFile.type_ids[class_idx.value].get_descriptor_jls(dexFile);
         }
         return this.clazz_jls;
     }
@@ -114,7 +114,7 @@ public class field_id_item extends FileComponent implements GenerateTreeNodeDexF
      */
     public String get_type_jls(DexFile dexFile) {
         if (this.type_jls == null) {
-            this.type_jls = dexFile.type_ids[type_idx.value].get_descriptor_jls(dexFile).toString();
+            this.type_jls = dexFile.type_ids[type_idx.value].get_descriptor_jls(dexFile);
         }
         return this.type_jls;
     }

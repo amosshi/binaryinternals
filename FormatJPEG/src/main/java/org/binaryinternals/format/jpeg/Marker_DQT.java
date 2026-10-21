@@ -23,14 +23,14 @@ public class Marker_DQT extends Marker {
     private int Tq;
     private FileComponentPlaceHolder Qk;
 
-    Marker_DQT(final PosDataInputStream pDIS, int marker_code) throws IOException, FileFormatException {
+    Marker_DQT(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
 
 
     @Override
     protected void parse(final PosDataInputStream pDisMarker)
-            throws IOException, FileFormatException {
+            throws IOException {
 
         super.parseInitSkip(pDisMarker);
 

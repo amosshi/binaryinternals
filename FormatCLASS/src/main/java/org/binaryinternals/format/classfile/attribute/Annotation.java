@@ -46,7 +46,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
     public final u2 num_element_value_pairs;
     public final Annotation.element_value_pair[] element_value_pairs;
 
-    protected Annotation(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    protected Annotation(final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos();
         this.type_index = new u2(posDataInputStream);
         this.num_element_value_pairs = new u2(posDataInputStream);
@@ -145,7 +145,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         /// {@link Annotation#element_value_pairs} entry.
         public final element_value value;
 
-        protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
 
             this.element_name_index = new u2(posDataInputStream);
@@ -224,7 +224,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         /// {@link #tag}.
         public final Value value;
 
-        protected element_value(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        protected element_value(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
 
             this.tag = (char) posDataInputStream.readUnsignedByte();
@@ -451,7 +451,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             public final element_value[] values;
 
             protected array_value(final PosDataInputStream posDataInputStream)
-                    throws IOException, FileFormatException {
+                    throws IOException {
                 this.startPos = posDataInputStream.getPos();
 
                 this.num_values = new u2(posDataInputStream);

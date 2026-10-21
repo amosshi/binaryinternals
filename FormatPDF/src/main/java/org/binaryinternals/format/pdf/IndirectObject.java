@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
@@ -72,7 +71,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
      */
     private List<FileComponent> components = Collections.synchronizedList(new ArrayList<FileComponent>(100));
 
-    IndirectObject(PosDataInputStream stream, ASCIILine line) throws IOException, FileFormatException {
+    IndirectObject(PosDataInputStream stream, ASCIILine line) throws IOException {
         stream.backward(line.length());
         super.startPos = stream.getPos();
         this.objectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
@@ -110,7 +109,7 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
         } while (stream.getPos() < (stream.getBuf().length - 1));
     }
 
-    private void parseObject(PosDataInputStream root) throws IOException, FileFormatException {
+    private void parseObject(PosDataInputStream root) throws IOException {
         PosDataInputStream stream = root.getPartialStream(super.startPos + this.numberLen + this.signatureStart.length(),
                 super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length());
 

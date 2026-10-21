@@ -13,7 +13,6 @@ import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -50,7 +49,7 @@ public class StackMapTable_attribute extends attribute_info {
     /// significant.
     public final stack_map_frame[] entries;
 
-    StackMapTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException, FileFormatException {
+    StackMapTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException {
         super(nameIndex, type, posDataInputStream);
 
         this.number_of_entries = new u2(posDataInputStream);
@@ -190,7 +189,7 @@ public class StackMapTable_attribute extends attribute_info {
         /// - {@link full_frame}
         public final stack_frame union_stack_frame;
 
-        private stack_map_frame(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+        private stack_map_frame(final PosDataInputStream posDataInputStream) throws IOException {
             super.startPos = posDataInputStream.getPos();
 
             this.frame_type = new u1(posDataInputStream);

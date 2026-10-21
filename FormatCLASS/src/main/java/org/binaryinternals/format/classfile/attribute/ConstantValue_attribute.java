@@ -46,7 +46,7 @@ public class ConstantValue_attribute extends attribute_info {
     /// attribute.
     public final u2 constantvalue_index;
 
-    ConstantValue_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    ConstantValue_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
         if (this.attribute_length.value != 2) {

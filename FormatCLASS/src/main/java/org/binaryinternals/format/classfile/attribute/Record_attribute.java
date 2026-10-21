@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -58,7 +57,7 @@ public class Record_attribute extends attribute_info {
     /// of the current class, in the order the record components were declared.
     public final record_component_info[] components;
 
-    Record_attribute(final u2 nameIndex, final String type, final PosDataInputStream stream, final cp_info[] cp) throws IOException, FileFormatException {
+    Record_attribute(final u2 nameIndex, final String type, final PosDataInputStream stream, final cp_info[] cp) throws IOException {
         super(nameIndex, type, stream);
         this.components_count = new u2(stream);
 
@@ -156,7 +155,7 @@ public class Record_attribute extends attribute_info {
         /// associated with it.
         public final attribute_info[] attributes;
 
-        private record_component_info(final PosDataInputStream stream, final cp_info[] cp) throws IOException, FileFormatException {
+        private record_component_info(final PosDataInputStream stream, final cp_info[] cp) throws IOException {
             super.startPos = stream.getPos();
 
             this.name_index = new u2(stream);

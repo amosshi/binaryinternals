@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -26,7 +25,7 @@ public class BMPFile extends FileFormat{
     public final ColorTable colorTable;
     public final PixelArray pixelArray;
 
-    public BMPFile(final Path file) throws IOException, FileFormatException {
+    public BMPFile(final Path file) throws IOException {
         super(file);
 
         // Parse

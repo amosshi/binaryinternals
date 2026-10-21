@@ -53,14 +53,14 @@ public abstract class CONSTANT_Ref extends cp_info {
         String returnType;
 
         try {
-            parameters = SignatureConvertor.methodParameters2Readable(typeStr);
+            parameters = SignatureConvertor.methodParameters(typeStr);
         } catch (FileFormatException ex) {
             parameters = typeStr + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method parameters: " + typeStr, ex);
         }
 
         try {
-            returnType = SignatureConvertor.methodReturnTypeExtractor(typeStr).toString();
+            returnType = SignatureConvertor.methodReturnType(typeStr);
         } catch (FileFormatException ex) {
             returnType = typeStr + UNRECOGNIZED_TYPE;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to parse the method return type: " + typeStr, ex);

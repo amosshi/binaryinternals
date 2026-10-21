@@ -110,7 +110,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     /// @return Parsed result
     /// @throws IOException Input Stream read fail
     /// @throws FileFormatException Class file format error
-    public static attribute_info parse(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException, FileFormatException {
+    public static attribute_info parse(final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         final int attrNameIndexPos = posDataInputStream.getPos();
         final u2 attrNameIndex = new u2(posDataInputStream);
         if (attrNameIndex.value >= cp.length || !(cp[attrNameIndex.value] instanceof CONSTANT_Utf8_info nameInfo)) {

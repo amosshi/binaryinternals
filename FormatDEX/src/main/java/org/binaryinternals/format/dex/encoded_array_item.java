@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 
 /**
@@ -28,7 +27,7 @@ public class encoded_array_item extends FileComponent implements GenerateTreeNod
     
     public final encoded_array value;
 
-    encoded_array_item(PosDataInputStreamDex stream) throws IOException, FileFormatException {
+    encoded_array_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
         this.value = new encoded_array(stream);
         super.length = stream.getPos() - super.startPos;

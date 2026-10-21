@@ -49,7 +49,7 @@ public class CONSTANT_Utf8_info extends cp_info {
     /// Buffer for {@link #getValue()}.
     private String value = null;
 
-    CONSTANT_Utf8_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    CONSTANT_Utf8_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_Utf8.tag);
         super.startPos = posDataInputStream.getPos() - 1;
 

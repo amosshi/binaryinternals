@@ -7,7 +7,6 @@
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 /// The `CONSTANT_InvokeDynamic_info` structure is used by an
@@ -36,7 +35,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 @SuppressWarnings({"java:S101"})
 public class CONSTANT_InvokeDynamic_info extends CONSTANT_Dynamic {
 
-    CONSTANT_InvokeDynamic_info(final PosDataInputStream posDataInputStream) throws IOException, FileFormatException {
+    CONSTANT_InvokeDynamic_info(final PosDataInputStream posDataInputStream) throws IOException {
         super(cp_info.ConstantType.CONSTANT_InvokeDynamic.tag, posDataInputStream);
     }
 
