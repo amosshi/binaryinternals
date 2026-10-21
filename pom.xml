@@ -69,6 +69,7 @@
             <artifactId>spotbugs-annotations</artifactId>
             <version>${spotbugs.version}</version>
             <type>jar</type>
+            <scope>provided</scope><!-- Compile time only, not packaged: "requires static" in module-info.java -->
         </dependency>
     </dependencies>
 
