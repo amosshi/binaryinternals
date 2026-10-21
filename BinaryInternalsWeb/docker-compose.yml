@@ -1,0 +1,39 @@
+# Binary Internals web server
+#
+# Run in this BinaryInternalsWeb folder, or use -f BinaryInternalsWeb/docker-compose.yml
+#
+#   docker compose up -d --build     # build the image and start
+#   docker compose logs -f           # follow the logs
+#   docker compose down              # stop
+#
+# Then open http://localhost:8080
+
+services:
+  web:
+    build:
+      # The repository root: the image builds the parent and the format modules too
+      context: ..
+      dockerfile: BinaryInternalsWeb/Dockerfile
+    image: binaryinternals-web
+    ports:
+      - "8080:8080"
+    environment:
+      MAX_UPLOAD_MB: "20"
+      MAX_CONCURRENT_PARSES: "2"
+      PARSE_TIMEOUT_SECONDS: "30"
+      CORS_ORIGIN: "*"
+    # The uploaded files are only written to /tmp, kept in memory
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+    # Contain a runaway parse of a hostile file
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped

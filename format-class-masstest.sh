@@ -11,7 +11,7 @@
 # Java folder location, default to current JAVA_HOME
 JAVA_FOLDER=$JAVA_HOME
 
-# The viewer jar has a build timestamp in its name, e.g. BinaryInternalsViewer-3.6-20261019.061545.jar
+# The viewer jar has a build timestamp in its name, e.g. BinaryInternalsViewer-3.7-20261019.061545.jar
 # Use the newest one, skipping the -sources and -javadoc jars
 VIEWER_JAR=$(ls -t BinaryInternalsViewer/target/BinaryInternalsViewer-*.jar 2>/dev/null \
   | grep -v -e '-sources\.jar$' -e '-javadoc\.jar$' \

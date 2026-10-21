@@ -4,7 +4,7 @@ digraph "binaryinternals" {
 
   // Node Definitions:
   "org.binaryinternals:binaryinternals.format.class:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.class<font point-size="10"><br/>25.0</font>>]
-  "org.binaryinternals:binaryinternals.commonlib:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.commonlib<font point-size="10"><br/>3.6</font>>]
+  "org.binaryinternals:binaryinternals.commonlib:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.commonlib<font point-size="10"><br/>3.7</font>>]
   "org.binaryinternals:binaryinternals.format.bmp:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.bmp<font point-size="10"><br/>1.1</font>>]
   "org.binaryinternals:binaryinternals.format.jpeg:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.jpeg<font point-size="10"><br/>2.1</font>>]
   "org.binaryinternals:binaryinternals.format.zip:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.zip<font point-size="10"><br/>0.8</font>>]
@@ -12,7 +12,8 @@ digraph "binaryinternals" {
   "org.binaryinternals:binaryinternals.format.dex:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.dex<font point-size="10"><br/>0.8</font>>]
   "org.binaryinternals:binaryinternals.format.elf:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.elf<font point-size="10"><br/>0.3</font>>]
   "org.binaryinternals:binaryinternals.format.png:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>binaryinternals.format.png<font point-size="10"><br/>1.1</font>>]
-  "org.binaryinternals:BinaryInternalsViewer:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>BinaryInternalsViewer<font point-size="10"><br/>3.6</font>>]
+  "org.binaryinternals:BinaryInternalsViewer:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>BinaryInternalsViewer<font point-size="10"><br/>3.7</font>>]
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile"[label=<<font point-size="10">org.binaryinternals</font><br/>BinaryInternalsWeb<font point-size="10"><br/>3.7</font>>]
 
   // Edge Definitions:
   "org.binaryinternals:binaryinternals.format.class:jar:compile" -> "org.binaryinternals:binaryinternals.commonlib:jar:compile"
@@ -30,4 +31,11 @@ digraph "binaryinternals" {
   "org.binaryinternals:BinaryInternalsViewer:jar:compile" -> "org.binaryinternals:binaryinternals.format.dex:jar:compile"
   "org.binaryinternals:BinaryInternalsViewer:jar:compile" -> "org.binaryinternals:binaryinternals.format.elf:jar:compile"
   "org.binaryinternals:BinaryInternalsViewer:jar:compile" -> "org.binaryinternals:binaryinternals.format.png:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.bmp:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.jpeg:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.zip:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.pdf:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.dex:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.elf:jar:compile"
+  "org.binaryinternals:BinaryInternalsWeb:jar:compile" -> "org.binaryinternals:binaryinternals.format.png:jar:compile"
 }

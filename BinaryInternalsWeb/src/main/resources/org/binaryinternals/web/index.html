@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary Internals</title>
+<style>
+:root {
+  --bg: #ffffff; --panel: #f6f7f9; --text: #1d2125; --muted: #5f6b76; --border: #d9dde2;
+  --accent: #1f6feb; --sel-bg: #dbe9ff; --hex-sel: #ffe08a; --hex-sel-text: #1d2125; --error: #c62828;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15181c; --panel: #1d2126; --text: #e6e9ec; --muted: #9aa5b1; --border: #333a42;
+    --accent: #58a6ff; --sel-bg: #1f3a5f; --hex-sel: #8a6d1f; --hex-sel-text: #fff7e0; --error: #ff8a80;
+  }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+       display: flex; flex-direction: column; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 16px;
+         border-bottom: 1px solid var(--border); background: var(--panel); }
+header h1 { font-size: 16px; margin: 0; }
+#formats { color: var(--muted); font-size: 12px; flex: 1 1 240px; }
+#status { font-size: 13px; color: var(--muted); }
+#status.error { color: var(--error); }
+button { font: inherit; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border);
+         background: var(--bg); color: var(--text); cursor: pointer; }
+button:hover { border-color: var(--accent); }
+main { flex: 1; display: grid; grid-template-columns: minmax(260px, 2fr) 3fr; min-height: 0; }
+#tree-pane { border-right: 1px solid var(--border); overflow: auto; min-height: 0; outline: none; }
+#right { display: grid; grid-template-rows: 3fr 2fr; min-height: 0; }
+#hex { overflow: auto; position: relative; font: 12px/20px var(--mono); border-bottom: 1px solid var(--border); }
+#hex-spacer { position: relative; }
+#hex-rows { position: absolute; left: 0; top: 0; white-space: pre; padding: 0 12px; }
+.off { color: var(--muted); }
+.sel { background: var(--hex-sel); color: var(--hex-sel-text); }
+#details { overflow: auto; padding: 12px 16px; }
+#details h2 { font-size: 14px; margin: 0 0 4px; word-break: break-all; }
+#details .meta { color: var(--muted); font: 12px var(--mono); margin-bottom: 10px; }
+#details code, #details pre { font-family: var(--mono); font-size: 12px; }
+#drop { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
+        color: var(--muted); margin: 16px; border: 2px dashed var(--border); border-radius: 10px; }
+body.dragging #drop, body.dragging main { border-color: var(--accent); }
+ul.tree { list-style: none; margin: 0; padding-left: 16px; }
+#tree-pane > ul.tree { padding: 6px 4px; }
+.row { display: flex; align-items: center; gap: 4px; padding: 1px 4px; border-radius: 4px; cursor: default; white-space: nowrap; }
+.row:hover { background: var(--panel); }
+.row.selected { background: var(--sel-bg); }
+.toggle { width: 14px; flex: none; text-align: center; color: var(--muted); cursor: pointer; font-size: 10px; }
+.row img { width: 16px; height: 16px; flex: none; }
+.row .label { overflow: hidden; text-overflow: ellipsis; }
+.hidden { display: none !important; }
+@media (max-width: 760px) {
+  main { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  #tree-pane { border-right: 0; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Binary Internals</h1>
+  <button id="open" type="button">Open file…</button>
+  <input id="file" type="file" class="hidden">
+  <span id="status">Choose or drop a file</span>
+  <span id="formats"></span>
+</header>
+<div id="drop">Drop a file here, or use “Open file…”.<br>The file is parsed on the server and not stored.</div>
+<main class="hidden">
+  <div id="tree-pane" tabindex="0" aria-label="File structure"></div>
+  <div id="right">
+    <div id="hex" aria-label="Hex view"><div id="hex-spacer"><div id="hex-rows"></div></div></div>
+    <div id="details"></div>
+  </div>
+</main>
+<script>
+"use strict";
+const ROW_BYTES = 16, ROW_HEIGHT = 20;
+const $ = id => document.getElementById(id);
+let bytes = new Uint8Array(0);
+let selection = null;       // {start, length}
+let selectedRow = null;
+
+// ---------- Loading ----------
+fetch("/api/v1/formats").then(r => r.json()).then(formats => {
+  $("formats").textContent = "Supports: " + formats.map(f => f.extensions.map(e => "." + e).join(" ")).join("  ");
+  $("file").accept = formats.flatMap(f => f.extensions.map(e => "." + e)).join(",");
+}).catch(() => {});
+
+$("open").addEventListener("click", () => $("file").click());
+$("file").addEventListener("change", e => { if (e.target.files[0]) load(e.target.files[0]); });
+document.addEventListener("dragover", e => { e.preventDefault(); document.body.classList.add("dragging"); });
+document.addEventListener("dragleave", e => { if (!e.relatedTarget) document.body.classList.remove("dragging"); });
+document.addEventListener("drop", e => {
+  e.preventDefault();
+  document.body.classList.remove("dragging");
+  if (e.dataTransfer.files[0]) load(e.dataTransfer.files[0]);
+});
+
+function status(text, isError) {
+  $("status").textContent = text;
+  $("status").classList.toggle("error", !!isError);
+}
+
+async function load(file) {
+  status("Parsing " + file.name + " …");
+  try {
+    const buffer = await file.arrayBuffer();
+    const response = await fetch("/api/v1/parse?name=" + encodeURIComponent(file.name), {
+      method: "POST", headers: {"Content-Type": "application/octet-stream"}, body: buffer
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      status(json.error || ("Error " + response.status), true);
+      return;
+    }
+    bytes = new Uint8Array(buffer);
+    showTree(json);
+    status(file.name + " · " + bytes.length.toLocaleString() + " bytes");
+  } catch (err) {
+    status("Failed: " + err.message, true);
+  }
+}
+
+// ---------- Tree ----------
+function showTree(root) {
+  $("drop").classList.add("hidden");
+  document.querySelector("main").classList.remove("hidden");
+  const pane = $("tree-pane");
+  pane.replaceChildren();
+  const ul = document.createElement("ul");
+  ul.className = "tree";
+  ul.appendChild(createNode(root));
+  pane.appendChild(ul);
+  $("hex-spacer").style.height = (Math.ceil(bytes.length / ROW_BYTES) * ROW_HEIGHT) + "px";
+  $("hex").scrollTop = 0;
+  const first = pane.querySelector(".row");
+  toggle(first, true);
+  select(first);
+}
+
+function createNode(node) {
+  const li = document.createElement("li");
+  const row = document.createElement("div");
+  row.className = "row";
+  row.node = node;
+  const tg = document.createElement("span");
+  tg.className = "toggle";
+  tg.textContent = node.children ? "▸" : "";
+  row.appendChild(tg);
+  if (node.icon) {
+    const img = document.createElement("img");
+    img.src = "/icons/" + encodeURIComponent(node.icon) + ".png";
+    img.alt = "";
+    row.appendChild(img);
+  }
+  const label = document.createElement("span");
+  label.className = "label";
+  label.textContent = node.text;     // file data: always as text
+  label.title = node.text;
+  row.appendChild(label);
+  tg.addEventListener("click", e => { e.stopPropagation(); toggle(row); });
+  row.addEventListener("click", () => select(row));
+  row.addEventListener("dblclick", () => toggle(row));
+  li.appendChild(row);
+  return li;
+}
+
+// Children are created on the first expand, trees can be huge
+function toggle(row, open) {
+  const node = row.node;
+  if (!node.children) return;
+  const li = row.parentElement;
+  let ul = li.querySelector(":scope > ul");
+  const expand = open ?? (!ul || ul.classList.contains("hidden"));
+  if (expand && !ul) {
+    ul = document.createElement("ul");
+    ul.className = "tree";
+    const frag = document.createDocumentFragment();
+    node.children.forEach(c => frag.appendChild(createNode(c)));
+    ul.appendChild(frag);
+    li.appendChild(ul);
+  }
+  if (ul) ul.classList.toggle("hidden", !expand);
+  row.firstChild.textContent = expand ? "▾" : "▸";
+}
+
+function select(row) {
+  if (selectedRow) selectedRow.classList.remove("selected");
+  selectedRow = row;
+  row.classList.add("selected");
+  row.scrollIntoView({block: "nearest"});
+  const node = row.node;
+  selection = node.length > 0 ? {start: node.start, length: node.length} : null;
+  showDetails(node);
+  if (selection) {
+    const hex = $("hex");
+    const top = Math.floor(node.start / ROW_BYTES) * ROW_HEIGHT;
+    if (top < hex.scrollTop || top > hex.scrollTop + hex.clientHeight - ROW_HEIGHT) {
+      hex.scrollTop = Math.max(0, top - ROW_HEIGHT * 2);
+    }
+  }
+  renderHex();
+}
+
+$("tree-pane").addEventListener("keydown", e => {
+  if (!selectedRow) return;
+  const rows = [...$("tree-pane").querySelectorAll(".row")].filter(r => r.offsetParent !== null);
+  const i = rows.indexOf(selectedRow);
+  const isOpen = () => { const ul = selectedRow.parentElement.querySelector(":scope > ul"); return ul && !ul.classList.contains("hidden"); };
+  if (e.key === "ArrowDown" && i < rows.length - 1) select(rows[i + 1]);
+  else if (e.key === "ArrowUp" && i > 0) select(rows[i - 1]);
+  else if (e.key === "ArrowRight" && selectedRow.node.children && !isOpen()) toggle(selectedRow, true);
+  else if (e.key === "ArrowLeft") {
+    if (isOpen()) toggle(selectedRow, false);
+    else { const parent = selectedRow.parentElement.parentElement.closest("li"); if (parent) select(parent.firstChild); }
+  } else return;
+  e.preventDefault();
+});
+
+// ---------- Details ----------
+function hex(n) { return "0x" + n.toString(16).toUpperCase().padStart(4, "0"); }
+
+function showDetails(node) {
+  const d = $("details");
+  d.replaceChildren();
+  const h = document.createElement("h2");
+  h.textContent = node.text;
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.textContent = node.length > 0
+    ? `offset ${hex(node.start)} (${node.start})  length ${node.length}  end ${hex(node.start + node.length - 1)}`
+    : `offset ${hex(node.start)} (${node.start})  length 0`;
+  d.append(h, meta);
+  if (node.description) d.appendChild(sanitize(node.description));
+}
+
+// The descriptions are HTML from the plug-ins: keep a few formatting tags only
+const ALLOWED = new Set(["B", "I", "EM", "STRONG", "CODE", "PRE", "BR", "P", "UL", "OL", "LI", "SUB", "SUP",
+                         "TABLE", "THEAD", "TBODY", "TR", "TH", "TD", "A", "H3", "H4"]);
+function sanitize(html) {
+  const doc = new DOMParser().parseFromString("<div>" + html + "</div>", "text/html");
+  const out = document.createElement("div");
+  (function copy(from, to) {
+    for (const n of from.childNodes) {
+      if (n.nodeType === Node.TEXT_NODE) {
+        to.appendChild(document.createTextNode(n.textContent));
+      } else if (n.nodeType === Node.ELEMENT_NODE) {
+        if (["SCRIPT", "STYLE", "IFRAME", "OBJECT", "TEMPLATE"].includes(n.tagName)) continue;
+        if (!ALLOWED.has(n.tagName)) { copy(n, to); continue; }
+        const el = document.createElement(n.tagName);
+        if (n.tagName === "A") {
+          const href = n.getAttribute("href") || "";
+          if (/^https?:\/\//i.test(href)) { el.href = href; el.target = "_blank"; el.rel = "noopener noreferrer"; }
+        }
+        copy(n, el);
+        to.appendChild(el);
+      }
+    }
+  })(doc.body.firstChild, out);
+  return out;
+}
+
+// ---------- Hex view, only the visible rows are drawn ----------
+const HEX = Array.from({length: 256}, (_, i) => i.toString(16).toUpperCase().padStart(2, "0"));
+function ascii(b) {
+  if (b < 0x20 || b > 0x7e) return ".";
+  return b === 0x3c ? "&lt;" : b === 0x3e ? "&gt;" : b === 0x26 ? "&amp;" : String.fromCharCode(b);
+}
+
+function renderHex() {
+  const view = $("hex");
+  const totalRows = Math.ceil(bytes.length / ROW_BYTES);
+  const first = Math.max(0, Math.floor(view.scrollTop / ROW_HEIGHT) - 5);
+  const last = Math.min(totalRows, first + Math.ceil(view.clientHeight / ROW_HEIGHT) + 10);
+  const selStart = selection ? selection.start : -1;
+  const selEnd = selection ? selection.start + selection.length : -1;
+  const lines = [];
+  for (let r = first; r < last; r++) {
+    const base = r * ROW_BYTES;
+    let h = "", a = "";
+    for (let i = 0; i < ROW_BYTES; i++) {
+      const p = base + i;
+      if (p >= bytes.length) { h += "   "; continue; }
+      const inSel = p >= selStart && p < selEnd;
+      const hx = HEX[bytes[p]], ch = ascii(bytes[p]);
+      h += (inSel ? `<span class="sel">${hx}</span>` : hx) + (i === 7 ? "  " : " ");
+      a += inSel ? `<span class="sel">${ch}</span>` : ch;
+    }
+    lines.push(`<span class="off">${base.toString(16).toUpperCase().padStart(8, "0")}</span>  ${h} ${a}`);
+  }
+  const rows = $("hex-rows");
+  rows.style.top = (first * ROW_HEIGHT) + "px";
+  rows.innerHTML = lines.join("\n");   // only hex digits and escaped characters
+}
+$("hex").addEventListener("scroll", () => requestAnimationFrame(renderHex));
+window.addEventListener("resize", () => requestAnimationFrame(renderHex));
+</script>
+</body>
+</html>

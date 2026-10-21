@@ -44,7 +44,7 @@
         <project.build.outputTimestamp>2026-10-17T00:00:00Z</project.build.outputTimestamp><!-- reproducible builds; update on each release -->
         <checkstyle.failOnViolation>true</checkstyle.failOnViolation><!-- override with -Dcheckstyle.failOnViolation=false -->
         <spotbugs.failOnError>true</spotbugs.failOnError><!-- override with -Dspotbugs.failOnError=false -->
-        <revision>3.6</revision>
+        <revision>3.7</revision>
         <format.class.version>25.0</format.class.version><!-- keep in sync with the version in FormatCLASS/pom.xml -->
 
         <buildnumber-maven-plugin.version>3.3.1</buildnumber-maven-plugin.version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/buildnumber-maven-plugin -->
@@ -509,6 +509,7 @@
     <modules>
         <module>CommonLib</module>
         <module>BinaryInternalsViewer</module>
+        <module>BinaryInternalsWeb</module>
 
         <!-- Libs ready to use -->
         <module>FormatBMP</module>
