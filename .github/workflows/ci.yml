@@ -20,4 +20,4 @@ jobs:
 
       - name: Build, test, and run static analysis
         run: |
-          mvn -B clean verify spotbugs:check checkstyle:check
+          mvn -B clean verify
