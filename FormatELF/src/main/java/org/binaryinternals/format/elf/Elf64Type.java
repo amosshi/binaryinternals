@@ -39,122 +39,82 @@ public class Elf64Type {
     /**
      * <code>typedef __u64    Elf64_Addr;</code>.
      */
-    public static class Elf64_Addr {
+    public record Elf64_Addr(BigInteger value) {
 
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 8;
-        public final BigInteger value;
-
-        Elf64_Addr(BigInteger big) {
-            this.value = big;
-        }
     }
 
     /**
      * <code>typedef __u16    Elf64_Half;</code>.
      */
-    public static class Elf64_Half {
+    public record Elf64_Half(int value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 2;
-        public final int value;
-
-        Elf64_Half(int i) {
-            this.value = i;
-        }
     }
 
     /**
      * <code>typedef __u64    Elf64_Off;</code>.
      */
-    public static class Elf64_Off {
+    public record Elf64_Off(BigInteger value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 8;
-        public final BigInteger value;
-
-        Elf64_Off(BigInteger big) {
-            this.value = big;
-        }
     }
 
     /**
      * <code>typedef __s16    Elf64_SHalf;</code>.
      */
-    public static class Elf64_SHalf {
+    public record Elf64_SHalf(short value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 2;
-        public final short value;
-
-        Elf64_SHalf(short s) {
-            this.value = s;
-        }
     }
 
     /**
      * <code>typedef __s32    Elf64_Sword;</code>.
      */
-    public static class Elf64_Sword {
+    public record Elf64_Sword(int value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 4;
-        public final int value;
-
-        Elf64_Sword(int i) {
-            this.value = i;
-        }
     }
 
     /**
      * <code>typedef __s64    Elf64_Sxword;</code>.
      */
-    public static class Elf64_Sxword {
+    public record Elf64_Sxword(long value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 8;
-        public final long value;
-
-        Elf64_Sxword(long l) {
-            this.value = l;
-        }
     }
 
     /**
      * <code>typedef __u32    Elf64_Word;</code>.
      */
-    public static class Elf64_Word {
+    public record Elf64_Word(long value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 4;
-        public final long value;
-
-        Elf64_Word(long l) {
-            this.value = l;
-        }
     }
 
     /**
      * <code>typedef __u64    Elf64_Xword;</code>.
      */
-    public static class Elf64_Xword {
+    public record Elf64_Xword(BigInteger value) {
         /**
          * Binary data length in bytes.
          */
         public static final int LENGTH = 8;
-        public final BigInteger value;
-
-        Elf64_Xword(BigInteger big) {
-            this.value = big;
-        }
     }
 
 }

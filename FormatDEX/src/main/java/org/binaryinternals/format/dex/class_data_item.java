@@ -7,6 +7,7 @@
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
@@ -14,18 +15,15 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class class_data_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class class_data_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uleb128 static_fields_size;
     public final Type_uleb128 instance_fields_size;
@@ -37,11 +35,9 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
     public final encoded_method[] direct_methods;
     public final encoded_method[] virtual_methods;
 
-    /**
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
-     * </pre>
-     */
+    /// ```
+    /// java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
+    /// ```
     @SuppressWarnings("java:S3776")
     class_data_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
         super.startPos = stream.getPos();
@@ -104,15 +100,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         addNode(parentNode, floatPos, this.virtual_methods_size.length, "virtual_methods_size", this.virtual_methods_size, "msg_class_data_item__virtual_methods_size", Icons.Size);
 
         if (this.static_fields != null) {
-            int fieldLenSum = 0;
-            for (encoded_field field : this.static_fields) {
-                fieldLenSum += field.getLength();
-            }
-
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.static_fields[0].getStartPos(),
-                    fieldLenSum,
-                    String.format("static_fields [%,d]", this.static_fields.length),
+                    Arrays.stream(this.static_fields).mapToInt(FileComponent::getLength).sum(),
+                    "static_fields [%,d]".formatted(this.static_fields.length),
                     Icons.Field,
                     MESSAGES.getString("msg_class_data_item__static_fields")
             ));
@@ -123,7 +114,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("static_fields [%,d]", i),
+                        "static_fields [%,d]".formatted(i),
                         Icons.Field,
                         encoded_field.class.getSimpleName()
                 ));
@@ -133,15 +124,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         if (this.instance_fields != null) {
-            int fieldLenSum = 0;
-            for (encoded_field field : this.instance_fields) {
-                fieldLenSum += field.getLength();
-            }
-
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.instance_fields[0].getStartPos(),
-                    fieldLenSum,
-                    String.format("instance_fields [%,d]", this.instance_fields.length),
+                    Arrays.stream(this.instance_fields).mapToInt(FileComponent::getLength).sum(),
+                    "instance_fields [%,d]".formatted(this.instance_fields.length),
                     Icons.Field,
                     MESSAGES.getString("msg_class_data_item__instance_fields")
             ));
@@ -152,7 +138,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("encoded_field [%,d]", i),
+                        "encoded_field [%,d]".formatted(i),
                         Icons.Field,
                         encoded_field.class.getSimpleName()
                 ));
@@ -162,15 +148,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         if (this.direct_methods != null) {
-            int methodLenSum = 0;
-            for (encoded_method method : this.direct_methods) {
-                methodLenSum += method.getLength();
-            }
-
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.direct_methods[0].getStartPos(),
-                    methodLenSum,
-                    String.format("direct_methods [%,d]", this.direct_methods.length),
+                    Arrays.stream(this.direct_methods).mapToInt(FileComponent::getLength).sum(),
+                    "direct_methods [%,d]".formatted(this.direct_methods.length),
                     Icons.Method,
                     MESSAGES.getString("msg_class_data_item__direct_methods")
             ));
@@ -181,7 +162,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("encoded_method [%,d]", i),
+                        "encoded_method [%,d]".formatted(i),
                         Icons.Method,
                         encoded_method.class.getSimpleName()
                 ));
@@ -191,15 +172,10 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         if (this.virtual_methods != null) {
-            int methodLenSum = 0;
-            for (encoded_method method : this.virtual_methods) {
-                methodLenSum += method.getLength();
-            }
-
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.virtual_methods[0].getStartPos(),
-                    methodLenSum,
-                    String.format("virtual_methods [%,d]", this.virtual_methods.length),
+                    Arrays.stream(this.virtual_methods).mapToInt(FileComponent::getLength).sum(),
+                    "virtual_methods [%,d]".formatted(this.virtual_methods.length),
                     Icons.Method,
                     MESSAGES.getString("msg_class_data_item__virtual_methods")
             ));
@@ -210,7 +186,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("encoded_method [%,d]", i),
+                        "encoded_method [%,d]".formatted(i),
                         Icons.Method,
                         encoded_method.class.getSimpleName()
                 ));
@@ -221,7 +197,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
 
     }
 
-    public static class encoded_field extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class encoded_field extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_uleb128 field_idx_diff;
         public final Type_uleb128 access_flags;
@@ -243,7 +219,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     floatPos,
                     this.field_idx_diff.length,
                     "field_idx_diff",
-                    String.format(FORMAT_STRING_STRING, this.field_idx_diff, (field == null) ? "null (should not happen)" : field.toString(dexFile)),
+                    FORMAT_STRING_STRING.formatted(this.field_idx_diff, (field == null) ? "null (should not happen)" : field.toString(dexFile)),
                     "msg_encoded_field__field_idx_diff",
                     Icons.Index);
             floatPos += this.field_idx_diff.length;
@@ -259,7 +235,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
-    public static class encoded_method extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class encoded_method extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_uleb128 method_idx_diff;
         public final Type_uleb128 access_flags;
@@ -271,7 +247,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
             this.access_flags = stream.Dex_uleb128();
             this.code_off = stream.Dex_uleb128();
             if (this.code_off.value != 0) {
-                dexFile.parseData(Long.valueOf(this.code_off.value), code_item.class, stream);
+                dexFile.parseData(this.code_off.value, (in, _) -> new code_item(in), stream);
             }
             super.length = stream.getPos() - super.startPos;
         }
@@ -286,7 +262,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     floatPos,
                     this.method_idx_diff.length,
                     "method_idx_diff",
-                    String.format(FORMAT_STRING_STRING, this.method_idx_diff, (method == null) ? "null (should not happen)" : method.toString(dexFile)),
+                    FORMAT_STRING_STRING.formatted(this.method_idx_diff, (method == null) ? "null (should not happen)" : method.toString(dexFile)),
                     "msg_encoded_method__method_idx_diff",
                     Icons.Index);
             floatPos += this.method_idx_diff.length;
@@ -308,7 +284,7 @@ public class class_data_item extends FileComponent implements GenerateTreeNodeDe
                     "msg_encoded_method__code_off",
                     Icons.Offset);
             if (this.code_off.value != 0) {
-                code_item item = (code_item) dexFile.data.get(Long.valueOf(this.code_off.value));
+                code_item item = (code_item) dexFile.data.get((long) this.code_off.value);
                 DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),

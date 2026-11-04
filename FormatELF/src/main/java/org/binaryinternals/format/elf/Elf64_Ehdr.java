@@ -7,6 +7,7 @@
 package org.binaryinternals.format.elf;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
@@ -149,7 +150,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
          */
         public final int value;
 
-        private ELF_FileType(final int i) {
+        ELF_FileType(final int i) {
             this.value = i;
         }
 
@@ -159,14 +160,12 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
          * @param v {@link #value} of an enum
          * @return Enum name if found, else <code>Unknown</code>
          */
-        public static String nameOf(int v) {
-            for (ELF_FileType item : ELF_FileType.values()) {
-                if (item.value == v) {
-                    return item.name();
-                }
-            }
-
-            return ELF_FileType.class.getName() + " Unknown";
+        public static String nameOf(final int v) {
+            return Arrays.stream(values())
+                    .filter(item -> item.value == v)
+                    .map(Enum::name)
+                    .findFirst()
+                    .orElse(ELF_FileType.class.getName() + " Unknown");
         }
     }
 
@@ -284,7 +283,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
          */
         public final int value;
 
-        private ELF_Machine(final int i) {
+        ELF_Machine(final int i) {
             this.value = i;
         }
 
@@ -294,14 +293,12 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
          * @param v {@link #value} of an enum
          * @return Enum name if found, else <code>Unknown</code>
          */
-        public static String nameOf(int v) {
-            for (ELF_Machine item : ELF_Machine.values()) {
-                if (item.value == v) {
-                    return item.name();
-                }
-            }
-
-            return ELF_Machine.class.getName() + " Unknown";
+        public static String nameOf(final int v) {
+            return Arrays.stream(values())
+                    .filter(item -> item.value == v)
+                    .map(Enum::name)
+                    .findFirst()
+                    .orElse(ELF_Machine.class.getName() + " Unknown");
         }
     }
 
@@ -312,7 +309,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos,
                 this.length,
-                String.format("ELF64 Header [0x%08X, %d]", this.startPos, this.length),
+                "ELF64 Header [0x%08X, %d]".formatted(this.startPos, this.length),
                 "The ELF header on 64-bit CPU architecture."
         ));
         parentNode.add(node);
@@ -321,7 +318,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_type = 0x%04X (%d): %s", this.e_type.value, this.e_type.value, ELF_FileType.nameOf(this.e_type.value)),
+                "e_type = 0x%04X (%d): %s".formatted(this.e_type.value(), this.e_type.value(), ELF_FileType.nameOf(this.e_type.value())),
                 "Identifies object file type.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -329,7 +326,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_machine = 0x%04X (%d): %s", this.e_machine.value, this.e_machine.value, ELF_Machine.nameOf(this.e_machine.value)),
+                "e_machine = 0x%04X (%d): %s".formatted(this.e_machine.value(), this.e_machine.value(), ELF_Machine.nameOf(this.e_machine.value())),
                 "Specifies target instruction set architecture.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -337,7 +334,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Word.LENGTH,
-                String.format("e_version = 0x%08X (%d)", this.e_version.value, this.e_version.value),
+                "e_version = 0x%08X (%d)".formatted(this.e_version.value(), this.e_version.value()),
                 "Set to 1 for the original version of ELF.")));
         currentPos += Elf64_Word.LENGTH;
 
@@ -345,7 +342,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Addr.LENGTH,
-                String.format("e_entry = 0x%016X (%d)", this.e_entry.value, this.e_entry.value),
+                "e_entry = 0x%016X (%d)".formatted(this.e_entry.value(), this.e_entry.value()),
                 "This is the memory address of the entry point from where the process starts executing. This field is either 32 or 64 bits long depending on the format defined earlier.")));
         currentPos += Elf64_Addr.LENGTH;
 
@@ -353,7 +350,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Off.LENGTH,
-                String.format("e_phoff = 0x%016X (%d)", this.e_phoff.value, this.e_phoff.value),
+                "e_phoff = 0x%016X (%d)".formatted(this.e_phoff.value(), this.e_phoff.value()),
                 "Points to the start of the program header table. It usually follows the file header immediately, making the offset 0x34 or 0x40 for 32- and 64-bit ELF executables, respectively.")));
         currentPos += Elf64_Off.LENGTH;
 
@@ -361,7 +358,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Off.LENGTH,
-                String.format("e_shoff = 0x%016X (%d)", this.e_shoff.value, this.e_shoff.value),
+                "e_shoff = 0x%016X (%d)".formatted(this.e_shoff.value(), this.e_shoff.value()),
                 "Points to the start of the section header table.")));
         currentPos += Elf64_Off.LENGTH;
 
@@ -369,7 +366,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Word.LENGTH,
-                String.format("e_flags = 0x%08X (%d)", this.e_flags.value, this.e_flags.value),
+                "e_flags = 0x%08X (%d)".formatted(this.e_flags.value(), this.e_flags.value()),
                 "Interpretation of this field depends on the target architecture.")));
         currentPos += Elf64_Word.LENGTH;
 
@@ -377,7 +374,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_ehsize = 0x%04X (%d)", this.e_ehsize.value, this.e_ehsize.value),
+                "e_ehsize = 0x%04X (%d)".formatted(this.e_ehsize.value(), this.e_ehsize.value()),
                 "Contains the size of this header, normally 64 Bytes for 64-bit and 52 Bytes for 32-bit format.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -385,7 +382,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_phentsize = 0x%04X (%d)", this.e_phentsize.value, this.e_phentsize.value),
+                "e_phentsize = 0x%04X (%d)".formatted(this.e_phentsize.value(), this.e_phentsize.value()),
                 "Contains the size of a program header table entry.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -393,7 +390,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_phnum = 0x%04X (%d)", this.e_phnum.value, this.e_phnum.value),
+                "e_phnum = 0x%04X (%d)".formatted(this.e_phnum.value(), this.e_phnum.value()),
                 "Contains the number of entries in the program header table.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -401,7 +398,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_shentsize = 0x%04X (%d)", this.e_shentsize.value, this.e_shentsize.value),
+                "e_shentsize = 0x%04X (%d)".formatted(this.e_shentsize.value(), this.e_shentsize.value()),
                 "Contains the size of a section header table entry.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -409,7 +406,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_shnum = 0x%04X (%d)", this.e_shnum.value, this.e_shnum.value),
+                "e_shnum = 0x%04X (%d)".formatted(this.e_shnum.value(), this.e_shnum.value()),
                 "Contains the number of entries in the section header table.")));
         currentPos += Elf64_Half.LENGTH;
 
@@ -417,7 +414,7 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 Elf64_Half.LENGTH,
-                String.format("e_shstrndx = 0x%04X (%d)", this.e_shstrndx.value, this.e_shstrndx.value),
+                "e_shstrndx = 0x%04X (%d)".formatted(this.e_shstrndx.value(), this.e_shstrndx.value()),
                 "Contains index of the section header table entry that contains the section names.")));
     }
 }

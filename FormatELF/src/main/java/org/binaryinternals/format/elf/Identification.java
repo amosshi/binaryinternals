@@ -7,6 +7,9 @@
 package org.binaryinternals.format.elf;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.IntFunction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormatException;
@@ -112,32 +115,16 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         }
 
         // ELF Class: 32-/64-bit
-        int value = input.readUnsignedByte();
-        if (!ElfClass.contains(value)) {
-            throw new FileFormatException("Unrecognized EI_CLASS value in  ELF file header. value=" + value);
-        }
-        this.EI_CLASS = ElfClass.valueOf(value);
+        this.EI_CLASS = readEnum(input, ElfClass::of, "EI_CLASS");
 
         // Endianness
-        value = input.readUnsignedByte();
-        if (!Endianness.contains(value)) {
-            throw new FileFormatException("Unrecognized EI_DATA value in  ELF file header. value=" + value);
-        }
-        this.EI_DATA = Endianness.valueOf(value);
+        this.EI_DATA = readEnum(input, Endianness::of, "EI_DATA");
 
         // Version
-        value = input.readUnsignedByte();
-        if (!Version.contains(value)) {
-            throw new FileFormatException("Unrecognized EI_VERSION value in  ELF file header. value=" + value);
-        }
-        this.EI_VERSION = Version.valueOf(value);
+        this.EI_VERSION = readEnum(input, Version::of, "EI_VERSION");
 
         // EI_OSABI
-        value = input.readUnsignedByte();
-        if (!OSAbi.contains(value)) {
-            throw new FileFormatException("Unrecognized EI_OSABI value in  ELF file header. value=" + value);
-        }
-        this.EI_OSABI = OSAbi.valueOf(value);
+        this.EI_OSABI = readEnum(input, OSAbi::of, "EI_OSABI");
 
         // EI_ABIVERSION
         this.EI_ABIVERSION = input.readUnsignedByte();
@@ -155,6 +142,13 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    private static <T> T readEnum(final PosDataInputStream input, final IntFunction<Optional<T>> lookup,
+            final String field) throws IOException {
+        final int value = input.readUnsignedByte();
+        return lookup.apply(value).orElseThrow(
+                () -> new FileFormatException("Unrecognized " + field + " value in  ELF file header. value=" + value));
+    }
+
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         int currentPos = this.startPos;
@@ -162,7 +156,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos,
                 this.length,
-                String.format("ELF File Header [0x%08X, %d]", this.startPos, this.length),
+                "ELF File Header [0x%08X, %d]".formatted(this.startPos, this.length),
                 "The ELF header defines whether to use 32-bit or 64-bit addresses. The header contains three fields that are affected by this setting and offset other fields that follow them."
         ));
         parentNode.add(node);
@@ -171,7 +165,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_MAG_SIZE,
-                String.format("EI_MAG = 0x%08X", this.EI_MAG),
+                "EI_MAG = 0x%08X".formatted(this.EI_MAG),
                 "0x7F followed by ELF(45 4c 46) in ASCII; these four bytes constitute the magic number.")));
         currentPos += EI_MAG_SIZE;
 
@@ -179,7 +173,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_CLASS_SIZE,
-                String.format("EI_CLASS = %d : %s", this.EI_CLASS.value, this.EI_CLASS.name()),
+                "EI_CLASS = %d : %s".formatted(this.EI_CLASS.value, this.EI_CLASS.name()),
                 "Length of target CPU, like 32-bit or 64-bit"
         )));
         currentPos += EI_CLASS_SIZE;
@@ -188,7 +182,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_DATA_SIZE,
-                String.format("EI_DATA = %d : %s", this.EI_DATA.value, this.EI_DATA.toString()),
+                "EI_DATA = %d : %s".formatted(this.EI_DATA.value, this.EI_DATA.toString()),
                 "Endianness of number format, like little or big endianness"
         )));
         currentPos += EI_DATA_SIZE;
@@ -197,7 +191,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_VERSION_SIZE,
-                String.format("EI_VERSION = %d : %s", this.EI_VERSION.value, this.EI_VERSION.name()),
+                "EI_VERSION = %d : %s".formatted(this.EI_VERSION.value, this.EI_VERSION.name()),
                 "Version of ELF file"
         )));
         currentPos += EI_VERSION_SIZE;
@@ -206,7 +200,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_OSABI_SIZE,
-                String.format("EI_OSABI = %d : %s", this.EI_OSABI.value, this.EI_OSABI.name()),
+                "EI_OSABI = %d : %s".formatted(this.EI_OSABI.value, this.EI_OSABI.name()),
                 "Identifies the target operating system ABI. Zero (0) means regardless of the target platform.")));
         currentPos += EI_OSABI_SIZE;
 
@@ -214,7 +208,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_ABIVERSION_SIZE,
-                String.format("EI_ABIVERSION = %d", this.EI_ABIVERSION),
+                "EI_ABIVERSION = %d".formatted(this.EI_ABIVERSION),
                 "Further specifies the ABI version. Its interpretation depends on the target ABI. Linux kernel (after at least 2.6) has no definition of it, so it is ignored for statically-linked executables."
         )));
         currentPos += EI_ABIVERSION_SIZE;
@@ -223,7 +217,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 currentPos,
                 EI_PAD_SIZE,
-                String.format("EI_PAD (length = %d)", EI_PAD_SIZE),
+                "EI_PAD (length = %d)".formatted(EI_PAD_SIZE),
                 "Currently unused"
         )));
     }
@@ -256,45 +250,18 @@ public class Identification extends FileComponent implements GenerateTreeNode {
          */
         public final int value;
 
-        private ElfClass(final int i) {
+        ElfClass(final int i) {
             this.value = i;
         }
 
         /**
-         * Check if a value is a valid {@link ElfClass} enumeration value.
+         * Find the {@link ElfClass} by its {@link #value}.
          *
-         * @param v Value to test
-         * @return <code>true</code> if contains the specified value, else
-         * <code>false</code>
+         * @param v Value to look up
+         * @return The matching constant, or empty if not recognized
          */
-        public static boolean contains(int v) {
-            boolean result = false;
-            for (ElfClass cls : ElfClass.values()) {
-                if (cls.value == v) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /**
-         * Returns the enum constant of the specified enum type with the
-         * specified name.
-         *
-         * @param v the value of the constant to return
-         * @return the enum constant of the specified enum type with the
-         * specified value
-         */
-        public static ElfClass valueOf(int v) {
-            for (ElfClass cls : ElfClass.values()) {
-                if (cls.value == v) {
-                    return cls;
-                }
-            }
-
-            throw new IllegalArgumentException(String.format("Unrecognized EI_CLASS value. value=%d", v));
+        public static Optional<ElfClass> of(final int v) {
+            return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
     }
 
@@ -334,7 +301,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
          */
         public final String description;
 
-        private Endianness(int e, String d) {
+        Endianness(int e, String d) {
             this.value = e;
             this.description = d;
         }
@@ -345,40 +312,13 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         }
 
         /**
-         * Check if a value is a valid {@link Endianness} enumeration value.
+         * Find the {@link Endianness} by its {@link #value}.
          *
-         * @param v Value to test
-         * @return <code>true</code> if contains the specified value, else
-         * <code>false</code>
+         * @param v Value to look up
+         * @return The matching constant, or empty if not recognized
          */
-        public static boolean contains(int v) {
-            boolean result = false;
-            for (Endianness cls : Endianness.values()) {
-                if (cls.value == v) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /**
-         * Returns the enum constant of the specified enum type with the
-         * specified name.
-         *
-         * @param v the value of the constant to return
-         * @return the enum constant of the specified enum type with the
-         * specified value
-         */
-        public static Endianness valueOf(int v) {
-            for (Endianness endian : Endianness.values()) {
-                if (endian.value == v) {
-                    return endian;
-                }
-            }
-
-            throw new IllegalArgumentException(String.format("Unrecognized EI_DATA value. value=%d", v));
+        public static Optional<Endianness> of(final int v) {
+            return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
 
     }
@@ -400,45 +340,18 @@ public class Identification extends FileComponent implements GenerateTreeNode {
          */
         public final int value;
 
-        private Version(int v) {
+        Version(int v) {
             this.value = v;
         }
 
         /**
-         * Check if a value is a valid {@link Version} enumeration value.
+         * Find the {@link Version} by its {@link #value}.
          *
-         * @param v Value to test
-         * @return <code>true</code> if contains the specified value, else
-         * <code>false</code>
+         * @param v Value to look up
+         * @return The matching constant, or empty if not recognized
          */
-        public static boolean contains(int v) {
-            boolean result = false;
-            for (Version ver : Version.values()) {
-                if (ver.value == v) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /**
-         * Returns the enum constant of the specified enum type with the
-         * specified name.
-         *
-         * @param v the value of the constant to return
-         * @return the enum constant of the specified enum type with the
-         * specified value
-         */
-        public static Version valueOf(int v) {
-            for (Version ver : Version.values()) {
-                if (ver.value == v) {
-                    return ver;
-                }
-            }
-
-            throw new IllegalArgumentException(String.format("Unrecognized EI_VERSION value. value=%d", v));
+        public static Optional<Version> of(final int v) {
+            return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
     }
 
@@ -507,45 +420,18 @@ public class Identification extends FileComponent implements GenerateTreeNode {
          */
         public final int value;
 
-        private OSAbi(int v) {
+        OSAbi(int v) {
             this.value = v;
         }
 
         /**
-         * Check if a value is a valid {@link Version} enumeration value.
+         * Find the {@link OSAbi} by its {@link #value}.
          *
-         * @param v Value to test
-         * @return <code>true</code> if contains the specified value, else
-         * <code>false</code>
+         * @param v Value to look up
+         * @return The matching constant, or empty if not recognized
          */
-        public static boolean contains(int v) {
-            boolean result = false;
-            for (OSAbi abi : OSAbi.values()) {
-                if (abi.value == v) {
-                    result = true;
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /**
-         * Returns the enum constant of the specified enum type with the
-         * specified name.
-         *
-         * @param v the value of the constant to return
-         * @return the enum constant of the specified enum type with the
-         * specified value
-         */
-        public static OSAbi valueOf(int v) {
-            for (OSAbi abi : OSAbi.values()) {
-                if (abi.value == v) {
-                    return abi;
-                }
-            }
-
-            throw new IllegalArgumentException(String.format("Unrecognized EI_OSABI value. value=%d", v));
+        public static Optional<OSAbi> of(final int v) {
+            return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
     }
 

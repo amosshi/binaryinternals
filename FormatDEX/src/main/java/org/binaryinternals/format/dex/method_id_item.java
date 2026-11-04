@@ -12,46 +12,35 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
-public class method_id_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class method_id_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * Item Size In Bytes.
-     *
-     * @see map_list.TypeCodes#TYPE_METHOD_ID_ITEM
-     */
+    /// Item Size In Bytes.
+    ///
+    /// @see map_list.TypeCodes#TYPE_METHOD_ID_ITEM
     public static final int ITEM_SIZE = 0x08;
 
-    /**
-     * index into the type_ids list for the definer of this method. This must be
-     * a class or array type, and not a primitive type.
-     */
+    /// index into the type_ids list for the definer of this method. This must be
+    /// a class or array type, and not a primitive type.
     public final Type_ushort class_idx;
-    private String clazz = null;
-    private String clazz_jls = null;
+    private String clazz;
+    private String clazz_jls;
 
-    /**
-     * index into the proto_ids list for the prototype of this method.
-     */
+    /// index into the proto_ids list for the prototype of this method.
     public final Type_ushort proto_idx;
 
-    /**
-     * index into the string_ids list for the name of this method. The string
-     * must conform to the syntax for MemberName, defined above.
-     */
+    /// index into the string_ids list for the name of this method. The string
+    /// must conform to the syntax for MemberName, defined above.
     public final Type_uint name_idx;
-    private String name = null;
+    private String name;
 
     method_id_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
@@ -62,13 +51,11 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
     }
 
 
-    /**
-     * Get {@link #class_idx} name.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return class name
-     * @see #class_idx
-     */
+    /// Get {@link #class_idx} name.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return class name
+    /// @see #class_idx
     public String get_class(DexFile dexFile) {
         if (this.clazz == null) {
             this.clazz = dexFile.get_type_ids_string(class_idx.value);
@@ -76,13 +63,11 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
         return this.clazz;
     }
 
-    /**
-     * Get {@link #class_idx} name in Java Language Specification format.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return class name in JLS format
-     * @see #class_idx
-     */
+    /// Get {@link #class_idx} name in Java Language Specification format.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return class name in JLS format
+    /// @see #class_idx
     public String get_class_jls(DexFile dexFile) {
         if (this.clazz_jls == null) {
             // The class string could be an array, use its element type
@@ -91,24 +76,20 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
         return this.clazz_jls;
     }
 
-    /**
-     * Get {@link #proto_idx} value.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return {@link #proto_idx} value
-     */
+    /// Get {@link #proto_idx} value.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return {@link #proto_idx} value
     public proto_id_item get_proto(DexFile dexFile) {
         return dexFile.proto_ids[this.proto_idx.value];
     }
 
 
-    /**
-     * Get {@link #name_idx} name.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return field name
-     * @see #name_idx
-     */
+    /// Get {@link #name_idx} name.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return field name
+    /// @see #name_idx
     public String get_name(DexFile dexFile) {
         if (this.name == null) {
             this.name = dexFile.get_string_ids_string(name_idx.intValue());
@@ -116,16 +97,14 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
         return this.name;
     }
 
-    /**
-     * String format of current {@link method_id_item}.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return String format of a method
-     */
+    /// String format of current {@link method_id_item}.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return String format of a method
     public String toString(DexFile dexFile) {
         proto_id_item proto = this.get_proto(dexFile);
         type_list params = proto.get_parameters(dexFile);
-        return String.format("%s %s.%s(%s)",
+        return "%s %s.%s(%s)".formatted(
                 proto.get_return_type_jls(dexFile),
                 this.get_class_jls(dexFile),
                 this.get_name(dexFile),
@@ -142,7 +121,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_ushort.LENGTH,
                 "class_idx",
-                String.format(FORMAT_STRING_STRING, this.class_idx, this.get_class_jls(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.class_idx, this.get_class_jls(dexFile)),
                 "msg_method_id_item__class_idx",
                 Icons.Index);
         floatPos += Type_ushort.LENGTH;
@@ -160,7 +139,7 @@ public class method_id_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_uint.LENGTH,
                 "name_idx",
-                String.format(FORMAT_STRING_STRING, this.name_idx, this.get_name(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.name_idx, this.get_name(dexFile)),
                 "msg_method_id_item__name_idx",
                 Icons.Index);
     }

@@ -14,102 +14,81 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
-public class class_def_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class class_def_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * Item Size In Bytes.
-     *
-     * @see map_list.TypeCodes#TYPE_CLASS_DEF_ITEM
-     */
+    /// Item Size In Bytes.
+    ///
+    /// @see map_list.TypeCodes#TYPE_CLASS_DEF_ITEM
     public static final int ITEM_SIZE = 0x20;
 
-    /**
-     * index into the type_ids list for this class. This must be a class type,
-     * and not an array or primitive type.
-     */
+    /// index into the type_ids list for this class. This must be a class type,
+    /// and not an array or primitive type.
     public final Type_uint class_idx;
     private String clazz_jls;
 
-    /**
-     * access flags for the class (public, final, etc.). See "access_flags
-     * Definitions" for details.
-     */
+    /// access flags for the class (public, final, etc.). See "access_flags
+    /// Definitions" for details.
     public final Type_uint access_flags;
 
-    /**
-     * index into the type_ids list for the superclass, or the constant value
-     * NO_INDEX if this class has no superclass (i.e., it is a root class such
-     * as Object). If present, this must be a class type, and not an array or
-     * primitive type.
-     */
+    /// index into the type_ids list for the superclass, or the constant value
+    /// NO_INDEX if this class has no superclass (i.e., it is a root class such
+    /// as Object). If present, this must be a class type, and not an array or
+    /// primitive type.
     public final Type_uint superclass_idx;
-    private String superclass_jls = null;
+    private String superclass_jls;
 
-    /**
-     * offset from the start of the file to the list of interfaces, or 0 if
-     * there are none. This offset should be in the data section, and the data
-     * there should be in the format specified by "type_list" below. Each of the
-     * elements of the list must be a class type (not an array or primitive
-     * type), and there must not be any duplicates.
-     */
+    /// offset from the start of the file to the list of interfaces, or 0 if
+    /// there are none. This offset should be in the data section, and the data
+    /// there should be in the format specified by "type_list" below. Each of the
+    /// elements of the list must be a class type (not an array or primitive
+    /// type), and there must not be any duplicates.
     public final Type_uint interfaces_off;
-    private type_list interfaces = null;
+    private type_list interfaces;
 
-    /**
-     * index into the string_ids list for the name of the file containing the
-     * original source for (at least most of) this class, or the special value
-     * NO_INDEX to represent a lack of this information. The debug_info_item of
-     * any given method may override this source file, but the expectation is
-     * that most classes will only come from one source file.
-     */
+    /// index into the string_ids list for the name of the file containing the
+    /// original source for (at least most of) this class, or the special value
+    /// NO_INDEX to represent a lack of this information. The debug_info_item of
+    /// any given method may override this source file, but the expectation is
+    /// that most classes will only come from one source file.
     public final Type_uint source_file_idx;
-    private String source_file = null;
+    private String source_file;
 
-    /**
-     * offset from the start of the file to the annotations structure for this
-     * class, or 0 if there are no annotations on this class. This offset, if
-     * non-zero, should be in the data section, and the data there should be in
-     * the format specified by "annotations_directory_item" below, with all
-     * items referring to this class as the definer.
-     */
+    /// offset from the start of the file to the annotations structure for this
+    /// class, or 0 if there are no annotations on this class. This offset, if
+    /// non-zero, should be in the data section, and the data there should be in
+    /// the format specified by "annotations_directory_item" below, with all
+    /// items referring to this class as the definer.
     public final Type_uint annotations_off;
-    private annotations_directory_item annotations = null;
+    private annotations_directory_item annotations;
 
-    /**
-     * offset from the start of the file to the associated class data for this
-     * item, or 0 if there is no class data for this class. (This may be the
-     * case, for example, if this class is a marker interface.) The offset, if
-     * non-zero, should be in the data section, and the data there should be in
-     * the format specified by "class_data_item" below, with all items referring
-     * to this class as the definer.
-     */
+    /// offset from the start of the file to the associated class data for this
+    /// item, or 0 if there is no class data for this class. (This may be the
+    /// case, for example, if this class is a marker interface.) The offset, if
+    /// non-zero, should be in the data section, and the data there should be in
+    /// the format specified by "class_data_item" below, with all items referring
+    /// to this class as the definer.
     public final Type_uint class_data_off;
 
-    /**
-     * offset from the start of the file to the list of initial values for
-     * static fields, or 0 if there are none (and all static fields are to be
-     * initialized with 0 or null). This offset should be in the data section,
-     * and the data there should be in the format specified by
-     * "encoded_array_item" below. The size of the array must be no larger than
-     * the number of static fields declared by this class, and the elements
-     * correspond to the static fields in the same order as declared in the
-     * corresponding field_list. The type of each array element must match the
-     * declared type of its corresponding field. If there are fewer elements in
-     * the array than there are static fields, then the leftover fields are
-     * initialized with a type-appropriate 0 or null.
-     */
+    /// offset from the start of the file to the list of initial values for
+    /// static fields, or 0 if there are none (and all static fields are to be
+    /// initialized with 0 or null). This offset should be in the data section,
+    /// and the data there should be in the format specified by
+    /// "encoded_array_item" below. The size of the array must be no larger than
+    /// the number of static fields declared by this class, and the elements
+    /// correspond to the static fields in the same order as declared in the
+    /// corresponding field_list. The type of each array element must match the
+    /// declared type of its corresponding field. If there are fewer elements in
+    /// the array than there are static fields, then the leftover fields are
+    /// initialized with a type-appropriate 0 or null.
     public final Type_uint static_values_off;
 
     class_def_item(final PosDataInputStreamDex stream, final DexFile dex) throws IOException {
@@ -122,20 +101,18 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         this.annotations_off = stream.Dex_uint();
         this.class_data_off = stream.Dex_uint();
         if (this.class_data_off.value != 0) {
-            dex.parseData(this.class_data_off.value, class_data_item.class, stream);
+            dex.parseData(this.class_data_off.value, class_data_item::new, stream);
         }
 
         this.static_values_off = stream.Dex_uint();
         super.length = stream.getPos() - super.startPos;
     }
 
-    /**
-     * Get {@link #class_idx} name in Java Language Specification format.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return class name in JLS format
-     * @see #class_idx
-     */
+    /// Get {@link #class_idx} name in Java Language Specification format.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return class name in JLS format
+    /// @see #class_idx
     public String get_class_jls(DexFile dexFile) {
         if (this.clazz_jls == null) {
             this.clazz_jls = dexFile.type_ids[this.class_idx.intValue()].get_descriptor_jls(dexFile);
@@ -143,13 +120,11 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         return this.clazz_jls;
     }
 
-    /**
-     * Get {@link #superclass_idx} name in Java Language Specification format.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return super class name in JLS format
-     * @see #superclass_idx
-     */
+    /// Get {@link #superclass_idx} name in Java Language Specification format.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return super class name in JLS format
+    /// @see #superclass_idx
     public String get_superclass_jls(DexFile dexFile) {
         if (this.superclass_jls == null) {
             this.superclass_jls = (this.superclass_idx.value == DexFile.NO_INDEX)
@@ -159,14 +134,12 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         return this.superclass_jls;
     }
 
-    /**
-     * Get {@link #interfaces_off} value.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return {@link type_list} value if {@link #interfaces_off} is not
-     * <code>0</code>, or else <code>null</code>
-     * @see #interfaces_off
-     */
+    /// Get {@link #interfaces_off} value.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return {@link type_list} value if {@link #interfaces_off} is not
+    /// `0`, or else `null`
+    /// @see #interfaces_off
     public type_list get_interfaces(DexFile dexFile) {
         if (this.interfaces_off.value == 0) {
             return null;
@@ -183,14 +156,12 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         return (types == null) ? "(no interface)" : types.toString(dexFile);
     }
 
-    /**
-     * Get {@link #annotations_off} value.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return {@link annotations_directory_item} value if
-     * {@link #annotations_off} is not <code>0</code>, or else <code>null</code>
-     * @see #annotations_off
-     */
+    /// Get {@link #annotations_off} value.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return {@link annotations_directory_item} value if
+    /// {@link #annotations_off} is not `0`, or else `null`
+    /// @see #annotations_off
     public annotations_directory_item get_annotations(DexFile dexFile) {
         if (this.annotations_off.value == 0) {
             return null;
@@ -202,13 +173,11 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
         return this.annotations;
     }
 
-    /**
-     * Get {@link #source_file_idx} value.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return source file
-     * @see #source_file_idx
-     */
+    /// Get {@link #source_file_idx} value.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return source file
+    /// @see #source_file_idx
     public String get_source_file(DexFile dexFile) {
         if (this.source_file == null) {
             this.source_file = (this.source_file_idx.value == 0 || this.source_file_idx.value == DexFile.NO_INDEX)
@@ -226,7 +195,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_uint.LENGTH,
                 "class_idx",
-                String.format(FORMAT_STRING_STRING, this.class_idx, this.get_class_jls(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.class_idx, this.get_class_jls(dexFile)),
                 "msg_class_def_item__class_idx",
                 Icons.Index);
         floatPos += Type_uint.LENGTH;
@@ -245,7 +214,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_uint.LENGTH,
                 "superclass_idx",
-                String.format(FORMAT_STRING_STRING, this.superclass_idx, this.get_superclass_jls(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.superclass_idx, this.get_superclass_jls(dexFile)),
                 "msg_class_def_item__superclass_idx",
                 Icons.Index);
         floatPos += Type_uint.LENGTH;
@@ -254,7 +223,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_uint.LENGTH,
                 "interfaces_off",
-                String.format(FORMAT_STRING_STRING, this.interfaces_off, this.get_interfaces_desc(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.interfaces_off, this.get_interfaces_desc(dexFile)),
                 "msg_class_def_item__interfaces_off",
                 Icons.Offset);
         floatPos += Type_uint.LENGTH;
@@ -276,7 +245,7 @@ public class class_def_item extends FileComponent implements GenerateTreeNodeDex
                 floatPos,
                 Type_uint.LENGTH,
                 "source_file_idx",
-                String.format(FORMAT_STRING_STRING, this.source_file_idx, this.get_source_file(dexFile)),
+                FORMAT_STRING_STRING.formatted(this.source_file_idx, this.get_source_file(dexFile)),
                 "msg_class_def_item__source_file_idx",
                 Icons.Index);
         floatPos += Type_uint.LENGTH;

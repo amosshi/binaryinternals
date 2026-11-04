@@ -12,14 +12,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorDEX implements PluginDescriptor{
-
-    public PluginDescriptorDEX() {
-    }
+/// @author Amos Shi
+public final class PluginDescriptorDEX implements PluginDescriptor {
 
     @Override
     public String getExtensionDescription() {

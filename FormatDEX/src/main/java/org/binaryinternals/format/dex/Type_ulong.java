@@ -8,38 +8,32 @@ package org.binaryinternals.format.dex;
 
 import java.math.BigInteger;
 
-/**
- * 64-bit unsigned int, little-endian.
- *
- * @author Amos Shi
- * @see
- * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
- * Dalvik Executable (DEX) format</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We need different Name convesins for readability
- * </pre>
- */
+/// 64-bit unsigned int, little-endian.
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
+/// Dalvik Executable (DEX) format</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We need different Name convesins for readability
+/// ```
 @SuppressWarnings("java:S101")
-public class Type_ulong {
+public final class Type_ulong {
 
-    /**
-     * Length of the type in bytes.
-     */
+    /// Length of the type in bytes.
     public static final int LENGTH = 8;
 
-    /**
-     * Value of the DEX <code>ulong</code>.
-     */
+    /// Value of the DEX `ulong`.
     public final BigInteger value;
 
-    protected Type_ulong(BigInteger bi) {
+    Type_ulong(BigInteger bi) {
         this.value = bi;
     }
 
     @Override
     public String toString() {
-        return String.format("0x%s | %s | %,d",
+        return "0x%s | %s | %,d".formatted(
                 this.value.toString(16).toUpperCase(),
                 this.value.toString(),
                 this.value.longValue());

@@ -8,8 +8,6 @@ package org.binaryinternals.format.dex;
 
 import java.nio.file.Path;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -26,93 +24,71 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 
-/**
- *
- * @author Amos Shi
- * @see
- * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
- * Dalvik Executable (DEX) format</a>
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+/// @see
+/// <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
+/// Dalvik Executable (DEX) format</a>
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S100", "java:S116", "java:S1104"})
 public final class DexFile extends FileFormat {
 
-    /**
-     * The constant NO_INDEX is used to indicate that an index value is absent.
-     * Embedded in {@link class_def_item} and {@link debug_info_item}
-     */
+    /// The constant NO_INDEX is used to indicate that an index value is absent.
+    /// Embedded in {@link class_def_item} and {@link debug_info_item}
     public static final long NO_INDEX = 0xffffffffL;
     private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
-    /**
-     * The constant array/string
-     * {@link #DEX_FILE_MAGIC1}|{@link #DEX_FILE_MAGIC2} is the list of bytes
-     * that must appear at the beginning of a <code>.dex</code> file in order
-     * for it to be recognized as such.
-     * <p>
-     * The value intentionally contains a <code>newline</code> ("\n" or 0x0a)
-     * and a <code>null</code> byte ("\0" or 0x00) in order to help in the
-     * detection of certain forms of corruption. The value also encodes a format
-     * version number as three decimal digits, which is expected to increase
-     * monotonically over time as the format evolves.
-     * </p>
-     */
+    /// The constant array/string
+    /// {@link #DEX_FILE_MAGIC1}|{@link #DEX_FILE_MAGIC2} is the list of bytes
+    /// that must appear at the beginning of a `.dex` file in order
+    /// for it to be recognized as such.
+    ///
+    /// The value intentionally contains a `newline` ("\n" or 0x0a)
+    /// and a `null` byte ("\0" or 0x00) in order to help in the
+    /// detection of certain forms of corruption. The value also encodes a format
+    /// version number as three decimal digits, which is expected to increase
+    /// monotonically over time as the format evolves.
     @SuppressWarnings("java:S2386")
-    static final byte[] DEX_FILE_MAGIC1 = new byte[]{'d', 'e', 'x', '\n'};
+    static final byte[] DEX_FILE_MAGIC1 = {'d', 'e', 'x', '\n'};
     @SuppressWarnings("java:S2386")
-    static final byte[] DEX_FILE_MAGIC2 = new byte[]{'0', '3', '5', '\0'};
+    static final byte[] DEX_FILE_MAGIC2 = {'0', '3', '5', '\0'};
 
-    /**
-     * Magic value part 1.
-     */
+    /// Magic value part 1.
     public final byte[] magic1;
-    /**
-     * Magic value part 2.
-     */
+    /// Magic value part 2.
     public final byte[] magic2;
 
-    /**
-     * The file header.
-     */
+    /// The file header.
     public final header_item header;
-    /**
-     * String identifiers list, or <code>null</code>.
-     */
+    /// String identifiers list, or `null`.
     public final string_id_item[] string_ids;
     public final type_id_item[] type_ids;
     public final proto_id_item[] proto_ids;
     public final field_id_item[] field_ids;
     public final method_id_item[] method_ids;
     public final class_def_item[] class_defs;
-    /**
-     * The parsed file components.
-     */
+    /// The parsed file components.
     public final SortedMap<Long, FileComponent> data = new TreeMap<>();
     public Type_ubyte[] link_data;
 
-    /**
-     * <pre>
-     * java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
-     * </pre>
-     *
-     * @param file Input file
-     * @throws IOException Read file failed
-     * @throws FileFormatException Invalid file format
-     */
+    /// ```
+    /// java:S3776 - Cognitive Complexity of methods should not be too high - We need this logic together
+    /// ```
+    ///
+    /// @param file Input file
+    /// @throws IOException Read file failed
+    /// @throws FileFormatException Invalid file format
     @SuppressWarnings("java:S3776")
     public DexFile(final Path file) throws IOException {
         super(file);
 
         // Check the file signature
-        this.magic1 = new byte[DEX_FILE_MAGIC1.length];
-        this.magic2 = new byte[DEX_FILE_MAGIC2.length];
-        System.arraycopy(super.fileByteArray, 0, magic1, 0, DEX_FILE_MAGIC1.length);
-        System.arraycopy(super.fileByteArray, 4, magic2, 0, DEX_FILE_MAGIC2.length);
+        this.magic1 = Arrays.copyOfRange(super.fileByteArray, 0, DEX_FILE_MAGIC1.length);
+        this.magic2 = Arrays.copyOfRange(super.fileByteArray, DEX_FILE_MAGIC1.length, DEX_FILE_MAGIC1.length + DEX_FILE_MAGIC2.length);
 
         if (!Arrays.equals(DEX_FILE_MAGIC1, magic1)
                 || magic2[DEX_FILE_MAGIC2.length - 1] != DEX_FILE_MAGIC2[DEX_FILE_MAGIC2.length - 1]) {
@@ -148,7 +124,7 @@ public final class DexFile extends FileFormat {
         }
 
         PosDataInputStreamDex stream = new PosDataInputStreamDex(new PosByteArrayInputStream(super.fileByteArray), endian);
-        SortedMap<Long, Class<?>> todoData = new TreeMap<>();
+        SortedMap<Long, DataParser> todoData = new TreeMap<>();
 
         // Header
         stream.skipNBytes(DEX_FILE_MAGIC1.length);
@@ -163,7 +139,7 @@ public final class DexFile extends FileFormat {
             this.string_ids = new string_id_item[this.header.string_ids_size.intValue()];
             for (int i = 0; i < this.string_ids.length; i++) {
                 this.string_ids[i] = new string_id_item(stream);
-                todoData.put(this.string_ids[i].string_data_off.value, string_data_item.class);
+                todoData.put(this.string_ids[i].string_data_off.value, (in, _) -> new string_data_item(in));
             }
         }
 
@@ -187,7 +163,7 @@ public final class DexFile extends FileFormat {
             for (int i = 0; i < this.proto_ids.length; i++) {
                 this.proto_ids[i] = new proto_id_item(stream);
                 if (this.proto_ids[i].parameters_off.value != 0) {
-                    todoData.put(this.proto_ids[i].parameters_off.value, type_list.class);
+                    todoData.put(this.proto_ids[i].parameters_off.value, (in, _) -> new type_list(in));
                 }
             }
         }
@@ -224,46 +200,44 @@ public final class DexFile extends FileFormat {
                 this.class_defs[i] = new class_def_item(stream, this);
 
                 if (this.class_defs[i].interfaces_off.value != 0) {
-                    todoData.put(this.class_defs[i].interfaces_off.value, type_list.class);
+                    todoData.put(this.class_defs[i].interfaces_off.value, (in, _) -> new type_list(in));
                 }
                 if (this.class_defs[i].annotations_off.value != 0) {
-                    todoData.put(this.class_defs[i].annotations_off.value, annotations_directory_item.class);
+                    todoData.put(this.class_defs[i].annotations_off.value, annotations_directory_item::new);
                 }
                 if (this.class_defs[i].class_data_off.value != 0) {
-                    todoData.put(this.class_defs[i].class_data_off.value, class_data_item.class);
+                    todoData.put(this.class_defs[i].class_data_off.value, class_data_item::new);
                 }
                 if (this.class_defs[i].static_values_off.value != 0) {
-                    todoData.put(this.class_defs[i].static_values_off.value, encoded_array_item.class);
+                    todoData.put(this.class_defs[i].static_values_off.value, (in, _) -> new encoded_array_item(in));
                 }
             }
         }
 
         // data
-        for (Map.Entry<Long, Class<?>> todoItem : todoData.entrySet()) {
+        for (Map.Entry<Long, DataParser> todoItem : todoData.entrySet()) {
             this.parseData(todoItem.getKey(), todoItem.getValue(), stream);
         }
     }
 
-    void parseData(Long offset, Class<?> type, PosDataInputStreamDex stream) throws IOException{
+    /// Parse an item of the {@link #data} section at the current stream position.
+    @FunctionalInterface
+    interface DataParser {
+
+        FileComponent parse(PosDataInputStreamDex stream, DexFile dex) throws IOException;
+    }
+
+    void parseData(final long offset, final DataParser parser, final PosDataInputStreamDex stream) throws IOException {
         int breakPos = stream.getPos();
 
-        Constructor<?> cons = type.getDeclaredConstructors()[0];
-        stream.flyTo(offset.intValue());
+        stream.flyTo((int) offset);
         try {
-            switch(cons.getParameterCount()) {
-                case 1:
-                    this.data.put(offset, (FileComponent) cons.newInstance(stream));
-                    break;
-                case 2:
-                    this.data.put(offset, (FileComponent) cons.newInstance(stream, this));
-                    break;
-                default:
-                    throw new FileFormatException(String.format("Coding issue: no suitable constructor for type %s at 0x%X", type.getSimpleName(), offset.intValue()));
-            }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            String msg = String.format("newInstance failed for data item for type %s at 0x%X", type.getSimpleName(), offset.intValue());
+            this.data.put(offset, parser.parse(stream, this));
+        } catch (RuntimeException e) {
+            // For example an out of range offset or size in a corrupted file
+            String msg = "Invalid data item at 0x%X".formatted((int) offset);
             LOGGER.severe(msg);
-            throw new IOException(msg, e);
+            throw new FileFormatException(msg, e);
         }
 
         stream.flyTo(breakPos);
@@ -271,7 +245,7 @@ public final class DexFile extends FileFormat {
 
     static void check_uint(String fieldName, Type_uint uint, int streamPosition) throws FileFormatException {
         if (uint.value > Integer.MAX_VALUE) {
-            throw new FileFormatException(String.format("%s is too big cannot be handled here: %d, position 0x%X", fieldName, uint.value, streamPosition));
+            throw new FileFormatException("%s is too big cannot be handled here: %d, position 0x%X".formatted(fieldName, uint.value, streamPosition));
         }
     }
 
@@ -280,34 +254,27 @@ public final class DexFile extends FileFormat {
         return Optional.of(Icons.Dex);
     }
 
-    /**
-     * Get the underlying String value for a {@link #string_ids} item.
-     *
-     * @param index Index in the {@link #string_ids} array
-     * @return String value for the {@link #string_ids} item, or
-     * <code>null</code> for invalid index
-     */
+    /// Get the underlying String value for a {@link #string_ids} item.
+    ///
+    /// @param index Index in the {@link #string_ids} array
+    /// @return String value for the {@link #string_ids} item, or
+    /// `null` for invalid index
     public String get_string_ids_string(int index) {
         if (index < -1 || this.string_ids == null || index >= this.string_ids.length) {
             LOGGER.log(Level.WARNING, "Return null for invalid string_ids index={0}", index);
             return null;
         }
 
-        FileComponent fc = this.data.get(this.string_ids[index].string_data_off.value);
-        if (fc instanceof string_data_item) {
-            return ((string_data_item) fc).getString();
-        } else {
-            return null;
-        }
+        return this.data.get(this.string_ids[index].string_data_off.value) instanceof string_data_item item
+                ? item.getString()
+                : null;
     }
 
-    /**
-     * Get the underlying String value for a {@link #type_ids} item.
-     *
-     * @param index Index in the {@link #type_ids} array
-     * @return String value for the {@link #type_ids} item, or <code>null</code>
-     * for invalid index
-     */
+    /// Get the underlying String value for a {@link #type_ids} item.
+    ///
+    /// @param index Index in the {@link #type_ids} array
+    /// @return String value for the {@link #type_ids} item, or `null`
+    /// for invalid index
     public String get_type_ids_string(int index) {
         if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {
             LOGGER.log(Level.WARNING, "Return null for invalid type_ids index={0}", index);
@@ -324,6 +291,6 @@ public final class DexFile extends FileFormat {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        (new JTreeDexFile()).generateTreeNode(parentNode, this);
+        new JTreeDexFile().generateTreeNode(parentNode, this);
     }
 }

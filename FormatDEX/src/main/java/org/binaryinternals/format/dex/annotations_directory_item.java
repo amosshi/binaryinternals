@@ -13,18 +13,15 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class annotations_directory_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class annotations_directory_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     private static final String MSG_ANNOTATIONS_OFF = "annotations_off";
 
@@ -40,8 +37,8 @@ public class annotations_directory_item extends FileComponent implements Generat
         super.startPos = stream.getPos();
 
         this.class_annotations_off = stream.Dex_uint();
-        if ((this.class_annotations_off.value != 0) && (!dex.data.keySet().contains(this.class_annotations_off.value))) {
-            dex.parseData(this.class_annotations_off.value, annotation_set_item.class, stream);
+        if ((this.class_annotations_off.value != 0) && (!dex.data.containsKey(this.class_annotations_off.value))) {
+            dex.parseData(this.class_annotations_off.value, annotation_set_item::new, stream);
         }
 
         this.fields_size = stream.Dex_uint();
@@ -90,7 +87,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 floatPos,
                 Type_uint.LENGTH,
                 "class_annotations_off",
-                String.format(FORMAT_STRING_STRING, this.class_annotations_off, this.class_annotations_off),
+                FORMAT_STRING_STRING.formatted(this.class_annotations_off, this.class_annotations_off),
                 "msg_annotations_directory_item__class_annotations_off",
                 Icons.Offset);
         floatPos += Type_uint.LENGTH;
@@ -139,7 +136,7 @@ public class annotations_directory_item extends FileComponent implements Generat
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.field_annotations[0].getStartPos(),
                     fieldLen * field_annotation.LENGTH,
-                    String.format("field_annotations [%,d]", fieldLen),
+                    "field_annotations [%,d]".formatted(fieldLen),
                     Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__field_annotations")
             ));
@@ -150,7 +147,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("field_annotation [%,d]", i),
+                        "field_annotation [%,d]".formatted(i),
                         Icons.Annotations,
                         field_annotation.class.getSimpleName()
                 ));
@@ -164,7 +161,7 @@ public class annotations_directory_item extends FileComponent implements Generat
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.method_annotations[0].getStartPos(),
                     methodLen * method_annotation.LENGTH,
-                    String.format("method_annotations [%,d]", methodLen),
+                    "method_annotations [%,d]".formatted(methodLen),
                     Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__method_annotations")
             ));
@@ -175,7 +172,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("method_annotation [%,d]", i),
+                        "method_annotation [%,d]".formatted(i),
                         Icons.Annotations,
                         method_annotation.class.getSimpleName()
                 ));
@@ -189,7 +186,7 @@ public class annotations_directory_item extends FileComponent implements Generat
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.parameter_annotations[0].getStartPos(),
                     parameterLen * parameter_annotation.LENGTH,
-                    String.format("parameter_annotations [%,d]", parameterLen),
+                    "parameter_annotations [%,d]".formatted(parameterLen),
                     Icons.Annotations,
                     MESSAGES.getString("msg_annotations_directory_item__parameter_annotations")
             ));
@@ -200,7 +197,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("parameter_annotation [%,d]", i),
+                        "parameter_annotation [%,d]".formatted(i),
                         Icons.Annotations,
                         parameter_annotation.class.getSimpleName()
                 ));
@@ -210,7 +207,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
     }
 
-    public static class field_annotation extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class field_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
         public final Type_uint field_idx;
@@ -221,8 +218,8 @@ public class annotations_directory_item extends FileComponent implements Generat
 
             this.field_idx = stream.Dex_uint();
             this.annotations_off = stream.Dex_uint();
-            if (!dex.data.keySet().contains(this.annotations_off.value)) {
-                dex.parseData(this.annotations_off.value, annotation_set_item.class, stream);
+            if (!dex.data.containsKey(this.annotations_off.value)) {
+                dex.parseData(this.annotations_off.value, annotation_set_item::new, stream);
             }
 
             super.length = stream.getPos() - super.startPos;
@@ -237,7 +234,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     floatPos,
                     Type_uint.LENGTH,
                     "field_idx",
-                    String.format(FORMAT_STRING_STRING, this.field_idx, dexFile.field_ids[this.field_idx.intValue()].toString(dexFile)),
+                    FORMAT_STRING_STRING.formatted(this.field_idx, dexFile.field_ids[this.field_idx.intValue()].toString(dexFile)),
                     "msg_field_annotation__field_idx",
                     Icons.Index);
             floatPos += Type_uint.LENGTH;
@@ -263,7 +260,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
     }
 
-    public static class method_annotation extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class method_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
 
@@ -275,8 +272,8 @@ public class annotations_directory_item extends FileComponent implements Generat
 
             this.method_idx = stream.Dex_uint();
             this.annotations_off = stream.Dex_uint();
-            if (!dex.data.keySet().contains(this.annotations_off.value)) {
-                dex.parseData(this.annotations_off.value, annotation_set_item.class, stream);
+            if (!dex.data.containsKey(this.annotations_off.value)) {
+                dex.parseData(this.annotations_off.value, annotation_set_item::new, stream);
             }
 
             super.length = stream.getPos() - super.startPos;
@@ -291,7 +288,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     floatPos,
                     Type_uint.LENGTH,
                     "method_idx",
-                    String.format(FORMAT_STRING_STRING, this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
+                    FORMAT_STRING_STRING.formatted(this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
                     "msg_method_annotation__method_idx",
                     Icons.Index);
             floatPos += Type_uint.LENGTH;
@@ -317,7 +314,7 @@ public class annotations_directory_item extends FileComponent implements Generat
         }
     }
 
-    public static class parameter_annotation extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class parameter_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
 
@@ -328,8 +325,8 @@ public class annotations_directory_item extends FileComponent implements Generat
             super.startPos = stream.getPos();
             this.method_idx = stream.Dex_uint();
             this.annotations_off = stream.Dex_uint();
-            if (!dex.data.keySet().contains(this.annotations_off.value)) {
-                dex.parseData(this.annotations_off.value, annotation_set_ref_list.class, stream);
+            if (!dex.data.containsKey(this.annotations_off.value)) {
+                dex.parseData(this.annotations_off.value, annotation_set_ref_list::new, stream);
             }
 
             super.length = stream.getPos() - super.startPos;
@@ -344,7 +341,7 @@ public class annotations_directory_item extends FileComponent implements Generat
                     floatPos,
                     Type_uint.LENGTH,
                     "method_idx",
-                    String.format(FORMAT_STRING_STRING, this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
+                    FORMAT_STRING_STRING.formatted(this.method_idx, dexFile.method_ids[this.method_idx.intValue()].toString(dexFile)),
                     "msg_parameter_annotation__method_idx",
                     Icons.Index);
             floatPos += Type_uint.LENGTH;

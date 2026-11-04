@@ -16,18 +16,15 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class encoded_array extends FileComponent implements GenerateTreeNodeDexFile {
+public final class encoded_array extends FileComponent implements GenerateTreeNodeDexFile {
 
     private static final Logger LOGGER = Logger.getLogger(encoded_array.class.getName());
     public final Type_uleb128 size;
@@ -55,7 +52,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
 
     @Override
     public String toString() {
-        return String.format(FORMAT_STRING_STRING, this.getClass().getSimpleName(), size.toString());
+        return FORMAT_STRING_STRING.formatted(this.getClass().getSimpleName(), size.toString());
     }
 
     @Override
@@ -86,7 +83,7 @@ public class encoded_array extends FileComponent implements GenerateTreeNodeDexF
                     DefaultMutableTreeNode valueNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             value.getStartPos(),
                             value.getLength(),
-                            String.format("%s[%d] %s", value.getClass().getSimpleName(), i, value.toString()),
+                            "%s[%d] %s".formatted(value.getClass().getSimpleName(), i, value.toString()),
                             Icons.Data,
                             MESSAGES.getString("msg_encoded_value")
                     ));

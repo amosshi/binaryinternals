@@ -14,16 +14,13 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// ```
 @SuppressWarnings("java:S100")
-public class JTreeDexFile implements GenerateTreeNodeDexFile {
+public final class JTreeDexFile implements GenerateTreeNodeDexFile {
 
     private static final Logger LOGGER = Logger.getLogger(JTreeDexFile.class.getName());
 
@@ -82,7 +79,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 size * Type_uint.LENGTH,
-                String.format("string_ids [%,d]", size)));
+                "string_ids [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -90,7 +87,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("string_id_item[%,d] : %s", i, left(dexFile.get_string_ids_string(i)))
+                    "string_id_item[%,d] : %s".formatted(i, left(dexFile.get_string_ids_string(i)))
             ));
             node.add(itemNode);
             item.generateTreeNode(itemNode, dexFile);
@@ -108,7 +105,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 size * Type_uint.LENGTH,
-                String.format("type_ids [%,d]", size)));
+                "type_ids [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -116,7 +113,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("type_id_item[%,d] : %s", i, item.get_descriptor_jls(dexFile))
+                    "type_id_item[%,d] : %s".formatted(i, item.get_descriptor_jls(dexFile))
             ));
             node.add(itemNode);
             item.generateTreeNode(itemNode, dexFile);
@@ -133,7 +130,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.proto_ids_off.intValue(),
                 size * proto_id_item.ITEM_SIZE,
-                String.format("proto_ids [%,d]", size)));
+                "proto_ids [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -141,7 +138,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("proto_id_item[%,d] : %s", i, item.get_shorty(dexFile))));
+                    "proto_id_item[%,d] : %s".formatted(i, item.get_shorty(dexFile))));
             item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
         }
@@ -156,7 +153,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.field_ids_off.intValue(),
                 size * field_id_item.ITEM_SIZE,
-                String.format("field_ids [%,d]", size)));
+                "field_ids [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -164,7 +161,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     item.getStartPos(),
                     item.getLength(),
-                    String.format("field_id_item[%,d] : %s", i, item.toString(dexFile))));
+                    "field_id_item[%,d] : %s".formatted(i, item.toString(dexFile))));
             item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
         }
@@ -179,7 +176,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.method_ids_off.intValue(),
                 size * method_id_item.ITEM_SIZE,
-                String.format("method_ids [%,d]", size)));
+                "method_ids [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -188,7 +185,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     item.getLength(),
-                    String.format("method_id_item[%,d] : %s", i, item.toString(dexFile))));
+                    "method_id_item[%,d] : %s".formatted(i, item.toString(dexFile))));
             item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
         }
@@ -203,7 +200,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.class_defs_off.intValue(),
                 size * class_def_item.ITEM_SIZE,
-                String.format("class_defs [%,d]", size)));
+                "class_defs [%,d]".formatted(size)));
         parentNode.add(node);
 
         for (int i = 0; i < size; i++) {
@@ -212,7 +209,7 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     startPos,
                     item.getLength(),
-                    String.format("class_def_item[%,d] %s", i, item.get_class_jls(dexFile))));
+                    "class_def_item[%,d] %s".formatted(i, item.get_class_jls(dexFile))));
             item.generateTreeNode(itemNode, dexFile);
             node.add(itemNode);
         }
@@ -226,10 +223,10 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 dexFile.header.data_off.intValue(),
                 dexFile.header.data_size.intValue(),
-                String.format("data [%,d]", dexFile.data.size())));
+                "data [%,d]".formatted(dexFile.data.size())));
         parentNode.add(node);
 
-        dexFile.data.entrySet().stream().map(item -> item.getValue()).forEachOrdered(comp -> {
+        dexFile.data.values().forEach(comp -> {
             int startPos = comp.getStartPos();
 
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -238,13 +235,13 @@ public class JTreeDexFile implements GenerateTreeNodeDexFile {
                     Type_uint.toString(startPos) + " - " + comp.getClass().getSimpleName()));
             node.add(itemNode);
 
-            if (comp instanceof GenerateTreeNode) {
-                ((GenerateTreeNode) comp).generateTreeNode(itemNode);
-            } else if (comp instanceof GenerateTreeNodeDexFile) {
-                ((GenerateTreeNodeDexFile) comp).generateTreeNode(itemNode, dexFile);
+            if (comp instanceof GenerateTreeNode item) {
+                item.generateTreeNode(itemNode);
+            } else if (comp instanceof GenerateTreeNodeDexFile item) {
+                item.generateTreeNode(itemNode, dexFile);
             } else {
                 // This should never happen, or else it is a coding logic error
-                LOGGER.severe(String.format("FileComponent is not added to the tree: position=0x%X type=%s", comp.getStartPos(), comp.getClass().getName()));
+                LOGGER.severe("FileComponent is not added to the tree: position=0x%X type=%s".formatted(comp.getStartPos(), comp.getClass().getName()));
             }
         });
     }

@@ -6,36 +6,30 @@
  */
 package org.binaryinternals.format.dex;
 
-/**
- * 32-bit signed int, little-endian.
- *
- * @author Amos Shi
- * @see
- * <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
- * Dalvik Executable (DEX) format</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We need different Name convesins for readability
- * </pre>
- */
+/// 32-bit signed int, little-endian.
+///
+/// @author Amos Shi
+/// @see
+/// <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
+/// Dalvik Executable (DEX) format</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We need different Name convesins for readability
+/// ```
 @SuppressWarnings("java:S101")
-public class Type_int {
-    /**
-     * Length of the type in bytes.
-     */
+public final class Type_int {
+    /// Length of the type in bytes.
     public static final int LENGTH = 4;
 
-    /**
-     * Value of the DEX <code>int</code>.
-     */
+    /// Value of the DEX `int`.
     public final int value;
 
-    protected Type_int(int i) {
+    Type_int(int i) {
         this.value = i;
     }
 
     @Override
     public String toString() {
-        return String.format("0x%s | %,d", Integer.toHexString(this.value).toUpperCase(), this.value);
+        return "0x%s | %,d".formatted(Integer.toHexString(this.value).toUpperCase(), this.value);
     }
 }

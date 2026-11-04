@@ -14,32 +14,25 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from Dex Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from Dex Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class string_data_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class string_data_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * size of this string, in UTF-16 code units (which is the "string length"
-     * in many systems). That is, this is the decoded length of the string. (The
-     * encoded length is implied by the position of the 0 byte.)
-     */
-    public Type_uleb128 utf16_size;
+    /// size of this string, in UTF-16 code units (which is the "string length"
+    /// in many systems). That is, this is the decoded length of the string. (The
+    /// encoded length is implied by the position of the 0 byte.)
+    public final Type_uleb128 utf16_size;
 
-    /**
-     * a series of MUTF-8 code units (a.k.a. octets, a.k.a. bytes) followed by a
-     * byte of value 0. See "MUTF-8 (Modified UTF-8) Encoding" above for details
-     * and discussion about the data format.
-     */
-    public byte[] data;
+    /// a series of MUTF-8 code units (a.k.a. octets, a.k.a. bytes) followed by a
+    /// byte of value 0. See "MUTF-8 (Modified UTF-8) Encoding" above for details
+    /// and discussion about the data format.
+    public final byte[] data;
 
     string_data_item(PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
@@ -57,11 +50,9 @@ public class string_data_item extends FileComponent implements GenerateTreeNodeD
         super.length = stream.getPos() - super.startPos;
     }
 
-    /**
-     * Get the {@link #data} as a String, using platform's default charset.
-     *
-     * @return String for the content
-     */
+    /// Get the {@link #data} as a String, using platform's default charset.
+    ///
+    /// @return String for the content
     public String getString() {
         return (this.data == null) ? "" : new String(this.data, StandardCharsets.UTF_8);
     }

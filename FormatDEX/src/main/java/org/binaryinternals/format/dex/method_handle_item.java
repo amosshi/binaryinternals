@@ -12,42 +12,29 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class method_handle_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class method_handle_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * Item Size In Bytes.
-     *
-     * @see map_list.TypeCodes#TYPE_METHOD_HANDLE_ITEM
-     */
+    /// Item Size In Bytes.
+    ///
+    /// @see map_list.TypeCodes#TYPE_METHOD_HANDLE_ITEM
     public static final int ITEM_SIZE = 0x08;
 
-    /**
-     * type of the method handle.
-     */
+    /// type of the method handle.
     public final Type_ushort method_handle_type;
-    /**
-     * (unused).
-     */
+    /// (unused).
     public final Type_ushort unused_1;
-    /**
-     * Field or method id depending on whether the method handle type is an
-     * accessor or a method invoker.
-     */
+    /// Field or method id depending on whether the method handle type is an
+    /// accessor or a method invoker.
     public final Type_ushort field_or_method_id;
-    /**
-     * (unused).
-     */
+    /// (unused).
     public final Type_ushort unused_2;
 
     method_handle_item(PosDataInputStreamDex stream) throws IOException {

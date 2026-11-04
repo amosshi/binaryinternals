@@ -12,18 +12,15 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.format.dex.annotation_set_item.annotation_item;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class map_list extends FileComponent implements GenerateTreeNode {
+public final class map_list extends FileComponent implements GenerateTreeNode {
 
     public final Type_uint size;
     public final map_item[] list;
@@ -51,13 +48,11 @@ public class map_list extends FileComponent implements GenerateTreeNode {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public static class map_item extends FileComponent implements GenerateTreeNode {
+    public static final class map_item extends FileComponent implements GenerateTreeNode {
 
-        /**
-         * Item Size In Bytes.
-         *
-         * @see map_list.TypeCodes#TYPE_MAP_LIST
-         */
+        /// Item Size In Bytes.
+        ///
+        /// @see map_list.TypeCodes#TYPE_MAP_LIST
         public static final int ITEM_SIZE = 12;
 
         public final Type_ushort type;

@@ -13,18 +13,15 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class code_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class code_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_ushort registers_size;
     public final Type_ushort ins_size;
@@ -97,7 +94,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
     }
 
 
-    public static class try_item extends FileComponent implements GenerateTreeNode {
+    public static final class try_item extends FileComponent implements GenerateTreeNode {
 
         public final Type_uint start_addr;
         public final Type_ushort insn_count;
@@ -117,7 +114,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         }
     }
 
-    public static class encoded_catch_handler_list extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_catch_handler_list extends FileComponent implements GenerateTreeNode {
 
         public final Type_uleb128 size;
         public final encoded_catch_handler[] list;
@@ -142,7 +139,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         }
     }
 
-    public static class encoded_catch_handler extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_catch_handler extends FileComponent implements GenerateTreeNode {
 
         public final Type_sleb128 size;
         public final encoded_type_addr_pair[] handlers;
@@ -177,7 +174,7 @@ public class code_item extends FileComponent implements GenerateTreeNodeDexFile 
         }
     }
 
-    public static class encoded_type_addr_pair extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_type_addr_pair extends FileComponent implements GenerateTreeNode {
 
         public final Type_uleb128 type_idx;
         public final Type_uleb128 addr;

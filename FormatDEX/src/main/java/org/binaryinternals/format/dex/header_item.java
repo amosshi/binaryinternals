@@ -8,72 +8,55 @@ package org.binaryinternals.format.dex;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- * The <code>header_item</code> structure of the DEX file.
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// The `header_item` structure of the DEX file.
+///
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class header_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class header_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * @see map_list.TypeCodes#TYPE_HEADER_ITEM
-     */
+    /// @see map_list.TypeCodes#TYPE_HEADER_ITEM
     public static final int ITEM_SIZE = 0x70;
 
-    /**
-     * adler32 checksum of the rest of the file (everything but magic and this
-     * field); used to detect file corruption.
-     */
+    /// adler32 checksum of the rest of the file (everything but magic and this
+    /// field); used to detect file corruption.
     public final Type_uint checksum;
 
-    /**
-     * SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
-     * {@link #checksum}, and this field {@link #signature}); used to uniquely
-     * identify files.
-     */
+    /// SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
+    /// {@link #checksum}, and this field {@link #signature}); used to uniquely
+    /// identify files.
     public final Type_ubyte[] signature = new Type_ubyte[20];
 
-    /**
-     * size of the entire file (including the {@link header_item}), in bytes.
-     */
+    /// size of the entire file (including the {@link header_item}), in bytes.
     public final Type_uint file_size;
 
-    /**
-     * size of the header (this entire section), in bytes. This allows for at
-     * least a limited amount of backwards/forwards compatibility without
-     * invalidating the format.
-     */
+    /// size of the header (this entire section), in bytes. This allows for at
+    /// least a limited amount of backwards/forwards compatibility without
+    /// invalidating the format.
     public final Type_uint header_size = new Type_uint(0x70);
 
-    /**
-     * Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
-     * {@link Endian#REVERSE_ENDIAN_CONSTANT}.
-     */
+    /// Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
+    /// {@link Endian#REVERSE_ENDIAN_CONSTANT}.
     public final Type_uint endian_tag;
-    /**
-     * Size of the link section, or 0 if this file isn't statically linked.
-     */
+    /// Size of the link section, or 0 if this file isn't statically linked.
     public final Type_uint link_size;
-    /**
-     * Offset from the start of the file to the link section, or 0 if
-     * {@link #link_size} == 0. The offset, if non-zero, should be to an offset
-     * into the {@link DexFile#link_data} section. The format of the data
-     * pointed at is left unspecified by this document; this header field (and
-     * the previous) are left as hooks for use by runtime implementations.
-     */
+    /// Offset from the start of the file to the link section, or 0 if
+    /// {@link #link_size} == 0. The offset, if non-zero, should be to an offset
+    /// into the {@link DexFile#link_data} section. The format of the data
+    /// pointed at is left unspecified by this document; this header field (and
+    /// the previous) are left as hooks for use by runtime implementations.
     public final Type_uint link_off;
     public final Type_uint map_off;
     public final Type_uint string_ids_size;
@@ -206,29 +189,21 @@ public class header_item extends FileComponent implements GenerateTreeNodeDexFil
     }
 
 
-    /**
-     * The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the
-     * endianness of the file in which it is found. Although the standard .dex
-     * format is little-endian, implementations may choose to perform
-     * byte-swapping. Should an implementation come across a header whose
-     * endian_tag is {@link Endian#REVERSE_ENDIAN_CONSTANT} instead of
-     * {@link Endian#ENDIAN_CONSTANT}, it would know that the file has been
-     * byte-swapped from the expected form.
-     */
+    /// The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the
+    /// endianness of the file in which it is found. Although the standard .dex
+    /// format is little-endian, implementations may choose to perform
+    /// byte-swapping. Should an implementation come across a header whose
+    /// endian_tag is {@link Endian#REVERSE_ENDIAN_CONSTANT} instead of
+    /// {@link Endian#ENDIAN_CONSTANT}, it would know that the file has been
+    /// byte-swapped from the expected form.
     public enum Endian {
 
-        /**
-         * Little-endian, which is DEX standard.
-         */
+        /// Little-endian, which is DEX standard.
         ENDIAN_CONSTANT(0x12345678),
-        /**
-         * Big-endian.
-         */
+        /// Big-endian.
         REVERSE_ENDIAN_CONSTANT(0x78563412);
 
-        /**
-         * Internal value of the endianness.
-         */
+        /// Internal value of the endianness.
         public final int value;
         public final int byte1;
         public final int byte2;
@@ -243,12 +218,10 @@ public class header_item extends FileComponent implements GenerateTreeNodeDexFil
             this.byte4 = (i << 24) >> 24;
         }
 
-        /**
-         * Map to {@link ByteOrder}. The existing parser reads
-         * {@link #ENDIAN_CONSTANT} as {@link ByteOrder#BIG_ENDIAN}.
-         *
-         * @return the matching byte order
-         */
+        /// Map to {@link ByteOrder}. The existing parser reads
+        /// {@link #ENDIAN_CONSTANT} as {@link ByteOrder#BIG_ENDIAN}.
+        ///
+        /// @return the matching byte order
         public ByteOrder toByteOrder() {
             return this == ENDIAN_CONSTANT ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
         }
@@ -258,13 +231,11 @@ public class header_item extends FileComponent implements GenerateTreeNodeDexFil
         }
 
         public static String toString(int i) {
-            if (Endian.ENDIAN_CONSTANT.value == i) {
-                return Endian.ENDIAN_CONSTANT.name();
-            } else if (Endian.REVERSE_ENDIAN_CONSTANT.value == i) {
-                return Endian.REVERSE_ENDIAN_CONSTANT.name();
-            } else {
-                return "Un-recognized !!!";
-            }
+            return Arrays.stream(values())
+                    .filter(item -> item.value == i)
+                    .findFirst()
+                    .map(Endian::name)
+                    .orElse("Un-recognized !!!");
         }
     }
 }

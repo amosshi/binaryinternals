@@ -7,24 +7,22 @@
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class annotation_set_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class annotation_set_item extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uint size;
     public final annotation_off_item[] entries;
@@ -46,7 +44,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
 
     @Override
     public String toString() {
-        return String.format(FORMAT_STRING_STRING, this.getClass().getSimpleName(), this.size);
+        return FORMAT_STRING_STRING.formatted(this.getClass().getSimpleName(), this.size);
     }
 
     @Override
@@ -70,7 +68,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
         DefaultMutableTreeNode entriesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 annotation_off_item.LENGTH * this.entries.length,
-                String.format("entries [%d]", this.entries.length),
+                "entries [%d]".formatted(this.entries.length),
                 Icons.Data,
                 MESSAGES.getString("msg_annotation_set_item__entries")
         ));
@@ -82,7 +80,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
             DefaultMutableTreeNode offItemNode = addNode(entriesNode,
                     offItem.getStartPos(),
                     offItem.getLength(),
-                    String.format("%s[%d].annotation_off", annotation_off_item.class.getSimpleName(), i),
+                    "%s[%d].annotation_off".formatted(annotation_off_item.class.getSimpleName(), i),
                     offItem.annotation_off,
                     "msg_annotation_off_item__annotation_off",
                     Icons.Offset
@@ -101,7 +99,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
         }
     }
 
-    public static class annotation_off_item extends FileComponent {
+    public static final class annotation_off_item extends FileComponent {
 
         public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotation_off;
@@ -111,11 +109,11 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
             this.annotation_off = stream.Dex_uint();
             super.length = stream.getPos() - super.startPos;
 
-            dexFile.parseData(this.annotation_off.value, annotation_item.class, stream);
+            dexFile.parseData(this.annotation_off.value, (in, _) -> new annotation_item(in), stream);
         }
     }
 
-    public static class annotation_item extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class annotation_item extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_ubyte visibility;
         public final encoded_annotation annotation;
@@ -135,7 +133,7 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
                     floatPos,
                     Type_ubyte.LENGTH,
                     "size",
-                    String.format(FORMAT_STRING_STRING, this.visibility, Visibility.toString(this.visibility.value)),
+                    FORMAT_STRING_STRING.formatted(this.visibility, Visibility.toString(this.visibility.value)),
                     "msg_annotation_item__visibility", //
                     Icons.Data // TODO Icon to be changed
             );
@@ -167,17 +165,15 @@ public class annotation_set_item extends FileComponent implements GenerateTreeNo
 
             @Override
             public String toString() {
-                return String.format("%d - %s", this.value, this.description);
+                return "%d - %s".formatted(this.value, this.description);
             }
 
             public static String toString(int v) {
-                for (Visibility item : Visibility.values()) {
-                    if (item.value == v) {
-                        return item.toString();
-                    }
-                }
-
-                return String.format("%d - %s", v, MESSAGES.getString("msg_common_unrecognized"));
+                return Arrays.stream(values())
+                        .filter(item -> item.value == v)
+                        .findFirst()
+                        .map(Visibility::toString)
+                        .orElseGet(() -> "%d - %s".formatted(v, MESSAGES.getString("msg_common_unrecognized")));
             }
         }
     }

@@ -13,18 +13,15 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class annotation_set_ref_list extends FileComponent implements GenerateTreeNodeDexFile {
+public final class annotation_set_ref_list extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uint size;
     public final annotation_set_ref_item[] list;
@@ -47,7 +44,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
 
     @Override
     public String toString() {
-        return String.format(FORMAT_STRING_STRING, this.getClass().getSimpleName(), this.size);
+        return FORMAT_STRING_STRING.formatted(this.getClass().getSimpleName(), this.size);
     }
 
     @Override
@@ -71,7 +68,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
         DefaultMutableTreeNode listNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 annotation_set_ref_item.LENGTH * this.list.length,
-                String.format("list [%d]", this.list.length),
+                "list [%d]".formatted(this.list.length),
                 Icons.Data,
                 MESSAGES.getString("msg_annotation_set_ref_list__list")
         ));
@@ -83,7 +80,7 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
             DefaultMutableTreeNode refItemNode = addNode(listNode,
                     refItem.getStartPos(),
                     refItem.getLength(),
-                    String.format("%s[%d].annotations_off", annotation_set_ref_item.class.getSimpleName(), i),
+                    "%s[%d].annotations_off".formatted(annotation_set_ref_item.class.getSimpleName(), i),
                     refItem.annotations_off,
                     "msg_annotation_set_ref_item__annotations_off",
                     Icons.Offset
@@ -94,7 +91,6 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
             }
 
             FileComponent fc = dexFile.data.get(refItem.annotations_off.value);
-            //annotation_set_item item = (annotation_set_item)
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     fc.getStartPos(),
                     fc.getLength(),
@@ -103,13 +99,13 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
                     MESSAGES.getString("msg_annotation_set_item")
             ));
             refItemNode.add(itemNode);
-            if (fc instanceof GenerateTreeNodeDexFile) {
-                ((GenerateTreeNodeDexFile) fc).generateTreeNode(itemNode, dexFile);
+            if (fc instanceof GenerateTreeNodeDexFile item) {
+                item.generateTreeNode(itemNode, dexFile);
             }
         }
     }
 
-    public static class annotation_set_ref_item extends FileComponent {
+    public static final class annotation_set_ref_item extends FileComponent {
 
         public static final int LENGTH = Type_uint.LENGTH;
         public final Type_uint annotations_off;
@@ -117,8 +113,8 @@ public class annotation_set_ref_list extends FileComponent implements GenerateTr
         annotation_set_ref_item(PosDataInputStreamDex stream, DexFile dex) throws IOException {
             super.startPos = stream.getPos();
             this.annotations_off = stream.Dex_uint();
-            if ((this.annotations_off.value != 0) && (!dex.data.keySet().contains(this.annotations_off.value))) {
-                dex.parseData(this.annotations_off.value, annotation_set_item.class, stream);
+            if ((this.annotations_off.value != 0) && (!dex.data.containsKey(this.annotations_off.value))) {
+                dex.parseData(this.annotations_off.value, annotation_set_item::new, stream);
             }
             super.length = stream.getPos() - super.startPos;
         }

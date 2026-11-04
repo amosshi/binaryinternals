@@ -16,22 +16,19 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
-public class encoded_annotation extends FileComponent implements GenerateTreeNodeDexFile {
+public final class encoded_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uleb128 type_idx;
-    private String type_jls = null;
+    private String type_jls;
     public final Type_uleb128 size;
     public final annotation_element[] elements;
 
@@ -52,13 +49,11 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
         super.length = stream.getPos() - super.startPos;
     }
 
-    /**
-     * Get {@link #type_idx} name in Java Language Specification format.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return type name in JLS format
-     * @see #type_idx
-     */
+    /// Get {@link #type_idx} name in Java Language Specification format.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return type name in JLS format
+    /// @see #type_idx
     public String get_type_jls(DexFile dexFile) {
         if (this.type_jls == null) {
             this.type_jls = dexFile.type_ids[this.type_idx.value].get_descriptor_jls(dexFile);
@@ -67,7 +62,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
     }
 
     public String toString(DexFile dexFile) {
-        return String.format("%s type=%d | %s size=%d",
+        return "%s type=%d | %s size=%d".formatted(
                 this.getClass().getSimpleName(),
                 this.type_idx.value,
                 this.get_type_jls(dexFile),
@@ -82,7 +77,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                 floatPos,
                 this.type_idx.length,
                 "type_idx",
-                String.format(FORMAT_STRING_STRING, this.type_idx, dexFile.get_type_ids_string(this.type_idx.value)),
+                FORMAT_STRING_STRING.formatted(this.type_idx, dexFile.get_type_ids_string(this.type_idx.value)),
                 "msg_encoded_annotation__type_idx",
                 Icons.Index);
         floatPos += this.type_idx.length;
@@ -100,7 +95,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
             DefaultMutableTreeNode elementsNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     floatPos,
                     this.length - this.type_idx.length - this.size.length,
-                    String.format("elements [%d]", this.elements.length),
+                    "elements [%d]".formatted(this.elements.length),
                     Icons.Data,
                     MESSAGES.getString("msg_encoded_annotation__elements")
             ));
@@ -117,7 +112,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                 DefaultMutableTreeNode elementNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         element.getStartPos(),
                         element.getLength(),
-                        String.format("%s[%d]", annotation_element.class.getSimpleName(), i),
+                        "%s[%d]".formatted(annotation_element.class.getSimpleName(), i),
                         Icons.Data,
                         MESSAGES.getString("msg_encoded_annotation__elements")
                 ));
@@ -130,7 +125,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
 
     }
 
-    public static class annotation_element extends FileComponent implements GenerateTreeNodeDexFile {
+    public static final class annotation_element extends FileComponent implements GenerateTreeNodeDexFile {
         private static final Logger LOGGER = Logger.getLogger(annotation_element.class.getName());
         public final Type_uleb128 name_idx;
         public encoded_value value;
@@ -157,7 +152,7 @@ public class encoded_annotation extends FileComponent implements GenerateTreeNod
                     floatPos,
                     this.name_idx.length,
                     "name_idx",
-                    String.format(FORMAT_STRING_STRING, this.name_idx, dexFile.get_string_ids_string(this.name_idx.value)),
+                    FORMAT_STRING_STRING.formatted(this.name_idx, dexFile.get_string_ids_string(this.name_idx.value)),
                     "msg_annotation_element__name_idx",
                     Icons.Index);
             floatPos += this.name_idx.length;

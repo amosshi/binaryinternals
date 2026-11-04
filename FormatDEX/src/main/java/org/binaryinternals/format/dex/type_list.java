@@ -7,26 +7,23 @@
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
- * java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We respect the name from DEX spec instead
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from DEX Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
-public class type_list extends FileComponent implements GenerateTreeNodeDexFile {
+public final class type_list extends FileComponent implements GenerateTreeNodeDexFile {
 
     public final Type_uint size;
     public final type_item[] list;
@@ -67,7 +64,7 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
                 addNode(parentNode,
                         item.getStartPos(),
                         item.getLength(),
-                        String.format("type_item[%d].type_idx", i),
+                        "type_item[%d].type_idx".formatted(i),
                         item.get_type_jls((DexFile)dexFile),
                         "msg_type_item__type_idx",
                         Icons.Index
@@ -76,39 +73,31 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
         }
     }
 
-    /**
-     * String format of current {@link type_list}.
-     *
-     * @param dexFile Current {@link DexFile}
-     * @return String format of type list
-     */
+    /// String format of current {@link type_list}.
+    ///
+    /// @param dexFile Current {@link DexFile}
+    /// @return String format of type list
     public String toString(DexFile dexFile) {
         if (this.size.value < 1) {
             return "";
         } else {
-            List<String> items = new ArrayList<>();
-            for (type_item item : this.list) {
-                items.add(item.get_type_jls(dexFile));
-            }
-            return String.join(", ", items);
+            return Arrays.stream(this.list)
+                    .map(item -> item.get_type_jls(dexFile))
+                    .collect(Collectors.joining(", "));
         }
     }
 
-    /**
-     * Elements of the {@link type_list}.
-     */
-    public static class type_item extends FileComponent {
+    /// Elements of the {@link type_list}.
+    public static final class type_item extends FileComponent {
 
-        /**
-         * Item Size In Bytes.
-         *
-         * @see map_list.TypeCodes#TYPE_TYPE_LIST
-         */
+        /// Item Size In Bytes.
+        ///
+        /// @see map_list.TypeCodes#TYPE_TYPE_LIST
         public static final int ITEM_SIZE = 2;
 
         public final Type_ushort type_idx;
-        private String type = null;
-        private String type_jls = null;
+        private String type;
+        private String type_jls;
 
         type_item(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
@@ -116,13 +105,11 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
             super.length = stream.getPos() - super.startPos;
         }
 
-        /**
-         * Get {@link #type} text.
-         *
-         * @param dexFile Current {@link DexFile}
-         * @return {@link #type} text
-         * @see #type
-         */
+        /// Get {@link #type} text.
+        ///
+        /// @param dexFile Current {@link DexFile}
+        /// @return {@link #type} text
+        /// @see #type
         public String get_type(DexFile dexFile) {
             if (this.type == null) {
                 this.type = dexFile.get_type_ids_string(type_idx.value);
@@ -130,13 +117,11 @@ public class type_list extends FileComponent implements GenerateTreeNodeDexFile 
             return this.type;
         }
 
-        /**
-         * Get {@link #type} text in Java Language Specification format.
-         *
-         * @param dexFile Current {@link DexFile}
-         * @return {@link #type} parse result for JLS format
-         * @see #type
-         */
+        /// Get {@link #type} text in Java Language Specification format.
+        ///
+        /// @param dexFile Current {@link DexFile}
+        /// @return {@link #type} parse result for JLS format
+        /// @see #type
         public String get_type_jls(DexFile dexFile) {
             if (this.type_jls == null) {
                 this.type_jls = dexFile.type_ids[type_idx.value].get_descriptor_jls(dexFile);

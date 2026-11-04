@@ -14,37 +14,28 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S100 - Method names should comply with a naming convention --- We use different naming convention for better readablity
- * java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S100 - Method names should comply with a naming convention --- We use different naming convention for better readablity
+/// java:S1110 - Redundant parenthesis --- Redundant parenthesis is needed for readability
+/// ```
 @SuppressWarnings({"java:S100", "java:S1110"})
-public class PosDataInputStreamDex extends PosDataInputStream {
+public final class PosDataInputStreamDex extends PosDataInputStream {
 
-    /**
-     * Full Byte length: 3.
-     */
+    /// Full Byte length: 3.
     private static final int BYTE_LENGTH_3 = 3;
     private static final int BYTE_LENGTH_5 = 5;
     private static final int BYTE_LENGTH_6 = 6;
     private static final int BYTE_LENGTH_7 = 7;
 
-    /**
-     * Byte position: 6.
-     */
+    /// Byte position: 6.
     private static final int BYTE_POSITION_5 = 5;
 
-    /**
-     * Endian of the {@link DexFile}. The default value is little-endian
-     * {@link header_item.Endian#ENDIAN_CONSTANT}, as the DEX format
-     * specification said.
-     */
-    protected final header_item.Endian endian;
+    /// Endian of the {@link DexFile}. The default value is little-endian
+    /// {@link header_item.Endian#ENDIAN_CONSTANT}, as the DEX format
+    /// specification said.
+    private final header_item.Endian endian;
 
     private final ByteOrder byteOrder;
 
@@ -60,62 +51,50 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         this.byteOrder = e.toByteOrder();
     }
 
-    /**
-     * Read a {@link Type_byte} from the input stream.
-     *
-     * @return a {@link Type_byte}
-     * @throws IOException I/O error
-     */
+    /// Read a {@link Type_byte} from the input stream.
+    ///
+    /// @return a {@link Type_byte}
+    /// @throws IOException I/O error
     public Type_byte Dex_byte() throws IOException {
         return new Type_byte(this.readByte());
     }
 
-    /**
-     * Read a {@link Type_ubyte} from the input stream.
-     *
-     * @return a {@link Type_ubyte}
-     * @throws IOException I/O error
-     */
+    /// Read a {@link Type_ubyte} from the input stream.
+    ///
+    /// @return a {@link Type_ubyte}
+    /// @throws IOException I/O error
     public Type_ubyte Dex_ubyte() throws IOException {
         return new Type_ubyte(this.readUnsignedByte());
     }
 
-    /**
-     * Read a {@link Type_short} from the input stream.
-     *
-     * @return a {@link Type_short}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_short} from the input stream.
+    ///
+    /// @return a {@link Type_short}
+    /// @throws IOException I/O Error
     public Type_short Dex_short() throws IOException {
         return new Type_short(this.readShort(this.byteOrder));
     }
 
-    /**
-     * Read a {@link Type_ushort} from the input stream.
-     *
-     * @return a {@link Type_ushort}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_ushort} from the input stream.
+    ///
+    /// @return a {@link Type_ushort}
+    /// @throws IOException I/O Error
     public Type_ushort Dex_ushort() throws IOException {
         return new Type_ushort(this.readUnsignedShort(this.byteOrder));
     }
 
-    /**
-     * Read a {@link Type_int} from the input stream.
-     *
-     * @return a {@link Type_int}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_int} from the input stream.
+    ///
+    /// @return a {@link Type_int}
+    /// @throws IOException I/O Error
     public Type_int Dex_int() throws IOException {
         return new Type_int(this.readInt(this.byteOrder));
     }
 
-    /**
-     * Read a 3-byte {@link Type_int} from the input stream.
-     *
-     * @return a {@link Type_int}
-     * @throws IOException I/O Error
-     */
+    /// Read a 3-byte {@link Type_int} from the input stream.
+    ///
+    /// @return a {@link Type_int}
+    /// @throws IOException I/O Error
     public Type_int Dex_int3() throws IOException {
         if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_int(this.readInt3());
@@ -124,90 +103,62 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         }
     }
 
-    /**
-     * Read a {@link Type_uint} from the input stream.
-     *
-     * @return a {@link Type_uint}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_uint} from the input stream.
+    ///
+    /// @return a {@link Type_uint}
+    /// @throws IOException I/O Error
     public Type_uint Dex_uint() throws IOException {
         return new Type_uint(this.readUnsignedInt(this.byteOrder));
     }
 
-    /**
-     * Read a {@link Type_uint} from the input stream for only 3 bytes.
-     *
-     * @return a {@link Type_uint}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_uint} from the input stream for only 3 bytes.
+    ///
+    /// @return a {@link Type_uint}
+    /// @throws IOException I/O Error
     public Type_uint Dex_uint3() throws IOException {
-        if (this.endian.value == header_item.Endian.ENDIAN_CONSTANT.value) {
+        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
             return new Type_uint(this.readUnsignedInt3());
         } else {
             return new Type_uint(this.readUnsignedInt3InLittleEndian());
         }
     }
 
-    /**
-     * Read a {@link Type_long} from the input stream.
-     *
-     * @return a {@link Type_long}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_long} from the input stream.
+    ///
+    /// @return a {@link Type_long}
+    /// @throws IOException I/O Error
     public Type_long Dex_long() throws IOException {
         return new Type_long(this.readLong(this.byteOrder));
     }
 
-    /**
-     * Read a 5/6/7-byte {@link Type_long} from the input stream.
-     *
-     * @param length Dynamic long length value: 5, 6, or 7
-     * @return a {@link Type_long}
-     * @throws IOException I/O Error
-     */
+    /// Read a 5/6/7-byte {@link Type_long} from the input stream.
+    ///
+    /// @param length Dynamic long length value: 5, 6, or 7
+    /// @return a {@link Type_long}
+    /// @throws IOException I/O Error
     public Type_long Dex_long(int length) throws IOException {
-        if (this.endian == header_item.Endian.ENDIAN_CONSTANT) {
-            switch (length) {
-                case 5:
-                    return new Type_long(this.readLong5());
-                case 6:
-                    return new Type_long(this.readLong6());
-                case 7:
-                    return new Type_long(this.readLong7());
-                default:
-            }
-        } else {
-            switch (length) {
-                case 5:
-                    return new Type_long(this.readLong5InLittleEndian());
-                case 6:
-                    return new Type_long(this.readLong6InLittleEndian());
-                case 7:
-                    return new Type_long(this.readLong7InLittleEndian());
-                default:
-            }
-        }
-
-        throw new IllegalArgumentException(String.format("Unexpected long value length: %d", length));
+        final boolean constant = this.endian == header_item.Endian.ENDIAN_CONSTANT;
+        return new Type_long(switch (length) {
+            case 5 -> constant ? this.readLong5() : this.readLong5InLittleEndian();
+            case 6 -> constant ? this.readLong6() : this.readLong6InLittleEndian();
+            case 7 -> constant ? this.readLong7() : this.readLong7InLittleEndian();
+            default -> throw new IllegalArgumentException("Unexpected long value length: %d".formatted(length));
+        });
     }
 
-    /**
-     * Read a {@link Type_ulong} from the input stream.
-     *
-     * @return a {@link Type_ulong}
-     * @throws IOException I/O Error
-     */
+    /// Read a {@link Type_ulong} from the input stream.
+    ///
+    /// @return a {@link Type_ulong}
+    /// @throws IOException I/O Error
     public Type_ulong Dex_ulong() throws IOException {
         return new Type_ulong(this.readUnsignedLong(this.byteOrder));
     }
 
-    /**
-     * Read a {@link Type_sleb128} from the input stream.
-     *
-     * @throws IOException I/O Error
-     * @throws FileFormatException Invalid LEB128 format
-     * @return a {@link Type_sleb128}
-     */
+    /// Read a {@link Type_sleb128} from the input stream.
+    ///
+    /// @throws IOException I/O Error
+    /// @throws FileFormatException Invalid LEB128 format
+    /// @return a {@link Type_sleb128}
     public Type_sleb128 Dex_sleb128() throws IOException {
         int startPos = super.getPos();
         int result = 0;
@@ -233,13 +184,11 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         return new Type_sleb128(result, super.getPos() - startPos);
     }
 
-    /**
-     * Read a {@link Type_uleb128} from the input stream.
-     *
-     * @throws IOException I/O Error
-     * @throws FileFormatException Invalid LEB128 format
-     * @return a {@link Type_uleb128}
-     */
+    /// Read a {@link Type_uleb128} from the input stream.
+    ///
+    /// @throws IOException I/O Error
+    /// @throws FileFormatException Invalid LEB128 format
+    /// @return a {@link Type_uleb128}
     public Type_uleb128 Dex_uleb128() throws IOException {
         int startPos = super.getPos();
         int result = 0;
@@ -259,45 +208,39 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         return new Type_uleb128(result, super.getPos() - startPos);
     }
 
-    /**
-     * Read a {@link Type_uleb128p1} from the input stream.
-     *
-     * @throws IOException I/O Error
-     * @throws FileFormatException Invalid LEB128 format
-     * @return a {@link Type_uleb128p1}
-     */
+    /// Read a {@link Type_uleb128p1} from the input stream.
+    ///
+    /// @throws IOException I/O Error
+    /// @throws FileFormatException Invalid LEB128 format
+    /// @return a {@link Type_uleb128p1}
     public Type_uleb128p1 Dex_uleb128p1() throws IOException {
         Type_uleb128 uleb128 = this.Dex_uleb128();
         return new Type_uleb128p1(uleb128.value - 1, uleb128.length);
     }
 
-    public Double readDouble(int length) throws IOException{
-        System.out.println(this.getClass().getSimpleName() + " VALUE_DOUBLE value_arg " + (length - 1) + " at 0x" + Integer.toHexString(this.getPos())  + " - to implment");
-
-        byte[] raw = new byte[length];
-        int rb = this.read(raw);
-        if (rb != length) {
-            throw new IOException(String.format("Cannot read enough bytes for double. expected=%d readbytes=%d", length, rb));
-        }
-
+    /// Skip a `double` value.
+    /// TODO Not implemented, the value is not read.
+    ///
+    /// @param length Length of the value in bytes
+    /// @return {@link Double#MAX_VALUE} as a place holder
+    /// @throws IOException I/O Error
+    public double readDouble(int length) throws IOException {
+        this.readFully(new byte[length]);
         return Double.MAX_VALUE;
     }
 
-    public Float readFloat(int length) throws IOException{
-        System.out.println(this.getClass().getSimpleName() + " VALUE_FLOAT value_arg " + (length -1) + " at 0x" + Integer.toHexString(this.getPos())  + " - to implment");
-
-        byte[] raw = new byte[length];
-        int rb = this.read(raw);
-        if (rb != length) {
-            throw new IOException(String.format("Cannot read enough bytes for float. expected=%d readbytes=%d", length, rb));
-        }
-
+    /// Skip a `float` value.
+    /// TODO Not implemented, the value is not read.
+    ///
+    /// @param length Length of the value in bytes
+    /// @return {@link Float#MIN_VALUE} as a place holder
+    /// @throws IOException I/O Error
+    public float readFloat(int length) throws IOException {
+        this.readFully(new byte[length]);
         return Float.MIN_VALUE;
     }
 
-    /**
-     * Read 3-byte int.
-     */
+    /// Read 3-byte int.
     private int readInt3() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
@@ -307,16 +250,13 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         }
 
         if ((ch3 & 0x80) > 0) {
-            System.out.println("TODO verify - 3-byte int test case at 0x" + Integer.toHexString(this.getPos()) + " ----------------------- readInt3 ----");
             return 0xFF000000 | (ch1 << SHIFT_16) | (ch2 << SHIFT_8) | (ch3);
         } else {
             return (ch1 << SHIFT_16) | (ch2 << SHIFT_8) | (ch3);
         }
     }
 
-    /**
-     * Read 3-byte int in little-endian.
-     */
+    /// Read 3-byte int in little-endian.
     private int readInt3InLittleEndian() throws IOException {
         int ch1 = this.in.read();
         int ch2 = this.in.read();
@@ -326,7 +266,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         }
 
         if ((ch3 & 0x80) > 0) {
-            // System.out.println("TODO verify via Java source code via minus value - 3-byte int test case at 0x" + Integer.toHexString(this.getPos()) + " ----------------------- readIntInLittleEndian3 ----");
             return 0xFF000000 | (ch3 << SHIFT_16) | (ch2 << SHIFT_8) | (ch1);
         } else {
             return (ch3 << SHIFT_16) | (ch2 << SHIFT_8) | (ch1);
@@ -338,7 +277,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 NEGATIVE----");
             return (0xFFFFFF0000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
@@ -346,7 +284,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
         } else {
-            System.out.println("TODO test case at  0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5 POSITIVE----");
             return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
@@ -360,7 +297,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
-            System.out.println("TODO test case at   0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong5InLittleEndian NEGATIVE----");
             return (0xFFFFFF0000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
@@ -381,7 +317,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6 NEGATIVE----");
             return (0xFFFF000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
@@ -390,7 +325,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_8)
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255)));
         } else {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6 POSITIVE----");
             return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_24)
@@ -404,7 +338,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong6InLittleEndian NEGATIVE----");
             return (0xFFFF000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
@@ -427,7 +360,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_6] & 0x80) > 0) {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong7 NEGATIVE----");
             return (0xFF00000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
@@ -437,7 +369,6 @@ public class PosDataInputStreamDex extends PosDataInputStream {
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_8)
                     | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255)));
         } else {
-            System.out.println("TODO test case at 0x" + Integer.toHexString(this.getPos()) + " ------------------- to verify ---- readLong7 POSITIVE----");
             return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_32)
@@ -471,9 +402,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
         }
     }
 
-    /**
-     * Read 3-byte unsigned int.
-     */
+    /// Read 3-byte unsigned int.
     private long readUnsignedInt3() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_8];
 
@@ -494,9 +423,7 @@ public class PosDataInputStreamDex extends PosDataInputStream {
                 + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
     }
 
-    /**
-     * Read 3-byte unsigned int in little-endian.
-     */
+    /// Read 3-byte unsigned int in little-endian.
     private long readUnsignedInt3InLittleEndian() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_8];
 

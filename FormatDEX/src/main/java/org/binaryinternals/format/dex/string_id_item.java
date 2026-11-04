@@ -13,30 +13,23 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- *
- * @author Amos Shi
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from Dex Spec instead
- * java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
- * java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
- * </pre>
- */
+/// @author Amos Shi
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from Dex Spec instead
+/// java:S116 - Field names should comply with a naming convention --- We respect the DEX spec name instead
+/// java:S1104 - Class variable fields should not have public accessibility --- No, we like the simplified final value manner
+/// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
-public class string_id_item extends FileComponent implements GenerateTreeNodeDexFile {
+public final class string_id_item extends FileComponent implements GenerateTreeNodeDexFile {
 
-    /**
-     * @see map_list.TypeCodes#TYPE_STRING_ID_ITEM
-     */
+    /// @see map_list.TypeCodes#TYPE_STRING_ID_ITEM
     public static final int ITEM_SIZE = 0x04;
 
-    /**
-     * offset from the start of the file to the string data for this item. The
-     * offset should be to a location in the data section, and the data should
-     * be in the format specified by "string_data_item" below. There is no
-     * alignment requirement for the offset.
-     */
+    /// offset from the start of the file to the string data for this item. The
+    /// offset should be to a location in the data section, and the data should
+    /// be in the format specified by "string_data_item" below. There is no
+    /// alignment requirement for the offset.
     public final Type_uint string_data_off;
 
     string_id_item(PosDataInputStreamDex stream) throws IOException {
