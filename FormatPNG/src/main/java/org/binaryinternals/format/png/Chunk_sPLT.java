@@ -47,7 +47,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public final class Chunk_sPLT extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "sPLT";
-    /// Size of [SuggestedPaletteEntry#Frequency()].
+    /// Size of [SuggestedPaletteEntry#frequency()].
     private static final int FREQUENCY_SIZE = 2;
 
     /// The palette name can be any convenient name for referring to the palette
@@ -154,41 +154,41 @@ public final class Chunk_sPLT extends Chunk {
             entryNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     sampleSize,
-                    "Red = %03d".formatted(entry.Red()))));
+                    "Red = %03d".formatted(entry.red()))));
             entryNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + sampleSize,
                     sampleSize,
-                    "Green = %03d".formatted(entry.Green()))));
+                    "Green = %03d".formatted(entry.green()))));
             entryNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 2 * sampleSize,
                     sampleSize,
-                    "Blue = %03d".formatted(entry.Blue()))));
+                    "Blue = %03d".formatted(entry.blue()))));
             entryNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 3 * sampleSize,
                     sampleSize,
-                    "Alpha = %03d".formatted(entry.Alpha()))));
+                    "Alpha = %03d".formatted(entry.alpha()))));
             entryNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 4 * sampleSize,
                     FREQUENCY_SIZE,
-                    "Frequency = %03d".formatted(entry.Frequency()))));
+                    "Frequency = %03d".formatted(entry.frequency()))));
             start += entryLength;
         }
     }
 
     /// One suggested palette entry.
     ///
-    /// @param Red The red, green, blue, and alpha samples are either one or two
+    /// @param red The red, green, blue, and alpha samples are either one or two
     ///        bytes each, depending on the `sPLT` sample depth, regardless of the
     ///        image bit depth.
-    /// @param Green Refer to `Red`.
-    /// @param Blue Refer to `Red`.
-    /// @param Alpha The color samples are not premultiplied by alpha, nor are
+    /// @param green Refer to `red`.
+    /// @param blue Refer to `red`.
+    /// @param alpha The color samples are not premultiplied by alpha, nor are
     ///        they precomposited against any background. An alpha value of 0
     ///        means fully transparent, while an alpha value of 255 (when the
     ///        `sPLT` sample depth is 8) or 65535 (when the `sPLT` sample depth is
     ///        16) means fully opaque. The palette samples have the same gamma and
     ///        chromaticity values as those of the PNG image.
-    /// @param Frequency Each frequency value is proportional to the fraction of
+    /// @param frequency Each frequency value is proportional to the fraction of
     ///        pixels in the image that are closest to that palette entry in RGBA
     ///        space, before the image has been composited against any
     ///        background. The exact scale factor is chosen by the encoder, but
@@ -200,13 +200,13 @@ public final class Chunk_sPLT extends Chunk {
     ///        is rarely if ever used. But when all of the frequencies are zero,
     ///        they are meaningless (nothing may be inferred about the actual
     ///        frequencies of the colors).
-    public record SuggestedPaletteEntry(int Red, int Green, int Blue, int Alpha, int Frequency) {
+    public record SuggestedPaletteEntry(int red, int green, int blue, int alpha, int frequency) {
 
         @Override
         public String toString() {
             return "RGB: (%03d, %03d, %03d), Alpha = %03d, Frequency = %03d".formatted(
-                    this.Red, this.Green, this.Blue,
-                    this.Alpha, this.Frequency);
+                    this.red, this.green, this.blue,
+                    this.alpha, this.frequency);
         }
     }
 }

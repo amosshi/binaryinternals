@@ -465,12 +465,12 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
-    /// @param Red The xyz coordinates of red endpoint.
-    /// @param Green The xyz coordinates of green endpoint.
-    /// @param Blue The xyz coordinates of blue endpoint.
+    /// @param red The xyz coordinates of red endpoint.
+    /// @param green The xyz coordinates of green endpoint.
+    /// @param blue The xyz coordinates of blue endpoint.
     /// @see <a href="http://msdn.microsoft.com/en-us/library/dd371833%28v=VS.85%29.aspx">CIEXYZTRIPLE Structure</a>
     @SuppressWarnings("PublicInnerClass")
-    public record CIEXYZTRIPLE(CIEXYZ Red, CIEXYZ Green, CIEXYZ Blue) {
+    public record CIEXYZTRIPLE(CIEXYZ red, CIEXYZ green, CIEXYZ blue) {
 
         public static final int SIZE = 36;
 

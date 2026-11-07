@@ -65,30 +65,30 @@ public final class Chunk_PLTE extends Chunk {
             final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     3,
-                    "Palette entry [%d] = [%03d, %03d, %03d]".formatted(i, entry.Red(), entry.Green(), entry.Blue())));
+                    "Palette entry [%d] = [%03d, %03d, %03d]".formatted(i, entry.red(), entry.green(), entry.blue())));
             parent.add(node);
 
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     1,
-                    "Red = %03d".formatted(entry.Red()))));
+                    "Red = %03d".formatted(entry.red()))));
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 1,
                     1,
-                    "Green = %03d".formatted(entry.Green()))));
+                    "Green = %03d".formatted(entry.green()))));
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 2,
                     1,
-                    "Blue = %03d".formatted(entry.Blue()))));
+                    "Blue = %03d".formatted(entry.blue()))));
             start += 3;
         }
     }
 
     /// One palette entry.
     ///
-    /// @param Red   Red, 0 = black, 255 = red
-    /// @param Green Green, 0 = black, 255 = green
-    /// @param Blue  Blue, 0 = black, 255 = blue
-    public record PaletteEntry(int Red, int Green, int Blue) {
+    /// @param red   Red, 0 = black, 255 = red
+    /// @param green Green, 0 = black, 255 = green
+    /// @param blue  Blue, 0 = black, 255 = blue
+    public record PaletteEntry(int red, int green, int blue) {
     }
 }
