@@ -109,11 +109,11 @@ public final class ZIPFile extends FileFormat implements GenerateTreeNode {
                 final Zip64EndOfCentralDirectoryRecord record = new Zip64EndOfCentralDirectoryRecord(stream);
                 this.addFileComponent(record);
 
+                centralDirectoryEnd = record.getStartPos();
                 if (end.isZip64()) {
                     entryCount = record.EntryTotalNumber;
                     centralDirectorySize = record.CentralDirectorySize;
                     centralDirectoryOffset = record.CentralDirectoryOffset;
-                    centralDirectoryEnd = record.getStartPos();
                 }
             }
         }
