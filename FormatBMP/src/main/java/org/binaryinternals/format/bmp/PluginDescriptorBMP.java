@@ -11,13 +11,14 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorBMP implements PluginDescriptor{
+/// Plug-in descriptor for the BMP file format.
+///
+/// @author Amos Shi
+public final class PluginDescriptorBMP implements PluginDescriptor {
 
+    /// Public no-argument constructor, required by `ServiceLoader`.
     public PluginDescriptorBMP() {
+        // Nothing to initialize
     }
 
     @Override
@@ -34,5 +35,4 @@ public class PluginDescriptorBMP implements PluginDescriptor{
     public Class<? extends FileFormat> getFileFormatClass() {
         return BMPFile.class;
     }
-
 }

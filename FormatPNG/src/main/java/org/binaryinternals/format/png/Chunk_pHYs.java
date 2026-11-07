@@ -7,64 +7,53 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The <span>pHYs</span> chunk specifies the intended pixel size or aspect ratio for display
- * of the image.
- *
- * @author Amos Shi
- */
-public class Chunk_pHYs extends Chunk {
+/// The `pHYs` chunk specifies the intended pixel size or aspect ratio for
+/// display of the image.
+///
+/// @author Amos Shi
+public final class Chunk_pHYs extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "pHYs";
-    /** Pixels per unit, X axis.   */
+    /// Pixels per unit, X axis.
     public final int AxisX;
-    /** Pixels per unit, Y axis.   */
+    /// Pixels per unit, Y axis.
     public final int AxisY;
-    /**
-     * Unit specifier.
-     * <pre>
-     * 0: unit is unknown
-     * 1: unit is the meter
-     * </pre>
-     */
+    /// Unit specifier.
+    ///
+    /// ```
+    /// 0: unit is unknown
+    /// 1: unit is the meter
+    /// ```
     public final int Unit;
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_pHYs(PosDataInputStream stream) throws IOException {
+    Chunk_pHYs(final PosDataInputStream stream) throws IOException {
         super(stream);
 
-        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
+        final PosDataInputStream chunkDataStream = this.getChunkDataStream();
         this.AxisX = chunkDataStream.readInt();
         this.AxisY = chunkDataStream.readInt();
         this.Unit = chunkDataStream.read();
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        final int start = this.getDataStartPos();
 
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 start,
                 4,
-                String.format("Pixels per unit, X axis = %d", this.AxisX))));
-        parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 4,
-                4,
-                String.format("Pixels per unit, Y axis = %d", this.AxisY))));
+                "Pixels per unit, X axis = %d".formatted(this.AxisX))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 start + 4,
+                4,
+                "Pixels per unit, Y axis = %d".formatted(this.AxisY))));
+        parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                start + 8,
                 1,
-                String.format("Unit specifier = %d", this.Unit))));
+                "Unit specifier = %d".formatted(this.Unit))));
     }
 }

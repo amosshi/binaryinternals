@@ -7,94 +7,50 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The <span>sBIT</span> chunk is provided in order to store the original number
- * of significant bits.
- *
- * @author Amos Shi
- */
-public class Chunk_sBIT extends Chunk {
+/// The `sBIT` chunk is provided in order to store the original number of
+/// significant bits.
+///
+/// It holds one byte per channel of the image color type.
+///
+/// @author Amos Shi
+public final class Chunk_sBIT extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "sBIT";
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_sBIT(PosDataInputStream stream) throws IOException {
+    Chunk_sBIT(final PosDataInputStream stream) throws IOException {
         super(stream);
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        final int start = this.getDataStartPos();
 
-        switch (this.ChunkData.length) {
-            case 1:
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start,
-                        1,
-                        String.format("significant = %d", this.ChunkData[0]))));
-                break;
+        final List<String> channels = switch (this.ChunkData.length) {
+            case 1 -> List.of("significant");
+            case 2 -> List.of("significant source grayscale data", "significant source alpha data");
+            case 3 -> List.of("significant red", "significant green", "significant blue");
+            case 4 -> List.of("significant red", "significant green", "significant blue", "significant alpha");
+            default -> List.of();
+        };
 
-            case 2:
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start,
-                        1,
-                        String.format("significant source grayscale data = %d", this.ChunkData[0]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 1,
-                        1,
-                        String.format("significant source alpha data = %d", this.ChunkData[1]))));
-                break;
+        if (channels.isEmpty()) {
+            parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    start,
+                    this.ChunkData.length,
+                    "Un-recognized")));
+            return;
+        }
 
-            case 3:
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start,
-                        1,
-                        String.format("significant red = %d", this.ChunkData[0]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 1,
-                        1,
-                        String.format("significant green = %d", this.ChunkData[1]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 2,
-                        1,
-                        String.format("significant blue = %d", this.ChunkData[2]))));
-                break;
-
-            case 4:
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start,
-                        1,
-                        String.format("significant red = %d", this.ChunkData[0]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 1,
-                        1,
-                        String.format("significant green = %d", this.ChunkData[1]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 2,
-                        1,
-                        String.format("significant blue = %d", this.ChunkData[2]))));
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start + 3,
-                        1,
-                        String.format("significant alpha = %d", this.ChunkData[3]))));
-                break;
-
-            default:
-                parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        start,
-                        this.ChunkData.length,
-                        "Un-recognized")));
+        for (int i = 0; i < channels.size(); i++) {
+            parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    start + i,
+                    1,
+                    "%s = %d".formatted(channels.get(i), Byte.toUnsignedInt(this.ChunkData[i])))));
         }
     }
 }

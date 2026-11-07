@@ -7,154 +7,128 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see <a href="http://www.LIBPNG.org">PNG (Portable Network Graphics) Specification</a>
- */
-public class Chunk extends FileComponent implements GenerateTreeNode {
+/// A PNG chunk. Chunks without a dedicated class, such as `sRGB`, are shown
+/// with this generic class.
+///
+/// @author Amos Shi
+/// @see <a href="http://www.LIBPNG.org">PNG (Portable Network Graphics) Specification</a>
+public sealed class Chunk extends FileComponent implements GenerateTreeNode
+        permits Chunk_IHDR, Chunk_PLTE, Chunk_IDAT, Chunk_IEND,
+        Chunk_bKGD, Chunk_cHRM, Chunk_gAMA, Chunk_hIST, Chunk_iTXt, Chunk_pHYs,
+        Chunk_sBIT, Chunk_sPLT, Chunk_tEXt, Chunk_tIME, Chunk_tRNS, Chunk_zTXt {
 
-    /**
-     * A 4-byte unsigned integer giving the number of bytes in the chunk's data
-     * field.
-     * <p>
-     * The length counts <strong>only</strong> the data field,
-     * <strong>not</strong> itself, the chunk type code, or the CRC.
-     * Zero is a valid length.
-     * Although encoders and decoders should treat the length as unsigned,
-     * its value must not exceed <code>2<sup>31</sup>-1</code> bytes.
-     * </p>
-     */
+    /// Size of the [#Length] field.
+    static final int LENGTH_SIZE = 4;
+    /// Size of [#CRC].
+    static final int CRC_SIZE = 4;
+
+    /// A 4-byte unsigned integer giving the number of bytes in the chunk's data
+    /// field.
+    ///
+    /// The length counts **only** the data field, **not** itself, the chunk
+    /// type code, or the CRC. Zero is a valid length. Although encoders and
+    /// decoders should treat the length as unsigned, its value must not exceed
+    /// <code>2<sup>31</sup>-1</code> bytes.
     public final int Length;
-    /**
-     * A 4-byte chunk type code.
-     * <p>
-     * For convenience in description and in examining PNG files, type codes
-     * are restricted to consist of uppercase and lowercase ASCII letters
-     * (A-Z and a-z, or 65-90 and 97-122 decimal).
-     * However, encoders and decoders must treat the codes as fixed binary
-     * values, not character strings.
-     * For example, it would not be correct to represent the type code
-     * <code>IDAT</code> by the EBCDIC equivalents of those letters.
-     * Additional naming conventions for chunk types are discussed in the next
-     * section.
-     * </p>
-     */
+    /// A 4-byte chunk type code.
+    ///
+    /// For convenience in description and in examining PNG files, type codes
+    /// are restricted to consist of uppercase and lowercase ASCII letters
+    /// (A-Z and a-z, or 65-90 and 97-122 decimal). However, encoders and
+    /// decoders must treat the codes as fixed binary values, not character
+    /// strings. For example, it would not be correct to represent the type code
+    /// `IDAT` by the EBCDIC equivalents of those letters. Additional naming
+    /// conventions for chunk types are discussed in the next section.
     public final byte[] ChunkType = new byte[PNGFile.CHUNK_TYPE_SIZE];
-    /**
-     * The data bytes appropriate to the chunk type, if any.
-     * <p>
-     * This field can be <code>null</code> for zero length.
-     * </p>
-     */
+    /// The data bytes appropriate to the chunk type, if any.
+    ///
+    /// This field can be `null` for zero length.
     public final byte[] ChunkData;
-    /**
-     * A 4-byte CRC (Cyclic Redundancy Check) calculated on the preceding bytes
-     * in the chunk, including the chunk type code and chunk data fields,
-     * but <strong>not</strong> including the length field.
-     * <p>
-     * The CRC is always present, even for chunks containing no data.
-     * </p>
-     */
+    /// A 4-byte CRC (Cyclic Redundancy Check) calculated on the preceding bytes
+    /// in the chunk, including the chunk type code and chunk data fields, but
+    /// **not** including the length field.
+    ///
+    /// The CRC is always present, even for chunks containing no data.
     public final byte[] CRC = new byte[CRC_SIZE];
-    
-    /**
-     * Size of {@link #CRC}.
-     */
-    private static final int CRC_SIZE = 4;
 
-    Chunk(PosDataInputStream stream) throws IOException {
+    Chunk(final PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
 
         this.Length = stream.readInt();  // Chunk Length
-        this.length = this.Length + 12;
+        this.length = LENGTH_SIZE + PNGFile.CHUNK_TYPE_SIZE + this.Length + CRC_SIZE;
 
         // Chunk Type
-        if (stream.read(this.ChunkType) != PNGFile.CHUNK_TYPE_SIZE) {
-            throw new IOException("Read the chunk type field failed near position " + stream.getPos());
-        }
+        stream.readFully(this.ChunkType);
 
         // Chunk Data
         if (this.Length > 0) {
             this.ChunkData = new byte[this.Length];
-            if (stream.read(this.ChunkData) != this.Length) {
-                throw new IOException("Read the chunk data failed near position " + stream.getPos());
-            }
+            stream.readFully(this.ChunkData);
         } else {
             this.ChunkData = null;
         }
 
         // CRC
-        if (stream.read(this.CRC) != CRC_SIZE) {
-            throw new IOException("Read the CRC field failed near position " + stream.getPos());
-        }
+        stream.readFully(this.CRC);
     }
 
     public String getChunkTypeName() {
-        StringBuilder sb = new StringBuilder(this.ChunkType.length);
-        sb.append((char) this.ChunkType[0]);
-        sb.append((char) this.ChunkType[1]);
-        sb.append((char) this.ChunkType[2]);
-        sb.append((char) this.ChunkType[3]);
-        return sb.toString();
+        return new String(this.ChunkType, StandardCharsets.ISO_8859_1);
     }
 
-    protected final void checkLength(String chunkTypeName, int lengthExpected) throws FileFormatException {
-        if (this.Length != lengthExpected) {
-            throw new FileFormatException(String.format(
-                    "Chunk (%s): chunk data length must be %d. current value = %d",
-                    chunkTypeName,
-                    lengthExpected,
-                    this.Length));
-        }
+    /// File position of the first byte of [#ChunkData].
+    protected final int getDataStartPos() {
+        return this.startPos + LENGTH_SIZE + PNGFile.CHUNK_TYPE_SIZE;
     }
 
-    static PosDataInputStream getChunkDataStream(byte[] chunkData, int startPos) {
-        if (chunkData != null) {
-            return new PosDataInputStream(
-                    new PosByteArrayInputStream(chunkData),
-                    startPos + 4 + 4);
-        } else {
-            return null;
-        }
+    /// A stream over [#ChunkData], which reports positions in the file.
+    ///
+    /// @return The stream, or `null` when the chunk has no data
+    protected final PosDataInputStream getChunkDataStream() {
+        return this.ChunkData == null
+                ? null
+                : new PosDataInputStream(new PosByteArrayInputStream(this.ChunkData), this.getDataStartPos());
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parent) {
-        int start = this.startPos;
-        DefaultMutableTreeNode chunkDataNode;
-
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parent) {
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start,
-                4,
-                String.format("Length = %d", this.Length))));
+                this.startPos,
+                LENGTH_SIZE,
+                "Length = %d".formatted(this.Length))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 4,
-                4,
-                String.format("Chunk Type = %s", this.getChunkTypeName()))));
+                this.startPos + LENGTH_SIZE,
+                PNGFile.CHUNK_TYPE_SIZE,
+                "Chunk Type = %s".formatted(this.getChunkTypeName()))));
 
-        start = start + 4;            // Or else when Lengh == 0, the 4 is not added
+        final int dataStart = this.getDataStartPos();
         if (this.Length > 0) {
-            parent.add(chunkDataNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    start, // start = start + 4
+            final DefaultMutableTreeNode chunkDataNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    dataStart,
                     this.Length,
-                    "Chunk Data")));
+                    "Chunk Data"));
+            parent.add(chunkDataNode);
             this.generateTreeNodeChunkData(chunkDataNode);
         }
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start + this.Length,
-                4,
+                dataStart + this.Length,
+                CRC_SIZE,
                 "CRC")));
     }
 
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        System.out.println("Care me!");
+    /// Add the fields of [#ChunkData] to the tree. A chunk without a dedicated
+    /// class shows its data as one node.
+    ///
+    /// @param parent The "Chunk Data" node
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        // Nothing more is known about the data of a generic chunk
     }
 }

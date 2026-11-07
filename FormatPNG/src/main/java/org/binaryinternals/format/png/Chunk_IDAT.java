@@ -7,39 +7,27 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The IDAT chunk contains the actual image data.
- * <p>
- * The IDAT chunk contains the output data stream of the compression algorithm.
- * </p>
- *
- * @author Amos Shi
- */
-public class Chunk_IDAT extends Chunk {
+/// The `IDAT` chunk contains the actual image data.
+///
+/// The `IDAT` chunk contains the output data stream of the compression algorithm.
+///
+/// @author Amos Shi
+public final class Chunk_IDAT extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "IDAT";
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType(){
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_IDAT(PosDataInputStream stream) throws IOException {
+    Chunk_IDAT(final PosDataInputStream stream) throws IOException {
         super(stream);
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start,
+                this.getDataStartPos(),
                 this.Length,
                 "Image Data")));
     }
