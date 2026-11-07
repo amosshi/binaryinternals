@@ -90,9 +90,20 @@ public final class ZIPFile extends FileFormat implements GenerateTreeNode {
 
             // The offset in the locator is wrong when data is prepended to the archive,
             // then the record is expected right before the locator.
-            final long posRecord = this.hasSignature(locator.Zip64EndOffset, CENTRAL_ZIP64_RECORD)
-                    ? locator.Zip64EndOffset
-                    : posLocator - Zip64EndOfCentralDirectoryRecord.MIN_LENGTH;
+            long posRecord = locator.Zip64EndOffset;
+            if (!this.hasSignature(posRecord, CENTRAL_ZIP64_RECORD)) {
+                posRecord = -1;
+                for (int candidate = posLocator - Zip64EndOfCentralDirectoryRecord.MIN_LENGTH; candidate >= 0; candidate--) {
+                    if (this.hasSignature(candidate, CENTRAL_ZIP64_RECORD)) {
+                        stream.flyTo(candidate + CENTRAL_ZIP64_RECORD.length);
+                        final long recordSize = stream.readLongInLittleEndian();
+                        if (recordSize == (long) posLocator - candidate - 12) {
+                            posRecord = candidate;
+                            break;
+                        }
+                    }
+                }
+            }
             if (this.hasSignature(posRecord, CENTRAL_ZIP64_RECORD)) {
                 stream.flyTo((int) posRecord);
                 final Zip64EndOfCentralDirectoryRecord record = new Zip64EndOfCentralDirectoryRecord(stream);
