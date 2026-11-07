@@ -10,13 +10,14 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorPDF implements PluginDescriptor {
+/// Plug-in descriptor for the PDF file format.
+///
+/// @author Amos Shi
+public final class PluginDescriptorPDF implements PluginDescriptor {
 
+    /// Public no-argument constructor, required by `ServiceLoader`.
     public PluginDescriptorPDF() {
+        // Nothing to initialize
     }
 
     @Override

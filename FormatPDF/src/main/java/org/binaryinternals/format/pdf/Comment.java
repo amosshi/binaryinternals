@@ -1,47 +1,42 @@
 package org.binaryinternals.format.pdf;
 
-import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 
-/**
- * PDF Comment, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.2.3</code>: Comments.
- *
- * @author Amos Shi
- */
-public class Comment extends FileComponent implements GenerateTreeNode {
+/// PDF Comment, see `PDF 32000-1:2008` `7.2.3`: Comments.
+///
+/// @author Amos Shi
+public final class Comment extends FileComponent implements GenerateTreeNode {
 
-    /**
-     * Comment text.
-     */
+    static final String SIGNATURE = "%";
+    /// Comment text.
     public final String Text;
 
-    Comment(PosDataInputStream stream, ASCIILine line) throws IOException {
-        super.startPos = stream.getPos() - line.length();
-        super.length = line.length();
+    Comment(final PosDataInputStream stream, final ASCIILine line) {
+        super(stream.getPos() - line.length(), line.length());
         this.Text = line.line();
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeComment = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                "Comment");
-        DefaultMutableTreeNode nodeComment = new DefaultMutableTreeNode(nodeComp);
+                "Comment"));
         nodeComment.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 this.Text.length(),
                 "Text")));
-        nodeComment.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + this.Text.length(),
-                super.length - this.Text.length(),
-                "New Line")));
+        if (super.length > this.Text.length()) {
+            nodeComment.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + this.Text.length(),
+                    super.length - this.Text.length(),
+                    Texts.NewLine)));
+        }
         parentNode.add(nodeComment);
     }
 }

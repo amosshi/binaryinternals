@@ -1,50 +1,44 @@
 package org.binaryinternals.format.pdf;
 
-import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 
-/**
- * PDF End of File (
- * <code>EOF</code>) object, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.5.5</code>: File Trailer.
- *
- * @author Amos Shi
- */
-public class EndOfFile extends FileComponent implements GenerateTreeNode {
+/// PDF End of File (`%%EOF`) marker, see `PDF 32000-1:2008` `7.5.5`: File
+/// Trailer.
+///
+/// @author Amos Shi
+public final class EndOfFile extends FileComponent implements GenerateTreeNode {
 
     static final String SIGNATURE = "%%EOF";
-    /**
-     * The content of current line.
-     */
+    /// The content of current line.
     public final ASCIILine Line;
 
-    EndOfFile(PosDataInputStream stream, ASCIILine line) throws IOException {
-        super.startPos = stream.getPos() - line.length();
-        super.length = line.length();
+    EndOfFile(final PosDataInputStream stream, final ASCIILine line) {
+        super(stream.getPos() - line.length(), line.length());
         this.Line = line;
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeEoF = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                "End of File");
-        DefaultMutableTreeNode nodeEoF = new DefaultMutableTreeNode(nodeComp);
+                "End of File"));
 
         nodeEoF.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 this.Line.line().length(),
                 Texts.Signature + SIGNATURE)));
-        nodeEoF.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                super.startPos + this.Line.line().length(),
-                this.Line.newLineLength(),
-                Texts.NewLine)));
+        if (this.Line.newLineLength() > 0) {
+            nodeEoF.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    super.startPos + this.Line.line().length(),
+                    this.Line.newLineLength(),
+                    Texts.NewLine)));
+        }
         parentNode.add(nodeEoF);
     }
 }

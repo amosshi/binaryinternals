@@ -299,21 +299,26 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /// Read current byte array as ASCII string until a {@link #NEWLINE_CR} /
     /// {@link #NEWLINE_LF} flag found.
     ///
+    /// The new line is `CR`, `LF` or `CR LF`, so `LF LF` is two lines.
+    ///
     /// @return ASCII Line
     /// @throws IOException Read failed
     public ASCIILine readASCIILine() throws IOException {
-        int nlLen = 1;
-        String line = this.readASCIIUntil(NEWLINE_CR, NEWLINE_LF);
-        if (this.hasNext()) {
-            byte next = this.readByte();
-            if (next != NEWLINE_LF && next != NEWLINE_CR) {
-                this.backward(1);
-            } else {
-                nlLen += 1;
-            }
+        final byte[] buf = this.getBuf();
+        final int start = this.posIn.getPos();
+        int end = start;
+        while (end < buf.length && buf[end] != NEWLINE_CR && buf[end] != NEWLINE_LF) {
+            end++;
         }
 
-        return new ASCIILine(line, nlLen);
+        // The new line is CR, LF or CR LF; the last line may have none
+        int nlLen = 0;
+        if (end < buf.length) {
+            nlLen = (buf[end] == NEWLINE_CR && end + 1 < buf.length && buf[end + 1] == NEWLINE_LF) ? 2 : 1;
+        }
+        this.posIn.setPos(end + nlLen);
+
+        return new ASCIILine(new String(buf, start, end - start, StandardCharsets.ISO_8859_1), nlLen);
     }
 
     private static boolean contains(final byte v, final byte[] list) {
@@ -429,7 +434,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     ///
     /// @param line Line text, excluding the {@link PosDataInputStream#NEWLINE_CR} /
     /// {@link PosDataInputStream#NEWLINE_LF}
-    /// @param newLineLength New Line length, could be 1 (0x0D) or 2 (0x0D0A), or 0
+    /// @param newLineLength New Line length, could be 1 (0x0D or 0x0A) or 2 (0x0D0A), or 0
+    /// for the last line without a new line
     public record ASCIILine(String line, int newLineLength) {
 
         /// Length of the line, including the {@link PosDataInputStream#NEWLINE_CR} /

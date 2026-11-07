@@ -3,12 +3,10 @@ package org.binaryinternals.format.pdf;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * Texts used in User Interface.
- *
- * @author Amos Shi
- */
-public class Texts {
+/// Texts used in User Interface.
+///
+/// @author Amos Shi
+public final class Texts {
 
     private Texts() {
     }
@@ -17,8 +15,9 @@ public class Texts {
     public static final String NewLine = "New Line";
     public static final String Signature = "Signature: ";
     public static final String Space = "Space";
+    public static final String WhiteSpace = "White Space";
 
-    public static String getString(String key) {
+    public static String getString(final String key) {
         return MESSAGES.getString(key);
     }
     public static final String PDF_FILE_HEADER = "PDF_FILE_HEADER";

@@ -1,94 +1,137 @@
 package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.pdf.PDFStatics;
 import org.binaryinternals.format.pdf.Texts;
 
-/**
- * PDF basic object Literal String, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.4.2</code>: Literal Strings.
- *
- * @author Amos Shi
- */
-class StringLiteral extends FileComponent implements GenerateTreeNode {
+/// PDF basic object Literal String, see `PDF 32000-1:2008` `7.3.4.2`:
+/// Literal Strings.
+///
+/// @author Amos Shi
+public final class StringLiteral extends FileComponent implements BasicObject {
 
-    /**
-     * Escape character in a literal string. <p> Within a literal string, the
-     * REVERSE SOLIDUS is used as an escape character. The character immediately
-     * following the REVERSE SOLIDUS determines its precise interpretation as
-     * shown in Table 3. </p>
-     */
+    /// Escape character in a literal string.
+    ///
+    /// Within a literal string, the REVERSE SOLIDUS is used as an escape
+    /// character. The character immediately following the REVERSE SOLIDUS
+    /// determines its precise interpretation as shown in Table 3.
     public static final byte REVERSE_SOLIDUS = '\\';
-    /**
-     * Literal String text in
-     * <code>Raw</code> format.
-     */
-    private String RawText;
+    /// Literal String text in `Raw` format, the bytes between the outer
+    /// parentheses.
+    private final String RawText;
+    /// Whether the closing parenthesis is found.
+    private final boolean closed;
 
-    public StringLiteral(PosDataInputStream stream) throws IOException {
+    StringLiteral(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        this.parse(stream);
-        super.length = stream.getPos() - super.startPos;
-    }
+        stream.skipNBytes(1);     // The '(' sign
 
-    private void parse(PosDataInputStream stream) throws IOException {
-
-        StringBuilder builder = new StringBuilder(32);
-
-        // Parentheses Level.
-        // - Balanced pairs of parentheses within a string require no special treatment.
-        // - Example: (Strings may contain balanced parentheses ( ) and special characters (*!&}^% and so on).)
-        int parentheseLevel = 0;  // 
-
-        boolean stop = false;
+        // Balanced pairs of parentheses within a string require no special treatment.
+        // Example: (Strings may contain balanced parentheses ( ) and special characters (*!&}^% and so on).)
+        final byte[] buf = stream.getBuf();
+        final int rawStart = stream.getPos() - stream.getOffset();
+        int level = 1;
+        boolean found = false;
         while (stream.hasNext()) {
-            byte next = stream.readByte();
-            switch (next) {
-                // Escape 
-                case REVERSE_SOLIDUS:
-                    // Skip the charactor after REVERSE SOLIDUS
-                    stream.skipNBytes(1);
-                    break;
-                case PDFStatics.DelimiterCharacter.LP:
-                    parentheseLevel++;
-                    break;
-                case PDFStatics.DelimiterCharacter.RP:
-                    parentheseLevel--;
-                    if (parentheseLevel <= 0) {
-                        // To the end of current Liternal String
-                        stop = true;
-                    }
-                    break;
-                default:
-                    builder.append((char) next);
-                    break;
-            }
-            if (stop) {
-                break;            // Stop current while-loop
+            final byte next = stream.readByte();
+            if (next == REVERSE_SOLIDUS) {
+                if (stream.hasNext()) {
+                    stream.skipNBytes(1);   // The escaped character can not change the level
+                }
+            } else if (next == PDFStatics.DelimiterCharacter.LP) {
+                level++;
+            } else if (next == PDFStatics.DelimiterCharacter.RP && --level == 0) {
+                found = true;
+                break;
             }
         }
 
-        this.RawText = builder.toString();
+        this.closed = found;
+        final int rawEnd = stream.getPos() - stream.getOffset() - (found ? 1 : 0);
+        this.RawText = new String(buf, rawStart, rawEnd - rawStart, StandardCharsets.ISO_8859_1);
+        super.length = stream.getPos() - super.startPos;
     }
 
+    /// The string with the escape sequences of Table 3 and the end-of-line
+    /// markers decoded. Each character is one byte of the string.
+    ///
+    /// @return The string
     public String getString() {
-        // TODO - Change to the .getString()
-        return this.RawText;
+        return unescape(this.RawText);
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    static String unescape(final String raw) {
+        final int n = raw.length();
+        final StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            final char c = raw.charAt(i);
+            if (c == '\r') {
+                // An end-of-line marker is treated as a single LINE FEED
+                sb.append('\n');
+                if (i + 1 < n && raw.charAt(i + 1) == '\n') {
+                    i++;
+                }
+                continue;
+            }
+            if (c != REVERSE_SOLIDUS || i + 1 == n) {
+                sb.append(c);
+                continue;
+            }
+
+            final char e = raw.charAt(++i);
+            switch (e) {
+                case 'n' -> sb.append('\n');
+                case 'r' -> sb.append('\r');
+                case 't' -> sb.append('\t');
+                case 'b' -> sb.append('\b');
+                case 'f' -> sb.append('\f');
+                case '(', ')', '\\' -> sb.append(e);
+                case '\r' -> {
+                    // Line continuation, the backslash and end-of-line marker are ignored
+                    if (i + 1 < n && raw.charAt(i + 1) == '\n') {
+                        i++;
+                    }
+                }
+                case '\n' -> {
+                    // Line continuation
+                }
+                default -> {
+                    if (isOctalDigit(e)) {
+                        // \ddd, one to three octal digits, high-order overflow is ignored
+                        int value = 0;
+                        int j = i;
+                        while (j < n && j < i + 3 && isOctalDigit(raw.charAt(j))) {
+                            value = value * 8 + (raw.charAt(j) - '0');
+                            j++;
+                        }
+                        sb.append((char) (value & 0xFF));
+                        i = j - 1;
+                    } else {
+                        sb.append(e);     // The REVERSE SOLIDUS is ignored
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    private static boolean isOctalDigit(final char c) {
+        return c >= '0' && c <= '7';
+    }
+
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
                 "Literal String");
         nodeComp.setDescription("Raw String Text: " + this.RawText);
-        DefaultMutableTreeNode nodeStr = new DefaultMutableTreeNode(nodeComp);
+        final DefaultMutableTreeNode nodeStr = new DefaultMutableTreeNode(nodeComp);
 
         int pos = super.startPos;
         nodeStr.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -99,21 +142,23 @@ class StringLiteral extends FileComponent implements GenerateTreeNode {
 
         nodeStr.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                super.length - 2,
+                this.RawText.length(),
                 "Raw Data")));
-        pos += (super.length - 2);
+        pos += this.RawText.length();
 
-        nodeStr.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
-                1,
-                Texts.Signature + (char) PDFStatics.DelimiterCharacter.RP)));
+        if (this.closed) {
+            nodeStr.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    pos,
+                    1,
+                    Texts.Signature + (char) PDFStatics.DelimiterCharacter.RP)));
+        }
 
         parentNode.add(nodeStr);
     }
 
     @Override
     public String toString() {
-        return String.format("Literal String Object: Start Position = %d, Length = %d, Raw Text = '%s'",
+        return "Literal String Object: Start Position = %d, Length = %d, Raw Text = '%s'".formatted(
                 super.startPos,
                 super.length,
                 this.RawText);
