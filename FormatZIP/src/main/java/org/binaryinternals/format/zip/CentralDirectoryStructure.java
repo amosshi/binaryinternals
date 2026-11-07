@@ -7,8 +7,9 @@
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
@@ -18,16 +19,14 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * File header of central directory structure.
- *
- * @author Amos Shi
- */
-public class CentralDirectoryStructure extends FileComponent implements GenerateTreeNode {
+/// File header of central directory structure.
+///
+/// @author Amos Shi
+public final class CentralDirectoryStructure extends FileComponent implements GenerateTreeNode {
 
     public final FileHeader header;
 
-    CentralDirectoryStructure(PosDataInputStream stream) throws IOException {
+    CentralDirectoryStructure(final PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
         this.header = new FileHeader(stream);
         this.length = this.header.calcLength();
@@ -35,17 +34,17 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
 
     @Override
     @SuppressWarnings({"java:S1121"})
-    public void generateTreeNode(DefaultMutableTreeNode parent) {
+    public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
-        DefaultMutableTreeNode nodeCDS = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeCDS = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 this.getLength(),
                 "Central Directory Structure: " + this.header.FileNameValue
         ));
         parent.add(nodeCDS);
 
-        DefaultMutableTreeNode headerNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode headerNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 this.header.calcLength(),
                 "File header"));
@@ -60,50 +59,34 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format("version made by = %d", this.header.VersionMadeBy),
+                "version made by = %d".formatted(this.header.VersionMadeBy),
                 Icons.Versions
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("version needed to extract = %d", this.header.VersionNeededToExtract),
+                "version needed to extract = %d".formatted(this.header.VersionNeededToExtract),
                 Icons.Versions
         )));
-
-        DefaultMutableTreeNode nodeBigFlag = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
-                2,
-                String.format("general purpose bit flag = %02X %02X",
-                        this.header.GeneralPurposeBitFlag[0],
-                        this.header.GeneralPurposeBitFlag[1])
-        ));
-        headerNode.add(nodeBigFlag);
-        for (int i = 0; i < 16; i++) {
-            nodeBigFlag.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position + ((i > 7) ? 1 : 0),
-                    1,
-                    String.format("Bit %02d = %d", i, this.header.getGeneralPurposeBitFlagBitValue(i)),
-                    Icons.Tag
-            )));
-        }
+        LocalFileHeader.generateTreeNodeGeneralPurposeBitFlag(headerNode, position += 2, this.header.GeneralPurposeBitFlag);
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("compression method = %d", this.header.CompressionMethod))));
+                Compression.toText(this.header.CompressionMethod))));
 
-        DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("last mod file time = %s", this.header.LastModFileTimeValue.toString()),
+                "last mod file time = %s".formatted(this.header.LastModFileTimeValue),
                 Icons.Time
         ));
         headerNode.add(nodeTime);
         this.header.LastModFileTimeValue.generateTreeNode(nodeTime);
 
-        DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("last mod file date = %s", this.header.LastModFileDateValue.toString()),
+                "last mod file date = %s".formatted(this.header.LastModFileDateValue),
                 Icons.Calendar
         ));
         headerNode.add(nodeDate);
@@ -118,41 +101,41 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("compressed size = %d", this.header.CompressedSize),
+                "compressed size = %s".formatted(zip64Text(this.header.CompressedSize, this.header.CompressedSizeValue)),
                 Icons.Size
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("uncompressed size = %d", this.header.UncompressedSize),
+                "uncompressed size = %s".formatted(zip64Text(this.header.UncompressedSize, this.header.UncompressedSizeValue)),
                 Icons.Size
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format("file name length = %d", this.header.FileNameLength),
+                "file name length = %d".formatted(this.header.FileNameLength),
                 Icons.Length
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("extra field length = %d", this.header.ExtraFieldLength),
+                "extra field length = %d".formatted(this.header.ExtraFieldLength),
                 Icons.Length
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("file comment length = %d", this.header.FileCommentLength),
+                "file comment length = %d".formatted(this.header.FileCommentLength),
                 Icons.Length
         )));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("disk number start = %d", this.header.DiskNumberStart))));
+                "disk number start = %d".formatted(this.header.DiskNumberStart))));
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("internal file attributes = %02X %02X",
+                "internal file attributes = %02X %02X".formatted(
                         this.header.InternalFileAttributes[0],
                         this.header.InternalFileAttributes[1]),
                 Icons.Annotations
@@ -160,7 +143,7 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 4,
-                String.format("external file attributes = %02X %02X %02X %02X",
+                "external file attributes = %02X %02X %02X %02X".formatted(
                         this.header.ExternalFileAttributes[0],
                         this.header.ExternalFileAttributes[1],
                         this.header.ExternalFileAttributes[2],
@@ -170,7 +153,9 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("relative offset of local header = 0x%08X", this.header.RelativeOffsetOfLocalHeader),
+                (this.header.RelativeOffsetOfLocalHeader == FileHeader.ZIP64_MAGIC)
+                ? "relative offset of local header = 0xFFFFFFFF (Zip64: 0x%08X)".formatted(this.header.RelativeOffsetOfLocalHeaderValue)
+                : "relative offset of local header = 0x%08X".formatted(this.header.RelativeOffsetOfLocalHeader),
                 Icons.Offset
         )));
         position += 4;
@@ -178,73 +163,76 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
             headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
                     this.header.FileName.length,
-                    String.format("file name = %s", this.header.FileNameValue),
+                    "file name = %s".formatted(this.header.FileNameValue),
                     Icons.Name
             )));
             position += this.header.FileName.length;
         }
         if (this.header.ExtraField != null) {
-            headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position,
-                    this.header.ExtraField.length,
-                    "extra field")));
+            LocalFileHeader.generateTreeNodeExtraField(headerNode, position, this.header.ExtraField.length, this.header.ExtraFieldBlocks);
             position += this.header.ExtraField.length;
         }
         if (this.header.FileComment != null) {
             headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
                     this.header.FileComment.length,
-                    "file comment")));
+                    "file comment = %s".formatted(LocalFileHeader.decodeText(this.header.FileComment)),
+                    Icons.Annotations)));
         }
-
     }
 
-    /**
-     * File header of central directory structure.
-     * <pre>
-     *  central file header signature   4 bytes  (0x02014b50)
-     *  version made by                 2 bytes
-     *  version needed to extract       2 bytes
-     *  general purpose bit flag        2 bytes
-     *  compression method              2 bytes
-     *  last mod file time              2 bytes
-     *  last mod file date              2 bytes
-     *  crc-32                          4 bytes
-     *  compressed size                 4 bytes
-     *  uncompressed size               4 bytes
-     *  file name length                2 bytes
-     *  extra field length              2 bytes
-     *  file comment length             2 bytes
-     *  disk number start               2 bytes
-     *  internal file attributes        2 bytes
-     *  external file attributes        4 bytes
-     *  relative offset of local header 4 bytes
-     *
-     *  file name (variable size)
-     *  extra field (variable size)
-     *  file comment (variable size)
-     * </pre>
-     */
-    public static class FileHeader {
+    /// Text of a size field, with the Zip64 value when the field is
+    /// [FileHeader#ZIP64_MAGIC].
+    private static String zip64Text(final long value, final long zip64Value) {
+        return (value == FileHeader.ZIP64_MAGIC)
+                ? "0xFFFFFFFF (Zip64: %d)".formatted(zip64Value)
+                : Long.toString(value);
+    }
+
+    /// File header of central directory structure.
+    ///
+    /// ```
+    /// central file header signature   4 bytes  (0x02014b50)
+    /// version made by                 2 bytes
+    /// version needed to extract       2 bytes
+    /// general purpose bit flag        2 bytes
+    /// compression method              2 bytes
+    /// last mod file time              2 bytes
+    /// last mod file date              2 bytes
+    /// crc-32                          4 bytes
+    /// compressed size                 4 bytes
+    /// uncompressed size               4 bytes
+    /// file name length                2 bytes
+    /// extra field length              2 bytes
+    /// file comment length             2 bytes
+    /// disk number start               2 bytes
+    /// internal file attributes        2 bytes
+    /// external file attributes        4 bytes
+    /// relative offset of local header 4 bytes
+    ///
+    /// file name (variable size)
+    /// extra field (variable size)
+    /// file comment (variable size)
+    /// ```
+    public static final class FileHeader {
+
+        /// Size of the fixed part of the header.
+        public static final int MIN_LENGTH = 46;
+        /// A 4-byte field with this value has its actual value in the Zip64
+        /// extended information extra field.
+        public static final long ZIP64_MAGIC = 0xFFFFFFFFL;
 
         public final byte[] Signature = new byte[4];
         public final int VersionMadeBy;
         public final int VersionNeededToExtract;
         public final byte[] GeneralPurposeBitFlag = new byte[2];
+        /// Compression method, see [Compression].
         public final int CompressionMethod;
         public final int LastModFileTime;
-        /**
-         * Parsed value of {@link #LastModFileTime}.
-         *
-         * @see #LastModFileTime
-         */
+        /// Parsed value of [#LastModFileTime].
         public final MSDosTime LastModFileTimeValue;
         public final int LastModFileDate;
-        /**
-         * Parsed value of {@link #LastModFileDate}.
-         *
-         * @see #LastModFileDate
-         */
+        /// Parsed value of [#LastModFileDate].
         public final MSDosDate LastModFileDateValue;
         public final byte[] CRC32 = new byte[4];
         public final long CompressedSize;
@@ -256,138 +244,86 @@ public class CentralDirectoryStructure extends FileComponent implements Generate
         public final byte[] InternalFileAttributes = new byte[2];
         public final byte[] ExternalFileAttributes = new byte[4];
         public final long RelativeOffsetOfLocalHeader;
-        /**
-         * Contains the file name or <code>null</code> if
-         * {@link #FileNameLength} is zero.
-         *
-         * @see #FileNameLength
-         */
+        /// Contains the file name or `null` if [#FileNameLength] is zero.
         public final byte[] FileName;
-        /**
-         * Parsed value of {@link #FileName}.
-         *
-         * @see #FileName
-         */
+        /// Parsed value of [#FileName].
         public final String FileNameValue;
-        /**
-         * Contains extra fields or <code>null</code> if
-         * {@link #ExtraFieldLength} is zero.
-         *
-         * @see #ExtraFieldLength
-         */
+        /// Contains extra fields or `null` if [#ExtraFieldLength] is zero.
         public final byte[] ExtraField;
-        /**
-         * Contains comment of the file or <code>null</code> if
-         * {@link #FileCommentLength} is zero.
-         *
-         * @see #FileCommentLength
-         */
+        /// Parsed value of [#ExtraField].
+        public final List<ExtraFieldBlock> ExtraFieldBlocks;
+        /// Contains comment of the file or `null` if [#FileCommentLength] is
+        /// zero.
         public final byte[] FileComment;
+        /// [#UncompressedSize], or the Zip64 value when it is [#ZIP64_MAGIC].
+        public final long UncompressedSizeValue;
+        /// [#CompressedSize], or the Zip64 value when it is [#ZIP64_MAGIC].
+        public final long CompressedSizeValue;
+        /// [#RelativeOffsetOfLocalHeader], or the Zip64 value when it is
+        /// [#ZIP64_MAGIC].
+        public final long RelativeOffsetOfLocalHeaderValue;
 
-        FileHeader(PosDataInputStream stream) throws IOException {
-            int readBytes = stream.read(this.Signature);
-            if (readBytes != this.Signature.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
-            }
-            if (Arrays.equals(this.Signature, ZIPFile.CENTRAL_FILE_HEADER) == false) {
-                throw new FileFormatException("Signature does not match for 'central file header signature' at 0x" + Integer.toHexString(stream.getPos()) + ": found =" + BytesTool.getByteDataHexView(this.Signature) + ", expected =" + BytesTool.getByteDataHexView(ZIPFile.CENTRAL_FILE_HEADER));
+        FileHeader(final PosDataInputStream stream) throws IOException {
+            final int startPos = stream.getPos();
+            stream.readFully(this.Signature);
+            if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_FILE_HEADER)) {
+                throw new FileFormatException(LocalFileHeader.signatureMismatch("central file header signature", startPos, this.Signature, ZIPFile.CENTRAL_FILE_HEADER));
             }
 
             this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();
             this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
-
-            readBytes = stream.read(this.GeneralPurposeBitFlag);
-            if (readBytes != this.GeneralPurposeBitFlag.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.GeneralPurposeBitFlag.length, readBytes));
-            }
-
+            stream.readFully(this.GeneralPurposeBitFlag);
             this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
 
-            int lastModFileTimeStartPos = stream.getPos();
+            final int lastModFileTimeStartPos = stream.getPos();
             this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
             this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime, lastModFileTimeStartPos, PosDataInputStream.USHORT_LENGTH);
 
-            int lastModFileDateStartPos = stream.getPos();
+            final int lastModFileDateStartPos = stream.getPos();
             this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
             this.LastModFileDateValue = new MSDosDate(this.LastModFileDate, lastModFileDateStartPos, PosDataInputStream.USHORT_LENGTH);
 
-            readBytes = stream.read(this.CRC32);
-            if (readBytes != this.CRC32.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.CRC32.length, readBytes));
-            }
-
+            stream.readFully(this.CRC32);
             this.CompressedSize = stream.readUnsignedIntInLittleEndian();
             this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
             this.FileNameLength = stream.readUnsignedShortInLittleEndian();
             this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
             this.FileCommentLength = stream.readUnsignedShortInLittleEndian();
             this.DiskNumberStart = stream.readUnsignedShortInLittleEndian();
-
-            readBytes = stream.read(this.InternalFileAttributes);
-            if (readBytes != this.InternalFileAttributes.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.InternalFileAttributes.length, readBytes));
-            }
-
-            readBytes = stream.read(this.ExternalFileAttributes);
-            if (readBytes != this.ExternalFileAttributes.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExternalFileAttributes.length, readBytes));
-            }
-
+            stream.readFully(this.InternalFileAttributes);
+            stream.readFully(this.ExternalFileAttributes);
             this.RelativeOffsetOfLocalHeader = stream.readUnsignedIntInLittleEndian();
 
-            if (this.FileNameLength > 0) {
-                this.FileName = new byte[this.FileNameLength];
-                readBytes = stream.read(this.FileName);
-                if (readBytes != this.FileName.length) {
-                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileName.length, readBytes));
-                }
+            this.FileName = LocalFileHeader.readOptional(stream, this.FileNameLength);
+            this.FileNameValue = LocalFileHeader.decodeText(this.FileName);
+            final int extraFieldStartPos = stream.getPos();
+            this.ExtraField = LocalFileHeader.readOptional(stream, this.ExtraFieldLength);
+            this.ExtraFieldBlocks = ExtraFieldBlock.parse(this.ExtraField, extraFieldStartPos);
+            this.FileComment = LocalFileHeader.readOptional(stream, this.FileCommentLength);
 
-                this.FileNameValue = new String(this.FileName, Charset.forName("UTF-8")); // Not working for WinRAR zip Chinese file name
-            } else {
-                this.FileName = null;
-                this.FileNameValue = "";  // We are not using NULL to avoid Exception
-            }
-
-            if (this.ExtraFieldLength > 0) {
-                this.ExtraField = new byte[this.ExtraFieldLength];
-                readBytes = stream.read(this.ExtraField);
-                if (readBytes != this.ExtraField.length) {
-                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExtraField.length, readBytes));
-                }
-            } else {
-                this.ExtraField = null;
-            }
-
-            if (this.FileCommentLength > 0) {
-                this.FileComment = new byte[this.FileCommentLength];
-                readBytes = stream.read(this.FileComment);
-                if (readBytes != this.FileComment.length) {
-                    throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileComment.length, readBytes));
-                }
-            } else {
-                this.FileComment = null;
-            }
+            // The Zip64 values only exist for the fields set to ZIP64_MAGIC, in this order
+            final ByteBuffer zip64 = ExtraFieldBlock.zip64ExtendedInfo(this.ExtraField);
+            this.UncompressedSizeValue = zip64Value(zip64, this.UncompressedSize);
+            this.CompressedSizeValue = zip64Value(zip64, this.CompressedSize);
+            this.RelativeOffsetOfLocalHeaderValue = zip64Value(zip64, this.RelativeOffsetOfLocalHeader);
         }
-        private int length = -1;
+
+        private static long zip64Value(final ByteBuffer zip64, final long value) {
+            return (value == ZIP64_MAGIC && zip64.remaining() >= Long.BYTES) ? zip64.getLong() : value;
+        }
 
         public int calcLength() {
-            if (this.length == -1) {
-                this.length = 46 + this.FileNameLength + this.ExtraFieldLength + this.FileCommentLength;
-            }
-
-            return this.length;
+            return MIN_LENGTH + this.FileNameLength + this.ExtraFieldLength + this.FileCommentLength;
         }
 
-        /**
-         * Get the corresponding bit value of <code>position</code>.
-         *
-         * @param position Bit position, from 1 to 15
-         * @return The bit value, 0 or 1
-         *
-         * @see #GeneralPurposeBitFlag
-         * @see LocalFileHeader#getGeneralPurposeBitFlagBitValue(int)
-         */
-        public int getGeneralPurposeBitFlagBitValue(int position) {
+        /// Get the corresponding bit value of `position`.
+        ///
+        /// @param position Bit position, from 0 to 15
+        /// @return The bit value, 0 or 1
+        ///
+        /// @see #GeneralPurposeBitFlag
+        /// @see LocalFileHeader#getGeneralPurposeBitFlagBitValue(int)
+        public int getGeneralPurposeBitFlagBitValue(final int position) {
             return LocalFileHeader.parseGeneralPurposeBitFlag(this.GeneralPurposeBitFlag, position);
         }
     }

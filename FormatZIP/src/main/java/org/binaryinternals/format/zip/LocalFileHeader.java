@@ -7,8 +7,10 @@
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
@@ -18,176 +20,164 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * Local file header.
- * <pre>
- *      local file header signature     4 bytes  (0x04034b50)
- *      version needed to extract       2 bytes
- *      general purpose bit flag        2 bytes
- *      compression method              2 bytes
- *      last mod file time              2 bytes
- *      last mod file date              2 bytes
- *      crc-32                          4 bytes
- *      compressed size                 4 bytes
- *      uncompressed size               4 bytes
- *      file name length                2 bytes
- *      extra field length              2 bytes
- *
- *      file name (variable size)
- *      extra field (variable size)
- * </pre>
- *
- * @author Amos Shi
- */
-public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
+/// Local file header, followed by the file data and the optional data
+/// descriptor.
+///
+/// ```
+/// local file header signature     4 bytes  (0x04034b50)
+/// version needed to extract       2 bytes
+/// general purpose bit flag        2 bytes
+/// compression method              2 bytes
+/// last mod file time              2 bytes
+/// last mod file date              2 bytes
+/// crc-32                          4 bytes
+/// compressed size                 4 bytes
+/// uncompressed size               4 bytes
+/// file name length                2 bytes
+/// extra field length              2 bytes
+///
+/// file name (variable size)
+/// extra field (variable size)
+/// ```
+///
+/// @author Amos Shi
+public final class LocalFileHeader extends FileComponent implements GenerateTreeNode {
 
-    /**
-     * Local file header signature.
-     */
+    /// Size of the fixed part of the header.
+    public static final int MIN_LENGTH = 30;
+    /// [#GeneralPurposeBitFlag] bit: `crc-32`, `compressed size` and
+    /// `uncompressed size` are zero in the local header, and the values are in
+    /// the data descriptor after the file data.
+    public static final int FLAG_DATA_DESCRIPTOR = 3;
+    /// Name of the [#GeneralPurposeBitFlag] bits, see `APPNOTE.TXT` 4.4.4.
+    private static final List<String> FLAG_NAMES = List.of(
+            "encrypted file",
+            "compression option",
+            "compression option",
+            "data descriptor",
+            "enhanced deflating",
+            "compressed patched data",
+            "strong encryption",
+            "unused",
+            "unused",
+            "unused",
+            "unused",
+            "language encoding (UTF-8)",
+            "reserved",
+            "masked local header values",
+            "reserved",
+            "reserved");
+
+    /// Local file header signature.
     public final byte[] Signature = new byte[4];
-    /**
-     * Version needed to extract.
-     */
+    /// Version needed to extract.
     public final int VersionNeededToExtract;
-    /**
-     * General purpose bit flag.
-     */
+    /// General purpose bit flag.
     public final byte[] GeneralPurposeBitFlag = new byte[2];
-    /**
-     * Compression method.
-     */
+    /// Compression method, see [Compression].
     public final int CompressionMethod;
-    /**
-     * Last mod file time.
-     */
+    /// Last mod file time.
     public final int LastModFileTime;
-    /**
-     * Parsed value of {@link #LastModFileTime}.
-     *
-     * @see #LastModFileTime
-     */
+    /// Parsed value of [#LastModFileTime].
     public final MSDosTime LastModFileTimeValue;
-    /**
-     * Last mod file date.
-     */
+    /// Last mod file date.
     public final int LastModFileDate;
-    /**
-     * Parsed value of {@link #LastModFileDate}.
-     *
-     * @see #LastModFileDate
-     */
+    /// Parsed value of [#LastModFileDate].
     public final MSDosDate LastModFileDateValue;
-    /**
-     * CRC-32.
-     */
+    /// CRC-32.
     public final byte[] CRC32 = new byte[4];
-    /**
-     * Compressed size.
-     */
+    /// Compressed size.
     public final long CompressedSize;
-    /**
-     * Uncompressed size.
-     */
+    /// Uncompressed size.
     public final long UncompressedSize;
-    /**
-     * File name length.
-     */
+    /// File name length.
     public final int FileNameLength;
-    /**
-     * Extra field length.
-     */
+    /// Extra field length.
     public final int ExtraFieldLength;
-    /**
-     * File name. <code>null</code> when {@link #FileNameLength} is 0.
-     */
+    /// File name. `null` when [#FileNameLength] is 0.
     public final byte[] FileName;
-    /**
-     * Parsed value of {@link #FileName}.
-     *
-     * @see #FileName
-     */
+    /// Parsed value of [#FileName].
     public final String FileNameValue;
-    /**
-     * Extra field. <code>null</code> when {@link #ExtraFieldLength} is 0.
-     */
+    /// Extra field. `null` when [#ExtraFieldLength] is 0.
     public final byte[] ExtraField;
+    /// Parsed value of [#ExtraField].
+    public final List<ExtraFieldBlock> ExtraFieldBlocks;
+    /// Length of the file data following the header.
+    ///
+    /// Taken from the central directory, since [#CompressedSize] is zero
+    /// when [#FLAG_DATA_DESCRIPTOR] is set, or `0xFFFFFFFF` for Zip64.
+    public final int FileDataLength;
+    /// The data descriptor after the file data, if any.
+    private final DataDescriptor dataDescriptor;
 
-    LocalFileHeader(PosDataInputStream stream) throws IOException {
+    /// Read a local file header.
+    ///
+    /// @param stream Stream positioned at the local file header
+    /// @param central The central directory file header of the same entry
+    LocalFileHeader(final PosDataInputStream stream, final CentralDirectoryStructure.FileHeader central) throws IOException {
         this.startPos = stream.getPos();
 
-        int readBytes = stream.read(this.Signature);
-        if (readBytes != this.Signature.length) {
-            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
-        }
-
-        if (Arrays.equals(this.Signature, ZIPFile.LOCAL_FILE_HEADER) == false) {
-            throw new FileFormatException("Signature does not match for 'local file header signature'.");
+        stream.readFully(this.Signature);
+        if (!Arrays.equals(this.Signature, ZIPFile.LOCAL_FILE_HEADER)) {
+            throw new FileFormatException(signatureMismatch("local file header signature", this.startPos, this.Signature, ZIPFile.LOCAL_FILE_HEADER));
         }
 
         this.VersionNeededToExtract = stream.readUnsignedShortInLittleEndian();
-
-        readBytes = stream.read(this.GeneralPurposeBitFlag);
-        if (readBytes != this.GeneralPurposeBitFlag.length) {
-            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.GeneralPurposeBitFlag.length, readBytes));
-        }
-
+        stream.readFully(this.GeneralPurposeBitFlag);
         this.CompressionMethod = stream.readUnsignedShortInLittleEndian();
 
-        int lastModFileTimeStartPos = stream.getPos();
+        final int lastModFileTimeStartPos = stream.getPos();
         this.LastModFileTime = stream.readUnsignedShortInLittleEndian();
         this.LastModFileTimeValue = new MSDosTime(this.LastModFileTime, lastModFileTimeStartPos, PosDataInputStream.USHORT_LENGTH);
 
-        int lastModFileDateStartPos = stream.getPos();
+        final int lastModFileDateStartPos = stream.getPos();
         this.LastModFileDate = stream.readUnsignedShortInLittleEndian();
         this.LastModFileDateValue = new MSDosDate(this.LastModFileDate, lastModFileDateStartPos, PosDataInputStream.USHORT_LENGTH);
 
-        readBytes = stream.read(this.CRC32);
-        if (readBytes != this.CRC32.length) {
-            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.CRC32.length, readBytes));
-        }
-
+        stream.readFully(this.CRC32);
         this.CompressedSize = stream.readUnsignedIntInLittleEndian();
         this.UncompressedSize = stream.readUnsignedIntInLittleEndian();
         this.FileNameLength = stream.readUnsignedShortInLittleEndian();
         this.ExtraFieldLength = stream.readUnsignedShortInLittleEndian();
-        if (this.FileNameLength > 0) {
-            this.FileName = new byte[this.FileNameLength];
-            readBytes = stream.read(this.FileName);
-            if (readBytes != this.FileName.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.FileName.length, readBytes));
-            }
 
-            // PosDataInputStream utf8 = new PosDataInputStream(new PosByteArrayInputStream(this.FileName));
-            // this.FileNameValue = utf8.readUTF();              // Failed: EOFException
-            // this.FileNameValue = new String(this.FileName);   // TODO - This logic is not working for Chinese charactor
-            // this.FileNameValue = new String(this.FileName, Charset.forName("ISO-8859-1"));// Not working for WinRAR zip Chinese file name
-            this.FileNameValue = new String(this.FileName, Charset.forName("UTF-8")); // Not working for WinRAR zip Chinese file name
-            // this.FileNameValue = new String(this.FileName, Charset.forName("UTF-16")); // Not
-            // this.FileNameValue = new String(this.FileName, Charset.forName("UTF-16BE")); // Not
-            // this.FileNameValue = new String(this.FileName, Charset.forName("UTF-16LE"));  // Not
-        } else {
-            this.FileName = null;
-            this.FileNameValue = "";  // We are not using NULL to make smaller dump
-        }
-        if (this.ExtraFieldLength > 0) {
-            this.ExtraField = new byte[this.ExtraFieldLength];
-            readBytes = stream.read(this.ExtraField);
-            if (readBytes != this.ExtraField.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ExtraField.length, readBytes));
-            }
-        } else {
-            this.ExtraField = null;
-        }
+        this.FileName = readOptional(stream, this.FileNameLength);
+        this.FileNameValue = decodeText(this.FileName);
+        final int extraFieldStartPos = stream.getPos();
+        this.ExtraField = readOptional(stream, this.ExtraFieldLength);
+        this.ExtraFieldBlocks = ExtraFieldBlock.parse(this.ExtraField, extraFieldStartPos);
 
-        this.length = 30 + this.FileNameLength + this.ExtraFieldLength;
+        this.length = MIN_LENGTH + this.FileNameLength + this.ExtraFieldLength;
+
+        final int dataStartPos = this.startPos + this.length;
+        this.FileDataLength = Math.clamp(central.CompressedSizeValue, 0, stream.getBuf().length - dataStartPos);
+        this.dataDescriptor = (this.getGeneralPurposeBitFlagBitValue(FLAG_DATA_DESCRIPTOR) == 1)
+                ? DataDescriptor.read(stream, dataStartPos + this.FileDataLength, ExtraFieldBlock.zip64ExtendedInfo(this.ExtraField).hasRemaining())
+                : null;
+    }
+
+    /// The data descriptor after the file data, which exists when
+    /// [#FLAG_DATA_DESCRIPTOR] is set.
+    ///
+    /// @return The data descriptor, or empty if there is none
+    public Optional<DataDescriptor> getDataDescriptor() {
+        return Optional.ofNullable(this.dataDescriptor);
+    }
+
+    /// Position after the file data and the data descriptor.
+    ///
+    /// @return The end position, exclusive
+    public int getEndPos() {
+        return this.getDataDescriptor()
+                .map(d -> d.startPos() + d.length())
+                .orElse(this.startPos + this.length + this.FileDataLength);
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parent) {
+    @SuppressWarnings({"java:S1121"})
+    public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
-        // Local file header
-        DefaultMutableTreeNode nodeLfh = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeLfh = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 this.getLength(),
                 "Local file header - " + this.FileNameValue));
@@ -202,46 +192,28 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format("version needed to extract = %d", this.VersionNeededToExtract),
+                "version needed to extract = %d".formatted(this.VersionNeededToExtract),
                 Icons.Versions
         )));
-
-        DefaultMutableTreeNode nodeBigFlag = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
-                2,
-                String.format("general purpose bit flag = %02X %02X",
-                        this.GeneralPurposeBitFlag[0],
-                        this.GeneralPurposeBitFlag[1])
-        ));
-        nodeLfh.add(nodeBigFlag);
-        for (int i = 0; i < 16; i++) {
-            nodeBigFlag.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position + ((i > 7) ? 1 : 0),
-                    1,
-                    String.format("Bit %02d = %d", i, this.getGeneralPurposeBitFlagBitValue(i)),
-                    Icons.Tag
-            )));
-        }
+        generateTreeNodeGeneralPurposeBitFlag(nodeLfh, position += 2, this.GeneralPurposeBitFlag);
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("compression method = %d", this.CompressionMethod))));
+                Compression.toText(this.CompressionMethod))));
 
-        //
-        DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("last mod file time = %s", this.LastModFileTimeValue.toString()),
+                "last mod file time = %s".formatted(this.LastModFileTimeValue),
                 Icons.Time
         ));
         nodeLfh.add(nodeTime);
         this.LastModFileTimeValue.generateTreeNode(nodeTime);
 
-        //
-        DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("last mod file date = %s", this.LastModFileDateValue.toString()),
+                "last mod file date = %s".formatted(this.LastModFileDateValue),
                 Icons.Calendar
         ));
         nodeLfh.add(nodeDate);
@@ -256,25 +228,25 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("compressed size = %d", this.CompressedSize),
+                "compressed size = %d".formatted(this.CompressedSize),
                 Icons.Size
         )));
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("uncompressed size = %d", this.UncompressedSize),
+                "uncompressed size = %d".formatted(this.UncompressedSize),
                 Icons.Size
         )));
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format("file name length = %d", this.FileNameLength),
+                "file name length = %d".formatted(this.FileNameLength),
                 Icons.Length
         )));
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("extra field length = %d", this.ExtraFieldLength),
+                "extra field length = %d".formatted(this.ExtraFieldLength),
                 Icons.Length
         )));
         position += 2;
@@ -282,64 +254,188 @@ public class LocalFileHeader extends FileComponent implements GenerateTreeNode {
             nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
                     this.FileName.length,
-                    String.format("file name = %s", this.FileNameValue),
+                    "file name = %s".formatted(this.FileNameValue),
                     Icons.Name
             )));
             position += this.FileName.length;
         }
         if (this.ExtraField != null) {
-            nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position,
-                    this.ExtraField.length,
-                    "extra field")));
+            generateTreeNodeExtraField(nodeLfh, position, this.ExtraField.length, this.ExtraFieldBlocks);
             position += this.ExtraField.length;
         }
 
         // File data
-        if (this.CompressedSize > 0) {
+        if (this.FileDataLength > 0) {
             parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
-                    (int) this.CompressedSize, // Note. We are in danger of very big file longer than int value size.
+                    this.FileDataLength,
                     "File data",
                     Icons.Data,
                     ZIPFile.MESSAGES.getString("MSG_COMPRESSED_FILE")
             )));
         }
+
+        if (this.dataDescriptor != null) {
+            this.dataDescriptor.generateTreeNode(parent);
+        }
     }
 
-    /**
-     * Get the corresponding bit value of <code>position</code>.
-     * <p>
-     * There are two bytes in in the {@link #GeneralPurposeBitFlag} field, the
-     * bit position is located as:
-     * </p>
-     * <pre>
-     *   byte       :  [ byte left/0 ]    [ byte right/1]
-     *   bit postion:  7 6 5 4 3 2 1 0    F E D C B A 9 8
-     * </pre>
-     *
-     * @param position Bit position, from 1 to 15
-     * @return The bit value, 0 or 1
-     */
-    public int getGeneralPurposeBitFlagBitValue(int position) {
-        return LocalFileHeader.parseGeneralPurposeBitFlag(this.GeneralPurposeBitFlag, position);
+    /// Get the corresponding bit value of `position`.
+    ///
+    /// There are two bytes in the [#GeneralPurposeBitFlag] field, the bit
+    /// position is located as:
+    ///
+    /// ```
+    /// byte        :  [ byte left/0 ]    [ byte right/1]
+    /// bit position:  7 6 5 4 3 2 1 0    F E D C B A 9 8
+    /// ```
+    ///
+    /// @param position Bit position, from 0 to 15
+    /// @return The bit value, 0 or 1
+    public int getGeneralPurposeBitFlagBitValue(final int position) {
+        return parseGeneralPurposeBitFlag(this.GeneralPurposeBitFlag, position);
     }
 
-    static int parseGeneralPurposeBitFlag(byte[] buf, int position) {
+    static int parseGeneralPurposeBitFlag(final byte[] buf, final int position) {
         if (position < 0 || position > 15) {
-            throw new IllegalArgumentException(String.format("Invalid postion value %d, [0, 15] is expeced.", position));
+            throw new IllegalArgumentException("Invalid position value %d, [0, 15] is expected.".formatted(position));
+        }
+        return (buf[position / Byte.SIZE] >> (position % Byte.SIZE)) & 1;
+    }
+
+    /// Add the `general purpose bit flag` node, with one child per bit.
+    static void generateTreeNodeGeneralPurposeBitFlag(final DefaultMutableTreeNode parent, final int position, final byte[] flag) {
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                2,
+                "general purpose bit flag = %02X %02X".formatted(flag[0], flag[1])));
+        parent.add(node);
+        for (int i = 0; i < FLAG_NAMES.size(); i++) {
+            node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position + i / Byte.SIZE,
+                    1,
+                    "Bit %02d = %d (%s)".formatted(i, parseGeneralPurposeBitFlag(flag, i), FLAG_NAMES.get(i)),
+                    Icons.Tag
+            )));
+        }
+    }
+
+    /// Add the `extra field` node, with one child per [ExtraFieldBlock].
+    static void generateTreeNodeExtraField(final DefaultMutableTreeNode parent, final int position, final int length, final List<ExtraFieldBlock> blocks) {
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                position,
+                length,
+                "extra field"));
+        parent.add(node);
+        blocks.forEach(b -> b.generateTreeNode(node));
+    }
+
+    /// Read `length` bytes, or return `null` if `length` is 0.
+    static byte[] readOptional(final PosDataInputStream stream, final int length) throws IOException {
+        if (length == 0) {
+            return null;
+        }
+        final byte[] bytes = new byte[length];
+        stream.readFully(bytes);
+        return bytes;
+    }
+
+    /// Decode a file name or comment.
+    ///
+    /// The names are decoded as UTF-8, the same as `java.util.zip`. Archives
+    /// using a local code page, such as WinRAR with Chinese file names, are not
+    /// decoded correctly.
+    ///
+    /// @return The text, or empty string for `null`
+    static String decodeText(final byte[] bytes) {
+        return (bytes == null) ? "" : new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    static String signatureMismatch(final String name, final int pos, final byte[] found, final byte[] expected) {
+        return "Signature does not match for '%s' at 0x%08X: found = %s, expected = %s".formatted(
+                name, pos, BytesTool.getByteDataHexView(found), BytesTool.getByteDataHexView(expected));
+    }
+
+    /// The data descriptor, which follows the file data when
+    /// [#FLAG_DATA_DESCRIPTOR] is set.
+    ///
+    /// ```
+    /// signature (optional)    4 bytes  (0x08074b50)
+    /// crc-32                  4 bytes
+    /// compressed size         4 bytes, or 8 bytes for Zip64
+    /// uncompressed size       4 bytes, or 8 bytes for Zip64
+    /// ```
+    ///
+    /// @param startPos Start position in the file
+    /// @param hasSignature Whether the optional signature exists
+    /// @param sizeLength Length of each size field, 4, or 8 for Zip64
+    /// @param crc32 CRC-32
+    /// @param compressedSize Compressed size
+    /// @param uncompressedSize Uncompressed size
+    public record DataDescriptor(int startPos, boolean hasSignature, int sizeLength,
+            long crc32, long compressedSize, long uncompressedSize) implements GenerateTreeNode {
+
+        /// Read the data descriptor at `pos`.
+        ///
+        /// @return The data descriptor, or `null` if it does not fit the file
+        static DataDescriptor read(final PosDataInputStream stream, final int pos, final boolean zip64) throws IOException {
+            final byte[] buf = stream.getBuf();
+            final int sigLength = ZIPFile.DATA_DESCRIPTOR.length;
+            final boolean signature = pos + sigLength <= buf.length
+                    && Arrays.equals(buf, pos, pos + sigLength, ZIPFile.DATA_DESCRIPTOR, 0, sigLength);
+            final int sizeLength = zip64 ? Long.BYTES : Integer.BYTES;
+            if (pos + (signature ? sigLength : 0) + Integer.BYTES + 2 * sizeLength > buf.length) {
+                return null;
+            }
+
+            stream.flyTo(pos + (signature ? sigLength : 0));
+            final long crc = stream.readUnsignedIntInLittleEndian();
+            final long compressed = zip64 ? stream.readLongInLittleEndian() : stream.readUnsignedIntInLittleEndian();
+            final long uncompressed = zip64 ? stream.readLongInLittleEndian() : stream.readUnsignedIntInLittleEndian();
+            return new DataDescriptor(pos, signature, sizeLength, crc, compressed, uncompressed);
         }
 
-        byte byteValue;
-        int bitPos;
-        if (position >= 0 && position <= 7) {
-            byteValue = buf[0];
-            bitPos = position;
-        } else {
-            byteValue = buf[1];
-            bitPos = position - 8;
+        /// Length of the data descriptor.
+        ///
+        /// @return The length in bytes
+        public int length() {
+            return (this.hasSignature ? ZIPFile.DATA_DESCRIPTOR.length : 0) + Integer.BYTES + 2 * this.sizeLength;
         }
 
-        return (((byte) (((byte) (byteValue << (7 - bitPos))) >> 7)) & 0x0001);
+        @Override
+        @SuppressWarnings({"java:S1121"})
+        public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+            int position = this.startPos;
+
+            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    this.length(),
+                    "Data descriptor"));
+            parentNode.add(node);
+
+            if (this.hasSignature) {
+                node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                        position,
+                        4,
+                        "signature:" + BytesTool.getByteDataHexView(ZIPFile.DATA_DESCRIPTOR),
+                        Icons.Signature)));
+                position += 4;
+            }
+            node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position,
+                    4,
+                    "crc-32 = 0x%08X".formatted(this.crc32),
+                    Icons.Checksum)));
+            node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position += 4,
+                    this.sizeLength,
+                    "compressed size = %d".formatted(this.compressedSize),
+                    Icons.Size)));
+            node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    position + this.sizeLength,
+                    this.sizeLength,
+                    "uncompressed size = %d".formatted(this.uncompressedSize),
+                    Icons.Size)));
+        }
     }
 }

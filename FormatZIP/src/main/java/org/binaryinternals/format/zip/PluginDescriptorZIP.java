@@ -1,5 +1,5 @@
 /*
- * PluginDescriptorPNG.java    Apr 16, 2011, 20:14
+ * PluginDescriptorZIP.java    Apr 16, 2011, 20:14
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -11,13 +11,14 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorZIP implements PluginDescriptor{
+/// Plug-in descriptor for the ZIP file format.
+///
+/// @author Amos Shi
+public final class PluginDescriptorZIP implements PluginDescriptor {
 
+    /// Public no-argument constructor, required by `ServiceLoader`.
     public PluginDescriptorZIP() {
+        // Nothing to initialize
     }
 
     @Override
@@ -34,5 +35,4 @@ public class PluginDescriptorZIP implements PluginDescriptor{
     public Class<? extends FileFormat> getFileFormatClass() {
         return ZIPFile.class;
     }
-
 }
