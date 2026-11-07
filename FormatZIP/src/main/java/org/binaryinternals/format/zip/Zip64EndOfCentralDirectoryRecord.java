@@ -83,7 +83,8 @@ public final class Zip64EndOfCentralDirectoryRecord extends FileComponent implem
         this.CentralDirectoryOffset = stream.readLongInLittleEndian();
 
         final long recordLength = LEADING_LENGTH + this.RecordSize;
-        if (recordLength < MIN_LENGTH || this.startPos + recordLength > stream.getBuf().length) {
+        if (this.RecordSize < MIN_LENGTH - LEADING_LENGTH
+                || this.RecordSize > (long) stream.getBuf().length - this.startPos - LEADING_LENGTH) {
             throw new FileFormatException("Invalid 'size of zip64 end of central directory record' at 0x%08X: %d".formatted(this.startPos + 4, this.RecordSize));
         }
         this.length = (int) recordLength;
