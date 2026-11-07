@@ -9,6 +9,7 @@ package org.binaryinternals.format.zip;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
@@ -16,54 +17,52 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * End of central directory record.
- * <pre>
- *      end of central dir signature                                   4 bytes  (0x06054b50)
- *      number of this disk                                            2 bytes
- *      number of the disk with the start of the central directory     2 bytes
- *      total number of entries in the central directory on this disk  2 bytes
- *      total number of entries in the central directory               2 bytes
- *      size of the central directory                                  4 bytes
- *      offset of start of central directory with respect to the
- *        starting disk number                                         4 bytes
- *      .ZIP file comment length                                       2 bytes
- *      .ZIP file comment                                              (variable size)
- * </pre>
- *
- * @author Amos Shi
- */
-public class EndOfCentralDirectoryRecord extends FileComponent implements GenerateTreeNode {
+/// End of central directory record.
+///
+/// ```
+/// end of central dir signature                                   4 bytes  (0x06054b50)
+/// number of this disk                                            2 bytes
+/// number of the disk with the start of the central directory     2 bytes
+/// total number of entries in the central directory on this disk  2 bytes
+/// total number of entries in the central directory               2 bytes
+/// size of the central directory                                  4 bytes
+/// offset of start of central directory with respect to the
+///   starting disk number                                         4 bytes
+/// .ZIP file comment length                                       2 bytes
+/// .ZIP file comment                                              (variable size)
+/// ```
+///
+/// @author Amos Shi
+public final class EndOfCentralDirectoryRecord extends FileComponent implements GenerateTreeNode {
 
-    /** End of central directory signature. */
+    /// Size of the record without the comment.
+    public static final int MIN_LENGTH = 22;
+
+    /// End of central directory signature.
     public final byte[] Signature = new byte[4];
-    /** Number of this disk. */
+    /// Number of this disk.
     public final int DiskNumber;
-    /** Number of the disk with the start of the central directory. */
+    /// Number of the disk with the start of the central directory.
     public final int DiskNumberWithSCD;
-    /** Total number of entries in the central directory on this disk. */
+    /// Total number of entries in the central directory on this disk.
     public final int EntryTotalNumberDisk;
-    /** Total number of entries in the central directory. */
+    /// Total number of entries in the central directory.
     public final int EntryTotalNumber;
-    /** Size of the central directory. */
+    /// Size of the central directory.
     public final long CentralDirectorySize;
-    /** Offset of start of central directory with respect to the starting disk number. */
+    /// Offset of start of central directory with respect to the starting disk number.
     public final long CentralDirectoryOffset;
-    /** ZIP file comment length. */
+    /// ZIP file comment length.
     public final int ZipFileCommentLength;
-    /** ZIP file comment. <code>null</code> of {@link #ZipFileCommentLength} is zero. */
+    /// ZIP file comment. `null` if [#ZipFileCommentLength] is zero.
     public final byte[] ZipFileComment;
 
-    EndOfCentralDirectoryRecord(PosDataInputStream stream) throws IOException {
+    EndOfCentralDirectoryRecord(final PosDataInputStream stream) throws IOException {
         this.startPos = stream.getPos();
 
-        int readBytes = stream.read(this.Signature);
-        if (readBytes != this.Signature.length) {
-            throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.Signature.length, readBytes));
-        }
-
-        if (Arrays.equals(this.Signature, ZIPFile.CENTRAL_END) == false) {
-            throw new FileFormatException("Signature does not match for 'end of central directory signature'.");
+        stream.readFully(this.Signature);
+        if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_END)) {
+            throw new FileFormatException(LocalFileHeader.signatureMismatch("end of central directory signature", this.startPos, this.Signature, ZIPFile.CENTRAL_END));
         }
         this.DiskNumber = stream.readUnsignedShortInLittleEndian();
         this.DiskNumberWithSCD = stream.readUnsignedShortInLittleEndian();
@@ -72,26 +71,30 @@ public class EndOfCentralDirectoryRecord extends FileComponent implements Genera
         this.CentralDirectorySize = stream.readUnsignedIntInLittleEndian();
         this.CentralDirectoryOffset = stream.readUnsignedIntInLittleEndian();
         this.ZipFileCommentLength = stream.readUnsignedShortInLittleEndian();
-        if (this.ZipFileCommentLength > 0) {
-            this.ZipFileComment = new byte[this.ZipFileCommentLength];
+        this.ZipFileComment = LocalFileHeader.readOptional(stream, this.ZipFileCommentLength);
 
-            readBytes = stream.read(this.ZipFileComment);
-            if (readBytes != this.ZipFileComment.length) {
-                throw new IOException(String.format("Failed to read %d bytes, actual bytes read %d", this.ZipFileComment.length, readBytes));
-            }
-        } else {
-            this.ZipFileComment = null;
-        }
+        this.length = MIN_LENGTH + this.ZipFileCommentLength;
+    }
 
-        this.length = 22 + this.ZipFileCommentLength;
+    /// Whether any field is set to its maximum value, which means the actual
+    /// value is in the [Zip64EndOfCentralDirectoryRecord].
+    ///
+    /// @return `true` if the archive needs the Zip64 record
+    public boolean isZip64() {
+        return this.DiskNumber == 0xFFFF
+                || this.DiskNumberWithSCD == 0xFFFF
+                || this.EntryTotalNumberDisk == 0xFFFF
+                || this.EntryTotalNumber == 0xFFFF
+                || this.CentralDirectorySize == CentralDirectoryStructure.FileHeader.ZIP64_MAGIC
+                || this.CentralDirectoryOffset == CentralDirectoryStructure.FileHeader.ZIP64_MAGIC;
     }
 
     @Override
     @SuppressWarnings({"java:S1121"})
-    public void generateTreeNode(DefaultMutableTreeNode parent) {
+    public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
-        DefaultMutableTreeNode nodeCDE = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeCDE = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 this.getLength(),
                 "End of central directory record"));
@@ -100,56 +103,56 @@ public class EndOfCentralDirectoryRecord extends FileComponent implements Genera
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position,
                 4,
-                "signature",
+                "signature:" + BytesTool.getByteDataHexView(this.Signature),
                 Icons.Signature
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format("number of this disk = %d", this.DiskNumber),
+                "number of this disk = %d".formatted(this.DiskNumber),
                 Icons.Counter
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("number of the disk with the start of the central directory = %d", this.DiskNumberWithSCD),
+                "number of the disk with the start of the central directory = %d".formatted(this.DiskNumberWithSCD),
                 Icons.Counter
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("total number of entries in the central directory on this disk = %d", this.EntryTotalNumberDisk),
+                "total number of entries in the central directory on this disk = %d".formatted(this.EntryTotalNumberDisk),
                 Icons.Counter
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 2,
-                String.format("total number of entries in the central directory = %d", this.EntryTotalNumber),
+                "total number of entries in the central directory = %d".formatted(this.EntryTotalNumber),
                 Icons.Counter
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 2,
                 4,
-                String.format("size of the central directory = %d", this.CentralDirectorySize),
+                "size of the central directory = %d".formatted(this.CentralDirectorySize),
                 Icons.Size
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 4,
-                String.format("offset of start of central directory with respect to the starting disk number = 0x%08X", this.CentralDirectoryOffset),
+                "offset of start of central directory with respect to the starting disk number = 0x%08X".formatted(this.CentralDirectoryOffset),
                 Icons.Offset
         )));
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 position += 4,
                 2,
-                String.format(".ZIP file comment length = %d", this.ZipFileCommentLength),
+                ".ZIP file comment length = %d".formatted(this.ZipFileCommentLength),
                 Icons.Length
         )));
         if (this.ZipFileComment != null) {
             nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position + 2,
                     this.ZipFileComment.length,
-                    ".ZIP file comment",
+                    ".ZIP file comment = %s".formatted(LocalFileHeader.decodeText(this.ZipFileComment)),
                     Icons.Annotations
             )));
         }
