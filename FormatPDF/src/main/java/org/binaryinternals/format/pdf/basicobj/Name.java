@@ -1,77 +1,73 @@
 package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
+import java.util.HexFormat;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.pdf.PDFStatics;
 import org.binaryinternals.format.pdf.Texts;
 
-/**
- * PDF basic object Name, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.5</code>: Name Objects.
- *
- * @author Amos Shi
- */
-public final class Name extends FileComponent implements GenerateTreeNode {
+/// PDF basic object Name, see `PDF 32000-1:2008` `7.3.5`: Name Objects.
+///
+/// @author Amos Shi
+public final class Name extends FileComponent implements BasicObject {
 
-    /**
-     * Name text in
-     * <code>Raw</code> format.
-     */
+    /// Prefix of a two-digit hexadecimal code in a name, like `#20` for a space.
+    private static final char NUMBER_SIGN = '#';
+
+    /// Name text in `Raw` format, without the leading `/`.
     private final String RawName;
 
-    Name(PosDataInputStream stream) throws IOException {
+    Name(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
         stream.skipNBytes(1);
-        this.RawName = stream.readASCIIUntil(
-                PDFStatics.WhiteSpace.SP,
-                PDFStatics.WhiteSpace.LF,
-                PDFStatics.WhiteSpace.CR,
-                PDFStatics.DelimiterCharacter.LP,
-                PDFStatics.DelimiterCharacter.RP,
-                PDFStatics.DelimiterCharacter.LT,
-                PDFStatics.DelimiterCharacter.GT,
-                PDFStatics.DelimiterCharacter.LS,
-                PDFStatics.DelimiterCharacter.RS,
-                PDFStatics.DelimiterCharacter.LC,
-                PDFStatics.DelimiterCharacter.RC,
-                PDFStatics.DelimiterCharacter.SO,
-                PDFStatics.DelimiterCharacter.PS);
-        stream.backward(1);
-        this.length = stream.getPos() - super.startPos; // The length includes 3 parts: '/' RawNameText ' '(Space at the End)
+        this.RawName = PDFStatics.readRegularCharacters(stream);
+        this.length = stream.getPos() - super.startPos; // The length includes 2 parts: '/' RawNameText
     }
 
+    /// The name, with the `#xx` hexadecimal codes decoded.
+    ///
+    /// @return The name
     public String getName() {
-        // TODO - Change to the .getName() - Issue: No test case until now.
-        //        The following if-clause is used to search for such case
-        if (this.RawName.contains("#")) {
-            System.out.println(this.toString());
-        }
-        return this.RawName;
+        return decode(this.RawName);
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    static String decode(final String raw) {
+        if (raw.indexOf(NUMBER_SIGN) < 0) {
+            return raw;
+        }
+
+        final StringBuilder sb = new StringBuilder(raw.length());
+        for (int i = 0; i < raw.length(); i++) {
+            final char c = raw.charAt(i);
+            if (c == NUMBER_SIGN && i + 2 < raw.length()
+                    && HexFormat.isHexDigit(raw.charAt(i + 1))
+                    && HexFormat.isHexDigit(raw.charAt(i + 2))) {
+                sb.append((char) HexFormat.fromHexDigits(raw, i + 1, i + 3));
+                i += 2;
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeName = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                "Name Object: " + this.getName());
-        DefaultMutableTreeNode nodeName = new DefaultMutableTreeNode(nodeComp);
+                "Name Object: " + this.getName()));
 
-        int pos = super.startPos;
         nodeName.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
+                super.startPos,
                 1,
                 Texts.Signature + (char) PDFStatics.DelimiterCharacter.SO)));
-        pos += 1;
-
-        int len = super.length - 1;
         nodeName.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
-                len,
+                super.startPos + 1,
+                super.length - 1,
                 "Name = " + this.RawName)));
 
         parentNode.add(nodeName);
@@ -79,7 +75,7 @@ public final class Name extends FileComponent implements GenerateTreeNode {
 
     @Override
     public String toString() {
-        return String.format("Name Object: Start Position = %d, Length = %d, Raw Name = '%s'",
+        return "Name Object: Start Position = %d, Length = %d, Raw Name = '%s'".formatted(
                 super.startPos,
                 super.length,
                 this.RawName);

@@ -8,129 +8,117 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.pdf.PDFStatics;
 import org.binaryinternals.format.pdf.Texts;
 
-/**
- * Basic object analysis.
- *
- * @author Amos Shi
- */
-public class Analysis {
+/// Basic object analysis.
+///
+/// @author Amos Shi
+public final class Analysis {
 
-    public Analysis() {
+    private Analysis() {
     }
 
-    public FileComponent parseNextObject(PosDataInputStream stream, List<FileComponent> components) throws IOException {
-        FileComponent comp;
-        byte next1 = stream.readByte();
-        byte next2;
+    /// Parse the next object, white-space or comment, and add it to
+    /// `components`.
+    ///
+    /// @param stream The stream
+    /// @param components The parsed components, the former 2 objects are
+    /// merged into a [Reference]
+    /// @return The parsed component, or `null` if the next byte does not
+    /// start one; the byte is not consumed then
+    /// @throws IOException Read failed
+    public static FileComponent parseNextObject(final PosDataInputStream stream, final List<FileComponent> components) throws IOException {
+        final int start = stream.getPos();
+        final byte next = stream.readByte();
 
-        switch (next1) {
-            case PDFStatics.WhiteSpace.LF:                                      // New Line
-            case PDFStatics.WhiteSpace.CR:                                      // New Line
-                comp = new DefaultFileComponent(stream.getPos() - 1, 1, Texts.NewLine);
-                break;
-            case PDFStatics.WhiteSpace.SP:                                      // ' '  - White Space
-                comp = new DefaultFileComponent(stream.getPos() - 1, 1, Texts.Space);
-                break;
-            case PDFStatics.DelimiterCharacter.LP:                              //  '('  - Leteral String
+        final FileComponent comp = switch (next) {
+            case PDFStatics.WhiteSpace.LF, PDFStatics.WhiteSpace.CR ->
+                new DefaultFileComponent(start, 1, Texts.NewLine);
+            case PDFStatics.WhiteSpace.SP ->
+                new DefaultFileComponent(start, 1, Texts.Space);
+            case PDFStatics.WhiteSpace.HT, PDFStatics.WhiteSpace.FF, PDFStatics.WhiteSpace.NUL ->
+                new DefaultFileComponent(start, 1, Texts.WhiteSpace);
+            case PDFStatics.DelimiterCharacter.PS -> {
                 stream.backward(1);
-                comp = new StringLiteral(stream);
-                break;
-            case PDFStatics.DelimiterCharacter.LT:
-                next2 = stream.readByte();
-                stream.backward(2);
-                if (next2 == PDFStatics.DelimiterCharacter.LT) {                //  '<<' - Dictionary
-                    comp = new Dictionary(stream);
-                } else {
-                    comp = new StringHexadecimal(stream);                       //  '<'  - Hexadecimal String
-                }
-                break;
-            case PDFStatics.DelimiterCharacter.SO:                              //  '/' - Name
+                final String comment = stream.readASCIILine().line();
+                stream.backward(stream.getPos() - start - comment.length());
+                yield new DefaultFileComponent(start, comment.length(), "Comment: " + comment);
+            }
+            case PDFStatics.DelimiterCharacter.LP -> {                          //  '('  - Literal String
                 stream.backward(1);
-                comp = new Name(stream);
-                break;
-            case PDFStatics.DelimiterCharacter.LS:                              //  '[' - Array
+                yield new StringLiteral(stream);
+            }
+            case PDFStatics.DelimiterCharacter.LT -> {
+                final boolean dictionary = stream.hasNext() && stream.readByte() == PDFStatics.DelimiterCharacter.LT;
+                stream.backward(stream.getPos() - start);
+                yield dictionary
+                        ? new Dictionary(stream)                                //  '<<' - Dictionary
+                        : new StringHexadecimal(stream);                        //  '<'  - Hexadecimal String
+            }
+            case PDFStatics.DelimiterCharacter.SO -> {                          //  '/' - Name
                 stream.backward(1);
-                comp = new Array(stream);
-                break;
-            case Numeric.StartByte.SIGN_ADD:
-            case Numeric.StartByte.SIGN_MINUS:
-            case Numeric.StartByte.NUMBER_0:
-            case Numeric.StartByte.NUMBER_1:
-            case Numeric.StartByte.NUMBER_2:
-            case Numeric.StartByte.NUMBER_3:
-            case Numeric.StartByte.NUMBER_4:
-            case Numeric.StartByte.NUMBER_5:
-            case Numeric.StartByte.NUMBER_6:
-            case Numeric.StartByte.NUMBER_7:
-            case Numeric.StartByte.NUMBER_8:
-            case Numeric.StartByte.NUMBER_9:
+                yield new Name(stream);
+            }
+            case PDFStatics.DelimiterCharacter.LS -> {                          //  '[' - Array
                 stream.backward(1);
-                comp = new Numeric(stream);
-                break;
-            case Boolean.StartByte.TRUE:
-            case Boolean.StartByte.FALSE:
+                yield new Array(stream);
+            }
+            case Numeric.StartByte.SIGN_ADD, Numeric.StartByte.SIGN_MINUS, Numeric.StartByte.DECIMAL_POINT,
+                 Numeric.StartByte.NUMBER_0, Numeric.StartByte.NUMBER_1, Numeric.StartByte.NUMBER_2,
+                 Numeric.StartByte.NUMBER_3, Numeric.StartByte.NUMBER_4, Numeric.StartByte.NUMBER_5,
+                 Numeric.StartByte.NUMBER_6, Numeric.StartByte.NUMBER_7, Numeric.StartByte.NUMBER_8,
+                 Numeric.StartByte.NUMBER_9 -> {
                 stream.backward(1);
-                comp = new Boolean(stream);                                     // 'true' 'false' - Boolean Object
-                break;
-            case Null.StartByte.NULL:
+                yield new Numeric(stream);
+            }
+            case Boolean.StartByte.TRUE, Boolean.StartByte.FALSE -> {           // 'true' 'false' - Boolean Object
                 stream.backward(1);
-                comp = new Null(stream);                                        // 'null' - Null Object
-                break;
-            case Reference.SIGNATURE:
+                yield new Boolean(stream);
+            }
+            case Null.StartByte.NULL -> {                                       // 'null' - Null Object
                 stream.backward(1);
-                comp = new Reference(stream);                                   // '9 0 R' - Reference Indirect Object
+                yield new Null(stream);
+            }
+            case Reference.SIGNATURE -> {                                       // '9 0 R' - Reference Indirect Object
+                stream.backward(1);
+                final Reference ref = new Reference(stream);
+                mergeReferenceObjects(components, ref);
+                yield ref;
+            }
+            default -> {                                                        // Unknown
+                stream.backward(1);
+                yield null;
+            }
+        };
 
-                this.MergeReferenceObjects(components, (Reference) comp);
-
-                break;
-            default:                                                            // Unknown
-                stream.backward(1);
-                comp = null;
-                break;
-        } // End Switch
-
-        components.add(comp);
+        if (comp != null) {
+            components.add(comp);
+        }
         return comp;
     }
 
-    /**
-     * Merge the former 2 objects before the {@link Reference} object 'R'. <p>
-     * Example:
-     * <pre>
-     * 5 0 obj
-     * /Type /XObject
-     * /Subtype /Image
-     * /Width 2038
-     * /Height 171
-     * /BitsPerComponent 4
-     * /Length 347
-     * /Filter 8 0 R
-     * </pre> When we found the '
-     * <code>R</code>', we need to merge the former
-     * <code>8</code> and
-     * <code>0</code> together with the
-     * <code>R</code> object.
-     */
-    private void MergeReferenceObjects(List<FileComponent> components, Reference ref) {
-        int size = components.size();
-
-        boolean found = false;
-        int pdfObjectCounter = 0;
-        int i;
-        for (i = size - 1; i >= 0; i--) {
-            if (!(components.get(i) instanceof DefaultFileComponent)) {
-                pdfObjectCounter++;
+    /// Merge the former 2 objects before the [Reference] object 'R'.
+    ///
+    /// Example:
+    ///
+    /// ```
+    /// 5 0 obj
+    /// /Type /XObject
+    /// /Subtype /Image
+    /// /Filter 8 0 R
+    /// ```
+    ///
+    /// When we found the `R`, we need to merge the former `8` and `0`
+    /// together with the `R` object.
+    private static void mergeReferenceObjects(final List<FileComponent> components, final Reference ref) {
+        int objectCounter = 0;
+        for (int i = components.size() - 1; i >= 0; i--) {
+            if (components.get(i) instanceof BasicObject) {
+                objectCounter++;
             }
-            if (pdfObjectCounter == 2) {
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
-            for (int j = size - 1; j >= i; j--) {
-                ref.formerComponents.add(0, components.get(j));
-                components.remove(j);
+            if (objectCounter == 2) {
+                final List<FileComponent> former = components.subList(i, components.size());
+                ref.formerComponents.addAll(former);
+                former.clear();
+                return;
             }
         }
     }

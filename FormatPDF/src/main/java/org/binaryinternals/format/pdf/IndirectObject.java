@@ -1,181 +1,224 @@
 package org.binaryinternals.format.pdf;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.BytesTool;
 import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 import org.binaryinternals.format.pdf.basicobj.Analysis;
-import org.binaryinternals.format.pdf.basicobj.Reference;
 import org.binaryinternals.format.pdf.basicobj.Stream;
 
-/**
- * PDF Indirect Object, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.10</code>: Indirect Object.
- *
- * @author Amos Shi
- */
-public class IndirectObject extends FileComponent implements GenerateTreeNode {
+/// PDF Indirect Object, see `PDF 32000-1:2008` `7.3.10`: Indirect Object.
+///
+/// @author Amos Shi
+public final class IndirectObject extends FileComponent implements GenerateTreeNode {
 
-    /**
-     * Start definition regular expression. <p> Example: </p>
-     * <pre>
-     *  5534 0 obj
-     *  5491 0 obj SOME TEXT OF OBJECT
-     *  5491 0 objSOME TEXT OF OBJECT
-     * </pre>
-     *
-     */
-    public static final String SIGNATURE_START_REGEXP = "\\d+.*\\d+.*obj.*";
-    /**
-     * Key word in the first line of current object.
-     */
+    private static final Logger LOGGER = Logger.getLogger(IndirectObject.class.getName());
+
+    /// Start definition regular expression, matched at the start of a line.
+    ///
+    /// Example:
+    ///
+    /// ```
+    /// 5534 0 obj
+    /// 5491 0 obj SOME TEXT OF OBJECT
+    /// 5491 0 obj<< SOME TEXT OF OBJECT
+    /// ```
+    public static final String SIGNATURE_START_REGEXP = "(\\d+)[ \\t\\f\\x00]+(\\d+)[ \\t\\f\\x00]+obj(?=[\\s\\x00()<>\\[\\]{}/%]|$)";
+    static final Pattern SIGNATURE_START_PATTERN = Pattern.compile(SIGNATURE_START_REGEXP);
+    /// Key word in the first line of current object.
     public static final String SIGNATURE_START = "obj";
-    /**
-     * End line of current object.
-     */
+    /// End line of current object.
     public static final String SIGNATURE_END = "endobj";
-    /**
-     * A positive integer object number. <p> Indirect objects may be numbered
-     * sequentially within a PDF file, but this is not required; object numbers
-     * may be assigned in any arbitrary order. </p>
-     */
+
+    /// A positive integer object number.
+    ///
+    /// Indirect objects may be numbered sequentially within a PDF file, but
+    /// this is not required; object numbers may be assigned in any arbitrary
+    /// order.
     private final int objectNumber;
-    /**
-     * A non-negative integer generation number. <p> In a newly created file,
-     * all indirect objects shall have generation numbers of 0. Nonzero
-     * generation numbers may be introduced when the file is later updated. </p>
-     */
+    /// A non-negative integer generation number.
+    ///
+    /// In a newly created file, all indirect objects shall have generation
+    /// numbers of 0. Nonzero generation numbers may be introduced when the file
+    /// is later updated.
     private final int generationNumber;
-    /**
-     * Length of {@link #objectNumber} and {@link #generationNumber}.
-     */
+    /// Length of [#objectNumber] and [#generationNumber].
     private final int numberLen;
-    /**
-     * The last line of the indirect object.
-     */
+    /// The `obj` keyword, with the new line after it.
     private final ASCIILine signatureStart;
-    /**
-     * The last line of the indirect object.
-     */
-    private ASCIILine signatureEnd;
-    /**
-     * Component of current object.
-     */
-    private List<FileComponent> components = Collections.synchronizedList(new ArrayList<FileComponent>(100));
+    /// The `endobj` keyword, with the new line after it.
+    private final ASCIILine signatureEnd;
+    /// Length of the content between `obj` and `endobj`.
+    private final int contentLength;
+    /// Components of current object.
+    private final List<FileComponent> components = new ArrayList<>();
 
-    IndirectObject(PosDataInputStream stream, ASCIILine line) throws IOException {
-        stream.backward(line.length());
-        super.startPos = stream.getPos();
-        this.objectNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
-        this.generationNumber = Integer.parseInt(stream.readASCIIUntil(PDFStatics.WhiteSpace.SP));
-        this.numberLen = stream.getPos() - super.startPos;
-        stream.skipNBytes(SIGNATURE_START.length());
-        byte b1 = stream.readByte();
-        byte b2 = stream.readByte();
-        if (b1 == PDFStatics.WhiteSpace.CR && b2 == PDFStatics.WhiteSpace.LF) {
-            this.signatureStart = new ASCIILine(SIGNATURE_START, 2);
-        } else if (b1 == PDFStatics.WhiteSpace.CR || b1 == PDFStatics.WhiteSpace.LF) {
-            this.signatureStart = new ASCIILine(SIGNATURE_START, 1);
-            stream.backward(1);
-        } else {
-            this.signatureStart = new ASCIILine(SIGNATURE_START, 0);
-            stream.backward(2);
+    /// Parse the indirect object starting with `line`.
+    ///
+    /// @param stream The file stream, positioned after `line`
+    /// @param line The line starting with [#SIGNATURE_START_REGEXP]
+    /// @throws IOException Read failed, or `endobj` not found
+    IndirectObject(final PosDataInputStream stream, final ASCIILine line) throws IOException {
+        final Matcher m = SIGNATURE_START_PATTERN.matcher(line.line());
+        if (!m.lookingAt()) {
+            throw new IllegalArgumentException("Not an indirect object: " + line);
         }
+        super.startPos = stream.getPos() - line.length();
+        this.objectNumber = Integer.parseInt(m.group(1));
+        this.generationNumber = Integer.parseInt(m.group(2));
+        this.numberLen = m.end() - SIGNATURE_START.length();
+        this.signatureStart = new ASCIILine(SIGNATURE_START, (m.end() == line.line().length()) ? line.newLineLength() : 0);
 
-        // parse
-        this.parseStartEnd(stream);
+        final byte[] buf = stream.getBuf();
+        final int offset = stream.getOffset();
+        final int contentStart = super.startPos + this.numberLen + this.signatureStart.length();
+        final int endKeyword = this.findEnd(buf, contentStart - offset) + offset;
+        this.contentLength = endKeyword - contentStart;
 
-        // Furthur parse
-        this.parseObject(stream);
+        final int eol = eolLength(buf, endKeyword - offset + SIGNATURE_END.length());
+        this.signatureEnd = new ASCIILine(SIGNATURE_END, eol);
+        final int end = endKeyword + this.signatureEnd.length();
+        stream.flyTo(end - offset);
+        super.length = end - super.startPos;
+
+        this.parseObject(stream, contentStart - offset);
     }
 
-    private void parseStartEnd(PosDataInputStream stream) throws IOException {
-        ASCIILine line;
-        do {
-            line = stream.readASCIILine();
-            if (line.line().length() == SIGNATURE_END.length() && SIGNATURE_END.equalsIgnoreCase(line.line())) {
-                super.length = stream.getPos() - super.startPos;
-                this.signatureEnd = line;
+    /// Find the `endobj` keyword, skipping the stream data if any.
+    private int findEnd(final byte[] buf, final int from) throws FileFormatException {
+        int endobj = indexOfKeyword(buf, SIGNATURE_END, from);
+        final int stream = indexOfKeyword(buf, Stream.SIGNATURE_START, from);
+        if (stream >= 0 && (endobj < 0 || stream < endobj)) {
+            final int endstream = indexOfKeyword(buf, Stream.SIGNATURE_END, stream);
+            if (endstream >= 0) {
+                endobj = indexOfKeyword(buf, SIGNATURE_END, endstream + Stream.SIGNATURE_END.length());
+            }
+        }
+        if (endobj < 0) {
+            throw new FileFormatException("The '%s' is not found for object %d %d at %d.".formatted(
+                    SIGNATURE_END, this.objectNumber, this.generationNumber, super.startPos));
+        }
+        return endobj;
+    }
+
+    /// Index of `keyword` delimited by white-space, delimiters or the buffer
+    /// bounds.
+    static int indexOfKeyword(final byte[] buf, final String keyword, final int from) {
+        final byte[] target = keyword.getBytes(StandardCharsets.ISO_8859_1);
+        for (int i = Math.max(from, 0); i <= buf.length - target.length; i++) {
+            if (Arrays.equals(buf, i, i + target.length, target, 0, target.length)
+                    && (i == 0 || isBoundary(buf[i - 1]))
+                    && (i + target.length == buf.length || isBoundary(buf[i + target.length]))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean isBoundary(final byte b) {
+        return PDFStatics.isWhiteSpace(b) || PDFStatics.isDelimiter(b);
+    }
+
+    /// Length of the end-of-line marker at `pos`: `CR LF`, `LF`, or `CR`.
+    private static int eolLength(final byte[] buf, final int pos) {
+        if (pos >= buf.length) {
+            return 0;
+        }
+        if (buf[pos] == PDFStatics.WhiteSpace.CR) {
+            return (pos + 1 < buf.length && buf[pos + 1] == PDFStatics.WhiteSpace.LF) ? 2 : 1;
+        }
+        return (buf[pos] == PDFStatics.WhiteSpace.LF) ? 1 : 0;
+    }
+
+    /// Parse the content between `obj` and `endobj`.
+    ///
+    /// @param root The file stream
+    /// @param contentStart Start of the content in `root`
+    private void parseObject(final PosDataInputStream root, final int contentStart) throws IOException {
+        if (this.contentLength == 0) {
+            return;
+        }
+
+        // Find the stream object first, it lasts to the end of the content
+        final PosDataInputStream content = root.getPartialStream(contentStart, this.contentLength);
+        Stream stream = null;
+        while (content.hasNext()) {
+            final ASCIILine line = content.readASCIILine();
+            if (endsWithKeyword(line.line(), Stream.SIGNATURE_START)) {
+                stream = new Stream(content, line);
                 break;
             }
-        } while (stream.getPos() < (stream.getBuf().length - 1));
+        }
+
+        // Objects before the stream
+        final int objectsLength = (stream == null) ? this.contentLength : stream.getStartPos() - content.getOffset();
+        if (objectsLength > 0) {
+            this.parseObjects(root.getPartialStream(contentStart, objectsLength));
+        }
+
+        if (stream != null) {
+            this.components.add(stream);
+        }
     }
 
-    private void parseObject(PosDataInputStream root) throws IOException {
-        PosDataInputStream stream = root.getPartialStream(super.startPos + this.numberLen + this.signatureStart.length(),
-                super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length());
-
-        // Filter Stream Object First
-        ASCIILine line;
-        List<FileComponent> compStreams = new ArrayList<FileComponent>(2);
-
-        while (stream.hasNext()) {
-            line = stream.readASCIILine();
-            if (line.line().endsWith(Stream.SIGNATURE_START)) {
-                compStreams.add(new Stream(stream, line));
-            }
-        }
-
-        // -- Calculate the lastIndex
-        int lastIndex = super.startPos + super.length - this.signatureEnd.length();
-        if (compStreams.size() > 0) {
-            for (FileComponent comp : compStreams) {
-                if (comp instanceof Stream) {
-                    lastIndex = (lastIndex > comp.getStartPos()) ? comp.getStartPos() : lastIndex;
-                }
-            }
-        }
-
-        int pos = super.startPos + this.numberLen + this.signatureStart.length();
-        int len = lastIndex - pos;
-        stream = root.getPartialStream(pos, len);
-        FileComponent comp;
-        Analysis analysis = new Analysis();
-
-        while (stream.hasNext()) {
-            comp = analysis.parseNextObject(stream, this.components);
-            if (comp == null) {
-                // To Ensure Continue Analysis
-                byte next1 = stream.readByte();
-                // Show error message
-                System.out.println(String.format("ERROR ======== IndirectObject.parseObject() - Object number = %d, Generation number = %d, Location = %d (%X), Value = %s",
-                        this.objectNumber,
-                        this.generationNumber,
-                        stream.getPos(),
-                        stream.getPos(),
-                        String.valueOf((char) next1)));
-            }
-        } // End while
-
-        // Add the stream object we've found earlier
-        if (compStreams.size() > 0) {
-            for (FileComponent compStream : compStreams) {
-                this.components.add(compStream);
+    private void parseObjects(final PosDataInputStream objects) throws IOException {
+        while (objects.hasNext()) {
+            if (Analysis.parseNextObject(objects, this.components) == null) {
+                final byte next = objects.readByte();
+                LOGGER.log(Level.WARNING, "Unexpected byte in object {0} {1} at {2}: ''{3}''", new Object[]{
+                    this.objectNumber, this.generationNumber, objects.getPos() - 1, (char) (next & 0xFF)});
             }
         }
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    private static boolean endsWithKeyword(final String line, final String keyword) {
+        if (!line.endsWith(keyword)) {
+            return false;
+        }
+        final int before = line.length() - keyword.length() - 1;
+        return before < 0 || isBoundary((byte) line.charAt(before));
+    }
+
+    /// The object number.
+    ///
+    /// @return The object number
+    public int getObjectNumber() {
+        return this.objectNumber;
+    }
+
+    /// The generation number.
+    ///
+    /// @return The generation number
+    public int getGenerationNumber() {
+        return this.generationNumber;
+    }
+
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                String.format("Indirect Object: %d %d", this.objectNumber, this.generationNumber));
+                "Indirect Object: %d %d".formatted(this.objectNumber, this.generationNumber));
         nodeComp.setDescription(Texts.getString(Texts.PDF_INDIRECT_OBJECT));
-        DefaultMutableTreeNode nodeIO = new DefaultMutableTreeNode(nodeComp);
+        final DefaultMutableTreeNode nodeIO = new DefaultMutableTreeNode(nodeComp);
 
         int pos = super.startPos;
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
                 this.numberLen,
-                String.format("Object Number = %d, Generation Number = %d", this.objectNumber, this.generationNumber))));
+                "Object Number = %d, Generation Number = %d".formatted(this.objectNumber, this.generationNumber))));
         pos += this.numberLen;
 
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -192,29 +235,30 @@ public class IndirectObject extends FileComponent implements GenerateTreeNode {
             pos += this.signatureStart.newLineLength();
         }
 
-        int contLen = super.length - this.numberLen - this.signatureStart.length() - this.signatureEnd.length();
-        DefaultMutableTreeNode nodeContent;
-        nodeIO.add(nodeContent = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeContent = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
-                contLen,
-                "Indirect Object Content")));
-
-        for (FileComponent comp : this.components) {
-            if (comp instanceof GenerateTreeNode) {
-                ((GenerateTreeNode) comp).generateTreeNode(nodeContent);
+                this.contentLength,
+                "Indirect Object Content"));
+        nodeIO.add(nodeContent);
+        for (final FileComponent comp : this.components) {
+            if (comp instanceof GenerateTreeNode node) {
+                node.generateTreeNode(nodeContent);
             }
         }
+        pos += this.contentLength;
 
-        pos += contLen;
         nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
                 SIGNATURE_END.length(),
                 Texts.Signature + SIGNATURE_END)));
         pos += SIGNATURE_END.length();
-        nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
-                this.signatureEnd.newLineLength(),
-                Texts.NewLine)));
+
+        if (this.signatureEnd.newLineLength() > 0) {
+            nodeIO.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    pos,
+                    this.signatureEnd.newLineLength(),
+                    Texts.NewLine)));
+        }
 
         parentNode.add(nodeIO);
     }

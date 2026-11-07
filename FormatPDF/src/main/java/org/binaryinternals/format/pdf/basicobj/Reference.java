@@ -2,72 +2,59 @@ package org.binaryinternals.format.pdf.basicobj;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
-import org.binaryinternals.format.pdf.Texts;
 
-/**
- * Reference of PDF Indirect Object, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.10</code>: Indirect Object.
- *
- * @author Amos Shi
- */
-public final class Reference extends FileComponent implements GenerateTreeNode {
+/// Reference of PDF Indirect Object, see `PDF 32000-1:2008` `7.3.10`:
+/// Indirect Object.
+///
+/// @author Amos Shi
+public final class Reference extends FileComponent implements BasicObject {
 
     static final byte SIGNATURE = 'R';
     public final byte Value;
-    /**
-     * Component of current object.
-     */
-    protected List<FileComponent> formerComponents = Collections.synchronizedList(new ArrayList<FileComponent>(7));
+    /// The object number, generation number and white-space before the `R`.
+    final List<FileComponent> formerComponents = new ArrayList<>(3);
 
-    Reference(PosDataInputStream stream) throws IOException {
+    Reference(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
         this.Value = stream.readByte();
         this.length = stream.getPos() - super.startPos;
-
-        // System.out.println(this.toString());   // Deubg output
     }
 
-    /**
-     * Length of the former objects {@link #formerComponents}.
-     */
+    /// Length of the former objects.
+    ///
+    /// @return The length
     public int getFormerLength() {
-        int len = 0;
-        if (this.formerComponents.size() > 0) {
-            for (FileComponent comp : this.formerComponents) {
-                len += comp.getLength();
-            }
-        }
-        return len;
+        return this.formerComponents.stream().mapToInt(FileComponent::getLength).sum();
     }
 
-    /**
-     * Need to call current method to get the object length, instead of using
-     * the {@link #length} field because the reference object total length would
-     * include the former 2 objects.
-     */
+    /// Start position, including the object number and generation number.
+    @Override
+    public int getStartPos() {
+        return super.startPos - this.getFormerLength();
+    }
+
+    /// Length, including the object number and generation number.
     @Override
     public int getLength() {
         return this.getFormerLength() + this.length;
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
-                super.startPos - this.getFormerLength(),
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeRef = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.getStartPos(),
                 this.getLength(),
-                "Refence to Indirect Object");
-        DefaultMutableTreeNode nodeRef = new DefaultMutableTreeNode(nodeComp);
+                "Reference to Indirect Object"));
 
-        for (FileComponent comp : this.formerComponents) {
-            if (comp instanceof GenerateTreeNode) {
-                ((GenerateTreeNode) comp).generateTreeNode(nodeRef);
+        for (final FileComponent comp : this.formerComponents) {
+            if (comp instanceof GenerateTreeNode node) {
+                node.generateTreeNode(nodeRef);
             }
         }
 
@@ -81,7 +68,7 @@ public final class Reference extends FileComponent implements GenerateTreeNode {
 
     @Override
     public String toString() {
-        return String.format("Refence to Indirect Object: Start Position = %d, Length = %d, Raw Value = '%s'",
+        return "Reference to Indirect Object: Start Position = %d, Length = %d, Raw Value = '%s'".formatted(
                 super.startPos,
                 super.length,
                 (char) this.Value);

@@ -3,48 +3,31 @@ package org.binaryinternals.format.pdf.basicobj;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import org.binaryinternals.format.pdf.PDFStatics;
 
-/**
- * PDF basic object Null, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.9</code>: Null Object.
- *
- * @author Amos Shi
- */
-public final class Null extends FileComponent implements GenerateTreeNode {
+/// PDF basic object Null, see `PDF 32000-1:2008` `7.3.9`: Null Object.
+///
+/// @author Amos Shi
+public final class Null extends FileComponent implements BasicObject {
 
     public static final String VALUE = "null";
-    /**
-     * Name text in
-     * <code>Raw</code> format.
-     */
-    private String RawText;
+    /// Null text in `Raw` format.
+    private final String RawText;
 
-    Null(PosDataInputStream stream) throws IOException {
+    Null(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        this.parse(stream);
+        this.RawText = PDFStatics.readRegularCharacters(stream);
         this.length = stream.getPos() - super.startPos;
-
-        // System.out.println(this.toString());   // Deubg output
     }
 
-    private void parse(PosDataInputStream stream) throws IOException {
-        StringBuilder builder = new StringBuilder(6);
-        byte b1 = stream.readByte();
-        builder.append((char) b1);
-        builder.append(stream.readASCII(VALUE.length() - 1));
-        this.RawText = builder.toString();
-    }
-
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeName = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                "Null Object");
-        DefaultMutableTreeNode nodeName = new DefaultMutableTreeNode(nodeComp);
+                "Null Object"));
 
         nodeName.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
@@ -56,22 +39,19 @@ public final class Null extends FileComponent implements GenerateTreeNode {
 
     @Override
     public String toString() {
-        return String.format("Null Object: Start Position = %d (0x%X), Length = %d, Raw Text = '%s'",
+        return "Null Object: Start Position = %d (0x%X), Length = %d, Raw Text = '%s'".formatted(
                 super.startPos,
                 super.startPos,
                 super.length,
                 this.RawText);
     }
 
-    public static class StartByte {
+    public static final class StartByte {
 
         private StartByte() {
         }
 
-        /**
-         * Start byte for
-         * <code>null</code>.
-         */
+        /// Start byte for `null`.
         public static final byte NULL = 'n';
     }
 }

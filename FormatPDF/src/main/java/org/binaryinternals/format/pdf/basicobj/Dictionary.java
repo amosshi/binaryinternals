@@ -3,12 +3,12 @@ package org.binaryinternals.format.pdf.basicobj;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.binaryinternals.commonlib.DefaultFileComponent;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
@@ -16,125 +16,84 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.pdf.PDFStatics;
 import org.binaryinternals.format.pdf.Texts;
 
-/**
- * PDF basic object Dictionary, see
- * <pre>PDF 32000-1:2008</pre>
- * <code>7.3.7</code>: Dictionary Object.
- *
- * @author Amos Shi
- */
-public class Dictionary extends FileComponent implements GenerateTreeNode {
+/// PDF basic object Dictionary, see `PDF 32000-1:2008` `7.3.7`: Dictionary
+/// Object.
+///
+/// @author Amos Shi
+public final class Dictionary extends FileComponent implements BasicObject {
 
-    /**
-     * Signature indicates the start of current object.
-     */
+    private static final Logger LOGGER = Logger.getLogger(Dictionary.class.getName());
+
+    /// Signature indicates the start of current object.
     public static final String SIGNATURE_START = "<<";
-    /**
-     * Signature indicates the end of current object.
-     */
+    /// Signature indicates the end of current object.
     public static final String SIGNATURE_END = ">>";
-    /**
-     * Component of current object.
-     */
-    private List<FileComponent> components = Collections.synchronizedList(new ArrayList<FileComponent>(31));
-    /**
-     * Dictionary entries. <p> The first element of each entry is the key and
-     * the second element is the value. The key shall be a name {@link Name}.
-     * The value may be any kind of object, including another dictionary. A
-     * dictionary entry whose value is null {@link Null} shall be treated the
-     * same as if the entry does not exist. </p> <p> The entries in a dictionary
-     * represent an associative table and as such shall be unordered even though
-     * an arbitrary order may be imposed upon them when written in a file. That
-     * ordering shall be ignored. </p> <p> Multiple entries in the same
-     * dictionary shall not have the same key. </p>
-     */
-    public final HashMap<String, FileComponent> DictionaryEntries = new HashMap<String, FileComponent>();
+    /// Components of current object, including white-space.
+    private final List<FileComponent> components = new ArrayList<>();
+    /// Whether the closing `>>` is found.
+    private final boolean closed;
+    /// Dictionary entries, in the order of the file.
+    ///
+    /// The first element of each entry is the key and the second element is
+    /// the value. The key shall be a name [Name]. The value may be any kind of
+    /// object, including another dictionary. A dictionary entry whose value is
+    /// null [Null] shall be treated the same as if the entry does not exist.
+    ///
+    /// Multiple entries in the same dictionary shall not have the same key.
+    public final Map<String, BasicObject> DictionaryEntries;
 
-    Dictionary(PosDataInputStream stream) throws IOException {
+    Dictionary(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
-        this.parse(stream);
-        this.organizeDictionary();
+        this.closed = this.parse(stream);
         super.length = stream.getPos() - super.startPos;
-
-        // Debug Output
-        System.out.println(this.toString());
-        Iterator<Map.Entry<String, FileComponent>> it = this.DictionaryEntries.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, FileComponent> pairs = it.next();
-            System.out.println(pairs.getKey() + " = " + pairs.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
-        } // End while
+        this.DictionaryEntries = Collections.unmodifiableMap(this.organizeDictionary());
     }
 
-    private void parse(PosDataInputStream stream) throws IOException {
-        // The '<<' sign
+    private boolean parse(final PosDataInputStream stream) throws IOException {
         stream.skipNBytes(SIGNATURE_START.length());
 
-        FileComponent comp;
-        Analysis analysis = new Analysis();
-
-        byte next1;
-        byte next2;
-        boolean stop = false;
         while (stream.hasNext()) {
-            comp = analysis.parseNextObject(stream, this.components);
-            if (comp == null) {
-                next1 = stream.readByte();
-                switch (next1) {
-                    // Dictionary Ends
-                    case PDFStatics.DelimiterCharacter.GT:
-                        next2 = stream.readByte();
-                        if (next2 == PDFStatics.DelimiterCharacter.GT) {
-                            // Stop current Dictionary Object
-                            stop = true;
-                            // System.out.println("==== PDF Dictionary -- Ends at " + stream.getPos());   // Deubg output
-                        }
-                        break;
-                    default:
-                        System.out.println(String.format("ERROR ======== Dictionary.parse() - Location = %d (%X), Value = %s",
-                                stream.getPos(), stream.getPos(), String.valueOf((char) next1)));
-                        break;
-                } // switch
-                if (stop == true) {
-                    break;   // Quit current while-loop
+            if (Analysis.parseNextObject(stream, this.components) == null) {
+                final byte next = stream.readByte();
+                if (next == PDFStatics.DelimiterCharacter.GT
+                        && stream.hasNext()
+                        && stream.readByte() == PDFStatics.DelimiterCharacter.GT) {
+                    return true;
                 }
-            }
-        } // End While
-    }
-
-    private void organizeDictionary() {
-        String name = null;
-        int counter = 0;
-        for (FileComponent comp : this.components) {
-            if (comp instanceof DefaultFileComponent) {
-                continue;
-            }
-
-            counter++;
-
-            if (counter == 1) {
-                if (comp instanceof Name) {
-                    name = ((Name) comp).getName();
-                } else {
-                    System.out.println("==== ERROR!!! Incorrect Dictionary Content. " + this.toString());
-                    name = null;
-                }
-            } else if (counter == 2 && name != null) {
-                this.DictionaryEntries.put(name, comp);
-            }
-
-            if (counter >= 2) {
-                counter = 0;
+                LOGGER.log(Level.WARNING, "Unexpected byte in Dictionary at {0}: ''{1}''",
+                        new Object[]{stream.getPos() - 1, (char) (next & 0xFF)});
             }
         }
+        return false;
     }
 
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent nodeComp = new JTreeNodeFileComponent(
+    /// Pair the objects as key and value.
+    private Map<String, BasicObject> organizeDictionary() {
+        final Map<String, BasicObject> entries = new LinkedHashMap<>();
+        Name key = null;
+        for (final FileComponent comp : this.components) {
+            if (!(comp instanceof BasicObject obj)) {
+                continue;     // White-space
+            }
+
+            if (key != null) {
+                entries.put(key.getName(), obj);
+                key = null;
+            } else if (obj instanceof Name name) {
+                key = name;
+            } else {
+                LOGGER.log(Level.WARNING, "Dictionary key at {0} is not a Name: {1}", new Object[]{obj.getStartPos(), obj});
+            }
+        }
+        return entries;
+    }
+
+    @Override
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
+        final DefaultMutableTreeNode nodeDic = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.startPos,
                 super.length,
-                "Dictionary Object");
-        DefaultMutableTreeNode nodeDic = new DefaultMutableTreeNode(nodeComp);
+                "Dictionary Object"));
 
         int pos = super.startPos;
         nodeDic.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -143,31 +102,32 @@ public class Dictionary extends FileComponent implements GenerateTreeNode {
                 Texts.Signature + SIGNATURE_START)));
         pos += SIGNATURE_START.length();
 
-        int contLen = super.length - SIGNATURE_START.length() - SIGNATURE_END.length();
-        DefaultMutableTreeNode nodeContent;
-        nodeDic.add(nodeContent = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final int contLen = super.length - SIGNATURE_START.length() - (this.closed ? SIGNATURE_END.length() : 0);
+        final DefaultMutableTreeNode nodeContent = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos,
                 contLen,
-                "Dictionary Content")));
+                "Dictionary Content"));
+        nodeDic.add(nodeContent);
 
-        for (FileComponent comp : this.components) {
-            if (comp instanceof GenerateTreeNode) {
-                ((GenerateTreeNode) comp).generateTreeNode(nodeContent);
+        for (final FileComponent comp : this.components) {
+            if (comp instanceof GenerateTreeNode node) {
+                node.generateTreeNode(nodeContent);
             }
         }
 
-        pos += contLen;
-        nodeDic.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos,
-                SIGNATURE_END.length(),
-                Texts.Signature + SIGNATURE_END)));
+        if (this.closed) {
+            nodeDic.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    pos + contLen,
+                    SIGNATURE_END.length(),
+                    Texts.Signature + SIGNATURE_END)));
+        }
 
         parentNode.add(nodeDic);
     }
 
     @Override
     public String toString() {
-        return String.format("Dictionary Object: Start Position = %d, Length = %d, Component Count = %d",
+        return "Dictionary Object: Start Position = %d, Length = %d, Component Count = %d".formatted(
                 super.startPos,
                 super.length,
                 this.components.size());
