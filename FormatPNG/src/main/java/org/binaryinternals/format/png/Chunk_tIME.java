@@ -7,43 +7,38 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The <span>tIME</span> chunk gives the time of the last image
- * modification (<em>not</em> the time of initial image creation).
- * <p>
- * Universal Time (UTC, also called GMT) should be specified rather than local
- * time.
- * </p>
- *
- * @author Amos Shi
- */
-public class Chunk_tIME extends Chunk {
+/// The `tIME` chunk gives the time of the last image modification (_not_ the
+/// time of initial image creation).
+///
+/// Universal Time (UTC, also called GMT) should be specified rather than local
+/// time.
+///
+/// @author Amos Shi
+public final class Chunk_tIME extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "tIME";
+    /// Complete year, for example 1995; not 95. A 2-byte unsigned integer.
     public final int Year;
+    /// 1-12.
     public final int Month;
+    /// 1-31.
     public final int Day;
+    /// 0-23.
     public final int Hour;
+    /// 0-59.
     public final int Minute;
+    /// 0-60, for leap seconds.
     public final int Second;
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_tIME(PosDataInputStream stream) throws IOException {
+    Chunk_tIME(final PosDataInputStream stream) throws IOException {
         super(stream);
 
-        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
-        this.Year = chunkDataStream.readShort();
+        final PosDataInputStream chunkDataStream = this.getChunkDataStream();
+        this.Year = chunkDataStream.readUnsignedShort();
         this.Month = chunkDataStream.read();
         this.Day = chunkDataStream.read();
         this.Hour = chunkDataStream.read();
@@ -52,39 +47,39 @@ public class Chunk_tIME extends Chunk {
     }
 
     @Override
-    public String toString(){
-        return String.format("%04d-%02d-%02d %02d:%02d:%02d",
+    public String toString() {
+        return "%04d-%02d-%02d %02d:%02d:%02d".formatted(
                 this.Year, this.Month, this.Day,
                 this.Hour, this.Minute, this.Second);
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        final int start = this.getDataStartPos();
 
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 start,
                 2,
-                String.format("Year = %04d", this.Year))));
+                "Year = %04d".formatted(this.Year))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 2,
+                start + 2,
                 1,
-                String.format("Month = %02d", this.Month))));
+                "Month = %02d".formatted(this.Month))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 1,
+                start + 3,
                 1,
-                String.format("Day = %02d", this.Day))));
+                "Day = %02d".formatted(this.Day))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 1,
+                start + 4,
                 1,
-                String.format("Hour = %02d", this.Hour))));
+                "Hour = %02d".formatted(this.Hour))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 1,
+                start + 5,
                 1,
-                String.format("Minute = %02d", this.Minute))));
+                "Minute = %02d".formatted(this.Minute))));
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start = start + 1,
+                start + 6,
                 1,
-                String.format("Second = %02d", this.Second))));
+                "Second = %02d".formatted(this.Second))));
     }
 }

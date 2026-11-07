@@ -1,5 +1,5 @@
 /*
- * Chunk_PLTE .java    May 01, 2011, 15:04
+ * Chunk_PLTE.java    May 01, 2011, 15:04
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,59 +7,47 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The <span>PLTE</span> chunk contains from 1 to 256 palette entries.
- * <p>
- * Each entry is a three-byte series of the form:
- * </p>
- * <pre>
- * Red:   1 byte (0 = black, 255 = red)
- * Green: 1 byte (0 = black, 255 = green)
- * Blue:  1 byte (0 = black, 255 = blue)
- * </pre>
- * <p>
- * The number of entries is determined from the chunk length.
- * A chunk length not divisible by 3 is an error.
- * </p>
- * 
- * @author Amos Shi
- */
-public class Chunk_PLTE extends Chunk {
+/// The `PLTE` chunk contains from 1 to 256 palette entries.
+///
+/// Each entry is a three-byte series of the form:
+///
+/// ```
+/// Red:   1 byte (0 = black, 255 = red)
+/// Green: 1 byte (0 = black, 255 = green)
+/// Blue:  1 byte (0 = black, 255 = blue)
+/// ```
+///
+/// The number of entries is determined from the chunk length.
+/// A chunk length not divisible by 3 is an error.
+///
+/// @author Amos Shi
+public final class Chunk_PLTE extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "PLTE";
     public final PaletteEntry[] Palette;
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_PLTE(PosDataInputStream stream) throws IOException {
+    Chunk_PLTE(final PosDataInputStream stream) throws IOException {
         super(stream);
 
         // A chunk length not divisible by 3 is an error.
         if ((this.Length % 3) != 0) {
             throw new FileFormatException(
-                    String.format("The chunk data lengh cannot be divisible by 3. value = %d", this.Length));
+                    "The chunk data length is not divisible by 3. value = %d".formatted(this.Length));
         }
 
-        // Palete entry number should be >= 1.
-        int count = this.Length / 3;
+        // Palette entry number should be >= 1.
+        final int count = this.Length / 3;
         if (count < 1) {
-            throw new FileFormatException(
-                    String.format("The palette entry is invalid. count = %d", count));
+            throw new FileFormatException("The palette entry is invalid. count = %d".formatted(count));
         }
 
         this.Palette = new PaletteEntry[count];
-        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
+        final PosDataInputStream chunkDataStream = this.getChunkDataStream();
         for (int i = 0; i < this.Palette.length; i++) {
             this.Palette[i] = new PaletteEntry(
                     chunkDataStream.read(),
@@ -69,46 +57,38 @@ public class Chunk_PLTE extends Chunk {
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
-        DefaultMutableTreeNode node;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        int start = this.getDataStartPos();
 
         for (int i = 0; i < this.Palette.length; i++) {
-            parent.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final PaletteEntry entry = this.Palette[i];
+            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     3,
-                    String.format("Palette entry [%d] = [%03d, %03d, %03d]",
-                    i,
-                    this.Palette[i].Red,
-                    this.Palette[i].Green,
-                    this.Palette[i].Blue))));
+                    "Palette entry [%d] = [%03d, %03d, %03d]".formatted(i, entry.Red(), entry.Green(), entry.Blue())));
+            parent.add(node);
 
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     1,
-                    String.format("Red = %03d", this.Palette[i].Red))));
+                    "Red = %03d".formatted(entry.Red()))));
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 1,
                     1,
-                    String.format("Green = %03d", this.Palette[i].Green))));
+                    "Green = %03d".formatted(entry.Green()))));
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start + 2,
                     1,
-                    String.format("Blue = %03d", this.Palette[i].Blue))));
+                    "Blue = %03d".formatted(entry.Blue()))));
             start += 3;
         }
     }
 
-    public static class PaletteEntry {
-
-        public final int Red;
-        public final int Green;
-        public final int Blue;
-
-        public PaletteEntry(int r, int g, int b) {
-            this.Red = r;
-            this.Green = g;
-            this.Blue = b;
-        }
+    /// One palette entry.
+    ///
+    /// @param Red   Red, 0 = black, 255 = red
+    /// @param Green Green, 0 = black, 255 = green
+    /// @param Blue  Blue, 0 = black, 255 = blue
+    public record PaletteEntry(int Red, int Green, int Blue) {
     }
 }

@@ -6,22 +6,22 @@
  */
 package org.binaryinternals.format.bmp;
 
-import java.nio.file.Path;
 import java.io.IOException;
+import java.nio.file.Path;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
-public class BMPFile extends FileFormat{
+/// Bitmap image, or Device Independent Bitmap (DIB), file.
+///
+/// @author Amos Shi
+public class BMPFile extends FileFormat {
 
     public final BitmapFileHeader bitmapFileHeader;
     public final DIBHeader dibHeader;
+    /// The color table, or `null` when the pixel data follows the DIB header.
     public final ColorTable colorTable;
     public final PixelArray pixelArray;
 
@@ -29,42 +29,38 @@ public class BMPFile extends FileFormat{
         super(file);
 
         // Parse
-        PosDataInputStream input = new PosDataInputStream(
-                new PosByteArrayInputStream(this.fileByteArray));
+        final PosDataInputStream input = new PosDataInputStream(new PosByteArrayInputStream(this.fileByteArray));
         this.bitmapFileHeader = new BitmapFileHeader(input);
         this.dibHeader = new DIBHeader(input);
 
-        if (input.getPos() < this.bitmapFileHeader.offset) {
-            this.colorTable = new ColorTable(input, this.dibHeader);
-        } else {
-            this.colorTable = null;
-        }
+        this.colorTable = input.getPos() < this.bitmapFileHeader.offset
+                ? new ColorTable(input, this.dibHeader, this.bitmapFileHeader.offset)
+                : null;
 
         this.pixelArray = new PixelArray(this.dibHeader, Math.toIntExact(this.bitmapFileHeader.offset));
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode parentNode) {
+    public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
         int lastPos = 0;
-        int distance;
 
         this.bitmapFileHeader.generateTreeNode(parentNode);
-        lastPos = lastPos + BitmapFileHeader.LENGTH;
+        lastPos += BitmapFileHeader.LENGTH;
 
         this.dibHeader.generateTreeNode(parentNode);
-        lastPos = lastPos + this.dibHeader.size;
+        lastPos += this.dibHeader.size;
 
         if (this.colorTable != null) {
             this.colorTable.generateTreeNode(parentNode);
-            lastPos = lastPos + this.colorTable.getLength();
+            lastPos += this.colorTable.getLength();
         }
 
-        distance = (this.pixelArray.getStartPos() - lastPos);
+        final int distance = this.pixelArray.getStartPos() - lastPos;
         if (distance > 0) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos,
                     distance,
-                    String.format("GAP1 [0x%08X, %d]", lastPos, distance))));
+                    "GAP1 [0x%08X, %d]".formatted(lastPos, distance))));
         }
 
         this.pixelArray.generateTreeNode(parentNode);

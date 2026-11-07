@@ -7,31 +7,19 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * Image trailer.
- * <p>
- * The <span>IEND</span> chunk must appear LAST.
- * It marks the end of the PNG data stream.
- * The chunk's data field is empty.
- * </p>
- *
- * @author Amos Shi
- */
-public class Chunk_IEND extends Chunk {
+/// Image trailer.
+///
+/// The `IEND` chunk must appear LAST. It marks the end of the PNG data stream.
+/// The chunk's data field is empty.
+///
+/// @author Amos Shi
+public final class Chunk_IEND extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "IEND";
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType(){
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_IEND(PosDataInputStream stream) throws IOException {
+    Chunk_IEND(final PosDataInputStream stream) throws IOException {
         super(stream);
     }
 }

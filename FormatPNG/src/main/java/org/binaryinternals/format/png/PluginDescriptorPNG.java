@@ -11,13 +11,14 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorPNG implements PluginDescriptor{
+/// Plug-in descriptor for the PNG file format.
+///
+/// @author Amos Shi
+public final class PluginDescriptorPNG implements PluginDescriptor {
 
+    /// Public no-argument constructor, required by `ServiceLoader`.
     public PluginDescriptorPNG() {
+        // Nothing to initialize
     }
 
     @Override
@@ -34,5 +35,4 @@ public class PluginDescriptorPNG implements PluginDescriptor{
     public Class<? extends FileFormat> getFileFormatClass() {
         return PNGFile.class;
     }
-
 }

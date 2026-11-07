@@ -1,5 +1,5 @@
 /*
- * Chunk_zEXt.java    May 04, 2011, 16:06
+ * Chunk_zTXt.java    May 04, 2011, 16:06
  *
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
@@ -7,74 +7,67 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see Chunk_tEXt
- */
-public class Chunk_zTXt extends Chunk {
+/// Compressed textual data, in the format:
+///
+/// ```
+/// Keyword:            1-79 bytes (character string)
+/// Null separator:     1 byte
+/// Compression method: 1 byte
+/// Compressed text:    n bytes
+/// ```
+///
+/// @author Amos Shi
+/// @see Chunk_tEXt
+public final class Chunk_zTXt extends Chunk {
 
     public static final String CHUNK_TYPE_NAME = "zTXt";
-    /**
-     * Refer to {@link Chunk_tEXt#Keyword}.
-     * 
-     * @see Chunk_tEXt#Keyword
-     */
+    /// Refer to [Chunk_tEXt#Keyword].
     public final String Keyword;
+    /// The only value presently defined is 0, meaning zlib data stream with
+    /// deflate compression.
     public final int CompressionMethod;
+    /// The compressed text, or `null` when there is none.
     public final byte[] CompressedText;
     public final String CompressedTextString = null;      // TODO - Un-compress the text
 
-    /**
-     * Get Chunk Type in binary format.
-     */
-    static byte[] GetChunkType() {
-        return CHUNK_TYPE_NAME.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public Chunk_zTXt(PosDataInputStream stream) throws IOException {
+    Chunk_zTXt(final PosDataInputStream stream) throws IOException {
         super(stream);
 
-        PosDataInputStream chunkDataStream = Chunk.getChunkDataStream(super.ChunkData, super.startPos);
+        final PosDataInputStream chunkDataStream = this.getChunkDataStream();
         this.Keyword = chunkDataStream.readASCII();
         this.CompressionMethod = chunkDataStream.read();
 
-        int rest = this.ChunkData.length - this.Keyword.length() - 1 - 1;
-        if (rest > 0) {
-            this.CompressedText = new byte[rest];
-            for (int i = 0; i < this.CompressedText.length; i++) {
-                this.CompressedText[i] = chunkDataStream.readByte();
-            }
-        } else {
-            this.CompressedText = null;
-        }
+        final int rest = this.Length - this.Keyword.length() - 1 - 1;
+        this.CompressedText = rest > 0 ? chunkDataStream.readNBytes(rest) : null;
     }
 
     @Override
-    protected void generateTreeNodeChunkData(DefaultMutableTreeNode parent) {
-        int start = this.startPos + 4 + 4;
+    protected void generateTreeNodeChunkData(final DefaultMutableTreeNode parent) {
+        int start = this.getDataStartPos();
 
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 start,
                 this.Keyword.length(),
-                String.format("Keyword = %s", this.Keyword))));
+                "Keyword = %s".formatted(this.Keyword))));
+        start += this.Keyword.length();
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start += this.Keyword.length(),
+                start,
                 1,
                 "Null separator")));
+        start += 1;
         parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                start += 1,
+                start,
                 1,
-                String.format("Compression method = %d", this.CompressionMethod))));
+                "Compression method = %d".formatted(this.CompressionMethod))));
+        start += 1;
 
         if (this.CompressedText != null) {
             parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    start = start + 1,
+                    start,
                     this.CompressedText.length,
                     "Compressed text")));
         }
