@@ -37,7 +37,8 @@ public final class ColorTable extends FileComponent implements GenerateTreeNode 
 
         final boolean core = dibHeader.data instanceof DIBHeader.BITMAPCOREHEADER;
         final int entrySize = core ? PixelBGR.LENGTH : PixelRGBA.LENGTH;
-        final int count = (int) Math.min(entryCount(dibHeader), Math.max(0, (pixelArrayOffset - this.startPos) / entrySize));
+        final long tableEnd = Math.min(pixelArrayOffset, input.getBuf().length);
+        final int count = (int) Math.min(entryCount(dibHeader), Math.max(0, (tableEnd - this.startPos) / entrySize));
 
         final List<Pixel> entries = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
