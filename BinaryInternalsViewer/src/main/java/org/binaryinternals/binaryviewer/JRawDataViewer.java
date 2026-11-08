@@ -9,17 +9,13 @@ package org.binaryinternals.binaryviewer;
 import org.binaryinternals.commonlib.HTMLKit;
 import java.util.HexFormat;
 
-/**
- * Display binary data as HEX text.
- *
- * @author Amos Shi
- */
+/// Display binary data as HEX text.
+///
+/// @author Amos Shi
 final class JRawDataViewer extends DataViewer {
 
     private static final long serialVersionUID = 4876543219876500009L;
-    /**
-     * Width of the raw data viewer section.
-     */
+    /// Width of the raw data viewer section.
     public static final int WIDTH_VALUE = 460;
     private static final HexFormat HEX = HexFormat.of().withUpperCase();
 

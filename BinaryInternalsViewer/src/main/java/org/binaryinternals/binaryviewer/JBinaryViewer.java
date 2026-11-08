@@ -17,96 +17,60 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.SpringLayout;
 
-/**
- * Viewer for binary data. It contains three columns: row numbers, data in HEX,
- * data in ASCII.
- *
- * @author Amos Shi
- */
+/// Viewer for binary data. It contains three columns: row numbers, data in HEX,
+/// data in ASCII.
+///
+/// @author Amos Shi
 public final class JBinaryViewer extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500005L;
 
-    /**
-     * Height for each row.
-     */
+    /// Height for each row.
     public static final int ITEM_HEIGHT = 22;
 
-    /**
-     * Number of bytes to be shown in one row.
-     */
+    /// Number of bytes to be shown in one row.
     public static final int ROW_ITEM_MAX = 16;
 
-    /**
-     * 0-based row item index.
-     */
+    /// 0-based row item index.
     public static final int ROW_ITEM_MAX_INDEX = ROW_ITEM_MAX - 1;
 
-    /**
-     * Spare space in bottom.
-     */
+    /// Spare space in bottom.
     private static final int ROW_EMPTYROW_COUNT = 10;
 
-    /**
-     * Constant value for <code>-4</code>.
-     */
+    /// Constant value for `-4`.
     private static final int MINUS_4 = -4;
 
-    /**
-     * Column 1: row viewer.
-     */
+    /// Column 1: row viewer.
     private final JRowViewer rowViewer;
 
-    /**
-     * Column 2: Data viewer in HEX format.
-     */
+    /// Column 2: Data viewer in HEX format.
     private final JRawDataViewer rawViewer;
 
-    /**
-     * Column 3: Data viewer in ASCII format.
-     */
+    /// Column 3: Data viewer in ASCII format.
     private final JAsciiDataViewer asciiViewer;
 
-    /**
-     * Binary data to be shown.
-     */
+    /// Binary data to be shown.
     private byte[] data = null;
 
-    /**
-     * Vertical scroll bar for paging.
-     */
+    /// Vertical scroll bar for paging.
     private final JScrollBar vBar;
 
-    /**
-     * Max number of rows will be shown, due to the {@link #data} size.
-     */
+    /// Max number of rows will be shown, due to the [#data] size.
     private int rowMax;
 
-    /**
-     * Start index to be high-lighted.
-     *
-     */
+    /// Start index to be high-lighted.
     private int selectedStartIndex = 0;
 
-    /**
-     * Length to be high-lighted.
-     *
-     */
+    /// Length to be high-lighted.
     private int selectedLength = 0;
 
-    /**
-     * Guards {@link #updateViewContent()} against re-entry from scroll bar events.
-     */
+    /// Guards [#updateViewContent()] against re-entry from scroll bar events.
     private boolean updating = false;
 
-    /**
-     * Fraction of a wheel step not yet applied, for high-resolution wheels.
-     */
+    /// Fraction of a wheel step not yet applied, for high-resolution wheels.
     private double wheelRemainder = 0;
 
-    /**
-     * Keyboard navigation shared by the data viewers.
-     */
+    /// Keyboard navigation shared by the data viewers.
     private final transient KeyListener keyboard = new KeyAdapter() {
         @Override
         public void keyPressed(final KeyEvent e) {
@@ -125,9 +89,7 @@ public final class JBinaryViewer extends JPanel {
         }
     };
 
-    /**
-     * Constructor.
-     */
+    /// Constructor.
     public JBinaryViewer() {
         this.setLayout(new BorderLayout());
         this.addComponentListener(new ComponentAdapter() {
@@ -185,12 +147,10 @@ public final class JBinaryViewer extends JPanel {
         this.add(panel, BorderLayout.CENTER);
     }
 
-    /**
-     * Set the binary data to be displayed. The array is shared, not copied, and
-     * must not be modified while it is displayed.
-     *
-     * @param bytes Binary data to be displayed, or null to clear the view
-     */
+    /// Set the binary data to be displayed. The array is shared, not copied, and
+    /// must not be modified while it is displayed.
+    ///
+    /// @param bytes Binary data to be displayed, or null to clear the view
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Avoid copying a large file")
     public void setData(final byte[] bytes) {
         this.data = bytes;
@@ -217,12 +177,10 @@ public final class JBinaryViewer extends JPanel {
                 : 0;
     }
 
-    /**
-     * Return 1-based row count number.
-     *
-     * @param number to explain
-     * @return 1-based row number
-     */
+    /// Return 1-based row count number.
+    ///
+    /// @param number to explain
+    /// @return 1-based row number
     private int getRowCount(final int number) {
         return number > 0 ? Math.ceilDiv(number, ROW_ITEM_MAX) : 0;
     }
@@ -276,12 +234,10 @@ public final class JBinaryViewer extends JPanel {
         this.asciiViewer.setContent(this.data, startPos, dataSize, selStart, selLength);
     }
 
-    /**
-     * Selects the bytes between the specified start position and length.
-     *
-     * @param selectionStart the start position of the bytes
-     * @param length the length of the bytes
-     */
+    /// Selects the bytes between the specified start position and length.
+    ///
+    /// @param selectionStart the start position of the bytes
+    /// @param length the length of the bytes
     public void setSelection(final int selectionStart, final int length) {
         if ((this.data == null) || (selectionStart < 0)) {
             return;
@@ -299,21 +255,17 @@ public final class JBinaryViewer extends JPanel {
         }
     }
 
-    /**
-     * Remove the high-lighting, without scrolling.
-     */
+    /// Remove the high-lighting, without scrolling.
     public void clearSelection() {
         this.selectedStartIndex = 0;
         this.selectedLength = 0;
         this.updateViewContent();
     }
 
-    /**
-     * Ensure the byte at <code>startPos</code> is visible.
-     *
-     * @param startPos the start position of the byte(s) to be visible
-     * @return true if the scroll bar was moved, which refreshes the view
-     */
+    /// Ensure the byte at `startPos` is visible.
+    ///
+    /// @param startPos the start position of the byte(s) to be visible
+    /// @return true if the scroll bar was moved, which refreshes the view
     private boolean ensureVisible(final int startPos) {
         if ((this.data == null) || (startPos < 0) || (this.data.length <= startPos)) {
             return false;

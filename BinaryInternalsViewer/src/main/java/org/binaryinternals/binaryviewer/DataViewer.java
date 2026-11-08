@@ -9,18 +9,14 @@ package org.binaryinternals.binaryviewer;
 import javax.swing.JTextPane;
 import org.binaryinternals.commonlib.HTMLKit;
 
-/**
- * Display binary data.
- *
- * @author Amos Shi
- */
+/// Display binary data.
+///
+/// @author Amos Shi
 public abstract sealed class DataViewer extends JTextPane permits JRawDataViewer, JAsciiDataViewer {
 
     private static final long serialVersionUID = 4876543219876500012L;
 
-    /**
-     * Constructor.
-     */
+    /// Constructor.
     DataViewer() {
         super();
         this.setEditable(false);
@@ -28,16 +24,14 @@ public abstract sealed class DataViewer extends JTextPane permits JRawDataViewer
         this.setContentType("text/html");
     }
 
-    /**
-     * Render a window of the data as HTML in one pass,
-     * {@link JBinaryViewer#ROW_ITEM_MAX} bytes per row. The data is not copied.
-     *
-     * @param data Binary data, or null to clear the view
-     * @param offset First byte of the window
-     * @param length Number of bytes in the window
-     * @param selectedStart Start of the high-lighted part, relative to the window
-     * @param selectedLength Length of the high-lighted part
-     */
+    /// Render a window of the data as HTML in one pass,
+    /// [JBinaryViewer#ROW_ITEM_MAX] bytes per row. The data is not copied.
+    ///
+    /// @param data Binary data, or null to clear the view
+    /// @param offset First byte of the window
+    /// @param length Number of bytes in the window
+    /// @param selectedStart Start of the high-lighted part, relative to the window
+    /// @param selectedLength Length of the high-lighted part
     public void setContent(final byte[] data, final int offset, final int length,
             final int selectedStart, final int selectedLength) {
         if (data == null || length <= 0) {
@@ -62,12 +56,10 @@ public abstract sealed class DataViewer extends JTextPane permits JRawDataViewer
         this.setText(sb.toString());
     }
 
-    /**
-     * Format one byte as HTML.
-     *
-     * @param value The byte
-     * @param selected Whether the byte is high-lighted
-     * @return HTML of the byte
-     */
+    /// Format one byte as HTML.
+    ///
+    /// @param value The byte
+    /// @param selected Whether the byte is high-lighted
+    /// @return HTML of the byte
     protected abstract String formatByte(byte value, boolean selected);
 }

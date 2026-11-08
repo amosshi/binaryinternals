@@ -26,11 +26,9 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.HTMLKit;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- * A split panel showing the tree and the binary content of a parsed file.
- *
- * @author Amos Shi
- */
+/// A split panel showing the tree and the binary content of a parsed file.
+///
+/// @author Amos Shi
 public final class JSplitPaneFile extends JSplitPane {
 
     private static final long serialVersionUID = 4876543219876500003L;
@@ -39,12 +37,10 @@ public final class JSplitPaneFile extends JSplitPane {
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JBinaryViewer binaryViewer = new JBinaryViewer();
 
-    /**
-     * Creates a split panel from an already parsed file.
-     *
-     * @param fileFormat Parsed file
-     * @param frame Parent frame
-     */
+    /// Creates a split panel from an already parsed file.
+    ///
+    /// @param fileFormat Parsed file
+    /// @param frame Parent frame
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public JSplitPaneFile(final FileFormat fileFormat, final JFrame frame) {
         this.file = fileFormat;
@@ -52,11 +48,9 @@ public final class JSplitPaneFile extends JSplitPane {
         this.createAndShowGUI();
     }
 
-    /**
-     * Getter {@link #file} name.
-     *
-     * @return {@link #file} name
-     */
+    /// Getter [#file] name.
+    ///
+    /// @return [#file] name
     public String getFileFormatName() {
         return this.file.getClass().getSimpleName();
     }

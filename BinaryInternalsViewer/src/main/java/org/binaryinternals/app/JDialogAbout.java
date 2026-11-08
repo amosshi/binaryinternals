@@ -24,11 +24,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-/**
- *
- * @author Amos Shi
- */
-class JDialogAbout extends JDialog {
+/// The About dialog, with the version and the system properties.
+///
+/// @author Amos Shi
+final class JDialogAbout extends JDialog {
 
     private static final long serialVersionUID = 4876543219876500004L;
 
@@ -45,8 +44,8 @@ class JDialogAbout extends JDialog {
         this.dispose();
     }
 
-    private JTextField getLine(String label) {
-        JTextField field = new JTextField(label);
+    private static JTextField getLine(final String label) {
+        final JTextField field = new JTextField(label);
         field.setEditable(false);
         field.setBorder(BorderFactory.createEmptyBorder());
         return field;
@@ -77,16 +76,16 @@ class JDialogAbout extends JDialog {
                 "https://github.com/amosshi/binaryinternals"));
 
         listPane.add(Box.createVerticalStrut(20));
-        listPane.add(this.getLine("Watch binary file internals visually & interactively for the meaning of every bit"));
+        listPane.add(getLine("Watch binary file internals visually & interactively for the meaning of every bit"));
         listPane.add(Box.createVerticalStrut(5));
-        listPane.add(this.getLine("Version: " + getVersion()));
+        listPane.add(getLine("Version: " + getVersion()));
         listPane.add(Box.createVerticalStrut(5));
-        listPane.add(this.getLine("Author: Amos Shi"));
+        listPane.add(getLine("Author: Amos Shi"));
 
         listPane.add(Box.createVerticalStrut(20));
-        listPane.add(this.getLine("System Properties:"));
+        listPane.add(getLine("System Properties:"));
         listPane.add(Box.createVerticalStrut(5));
-        JTextArea sysinfo = new JTextArea(8, 40);
+        final JTextArea sysinfo = new JTextArea(8, 40);
         // Sorted by key, for easier reading
         final Properties properties = System.getProperties();
         new TreeSet<>(properties.stringPropertyNames()).forEach(
@@ -97,7 +96,7 @@ class JDialogAbout extends JDialog {
         listPane.add(new JScrollPane(sysinfo));
 
         listPane.add(Box.createVerticalStrut(20));
-        listPane.add(this.getLine("Icons are freely provided by icons8, see license:"));
+        listPane.add(getLine("Icons are freely provided by icons8, see license:"));
         listPane.add(new JLabelHyperLink(
                 "https://icons8.com/license",
                 "https://icons8.com/license"));

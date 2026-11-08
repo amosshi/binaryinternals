@@ -51,18 +51,14 @@ import javax.swing.WindowConstants;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.plugin.PluginManager;
 
-/**
- *
- *
- * @author Amos Shi
- */
-public class Main extends JFrame {
+/// Main window of the Binary Internals Viewer.
+///
+/// @author Amos Shi
+public final class Main extends JFrame {
 
     private static final long serialVersionUID = 4876543219876500001L;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-    /**
-     * Size ratio of the pop-up window and its parent.
-     */
+    /// Size ratio of the pop-up window and its parent.
     private static final float POPUP_RATIO = 0.8f;
     private static final String URI_HOMEPAGE = "https://github.com/amosshi/binaryinternals";
     private static final String TITLE = "Binary Internals Viewer ";
@@ -70,9 +66,7 @@ public class Main extends JFrame {
     private static final int RECENT_FILES_MAX = 10;
     private static final int EXIT_OK = 0;
     private static final int EXIT_FAILED = 1;
-    /**
-     * Name of the detail popup windows, to find them among the owned windows.
-     */
+    /// Name of the detail popup windows, to find them among the owned windows.
     private static final String POPUP_NAME = "detailPopup";
 
     private final JPanel filedropPanel = new JPanel();
@@ -97,9 +91,7 @@ public class Main extends JFrame {
         this.enableFileDrop(this.getJMenuBar());
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    /// @param args the command line arguments
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             final Main main = new Main();
@@ -110,9 +102,7 @@ public class Main extends JFrame {
         });
     }
 
-    /**
-     * Accept file name at command line.
-     */
+    /// Accept file name at command line.
     private void openCommandLineFile(final String fileName) {
         Path file = null;
         try {
@@ -128,11 +118,9 @@ public class Main extends JFrame {
         }
     }
 
-    /**
-     * Exit immediately for mass test mode.
-     *
-     * @param status Exit status, non-zero when the file failed to open
-     */
+    /// Exit immediately for mass test mode.
+    ///
+    /// @param status Exit status, non-zero when the file failed to open
     private static void exitIfMassTestMode(final int status) {
         if (isMassTestMode()) {
             System.exit(status);
@@ -143,9 +131,7 @@ public class Main extends JFrame {
         return Boolean.getBoolean(MASS_TEST_MODE_PROPERTY);
     }
 
-    /**
-     * Set a {@code JFrame} window to screen center.
-     */
+    /// Set a `JFrame` window to screen center.
     private void centerJFrame() {
         // Set main window size
         // The usable area, excluding the taskbar and the menu bar
@@ -228,10 +214,8 @@ public class Main extends JFrame {
         menuHelp.add(menuItemHelpAbout);
     }
 
-    /**
-     * Support drag and drop. Only the 1st file are handled, if more than 1 file
-     * are dropped.
-     */
+    /// Support drag and drop. Only the 1st file are handled, if more than 1 file
+    /// are dropped.
     private void enableFileDrop(Component c) {
         c.setDropTarget(new DropTarget() {
             @Override
@@ -265,19 +249,15 @@ public class Main extends JFrame {
         }
     }
 
-    /**
-     * Open the file in the background.
-     */
+    /// Open the file in the background.
     private void openFile(final Path file) {
         this.openFile(file, _ -> { });
     }
 
-    /**
-     * Parse the file in the background, then show it on the event thread.
-     *
-     * @param path File to open
-     * @param onFinished Called on the event thread with whether the file is shown
-     */
+    /// Parse the file in the background, then show it on the event thread.
+    ///
+    /// @param path File to open
+    /// @param onFinished Called on the event thread with whether the file is shown
     private void openFile(final Path path, final Consumer<Boolean> onFinished) {
         final Path file = path.toAbsolutePath().normalize();
         // Close any open or loading file first
@@ -444,14 +424,12 @@ public class Main extends JFrame {
         plugins.setVisible(true);
     }
 
-    /**
-     * Show a popup window with given message. A panel can be in only one
-     * window, so the popup already showing the panel is reused.
-     *
-     * @param frame Parent window
-     * @param panel Content in panel
-     * @param title Popup window title
-     */
+    /// Show a popup window with given message. A panel can be in only one
+    /// window, so the popup already showing the panel is reused.
+    ///
+    /// @param frame Parent window
+    /// @param panel Content in panel
+    /// @param title Popup window title
     static void showPopup(final JFrame frame, final JPanel panel, final String title) {
         if (frame == null || panel == null) {
             return;

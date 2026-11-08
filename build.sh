@@ -31,6 +31,11 @@ rm -rf dist
 mvn dependency:purge-local-repository -DreResolve=true
 
 mvn  clean install
+#mvn --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
+#mvn --projects CommonLib,FormatDEX,BinaryInternalsViewer    clean package install
+#mvn --projects CommonLib,FormatZIP,BinaryInternalsViewer   clean package install
+#mvn --projects FormatELF,BinaryInternalsViewer              clean package install
+#mvn --projects FormatPDF,BinaryInternalsViewer              clean package install
 
 # Dependency graph, shown in the README
 mvn  com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -DimageFormat=svg -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs

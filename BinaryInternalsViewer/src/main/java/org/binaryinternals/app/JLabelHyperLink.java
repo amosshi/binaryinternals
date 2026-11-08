@@ -18,34 +18,24 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import org.binaryinternals.commonlib.HTMLKit;
 
-/**
- * Hyper Link enabled JLabel.
- *
- * @author Amos Shi
- */
+/// Hyper Link enabled JLabel.
+///
+/// @author Amos Shi
 public final class JLabelHyperLink extends JLabel {
 
     private static final long serialVersionUID = 4876543219876500005L;
 
-    /**
-     * Text of the label.
-     */
+    /// Text of the label.
     private final String text;
-    /**
-     * Target URL of the label.
-     */
+    /// Target URL of the label.
     private final String url;
-    /**
-     * Flag indicates whether current JVM support browser or not.
-     */
+    /// Flag indicates whether current JVM support browser or not.
     private final boolean isSupported;
 
-    /**
-     * Create a new Hyper Link enabled JLabel.
-     *
-     * @param txt Text of the label
-     * @param link Target Link URL
-     */
+    /// Create a new Hyper Link enabled JLabel.
+    ///
+    /// @param txt Text of the label
+    /// @param link Target Link URL
     public JLabelHyperLink(final String txt, final String link) {
         this.text = HTMLKit.escapeFilter(txt);
         this.url = link;
