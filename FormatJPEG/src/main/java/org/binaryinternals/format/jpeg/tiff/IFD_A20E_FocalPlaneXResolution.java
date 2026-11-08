@@ -25,7 +25,7 @@ public class IFD_A20E_FocalPlaneXResolution extends IFD_RATIONAL_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_A20E_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

@@ -24,7 +24,7 @@ public class IFD_A409_Saturation extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_A409_Description)
+                this.getDescription()
                 + IFD_8769_Exif.CATEGORY_G);
     }
 }

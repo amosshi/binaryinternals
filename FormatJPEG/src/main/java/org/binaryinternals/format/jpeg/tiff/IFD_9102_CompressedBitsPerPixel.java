@@ -24,7 +24,7 @@ public class IFD_9102_CompressedBitsPerPixel extends IFD_RATIONAL_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_RATIONAL(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_9102_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C));
     }
 }

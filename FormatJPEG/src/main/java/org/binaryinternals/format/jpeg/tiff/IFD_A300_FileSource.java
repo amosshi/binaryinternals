@@ -37,7 +37,7 @@ public class IFD_A300_FileSource extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 "%s: %d".formatted(this.getTagName(), this.getFileSource()),
-                IFDMessage.getString(IFDMessage.KEY_IFD_A300_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

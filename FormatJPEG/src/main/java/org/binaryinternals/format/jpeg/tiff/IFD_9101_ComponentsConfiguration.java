@@ -47,7 +47,7 @@ public class IFD_9101_ComponentsConfiguration extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 "%s: %s".formatted(this.getTagName(), this.getValue()),
-                IFDMessage.getString(IFDMessage.KEY_IFD_9101_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C));
     }
 }

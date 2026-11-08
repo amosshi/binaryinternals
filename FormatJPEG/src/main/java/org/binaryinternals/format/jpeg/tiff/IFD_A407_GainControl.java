@@ -24,7 +24,7 @@ public class IFD_A407_GainControl extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_A407_Description)
+                this.getDescription()
                 + IFD_8769_Exif.CATEGORY_G);
     }
 }

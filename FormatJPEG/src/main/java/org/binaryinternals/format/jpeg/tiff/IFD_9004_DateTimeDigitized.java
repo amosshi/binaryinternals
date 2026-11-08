@@ -37,6 +37,6 @@ public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
         super.generateTreeNode_ASCII(
                 parentNode,
                 IFD_0132_DateTime.toText(this.datetime, this.value),
-                IFDMessage.getString(IFDMessage.KEY_IFD_9004_Description) + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F));
+                this.getDescription() + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F));
     }
 }

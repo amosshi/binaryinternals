@@ -37,7 +37,7 @@ public class IFD_A301_SceneType extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 "%s: %d".formatted(this.getTagName(), this.getSceneType()),
-                IFDMessage.getString(IFDMessage.KEY_IFD_A301_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

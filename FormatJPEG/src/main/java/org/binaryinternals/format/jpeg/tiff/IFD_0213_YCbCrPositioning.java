@@ -28,6 +28,6 @@ public class IFD_0213_YCbCrPositioning extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_0213_Description));
+                this.getDescription());
     }
 }

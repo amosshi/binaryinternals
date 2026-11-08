@@ -38,7 +38,7 @@ public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
                 pos + 8,
                 2,
                 "Resolution Unit: %d - %s".formatted(this.value[0], this.getResolutionUnitName()));
-        comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0128_Description));
+        comp.setDescription(this.getDescription());
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

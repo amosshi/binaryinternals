@@ -26,7 +26,7 @@ public class IFD_A002_PixelXDimension extends IFD_LONG_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_LONG(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_A002_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C));
     }
 }

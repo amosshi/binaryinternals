@@ -38,7 +38,7 @@ public class IFD_9000_ExifVersion extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 "%s: %s".formatted(this.getTagName(), this.getExifVersion()),
-                IFDMessage.getString(IFDMessage.KEY_IFD_9000_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion));
     }
