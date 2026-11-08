@@ -4,6 +4,7 @@
  * Copyright  2014, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -85,7 +86,7 @@ public class Signature_attribute extends attribute_info {
         public final char signature;
         public final String JavaKeyWord;
 
-        private BaseType(char c, String kw) {
+        BaseType(char c, String kw) {
             this.signature = c;
             this.JavaKeyWord = kw;
         }
@@ -145,7 +146,7 @@ public class Signature_attribute extends attribute_info {
 
         public final char signature;
 
-        private ReferenceType(char c) {
+        ReferenceType(char c) {
             this.signature = c;
         }
 

@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -99,7 +100,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
 
     encoded_value(final PosDataInputStreamDex stream) throws IOException {
         super.startPos = stream.getPos();
-        value_arg_and_type  = stream.Dex_ubyte();
+        value_arg_and_type = stream.Dex_ubyte();
 
         // In the logic bellow we assume Java int type is still a 32-bit number
         // This should be truth in know future of Java programming language
@@ -207,7 +208,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
-        DexFile dex = (DexFile)fileFormat;
+        final DexFile dex = (DexFile) fileFormat;
         int floatPos = super.startPos;
 
         addNode(parentNode,
@@ -246,8 +247,10 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
             case FloatValue(float v) -> addNode(parentNode, floatPos, size, "VALUE_FLOAT", v, "msg_encoded_value__value_float", Icons.Data);
             case DoubleValue(double v) -> addNode(parentNode, floatPos, size, "VALUE_DOUBLE", v, "msg_encoded_value__value_double", Icons.Data);
             // TODO for value of the indexes: method type, method handle, type, field, method
-            case MethodTypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_TYPE", i, "msg_encoded_value__value_method_type", Icons.Data);
-            case MethodHandleValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_HANDLE", i, "msg_encoded_value__value_method_handle", Icons.Data);
+            case MethodTypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_TYPE", i, "msg_encoded_value__value_method_type",
+                    Icons.Data);
+            case MethodHandleValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_HANDLE", i, "msg_encoded_value__value_method_handle",
+                    Icons.Data);
             case StringValue(Type_uint i) -> addNode(parentNode,
                     floatPos,
                     size,
@@ -281,7 +284,8 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
             case NullValue() -> {
                 // No value for null
             }
-            case BooleanValue(boolean v) -> addNode(parentNode, super.startPos, Type_ubyte.LENGTH, "VALUE_BOOLEAN", v, "msg_encoded_value__value_boolean", Icons.Data);
+            case BooleanValue(boolean v) -> addNode(parentNode, super.startPos, Type_ubyte.LENGTH, "VALUE_BOOLEAN", v, "msg_encoded_value__value_boolean",
+                    Icons.Data);
         }
     }
 
@@ -298,12 +302,12 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
         VALUE_STRING(0x17, 3),
         VALUE_TYPE(0x18, 3),
         VALUE_FIELD(0x19, 3),
-        VALUE_METHOD(0x1a, 3),
-        VALUE_ENUM(0x1b, 3),
-        VALUE_ARRAY(0x1c, 0),
-        VALUE_ANNOTATION(0x1d, 0),
-        VALUE_NULL(0x1e, 0),
-        VALUE_BOOLEAN(0x1f, 1);
+        VALUE_METHOD(0x1A, 3),
+        VALUE_ENUM(0x1B, 3),
+        VALUE_ARRAY(0x1C, 0),
+        VALUE_ANNOTATION(0x1D, 0),
+        VALUE_NULL(0x1E, 0),
+        VALUE_BOOLEAN(0x1F, 1);
 
         /// Internal code of the value type.
         public final int code;
@@ -311,7 +315,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
         /// Max allowed value for [encoded_value#value_arg]
         public final int arg_max;
 
-        private ValueFormat(int i, int m) {
+        ValueFormat(int i, int m) {
             this.code = i;
             this.arg_max = m;
         }

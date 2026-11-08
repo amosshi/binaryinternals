@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class IFD_8822_ExposureProgram extends IFD_SHORT_COUNT1 {
 
-    private final static String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_8822_Description)
+    private static final String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_8822_Description)
             + IFD_8769_Exif.CATEGORY_G;
 
     public IFD_8822_ExposureProgram(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)

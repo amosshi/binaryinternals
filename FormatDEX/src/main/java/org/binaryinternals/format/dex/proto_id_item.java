@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
     /// Item Size In Bytes.
     ///
     /// @see map_list.TypeCodes#TYPE_PROTO_ID_ITEM
-    public static final int ITEM_SIZE = 0x0c;
+    public static final int ITEM_SIZE = 0x0C;
 
     /// index into the string_ids list for the short-form descriptor string of
     /// this prototype. The string must conform to the syntax for
@@ -120,7 +121,7 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
 
         addNode(parentNode,

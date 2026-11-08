@@ -4,6 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.awt.Component;
@@ -78,7 +79,7 @@ public abstract class FileFormat {
     /// Generate the Tree node for the file.
     ///
     /// @param parentNode The root tree node
-    public abstract void generateTreeNode(final DefaultMutableTreeNode parentNode);
+    public abstract void generateTreeNode(DefaultMutableTreeNode parentNode);
 
     /// Get part of the file byte array. The array begins at the specified
     /// `startIndex` and extends to the byte at

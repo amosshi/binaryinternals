@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -189,7 +190,7 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
         addNode(parentNode,
                 floatPos,
@@ -204,7 +205,8 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
                 floatPos,
                 Type_uint.LENGTH,
                 "access_flags",
-                this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getClassModifier(this.access_flags.intValue()),
+                this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value)
+                        + access_flag.getClassModifier(this.access_flags.intValue()),
                 "msg_class_def_item__access_flags",
                 Icons.AccessFlag
         );

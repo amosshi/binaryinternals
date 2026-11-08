@@ -35,20 +35,23 @@ Two problems were confirmed by running them:
 
 ### 1. Make Checkstyle check something, or remove it
 
-- [ ] Decide between a custom ruleset and report-only, then apply it.
+- [x] Adopt a ruleset that fails the build: the bundled `openjdk_checks.xml` (OpenJDK Java Style), used unchanged, with project exceptions in `checkstyle-suppressions.xml`.
+- [x] Fix the temporary baseline (`EmptyLineSeparator`, `DeclarationOrder`, lines over 160 characters); no baseline is left.
+- [ ] Decode the ICC profile header flags, device attributes and rendering intent (`FormatJPEG` `icc/Header.java`, bytes 44 - 67). They were `TODO` comments, which `openjdk_checks.xml` does not allow.
 
-It never fails because `google_checks.xml` marks every rule as a warning, while the plugin only fails on errors. So `checkstyle.failOnViolation=true` has no effect, but the step still costs time in every build. Much of the noise is probably the Google 2-space indent rule against the 4-space code.
+Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
 
-Options:
-
-- Write a small custom ruleset that matches the actual style, and set it to fail on violations.
-- Or keep Checkstyle as a site report only and drop the build step.
+- `LineEnding`: the repository keeps each file's existing CRLF or LF line endings.
+- Naming checks: names follow the file format specifications (`InnerClasses_attribute`, `u4`, `tableswitch`).
+- `UnusedImports`: Checkstyle does not see references in Markdown doc comments (`///`, JEP 467).
+- `NeedBraces` for arrow switch cases only (`case X -> value;`); braces stay required for `if`, `else`, `for`, `while` and `do`.
+- `LineLength`: the limit is 160 instead of 100, by suppressing the messages for 101 - 160 characters.
 
 ### 2. Fix building a single module
 
 - [ ] Add an empty `.mvn/` directory at the root, or better, add the Maven Wrapper (`mvn wrapper:wrapper`).
 
-SpotBugs finds its filter through `${maven.multiModuleProjectDirectory}`. That is the directory where Maven started unless a `.mvn/` folder marks the project root, and this repo has none. The wrapper also pins the Maven version for CI and contributors.
+SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checkstyle-suppressions.xml`) through `${maven.multiModuleProjectDirectory}`. That is the directory where Maven started unless a `.mvn/` folder marks the project root, and this repo has none. The wrapper also pins the Maven version for CI and contributors.
 
 ### 3. Put internal module versions in one place
 
@@ -110,4 +113,4 @@ The git commit already identifies the build.
 - [ ] **Whitespace:** trailing spaces in the ELF and JPEG POMs, and a line-wrapped `<outputDirectory>` in the Viewer.
 - [ ] **Outside the POMs:** a `jvnet-nexus` certificate warning appears in every build. It doesn't come from these POMs (nor from `~/.m2/settings.xml`), so it's probably a repository declared inside some third-party dependency's POM. Harmless.
 
-Suggested order: start with 1–5. Items 2–4 are mechanical changes the existing build checks can verify. Item 1 needs a decision between a custom ruleset and report-only.
+Suggested order: start with 2–5. They are mechanical changes the existing build checks can verify. The Checkstyle baseline in item 1 can be worked off one rule at a time.

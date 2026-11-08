@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class TagData_signatureType extends TagData {
 
-    public final static int LENGTH = 12;
+    public static final int LENGTH = 12;
     public final String signature;
 
     /// @param input Input stream of the file

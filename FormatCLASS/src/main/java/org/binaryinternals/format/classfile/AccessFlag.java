@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 import java.lang.reflect.AccessFlag.Location;
@@ -145,7 +146,7 @@ public enum AccessFlag {
 
     /// @param i Value in the Class file
     /// @param m Modifier in the java source file
-    private AccessFlag(long i, String m) {
+    AccessFlag(long i, String m) {
         this.value = i;
         this.modifier = m;
     }

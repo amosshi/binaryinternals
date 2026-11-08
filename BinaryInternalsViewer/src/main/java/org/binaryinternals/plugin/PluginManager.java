@@ -4,10 +4,9 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.plugin;
 
-import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.PluginDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -26,11 +25,13 @@ import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PluginDescriptor;
 
 /// Loads the file format plug-ins, and opens a file with the plug-in for its
 /// extension.
@@ -87,8 +88,8 @@ public final class PluginManager {
         final ClassLoader loader = urls.isEmpty() ? parent : new URLClassLoader(urls.toArray(URL[]::new), parent);
 
         final SortedMap<String, PluginDescriptor> plugins = new TreeMap<>();
-        final Iterator<ServiceLoader.Provider<PluginDescriptor>> providers =
-                ServiceLoader.load(PluginDescriptor.class, loader).stream().iterator();
+        final Iterator<ServiceLoader.Provider<PluginDescriptor>> providers
+                = ServiceLoader.load(PluginDescriptor.class, loader).stream().iterator();
         while (providers.hasNext()) {
             try {
                 final ServiceLoader.Provider<PluginDescriptor> provider = providers.next();

@@ -4,9 +4,9 @@
  * Copyright  2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute.aspectj;
 
-import org.binaryinternals.format.classfile.attribute.attribute_info;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
@@ -14,6 +14,7 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.u2;
 
 /// The class for the `org.aspectj.weaver.MethodDeclarationLineNumber` attribute.

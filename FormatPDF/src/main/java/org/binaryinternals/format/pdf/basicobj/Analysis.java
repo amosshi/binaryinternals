@@ -31,11 +31,11 @@ public final class Analysis {
 
         final FileComponent comp = switch (next) {
             case PDFStatics.WhiteSpace.LF, PDFStatics.WhiteSpace.CR ->
-                new DefaultFileComponent(start, 1, Texts.NewLine);
+                    new DefaultFileComponent(start, 1, Texts.NewLine);
             case PDFStatics.WhiteSpace.SP ->
-                new DefaultFileComponent(start, 1, Texts.Space);
+                    new DefaultFileComponent(start, 1, Texts.Space);
             case PDFStatics.WhiteSpace.HT, PDFStatics.WhiteSpace.FF, PDFStatics.WhiteSpace.NUL ->
-                new DefaultFileComponent(start, 1, Texts.WhiteSpace);
+                    new DefaultFileComponent(start, 1, Texts.WhiteSpace);
             case PDFStatics.DelimiterCharacter.PS -> {
                 stream.backward(1);
                 final String comment = stream.readASCIILine().line();
@@ -62,10 +62,10 @@ public final class Analysis {
                 yield new Array(stream);
             }
             case Numeric.StartByte.SIGN_ADD, Numeric.StartByte.SIGN_MINUS, Numeric.StartByte.DECIMAL_POINT,
-                 Numeric.StartByte.NUMBER_0, Numeric.StartByte.NUMBER_1, Numeric.StartByte.NUMBER_2,
-                 Numeric.StartByte.NUMBER_3, Numeric.StartByte.NUMBER_4, Numeric.StartByte.NUMBER_5,
-                 Numeric.StartByte.NUMBER_6, Numeric.StartByte.NUMBER_7, Numeric.StartByte.NUMBER_8,
-                 Numeric.StartByte.NUMBER_9 -> {
+                    Numeric.StartByte.NUMBER_0, Numeric.StartByte.NUMBER_1, Numeric.StartByte.NUMBER_2,
+                    Numeric.StartByte.NUMBER_3, Numeric.StartByte.NUMBER_4, Numeric.StartByte.NUMBER_5,
+                    Numeric.StartByte.NUMBER_6, Numeric.StartByte.NUMBER_7, Numeric.StartByte.NUMBER_8,
+                    Numeric.StartByte.NUMBER_9 -> {
                 stream.backward(1);
                 yield new Numeric(stream);
             }

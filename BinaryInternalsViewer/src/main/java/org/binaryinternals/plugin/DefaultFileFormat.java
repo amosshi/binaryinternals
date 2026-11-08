@@ -4,6 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.plugin;
 
 import java.io.IOException;

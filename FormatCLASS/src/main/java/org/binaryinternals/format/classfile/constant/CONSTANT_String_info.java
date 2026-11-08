@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -59,7 +60,8 @@ public class CONSTANT_String_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return "%s: Start Position: [%d], length: [%d], value: string_index=[%d].".formatted(this.getName(), this.startPos, this.length, this.string_index.value);
+        return "%s: Start Position: [%d], length: [%d], value: string_index=[%d].".formatted(this.getName(), this.startPos, this.length,
+                this.string_index.value);
     }
 
     @Override

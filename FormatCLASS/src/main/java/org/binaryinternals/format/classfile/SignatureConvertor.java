@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 import java.lang.constant.ClassDesc;
@@ -75,14 +76,6 @@ public final class SignatureConvertor {
         return Objects.requireNonNull(binaryName, "binaryName").replace(BINARY_NAME_SEPARATOR, '.');
     }
 
-    private static MethodTypeDesc methodType(final String descriptor) throws FileFormatException {
-        try {
-            return MethodTypeDesc.ofDescriptor(Objects.requireNonNull(descriptor, "descriptor"));
-        } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
-            throw new FileFormatException("Un-recognized method descriptor: " + descriptor, ex);
-        }
-    }
-
     private static String javaName(final ClassDesc type) {
         if (type.isArray()) {
             return javaName(type.componentType()) + "[]";
@@ -93,4 +86,13 @@ public final class SignatureConvertor {
         final String descriptor = type.descriptorString();
         return javaName(descriptor.substring(1, descriptor.length() - 1));  // Strip the 'L' and ';'
     }
+
+    private static MethodTypeDesc methodType(final String descriptor) throws FileFormatException {
+        try {
+            return MethodTypeDesc.ofDescriptor(Objects.requireNonNull(descriptor, "descriptor"));
+        } catch (IllegalArgumentException | IndexOutOfBoundsException ex) {
+            throw new FileFormatException("Un-recognized method descriptor: " + descriptor, ex);
+        }
+    }
+
 }

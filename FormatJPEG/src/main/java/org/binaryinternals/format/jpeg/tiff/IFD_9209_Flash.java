@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -32,10 +33,10 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
         this.RedeyeMode = (this.value[0] >> 6) & 0x000000001;
     }
 
-    public String getValueBinaryString(){
+    public String getValueBinaryString() {
         StringBuilder sb = new StringBuilder(8);
         sb.append(Integer.toBinaryString(this.value[0]));
-        while(sb.length() < 7){
+        while (sb.length() < 7) {
             sb.insert(0, '0');
         }
 
@@ -47,7 +48,6 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
 
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);
-
 
         final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 pos + 8,

@@ -4,6 +4,7 @@
  * Copyright 2020, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.elf;
 
 import java.io.IOException;
@@ -123,7 +124,8 @@ public class Identification extends FileComponent implements GenerateTreeNode {
     }
 
     private static <T> T readEnum(final PosDataInputStream input, final IntFunction<Optional<T>> lookup,
-            final String field) throws IOException {
+            final String field)
+                    throws IOException {
         final int value = input.readUnsignedByte();
         return lookup.apply(value).orElseThrow(
                 () -> new FileFormatException("Unrecognized " + field + " value in  ELF file header. value=" + value));
@@ -137,7 +139,8 @@ public class Identification extends FileComponent implements GenerateTreeNode {
                 this.startPos,
                 this.length,
                 "ELF File Header [0x%08X, %d]".formatted(this.startPos, this.length),
-                "The ELF header defines whether to use 32-bit or 64-bit addresses. The header contains three fields that are affected by this setting and offset other fields that follow them."
+                "The ELF header defines whether to use 32-bit or 64-bit addresses. The header contains three fields that are affected by this setting and "
+                        + "offset other fields that follow them."
         ));
         parentNode.add(node);
 
@@ -189,7 +192,8 @@ public class Identification extends FileComponent implements GenerateTreeNode {
                 currentPos,
                 EI_ABIVERSION_SIZE,
                 "EI_ABIVERSION = %d".formatted(this.EI_ABIVERSION),
-                "Further specifies the ABI version. Its interpretation depends on the target ABI. Linux kernel (after at least 2.6) has no definition of it, so it is ignored for statically-linked executables."
+                "Further specifies the ABI version. Its interpretation depends on the target ABI. Linux kernel (after at least 2.6) has no definition of it, "
+                        + "so it is ignored for statically-linked executables."
         )));
         currentPos += EI_ABIVERSION_SIZE;
 

@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
 import java.nio.ByteBuffer;
@@ -12,12 +13,9 @@ import java.nio.charset.StandardCharsets;
 /// @author Amos Shi
 public class TagType {
 
-    private TagType() {
-    }
-
     public static final int chromaticityType = 0x6368726D;                      // ’chrm’, ICC 4.2.0.0 - 10.2
     public static final int colorantOrderType = 0x636C726F;                     // ‘clro’, ICC 4.2.0.0 - 10.3
-    public static final int colorantTableType = 0x636c7274;                     // ‘clrt’, ICC 4.2.0.0 - 10.4
+    public static final int colorantTableType = 0x636C7274;                     // ‘clrt’, ICC 4.2.0.0 - 10.4
     public static final int curveType = 0x63757276;                             // ‘curv’, ICC 4.2.0.0 - 10.5
     public static final int dataType = 0x64617461;                              // ‘data’, ICC 4.2.0.0 - 10.6
     public static final int dateTimeType = 0x6474696D;                          // ‘dtim’, ICC 4.2.0.0 - 10.7
@@ -41,6 +39,9 @@ public class TagType {
     public static final int uInt8ArrayType = 0x75693038;                        // ‘ui08’, ICC 4.2.0.0 - 10.25
     public static final int viewingConditionsType = 0x76696577;                 // ‘view’, ICC 4.2.0.0 - 10.26
     public static final int XYZType = 0x58595A20;                               // ‘XYZ ’, ICC 4.2.0.0 - 10.27
+
+    private TagType() {
+    }
 
     /// @param sig Type Signature value in number
     /// @return Type Signature string

@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
         this.parseSubIFDs(IFDParse::parseIntero, TagSpace.INTERO);
     }
 
-    public final long getInteroperabilityOffset() {
+    public long getInteroperabilityOffset() {
         return super.value[0];
     }
 
@@ -40,7 +41,6 @@ public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
                 "Interoperability Offset: %d".formatted(super.value[0]));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
-
 
         // Sub IFD
         comp = new JTreeNodeFileComponent(

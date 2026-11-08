@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 import java.util.List;
@@ -105,7 +106,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         this.addNode(this.root,
                 startPos,
                 u2.LENGTH,
-                "constant_pool_count", 
+                "constant_pool_count",
                 cpCount,
                 "msg_constant_pool_count",
                 Icons.Counter
@@ -127,7 +128,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         ));
         this.root.add(constantPool);
 
-        // JVM Spec: The constant_pool table is indexed from 1 to constant_pool_count - 1. 
+        // JVM Spec: The constant_pool table is indexed from 1 to constant_pool_count - 1.
         for (int i = 1; i < cpCount; i++) {
             if (cp[i] != null) {
                 DefaultMutableTreeNode cpInfoNode = this.addNode(constantPool,
@@ -184,7 +185,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         );
 
         final int interfaceCount = this.classFile.interfaces_count.getValue();
-        this.addNode(this.root, 
+        this.addNode(this.root,
                 this.classFile.interfaces_count.getStartPos(),
                 this.classFile.interfaces_count.getLength(),
                 "interfaces_count", interfaceCount,
@@ -320,13 +321,12 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(HTMLKit.START);
 
-        int cpindexCounter = 0;
-
         // The Extracted Code
         sb.append("<pre>");
         sb.append(BytesTool.getByteDataHexView(opcodeData));
         sb.append('\n');
         List<Opcode.InstructionParsed> codeResult = Opcode.parseCode(opcodeData);
+        int cpindexCounter = 0;
         for (Opcode.InstructionParsed iResult : codeResult) {
             sb.append(iResult.toString(this.classFile));
             sb.append('\n');
@@ -353,7 +353,6 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
     StringBuilder generateReport2CP() {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(HTMLKit.START);
-
 
         // Constant Pool
         final int count = this.classFile.constant_pool_count.value;

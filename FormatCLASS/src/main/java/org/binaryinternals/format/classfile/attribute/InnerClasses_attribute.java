@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -107,7 +108,7 @@ public class InnerClasses_attribute extends attribute_info {
                         cls.getStartPos(),
                         cls.getLength(),
                         "inner class %d".formatted(i + 1),
-                        ((ClassFile)classFile).getCPDescription(cls.inner_class_info_index.value),
+                        ((ClassFile) classFile).getCPDescription(cls.inner_class_info_index.value),
                         "msg_attr_classes",
                         Icons.Kind
                 );

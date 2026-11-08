@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public final class type_id_item extends FileComponent implements GenerateTreeNod
         this.descriptor_idx = stream.Dex_uint();
         super.length = Type_uint.LENGTH;
     }
-    
+
     /// Get descriptor text.
     ///
     /// @param dexFile Current [DexFile]
@@ -87,7 +88,7 @@ public final class type_id_item extends FileComponent implements GenerateTreeNod
                 this.startPos,
                 Type_uint.LENGTH,
                 "descriptor_idx",
-                "%s - %s".formatted(descriptor_idx, this.get_descriptor((DexFile)dexFile)),
+                "%s - %s".formatted(descriptor_idx, this.get_descriptor((DexFile) dexFile)),
                 "msg_type_id_item__descriptor_idx",
                 Icons.Offset
         );

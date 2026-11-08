@@ -60,12 +60,12 @@ public final class Boolean extends FileComponent implements BasicObject {
 
     public static final class StartByte {
 
-        private StartByte() {
-        }
-
         /// Start byte for `true`.
         public static final byte TRUE = 't';
         /// Start byte for `false`.
         public static final byte FALSE = 'f';
+
+        private StartByte() {
+        }
     }
 }

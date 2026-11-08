@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -50,7 +51,6 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
         super.length = stream.getPos() - super.startPos;
     }
 
-
     /// Get [#class_idx] name.
     ///
     /// @param dexFile Current [DexFile]
@@ -84,7 +84,6 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
         return dexFile.proto_ids[this.proto_idx.value];
     }
 
-
     /// Get [#name_idx] name.
     ///
     /// @param dexFile Current [DexFile]
@@ -114,7 +113,7 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
 
         addNode(parentNode,

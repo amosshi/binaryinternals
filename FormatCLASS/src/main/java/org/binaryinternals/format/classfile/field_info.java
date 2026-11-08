@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 import java.io.IOException;
@@ -135,7 +136,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
-        final ClassFile classFile = (ClassFile)fileFormat;
+        final ClassFile classFile = (ClassFile) fileFormat;
         final int floatPos = this.getStartPos();
 
         this.addNode(parentNode,
@@ -179,8 +180,8 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
 
         if (attributesCount > 0) {
             final attribute_info lastAttr = this.attributes[attributesCount - 1];
-            final DefaultMutableTreeNode treeNodeAttr =
-                    new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode treeNodeAttr
+                    = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     floatPos + 8,
                     lastAttr.getStartPos() + lastAttr.getLength() - floatPos - 8,
                     FIELD_ATTRS.formatted(attributesCount),

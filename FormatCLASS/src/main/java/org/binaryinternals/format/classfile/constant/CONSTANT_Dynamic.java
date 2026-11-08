@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -90,7 +91,7 @@ public abstract class CONSTANT_Dynamic extends cp_info {
                 startPos + 3,
                 2,
                 "name_and_type_index",
-                TEXT_CPINDEX_PUREVALUE.formatted(cpIndex, ((ClassFile)classFile).getCPDescription(cpIndex)),
+                TEXT_CPINDEX_PUREVALUE.formatted(cpIndex, ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_const_dynamic_name_and_type_index",
                 Icons.Offset
         );

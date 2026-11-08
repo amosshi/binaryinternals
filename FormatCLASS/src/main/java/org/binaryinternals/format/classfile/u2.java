@@ -4,11 +4,12 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /// An unsigned two-byte quantity.
 ///
@@ -17,7 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// ```
 /// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
 /// ```
-@SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+@SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from JVM Spec")
 @SuppressWarnings("java:S101")
 public class u2 {
 

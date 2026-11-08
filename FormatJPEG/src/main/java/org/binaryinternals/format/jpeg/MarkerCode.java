@@ -4,13 +4,11 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 /// @author Amos Shi
 public class MarkerCode {
-
-    private MarkerCode() {
-    }
 
     public static final int MARKER_CODE_BYTES_COUNT = 2;
     public static final int MARKER_LENGTH_BYTES_COUNT = 2;
@@ -83,12 +81,15 @@ public class MarkerCode {
     public static final int COM = 0xFFFE;                       // Specified
     public static final int MAX = 0xFFFF;
 
+    private MarkerCode() {
+    }
+
     /// The marker code value is in valid value space or not.
     ///
     /// @param code Marker code value
     /// @return `true` when in valid value space, else `false`
     public static boolean isValid(int code) {
-        return (code > MIN && code != MAX);
+        return code > MIN && code != MAX;
     }
 
     /// The marker structure is specified in `ITU` `T.81` or not.

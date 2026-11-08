@@ -4,11 +4,11 @@
  * Copyright 2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.zip.ZipEntry;

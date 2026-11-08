@@ -48,10 +48,10 @@ public final class Null extends FileComponent implements BasicObject {
 
     public static final class StartByte {
 
-        private StartByte() {
-        }
-
         /// Start byte for `null`.
         public static final byte NULL = 'n';
+
+        private StartByte() {
+        }
     }
 }

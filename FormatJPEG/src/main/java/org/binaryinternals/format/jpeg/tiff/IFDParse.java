@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -11,14 +12,13 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-
 /// @author Amos Shi
 public class IFDParse {
 
     private IFDParse() {
     }
 
-    public static IFD parse(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
+    public static IFD parse(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);
@@ -102,7 +102,7 @@ public class IFDParse {
         };
     }
 
-    static IFD parseGPS(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
+    static IFD parseGPS(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);
@@ -121,7 +121,7 @@ public class IFDParse {
 
     }
 
-    static IFD parseIntero(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) 
+    static IFD parseIntero(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
         final int type = readUnsignedShort(pDIS, byteOrder);

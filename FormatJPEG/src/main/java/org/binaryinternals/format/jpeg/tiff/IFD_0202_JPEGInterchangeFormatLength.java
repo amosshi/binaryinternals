@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class IFD_0202_JPEGInterchangeFormatLength extends IFD_LONG_COUNT1 {
     /// The length in bytes of the `JPEG` interchange format bit stream.
     ///
     /// @return the length
-    public long getBitstreamLength(){
+    public long getBitstreamLength() {
         return super.value[0];
     }
 

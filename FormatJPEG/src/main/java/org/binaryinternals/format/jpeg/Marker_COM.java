@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -18,11 +19,9 @@ public class Marker_COM extends Marker {
     /// Comment byte.
     private FileComponentPlaceHolder Cm;
 
-
     Marker_COM(final PosDataInputStream pDIS, int marker_code) throws IOException {
         super(pDIS, marker_code);
     }
-
 
     @Override
     protected void parse(final PosDataInputStream pDisMarker)

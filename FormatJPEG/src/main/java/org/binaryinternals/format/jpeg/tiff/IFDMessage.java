@@ -4,20 +4,18 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 /// @author Amos shi
-public class IFDMessage{
-
-    private IFDMessage() {
-    }
+public class IFDMessage {
 
     private static final ResourceBundle res;
 
-    static{
+    static {
         res = ResourceBundle.getBundle(IFDMessage.class.getName().replace('.', '/'), Locale.ROOT);
     }
 
@@ -105,7 +103,10 @@ public class IFDMessage{
     public static final String KEY_IFD_GPS_0000_Description = "IFD_GPS_0000_Description";
     public static final String KEY_IFD_ItO_0001_Description = "IFD_ItO_0001_Description";
 
-    public static String getString(String key){
+    private IFDMessage() {
+    }
+
+    public static String getString(String key) {
         return res.getString(key);
     }
 }

@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.io.IOException;
@@ -97,19 +98,19 @@ public interface DataInputEx {
     /// @throws IOException I/O Error
     BigInteger readUnsignedLongInLittleEndian() throws IOException;
 
-    /// Reads `length` input bytes as an ASCII string.
-    ///
-    /// @param length Then number of bytes to read
-    /// @return the `String` value read.
-    /// @throws IOException I/O Error
-    String readASCII(int length) throws IOException;
-
     /// Reads until a null terminator, or the end of the buffer as an ASCII
     /// String.
     ///
     /// @return the `String` value read.
     /// @throws IOException I/O Error
     String readASCII() throws IOException;
+
+    /// Reads `length` input bytes as an ASCII string.
+    ///
+    /// @param length Then number of bytes to read
+    /// @return the `String` value read.
+    /// @throws IOException I/O Error
+    String readASCII(int length) throws IOException;
 
     /// Reads until `end`, or the end of the buffer as an ASCII String.
     ///

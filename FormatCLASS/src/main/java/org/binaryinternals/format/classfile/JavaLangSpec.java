@@ -4,6 +4,7 @@
  * Copyright  2014, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 /// Java Language specification constants.
@@ -88,7 +89,7 @@ public class JavaLangSpec {
 
         public final String text;
 
-        private Keyword(String k) {
+        Keyword(String k) {
             this.text = k;
         }
     }
@@ -122,7 +123,7 @@ public class JavaLangSpec {
 
         public final String keyword;
 
-        private ContextualKeyword(String k) {
+        ContextualKeyword(String k) {
             this.keyword = k;
         }
     }

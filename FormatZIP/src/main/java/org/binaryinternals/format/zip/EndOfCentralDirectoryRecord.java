@@ -4,6 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
@@ -62,7 +63,8 @@ public final class EndOfCentralDirectoryRecord extends FileComponent implements 
 
         stream.readFully(this.Signature);
         if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_END)) {
-            throw new FileFormatException(LocalFileHeader.signatureMismatch("end of central directory signature", this.startPos, this.Signature, ZIPFile.CENTRAL_END));
+            throw new FileFormatException(LocalFileHeader.signatureMismatch("end of central directory signature", this.startPos, this.Signature,
+                            ZIPFile.CENTRAL_END));
         }
         this.DiskNumber = stream.readUnsignedShortInLittleEndian();
         this.DiskNumberWithSCD = stream.readUnsignedShortInLittleEndian();

@@ -4,6 +4,7 @@
  * Copyright 2014, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
                 super.startPos + 2,
                 2,
                 "reference_index",
-                this.reference_index.value + " - " + ((ClassFile)classFile).getCPDescription(this.reference_index.value),
+                this.reference_index.value + " - " + ((ClassFile) classFile).getCPDescription(this.reference_index.value),
                 "msg_const_methodhandle_reference_index",
                 Icons.Offset
         );
@@ -126,7 +127,7 @@ public class CONSTANT_MethodHandle_info extends cp_info {
         /// ID of the [ReferenceKind].
         public final int value;
 
-        private ReferenceKind(int value) {
+        ReferenceKind(int value) {
             this.value = value;
         }
 

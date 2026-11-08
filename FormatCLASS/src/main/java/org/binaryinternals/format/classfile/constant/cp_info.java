@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -238,7 +239,7 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
         /// </a>
         public final boolean loadable;
 
-        private ConstantType(int tag, ClassFileFormatVersion format, boolean loadable) {
+        ConstantType(int tag, ClassFileFormatVersion format, boolean loadable) {
             this.tag = (short) tag;
             this.format = format;
             this.loadable = loadable;

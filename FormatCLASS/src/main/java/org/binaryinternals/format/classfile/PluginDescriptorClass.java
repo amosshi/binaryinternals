@@ -7,12 +7,12 @@
 
 package org.binaryinternals.format.classfile;
 
-import org.binaryinternals.commonlib.PluginDescriptor;
 import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PluginDescriptor;
 
 /// @author Amos Shi
-public class PluginDescriptorClass implements PluginDescriptor{
+public class PluginDescriptorClass implements PluginDescriptor {
 
     public PluginDescriptorClass() {
     }

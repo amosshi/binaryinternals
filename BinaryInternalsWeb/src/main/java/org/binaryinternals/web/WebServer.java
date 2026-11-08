@@ -4,10 +4,9 @@
  * Copyright 2026, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.web;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -36,6 +35,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 
 /// Web server and HTTP API, each request runs on a virtual thread.
 ///

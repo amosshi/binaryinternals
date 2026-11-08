@@ -8,20 +8,22 @@ import java.util.ResourceBundle;
 /// @author Amos Shi
 public final class Texts {
 
-    private Texts() {
-    }
-
-    static final ResourceBundle MESSAGES = ResourceBundle.getBundle(Texts.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
     public static final String NewLine = "New Line";
     public static final String Signature = "Signature: ";
     public static final String Space = "Space";
     public static final String WhiteSpace = "White Space";
 
-    public static String getString(final String key) {
-        return MESSAGES.getString(key);
-    }
     public static final String PDF_FILE_HEADER = "PDF_FILE_HEADER";
     public static final String PDF_INDIRECT_OBJECT = "PDF_INDIRECT_OBJECT";
     public static final String PDF_CROSS_REFERENCE_TABLE = "PDF_CROSS_REFERENCE_TABLE";
     public static final String PDF_CROSS_REFERENCE_TABLE_KEY = "PDF_CROSS_REFERENCE_TABLE_KEY";
+
+    static final ResourceBundle MESSAGES = ResourceBundle.getBundle(Texts.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
+
+    private Texts() {
+    }
+
+    public static String getString(final String key) {
+        return MESSAGES.getString(key);
+    }
 }

@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class TIFFHeader extends FileComponent {
     /// The offset (in bytes) of the first IFD.
     public final int offset_0ifd;
 
-    public TIFFHeader(final PosDataInputStream pDisMarker) 
+    public TIFFHeader(final PosDataInputStream pDisMarker)
             throws IOException {
         super.startPos = pDisMarker.getPos();
         super.length = SIZE;
@@ -39,7 +40,9 @@ public class TIFFHeader extends FileComponent {
             this.arbitray_number = pDisMarker.readUnsignedShort(order);
             this.offset_0ifd = pDisMarker.readInt(order);
         } else {
-            throw new FileFormatException("Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.".formatted(TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
+            throw new FileFormatException(
+                    "Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.".formatted(
+                            TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
         }
     }
 
@@ -69,8 +72,10 @@ public class TIFFHeader extends FileComponent {
         comp.setDescription("""
                 The byte order used within the file. Legal values are:<br />\
                 <ul>\
-                <li> <strong>II</strong> (4949.H): In the <code>II</code> format, byte order is always from the least significant byte to the most significant byte, for both 16-bit and 32-bit integers This is called <i>little-endian</i> byte order. </li>\
-                <li> <strong>MM</strong> (4D4D.H): In the <code>MM</code> format, byte order is always from most significant to least significant, for both 16-bit and 32-bit integers. This is called <i>big-endian</i> byte order.</li>\
+                <li> <strong>II</strong> (4949.H): In the <code>II</code> format, byte order is always from the least significant byte to the most \
+                significant byte, for both 16-bit and 32-bit integers This is called <i>little-endian</i> byte order. </li>\
+                <li> <strong>MM</strong> (4D4D.H): In the <code>MM</code> format, byte order is always from most significant to least significant, \
+                for both 16-bit and 32-bit integers. This is called <i>big-endian</i> byte order.</li>\
                 </ul>""");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -93,9 +98,9 @@ public class TIFFHeader extends FileComponent {
                 In particular, an Image File Directory may follow the image data it describes.\s\
                 Readers must follow the pointers wherever they may lead.\
                 <br />\
-                The term <strong><i>byte offset</i></strong> is always used in this document to refer to a location with respect to the beginning of the TIFF file.\s\
-                The first byte of the file has an offset of <strong>0</strong>."""
-                );
+                The term <strong><i>byte offset</i></strong> is always used in this document to refer to a location with respect to the beginning of \
+                the TIFF file.\s\
+                The first byte of the file has an offset of <strong>0</strong>.""");
         parentNode.add(new DefaultMutableTreeNode(comp));
     }
 }

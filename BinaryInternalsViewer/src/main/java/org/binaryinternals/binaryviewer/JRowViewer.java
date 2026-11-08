@@ -4,12 +4,13 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.binaryviewer;
 
-import org.binaryinternals.commonlib.HTMLKit;
 import java.awt.Component;
 import java.util.HexFormat;
 import javax.swing.JTextPane;
+import org.binaryinternals.commonlib.HTMLKit;
 
 /// Display rows of binary data.
 ///
@@ -22,7 +23,7 @@ final class JRowViewer extends JTextPane {
     private static final HexFormat HEX = HexFormat.of().withUpperCase();
 
     /// Constructor.
-    public JRowViewer() {
+    JRowViewer() {
         super();
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.setEditable(false);

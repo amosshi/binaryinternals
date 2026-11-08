@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
 
-    public IFD_920A_FocalLength(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
+    public IFD_920A_FocalLength(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
@@ -25,7 +26,6 @@ public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
         super.generateTreeNode_RATIONAL(
                 parentNode,
                 IFDMessage.getString(IFDMessage.KEY_IFD_920A_Description)
-                + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G)
-                );
+                + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

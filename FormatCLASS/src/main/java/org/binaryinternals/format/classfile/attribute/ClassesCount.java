@@ -4,6 +4,7 @@
  * Copyright  2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -88,7 +89,7 @@ public abstract class ClassesCount extends attribute_info {
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
                         "class %d".formatted(i + 1),
-                        TEXT_CPINDEX_VALUE.formatted(classIndex, "class", ((ClassFile)classFile).getCPDescription(classIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(classIndex, "class", ((ClassFile) classFile).getCPDescription(classIndex)),
                         this.getMessageKey_4_classes(),
                         Icons.Class
                 );

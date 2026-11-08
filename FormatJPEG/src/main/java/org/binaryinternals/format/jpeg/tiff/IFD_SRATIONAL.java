@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -17,20 +18,18 @@ public class IFD_SRATIONAL extends IFD {
 
     public final SRational[] value;
 
-    public IFD_SRATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
+    public IFD_SRATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.SRATIONAL, startPosTiff, byteArrayTiff);
         super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                 // Offset
 
         // Read the rational values
         if (super.ifd_count > 0) {
-            int n, d;
-
             final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
             this.value = new SRational[super.ifd_count];
             for (int i = 0; i < super.ifd_count; i++) {
-                n = IFDParse.readInt(reader, byteOrder);
-                d = IFDParse.readInt(reader, byteOrder);
+                final int n = IFDParse.readInt(reader, byteOrder);
+                final int d = IFDParse.readInt(reader, byteOrder);
                 this.value[i] = new SRational(n, d);
             }
         } else {

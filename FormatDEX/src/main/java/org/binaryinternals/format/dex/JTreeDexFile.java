@@ -4,11 +4,13 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
@@ -29,7 +31,7 @@ public final class JTreeDexFile implements GenerateTreeNodeDexFile {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        DexFile dexFile = (DexFile) format;
         this.generate_magic(parentNode, dexFile);
         dexFile.header.generateTreeNode(parentNode, dexFile);
         this.generate_string_ids(parentNode, dexFile);
@@ -226,7 +228,7 @@ public final class JTreeDexFile implements GenerateTreeNodeDexFile {
                 "data [%,d]".formatted(dexFile.data.size())));
         parentNode.add(node);
 
-        dexFile.data.values().forEach(comp -> {
+        for (final FileComponent comp : dexFile.data.values()) {
             int startPos = comp.getStartPos();
 
             DefaultMutableTreeNode itemNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -239,8 +241,9 @@ public final class JTreeDexFile implements GenerateTreeNodeDexFile {
                 case GenerateTreeNode item -> item.generateTreeNode(itemNode);
                 case GenerateTreeNodeDexFile item -> item.generateTreeNode(itemNode, dexFile);
                 // This should never happen, or else it is a coding logic error
-                default -> LOGGER.severe("FileComponent is not added to the tree: position=0x%X type=%s".formatted(comp.getStartPos(), comp.getClass().getName()));
+                default -> LOGGER.severe("FileComponent is not added to the tree: position=0x%X type=%s".formatted(comp.getStartPos(), comp.getClass()
+                                .getName()));
             }
-        });
+        }
     }
 }

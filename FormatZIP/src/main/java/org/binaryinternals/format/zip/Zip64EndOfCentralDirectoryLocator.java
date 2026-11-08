@@ -4,6 +4,7 @@
  * Copyright 2026, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
@@ -48,7 +49,8 @@ public final class Zip64EndOfCentralDirectoryLocator extends FileComponent imple
 
         stream.readFully(this.Signature);
         if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_ZIP64_LOCATOR)) {
-            throw new FileFormatException(LocalFileHeader.signatureMismatch("zip64 end of central dir locator signature", this.startPos, this.Signature, ZIPFile.CENTRAL_ZIP64_LOCATOR));
+            throw new FileFormatException(LocalFileHeader.signatureMismatch("zip64 end of central dir locator signature", this.startPos, this.Signature,
+                            ZIPFile.CENTRAL_ZIP64_LOCATOR));
         }
         this.DiskNumberWithZip64End = stream.readUnsignedIntInLittleEndian();
         this.Zip64EndOffset = stream.readLongInLittleEndian();

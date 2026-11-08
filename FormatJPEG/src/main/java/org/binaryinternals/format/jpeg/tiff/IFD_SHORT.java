@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class IFD_SHORT extends IFD {
 
     public final int[] value;
 
-    public IFD_SHORT(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
+    public IFD_SHORT(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.SHORT, startPosTiff, byteArrayTiff);
 
@@ -40,7 +41,7 @@ public class IFD_SHORT extends IFD {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         if (this.isValue()) {
             this.generateTreeNode_SHORT(parentNode, IFDMessage.getString(IFDMessage.KEY_IFD_Value));
-        }else{
+        } else {
             this.generateTreeNode_SHORT(parentNode, IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
         }
     }
