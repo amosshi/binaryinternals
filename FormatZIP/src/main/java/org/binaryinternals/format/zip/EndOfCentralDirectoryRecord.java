@@ -90,7 +90,6 @@ public final class EndOfCentralDirectoryRecord extends FileComponent implements 
     }
 
     @Override
-    @SuppressWarnings({"java:S1121"})
     public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
@@ -106,44 +105,51 @@ public final class EndOfCentralDirectoryRecord extends FileComponent implements 
                 "signature:" + BytesTool.getByteDataHexView(this.Signature),
                 Icons.Signature
         )));
+        position += 4;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 "number of this disk = %d".formatted(this.DiskNumber),
                 Icons.Counter
         )));
+        position += 2;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "number of the disk with the start of the central directory = %d".formatted(this.DiskNumberWithSCD),
                 Icons.Counter
         )));
+        position += 2;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "total number of entries in the central directory on this disk = %d".formatted(this.EntryTotalNumberDisk),
                 Icons.Counter
         )));
+        position += 2;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "total number of entries in the central directory = %d".formatted(this.EntryTotalNumber),
                 Icons.Counter
         )));
+        position += 2;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 4,
                 "size of the central directory = %d".formatted(this.CentralDirectorySize),
                 Icons.Size
         )));
+        position += 4;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "offset of start of central directory with respect to the starting disk number = 0x%08X".formatted(this.CentralDirectoryOffset),
                 Icons.Offset
         )));
+        position += 4;
         nodeCDE.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 ".ZIP file comment length = %d".formatted(this.ZipFileCommentLength),
                 Icons.Length

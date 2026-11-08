@@ -23,7 +23,6 @@ public final class DefaultFileFormat extends FileFormat {
     }
 
     @Override
-    @SuppressWarnings("java:S1186")  // Methods should not be empty --- Ignore this rule
     public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
         // No structure to show, only the binary data
     }

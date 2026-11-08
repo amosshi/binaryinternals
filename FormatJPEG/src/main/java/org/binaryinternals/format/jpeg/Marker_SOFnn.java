@@ -14,20 +14,13 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class Marker_SOFnn extends Marker {
 
-    private static class Component {
-
-        /// Component Identifier
-        @SuppressWarnings("PackageVisibleField")
-        int C;
-        /// Horizontal sampling factor
-        @SuppressWarnings("PackageVisibleField")
-        int H;
-        /// Vertical sampling factor
-        @SuppressWarnings("PackageVisibleField")
-        int V;
-        /// Quantization table destination selector
-        @SuppressWarnings("PackageVisibleField")
-        int Tq;
+    /// Frame component-specification parameters.
+    ///
+    /// @param c Component identifier, `C`
+    /// @param h Horizontal sampling factor, `H`
+    /// @param v Vertical sampling factor, `V`
+    /// @param tq Quantization table destination selector, `Tq`
+    private record Component(int c, int h, int v, int tq) {
     }
     /// Sample precision
     private int P;
@@ -57,15 +50,11 @@ public class Marker_SOFnn extends Marker {
         this.Nf = pDisMarker.readUnsignedByte();  // TODO - Check the values
 
         // Components: Ci, Hi, Vi, Tqi
-        byte b;
         this.C = new Component[this.Nf];
         for (int i = 0; i < this.Nf; i++) {
-            this.C[i] = new Component();
-            this.C[i].C = pDisMarker.readUnsignedByte();
-            b = pDisMarker.readByte();
-            this.C[i].H = (b & 0xF0) >> 4;
-            this.C[i].V = (b & 0x0F);
-            this.C[i].Tq = pDisMarker.readUnsignedByte();
+            final int c = pDisMarker.readUnsignedByte();
+            final int b = pDisMarker.readUnsignedByte();
+            this.C[i] = new Component(c, (b & 0xF0) >> 4, b & 0x0F, pDisMarker.readUnsignedByte());
         }
     }
 
@@ -130,19 +119,19 @@ public class Marker_SOFnn extends Marker {
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 0,
                         1,
-                        "C: %d".formatted(this.C[i].C))));
+                        "C: %d".formatted(this.C[i].c()))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 1,
                         1,
-                        "H: %d".formatted(this.C[i].H))));
+                        "H: %d".formatted(this.C[i].h()))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 1,
                         1,
-                        "V: %d".formatted(this.C[i].V))));
+                        "V: %d".formatted(this.C[i].v()))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 2,
                         1,
-                        "Tq: %d".formatted(this.C[i].Tq))));
+                        "Tq: %d".formatted(this.C[i].tq()))));
             }
         }
     }
