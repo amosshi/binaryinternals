@@ -41,7 +41,6 @@ Two problems were confirmed by running them:
 
 Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
 
-- `LineEnding`: the repository keeps each file's existing CRLF or LF line endings.
 - Naming checks: names follow the file format specifications (`InnerClasses_attribute`, `u4`, `tableswitch`).
 - `UnusedImports`: Checkstyle does not see references in Markdown doc comments (`///`, JEP 467).
 - `NeedBraces` for arrow switch cases only (`case X -> value;`); braces stay required for `if`, `else`, `for`, `while` and `do`.

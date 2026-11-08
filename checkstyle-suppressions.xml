@@ -7,9 +7,6 @@
   itself is used unchanged).
 -->
 <suppressions>
-    <!-- The repository keeps each file's existing line endings (both CRLF and LF are used) -->
-    <suppress checks="LineEnding" files=".*"/>
-
     <!-- Names follow the file format specifications, e.g. InnerClasses_attribute, u4, tableswitch -->
     <suppress checks="[A-Za-z]*Name" files=".*"/>
 
