@@ -7,18 +7,14 @@
 package org.binaryinternals.app;
 
 import java.awt.Frame;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.binaryinternals.commonlib.PluginDescriptor;
 import org.binaryinternals.plugin.PluginManager;
 
-/**
- * Shows the loaded plug-ins.
- *
- * @author Amos Shi
- */
-class JDialogPlugins extends JDialogTable {
+/// Shows the loaded plug-ins.
+///
+/// @author Amos Shi
+final class JDialogPlugins extends JDialogTable {
 
     private static final long serialVersionUID = 4876543219876500006L;
 
@@ -26,27 +22,20 @@ class JDialogPlugins extends JDialogTable {
         super(owner, title, new PluginsModel());
     }
 
-    static class PluginsModel extends AbstractTableModel {
+    private static final class PluginsModel extends AbstractTableModel {
 
         private static final long serialVersionUID = 4876543219876500013L;
+        private static final List<String> COLUMN_NAMES = List.of("Jar file", "Format Class", "Extension Description");
 
-        final transient List<String> columnNames = List.of("Jar file", "Format Class", "Extension Description");
-        final transient List<Row> rowData = new ArrayList<>();
-
-        /**
-         * One table row.
-         */
-        record Row(String jar, String formatClass, String description) {
-        }
-
-        PluginsModel() {
-            // Row Data
-            for (PluginDescriptor plugin : PluginManager.getPlugins().values()) {
-                this.rowData.add(new Row(
+        private final transient List<Row> rowData = PluginManager.getPlugins().values().stream()
+                .map(plugin -> new Row(
                         PluginManager.getJarName(plugin.getClass()),
                         plugin.getFileFormatClass().getName(),
-                        plugin.getExtensionDescription()));
-            }
+                        plugin.getExtensionDescription()))
+                .toList();
+
+        /// One table row.
+        private record Row(String jar, String formatClass, String description) {
         }
 
         @Override
@@ -56,16 +45,16 @@ class JDialogPlugins extends JDialogTable {
 
         @Override
         public int getColumnCount() {
-            return this.columnNames.size();
+            return COLUMN_NAMES.size();
         }
 
         @Override
-        public String getColumnName(int column) {
-            return this.columnNames.get(column);
+        public String getColumnName(final int column) {
+            return COLUMN_NAMES.get(column);
         }
 
         @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
+        public Object getValueAt(final int rowIndex, final int columnIndex) {
             final Row row = this.rowData.get(rowIndex);
             return switch (columnIndex) {
                 case 0 -> row.jar();

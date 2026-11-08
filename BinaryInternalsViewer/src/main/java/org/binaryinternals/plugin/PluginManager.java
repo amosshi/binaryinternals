@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.logging.Level;
@@ -32,33 +32,25 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginManager {
+/// Loads the file format plug-ins, and opens a file with the plug-in for its
+/// extension.
+///
+/// @author Amos Shi
+public final class PluginManager {
 
     private static final Logger LOGGER = Logger.getLogger(PluginManager.class.getName());
     public static final String PLUGIN_DIR = resolvePluginDir();
-    /**
-     * Plug-in descriptor class name and the plug-in descriptor. Keyed by class
-     * rather than jar, since several plug-ins can share a location, e.g.
-     * {@code target/classes} directories when running from an IDE.
-     */
-    static final Map<String, PluginDescriptor> PLUGINS = new TreeMap<>();
-
-    static {
-        loadPlugins();
-    }
+    /// Plug-in descriptor class name and the plug-in descriptor. Keyed by class
+    /// rather than jar, since several plug-ins can share a location, e.g.
+    /// `target/classes` directories when running from an IDE.
+    static final SortedMap<String, PluginDescriptor> PLUGINS = Collections.unmodifiableSortedMap(loadPlugins());
 
     private PluginManager() {
     }
 
-    /**
-     * The "libs" folder next to the running jar, so it works wherever the
-     * process is launched from (e.g. a double-click). Falls back to the
-     * working directory when not running from a jar.
-     */
+    /// The "libs" folder next to the running jar, so it works wherever the
+    /// process is launched from (e.g. a double-click). Falls back to the
+    /// working directory when not running from a jar.
     private static String resolvePluginDir() {
         try {
             final CodeSource source = PluginManager.class.getProtectionDomain().getCodeSource();
@@ -75,12 +67,10 @@ public class PluginManager {
         return Path.of(System.getProperty("user.dir"), "libs").toString();
     }
 
-    /**
-     * The class loader is intentionally kept open, because the plug-in classes
-     * are loaded lazily from the jars for as long as the application runs.
-     */
+    /// The class loader is intentionally kept open, because the plug-in classes
+    /// are loaded lazily from the jars for as long as the application runs.
     @SuppressWarnings("resource")
-    private static void loadPlugins() {
+    private static SortedMap<String, PluginDescriptor> loadPlugins() {
         final Path pluginFolder = Path.of(PLUGIN_DIR);
         final List<URL> urls = new ArrayList<>();
         if (Files.isDirectory(pluginFolder)) {
@@ -96,24 +86,24 @@ public class PluginManager {
         final ClassLoader parent = PluginManager.class.getClassLoader();
         final ClassLoader loader = urls.isEmpty() ? parent : new URLClassLoader(urls.toArray(URL[]::new), parent);
 
+        final SortedMap<String, PluginDescriptor> plugins = new TreeMap<>();
         final Iterator<ServiceLoader.Provider<PluginDescriptor>> providers =
                 ServiceLoader.load(PluginDescriptor.class, loader).stream().iterator();
         while (providers.hasNext()) {
             try {
                 final ServiceLoader.Provider<PluginDescriptor> provider = providers.next();
-                PLUGINS.put(provider.type().getName(), provider.get());
+                plugins.put(provider.type().getName(), provider.get());
             } catch (ServiceConfigurationError | RuntimeException ex) {
                 LOGGER.log(Level.SEVERE, "Failed to load a plugin", ex);
             }
         }
+        return plugins;
     }
 
-    /**
-     * Get the jar file name where a class is loaded from.
-     *
-     * @param type The class
-     * @return Jar file name, or the class name if the location is unknown
-     */
+    /// Get the jar file name where a class is loaded from.
+    ///
+    /// @param type The class
+    /// @return Jar file name, or the class name if the location is unknown
     public static String getJarName(final Class<?> type) {
         final CodeSource source = type.getProtectionDomain().getCodeSource();
         if (source != null) {
@@ -138,32 +128,25 @@ public class PluginManager {
                 .collect(Collectors.joining(", ", " - ", ", ..."));
     }
 
-    public static void initChooseFilters(JFileChooser chooser) {
-        FileNameExtensionFilter filter;
-        for (PluginDescriptor plugin : PLUGINS.values()) {
-            filter = new FileNameExtensionFilter(
+    public static void initChooseFilters(final JFileChooser chooser) {
+        for (final PluginDescriptor plugin : PLUGINS.values()) {
+            chooser.addChoosableFileFilter(new FileNameExtensionFilter(
                     plugin.getExtensionDescription(),
-                    plugin.getExtensions().toArray(String[]::new));
-            chooser.addChoosableFileFilter(filter);
+                    plugin.getExtensions().toArray(String[]::new)));
         }
     }
 
     public static FileFormat getFile(final Path file) throws IOException,
             ReflectiveOperationException {
-        Class<? extends FileFormat> fileFormatClass = null;
         final String name = String.valueOf(file.getFileName());
         final int dot = name.lastIndexOf('.');
         final String ext = dot < 0 ? "" : name.substring(dot + 1);
 
-        for (PluginDescriptor plugin : PLUGINS.values()) {
-            if (isContain(plugin.getExtensions(), ext)) {
-                fileFormatClass = plugin.getFileFormatClass();
-                break;
-            }
-        }
-        if (fileFormatClass == null) {
-            fileFormatClass = DefaultFileFormat.class;
-        }
+        final Class<? extends FileFormat> fileFormatClass = PLUGINS.values().stream()
+                .filter(plugin -> isContain(plugin.getExtensions(), ext))
+                .findFirst()
+                .<Class<? extends FileFormat>>map(PluginDescriptor::getFileFormatClass)
+                .orElse(DefaultFileFormat.class);
 
         final Constructor<? extends FileFormat> c = fileFormatClass.getConstructor(Path.class);
         try {
@@ -179,16 +162,14 @@ public class PluginManager {
         }
     }
 
-    static boolean isContain(List<String> exts, String ext) {
+    static boolean isContain(final List<String> exts, final String ext) {
         return exts != null && exts.stream().anyMatch(ext::equalsIgnoreCase);
     }
 
-    /**
-     * Return the loaded {@link #PLUGINS}.
-     *
-     * @return Loaded plug-ins
-     */
-    public static Map<String, PluginDescriptor> getPlugins() {
-        return Collections.unmodifiableMap(PLUGINS);
+    /// Return the loaded [#PLUGINS].
+    ///
+    /// @return Loaded plug-ins
+    public static SortedMap<String, PluginDescriptor> getPlugins() {
+        return PLUGINS;
     }
 }

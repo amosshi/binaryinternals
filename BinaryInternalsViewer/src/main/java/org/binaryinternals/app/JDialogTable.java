@@ -23,12 +23,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-/**
- * A modal dialog showing a read-only table and a Close button.
- *
- * @author Amos Shi
- */
-abstract class JDialogTable extends JDialog {
+/// A modal dialog showing a read-only table and a Close button.
+///
+/// @author Amos Shi
+abstract sealed class JDialogTable extends JDialog permits JDialogIcons, JDialogPlugins {
 
     private static final long serialVersionUID = 4876543219876500010L;
     private static final int COLUMN_MIN_WIDTH = 50;

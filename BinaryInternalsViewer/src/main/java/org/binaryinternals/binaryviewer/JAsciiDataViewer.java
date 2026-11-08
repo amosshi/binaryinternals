@@ -8,17 +8,13 @@ package org.binaryinternals.binaryviewer;
 
 import org.binaryinternals.commonlib.HTMLKit;
 
-/**
- * Display binary data as ASCII text.
- *
- * @author Amos Shi
- */
+/// Display binary data as ASCII text.
+///
+/// @author Amos Shi
 final class JAsciiDataViewer extends DataViewer {
 
     private static final long serialVersionUID = 4876543219876500004L;
-    /**
-     * Width of the ASCII data viewer section.
-     */
+    /// Width of the ASCII data viewer section.
     public static final int WIDTH_VALUE = 231;
 
     @Override

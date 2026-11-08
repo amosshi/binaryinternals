@@ -11,23 +11,17 @@ import java.awt.Component;
 import java.util.HexFormat;
 import javax.swing.JTextPane;
 
-/**
- * Display rows of binary data.
- *
- * @author Amos Shi
- */
-class JRowViewer extends JTextPane {
+/// Display rows of binary data.
+///
+/// @author Amos Shi
+final class JRowViewer extends JTextPane {
 
     private static final long serialVersionUID = 4876543219876500008L;
-    /**
-     * Width of the row viewer.
-     */
+    /// Width of the row viewer.
     public static final int WIDTH_VALUE = 110;
     private static final HexFormat HEX = HexFormat.of().withUpperCase();
 
-    /**
-     * Constructor.
-     */
+    /// Constructor.
     public JRowViewer() {
         super();
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -36,13 +30,11 @@ class JRowViewer extends JTextPane {
         this.setContentType("text/html");
     }
 
-    /**
-     * Set revised Binary data.
-     *
-     * @param rowStart  Start row to be displayed
-     * @param rowCount  Number of rows to be displayed
-     * @param rowMax    Max row
-     */
+    /// Set revised Binary data.
+    ///
+    /// @param rowStart  Start row to be displayed
+    /// @param rowCount  Number of rows to be displayed
+    /// @param rowMax    Max row
     public void setData(final int rowStart, final int rowCount, final int rowMax) {
 
         // Update contents
@@ -54,7 +46,7 @@ class JRowViewer extends JTextPane {
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(HTMLKit.START);
 
         int rowValue = rowStart * JBinaryViewer.ROW_ITEM_MAX;

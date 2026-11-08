@@ -22,53 +22,33 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
-/**
- * A panel containing a {@code JTree} object.
- *
- * @author Amos Shi
- */
+/// A panel containing a `JTree` object.
+///
+/// @author Amos Shi
 public final class JPanelForTree extends JPanel {
 
     private static final long serialVersionUID = 4876543219876500002L;
-    /**
-     * Default editor size.
-     */
+    /// Default editor size.
     private static final Dimension EDITOR_DEFAULT_SIZE = new Dimension(100, 120);
-    /**
-     * Top level window.
-     */
+    /// Top level window.
     private final JFrame topLevelFrame;
-    /**
-     * Details panel.
-     */
+    /// Details panel.
     private JPanel detailsPanel;
-    /**
-     * Title for details pane.
-     */
+    /// Title for details pane.
     private String detailsTitle;
-    /**
-     * Tree component for the file components.
-     */
+    /// Tree component for the file components.
     private final JTree tree;
-    /**
-     * Toolbar on the tree.
-     */
+    /// Toolbar on the tree.
     private final JToolBar toolbar;
-    /**
-     * Toolbar button for details.
-     */
+    /// Toolbar button for details.
     private final JButton toolbarbtnDetails;
-    /**
-     * Editor pane at the right.
-     */
+    /// Editor pane at the right.
     private JEditorPane editorPaneDescription;
 
-    /**
-     * Create a panel tool bar to contain a {@code JTree} object.
-     *
-     * @param jTree The tree to be contained
-     * @param frame The parent window
-     */
+    /// Create a panel tool bar to contain a `JTree` object.
+    ///
+    /// @param jTree The tree to be contained
+    /// @param frame The parent window
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public JPanelForTree(final JTree jTree, final JFrame frame) {
         if (jTree == null) {
