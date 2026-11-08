@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_829A_ExposureTime extends IFD_RATIONAL_COUNT1 {
 
     private final static String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_829A_Description)
@@ -25,9 +22,7 @@ public class IFD_829A_ExposureTime extends IFD_RATIONAL_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(parentNode, IFD_Description);

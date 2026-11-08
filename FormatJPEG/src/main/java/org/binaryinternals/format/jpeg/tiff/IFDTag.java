@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.util.ResourceBundle;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFDTag {
 
     private IFDTag() {
@@ -215,729 +212,357 @@ public class IFDTag {
     private static final ResourceBundle IFDTagMessage = ResourceBundle.getBundle(IFDTag.class.getName().replace('.', '/'));
 
     public static String getTagName(int tag){
-        final String name;
-        switch(tag){
+        return switch (tag) {
 
             ////////////////////////////////////////////////////////////////////
             // ITFF-v6
 
-            case IFDTag.IFD_00FE_NewSubfileType:
-                name = IFDTagMessage.getString("IFD_00FE_NewSubfileType");
-                break;
-
-            case IFDTag.IFD_00FF_SubfileType:
-                name = IFDTagMessage.getString("IFD_00FF_SubfileType");
-                break;
-
-            case IFDTag.IFD_0100_ImageWidth:
-                name = IFDTagMessage.getString("IFD_0100_ImageWidth");
-                break;
-
-            case IFDTag.IFD_0101_ImageLength:
-                name = IFDTagMessage.getString("IFD_0101_ImageLength");
-                break;
-
-            case IFDTag.IFD_0102_BitsPerSample:
-                name = IFDTagMessage.getString("IFD_0102_BitsPerSample");
-                break;
-
-            case IFDTag.IFD_0103_Compression:
-                name = IFDTagMessage.getString("IFD_0103_Compression");
-                break;
-
-//          case IFDTag.IFD_0106_Color:
-            case IFDTag.IFD_0106_PhotometricInterpretation:
-                name = IFDTagMessage.getString("IFD_0106_PhotometricInterpretation");
-                break;
-
-            case IFDTag.IFD_0107_Threshholding:
-                name = IFDTagMessage.getString("IFD_0107_Threshholding");
-                break;
-
-            case IFDTag.IFD_0108_CellWidth:
-                name = IFDTagMessage.getString("IFD_0108_CellWidth");
-                break;
-
-            case IFDTag.IFD_0109_CellLength:
-                name = IFDTagMessage.getString("IFD_0109_CellLength");
-                break;
-
-            case IFDTag.IFD_010A_FillOrder:
-                name = IFDTagMessage.getString("IFD_010A_FillOrder");
-                break;
-
-            case IFDTag.IFD_010D_DocumentName:
-                name = IFDTagMessage.getString("IFD_010D_DocumentName");
-                break;
-
-            case IFDTag.IFD_010E_ImageDescription:
-                name = IFDTagMessage.getString("IFD_010E_ImageDescription");
-                break;
-
-            case IFDTag.IFD_010F_Make:
-                name = IFDTagMessage.getString("IFD_010F_Make");
-                break;
-
-            case IFDTag.IFD_0110_Model:
-                name = IFDTagMessage.getString("IFD_0110_Model");
-                break;
-
-            case IFDTag.IFD_0111_StripOffsets:
-                name = IFDTagMessage.getString("IFD_0111_StripOffsets");
-                break;
-
-            case IFDTag.IFD_0112_Orientation:
-                name = IFDTagMessage.getString("IFD_0112_Orientation");
-                break;
-
-            case IFDTag.IFD_0115_SamplesPerPixel:
-                name = IFDTagMessage.getString("IFD_0115_SamplesPerPixel");
-                break;
-
-            case IFDTag.IFD_0116_RowsPerStrip:
-                name = IFDTagMessage.getString("IFD_0116_RowsPerStrip");
-                break;
-
-            case IFDTag.IFD_0117_StripByteCounts:
-                name = IFDTagMessage.getString("IFD_0117_StripByteCounts");
-                break;
-
-            case IFDTag.IFD_0118_MinSampleValue:
-                name = IFDTagMessage.getString("IFD_0118_MinSampleValue");
-                break;
-
-            case IFDTag.IFD_0119_MaxSampleValue:
-                name = IFDTagMessage.getString("IFD_0119_MaxSampleValue");
-                break;
-
-            case IFDTag.IFD_011A_XResolution:
-                name = IFDTagMessage.getString("IFD_011A_XResolution");
-                break;
-
-            case IFDTag.IFD_011B_YResolution:
-                name = IFDTagMessage.getString("IFD_011B_YResolution");
-                break;
-
-            case IFDTag.IFD_011C_PlanarConfiguration:
-                name = IFDTagMessage.getString("IFD_011C_PlanarConfiguration");
-                break;
-
-            case IFDTag.IFD_011D_PageName:
-                name = IFDTagMessage.getString("IFD_011D_PageName");
-                break;
+            case IFDTag.IFD_00FE_NewSubfileType -> IFDTagMessage.getString("IFD_00FE_NewSubfileType");
 
-            case IFDTag.IFD_011E_XPosition:
-                name = IFDTagMessage.getString("IFD_011E_XPosition");
-                break;
+            case IFDTag.IFD_00FF_SubfileType -> IFDTagMessage.getString("IFD_00FF_SubfileType");
 
-            case IFDTag.IFD_011F_YPosition:
-                name = IFDTagMessage.getString("IFD_011F_YPosition");
-                break;
+            case IFDTag.IFD_0100_ImageWidth -> IFDTagMessage.getString("IFD_0100_ImageWidth");
 
-            case IFDTag.IFD_0120_FreeOffsets:
-                name = IFDTagMessage.getString("IFD_0120_FreeOffsets");
-                break;
+            case IFDTag.IFD_0101_ImageLength -> IFDTagMessage.getString("IFD_0101_ImageLength");
 
-            case IFDTag.IFD_0121_FreeByteCounts:
-                name = IFDTagMessage.getString("IFD_0121_FreeByteCounts");
-                break;
+            case IFDTag.IFD_0102_BitsPerSample -> IFDTagMessage.getString("IFD_0102_BitsPerSample");
 
-            case IFDTag.IFD_0122_GrayResponseUnit:
-                name = IFDTagMessage.getString("IFD_0122_GrayResponseUnit");
-                break;
+            case IFDTag.IFD_0103_Compression -> IFDTagMessage.getString("IFD_0103_Compression");
 
-            case IFDTag.IFD_0123_GrayResponseCurve:
-                name = IFDTagMessage.getString("IFD_0123_GrayResponseCurve");
-                break;
+            //          case IFDTag.IFD_0106_Color:
+            case IFDTag.IFD_0106_PhotometricInterpretation -> IFDTagMessage.getString("IFD_0106_PhotometricInterpretation");
 
-            case IFDTag.IFD_0124_T4Options:
-                name = IFDTagMessage.getString("IFD_0124_T4Options");
-                break;
+            case IFDTag.IFD_0107_Threshholding -> IFDTagMessage.getString("IFD_0107_Threshholding");
 
-            case IFDTag.IFD_0125_T6Options:
-                name = IFDTagMessage.getString("IFD_0125_T6Options");
-                break;
+            case IFDTag.IFD_0108_CellWidth -> IFDTagMessage.getString("IFD_0108_CellWidth");
 
-            case IFDTag.IFD_0128_ResolutionUnit:
-                name = IFDTagMessage.getString("IFD_0128_ResolutionUnit");
-                break;
+            case IFDTag.IFD_0109_CellLength -> IFDTagMessage.getString("IFD_0109_CellLength");
 
-            case IFDTag.IFD_0129_PageNumber:
-                name = IFDTagMessage.getString("IFD_0129_PageNumber");
-                break;
+            case IFDTag.IFD_010A_FillOrder -> IFDTagMessage.getString("IFD_010A_FillOrder");
 
-            case IFDTag.IFD_012D_TransferFunction:
-                name = IFDTagMessage.getString("IFD_012D_TransferFunction");
-                break;
+            case IFDTag.IFD_010D_DocumentName -> IFDTagMessage.getString("IFD_010D_DocumentName");
 
-            case IFDTag.IFD_0131_Software:
-                name = IFDTagMessage.getString("IFD_0131_Software");
-                break;
+            case IFDTag.IFD_010E_ImageDescription -> IFDTagMessage.getString("IFD_010E_ImageDescription");
 
-            case IFDTag.IFD_0132_DateTime:
-                name = IFDTagMessage.getString("IFD_0132_DateTime");
-                break;
+            case IFDTag.IFD_010F_Make -> IFDTagMessage.getString("IFD_010F_Make");
 
-            case IFDTag.IFD_013B_Artist:
-                name = IFDTagMessage.getString("IFD_013B_Artist");
-                break;
+            case IFDTag.IFD_0110_Model -> IFDTagMessage.getString("IFD_0110_Model");
 
-            case IFDTag.IFD_013C_HostComputer:
-                name = IFDTagMessage.getString("IFD_013C_HostComputer");
-                break;
+            case IFDTag.IFD_0111_StripOffsets -> IFDTagMessage.getString("IFD_0111_StripOffsets");
 
-            case IFDTag.IFD_013D_Predictor:
-                name = IFDTagMessage.getString("IFD_013D_Predictor");
-                break;
+            case IFDTag.IFD_0112_Orientation -> IFDTagMessage.getString("IFD_0112_Orientation");
 
-            case IFDTag.IFD_013E_WhitePoint:
-                name = IFDTagMessage.getString("IFD_013E_WhitePoint");
-                break;
+            case IFDTag.IFD_0115_SamplesPerPixel -> IFDTagMessage.getString("IFD_0115_SamplesPerPixel");
 
-            case IFDTag.IFD_013F_PrimaryChromaticities:
-                name = IFDTagMessage.getString("IFD_013F_PrimaryChromaticities");
-                break;
+            case IFDTag.IFD_0116_RowsPerStrip -> IFDTagMessage.getString("IFD_0116_RowsPerStrip");
 
-            case IFDTag.IFD_0140_ColorMap:
-                name = IFDTagMessage.getString("IFD_0140_ColorMap");
-                break;
+            case IFDTag.IFD_0117_StripByteCounts -> IFDTagMessage.getString("IFD_0117_StripByteCounts");
 
-            case IFDTag.IFD_0141_HalftoneHints:
-                name = IFDTagMessage.getString("IFD_0141_HalftoneHints");
-                break;
+            case IFDTag.IFD_0118_MinSampleValue -> IFDTagMessage.getString("IFD_0118_MinSampleValue");
 
-            case IFDTag.IFD_0142_TileWidth:
-                name = IFDTagMessage.getString("IFD_0142_TileWidth");
-                break;
+            case IFDTag.IFD_0119_MaxSampleValue -> IFDTagMessage.getString("IFD_0119_MaxSampleValue");
 
-            case IFDTag.IFD_0143_TileLength:
-                name = IFDTagMessage.getString("IFD_0143_TileLength");
-                break;
+            case IFDTag.IFD_011A_XResolution -> IFDTagMessage.getString("IFD_011A_XResolution");
 
-            case IFDTag.IFD_0144_TileOffsets:
-                name = IFDTagMessage.getString("IFD_0144_TileOffsets");
-                break;
+            case IFDTag.IFD_011B_YResolution -> IFDTagMessage.getString("IFD_011B_YResolution");
 
-            case IFDTag.IFD_0145_TileByteCounts:
-                name = IFDTagMessage.getString("IFD_0145_TileByteCounts");
-                break;
+            case IFDTag.IFD_011C_PlanarConfiguration -> IFDTagMessage.getString("IFD_011C_PlanarConfiguration");
 
-            case IFDTag.IFD_014C_InkSet:
-                name = IFDTagMessage.getString("IFD_014C_InkSet");
-                break;
+            case IFDTag.IFD_011D_PageName -> IFDTagMessage.getString("IFD_011D_PageName");
 
-            case IFDTag.IFD_014D_InkNames:
-                name = IFDTagMessage.getString("IFD_014D_InkNames");
-                break;
+            case IFDTag.IFD_011E_XPosition -> IFDTagMessage.getString("IFD_011E_XPosition");
 
-            case IFDTag.IFD_014E_NumberOfInks:
-                name = IFDTagMessage.getString("IFD_014E_NumberOfInks");
-                break;
+            case IFDTag.IFD_011F_YPosition -> IFDTagMessage.getString("IFD_011F_YPosition");
 
-            case IFDTag.IFD_0150_DotRange:
-                name = IFDTagMessage.getString("IFD_0150_DotRange");
-                break;
+            case IFDTag.IFD_0120_FreeOffsets -> IFDTagMessage.getString("IFD_0120_FreeOffsets");
 
-            case IFDTag.IFD_0151_TargetPrinter:
-                name = IFDTagMessage.getString("IFD_0151_TargetPrinter");
-                break;
+            case IFDTag.IFD_0121_FreeByteCounts -> IFDTagMessage.getString("IFD_0121_FreeByteCounts");
 
-            case IFDTag.IFD_0152_ExtraSamples:
-                name = IFDTagMessage.getString("IFD_0152_ExtraSamples");
-                break;
+            case IFDTag.IFD_0122_GrayResponseUnit -> IFDTagMessage.getString("IFD_0122_GrayResponseUnit");
 
-            case IFDTag.IFD_0153_SampleFormat:
-                name = IFDTagMessage.getString("IFD_0153_SampleFormat");
-                break;
+            case IFDTag.IFD_0123_GrayResponseCurve -> IFDTagMessage.getString("IFD_0123_GrayResponseCurve");
 
-            case IFDTag.IFD_0154_SMinSampleValue:
-                name = IFDTagMessage.getString("IFD_0154_SMinSampleValue");
-                break;
+            case IFDTag.IFD_0124_T4Options -> IFDTagMessage.getString("IFD_0124_T4Options");
 
-            case IFDTag.IFD_0155_SMaxSampleValue:
-                name = IFDTagMessage.getString("IFD_0155_SMaxSampleValue");
-                break;
+            case IFDTag.IFD_0125_T6Options -> IFDTagMessage.getString("IFD_0125_T6Options");
 
-            case IFDTag.IFD_0156_TransferRange:
-                name = IFDTagMessage.getString("IFD_0156_TransferRange");
-                break;
+            case IFDTag.IFD_0128_ResolutionUnit -> IFDTagMessage.getString("IFD_0128_ResolutionUnit");
 
-            case IFDTag.IFD_0200_JPEGProc:
-                name = IFDTagMessage.getString("IFD_0200_JPEGProc");
-                break;
+            case IFDTag.IFD_0129_PageNumber -> IFDTagMessage.getString("IFD_0129_PageNumber");
 
-            case IFDTag.IFD_0201_JPEGInterchangeFormat:
-                name = IFDTagMessage.getString("IFD_0201_JPEGInterchangeFormat");
-                break;
+            case IFDTag.IFD_012D_TransferFunction -> IFDTagMessage.getString("IFD_012D_TransferFunction");
 
-            case IFDTag.IFD_0202_JPEGInterchangeFormatLength:
-                name = IFDTagMessage.getString("IFD_0202_JPEGInterchangeFormatLength");
-                break;
+            case IFDTag.IFD_0131_Software -> IFDTagMessage.getString("IFD_0131_Software");
 
-            case IFDTag.IFD_0203_JPEGRestartInterval:
-                name = IFDTagMessage.getString("IFD_0203_JPEGRestartInterval");
-                break;
+            case IFDTag.IFD_0132_DateTime -> IFDTagMessage.getString("IFD_0132_DateTime");
 
-            case IFDTag.IFD_0205_JPEGLosslessPredictors:
-                name = IFDTagMessage.getString("IFD_0205_JPEGLosslessPredictors");
-                break;
+            case IFDTag.IFD_013B_Artist -> IFDTagMessage.getString("IFD_013B_Artist");
 
-            case IFDTag.IFD_0206_JPEGPointTransforms:
-                name = IFDTagMessage.getString("IFD_0206_JPEGPointTransforms");
-                break;
+            case IFDTag.IFD_013C_HostComputer -> IFDTagMessage.getString("IFD_013C_HostComputer");
 
-            case IFDTag.IFD_0207_JPEGQTables:
-                name = IFDTagMessage.getString("IFD_0207_JPEGQTables");
-                break;
+            case IFDTag.IFD_013D_Predictor -> IFDTagMessage.getString("IFD_013D_Predictor");
 
-            case IFDTag.IFD_0208_JPEGDCTables:
-                name = IFDTagMessage.getString("IFD_0208_JPEGDCTables");
-                break;
+            case IFDTag.IFD_013E_WhitePoint -> IFDTagMessage.getString("IFD_013E_WhitePoint");
 
-            case IFDTag.IFD_0209_JPEGACTables:
-                name = IFDTagMessage.getString("IFD_0209_JPEGACTables");
-                break;
+            case IFDTag.IFD_013F_PrimaryChromaticities -> IFDTagMessage.getString("IFD_013F_PrimaryChromaticities");
 
-            case IFDTag.IFD_0211_YCbCrCoefficients:
-                name = IFDTagMessage.getString("IFD_0211_YCbCrCoefficients");
-                break;
+            case IFDTag.IFD_0140_ColorMap -> IFDTagMessage.getString("IFD_0140_ColorMap");
 
-            case IFDTag.IFD_0212_YCbCrSubSampling:
-                name = IFDTagMessage.getString("IFD_0212_YCbCrSubSampling");
-                break;
+            case IFDTag.IFD_0141_HalftoneHints -> IFDTagMessage.getString("IFD_0141_HalftoneHints");
 
-            case IFDTag.IFD_0213_YCbCrPositioning:
-                name = IFDTagMessage.getString("IFD_0213_YCbCrPositioning");
-                break;
+            case IFDTag.IFD_0142_TileWidth -> IFDTagMessage.getString("IFD_0142_TileWidth");
 
-            case IFDTag.IFD_0214_ReferenceBlackWhite:
-                name = IFDTagMessage.getString("IFD_0214_ReferenceBlackWhite");
-                break;
+            case IFDTag.IFD_0143_TileLength -> IFDTagMessage.getString("IFD_0143_TileLength");
 
-            case IFDTag.IFD_8298_Copyright:
-                name = IFDTagMessage.getString("IFD_8298_Copyright");
-                break;
+            case IFDTag.IFD_0144_TileOffsets -> IFDTagMessage.getString("IFD_0144_TileOffsets");
+
+            case IFDTag.IFD_0145_TileByteCounts -> IFDTagMessage.getString("IFD_0145_TileByteCounts");
+
+            case IFDTag.IFD_014C_InkSet -> IFDTagMessage.getString("IFD_014C_InkSet");
+
+            case IFDTag.IFD_014D_InkNames -> IFDTagMessage.getString("IFD_014D_InkNames");
+
+            case IFDTag.IFD_014E_NumberOfInks -> IFDTagMessage.getString("IFD_014E_NumberOfInks");
+
+            case IFDTag.IFD_0150_DotRange -> IFDTagMessage.getString("IFD_0150_DotRange");
+
+            case IFDTag.IFD_0151_TargetPrinter -> IFDTagMessage.getString("IFD_0151_TargetPrinter");
+
+            case IFDTag.IFD_0152_ExtraSamples -> IFDTagMessage.getString("IFD_0152_ExtraSamples");
+
+            case IFDTag.IFD_0153_SampleFormat -> IFDTagMessage.getString("IFD_0153_SampleFormat");
+
+            case IFDTag.IFD_0154_SMinSampleValue -> IFDTagMessage.getString("IFD_0154_SMinSampleValue");
+
+            case IFDTag.IFD_0155_SMaxSampleValue -> IFDTagMessage.getString("IFD_0155_SMaxSampleValue");
+
+            case IFDTag.IFD_0156_TransferRange -> IFDTagMessage.getString("IFD_0156_TransferRange");
+
+            case IFDTag.IFD_0200_JPEGProc -> IFDTagMessage.getString("IFD_0200_JPEGProc");
+
+            case IFDTag.IFD_0201_JPEGInterchangeFormat -> IFDTagMessage.getString("IFD_0201_JPEGInterchangeFormat");
+
+            case IFDTag.IFD_0202_JPEGInterchangeFormatLength -> IFDTagMessage.getString("IFD_0202_JPEGInterchangeFormatLength");
+
+            case IFDTag.IFD_0203_JPEGRestartInterval -> IFDTagMessage.getString("IFD_0203_JPEGRestartInterval");
+
+            case IFDTag.IFD_0205_JPEGLosslessPredictors -> IFDTagMessage.getString("IFD_0205_JPEGLosslessPredictors");
+
+            case IFDTag.IFD_0206_JPEGPointTransforms -> IFDTagMessage.getString("IFD_0206_JPEGPointTransforms");
+
+            case IFDTag.IFD_0207_JPEGQTables -> IFDTagMessage.getString("IFD_0207_JPEGQTables");
+
+            case IFDTag.IFD_0208_JPEGDCTables -> IFDTagMessage.getString("IFD_0208_JPEGDCTables");
+
+            case IFDTag.IFD_0209_JPEGACTables -> IFDTagMessage.getString("IFD_0209_JPEGACTables");
+
+            case IFDTag.IFD_0211_YCbCrCoefficients -> IFDTagMessage.getString("IFD_0211_YCbCrCoefficients");
+
+            case IFDTag.IFD_0212_YCbCrSubSampling -> IFDTagMessage.getString("IFD_0212_YCbCrSubSampling");
+
+            case IFDTag.IFD_0213_YCbCrPositioning -> IFDTagMessage.getString("IFD_0213_YCbCrPositioning");
+
+            case IFDTag.IFD_0214_ReferenceBlackWhite -> IFDTagMessage.getString("IFD_0214_ReferenceBlackWhite");
+
+            case IFDTag.IFD_8298_Copyright -> IFDTagMessage.getString("IFD_8298_Copyright");
 
             ////////////////////////////////////////////////////////////////////
             // CIPA DC-008-2010
 
-            case IFDTag.IFD_829A_ExposureTime:
-                name = IFDTagMessage.getString("IFD_829A_ExposureTime");
-                break;
-
-            case IFDTag.IFD_829D_FNumber:
-                name = IFDTagMessage.getString("IFD_829D_FNumber");
-                break;
-
-            case IFDTag.IFD_8769_Exif:
-                name = IFDTagMessage.getString("IFD_8769_Exif");
-                break;
-
-            case IFDTag.IFD_8822_ExposureProgram:
-                name = IFDTagMessage.getString("IFD_8822_ExposureProgram");
-                break;
-
-            case IFDTag.IFD_8824_SpectralSensitivity:
-                name = IFDTagMessage.getString("IFD_8824_SpectralSensitivity");
-                break;
-
-            case IFDTag.IFD_8825_GPS:
-                name = IFDTagMessage.getString("IFD_8825_GPS");
-                break;
-
-            case IFDTag.IFD_8827_PhotographicSensitivity:
-                name = IFDTagMessage.getString("IFD_8827_PhotographicSensitivity");
-                break;
-
-            case IFDTag.IFD_8828_OECF:
-                name = IFDTagMessage.getString("IFD_8828_OECF");
-                break;
-
-            case IFDTag.IFD_8830_SensitivityType:
-                name = IFDTagMessage.getString("IFD_8830_SensitivityType");
-                break;
-
-            case IFDTag.IFD_8831_StandardOutputSensitivity:
-                name = IFDTagMessage.getString("IFD_8831_StandardOutputSensitivity");
-                break;
-
-            case IFDTag.IFD_8832_RecommendedExposureIndex:
-                name = IFDTagMessage.getString("IFD_8832_RecommendedExposureIndex");
-                break;
-
-            case IFDTag.IFD_8833_ISOSpeed:
-                name = IFDTagMessage.getString("IFD_8833_ISOSpeed");
-                break;
-
-            case IFDTag.IFD_8834_ISOSpeedLatitudeyyy:
-                name = IFDTagMessage.getString("IFD_8834_ISOSpeedLatitudeyyy");
-                break;
-
-            case IFDTag.IFD_8835_ISOSpeedLatitudezzz:
-                name = IFDTagMessage.getString("IFD_8835_ISOSpeedLatitudezzz");
-                break;
-
-            case IFDTag.IFD_9000_ExifVersion:
-                name = IFDTagMessage.getString("IFD_9000_ExifVersion");
-                break;
-
-            case IFDTag.IFD_9003_DateTimeOriginal:
-                name = IFDTagMessage.getString("IFD_9003_DateTimeOriginal");
-                break;
-
-            case IFDTag.IFD_9004_DateTimeDigitized:
-                name = IFDTagMessage.getString("IFD_9004_DateTimeDigitized");
-                break;
-
-            case IFDTag.IFD_9101_ComponentsConfiguration:
-                name = IFDTagMessage.getString("IFD_9101_ComponentsConfiguration");
-                break;
-
-            case IFDTag.IFD_9102_CompressedBitsPerPixel:
-                name = IFDTagMessage.getString("IFD_9102_CompressedBitsPerPixel");
-                break;
-
-            case IFDTag.IFD_9201_ShutterSpeedValue:
-                name = IFDTagMessage.getString("IFD_9201_ShutterSpeedValue");
-                break;
-
-            case IFDTag.IFD_9202_ApertureValue:
-                name = IFDTagMessage.getString("IFD_9202_ApertureValue");
-                break;
-
-            case IFDTag.IFD_9203_BrightnessValue:
-                name = IFDTagMessage.getString("IFD_9203_BrightnessValue");
-                break;
-
-            case IFDTag.IFD_9204_ExposureBiasValue:
-                name = IFDTagMessage.getString("IFD_9204_ExposureBiasValue");
-                break;
-
-            case IFDTag.IFD_9205_MaxApertureValue:
-                name = IFDTagMessage.getString("IFD_9205_MaxApertureValue");
-                break;
-
-            case IFDTag.IFD_9206_SubjectDistance:
-                name = IFDTagMessage.getString("IFD_9206_SubjectDistance");
-                break;
-
-            case IFDTag.IFD_9207_MeteringMode:
-                name = IFDTagMessage.getString("IFD_9207_MeteringMode");
-                break;
-
-            case IFDTag.IFD_9208_LightSource:
-                name = IFDTagMessage.getString("IFD_9208_LightSource");
-                break;
-
-            case IFDTag.IFD_9209_Flash:
-                name = IFDTagMessage.getString("IFD_9209_Flash");
-                break;
-
-            case IFDTag.IFD_920A_FocalLength:
-                name = IFDTagMessage.getString("IFD_920A_FocalLength");
-                break;
-
-            case IFDTag.IFD_9214_SubjectArea:
-                name = IFDTagMessage.getString("IFD_9214_SubjectArea");
-                break;
-
-            case IFDTag.IFD_927C_MakerNode:
-                name = IFDTagMessage.getString("IFD_927C_MakerNode");
-                break;
-
-            case IFDTag.IFD_9286_UserComment:
-                name = IFDTagMessage.getString("IFD_9286_UserComment");
-                break;
-
-            case IFDTag.IFD_9290_SubsecTime:
-                name = IFDTagMessage.getString("IFD_9290_SubsecTime");
-                break;
-
-            case IFDTag.IFD_9291_SubsecTimeOriginal:
-                name = IFDTagMessage.getString("IFD_9291_SubsecTimeOriginal");
-                break;
-
-            case IFDTag.IFD_9292_SubsecTimeDigitized:
-                name = IFDTagMessage.getString("IFD_9292_SubsecTimeDigitized");
-                break;
-
-            case IFDTag.IFD_A000_FlashpixVersion:
-                name = IFDTagMessage.getString("IFD_A000_FlashpixVersion");
-                break;
-
-            case IFDTag.IFD_A001_ColorSpace:
-                name = IFDTagMessage.getString("IFD_A001_ColorSpace");
-                break;
-
-            case IFDTag.IFD_A002_PixelXDimension:
-                name = IFDTagMessage.getString("IFD_A002_PixelXDimension");
-                break;
-
-            case IFDTag.IFD_A003_PixelYDimension:
-                name = IFDTagMessage.getString("IFD_A003_PixelYDimension");
-                break;
-
-            case IFDTag.IFD_A004_RelatedSoundFile:
-                name = IFDTagMessage.getString("IFD_A004_RelatedSoundFile");
-                break;
-
-            case IFDTag.IFD_A005_Interoperability:
-                name = IFDTagMessage.getString("IFD_A005_Interoperability");
-                break;
-
-            case IFDTag.IFD_A20B_FlashEnergy:
-                name = IFDTagMessage.getString("IFD_A20B_FlashEnergy");
-                break;
-
-            case IFDTag.IFD_A20C_SpatialFrequencyResponse:
-                name = IFDTagMessage.getString("IFD_A20C_SpatialFrequencyResponse");
-                break;
-
-            case IFDTag.IFD_A20E_FocalPlaneXResolution:
-                name = IFDTagMessage.getString("IFD_A20E_FocalPlaneXResolution");
-                break;
-
-            case IFDTag.IFD_A20F_FocalPlaneYResolution:
-                name = IFDTagMessage.getString("IFD_A20F_FocalPlaneYResolution");
-                break;
-
-            case IFDTag.IFD_A210_FocalPlaneResolutionUnit:
-                name = IFDTagMessage.getString("IFD_A210_FocalPlaneResolutionUnit");
-                break;
-
-            case IFDTag.IFD_A214_SubjectLocation:
-                name = IFDTagMessage.getString("IFD_A214_SubjectLocation");
-                break;
-
-            case IFDTag.IFD_A215_ExposureIndex:
-                name = IFDTagMessage.getString("IFD_A215_ExposureIndex");
-                break;
-
-            case IFDTag.IFD_A217_SensingMethod:
-                name = IFDTagMessage.getString("IFD_A217_SensingMethod");
-                break;
-
-            case IFDTag.IFD_A300_FileSource:
-                name = IFDTagMessage.getString("IFD_A300_FileSource");
-                break;
-
-            case IFDTag.IFD_A301_SceneType:
-                name = IFDTagMessage.getString("IFD_A301_SceneType");
-                break;
-
-            case IFDTag.IFD_A302_CFAPattern:
-                name = IFDTagMessage.getString("IFD_A302_CFAPattern");
-                break;
-
-            case IFDTag.IFD_A401_CustomRendered:
-                name = IFDTagMessage.getString("IFD_A401_CustomRendered");
-                break;
-
-            case IFDTag.IFD_A402_ExposureMode:
-                name = IFDTagMessage.getString("IFD_A402_ExposureMode");
-                break;
-
-            case IFDTag.IFD_A403_WhiteBalance:
-                name = IFDTagMessage.getString("IFD_A403_WhiteBalance");
-                break;
-
-            case IFDTag.IFD_A404_DigitalZoomRatio:
-                name = IFDTagMessage.getString("IFD_A404_DigitalZoomRatio");
-                break;
-
-            case IFDTag.IFD_A405_FocalLengthIn35mmFilm:
-                name = IFDTagMessage.getString("IFD_A405_FocalLengthIn35mmFilm");
-                break;
-
-            case IFDTag.IFD_A406_SceneCaptureType:
-                name = IFDTagMessage.getString("IFD_A406_SceneCaptureType");
-                break;
-
-            case IFDTag.IFD_A407_GainControl:
-                name = IFDTagMessage.getString("IFD_A407_GainControl");
-                break;
-
-            case IFDTag.IFD_A408_Contrast:
-                name = IFDTagMessage.getString("IFD_A408_Contrast");
-                break;
-
-            case IFDTag.IFD_A409_Saturation:
-                name = IFDTagMessage.getString("IFD_A409_Saturation");
-                break;
-
-            case IFDTag.IFD_A40A_Sharpness:
-                name = IFDTagMessage.getString("IFD_A40A_Sharpness");
-                break;
-
-            case IFDTag.IFD_A40B_DeviceSettingDescription:
-                name = IFDTagMessage.getString("IFD_A40B_DeviceSettingDescription");
-                break;
-
-            case IFDTag.IFD_A40C_SubjectDistanceRange:
-                name = IFDTagMessage.getString("IFD_A40C_SubjectDistanceRange");
-                break;
-
-            case IFDTag.IFD_A420_ImageUniqueID:
-                name = IFDTagMessage.getString("IFD_A420_ImageUniqueID");
-                break;
-
-            case IFDTag.IFD_A430_CameraOwnerName:
-                name = IFDTagMessage.getString("IFD_A430_CameraOwnerName");
-                break;
-
-            case IFDTag.IFD_A431_BodySerialNumber:
-                name = IFDTagMessage.getString("IFD_A431_BodySerialNumber");
-                break;
-
-            case IFDTag.IFD_A432_LensSpecification:
-                name = IFDTagMessage.getString("IFD_A432_LensSpecification");
-                break;
-
-            case IFDTag.IFD_A433_LensMake:
-                name = IFDTagMessage.getString("IFD_A433_LensMake");
-                break;
-
-            case IFDTag.IFD_A434_LensModel:
-                name = IFDTagMessage.getString("IFD_A434_LensModel");
-                break;
-
-            case IFDTag.IFD_A435_LensSerialNumber:
-                name = IFDTagMessage.getString("IFD_A435_LensSerialNumber");
-                break;
-
-            case IFDTag.IFD_A500_Gamma:
-                name = IFDTagMessage.getString("IFD_A500_Gamma");
-                break;
-
-            default:
-                name = IFDTagMessage.getString("UNKNOWN_TAG");
-        }
-
-        return name;
+            case IFDTag.IFD_829A_ExposureTime -> IFDTagMessage.getString("IFD_829A_ExposureTime");
+
+            case IFDTag.IFD_829D_FNumber -> IFDTagMessage.getString("IFD_829D_FNumber");
+
+            case IFDTag.IFD_8769_Exif -> IFDTagMessage.getString("IFD_8769_Exif");
+
+            case IFDTag.IFD_8822_ExposureProgram -> IFDTagMessage.getString("IFD_8822_ExposureProgram");
+
+            case IFDTag.IFD_8824_SpectralSensitivity -> IFDTagMessage.getString("IFD_8824_SpectralSensitivity");
+
+            case IFDTag.IFD_8825_GPS -> IFDTagMessage.getString("IFD_8825_GPS");
+
+            case IFDTag.IFD_8827_PhotographicSensitivity -> IFDTagMessage.getString("IFD_8827_PhotographicSensitivity");
+
+            case IFDTag.IFD_8828_OECF -> IFDTagMessage.getString("IFD_8828_OECF");
+
+            case IFDTag.IFD_8830_SensitivityType -> IFDTagMessage.getString("IFD_8830_SensitivityType");
+
+            case IFDTag.IFD_8831_StandardOutputSensitivity -> IFDTagMessage.getString("IFD_8831_StandardOutputSensitivity");
+
+            case IFDTag.IFD_8832_RecommendedExposureIndex -> IFDTagMessage.getString("IFD_8832_RecommendedExposureIndex");
+
+            case IFDTag.IFD_8833_ISOSpeed -> IFDTagMessage.getString("IFD_8833_ISOSpeed");
+
+            case IFDTag.IFD_8834_ISOSpeedLatitudeyyy -> IFDTagMessage.getString("IFD_8834_ISOSpeedLatitudeyyy");
+
+            case IFDTag.IFD_8835_ISOSpeedLatitudezzz -> IFDTagMessage.getString("IFD_8835_ISOSpeedLatitudezzz");
+
+            case IFDTag.IFD_9000_ExifVersion -> IFDTagMessage.getString("IFD_9000_ExifVersion");
+
+            case IFDTag.IFD_9003_DateTimeOriginal -> IFDTagMessage.getString("IFD_9003_DateTimeOriginal");
+
+            case IFDTag.IFD_9004_DateTimeDigitized -> IFDTagMessage.getString("IFD_9004_DateTimeDigitized");
+
+            case IFDTag.IFD_9101_ComponentsConfiguration -> IFDTagMessage.getString("IFD_9101_ComponentsConfiguration");
+
+            case IFDTag.IFD_9102_CompressedBitsPerPixel -> IFDTagMessage.getString("IFD_9102_CompressedBitsPerPixel");
+
+            case IFDTag.IFD_9201_ShutterSpeedValue -> IFDTagMessage.getString("IFD_9201_ShutterSpeedValue");
+
+            case IFDTag.IFD_9202_ApertureValue -> IFDTagMessage.getString("IFD_9202_ApertureValue");
+
+            case IFDTag.IFD_9203_BrightnessValue -> IFDTagMessage.getString("IFD_9203_BrightnessValue");
+
+            case IFDTag.IFD_9204_ExposureBiasValue -> IFDTagMessage.getString("IFD_9204_ExposureBiasValue");
+
+            case IFDTag.IFD_9205_MaxApertureValue -> IFDTagMessage.getString("IFD_9205_MaxApertureValue");
+
+            case IFDTag.IFD_9206_SubjectDistance -> IFDTagMessage.getString("IFD_9206_SubjectDistance");
+
+            case IFDTag.IFD_9207_MeteringMode -> IFDTagMessage.getString("IFD_9207_MeteringMode");
+
+            case IFDTag.IFD_9208_LightSource -> IFDTagMessage.getString("IFD_9208_LightSource");
+
+            case IFDTag.IFD_9209_Flash -> IFDTagMessage.getString("IFD_9209_Flash");
+
+            case IFDTag.IFD_920A_FocalLength -> IFDTagMessage.getString("IFD_920A_FocalLength");
+
+            case IFDTag.IFD_9214_SubjectArea -> IFDTagMessage.getString("IFD_9214_SubjectArea");
+
+            case IFDTag.IFD_927C_MakerNode -> IFDTagMessage.getString("IFD_927C_MakerNode");
+
+            case IFDTag.IFD_9286_UserComment -> IFDTagMessage.getString("IFD_9286_UserComment");
+
+            case IFDTag.IFD_9290_SubsecTime -> IFDTagMessage.getString("IFD_9290_SubsecTime");
+
+            case IFDTag.IFD_9291_SubsecTimeOriginal -> IFDTagMessage.getString("IFD_9291_SubsecTimeOriginal");
+
+            case IFDTag.IFD_9292_SubsecTimeDigitized -> IFDTagMessage.getString("IFD_9292_SubsecTimeDigitized");
+
+            case IFDTag.IFD_A000_FlashpixVersion -> IFDTagMessage.getString("IFD_A000_FlashpixVersion");
+
+            case IFDTag.IFD_A001_ColorSpace -> IFDTagMessage.getString("IFD_A001_ColorSpace");
+
+            case IFDTag.IFD_A002_PixelXDimension -> IFDTagMessage.getString("IFD_A002_PixelXDimension");
+
+            case IFDTag.IFD_A003_PixelYDimension -> IFDTagMessage.getString("IFD_A003_PixelYDimension");
+
+            case IFDTag.IFD_A004_RelatedSoundFile -> IFDTagMessage.getString("IFD_A004_RelatedSoundFile");
+
+            case IFDTag.IFD_A005_Interoperability -> IFDTagMessage.getString("IFD_A005_Interoperability");
+
+            case IFDTag.IFD_A20B_FlashEnergy -> IFDTagMessage.getString("IFD_A20B_FlashEnergy");
+
+            case IFDTag.IFD_A20C_SpatialFrequencyResponse -> IFDTagMessage.getString("IFD_A20C_SpatialFrequencyResponse");
+
+            case IFDTag.IFD_A20E_FocalPlaneXResolution -> IFDTagMessage.getString("IFD_A20E_FocalPlaneXResolution");
+
+            case IFDTag.IFD_A20F_FocalPlaneYResolution -> IFDTagMessage.getString("IFD_A20F_FocalPlaneYResolution");
+
+            case IFDTag.IFD_A210_FocalPlaneResolutionUnit -> IFDTagMessage.getString("IFD_A210_FocalPlaneResolutionUnit");
+
+            case IFDTag.IFD_A214_SubjectLocation -> IFDTagMessage.getString("IFD_A214_SubjectLocation");
+
+            case IFDTag.IFD_A215_ExposureIndex -> IFDTagMessage.getString("IFD_A215_ExposureIndex");
+
+            case IFDTag.IFD_A217_SensingMethod -> IFDTagMessage.getString("IFD_A217_SensingMethod");
+
+            case IFDTag.IFD_A300_FileSource -> IFDTagMessage.getString("IFD_A300_FileSource");
+
+            case IFDTag.IFD_A301_SceneType -> IFDTagMessage.getString("IFD_A301_SceneType");
+
+            case IFDTag.IFD_A302_CFAPattern -> IFDTagMessage.getString("IFD_A302_CFAPattern");
+
+            case IFDTag.IFD_A401_CustomRendered -> IFDTagMessage.getString("IFD_A401_CustomRendered");
+
+            case IFDTag.IFD_A402_ExposureMode -> IFDTagMessage.getString("IFD_A402_ExposureMode");
+
+            case IFDTag.IFD_A403_WhiteBalance -> IFDTagMessage.getString("IFD_A403_WhiteBalance");
+
+            case IFDTag.IFD_A404_DigitalZoomRatio -> IFDTagMessage.getString("IFD_A404_DigitalZoomRatio");
+
+            case IFDTag.IFD_A405_FocalLengthIn35mmFilm -> IFDTagMessage.getString("IFD_A405_FocalLengthIn35mmFilm");
+
+            case IFDTag.IFD_A406_SceneCaptureType -> IFDTagMessage.getString("IFD_A406_SceneCaptureType");
+
+            case IFDTag.IFD_A407_GainControl -> IFDTagMessage.getString("IFD_A407_GainControl");
+
+            case IFDTag.IFD_A408_Contrast -> IFDTagMessage.getString("IFD_A408_Contrast");
+
+            case IFDTag.IFD_A409_Saturation -> IFDTagMessage.getString("IFD_A409_Saturation");
+
+            case IFDTag.IFD_A40A_Sharpness -> IFDTagMessage.getString("IFD_A40A_Sharpness");
+
+            case IFDTag.IFD_A40B_DeviceSettingDescription -> IFDTagMessage.getString("IFD_A40B_DeviceSettingDescription");
+
+            case IFDTag.IFD_A40C_SubjectDistanceRange -> IFDTagMessage.getString("IFD_A40C_SubjectDistanceRange");
+
+            case IFDTag.IFD_A420_ImageUniqueID -> IFDTagMessage.getString("IFD_A420_ImageUniqueID");
+
+            case IFDTag.IFD_A430_CameraOwnerName -> IFDTagMessage.getString("IFD_A430_CameraOwnerName");
+
+            case IFDTag.IFD_A431_BodySerialNumber -> IFDTagMessage.getString("IFD_A431_BodySerialNumber");
+
+            case IFDTag.IFD_A432_LensSpecification -> IFDTagMessage.getString("IFD_A432_LensSpecification");
+
+            case IFDTag.IFD_A433_LensMake -> IFDTagMessage.getString("IFD_A433_LensMake");
+
+            case IFDTag.IFD_A434_LensModel -> IFDTagMessage.getString("IFD_A434_LensModel");
+
+            case IFDTag.IFD_A435_LensSerialNumber -> IFDTagMessage.getString("IFD_A435_LensSerialNumber");
+
+            case IFDTag.IFD_A500_Gamma -> IFDTagMessage.getString("IFD_A500_Gamma");
+
+            default -> IFDTagMessage.getString("UNKNOWN_TAG");
+        };
     }
 
     
     public static String getTagNameGPS(int tag){
-        final String name;
-        switch(tag){
-            case IFDTag.IFD_0000_GPSVersionID:
-                name = IFDTagMessage.getString("IFD_0000_GPSVersionID");
-                break;
-            case IFDTag.IFD_0001_GPSLatitudeRef:
-                name = IFDTagMessage.getString("IFD_0001_GPSLatitudeRef");
-                break;
-            case IFDTag.IFD_0002_GPSLatitude:
-                name = IFDTagMessage.getString("IFD_0002_GPSLatitude");
-                break;
-            case IFDTag.IFD_0003_GPSLongitudeRef:
-                name = IFDTagMessage.getString("IFD_0003_GPSLongitudeRef");
-                break;
-            case IFDTag.IFD_0004_GPSLongitude:
-                name = IFDTagMessage.getString("IFD_0004_GPSLongitude");
-                break;
-            case IFDTag.IFD_0005_GPSAltitudeRef:
-                name = IFDTagMessage.getString("IFD_0005_GPSAltitudeRef");
-                break;
-            case IFDTag.IFD_0006_GPSAltitude:
-                name = IFDTagMessage.getString("IFD_0006_GPSAltitude");
-                break;
-            case IFDTag.IFD_0007_GPSTimeStamp:
-                name = IFDTagMessage.getString("IFD_0007_GPSTimeStamp");
-                break;
-            case IFDTag.IFD_0008_GPSSatellites:
-                name = IFDTagMessage.getString("IFD_0008_GPSSatellites");
-                break;
-            case IFDTag.IFD_0009_GPSStatus:
-                name = IFDTagMessage.getString("IFD_0009_GPSStatus");
-                break;
-            case IFDTag.IFD_000A_GPSMeasureMode:
-                name = IFDTagMessage.getString("IFD_000A_GPSMeasureMode");
-                break;
-            case IFDTag.IFD_000B_GPSDOP:
-                name = IFDTagMessage.getString("IFD_000B_GPSDOP");
-                break;
-            case IFDTag.IFD_000C_GPSSpeedRef:
-                name = IFDTagMessage.getString("IFD_000C_GPSSpeedRef");
-                break;
-            case IFDTag.IFD_000D_GPSSpeed:
-                name = IFDTagMessage.getString("IFD_000D_GPSSpeed");
-                break;
-            case IFDTag.IFD_000E_GPSTrackRef:
-                name = IFDTagMessage.getString("IFD_000E_GPSTrackRef");
-                break;
-            case IFDTag.IFD_000F_GPSTrack:
-                name = IFDTagMessage.getString("IFD_000F_GPSTrack");
-                break;
-            case IFDTag.IFD_0010_GPSImgDirectionRef:
-                name = IFDTagMessage.getString("IFD_0010_GPSImgDirectionRef");
-                break;
-            case IFDTag.IFD_0011_GPSImgDirection:
-                name = IFDTagMessage.getString("IFD_0011_GPSImgDirection");
-                break;
-            case IFDTag.IFD_0012_GPSMapDatum:
-                name = IFDTagMessage.getString("IFD_0012_GPSMapDatum");
-                break;
-            case IFDTag.IFD_0013_GPSDestLatitudeRef:
-                name = IFDTagMessage.getString("IFD_0013_GPSDestLatitudeRef");
-                break;
-            case IFDTag.IFD_0014_GPSDestLatitude:
-                name = IFDTagMessage.getString("IFD_0014_GPSDestLatitude");
-                break;
-            case IFDTag.IFD_0015_GPSDestLongitudeRef:
-                name = IFDTagMessage.getString("IFD_0015_GPSDestLongitudeRef");
-                break;
-            case IFDTag.IFD_0016_GPSDestLongitude:
-                name = IFDTagMessage.getString("IFD_0016_GPSDestLongitude");
-                break;
-            case IFDTag.IFD_0017_GPSDestBearingRef:
-                name = IFDTagMessage.getString("IFD_0017_GPSDestBearingRef");
-                break;
-            case IFDTag.IFD_0018_GPSDestBearing:
-                name = IFDTagMessage.getString("IFD_0018_GPSDestBearing");
-                break;
-            case IFDTag.IFD_0019_GPSDestDistanceRef:
-                name = IFDTagMessage.getString("IFD_0019_GPSDestDistanceRef");
-                break;
-            case IFDTag.IFD_001A_GPSDestDistance:
-                name = IFDTagMessage.getString("IFD_001A_GPSDestDistance");
-                break;
-            case IFDTag.IFD_001B_GPSProcessingMethod:
-                name = IFDTagMessage.getString("IFD_001B_GPSProcessingMethod");
-                break;
-            case IFDTag.IFD_001C_GPSAreaInformation:
-                name = IFDTagMessage.getString("IFD_001C_GPSAreaInformation");
-                break;
-            case IFDTag.IFD_001D_GPSDateStamp:
-                name = IFDTagMessage.getString("IFD_001D_GPSDateStamp");
-                break;
-            case IFDTag.IFD_001E_GPSDifferential:
-                name = IFDTagMessage.getString("IFD_001E_GPSDifferential");
-                break;
-            case IFDTag.IFD_001F_GPSHPositioiningError:
-                name = IFDTagMessage.getString("IFD_001F_GPSHPositioiningError");
-                break;
-            default:
-                name = IFDTagMessage.getString("UNKNOWN_GPS_TAG");
-        }
-
-        return name;
+        return switch (tag) {
+            case IFDTag.IFD_0000_GPSVersionID -> IFDTagMessage.getString("IFD_0000_GPSVersionID");
+            case IFDTag.IFD_0001_GPSLatitudeRef -> IFDTagMessage.getString("IFD_0001_GPSLatitudeRef");
+            case IFDTag.IFD_0002_GPSLatitude -> IFDTagMessage.getString("IFD_0002_GPSLatitude");
+            case IFDTag.IFD_0003_GPSLongitudeRef -> IFDTagMessage.getString("IFD_0003_GPSLongitudeRef");
+            case IFDTag.IFD_0004_GPSLongitude -> IFDTagMessage.getString("IFD_0004_GPSLongitude");
+            case IFDTag.IFD_0005_GPSAltitudeRef -> IFDTagMessage.getString("IFD_0005_GPSAltitudeRef");
+            case IFDTag.IFD_0006_GPSAltitude -> IFDTagMessage.getString("IFD_0006_GPSAltitude");
+            case IFDTag.IFD_0007_GPSTimeStamp -> IFDTagMessage.getString("IFD_0007_GPSTimeStamp");
+            case IFDTag.IFD_0008_GPSSatellites -> IFDTagMessage.getString("IFD_0008_GPSSatellites");
+            case IFDTag.IFD_0009_GPSStatus -> IFDTagMessage.getString("IFD_0009_GPSStatus");
+            case IFDTag.IFD_000A_GPSMeasureMode -> IFDTagMessage.getString("IFD_000A_GPSMeasureMode");
+            case IFDTag.IFD_000B_GPSDOP -> IFDTagMessage.getString("IFD_000B_GPSDOP");
+            case IFDTag.IFD_000C_GPSSpeedRef -> IFDTagMessage.getString("IFD_000C_GPSSpeedRef");
+            case IFDTag.IFD_000D_GPSSpeed -> IFDTagMessage.getString("IFD_000D_GPSSpeed");
+            case IFDTag.IFD_000E_GPSTrackRef -> IFDTagMessage.getString("IFD_000E_GPSTrackRef");
+            case IFDTag.IFD_000F_GPSTrack -> IFDTagMessage.getString("IFD_000F_GPSTrack");
+            case IFDTag.IFD_0010_GPSImgDirectionRef -> IFDTagMessage.getString("IFD_0010_GPSImgDirectionRef");
+            case IFDTag.IFD_0011_GPSImgDirection -> IFDTagMessage.getString("IFD_0011_GPSImgDirection");
+            case IFDTag.IFD_0012_GPSMapDatum -> IFDTagMessage.getString("IFD_0012_GPSMapDatum");
+            case IFDTag.IFD_0013_GPSDestLatitudeRef -> IFDTagMessage.getString("IFD_0013_GPSDestLatitudeRef");
+            case IFDTag.IFD_0014_GPSDestLatitude -> IFDTagMessage.getString("IFD_0014_GPSDestLatitude");
+            case IFDTag.IFD_0015_GPSDestLongitudeRef -> IFDTagMessage.getString("IFD_0015_GPSDestLongitudeRef");
+            case IFDTag.IFD_0016_GPSDestLongitude -> IFDTagMessage.getString("IFD_0016_GPSDestLongitude");
+            case IFDTag.IFD_0017_GPSDestBearingRef -> IFDTagMessage.getString("IFD_0017_GPSDestBearingRef");
+            case IFDTag.IFD_0018_GPSDestBearing -> IFDTagMessage.getString("IFD_0018_GPSDestBearing");
+            case IFDTag.IFD_0019_GPSDestDistanceRef -> IFDTagMessage.getString("IFD_0019_GPSDestDistanceRef");
+            case IFDTag.IFD_001A_GPSDestDistance -> IFDTagMessage.getString("IFD_001A_GPSDestDistance");
+            case IFDTag.IFD_001B_GPSProcessingMethod -> IFDTagMessage.getString("IFD_001B_GPSProcessingMethod");
+            case IFDTag.IFD_001C_GPSAreaInformation -> IFDTagMessage.getString("IFD_001C_GPSAreaInformation");
+            case IFDTag.IFD_001D_GPSDateStamp -> IFDTagMessage.getString("IFD_001D_GPSDateStamp");
+            case IFDTag.IFD_001E_GPSDifferential -> IFDTagMessage.getString("IFD_001E_GPSDifferential");
+            case IFDTag.IFD_001F_GPSHPositioiningError -> IFDTagMessage.getString("IFD_001F_GPSHPositioiningError");
+            default -> IFDTagMessage.getString("UNKNOWN_GPS_TAG");
+        };
     }
 
 
     public static String getTagNameIntero(int tag){
-        final String name;
-        switch(tag){
-            case IFDTag.IFD_0001_InteroperabilityIndex:
-                name = IFDTagMessage.getString("IFD_0001_InteroperabilityIndex");
-                break;
-            case IFDTag.IFD_0002_InteroperabilityVersion:
-                name = IFDTagMessage.getString("IFD_0002_InteroperabilityVersion");
-                break;
-            default:
-                name = IFDTagMessage.getString("UNKNOWN_TAG");
-        }
-
-        return name;
+        return switch (tag) {
+            case IFDTag.IFD_0001_InteroperabilityIndex -> IFDTagMessage.getString("IFD_0001_InteroperabilityIndex");
+            case IFDTag.IFD_0002_InteroperabilityVersion -> IFDTagMessage.getString("IFD_0002_InteroperabilityVersion");
+            default -> IFDTagMessage.getString("UNKNOWN_TAG");
+        };
     }
 
 

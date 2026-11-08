@@ -11,11 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
 
     public final int FlashFired;
@@ -57,7 +54,7 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 2,
-                String.format("%s: %s", super.getTagName(), this.getValueBinaryString()));
+                "%s: %s".formatted(super.getTagName(), this.getValueBinaryString()));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9209_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
         parentNode.add(node = new DefaultMutableTreeNode(comp));
@@ -65,19 +62,19 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,
                 1,
-                String.format("Flash fired: %d", this.FlashFired))));
+                "Flash fired: %d".formatted(this.FlashFired))));
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,
                 1,
-                String.format("Flash return: %d", this.FlashReturn))));
+                "Flash return: %d".formatted(this.FlashReturn))));
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,
                 1,
-                String.format("Flash mode: %d", this.FlashMode))));
+                "Flash mode: %d".formatted(this.FlashMode))));
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,
                 1,
-                String.format("Flash function: %d", this.FlashFunction))));
+                "Flash function: %d".formatted(this.FlashFunction))));
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 10,

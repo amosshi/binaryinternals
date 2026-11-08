@@ -7,18 +7,16 @@
 package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see <a href="http://www.color.org/">INTERNATIONAL COLOR CONSORTIUM</a>
- */
+/// @author Amos Shi
+/// @see <a href="http://www.color.org/">INTERNATIONAL COLOR CONSORTIUM</a>
 public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
     public final byte[] rawData;
@@ -59,38 +57,34 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
         parentNode.add(nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = this.header.getStartPos() + this.header.getLength(),
                 4,
-                String.format("Tag count = %d", this.tagCount))));
+                "Tag count = %d".formatted(this.tagCount))));
 
         lastPos = lastPos + 4;
 
-        ConcurrentSkipListMap<Long, RefItem> sortedMap = new ConcurrentSkipListMap<>();
+        // Tag data in the order of the offset; tags may share their data
+        final SortedMap<Long, RefItem> sortedMap = new TreeMap<>();
         for (int i = 0; i < this.tagTable.length; i++) {
             parentNode.add(nodeTagTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos + Tag.LENGTH * i,
                     Tag.LENGTH,
-                    String.format("Tag[%d]", i))));
+                    "Tag[%d]".formatted(i))));
             this.tagTable[i].generateTreeNode(nodeTagTable);
 
-            if (sortedMap.get(this.tagTable[i].Offset) == null) {
-                RefItem refItem = new RefItem();
-                refItem.i = i;
-                refItem.tag = this.tagTable[i];
-                sortedMap.put(refItem.tag.Offset, refItem);
-            }
+            sortedMap.putIfAbsent(this.tagTable[i].Offset, new RefItem(i, this.tagTable[i]));
         }
 
         lastPos = lastPos + this.tagTable.length * Tag.LENGTH;
-        for (RefItem ref : sortedMap.values()) {
-            diff = (int) ((this.startPos + ref.tag.Offset) - lastPos);
+        for (final RefItem ref : sortedMap.values()) {
+            diff = (int) ((this.startPos + ref.tag().Offset) - lastPos);
             if (diff > 0) {
                 generateTreeNodeDiff(parentNode, lastPos, diff, this.rawData, this.startPos);
             }
 
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    this.startPos + (int) ref.tag.Offset,
-                    (int) ref.tag.Size,
-                    String.format("Data of Tag [%d]", ref.i))));
-            lastPos = this.startPos + (int) ref.tag.Offset + (int) ref.tag.Size;
+                    this.startPos + (int) ref.tag().Offset,
+                    (int) ref.tag().Size,
+                    "Data of Tag [%d]".formatted(ref.i()))));
+            lastPos = this.startPos + (int) ref.tag().Offset + (int) ref.tag().Size;
         }
 
         diff = (this.startPos + this.rawData.length) - lastPos;
@@ -99,10 +93,10 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
         }
     }
 
-    @SuppressWarnings("PackageVisibleInnerClass")
-    private static class RefItem {
-
-        int i;
-        Tag tag;
+    /// A tag with its index in the tag table.
+    ///
+    /// @param i Index in the tag table
+    /// @param tag The tag
+    private record RefItem(int i, Tag tag) {
     }
 }

@@ -10,12 +10,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * The type <code>dateTimeNumber</code> defined in ICC Specification
- * ICC.1:2004-10 (Profile version 4.2.0.0).
- *
- * @author Amos Shi
- */
+/// The type `dateTimeNumber` defined in ICC Specification
+/// ICC.1:2004-10 (Profile version 4.2.0.0).
+///
+/// @author Amos Shi
 @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")
 public class dateTimeNumber {
 
@@ -37,6 +35,6 @@ public class dateTimeNumber {
 
     @Override
     public String toString() {
-        return String.format("%d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second);
+        return "%d-%02d-%02d %02d:%02d:%02d".formatted(year, month, day, hour, minute, second);
     }
 }

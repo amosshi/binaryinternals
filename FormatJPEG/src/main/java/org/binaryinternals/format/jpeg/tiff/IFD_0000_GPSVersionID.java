@@ -11,11 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8825_GPS#Category_A
- */
+/// @author Amos Shi
+/// @see IFD_8825_GPS#Category_A
 public class IFD_0000_GPSVersionID extends IFD_BYTE {
 
     public static final int COUNT = 4;
@@ -43,7 +40,7 @@ public class IFD_0000_GPSVersionID extends IFD_BYTE {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_BYTE(
                 parentNode,
-                String.format("%s: %s", this.getTagName(), this.getGPSVersionID()),
+                "%s: %s".formatted(this.getTagName(), this.getGPSVersionID()),
                 IFDMessage.getString(IFDMessage.KEY_IFD_GPS_0000_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8825_GPS_Category_A));
     }

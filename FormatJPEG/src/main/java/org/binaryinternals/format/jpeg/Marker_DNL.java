@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_DNL extends Marker {
 
     Marker_DNL(final PosDataInputStream pDIS, int marker_code) throws IOException {

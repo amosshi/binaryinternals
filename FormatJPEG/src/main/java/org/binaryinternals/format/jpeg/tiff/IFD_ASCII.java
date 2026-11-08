@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_ASCII extends IFD {
 
     public final String value;
@@ -25,7 +22,7 @@ public class IFD_ASCII extends IFD {
         super(pDIS, byteOrder, tag, IFDType.ASCII, startPosTiff, byteArrayTiff);
 
         if (this.data_size > 0 && this.data_size <= 4) {
-            final StringBuffer sb = new StringBuffer(5);
+            final StringBuilder sb = new StringBuilder(5);
             sb.append((char) pDIS.readByte());  // byte 1
             sb.append((char) pDIS.readByte());  // byte 2
             sb.append((char) pDIS.readByte());  // byte 3
@@ -35,7 +32,7 @@ public class IFD_ASCII extends IFD {
             super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);             // Offset
 
             final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
-            final StringBuffer sb = new StringBuffer(super.ifd_count + 2);
+            final StringBuilder sb = new StringBuilder(super.ifd_count + 2);
             for (int i = 0; i < super.ifd_count; i++) {
                 sb.append((char) reader.readByte());
             }
@@ -48,12 +45,12 @@ public class IFD_ASCII extends IFD {
         if (this.isValue()) {
             this.generateTreeNode_ASCII(
                     parentNode,
-                    String.format("%s: %s", super.getTagName(), this.value),
+                    "%s: %s".formatted(super.getTagName(), this.value),
                     IFDMessage.getString(IFDMessage.KEY_IFD_Value));
         } else {
             this.generateTreeNode_ASCII(
                     parentNode,
-                    String.format("%s: %s", super.getTagName(), this.value),
+                    "%s: %s".formatted(super.getTagName(), this.value),
                     IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
         }
     }
@@ -75,7 +72,7 @@ public class IFD_ASCII extends IFD {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                    ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 

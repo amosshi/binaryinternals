@@ -11,19 +11,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData_XYZType extends TagData {
 
     public final XYZNumber[] data;
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_XYZType(final PosDataInputStream input) throws IOException {
         super(input);
         if (this.length > 8) {
@@ -49,7 +43,7 @@ public class TagData_XYZType extends TagData {
                 comp = new JTreeNodeFileComponent(
                         startPos + 8 + XYZNumber.LENGTH * i,
                         XYZNumber.LENGTH,
-                        String.format("%s [%d]", XYZNumber.class.getSimpleName(), i));
+                        "%s [%d]".formatted(XYZNumber.class.getSimpleName(), i));
                 comp.setDescription(this.data[i].toString());
                 parentNode.add(xyzNode = new DefaultMutableTreeNode(comp));
                 this.data[i].generateTreeNode(xyzNode, this.startPos + 8 + XYZNumber.LENGTH * i);

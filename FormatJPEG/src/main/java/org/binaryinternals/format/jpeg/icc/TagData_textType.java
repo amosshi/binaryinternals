@@ -11,19 +11,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData_textType extends TagData {
 
     public final String text;
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_textType(final PosDataInputStream input) throws IOException {
         super(input);
         StringBuilder sb = new StringBuilder(this.length - 8);

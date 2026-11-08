@@ -10,10 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_0201_JPEGInterchangeFormat extends IFD_LONG_COUNT1 {
 
     public IFD_0201_JPEGInterchangeFormat(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -25,11 +22,9 @@ public class IFD_0201_JPEGInterchangeFormat extends IFD_LONG_COUNT1 {
         return (super.value[0] > 0);
     }
 
-    /**
-     * The <code>JPEG</code> interchange format bit stream offset within the <code>TIFF</code>.
-     * This attribute is valid only if {@link  #isBitstreamPresent} returns <code>true</code>.
-     * @return the offset value
-     */
+    /// The `JPEG` interchange format bit stream offset within the `TIFF`.
+    /// This attribute is valid only if {@link  #isBitstreamPresent} returns `true`.
+    /// @return the offset value
     public long getBitstreamOffset(){
         return super.value[0];
     }

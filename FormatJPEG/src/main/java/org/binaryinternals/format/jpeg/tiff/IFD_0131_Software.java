@@ -12,12 +12,9 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_010F_Make
- * @see IFD_0110_Model
- */
+/// @author Amos Shi
+/// @see IFD_010F_Make
+/// @see IFD_0110_Model
 public class IFD_0131_Software extends IFD_ASCII {
 
     public IFD_0131_Software(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -36,21 +33,21 @@ public class IFD_0131_Software extends IFD_ASCII {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format("Software: %s", this.value));
+                    "Software: %s".formatted(this.value));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0131_Description));
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format("Offset: %d", super.ifd_value_offset));
+                    "Offset: %d".formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
-                    String.format("Software: %s", this.value),
+                    "Software: %s".formatted(this.value),
                     Icons.Shortcut, null);
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0131_Description));
             parentNode.add(new DefaultMutableTreeNode(comp));

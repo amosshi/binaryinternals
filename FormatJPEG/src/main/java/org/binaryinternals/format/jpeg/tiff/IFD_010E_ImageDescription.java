@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_010E_ImageDescription extends IFD_ASCII {
 
     private final static String IFD_Image_Description = "A string that describes the subject of the image."
@@ -37,21 +34,21 @@ public class IFD_010E_ImageDescription extends IFD_ASCII {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format("Image Description: %s", this.value));
+                    "Image Description: %s".formatted(this.value));
             comp.setDescription(IFD_010E_ImageDescription.IFD_Image_Description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format("Offset: %d", super.ifd_value_offset));
+                    "Offset: %d".formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset,
                     super.data_size,
-                    String.format("Image Description: %s", this.value),
+                    "Image Description: %s".formatted(this.value),
                     Icons.Shortcut, null);
             comp.setDescription(IFD_010E_ImageDescription.IFD_Image_Description);
             parentNode.add(new DefaultMutableTreeNode(comp));

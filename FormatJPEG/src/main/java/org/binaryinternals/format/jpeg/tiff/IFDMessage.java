@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- *
- * @author Amos shi
- */
+/// @author Amos shi
 public class IFDMessage{
 
     private IFDMessage() {

@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_LONG extends IFD {
 
     public final long[] value;
@@ -57,14 +54,14 @@ public class IFD_LONG extends IFD {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format("%s: %d", super.getTagName(), this.value[0]));
+                    "%s: %d".formatted(super.getTagName(), this.value[0]));
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                    ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
             comp.setDescription(description);
             parentNode.add(new DefaultMutableTreeNode(comp));
 

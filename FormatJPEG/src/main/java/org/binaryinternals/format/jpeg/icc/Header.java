@@ -13,10 +13,7 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Header extends FileComponent implements GenerateTreeNode {
 
     public static final int LENGTH = 128;
@@ -89,84 +86,84 @@ public class Header extends FileComponent implements GenerateTreeNode {
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 0,
                 4,
-                String.format("Profile size = %d", this.ProfileSize));
+                "Profile size = %d".formatted(this.ProfileSize));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 4 - 7
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 4,
                 4,
-                String.format("CMM Type = %s", this.CMMType));
+                "CMM Type = %s".formatted(this.CMMType));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 8 - 11
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 8,
                 4,
-                String.format("Profile version = %s", this.ProfileVersion));
+                "Profile version = %s".formatted(this.ProfileVersion));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 12 - 15
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 12,
                 4,
-                String.format("Profile/Device class = %s", this.ProfileDeviceClass));
+                "Profile/Device class = %s".formatted(this.ProfileDeviceClass));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 16 - 19
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 16,
                 4,
-                String.format("Data colour space = %s", this.DataColourSpace));
+                "Data colour space = %s".formatted(this.DataColourSpace));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 20 - 23
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 20,
                 4,
-                String.format("Profile connection space = %s", this.ProfileConnectionSpace));
+                "Profile connection space = %s".formatted(this.ProfileConnectionSpace));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 24 - 35
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 24,
                 12,
-                String.format("Date and Time = %s", this.DateTime.toString()));
+                "Date and Time = %s".formatted(this.DateTime.toString()));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 36 - 39
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 36,
                 4,
-                String.format("Profile file signature = %s", this.ProfileFileSignature));
+                "Profile file signature = %s".formatted(this.ProfileFileSignature));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 40 - 43
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 40,
                 4,
-                String.format("Primary platform = %s", this.PrimaryPlatform));
+                "Primary platform = %s".formatted(this.PrimaryPlatform));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 44 - 47
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 44,
                 4,
-                String.format("Profile flags = %s", Long.toHexString(this.ProfileFlags)));
+                "Profile flags = %s".formatted(Long.toHexString(this.ProfileFlags)));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 48 - 51
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 48,
                 4,
-                String.format("Device manufacturer = %s", this.DeviceManufacturer));
+                "Device manufacturer = %s".formatted(this.DeviceManufacturer));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 52 - 55
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 52,
                 4,
-                String.format("Device model = %s", this.DeviceModel));
+                "Device model = %s".formatted(this.DeviceModel));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 56 - 63
@@ -195,21 +192,21 @@ public class Header extends FileComponent implements GenerateTreeNode {
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 80,
                 4,
-                String.format("Device model = %s", this.ProfileCreator));
+                "Device model = %s".formatted(this.ProfileCreator));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 84 - 99
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 80,
                 4,
-                String.format("Profile ID = %s", this.ProfileCreator));
+                "Profile ID = %s".formatted(this.ProfileCreator));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 100 - 127
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 80,
                 4,
-                String.format("Reserved = %s", this.ProfileCreator));
+                "Reserved = %s".formatted(this.ProfileCreator));
         parentNode.add(new DefaultMutableTreeNode(comp));
     }
 }

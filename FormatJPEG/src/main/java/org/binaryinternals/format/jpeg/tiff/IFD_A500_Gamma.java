@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_B
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_B
 public class IFD_A500_Gamma extends IFD_RATIONAL_COUNT1 {
 
     public IFD_A500_Gamma(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)

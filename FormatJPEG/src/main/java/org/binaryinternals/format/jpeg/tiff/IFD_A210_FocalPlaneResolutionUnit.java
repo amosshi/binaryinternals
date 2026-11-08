@@ -10,13 +10,10 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_A20E_FocalPlaneXResolution
- * @see IFD_A20F_FocalPlaneYResolution
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_A20E_FocalPlaneXResolution
+/// @see IFD_A20F_FocalPlaneYResolution
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_A210_FocalPlaneResolutionUnit extends IFD_SHORT_COUNT1 {
 
     public IFD_A210_FocalPlaneResolutionUnit(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 

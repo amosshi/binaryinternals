@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class XYZNumber {
 
     public static final int LENGTH = 12;
@@ -30,7 +27,7 @@ public class XYZNumber {
 
     @Override
     public String toString() {
-        return String.format("[x=%s, y=%s, z=%s]",
+        return "[x=%s, y=%s, z=%s]".formatted(
                 this.x.toString(), this.y.toString(), this.z.toString());
     }
 
@@ -38,14 +35,14 @@ public class XYZNumber {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos,
                 4,
-                String.format("x = %s", this.x.toString()))));
+                "x = %s".formatted(this.x.toString()))));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 4,
                 4,
-                String.format("y = %s", this.y.toString()))));
+                "y = %s".formatted(this.y.toString()))));
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 startPos + 8,
                 4,
-                String.format("z = %s", this.z.toString()))));
+                "z = %s".formatted(this.z.toString()))));
     }
 }

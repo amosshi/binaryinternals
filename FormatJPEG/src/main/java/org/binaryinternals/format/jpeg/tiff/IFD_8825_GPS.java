@@ -10,35 +10,17 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
-public class IFD_8825_GPS extends IFD_LONG_Pointer {
+/// @author Amos Shi
+public final class IFD_8825_GPS extends IFD_LONG_Pointer {
 
     public static final String Category_A = IFDMessage.getString(IFDMessage.KEY_IFD_8825_GPS_Category_A);
 
     public IFD_8825_GPS(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
-
-        // Sub IFD
-        final PosDataInputStream reader = new PosDataInputStream(
-                new PosByteArrayInputStream(this.tiff_ByteArray),
-                super.tiff_StartPos
-                );
-        reader.skipNBytes((int) this.getGPSOffset() + 2);
-        if (this.ifd_number > 0) {
-            for (int i = 0; i < this.ifd_number; i++) {
-                this.ifd_sub[i] = IFDParse.parseGPS(reader, byteOrder, startPosTiff, byteArrayTiff);
-                this.ifd_sub[i].setTagSpace(TagSpace.GPS);
-            }
-        }
-        // Next IFD
-        super.next = IFDParse.readInt(reader, byteOrder);
+        this.parseSubIFDs(IFDParse::parseGPS, TagSpace.GPS);
     }
 
     public final long getGPSOffset() {
@@ -55,7 +37,7 @@ public class IFD_8825_GPS extends IFD_LONG_Pointer {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 4,
-                String.format("GPS Offset: %d", super.value[0]));
+                "GPS Offset: %d".formatted(super.value[0]));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -76,7 +58,7 @@ public class IFD_8825_GPS extends IFD_LONG_Pointer {
         comp = new JTreeNodeFileComponent(
                 super.tiff_StartPos + (int) this.value[0],
                 2,
-                String.format("IFD number: %d", this.ifd_number));
+                "IFD number: %d".formatted(this.ifd_number));
         comp.setDescription(TIFF.IFD_Number_Description);
         node.add(new DefaultMutableTreeNode(comp));
 
@@ -89,7 +71,7 @@ public class IFD_8825_GPS extends IFD_LONG_Pointer {
             comp = new JTreeNodeFileComponent(
                     this.ifd_sub[i].getStartPos(),
                     IFD.SIZE,
-                    String.format("Sub IFD[%d] - %s", i, this.ifd_sub[i].getTagName()));
+                    "Sub IFD[%d] - %s".formatted(i, this.ifd_sub[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
             node_subifd = new DefaultMutableTreeNode(comp);
             node.add(node_subifd);

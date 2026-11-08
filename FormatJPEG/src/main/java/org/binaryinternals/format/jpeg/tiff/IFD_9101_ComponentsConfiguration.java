@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_0106_PhotometricInterpretation
- * @see IFD_8769_Exif#CATEGORY_C
- */
+/// @author Amos Shi
+/// @see IFD_0106_PhotometricInterpretation
+/// @see IFD_8769_Exif#CATEGORY_C
 public class IFD_9101_ComponentsConfiguration extends IFD_UNDEFINED {
 
     public static final int COUNT = 4;
@@ -32,7 +29,7 @@ public class IFD_9101_ComponentsConfiguration extends IFD_UNDEFINED {
     }
 
     public String getValue(){
-        final StringBuffer sb = new StringBuffer(20);
+        final StringBuilder sb = new StringBuilder(20);
         sb.append(super.value[0]);
         sb.append(' ');
         sb.append(super.value[1]);
@@ -48,7 +45,7 @@ public class IFD_9101_ComponentsConfiguration extends IFD_UNDEFINED {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
-                String.format("%s: %s", this.getTagName(), this.getValue()),
+                "%s: %s".formatted(this.getTagName(), this.getValue()),
                 IFDMessage.getString(IFDMessage.KEY_IFD_9101_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_C));
     }

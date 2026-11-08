@@ -6,10 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.icc;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagType {
 
     private TagType() {
@@ -42,11 +39,8 @@ public class TagType {
     public static final int viewingConditionsType = 0x76696577;                 // ‘view’, ICC 4.2.0.0 - 10.26
     public static final int XYZType = 0x58595A20;                               // ‘XYZ ’, ICC 4.2.0.0 - 10.27
 
-    /**
-     *
-     * @param sig Type Signature value in number
-     * @return Type Signature string
-     */
+    /// @param sig Type Signature value in number
+    /// @return Type Signature string
     public static String getTypeSignature(int sig) {
         StringBuilder sb = new StringBuilder(5);
         sb.append((char) ((sig & 0xFF000000) >> 24));

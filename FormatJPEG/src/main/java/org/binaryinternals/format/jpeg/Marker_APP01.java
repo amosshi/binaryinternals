@@ -15,10 +15,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.tiff.TIFF;
 import org.binaryinternals.format.jpeg.xmp.XMP;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_APP01 extends Marker {
 
     public static final String identifier_Exif = "Exif";
@@ -78,7 +75,7 @@ public class Marker_APP01 extends Marker {
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 2,
                 2,
-                String.format("length: %d", this.getMarkerLength()));
+                "length: %d".formatted(this.getMarkerLength()));
         comp.setDescription(MarkerCode.getHeaderLengthDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
@@ -86,7 +83,7 @@ public class Marker_APP01 extends Marker {
             comp = new JTreeNodeFileComponent(
                     this.getStartPos() + 4,
                     6,
-                    String.format("identifier: %s", this.identifier));
+                    "identifier: %s".formatted(this.identifier));
             markerNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
@@ -100,7 +97,7 @@ public class Marker_APP01 extends Marker {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     this.getStartPos() + 4,
                     this.identifier.length() + 1,
-                    String.format("identifier: %s", this.identifier))));
+                    "identifier: %s".formatted(this.identifier))));
 
             comp = new JTreeNodeFileComponent(
                     this.xmp.getStartPos(),

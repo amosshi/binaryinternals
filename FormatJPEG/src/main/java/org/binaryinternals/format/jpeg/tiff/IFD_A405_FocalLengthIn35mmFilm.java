@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- * @see IFD_920A_FocalLength
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
+/// @see IFD_920A_FocalLength
 public class IFD_A405_FocalLengthIn35mmFilm extends IFD_SHORT_COUNT1 {
 
     public IFD_A405_FocalLengthIn35mmFilm(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)

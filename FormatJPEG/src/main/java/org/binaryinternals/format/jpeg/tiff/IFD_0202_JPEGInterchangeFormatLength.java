@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_0201_JPEGInterchangeFormat
- */
+/// @author Amos Shi
+/// @see IFD_0201_JPEGInterchangeFormat
 public class IFD_0202_JPEGInterchangeFormatLength extends IFD_LONG_COUNT1 {
 
     public IFD_0202_JPEGInterchangeFormatLength(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -22,11 +19,9 @@ public class IFD_0202_JPEGInterchangeFormatLength extends IFD_LONG_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 
-    /**
-     * The length in bytes of the <code>JPEG</code> interchange format bit stream.
-     * 
-     * @return the length
-     */
+    /// The length in bytes of the `JPEG` interchange format bit stream.
+    ///
+    /// @return the length
     public long getBitstreamLength(){
         return super.value[0];
     }

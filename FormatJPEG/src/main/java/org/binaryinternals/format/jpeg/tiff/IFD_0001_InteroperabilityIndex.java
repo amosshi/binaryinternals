@@ -11,11 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 
-/**
- *
- * @author Amos Shi
- * @see IFD_A005_Interoperability#Category_A
- */
+/// @author Amos Shi
+/// @see IFD_A005_Interoperability#Category_A
 public class IFD_0001_InteroperabilityIndex extends IFD_ASCII {
 
     public static final int COUNT = 4;
@@ -30,7 +27,7 @@ public class IFD_0001_InteroperabilityIndex extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_ASCII(
                 parentNode,
-                String.format("%s: %s", this.getTagName(), super.value),
+                "%s: %s".formatted(this.getTagName(), super.value),
                 IFDMessage.getString(IFDMessage.KEY_IFD_ItO_0001_Description)
                 + IFD_A005_Interoperability.Category_A);
     }

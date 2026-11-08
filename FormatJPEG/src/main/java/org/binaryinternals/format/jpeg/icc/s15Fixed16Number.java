@@ -10,10 +10,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")
 public class s15Fixed16Number {
 
@@ -28,10 +25,10 @@ public class s15Fixed16Number {
         this.rawData[3] = input.readByte();
 
         StringBuilder sb = new StringBuilder(9);
-        sb.append(String.format("%02X", this.rawData[0]));
-        sb.append(String.format("%02X", this.rawData[1]));
-        sb.append(String.format("%02X", this.rawData[2]));
-        sb.append(String.format("%02X", this.rawData[3]));
+        sb.append("%02X".formatted(this.rawData[0]));
+        sb.append("%02X".formatted(this.rawData[1]));
+        sb.append("%02X".formatted(this.rawData[2]));
+        sb.append("%02X".formatted(this.rawData[3]));
 
         long l = Long.parseLong(sb.toString(), 16);
         if (l > 0x80000000) {
@@ -45,6 +42,6 @@ public class s15Fixed16Number {
 
     @Override
     public String toString() {
-        return String.format("%.4f", this.value);
+        return "%.4f".formatted(this.value);
     }
 }

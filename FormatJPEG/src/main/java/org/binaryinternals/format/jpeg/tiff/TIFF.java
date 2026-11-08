@@ -8,7 +8,10 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
@@ -30,9 +33,12 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
         this.tiffByteArray = pDisTiff.getBuf();
         this.tiffHeader = new TIFFHeader(pDisTiff);
 
+        // A next IFD pointing back to a parsed one would loop for ever
+        final Set<Integer> parsed = new HashSet<>();
         IFDGroup group = new IFDGroup(this.tiffByteArray, this.tiffHeader, this.tiffHeader.offset_0ifd);
+        parsed.add(group.offset);
         this.exifGroup.add(group);
-        while (group.next != 0) {
+        while (group.next != 0 && parsed.add(group.next)) {
             group = new IFDGroup(this.tiffByteArray, this.tiffHeader, group.next);
             this.exifGroup.add(group);
         }
@@ -52,105 +58,87 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
         parentNode.add(nodeTiffHeader = new DefaultMutableTreeNode(comp));
         this.tiffHeader.generateTreeNode(nodeTiffHeader);
 
-        // TIFF Data
-        ConcurrentSkipListMap<Integer, RefItem> sortedMap = new ConcurrentSkipListMap<>();
-        int lastEnd = this.tiffHeader.getStartPos() + TIFFHeader.SIZE;          // Absolute position
-        int diff;
-
-        for (IFDGroup group : this.exifGroup) {
-            RefItem refItem = new RefItem();
-            refItem.offset = group.offset;
-            refItem.length = group.length;
-            refItem.ifdgroup = group;
-            sortedMap.put(refItem.offset, refItem);
-
-            this.loadRefItem(group.ifd, sortedMap);
+        // TIFF Data, in the order of the offset
+        final SortedMap<Integer, RefItem> sortedMap = new TreeMap<>();
+        for (final IFDGroup group : this.exifGroup) {
+            sortedMap.put(group.offset, new RefItem(group.offset, group.length, null, group));
+            loadRefItem(group.ifd, sortedMap);
         }
 
-        for (RefItem ref : sortedMap.values()) {
-            diff = (this.startPos + ref.offset) - lastEnd;
+        int lastEnd = this.tiffHeader.getStartPos() + TIFFHeader.SIZE;          // Absolute position
+        for (final RefItem ref : sortedMap.values()) {
+            final int diff = (this.startPos + ref.offset()) - lastEnd;
             if (diff > 0) {
                 generateTreeNodeDiff(parentNode, lastEnd, diff, this.tiffByteArray, this.startPos);
             }
 
-            if (ref.ifdgroup != null) {
-                ref.ifdgroup.generateTreeNode(parentNode);
+            if (ref.ifdgroup() != null) {
+                ref.ifdgroup().generateTreeNode(parentNode);
             } else {
                 parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        this.tiffHeader.getStartPos() + ref.offset,
-                        ref.length,
-                        String.format("Reference of tag [%s] %04X.H (%d, %s)",
-                                ref.ifd.getTagSpace().toString(),
-                                ref.ifd.ifd_tag,
-                                ref.ifd.ifd_tag,
-                                ref.ifd.getTagName()))));
+                        this.tiffHeader.getStartPos() + ref.offset(),
+                        ref.length(),
+                        "Reference of tag [%s] %04X.H (%d, %s)".formatted(
+                                ref.ifd().getTagSpace(),
+                                ref.ifd().ifd_tag,
+                                ref.ifd().ifd_tag,
+                                ref.ifd().getTagName()))));
             }
 
-            lastEnd = this.startPos + ref.offset + ref.length;
+            lastEnd = this.startPos + ref.offset() + ref.length();
         }
 
         // In case, there is some extra space in the end
-        diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
+        final int diff = (this.tiffHeader.getStartPos() + this.tiffByteArray.length) - lastEnd;
         if (diff > 0) {
             generateTreeNodeDiff(parentNode, lastEnd, diff, this.tiffByteArray, this.startPos);
         }
     }
 
-    private void loadRefItem(IFD[] ifds, ConcurrentSkipListMap<Integer, RefItem> sortedMap) {
+    private static void loadRefItem(final IFD[] ifds, final SortedMap<Integer, RefItem> sortedMap) {
         if (ifds == null) {
             return;
         }
 
         // Add Special Logic for IFD_0201_JPEGInterchangeFormat & IFD_0202_JPEGInterchangeFormatLength
         // Now we just assume these two IFD tags should be in the same exifGroup
-        long jpeg_offset = 0;
-        long jpeg_length = 0;
-        IFD ifd_jpeg_offset = null;
+        long jpegOffset = 0;
+        long jpegLength = 0;
+        IFD ifdJpegOffset = null;
 
-        for (IFD item : ifds) {
-            if (item instanceof IFD_0201_JPEGInterchangeFormat) {
-                jpeg_offset = ((IFD_0201_JPEGInterchangeFormat) item).getBitstreamOffset();
-                ifd_jpeg_offset = item;
-            } else if (item instanceof IFD_0202_JPEGInterchangeFormatLength) {
-                jpeg_length = ((IFD_0202_JPEGInterchangeFormatLength) item).getBitstreamLength();
+        for (final IFD item : ifds) {
+            switch (item) {
+                case IFD_0201_JPEGInterchangeFormat format -> {
+                    jpegOffset = format.getBitstreamOffset();
+                    ifdJpegOffset = item;
+                }
+                case IFD_0202_JPEGInterchangeFormatLength formatLength -> jpegLength = formatLength.getBitstreamLength();
+                default -> {
+                    // Not the JPEG thumbnail
+                }
             }
 
-            if (item instanceof IFD_LONG_Pointer) {
-                IFD_LONG_Pointer p = (IFD_LONG_Pointer) item;
-
-                RefItem refItem = new RefItem();
-                refItem.offset = (int) p.value[0];
-                refItem.length = 2 + p.ifd_number * IFD.SIZE + 4;
-                refItem.ifd = p;
-                sortedMap.put(refItem.offset, refItem);
-
-                this.loadRefItem(p.ifd_sub, sortedMap);
-            } else {
-                if (item.isValue() == false) {
-                    RefItem refItem = new RefItem();
-                    refItem.offset = item.ifd_value_offset;
-                    refItem.length = item.data_size;
-                    refItem.ifd = item;
-                    sortedMap.put(refItem.offset, refItem);
-                }
+            if (item instanceof IFD_LONG_Pointer p) {
+                final int offset = (int) p.value[0];
+                sortedMap.put(offset, new RefItem(offset, 2 + p.ifd_number * IFD.SIZE + 4, p, null));
+                loadRefItem(p.ifd_sub, sortedMap);
+            } else if (!item.isValue() && item.data_size > 0) {
+                sortedMap.put(item.ifd_value_offset, new RefItem(item.ifd_value_offset, item.data_size, item, null));
             }
         }
 
-        if (jpeg_offset > 0 && jpeg_length > 0 && ifd_jpeg_offset != null) {
-            RefItem refItem = new RefItem();
-            refItem.offset = (int) jpeg_offset;
-            refItem.length = (int) jpeg_length;
-            refItem.ifd = ifd_jpeg_offset;
-            sortedMap.put(refItem.offset, refItem);
+        if (jpegOffset > 0 && jpegLength > 0 && ifdJpegOffset != null) {
+            sortedMap.put((int) jpegOffset, new RefItem((int) jpegOffset, (int) jpegLength, ifdJpegOffset, null));
         }
     }
 
-    @SuppressWarnings("PackageVisibleInnerClass")
-    private static class RefItem {
-
-        int offset;
-        int length;
-        IFD ifd = null;
-        IFDGroup ifdgroup = null;
+    /// Data referenced from the TIFF: an IFD group, or the value of an IFD
+    /// entry stored at an offset.
+    ///
+    /// @param offset Offset within the TIFF
+    /// @param length Length of the data
+    /// @param ifd The IFD entry referencing the data, or `null` for an IFD group
+    /// @param ifdgroup The IFD group, or `null` for an IFD entry value
+    private record RefItem(int offset, int length, IFD ifd, IFDGroup ifdgroup) {
     }
 }

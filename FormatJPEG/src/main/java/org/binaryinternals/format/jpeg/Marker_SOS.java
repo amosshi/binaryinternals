@@ -11,41 +11,38 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_SOS extends Marker {
 
     private static class Parameter {
 
-        /** Scan component selector */
+        /// Scan component selector
         @SuppressWarnings("PackageVisibleField")
         int Cs;
-        /** DC entropy coding table destination selector. */
+        /// DC entropy coding table destination selector.
         @SuppressWarnings("PackageVisibleField")
         int Td;
-        /** AC entropy coding table destination selector.  */
+        /// AC entropy coding table destination selector.
         @SuppressWarnings("PackageVisibleField")
         int Ta;
     }
 
-    /** Number of image components in scan. */
+    /// Number of image components in scan.
     private int Ns;
 
-    /** Scan component-specification parameters. */
+    /// Scan component-specification parameters.
     private Parameter[] parameter;
 
-    /** Start of spectral or predictor selection. */
+    /// Start of spectral or predictor selection.
     private int Ss;
 
-    /** End of spectral selection. */
+    /// End of spectral selection.
     private int Se;
 
-    /** Successive approximation bit position high. */
+    /// Successive approximation bit position high.
     private int Ah;
 
-    /** Successive approximation bit position low or point transform. */
+    /// Successive approximation bit position low or point transform.
     private int Al;
 
     Marker_SOS(final PosDataInputStream pDIS, int marker_code) throws IOException {
@@ -98,19 +95,19 @@ public class Marker_SOS extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 0,
                 2,
-                String.format("Marker code: 0x%X", super.getMarker()))));
+                "Marker code: 0x%X".formatted(super.getMarker()))));
 
         // Ls
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 2,
                 2,
-                String.format("Ls (Scan header length): %d", super.getMarkerLength()))));
+                "Ls (Scan header length): %d".formatted(super.getMarkerLength()))));
 
         // Ns
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 4,
                 1,
-                String.format("Ns: %d", this.Ns))));
+                "Ns: %d".formatted(this.Ns))));
 
         // Scan component-specification parameters: Cs, Td, Ta
         if (this.Ns > 0) {
@@ -125,22 +122,22 @@ public class Marker_SOS extends Marker {
                 parameterNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i,
                         2,
-                        String.format("Parameter-%d", i + 1)));
+                        "Parameter-%d".formatted(i + 1)));
                 attributeNode.add(parameterNode);
 
                 // Cs, Td, Ta
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 0,
                         1,
-                        String.format("Cs: %d", this.parameter[i].Cs))));
+                        "Cs: %d".formatted(this.parameter[i].Cs))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 1,
                         1,
-                        String.format("Td: %d", this.parameter[i].Td))));
+                        "Td: %d".formatted(this.parameter[i].Td))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 1,
                         1,
-                        String.format("Ta: %d", this.parameter[i].Ta))));
+                        "Ta: %d".formatted(this.parameter[i].Ta))));
             }
         }
 
@@ -148,18 +145,18 @@ public class Marker_SOS extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 5 + this.Ns*2 + 0,
                 1,
-                String.format("Ss: %d", this.Ss))));
+                "Ss: %d".formatted(this.Ss))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 5 + this.Ns*2 + 1,
                 1,
-                String.format("Se: %d", this.Se))));
+                "Se: %d".formatted(this.Se))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 5 + this.Ns*2 + 2,
                 1,
-                String.format("Ah: %d", this.Ah))));
+                "Ah: %d".formatted(this.Ah))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 5 + this.Ns*2 + 2,
                 1,
-                String.format("Al: %d", this.Al))));
+                "Al: %d".formatted(this.Al))));
     }
 }

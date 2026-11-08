@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_DRI extends Marker {
 
     private int Lr;
@@ -41,7 +38,7 @@ public class Marker_DRI extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
                 2,
-                String.format("Marker code: 0x04X", this.marker_code));
+                "Marker code: 0x%04X".formatted(this.marker_code));
         comp.setDescription(MarkerCode.getMarkerCodeDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
@@ -49,7 +46,7 @@ public class Marker_DRI extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 2,
-                String.format("length: %d", this.Lr));
+                "length: %d".formatted(this.Lr));
         comp.setDescription(MarkerCode.getHeaderLengthDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
@@ -57,7 +54,7 @@ public class Marker_DRI extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos + 2,
                 2,
-                String.format("Ri: %d", this.Ri));
+                "Ri: %d".formatted(this.Ri));
         comp.setDescription("Restart interval – Specifies the number of MCU in the restart interval.");
         markerNode.add(new DefaultMutableTreeNode(comp));
     }

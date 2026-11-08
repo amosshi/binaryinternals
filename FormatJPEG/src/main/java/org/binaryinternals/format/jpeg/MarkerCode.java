@@ -6,10 +6,7 @@
  */
 package org.binaryinternals.format.jpeg;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class MarkerCode {
 
     private MarkerCode() {
@@ -86,22 +83,18 @@ public class MarkerCode {
     public static final int COM = 0xFFFE;                       // Specified
     public static final int MAX = 0xFFFF;
 
-    /**
-     * The marker code value is in valid value space or not.
-     *
-     * @param code Marker code value
-     * @return <code>true</code> when in valid value space, else <code>false</code>
-     */
+    /// The marker code value is in valid value space or not.
+    ///
+    /// @param code Marker code value
+    /// @return `true` when in valid value space, else `false`
     public static boolean isValid(int code) {
         return (code > MIN && code != MAX);
     }
 
-    /**
-     * The marker structure is specified in <code>ITU</code> <code>T.81</code> or not.
-     *
-     * @param code Marker code value
-     * @return <code>true</code> when the structure is specified, else <code>false</code>
-     */
+    /// The marker structure is specified in `ITU` `T.81` or not.
+    ///
+    /// @param code Marker code value
+    /// @return `true` when the structure is specified, else `false`
     public static boolean isSpecified(int code) {
         boolean result = false;
         if (code == TEMP) {
@@ -115,13 +108,11 @@ public class MarkerCode {
         return result;
     }
 
-    /**
-     * The marker is stands alone or not.
-     * When a marker is stands alone, it is not the start of a marker segment.
-     *
-     * @param code Marker code value
-     * @return <code>true</code> when standalone, else <code>false</code>
-     */
+    /// The marker is stands alone or not.
+    /// When a marker is stands alone, it is not the start of a marker segment.
+    ///
+    /// @param code Marker code value
+    /// @return `true` when standalone, else `false`
     public static boolean isStandalone(int code) {
         boolean result = false;
         if (code == TEMP) {
@@ -133,12 +124,10 @@ public class MarkerCode {
         return result;
     }
 
-    /**
-     * Whether a two byte length indicator is followed the marker code or not.
-     *
-     * @param code Marker code value
-     * @return <code>true</code> when length indicator is available, else <code>false</code>
-     */
+    /// Whether a two byte length indicator is followed the marker code or not.
+    ///
+    /// @param code Marker code value
+    /// @return `true` when length indicator is available, else `false`
     public static boolean isLengthAvailable(int code) {
         boolean result = false;
         if (code >= SOF00 && code <= SOF15) {
@@ -152,12 +141,10 @@ public class MarkerCode {
         return result;
     }
 
-    /**
-     * Whether compressed data is followed the marker.
-     *
-     * @param code Marker code value
-     * @return <code>true</code> when compressed data is followed, else <code>false</code>
-     */
+    /// Whether compressed data is followed the marker.
+    ///
+    /// @param code Marker code value
+    /// @return `true` when compressed data is followed, else `false`
     public static boolean isCompressedDataFollowed(int code) {
         if (code == SOS
                 || code <= RST1
@@ -181,200 +168,72 @@ public class MarkerCode {
         } else if (markerCode >= MarkerCode.RES_MIN && markerCode <= MarkerCode.RES_MAX) {
             name = "RES";
         } else if (markerCode >= MarkerCode.SOF00 && markerCode <= MarkerCode.COM) {
-            switch (markerCode) {
-                case MarkerCode.SOF00:
-                    name = "SOF00";
-                    break;
-                case MarkerCode.SOF01:
-                    name = "SOF01";
-                    break;
-                case MarkerCode.SOF02:
-                    name = "SOF02";
-                    break;
-                case MarkerCode.SOF03:
-                    name = "SOF03";
-                    break;
-                case MarkerCode.DHT:
-                    name = "DHT";
-                    break;
-                case MarkerCode.SOF05:
-                    name = "SOF05";
-                    break;
-                case MarkerCode.SOF06:
-                    name = "SOF06";
-                    break;
-                case MarkerCode.SOF07:
-                    name = "SOF07";
-                    break;
-                case MarkerCode.JPG:
-                    name = "JPG";
-                    break;
-                case MarkerCode.SOF09:
-                    name = "SOF09";
-                    break;
-                case MarkerCode.SOF10:
-                    name = "SOF10";
-                    break;
-                case MarkerCode.SOF11:
-                    name = "SOF11";
-                    break;
-                case MarkerCode.DAC:
-                    name = "DAC";
-                    break;
-                case MarkerCode.SOF13:
-                    name = "SOF13";
-                    break;
-                case MarkerCode.SOF14:
-                    name = "SOF14";
-                    break;
-                case MarkerCode.SOF15:
-                    name = "SOF15";
-                    break;
-                case MarkerCode.RST0:
-                    name = "RST0";
-                    break;
-                case MarkerCode.RST1:
-                    name = "RST1";
-                    break;
-                case MarkerCode.RST2:
-                    name = "RST2";
-                    break;
-                case MarkerCode.RST3:
-                    name = "RST3";
-                    break;
-                case MarkerCode.RST4:
-                    name = "RST4";
-                    break;
-                case MarkerCode.RST5:
-                    name = "RST5";
-                    break;
-                case MarkerCode.RST6:
-                    name = "RST6";
-                    break;
-                case MarkerCode.RST7:
-                    name = "RST7";
-                    break;
-                case MarkerCode.SOI:
-                    name = "SOI";
-                    break;
-                case MarkerCode.EOI:
-                    name = "EOI";
-                    break;
-                case MarkerCode.SOS:
-                    name = "SOS";
-                    break;
-                case MarkerCode.DQT:
-                    name = "DQT";
-                    break;
-                case MarkerCode.DNL:
-                    name = "DNL";
-                    break;
-                case MarkerCode.DRI:
-                    name = "DRI";
-                    break;
-                case MarkerCode.DHP:
-                    name = "DHP";
-                    break;
-                case MarkerCode.EXP:
-                    name = "EXP";
-                    break;
-                case MarkerCode.APP00:
-                    name = "APP00";
-                    break;
-                case MarkerCode.APP01:
-                    name = "APP01";
-                    break;
-                case MarkerCode.APP02:
-                    name = "APP02";
-                    break;
-                case MarkerCode.APP03:
-                    name = "APP03";
-                    break;
-                case MarkerCode.APP04:
-                    name = "APP04";
-                    break;
-                case MarkerCode.APP05:
-                    name = "APP05";
-                    break;
-                case MarkerCode.APP06:
-                    name = "APP06";
-                    break;
-                case MarkerCode.APP07:
-                    name = "APP07";
-                    break;
-                case MarkerCode.APP08:
-                    name = "APP08";
-                    break;
-                case MarkerCode.APP09:
-                    name = "APP09";
-                    break;
-                case MarkerCode.APP10:
-                    name = "APP10";
-                    break;
-                case MarkerCode.APP11:
-                    name = "APP11";
-                    break;
-                case MarkerCode.APP12:
-                    name = "APP12";
-                    break;
-                case MarkerCode.APP13:
-                    name = "APP13";
-                    break;
-                case MarkerCode.APP14:
-                    name = "APP14";
-                    break;
-                case MarkerCode.APP15:
-                    name = "APP15";
-                    break;
-                case MarkerCode.JPG00:
-                    name = "SOF00";
-                    break;
-                case MarkerCode.JPG01:
-                    name = "SOF01";
-                    break;
-                case MarkerCode.JPG02:
-                    name = "SOF02";
-                    break;
-                case MarkerCode.JPG03:
-                    name = "SOF03";
-                    break;
-                case MarkerCode.JPG04:
-                    name = "SOF04";
-                    break;
-                case MarkerCode.JPG05:
-                    name = "SOF05";
-                    break;
-                case MarkerCode.JPG06:
-                    name = "SOF06";
-                    break;
-                case MarkerCode.JPG07:
-                    name = "SOF07";
-                    break;
-                case MarkerCode.JPG08:
-                    name = "SOF08";
-                    break;
-                case MarkerCode.JPG09:
-                    name = "SOF09";
-                    break;
-                case MarkerCode.JPG10:
-                    name = "SOF10";
-                    break;
-                case MarkerCode.JPG11:
-                    name = "SOF11";
-                    break;
-                case MarkerCode.JPG12:
-                    name = "SOF12";
-                    break;
-                case MarkerCode.JPG13:
-                    name = "SOF13";
-                    break;
-                case MarkerCode.COM:
-                    name = "COM";
-                    break;
-                default:
-                    name = "Un-recognized";
-                    break;
-            }
+            name = switch (markerCode) {
+                case MarkerCode.SOF00 -> "SOF00";
+                case MarkerCode.SOF01 -> "SOF01";
+                case MarkerCode.SOF02 -> "SOF02";
+                case MarkerCode.SOF03 -> "SOF03";
+                case MarkerCode.DHT -> "DHT";
+                case MarkerCode.SOF05 -> "SOF05";
+                case MarkerCode.SOF06 -> "SOF06";
+                case MarkerCode.SOF07 -> "SOF07";
+                case MarkerCode.JPG -> "JPG";
+                case MarkerCode.SOF09 -> "SOF09";
+                case MarkerCode.SOF10 -> "SOF10";
+                case MarkerCode.SOF11 -> "SOF11";
+                case MarkerCode.DAC -> "DAC";
+                case MarkerCode.SOF13 -> "SOF13";
+                case MarkerCode.SOF14 -> "SOF14";
+                case MarkerCode.SOF15 -> "SOF15";
+                case MarkerCode.RST0 -> "RST0";
+                case MarkerCode.RST1 -> "RST1";
+                case MarkerCode.RST2 -> "RST2";
+                case MarkerCode.RST3 -> "RST3";
+                case MarkerCode.RST4 -> "RST4";
+                case MarkerCode.RST5 -> "RST5";
+                case MarkerCode.RST6 -> "RST6";
+                case MarkerCode.RST7 -> "RST7";
+                case MarkerCode.SOI -> "SOI";
+                case MarkerCode.EOI -> "EOI";
+                case MarkerCode.SOS -> "SOS";
+                case MarkerCode.DQT -> "DQT";
+                case MarkerCode.DNL -> "DNL";
+                case MarkerCode.DRI -> "DRI";
+                case MarkerCode.DHP -> "DHP";
+                case MarkerCode.EXP -> "EXP";
+                case MarkerCode.APP00 -> "APP00";
+                case MarkerCode.APP01 -> "APP01";
+                case MarkerCode.APP02 -> "APP02";
+                case MarkerCode.APP03 -> "APP03";
+                case MarkerCode.APP04 -> "APP04";
+                case MarkerCode.APP05 -> "APP05";
+                case MarkerCode.APP06 -> "APP06";
+                case MarkerCode.APP07 -> "APP07";
+                case MarkerCode.APP08 -> "APP08";
+                case MarkerCode.APP09 -> "APP09";
+                case MarkerCode.APP10 -> "APP10";
+                case MarkerCode.APP11 -> "APP11";
+                case MarkerCode.APP12 -> "APP12";
+                case MarkerCode.APP13 -> "APP13";
+                case MarkerCode.APP14 -> "APP14";
+                case MarkerCode.APP15 -> "APP15";
+                case MarkerCode.JPG00 -> "SOF00";
+                case MarkerCode.JPG01 -> "SOF01";
+                case MarkerCode.JPG02 -> "SOF02";
+                case MarkerCode.JPG03 -> "SOF03";
+                case MarkerCode.JPG04 -> "SOF04";
+                case MarkerCode.JPG05 -> "SOF05";
+                case MarkerCode.JPG06 -> "SOF06";
+                case MarkerCode.JPG07 -> "SOF07";
+                case MarkerCode.JPG08 -> "SOF08";
+                case MarkerCode.JPG09 -> "SOF09";
+                case MarkerCode.JPG10 -> "SOF10";
+                case MarkerCode.JPG11 -> "SOF11";
+                case MarkerCode.JPG12 -> "SOF12";
+                case MarkerCode.JPG13 -> "SOF13";
+                case MarkerCode.COM -> "COM";
+                default -> "Un-recognized";
+            };
         }
 
         return name;
@@ -390,200 +249,72 @@ public class MarkerCode {
         } else if (markerCode >= MarkerCode.RES_MIN && markerCode <= MarkerCode.RES_MAX) {
             desc = "[<strong>Reserved markers</strong>] Reserved";
         } else if (markerCode >= MarkerCode.SOF00 && markerCode <= MarkerCode.COM) {
-            switch (markerCode) {
-                case MarkerCode.SOF00:
-                    desc = "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Baseline DCT";
-                    break;
-                case MarkerCode.SOF01:
-                    desc = "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Extended sequential DCT";
-                    break;
-                case MarkerCode.SOF02:
-                    desc = "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Progressive DCT";
-                    break;
-                case MarkerCode.SOF03:
-                    desc = "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Lossless (sequential)";
-                    break;
-                case MarkerCode.DHT:
-                    desc = "[<strong>Huffman table specification</strong>] Define Huffman table(s)";
-                    break;
-                case MarkerCode.SOF05:
-                    desc = "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential sequential DCT";
-                    break;
-                case MarkerCode.SOF06:
-                    desc = "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential progressive DCT";
-                    break;
-                case MarkerCode.SOF07:
-                    desc = "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential lossless (sequential)";
-                    break;
-                case MarkerCode.JPG:
-                    desc = "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.SOF09:
-                    desc = "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Extended sequential DCT";
-                    break;
-                case MarkerCode.SOF10:
-                    desc = "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Progressive DCT";
-                    break;
-                case MarkerCode.SOF11:
-                    desc = "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Lossless (sequential)";
-                    break;
-                case MarkerCode.DAC:
-                    desc = "[<strong>Arithmetic coding conditioning specification</strong>] Define arithmetic coding conditioning(s)";
-                    break;
-                case MarkerCode.SOF13:
-                    desc = "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential sequential DCT";
-                    break;
-                case MarkerCode.SOF14:
-                    desc = "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential progressive DCT";
-                    break;
-                case MarkerCode.SOF15:
-                    desc = "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential lossless (sequential)";
-                    break;
-                case MarkerCode.RST0:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “0”";
-                    break;
-                case MarkerCode.RST1:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “1”";
-                    break;
-                case MarkerCode.RST2:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “2”";
-                    break;
-                case MarkerCode.RST3:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “3”";
-                    break;
-                case MarkerCode.RST4:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “4”";
-                    break;
-                case MarkerCode.RST5:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “5”";
-                    break;
-                case MarkerCode.RST6:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “6”";
-                    break;
-                case MarkerCode.RST7:
-                    desc = "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “7”";
-                    break;
-                case MarkerCode.SOI:
-                    desc = "[<strong>Other markers</strong>] Start of image";
-                    break;
-                case MarkerCode.EOI:
-                    desc = "[<strong>Other markers</strong>] End of image";
-                    break;
-                case MarkerCode.SOS:
-                    desc = "[<strong>Other markers</strong>] Start of scan";
-                    break;
-                case MarkerCode.DQT:
-                    desc = "[<strong>Other markers</strong>] Define quantization table(s)";
-                    break;
-                case MarkerCode.DNL:
-                    desc = "[<strong>Other markers</strong>] Define number of lines";
-                    break;
-                case MarkerCode.DRI:
-                    desc = "[<strong>Other markers</strong>] Define restart interval";
-                    break;
-                case MarkerCode.DHP:
-                    desc = "[<strong>Other markers</strong>] Define hierarchical progression";
-                    break;
-                case MarkerCode.EXP:
-                    desc = "[<strong>Other markers</strong>] Expand reference component(s)";
-                    break;
-                case MarkerCode.APP00:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP01:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP02:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP03:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP04:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP05:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP06:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP07:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP08:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP09:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP10:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP11:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP12:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP13:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP14:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.APP15:
-                    desc = "[<strong>Other markers</strong>] Reserved for application segments";
-                    break;
-                case MarkerCode.JPG00:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG01:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG02:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG03:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG04:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG05:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG06:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG07:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG08:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG09:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG10:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG11:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG12:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.JPG13:
-                    desc = "[<strong>Other markers</strong>] Reserved for JPEG extensions";
-                    break;
-                case MarkerCode.COM:
-                    desc = "[<strong>Other markers</strong>] Comment";
-                    break;
-                default:
-                    desc = "Un-recognized markder: " + markerCode;
-                    break;
-            }
+            desc = switch (markerCode) {
+                case MarkerCode.SOF00 -> "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Baseline DCT";
+                case MarkerCode.SOF01 -> "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Extended sequential DCT";
+                case MarkerCode.SOF02 -> "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Progressive DCT";
+                case MarkerCode.SOF03 -> "[<strong>Start Of Frame markers, non-differential, Huffman coding</strong>] Lossless (sequential)";
+                case MarkerCode.DHT -> "[<strong>Huffman table specification</strong>] Define Huffman table(s)";
+                case MarkerCode.SOF05 -> "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential sequential DCT";
+                case MarkerCode.SOF06 -> "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential progressive DCT";
+                case MarkerCode.SOF07 -> "[<strong>Start Of Frame markers, differential, Huffman coding</strong>] Differential lossless (sequential)";
+                case MarkerCode.JPG -> "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Reserved for JPEG extensions";
+                case MarkerCode.SOF09 -> "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Extended sequential DCT";
+                case MarkerCode.SOF10 -> "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Progressive DCT";
+                case MarkerCode.SOF11 -> "[<strong>Start Of Frame markers, non-differential, arithmetic coding</strong>] Lossless (sequential)";
+                case MarkerCode.DAC -> "[<strong>Arithmetic coding conditioning specification</strong>] Define arithmetic coding conditioning(s)";
+                case MarkerCode.SOF13 -> "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential sequential DCT";
+                case MarkerCode.SOF14 -> "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential progressive DCT";
+                case MarkerCode.SOF15 -> "[<strong>Start Of Frame markers, differential, arithmetic coding</strong>] Differential lossless (sequential)";
+                case MarkerCode.RST0 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “0”";
+                case MarkerCode.RST1 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “1”";
+                case MarkerCode.RST2 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “2”";
+                case MarkerCode.RST3 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “3”";
+                case MarkerCode.RST4 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “4”";
+                case MarkerCode.RST5 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “5”";
+                case MarkerCode.RST6 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “6”";
+                case MarkerCode.RST7 -> "[<strong>Restart interval termination</strong>] Restart with modulo 8 count “7”";
+                case MarkerCode.SOI -> "[<strong>Other markers</strong>] Start of image";
+                case MarkerCode.EOI -> "[<strong>Other markers</strong>] End of image";
+                case MarkerCode.SOS -> "[<strong>Other markers</strong>] Start of scan";
+                case MarkerCode.DQT -> "[<strong>Other markers</strong>] Define quantization table(s)";
+                case MarkerCode.DNL -> "[<strong>Other markers</strong>] Define number of lines";
+                case MarkerCode.DRI -> "[<strong>Other markers</strong>] Define restart interval";
+                case MarkerCode.DHP -> "[<strong>Other markers</strong>] Define hierarchical progression";
+                case MarkerCode.EXP -> "[<strong>Other markers</strong>] Expand reference component(s)";
+                case MarkerCode.APP00 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP01 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP02 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP03 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP04 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP05 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP06 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP07 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP08 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP09 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP10 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP11 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP12 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP13 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP14 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.APP15 -> "[<strong>Other markers</strong>] Reserved for application segments";
+                case MarkerCode.JPG00 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG01 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG02 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG03 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG04 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG05 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG06 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG07 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG08 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG09 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG10 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG11 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG12 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.JPG13 -> "[<strong>Other markers</strong>] Reserved for JPEG extensions";
+                case MarkerCode.COM -> "[<strong>Other markers</strong>] Comment";
+                default -> "Un-recognized markder: " + markerCode;
+            };
         } else if (markerCode == MarkerCode.MAX) {
             desc = "MAX";
         }

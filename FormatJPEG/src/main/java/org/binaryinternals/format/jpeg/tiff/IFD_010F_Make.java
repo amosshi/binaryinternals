@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_0110_Model
- * @see IFD_0131_Software
- */
+/// @author Amos Shi
+/// @see IFD_0110_Model
+/// @see IFD_0131_Software
 public class IFD_010F_Make extends IFD_ASCII {
 
     public IFD_010F_Make(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -27,7 +24,7 @@ public class IFD_010F_Make extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_ASCII(
                 parentNode,
-                String.format("%s: %s", super.getTagName(), this.value),
+                "%s: %s".formatted(super.getTagName(), this.value),
                 IFDMessage.getString(IFDMessage.KEY_IFD_010F_Description));
     }
 }

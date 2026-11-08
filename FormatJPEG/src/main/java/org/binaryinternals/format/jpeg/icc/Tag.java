@@ -14,10 +14,7 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Tag extends FileComponent {
 
     public final static int LENGTH = 12;
@@ -50,21 +47,21 @@ public class Tag extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 this.getStartPos(),
                 4,
-                String.format("Signature = %s", this.TagSignature));
+                "Signature = %s".formatted(this.TagSignature));
         comp.setDescription("Tag Signature");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 4,
                 4,
-                String.format("Offset = %d", this.Offset));
+                "Offset = %d".formatted(this.Offset));
         comp.setDescription("Offset to beginning of tag data element");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 8,
                 4,
-                String.format("Size = %d", this.Size));
+                "Size = %d".formatted(this.Size));
         comp.setDescription("Size of tag data element");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -82,21 +79,14 @@ public class Tag extends FileComponent {
         int tagType = input.readInt();
         input.reset();
 
-        switch (tagType) {
-            case TagType.textType:
-                return new TagData_textType(input);
-            case TagType.XYZType:
-                return new TagData_XYZType(input);
-            case TagType.viewingConditionsType:
-                return new TagData_viewingConditionsType(input);
-            case TagType.curveType:
-                return new TagData_curveType(input);
-            case TagType.measurementType:
-                return new TagData_measurementType(input);
-            case TagType.signatureType:
-                return new TagData_signatureType(input);
-            default:
-                return new TagData(input);
-        }
+        return switch (tagType) {
+            case TagType.textType -> new TagData_textType(input);
+            case TagType.XYZType -> new TagData_XYZType(input);
+            case TagType.viewingConditionsType -> new TagData_viewingConditionsType(input);
+            case TagType.curveType -> new TagData_curveType(input);
+            case TagType.measurementType -> new TagData_measurementType(input);
+            case TagType.signatureType -> new TagData_signatureType(input);
+            default -> new TagData(input);
+        };
     }
 }

@@ -14,11 +14,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see <a href="http://www.adobe.com/devnet/photoshop.html">Adobe Photoshop Developer Center</a>
- */
+/// @author Amos Shi
+/// @see <a href="http://www.adobe.com/devnet/photoshop.html">Adobe Photoshop Developer Center</a>
 public class PhotoshopImageResource extends FileComponent {
 
     public final byte[] rawData;
@@ -58,7 +55,7 @@ public class PhotoshopImageResource extends FileComponent {
                 parentNode.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         irb.getStartPos(),
                         irb.getLength(),
-                        String.format("IRB-8BIM [%d]", count))));
+                        "IRB-8BIM [%d]".formatted(count))));
                 count++;
                 irb.generateTreeNode(node);
             }

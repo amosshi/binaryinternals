@@ -6,10 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.tiff;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFDType {
 
     private IFDType() {
@@ -44,93 +41,39 @@ public class IFDType {
 
     
     public static String getTypeName(int type) {
-        final String typeName;
-        switch (type) {
-            case IFDType.BYTE:
-                typeName = "BYTE";
-                break;
-            case IFDType.ASCII:
-                typeName = "ASCII";
-                break;
-            case IFDType.SHORT:
-                typeName = "SHORT";
-                break;
-            case IFDType.LONG:
-                typeName = "LONG";
-                break;
-            case IFDType.RATIONAL:
-                typeName = "RATIONAL";
-                break;
-            case IFDType.SBYTE:
-                typeName = "SBYTE";
-                break;
-            case IFDType.UNDEFINED:
-                typeName = "UNDEFINED";
-                break;
-            case IFDType.SSHORT:
-                typeName = "SSHORT";
-                break;
-            case IFDType.SLONG:
-                typeName = "SLONG";
-                break;
-            case IFDType.SRATIONAL:
-                typeName = "SRATIONAL";
-                break;
-            case IFDType.FLOAT:
-                typeName = "FLOAT";
-                break;
-            case IFDType.DOUBLE:
-                typeName = "DOUBLE";
-                break;
-            default:
-                typeName = "Unknown";
-        }
-        return typeName;
+        return switch (type) {
+            case IFDType.BYTE -> "BYTE";
+            case IFDType.ASCII -> "ASCII";
+            case IFDType.SHORT -> "SHORT";
+            case IFDType.LONG -> "LONG";
+            case IFDType.RATIONAL -> "RATIONAL";
+            case IFDType.SBYTE -> "SBYTE";
+            case IFDType.UNDEFINED -> "UNDEFINED";
+            case IFDType.SSHORT -> "SSHORT";
+            case IFDType.SLONG -> "SLONG";
+            case IFDType.SRATIONAL -> "SRATIONAL";
+            case IFDType.FLOAT -> "FLOAT";
+            case IFDType.DOUBLE -> "DOUBLE";
+            default -> "Unknown";
+        };
     }
 
     public static int getTypeLength(int type){
-        final int length;
-        switch (type) {
-            case IFDType.BYTE:
-                length = IFDType.LENGTH_BYTE;
-                break;
-            case IFDType.ASCII:
-                length = IFDType.LENGTH_ASCII;
-                break;
-            case IFDType.SHORT:
-                length = IFDType.LENGTH_SHORT;
-                break;
-            case IFDType.LONG:
-                length = IFDType.LENGTH_LONG;
-                break;
-            case IFDType.RATIONAL:
-                length = IFDType.LENGTH_RATIONAL;
-                break;
-            case IFDType.SBYTE:
-                length = IFDType.LENGTH_SBYTE;
-                break;
-            case IFDType.UNDEFINED:
-                length = IFDType.LENGTH_UNDEFINED;
-                break;
-            case IFDType.SSHORT:
-                length = IFDType.LENGTH_SSHORT;
-                break;
-            case IFDType.SLONG:
-                length = IFDType.LENGTH_SLONG;
-                break;
-            case IFDType.SRATIONAL:
-                length = IFDType.LENGTH_SRATIONAL;
-                break;
-            case IFDType.FLOAT:
-                length = IFDType.LENGTH_FLOAT;
-                break;
-            case IFDType.DOUBLE:
-                length = IFDType.LENGTH_DOUBLE;
-                break;
-            default:
-                length = -1;
-        }
-        return length;
+        return switch (type) {
+            case IFDType.BYTE -> IFDType.LENGTH_BYTE;
+            case IFDType.ASCII -> IFDType.LENGTH_ASCII;
+            case IFDType.SHORT -> IFDType.LENGTH_SHORT;
+            case IFDType.LONG -> IFDType.LENGTH_LONG;
+            case IFDType.RATIONAL -> IFDType.LENGTH_RATIONAL;
+            case IFDType.SBYTE -> IFDType.LENGTH_SBYTE;
+            case IFDType.UNDEFINED -> IFDType.LENGTH_UNDEFINED;
+            case IFDType.SSHORT -> IFDType.LENGTH_SSHORT;
+            case IFDType.SLONG -> IFDType.LENGTH_SLONG;
+            case IFDType.SRATIONAL -> IFDType.LENGTH_SRATIONAL;
+            case IFDType.FLOAT -> IFDType.LENGTH_FLOAT;
+            case IFDType.DOUBLE -> IFDType.LENGTH_DOUBLE;
+            default -> -1;
+        };
     }
 
 }

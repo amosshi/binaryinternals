@@ -11,21 +11,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * TODO - Study cure
- *
- * @author Amos Shi
- */
+/// TODO - Study cure
+///
+/// @author Amos Shi
 public class TagData_curveType extends TagData {
 
     public final long count;
     public final int curveValues[];
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_curveType(final PosDataInputStream input) throws IOException {
         super(input);
 
@@ -55,7 +50,7 @@ public class TagData_curveType extends TagData {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
                     4,
-                    String.format("count = %d", this.count));
+                    "count = %d".formatted(this.count));
             comp.setDescription("Count value specifying the number of entries (<code>n</code>) that follow.");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -71,7 +66,7 @@ public class TagData_curveType extends TagData {
                     node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                             this.startPos + 12 + i * 2,
                             2,
-                            String.format("value [%d] = %d", i, this.curveValues[i]))));
+                            "value [%d] = %d".formatted(i, this.curveValues[i]))));
                 }
             }
         } else {

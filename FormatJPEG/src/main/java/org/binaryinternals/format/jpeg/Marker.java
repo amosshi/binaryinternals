@@ -14,10 +14,7 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker extends FileComponent implements GenerateTreeNode {
 
     private static final int IDENTIFIER_LENGTH_MAX = 100;
@@ -25,32 +22,67 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     protected final int marker_code;
     @SuppressWarnings("ProtectedField")
     protected int marker_length;
+    /// Why the marker content cannot be parsed, or `null`.
+    private String error;
 
     Marker(final PosDataInputStream pDIS, int markerCode) throws IOException {
 
         // The marker is not valid
         if (!MarkerCode.isValid(markerCode)) {
-            throw new FileFormatException(String.format(
-                    "Non-valid marker found. marker code = %X (%d).",
-                    markerCode, markerCode));
+            throw new FileFormatException("Non-valid marker found. marker code = %X (%d).".formatted(markerCode, markerCode));
         }
 
         // Start Position of this Marker
-        super.startPos = pDIS.getPos() - 2;
+        super.startPos = pDIS.getPos() - MarkerCode.MARKER_CODE_BYTES_COUNT;
 
         // Marker Code
         this.marker_code = markerCode;
 
         // Marker Length
         if (MarkerCode.isLengthAvailable(markerCode)) {
+            final int remaining = pDIS.getBuf().length - (pDIS.getPos() - pDIS.getOffset());
+            if (remaining < MarkerCode.MARKER_LENGTH_BYTES_COUNT) {
+                this.marker_length = 0;
+                pDIS.skipNBytes(remaining);
+                super.length = MarkerCode.MARKER_CODE_BYTES_COUNT + remaining;
+                this.error = "The file ends inside the marker length";
+                return;
+            }
+
+            // The length counts itself, but not the marker code
             this.marker_length = pDIS.readUnsignedShort();
-            super.length = this.marker_length + 2;
-            long skip = this.marker_length - 2;
-            pDIS.skipNBytes(skip);
+            final int dataLength = Math.clamp(this.marker_length - MarkerCode.MARKER_LENGTH_BYTES_COUNT, 0,
+                    remaining - MarkerCode.MARKER_LENGTH_BYTES_COUNT);
+            pDIS.skipNBytes(dataLength);
+            super.length = MarkerCode.MARKER_CODE_BYTES_COUNT + MarkerCode.MARKER_LENGTH_BYTES_COUNT + dataLength;
+            if (this.marker_length < MarkerCode.MARKER_LENGTH_BYTES_COUNT) {
+                this.error = "Invalid marker length %d, at least 2 is expected".formatted(this.marker_length);
+            } else if (dataLength < this.marker_length - MarkerCode.MARKER_LENGTH_BYTES_COUNT) {
+                this.error = "The file ends inside the marker, %d bytes are missing".formatted(
+                        this.marker_length - MarkerCode.MARKER_LENGTH_BYTES_COUNT - dataLength);
+            }
         } else {
             this.marker_length = 0;
             super.length = MarkerCode.MARKER_CODE_BYTES_COUNT;
         }
+    }
+
+    /// A generic view of `other`, used when `other` failed to parse.
+    ///
+    /// @param other The marker
+    /// @param error Why `other` could not be parsed
+    Marker(final Marker other, final String error) {
+        super(other.startPos, other.length);
+        this.marker_code = other.marker_code;
+        this.marker_length = other.marker_length;
+        this.error = error;
+    }
+
+    /// Why the marker content cannot be parsed, or `null`.
+    ///
+    /// @return The error, or `null` if the marker is fine
+    String getError() {
+        return this.error;
     }
 
     protected void parse(final PosDataInputStream pDisMarker) throws IOException {
@@ -65,7 +97,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     protected String parseIdentifier(final PosDataInputStream pDisMarker) throws IOException {
 
         // Parse the Identifier, an '\000' ended ASCII string
-        final StringBuffer sb = new StringBuffer(IDENTIFIER_LENGTH_MAX);
+        final StringBuilder sb = new StringBuilder(IDENTIFIER_LENGTH_MAX);
         while (sb.length() <= IDENTIFIER_LENGTH_MAX) {
             byte b = pDisMarker.readByte();
             if (b == 0) {
@@ -103,21 +135,27 @@ public class Marker extends FileComponent implements GenerateTreeNode {
             comp = new JTreeNodeFileComponent(
                     this.getStartPos(),
                     2,
-                    String.format("Marker code = 0x%X", this.getMarker()));
+                    "Marker code = 0x%X".formatted(this.getMarker()));
             comp.setDescription(MarkerCode.getMarkerCodeDescription());
             markerNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
                     this.getStartPos() + 2,
                     2,
-                    String.format("length = %d", this.getMarkerLength()));
+                    "length = %d".formatted(this.getMarkerLength()));
             markerNode.add(new DefaultMutableTreeNode(comp));
 
-            comp = new JTreeNodeFileComponent(
-                    this.getStartPos() + 4,
-                    this.getMarkerLength() - 2,
-                    "marker data");
-            markerNode.add(new DefaultMutableTreeNode(comp));
+            final int dataLength = this.getLength() - MarkerCode.MARKER_CODE_BYTES_COUNT - MarkerCode.MARKER_LENGTH_BYTES_COUNT;
+            if (dataLength > 0 || this.error != null) {
+                comp = new JTreeNodeFileComponent(
+                        this.getStartPos() + 4,
+                        Math.max(dataLength, 0),
+                        "marker data");
+                if (this.error != null) {
+                    comp.setDescription(this.error);
+                }
+                markerNode.add(new DefaultMutableTreeNode(comp));
+            }
         } else {
             this.generateTreeNode_Marker(parentNode);
         }

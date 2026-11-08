@@ -13,11 +13,9 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.ps.PhotoshopImageResource;
 
-/**
- * An APP13 marker designates a Photoshop Image Resource (PSIR) that contains IPTC metadata.
- *
- * @author Amos Shi
- */
+/// An APP13 marker designates a Photoshop Image Resource (PSIR) that contains IPTC metadata.
+///
+/// @author Amos Shi
 public class Marker_APP13 extends Marker {
 
     public static final String IDENTIFIER_PHOTOSHOP = "Photoshop";
@@ -52,21 +50,21 @@ public class Marker_APP13 extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
                 2,
-                String.format("Marker code: 0x04X", this.marker_code));
+                "Marker code: 0x%04X".formatted(this.marker_code));
         comp.setDescription(MarkerCode.getMarkerCodeDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 2,
-                String.format("length: %d", this.getMarkerLength()));
+                "length: %d".formatted(this.getMarkerLength()));
         comp.setDescription(MarkerCode.getHeaderLengthDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 this.identifier.length() + 1,
-                String.format("identifier: %s", this.identifier))));
+                "identifier: %s".formatted(this.identifier))));
 
         if (this.identifier.contains(Marker_APP13.IDENTIFIER_PHOTOSHOP)) {
             comp = new JTreeNodeFileComponent(

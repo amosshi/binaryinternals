@@ -17,59 +17,49 @@ import org.binaryinternals.format.elf.Elf64Type.Elf64_Half;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Off;
 import org.binaryinternals.format.elf.Elf64Type.Elf64_Word;
 
-/**
- * ELF header for 64-bit system. In this class definition, we respect the name
- * defined in Linux source code.
- *
- * <pre>
- *   typedef struct elf64_hdr {
- *     unsigned char	e_ident[EI_NIDENT];      // ELF "magic number"
- *     Elf64_Half e_type;
- *     Elf64_Half e_machine;
- *     Elf64_Word e_version;
- *     Elf64_Addr e_entry;		         // Entry point virtual address
- *     Elf64_Off e_phoff;	         	 // Program header table file offset
- *     Elf64_Off e_shoff         ;		 // Section header table file offset
- *     Elf64_Word e_flags;
- *     Elf64_Half e_ehsize;
- *     Elf64_Half e_phentsize;
- *     Elf64_Half e_phnum;
- *     Elf64_Half e_shentsize;
- *     Elf64_Half e_shnum;
- *     Elf64_Half e_shstrndx;
- *   } Elf64_Ehdr;
- * </pre>
- *
- * @author Amos Shi
- *
- * @see
- * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
- *
- * <pre>
- * java:S101 - Class names should comply with a naming convention --- We respect the name from ELF C programming language source code
- * java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
- * </pre>
- */
+/// ELF header for 64-bit system. In this class definition, we respect the name
+/// defined in Linux source code.
+///
+/// ```
+///   typedef struct elf64_hdr {
+///     unsigned char	e_ident[EI_NIDENT];      // ELF "magic number"
+///     Elf64_Half e_type;
+///     Elf64_Half e_machine;
+///     Elf64_Word e_version;
+///     Elf64_Addr e_entry;		         // Entry point virtual address
+///     Elf64_Off e_phoff;	         	 // Program header table file offset
+///     Elf64_Off e_shoff         ;		 // Section header table file offset
+///     Elf64_Word e_flags;
+///     Elf64_Half e_ehsize;
+///     Elf64_Half e_phentsize;
+///     Elf64_Half e_phnum;
+///     Elf64_Half e_shentsize;
+///     Elf64_Half e_shnum;
+///     Elf64_Half e_shstrndx;
+///   } Elf64_Ehdr;
+/// ```
+///
+/// @author Amos Shi
+///
+/// @see
+/// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+///
+/// ```
+/// java:S101 - Class names should comply with a naming convention --- We respect the name from ELF C programming language source code
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
+/// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
 
-    /**
-     * ELF file types.
-     */
+    /// ELF file types.
     public final Elf64_Half e_type;
     public final Elf64_Half e_machine;
     public final Elf64_Word e_version;
-    /**
-     * Entry point virtual address
-     */
+    /// Entry point virtual address
     public final Elf64_Addr e_entry;
-    /**
-     * Program header table file offset
-     */
+    /// Program header table file offset
     public final Elf64_Off e_phoff;
-    /**
-     * Section header table file offset
-     */
+    /// Section header table file offset
     public final Elf64_Off e_shoff;
     public final Elf64_Word e_flags;
     public final Elf64_Half e_ehsize;
@@ -99,41 +89,39 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         super.length = input.getPos() - super.startPos;
     }
 
-    /**
-     * Enum type for field {@link #e_type}.
-     *
-     * <pre>
-     *   defined in: include/uapi/linux/elf.h
-     *
-     *   #define ET_NONE   0
-     *   #define ET_REL    1
-     *   #define ET_EXEC   2
-     *   #define ET_DYN    3
-     *   #define ET_CORE   4
-     *   #define ET_LOPROC 0xff00
-     *   #define ET_HIPROC 0xffff
-     * </pre>
-     *
-     * <pre>
-     *   defined in: arch/powerpc/boot/elf.h
-     *
-     *   #define ET_NONE   0
-     *   #define ET_REL    1
-     *   #define ET_EXEC   2
-     *   #define ET_DYN    3
-     *   #define ET_CORE   4
-     *   #define ET_LOPROC 0xff00
-     *   #define ET_HIPROC 0xffff
-     * </pre>
-     *
-     * @see
-     * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
-     * and Linkable Format</a>
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
-     */
+    /// Enum type for field [#e_type].
+    ///
+    /// ```
+    ///   defined in: include/uapi/linux/elf.h
+    ///
+    ///   #define ET_NONE   0
+    ///   #define ET_REL    1
+    ///   #define ET_EXEC   2
+    ///   #define ET_DYN    3
+    ///   #define ET_CORE   4
+    ///   #define ET_LOPROC 0xff00
+    ///   #define ET_HIPROC 0xffff
+    /// ```
+    ///
+    /// ```
+    ///   defined in: arch/powerpc/boot/elf.h
+    ///
+    ///   #define ET_NONE   0
+    ///   #define ET_REL    1
+    ///   #define ET_EXEC   2
+    ///   #define ET_DYN    3
+    ///   #define ET_CORE   4
+    ///   #define ET_LOPROC 0xff00
+    ///   #define ET_HIPROC 0xffff
+    /// ```
+    ///
+    /// @see
+    /// <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
+    /// and Linkable Format</a>
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
     public enum ELF_FileType {
         ET_NONE(0x00),
         ET_REL(0x01),
@@ -145,21 +133,17 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         ET_LOPROC(0xff00),
         ET_HIPROC(0xffff);
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
         ELF_FileType(final int i) {
             this.value = i;
         }
 
-        /**
-         * Name of the value.
-         *
-         * @param v {@link #value} of an enum
-         * @return Enum name if found, else <code>Unknown</code>
-         */
+        /// Name of the value.
+        ///
+        /// @param v [#value] of an enum
+        /// @return Enum name if found, else `Unknown`
         public static String nameOf(final int v) {
             return Arrays.stream(values())
                     .filter(item -> item.value == v)
@@ -169,130 +153,96 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         }
     }
 
-    /**
-     * Enum type for field {@link #e_machine}.
-     *
-     * @see
-     * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
-     * and Linkable Format</a>
-     *
-     * <pre>
-     * java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
-     * </pre>
-     */
+    /// Enum type for field [#e_machine].
+    ///
+    /// @see
+    /// <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
+    /// and Linkable Format</a>
+    ///
+    /// ```
+    /// java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
+    /// ```
     @SuppressWarnings("java:S115")
     public enum ELF_Machine {
-        /**
-         * No specific instruction set.
-         */
+        /// No specific instruction set.
         NotSet(0x00),
 
-        /**
-         * SPARC.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/SPARC">SPARC</a>
-         */
+        /// SPARC.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/SPARC">SPARC</a>
         SPARC(0x02),
 
-        /**
-         * x86.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/X86">x86</a>
-         */
+        /// x86.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/X86">x86</a>
         x86(0x03),
 
-        /**
-         * MIPS.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/MIPS_architecture">MIPS</a>
-         */
+        /// MIPS.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/MIPS_architecture">MIPS</a>
         MIPS(0x08),
 
-        /**
-         * PowerPC.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/PowerPC">PowerPC</a>
-         */
+        /// PowerPC.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/PowerPC">PowerPC</a>
         PowerPC(0x14),
 
-        /**
-         * PowerPC (64-bit).
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/PowerPC">PowerPC (64-bit)</a>
-         */
+        /// PowerPC (64-bit).
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/PowerPC">PowerPC (64-bit)</a>
         PowerPC64(0x15),
 
-        /**
-         * S390, including S390x.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/Z/Architecture">S390</a>
-         */
+        /// S390, including S390x.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/Z/Architecture">S390</a>
         S390(0x16),
 
-        /**
-         * ARM.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/ARM_architecture">ARM</a>
-         */
+        /// ARM.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/ARM_architecture">ARM</a>
         ARM(0x28),
 
-        /**
-         * SuperH.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/SuperH">SuperH</a>
-         */
+        /// SuperH.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/SuperH">SuperH</a>
         SuperH(0x2A),
 
-        /**
-         * IA-64.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/SPARC">IA-64</a>
-         */
+        /// IA-64.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/SPARC">IA-64</a>
         IA64(0x32),
 
-        /**
-         * amd64.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/Amd64">amd64</a>
-         */
+        /// amd64.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/Amd64">amd64</a>
         amd64(0x3E),
 
-        /**
-         * TMS320C6000 Family.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/Texas_Instruments_TMS320#C6000_series">TMS320C6000 Family</a>
-         */
+        /// TMS320C6000 Family.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/Texas_Instruments_TMS320#C6000_series">TMS320C6000 Family</a>
         TMS320C6000(0x8C),
 
-        /**
-         * AArch64.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/AArch64">AArch64</a>
-         */
+        /// AArch64.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/AArch64">AArch64</a>
         AArch64(0xB7),
 
-        /**
-         * RISC-V.
-         *
-         * @see <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V</a>
-         */
+        /// RISC-V.
+        ///
+        /// @see <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V</a>
         RISC_V(0xF3);
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
         ELF_Machine(final int i) {
             this.value = i;
         }
 
-        /**
-         * Name of the value.
-         *
-         * @param v {@link #value} of an enum
-         * @return Enum name if found, else <code>Unknown</code>
-         */
+        /// Name of the value.
+        ///
+        /// @param v [#value] of an enum
+        /// @return Enum name if found, else `Unknown`
         public static String nameOf(final int v) {
             return Arrays.stream(values())
                     .filter(item -> item.value == v)

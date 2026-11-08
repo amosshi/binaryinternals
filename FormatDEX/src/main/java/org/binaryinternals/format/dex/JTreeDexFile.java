@@ -216,7 +216,7 @@ public final class JTreeDexFile implements GenerateTreeNodeDexFile {
     }
 
     private void generate_data(DefaultMutableTreeNode parentNode, DexFile dexFile) {
-        if (dexFile.data.size() < 1) {
+        if (dexFile.data.isEmpty()) {
             return;
         }
 

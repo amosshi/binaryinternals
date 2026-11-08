@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 class IFD_SHORT_COUNT1 extends IFD_SHORT {
 
     public static final int COUNT = 1;

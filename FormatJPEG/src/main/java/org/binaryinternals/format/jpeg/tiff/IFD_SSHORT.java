@@ -10,10 +10,7 @@ import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_SSHORT extends IFD {
 
     public IFD_SSHORT(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 

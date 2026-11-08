@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- * @see IFD_A301_SceneType
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
+/// @see IFD_A301_SceneType
 public class IFD_A406_SceneCaptureType extends IFD_SHORT_COUNT1 {
 
     public IFD_A406_SceneCaptureType(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
