@@ -173,7 +173,6 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
     }
 
     @Override
-    @SuppressWarnings({"java:S1121"})
     public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
@@ -189,20 +188,24 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
                 "signature:" + BytesTool.getByteDataHexView(this.Signature),
                 Icons.Signature
         )));
+        position += 4;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 "version needed to extract = %d".formatted(this.VersionNeededToExtract),
                 Icons.Versions
         )));
-        generateTreeNodeGeneralPurposeBitFlag(nodeLfh, position += 2, this.GeneralPurposeBitFlag);
+        position += 2;
+        generateTreeNodeGeneralPurposeBitFlag(nodeLfh, position, this.GeneralPurposeBitFlag);
+        position += 2;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 Compression.toText(this.CompressionMethod))));
 
+        position += 2;
         final DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "last mod file time = %s".formatted(this.LastModFileTimeValue),
                 Icons.Time
@@ -210,8 +213,9 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
         nodeLfh.add(nodeTime);
         this.LastModFileTimeValue.generateTreeNode(nodeTime);
 
+        position += 2;
         final DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "last mod file date = %s".formatted(this.LastModFileDateValue),
                 Icons.Calendar
@@ -219,32 +223,37 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
         nodeLfh.add(nodeDate);
         this.LastModFileDateValue.generateTreeNode(nodeDate);
 
+        position += 2;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 4,
                 "crc-32:" + BytesTool.getByteDataHexView(this.CRC32),
                 Icons.Checksum
         )));
+        position += 4;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "compressed size = %d".formatted(this.CompressedSize),
                 Icons.Size
         )));
+        position += 4;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "uncompressed size = %d".formatted(this.UncompressedSize),
                 Icons.Size
         )));
+        position += 4;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 "file name length = %d".formatted(this.FileNameLength),
                 Icons.Length
         )));
+        position += 2;
         nodeLfh.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "extra field length = %d".formatted(this.ExtraFieldLength),
                 Icons.Length
@@ -403,7 +412,6 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
         }
 
         @Override
-        @SuppressWarnings({"java:S1121"})
         public void generateTreeNode(final DefaultMutableTreeNode parentNode) {
             int position = this.startPos;
 
@@ -426,8 +434,9 @@ public final class LocalFileHeader extends FileComponent implements GenerateTree
                     4,
                     "crc-32 = 0x%08X".formatted(this.crc32),
                     Icons.Checksum)));
+            position += 4;
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    position += 4,
+                    position,
                     this.sizeLength,
                     "compressed size = %d".formatted(this.compressedSize),
                     Icons.Size)));

@@ -14,17 +14,12 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class Marker_SOS extends Marker {
 
-    private static class Parameter {
-
-        /// Scan component selector
-        @SuppressWarnings("PackageVisibleField")
-        int Cs;
-        /// DC entropy coding table destination selector.
-        @SuppressWarnings("PackageVisibleField")
-        int Td;
-        /// AC entropy coding table destination selector.
-        @SuppressWarnings("PackageVisibleField")
-        int Ta;
+    /// Scan component-specification parameters.
+    ///
+    /// @param cs Scan component selector, `Cs`
+    /// @param td DC entropy coding table destination selector, `Td`
+    /// @param ta AC entropy coding table destination selector, `Ta`
+    private record Parameter(int cs, int td, int ta) {
     }
 
     /// Number of image components in scan.
@@ -64,12 +59,9 @@ public class Marker_SOS extends Marker {
         // Scan component-specification parameters: Cs, Td, Ta
         this.parameter = new Parameter[this.Ns];
         for (int i = 0; i < this.Ns; i++) {
-            this.parameter[i] = new Parameter();
-            this.parameter[i].Cs = pDisMarker.readUnsignedByte();
-
-            b = pDisMarker.readByte();
-            this.parameter[i].Td = (b & 0xF0) >> 4;
-            this.parameter[i].Ta = b & 0x0F;
+            final int cs = pDisMarker.readUnsignedByte();
+            final int tables = pDisMarker.readUnsignedByte();
+            this.parameter[i] = new Parameter(cs, (tables & 0xF0) >> 4, tables & 0x0F);
         }
         // TODO - Now check the value Ls(marker length) matchs
         //super.verify();
@@ -129,15 +121,15 @@ public class Marker_SOS extends Marker {
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 0,
                         1,
-                        "Cs: %d".formatted(this.parameter[i].Cs))));
+                        "Cs: %d".formatted(this.parameter[i].cs()))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 1,
                         1,
-                        "Td: %d".formatted(this.parameter[i].Td))));
+                        "Td: %d".formatted(this.parameter[i].td()))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i + 1,
                         1,
-                        "Ta: %d".formatted(this.parameter[i].Ta))));
+                        "Ta: %d".formatted(this.parameter[i].ta()))));
             }
         }
 

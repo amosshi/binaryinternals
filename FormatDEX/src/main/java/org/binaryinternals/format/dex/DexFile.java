@@ -52,9 +52,7 @@ public final class DexFile extends FileFormat {
     /// detection of certain forms of corruption. The value also encodes a format
     /// version number as three decimal digits, which is expected to increase
     /// monotonically over time as the format evolves.
-    @SuppressWarnings("java:S2386")
     static final byte[] DEX_FILE_MAGIC1 = {'d', 'e', 'x', '\n'};
-    @SuppressWarnings("java:S2386")
     static final byte[] DEX_FILE_MAGIC2 = {'0', '3', '5', '\0'};
 
     /// Magic value part 1.

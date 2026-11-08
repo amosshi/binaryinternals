@@ -218,9 +218,8 @@ public class ClassFile extends FileFormat {
         this(classFileBytes, null, null);
     }
 
-    // java:S127 - "for" loop stop conditions should be invariant --- No we need it because Long/Double type occupies two Constant Pool index
     // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
-    @SuppressWarnings({"java:S127", "java:S3776"})
+    @SuppressWarnings("java:S3776")
     public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException {
         super(classFileBytes, fileName, filePath);
 
@@ -242,14 +241,14 @@ public class ClassFile extends FileFormat {
         // Constant Pool
         this.constant_pool_count = new u2(posDataInputStream);
         this.constant_pool = new cp_info[this.constant_pool_count.value];
-        for (int i = 1; i < this.constant_pool_count.value; i++) {
-            short tag = (short) posDataInputStream.readUnsignedByte();
+        int index = 1;
+        while (index < this.constant_pool_count.value) {
+            final short tag = (short) posDataInputStream.readUnsignedByte();
+            this.constant_pool[index] = ConstantType.parse(tag, posDataInputStream);
 
-            this.constant_pool[i] = ConstantType.parse(tag, posDataInputStream);
-            if (tag == cp_info.ConstantType.CONSTANT_Long.tag || tag == cp_info.ConstantType.CONSTANT_Double.tag) {
-                // Long/Double type occupies two Constant Pool index
-                i++;
-            }
+            // Long/Double type occupies two Constant Pool index
+            final boolean twoSlots = tag == cp_info.ConstantType.CONSTANT_Long.tag || tag == cp_info.ConstantType.CONSTANT_Double.tag;
+            index += twoSlots ? 2 : 1;
         }
 
         // Class Declaration

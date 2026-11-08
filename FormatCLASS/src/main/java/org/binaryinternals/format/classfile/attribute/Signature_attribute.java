@@ -13,7 +13,6 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.JavaLangSpec;
-import org.binaryinternals.format.classfile.constant.cp_info;
 import org.binaryinternals.format.classfile.u2;
 
 /// An optional fixed-length attribute in the attributes table of a
@@ -34,9 +33,7 @@ public class Signature_attribute extends attribute_info {
 
     public final u2 signature_index;
 
-    // java:S1172 - Unused method parameters should be removed --- `cp` is used by children classes
-    @SuppressWarnings("java:S1172")
-    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
+    Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
         this.signature_index = new u2(posDataInputStream);
         super.checkSize(posDataInputStream.getPos());
