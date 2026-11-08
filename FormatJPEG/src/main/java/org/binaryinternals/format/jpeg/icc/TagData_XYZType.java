@@ -35,17 +35,16 @@ public class TagData_XYZType extends TagData {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         if (this.length > 8 && this.data != null) {
-            DefaultMutableTreeNode xyzNode;
-            JTreeNodeFileComponent comp;
 
             this.generateTreeNode_TagDataType(parentNode);
             for (int i = 0; i < this.data.length; i++) {
-                comp = new JTreeNodeFileComponent(
+                final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                         startPos + 8 + XYZNumber.LENGTH * i,
                         XYZNumber.LENGTH,
                         "%s [%d]".formatted(XYZNumber.class.getSimpleName(), i));
                 comp.setDescription(this.data[i].toString());
-                parentNode.add(xyzNode = new DefaultMutableTreeNode(comp));
+                final DefaultMutableTreeNode xyzNode = new DefaultMutableTreeNode(comp);
+                parentNode.add(xyzNode);
                 this.data[i].generateTreeNode(xyzNode, this.startPos + 8 + XYZNumber.LENGTH * i);
             }
         } else {

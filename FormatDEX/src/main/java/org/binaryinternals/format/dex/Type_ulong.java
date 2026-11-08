@@ -33,8 +33,8 @@ public final class Type_ulong {
 
     @Override
     public String toString() {
-        return "0x%s | %s | %,d".formatted(
-                this.value.toString(16).toUpperCase(),
+        return "0x%X | %s | %,d".formatted(
+                this.value,
                 this.value.toString(),
                 this.value.longValue());
     }

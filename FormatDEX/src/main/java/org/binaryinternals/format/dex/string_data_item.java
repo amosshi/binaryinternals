@@ -50,7 +50,7 @@ public final class string_data_item extends FileComponent implements GenerateTre
         super.length = stream.getPos() - super.startPos;
     }
 
-    /// Get the {@link #data} as a String, using platform's default charset.
+    /// Get the [#data] as a String, using platform's default charset.
     ///
     /// @return String for the content
     public String getString() {
@@ -59,11 +59,10 @@ public final class string_data_item extends FileComponent implements GenerateTre
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
-        DefaultMutableTreeNode nodeTemp;
         int floatPos = this.getStartPos();
         int utf16Size = this.utf16_size.value;
 
-        nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size, "msg_string_data_item__utf16_size", Icons.Size);
+        final DefaultMutableTreeNode nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size, "msg_string_data_item__utf16_size", Icons.Size);
         floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
         if (utf16Size > 0) {
             addNode(parentNode, floatPos, this.data.length, "data", this.getString(), "msg_string_data_item__data", Icons.Data);

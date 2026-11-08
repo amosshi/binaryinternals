@@ -6,6 +6,9 @@
  */
 package org.binaryinternals.format.jpeg.icc;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 /// @author Amos Shi
 public class TagType {
 
@@ -42,11 +45,6 @@ public class TagType {
     /// @param sig Type Signature value in number
     /// @return Type Signature string
     public static String getTypeSignature(int sig) {
-        StringBuilder sb = new StringBuilder(5);
-        sb.append((char) ((sig & 0xFF000000) >> 24));
-        sb.append((char) (((sig & 0x00FF0000) << 8) >> 24));
-        sb.append((char) (((sig & 0x0000FF00) << 16) >> 24));
-        sb.append((char) (((sig & 0x000000FF) << 24) >> 24));
-        return sb.toString();
+        return new String(ByteBuffer.allocate(Integer.BYTES).putInt(sig).array(), StandardCharsets.ISO_8859_1);
     }
 }

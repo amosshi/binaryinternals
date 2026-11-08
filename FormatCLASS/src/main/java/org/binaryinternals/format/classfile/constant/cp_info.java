@@ -43,10 +43,10 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
     /// Warning message for un-recognized type.
     protected static final String UNRECOGNIZED_TYPE = " !!! Un-recognized type";
 
-    /// Each item in the {@link ClassFile#constant_pool} table must begin with a
-    /// 1-byte {@link #tag} indicating the kind of `cp_info` entry.
+    /// Each item in the [ClassFile#constant_pool] table must begin with a
+    /// 1-byte [#tag] indicating the kind of `cp_info` entry.
     ///
-    /// The value come from the enum field {@link ConstantType#tag}.
+    /// The value come from the enum field [ConstantType#tag].
     public final u1 tag;
 
     cp_info(short tag) {
@@ -244,11 +244,11 @@ public abstract class cp_info extends FileComponent implements GenerateTreeNodeC
             this.loadable = loadable;
         }
 
-        /// Get the {@link ConstantType} based on its internal {@link #tag}
+        /// Get the [ConstantType] based on its internal [#tag]
         /// value.
         ///
-        /// @param tag Internal {@link #tag} value
-        /// @return Corresponding {@link ConstantType}
+        /// @param tag Internal [#tag] value
+        /// @return Corresponding [ConstantType]
         public static ConstantType valueOf(int tag) {
             for (ConstantType item : ConstantType.values()) {
                 if (item.tag == tag) {

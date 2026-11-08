@@ -69,30 +69,30 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     public static final String UNRECOGNIZED = "[Un-Recognized] ";
 
     /// Name of the attribute. It is one of the enum names in
-    /// {@link AttributeTypes}.
+    /// [AttributeTypes].
     public final String name;
 
-    /// The {@link #attribute_name_index} must be a valid unsigned 16-bit index
+    /// The [#attribute_name_index] must be a valid unsigned 16-bit index
     /// into the
-    /// {@link org.binaryinternals.format.classfile.ClassFile#constant_pool} of the
-    /// {@link ClassFile}, the {@link ClassFile#constant_pool} entry at
-    /// {@link #attribute_name_index} must be a
+    /// [org.binaryinternals.format.classfile.ClassFile#constant_pool] of the
+    /// [ClassFile], the [ClassFile#constant_pool] entry at
+    /// [#attribute_name_index] must be a
     /// `CONSTANT_Utf8_info structure`
-    /// ({@link org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info})
+    /// ([org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info])
     /// representing the name of the attribute.
     public final u2 attribute_name_index;
 
-    /// The value of the {@link #attribute_length} item indicates the length of
+    /// The value of the [#attribute_length] item indicates the length of
     /// the subsequent information in bytes. The length does not include the
-    /// initial six bytes that contain the {@link #attribute_name_index} and
-    /// {@link #attribute_length} items.
+    /// initial six bytes that contain the [#attribute_name_index] and
+    /// [#attribute_length] items.
     public final u4 attribute_length;
 
     protected attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
-        if (name == null || name.length() < 1) {
-            throw new IllegalArgumentException("The attribute name annot be none. location=0x" + Integer.toHexString(posDataInputStream.getPos()));
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("The attribute name cannot be empty. location=0x%x".formatted(posDataInputStream.getPos()));
         }
         this.name = name;
         this.attribute_name_index = nameIndex;
@@ -191,11 +191,11 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     /// @return Message key
     public abstract String getMessageKey();
 
-    /// Get the {@link #name} of the attribute, if {@link #name} is
+    /// Get the [#name] of the attribute, if [#name] is
     /// `null`, it will return an empty string.
     ///
-    /// Attributes are used in the {@link ClassFile}, {@link field_info},
-    /// {@link method_info}, and {@link Code_attribute} structures of the class
+    /// Attributes are used in the [ClassFile], [field_info],
+    /// [method_info], and [Code_attribute] structures of the class
     /// file format.
     ///
     /// @return A string of the attribute name
@@ -500,7 +500,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
 
         /// The Java class representing to the attributes.
         ///
-        /// If {@link #clazz} is null, which means it is not implemented yet.
+        /// If [#clazz] is null, which means it is not implemented yet.
         final Class<?> clazz;
 
         public final String fullname;
@@ -538,9 +538,9 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
             return Optional.ofNullable(BY_NAME.get(name));
         }
 
-        /// Getter for {@link #clazz}.
+        /// Getter for [#clazz].
         ///
-        /// @return Value of {@link #clazz}
+        /// @return Value of [#clazz]
         public Class<?> getClassType() {
             return this.clazz;
         }

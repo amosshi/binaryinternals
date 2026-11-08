@@ -41,8 +41,8 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class ConstantValue_attribute extends attribute_info {
 
-    /// The {@link ClassFile#constant_pool} entry at that
-    /// {@link #constantvalue_index} gives the constant value represented by this
+    /// The [ClassFile#constant_pool] entry at that
+    /// [#constantvalue_index] gives the constant value represented by this
     /// attribute.
     public final u2 constantvalue_index;
 

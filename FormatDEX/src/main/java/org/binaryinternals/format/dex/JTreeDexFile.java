@@ -235,13 +235,11 @@ public final class JTreeDexFile implements GenerateTreeNodeDexFile {
                     Type_uint.toString(startPos) + " - " + comp.getClass().getSimpleName()));
             node.add(itemNode);
 
-            if (comp instanceof GenerateTreeNode item) {
-                item.generateTreeNode(itemNode);
-            } else if (comp instanceof GenerateTreeNodeDexFile item) {
-                item.generateTreeNode(itemNode, dexFile);
-            } else {
+            switch (comp) {
+                case GenerateTreeNode item -> item.generateTreeNode(itemNode);
+                case GenerateTreeNodeDexFile item -> item.generateTreeNode(itemNode, dexFile);
                 // This should never happen, or else it is a coding logic error
-                LOGGER.severe("FileComponent is not added to the tree: position=0x%X type=%s".formatted(comp.getStartPos(), comp.getClass().getName()));
+                default -> LOGGER.severe("FileComponent is not added to the tree: position=0x%X type=%s".formatted(comp.getStartPos(), comp.getClass().getName()));
             }
         });
     }

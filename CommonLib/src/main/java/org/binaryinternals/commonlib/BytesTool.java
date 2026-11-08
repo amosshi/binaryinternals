@@ -19,6 +19,9 @@ import java.util.zip.ZipFile;
 /// @author Amos Shi
 public final class BytesTool {
 
+    /// Bytes per line of [#getByteDataHexView(byte[])].
+    private static final int HEX_VIEW_LINE_BYTES = 16;
+
     private BytesTool() {
     }
 
@@ -56,17 +59,14 @@ public final class BytesTool {
             return "";
         }
 
-        final HexFormat hex = HexFormat.of().withUpperCase();
+        // 16 bytes per line, each byte after a space
+        final HexFormat hex = HexFormat.ofDelimiter(" ").withUpperCase();
         final StringBuilder sb = new StringBuilder(data.length * 4);
-        final int length = data.length;
-        int i;
-        int lineBreakCounter = 0;
-        for (i = 0; i < length; i++) {
-            sb.append(' ').append(hex.toHexDigits(data[i]));
-            lineBreakCounter++;
-            if (lineBreakCounter == 16) {
+        for (int from = 0; from < data.length; from += HEX_VIEW_LINE_BYTES) {
+            final int to = Math.min(from + HEX_VIEW_LINE_BYTES, data.length);
+            sb.append(' ').append(hex.formatHex(data, from, to));
+            if (to - from == HEX_VIEW_LINE_BYTES) {
                 sb.append('\n');
-                lineBreakCounter = 0;
             }
         }
         sb.append('\n');

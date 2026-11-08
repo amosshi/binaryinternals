@@ -47,12 +47,11 @@ public class Marker_DQT extends Marker {
 
         // Qk
 
-        // This should be corret, but in testing, we find that when Pq is 0, it is still has 16-bit Pq.
-        //this.Qk = new FileComponentPlaceHolder(pDisMarker, (this.Pq + 1) * 64);
+        // The spec gives (Pq + 1) * 64 bytes, but files were found with 16-bit
+        // values when Pq is 0, so the rest of the marker is taken instead.
         this.Qk = new FileComponentPlaceHolder(pDisMarker, this.length - 1 - 2 - 2);
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
 
     @Override

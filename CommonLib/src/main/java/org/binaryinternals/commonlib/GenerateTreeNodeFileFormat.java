@@ -24,12 +24,12 @@ public interface GenerateTreeNodeFileFormat {
     /// Generate JTree nodes for the current file component.
     ///
     /// @param parentNode The parent JTree node
-    /// @param fileFormat The current {@link FileFormat} object
+    /// @param fileFormat The current [FileFormat] object
     void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
     /// Get the messages resource of current file format.
     ///
-    /// @return {@link ResourceBundle} for messages, or `null` if not
+    /// @return [ResourceBundle] for messages, or `null` if not
     /// exist
     ResourceBundle getMessages();
 

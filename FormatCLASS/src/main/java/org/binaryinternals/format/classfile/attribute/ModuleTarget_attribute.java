@@ -40,7 +40,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class ModuleTarget_attribute extends attribute_info {
 
-    /// Index to a {@link CONSTANT_Utf8_info} structure.
+    /// Index to a [CONSTANT_Utf8_info] structure.
     public final u2 os_arch_index;
 
     ModuleTarget_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {

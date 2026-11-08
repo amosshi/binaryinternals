@@ -39,8 +39,8 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class ModuleMainClass_attribute extends attribute_info {
 
-    /// The value of the {@link #main_class_index} item must be a valid index into the
-    /// {@link ClassFile#constant_pool} table. The {@link ClassFile#constant_pool} entry at that index must be a
+    /// The value of the [#main_class_index] item must be a valid index into the
+    /// [ClassFile#constant_pool] table. The [ClassFile#constant_pool] entry at that index must be a
     /// CONSTANT_Class_info structure representing the main class of the
     /// current module.
     public final u2 main_class_index;

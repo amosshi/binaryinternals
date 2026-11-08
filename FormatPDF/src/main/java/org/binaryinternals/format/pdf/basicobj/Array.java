@@ -40,8 +40,8 @@ public final class Array extends FileComponent implements BasicObject {
                 if (next == PDFStatics.DelimiterCharacter.RS) {
                     return true;
                 }
-                LOGGER.log(Level.WARNING, "Unexpected byte in Array at {0}: ''{1}''",
-                        new Object[]{stream.getPos() - 1, (char) (next & 0xFF)});
+                LOGGER.log(Level.WARNING, () -> "Unexpected byte in Array at %d: '%c'".formatted(
+                        stream.getPos() - 1, (char) Byte.toUnsignedInt(next)));
             }
         }
         return false;

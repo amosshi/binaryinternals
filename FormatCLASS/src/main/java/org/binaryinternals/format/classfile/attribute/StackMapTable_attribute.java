@@ -41,10 +41,10 @@ public class StackMapTable_attribute extends attribute_info {
     private static final String MSGKEY_OFFSET_DELTA= "msg_attr_stack_map_frame__all__offset_delta";
     private static final String MSGKEY_VTI = "msg_attr_verification_type_info";
 
-    /// Gives the number of {@link stack_map_frame} entries in the
-    /// {@link #entries} table.
+    /// Gives the number of [stack_map_frame] entries in the
+    /// [#entries] table.
     public final u2 number_of_entries;
-    /// Each entry in the {@link #entries} table describes one stack map frame of
+    /// Each entry in the [#entries] table describes one stack map frame of
     /// the method. The order of the stack map frames in the entries table is
     /// significant.
     public final stack_map_frame[] entries;
@@ -139,8 +139,8 @@ public class StackMapTable_attribute extends attribute_info {
 
         /// Get the corresponding enum item for `value`.
         ///
-        /// @param value The {@link stack_map_frame#frame_type} value
-        /// @return The corresponding {@link FrameTypeEnum} of `value`
+        /// @param value The [stack_map_frame#frame_type] value
+        /// @return The corresponding [FrameTypeEnum] of `value`
         public static FrameTypeEnum valueOf(short value) {
             for (FrameTypeEnum item : FrameTypeEnum.values()) {
                 if (item.inRange(value)) {
@@ -179,14 +179,14 @@ public class StackMapTable_attribute extends attribute_info {
     public static final class stack_map_frame extends FileComponent implements GenerateTreeNodeClassFile {
         public final u1 frame_type;
 
-        /// The frame data after the {@link #frame_type}, or `null` for `same_frame`. It is one of:
+        /// The frame data after the [#frame_type], or `null` for `same_frame`. It is one of:
         ///
-        /// - {@link same_locals_1_stack_item_frame}
-        /// - {@link same_locals_1_stack_item_frame_extended}
-        /// - {@link chop_frame}
-        /// - {@link same_frame_extended}
-        /// - {@link append_frame}
-        /// - {@link full_frame}
+        /// - [same_locals_1_stack_item_frame]
+        /// - [same_locals_1_stack_item_frame_extended]
+        /// - [chop_frame]
+        /// - [same_frame_extended]
+        /// - [append_frame]
+        /// - [full_frame]
         public final stack_frame union_stack_frame;
 
         private stack_map_frame(final PosDataInputStream posDataInputStream) throws IOException {
@@ -224,16 +224,16 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /// Get message key for the corresponding {@link #union_stack_frame}.
+        /// Get message key for the corresponding [#union_stack_frame].
         ///
-        /// @return {@link #union_stack_frame} message key, or `null` if {@link #union_stack_frame} is null
+        /// @return [#union_stack_frame] message key, or `null` if [#union_stack_frame] is null
         public String getFrameMessageKey () {
             return FrameTypeEnum.valueOf(this.frame_type.value).messageKey;
         }
 
-        /// Get the union name of {@link #frame_type}.
+        /// Get the union name of [#frame_type].
         ///
-        /// @return {@link #frame_type} union name
+        /// @return [#frame_type] union name
         public String getFrameTypeName() {
             return FrameTypeEnum.valueOf(this.frame_type.value).unionName;
         }
@@ -641,7 +641,7 @@ public class StackMapTable_attribute extends attribute_info {
 
         public final u1 tag;
         /// The `*_variable_info` item of the union, determined by
-        /// the {@link #tag}.
+        /// the [#tag].
         public final VariableInfo variable_info;
 
         private verification_type_info(final PosDataInputStream posDataInputStream)
@@ -695,19 +695,19 @@ public class StackMapTable_attribute extends attribute_info {
             }
         }
 
-        /// Get name of {@link #tag}.
+        /// Get name of [#tag].
         ///
-        /// @return {@link #tag} name
+        /// @return [#tag] name
         public String getTagName() {
             return verification_type_info.TagEnum.getTagName(this.tag.value);
         }
 
         /// The `*_variable_info` union of a
-        /// {@link verification_type_info}.
+        /// [verification_type_info].
         public sealed interface VariableInfo permits Simple_variable_info, Object_variable_info, Uninitialized_variable_info {
         }
 
-        /// The variable info which has the {@link #tag} only, for example
+        /// The variable info which has the [#tag] only, for example
         /// `Top_variable_info` and `Integer_variable_info`.
         public record Simple_variable_info() implements VariableInfo {
         }

@@ -33,13 +33,13 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
     /// high-order three (3) bits as value_arg.
     public final int value_arg;
 
-    /// The format of the value, from {@link #value_type}.
+    /// The format of the value, from [#value_type].
     public final ValueFormat format;
 
-    /// The value, its type depends on {@link #format}.
+    /// The value, its type depends on [#format].
     public final Value value;
 
-    /// The `value` union of the {@link encoded_value} structure.
+    /// The `value` union of the [encoded_value] structure.
     public sealed interface Value {
     }
 
@@ -214,7 +214,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
                 floatPos,
                 Type_ubyte.LENGTH,
                 "value_arg + value_type",
-                "0x%s | %s".formatted(Integer.toHexString(this.value_arg_and_type.value), Integer.toBinaryString(this.value_arg_and_type.value)),
+                "0x%x | %s".formatted(this.value_arg_and_type.value, Integer.toBinaryString(this.value_arg_and_type.value)),
                 "msg_encoded_value__value_type",
                 Icons.Tag
         );
@@ -222,7 +222,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
                 floatPos,
                 Type_ubyte.LENGTH,
                 "value_type",
-                "%d | 0x%s - %s".formatted(this.value_type, Integer.toHexString(this.value_type), this.format.name()),
+                "%d | 0x%x - %s".formatted(this.value_type, this.value_type, this.format.name()),
                 "msg_encoded_value__value_type",
                 Icons.Tag
         );
@@ -308,7 +308,7 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
         /// Internal code of the value type.
         public final int code;
 
-        /// Max allowed value for {@link encoded_value#value_arg}
+        /// Max allowed value for [encoded_value#value_arg]
         public final int arg_max;
 
         private ValueFormat(int i, int m) {
@@ -316,10 +316,10 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
             this.arg_max = m;
         }
 
-        /// Get enum item based on {@link #code}.
+        /// Get enum item based on [#code].
         ///
         /// @param value Value to search
-        /// @return matched {@link ValueFormat} item, or empty for an unrecognized value
+        /// @return matched [ValueFormat] item, or empty for an unrecognized value
         public static Optional<ValueFormat> of(final int value) {
             return Arrays.stream(values()).filter(item -> item.code == value).findFirst();
         }

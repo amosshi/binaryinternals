@@ -55,7 +55,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
 
     private static final String MSG_ATTR_LVTT = "msg_attr_LocalVariableTypeTable";
 
-    /// Indicates the number of entries in the {@link #local_variable_type_table}
+    /// Indicates the number of entries in the [#local_variable_type_table]
     /// array.
     public final u2 local_variable_type_table_length;
     /// Indicates a range of code array offsets within which a local variable has
@@ -131,7 +131,7 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
         /// Representing a field signature which encodes the type of a local
         /// variable in the source program.
         public final u2 signature_index;
-        /// The given local variable must be at {@link index} in the local
+        /// The given local variable must be at [index] in the local
         /// variable array of the current frame.
         public final u2 index;
 

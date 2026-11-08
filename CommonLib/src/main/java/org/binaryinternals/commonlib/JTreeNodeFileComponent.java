@@ -32,9 +32,9 @@ public final class JTreeNodeFileComponent {
 
     /// Constructor.
     ///
-    /// @param nodeStartPos Value for {@link #startPos}
-    /// @param nodeLength Value for {@link #length}
-    /// @param nodeText Value for {@link #text}
+    /// @param nodeStartPos Value for [#startPos]
+    /// @param nodeLength Value for [#length]
+    /// @param nodeText Value for [#text]
     public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText) {
         if (nodeStartPos < 0) {
             throw new IllegalArgumentException("Start position cannot be less than zero; it is '" + nodeStartPos + "'.");
@@ -55,10 +55,10 @@ public final class JTreeNodeFileComponent {
 
     /// Constructor.
     ///
-    /// @param nodeStartPos Value for {@link #startPos}
-    /// @param nodeLength Value for {@link #length}
-    /// @param nodeText Value for {@link #text}
-    /// @param desc Value for {@link #description}, could be null
+    /// @param nodeStartPos Value for [#startPos]
+    /// @param nodeLength Value for [#length]
+    /// @param nodeText Value for [#text]
+    /// @param desc Value for [#description], could be null
     public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final String desc) {
         this(nodeStartPos, nodeLength, nodeText);
         this.description = desc;
@@ -66,10 +66,10 @@ public final class JTreeNodeFileComponent {
 
     /// Constructor.
     ///
-    /// @param nodeStartPos Value for {@link #startPos}
-    /// @param nodeLength Value for {@link #length}
-    /// @param nodeText Value for {@link #text}
-    /// @param nodeIcon Value for {@link #icon}, could be null
+    /// @param nodeStartPos Value for [#startPos]
+    /// @param nodeLength Value for [#length]
+    /// @param nodeText Value for [#text]
+    /// @param nodeIcon Value for [#icon], could be null
     public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icons nodeIcon) {
         this(nodeStartPos, nodeLength, nodeText);
         if (nodeIcon != null) {
@@ -79,11 +79,11 @@ public final class JTreeNodeFileComponent {
 
     /// Constructor.
     ///
-    /// @param nodeStartPos Value for {@link #startPos}
-    /// @param nodeLength Value for {@link #length}
-    /// @param nodeText Value for {@link #text}
-    /// @param nodeIcon Value for {@link #icon}, could be null
-    /// @param desc Value for {@link #description}, could be null
+    /// @param nodeStartPos Value for [#startPos]
+    /// @param nodeLength Value for [#length]
+    /// @param nodeText Value for [#text]
+    /// @param nodeIcon Value for [#icon], could be null
+    /// @param desc Value for [#description], could be null
     public JTreeNodeFileComponent(final int nodeStartPos, final int nodeLength, final String nodeText, final Icons nodeIcon, final String desc) {
         this(nodeStartPos, nodeLength, nodeText);
         if (nodeIcon != null) {
@@ -97,82 +97,82 @@ public final class JTreeNodeFileComponent {
         return this.text;
     }
 
-    /// Getter for {@link #startPos}.
+    /// Getter for [#startPos].
     ///
-    /// @return {@link #startPos} value
+    /// @return [#startPos] value
     public int getStartPos() {
         return this.startPos;
     }
 
-    /// Getter for {@link #length}.
+    /// Getter for [#length].
     ///
-    /// @return {@link #length} value
+    /// @return [#length] value
     public int getLength() {
         return this.length;
     }
 
     /// Get the last position of current node plus 1, which equals to the first
     /// position of the next node. The value is
-    /// ({@link #startPos} + {@link #length}).
+    /// ([#startPos] + [#length]).
     ///
     /// @return Last position plus 1
     public int getLastPosPlus1() {
         return this.startPos + this.length;
     }
 
-    /// Getter for {@link #text}.
+    /// Getter for [#text].
     ///
-    /// @return {@link #text} value
+    /// @return [#text] value
     public String getText() {
         return this.text;
     }
 
-    /// Getter for {@link #icon}.
+    /// Getter for [#icon].
     ///
-    /// @return {@link #icon} value
+    /// @return [#icon] value
     public Icon getIcon() {
         return this.icon;
     }
     
-    /// Setter for {@link #icon}.
+    /// Setter for [#icon].
     ///
-    /// @param icon value for {@link #icon}
+    /// @param icon value for [#icon]
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
-    /// Setter for {@link #description}.
+    /// Setter for [#description].
     ///
-    /// @param d Value for {@link #description}
+    /// @param d Value for [#description]
     public void setDescription(final String d) {
         this.description = d;
     }
 
-    /// Getter for {@link #description}.
+    /// Getter for [#description].
     ///
-    /// @return {@link #description} value
+    /// @return [#description] value
     public String getDescription() {
         return this.description;
     }
 
-    /// Setter for {@link #panelDetail}.
+    /// Setter for [#panelDetail].
     ///
-    /// @param p Value for {@link #panelDetail}
+    /// @param p Value for [#panelDetail]
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP2", justification="We need it")
     public void setDetailPanel(final JPanel p) {
         this.panelDetail = p;
     }
     
-    /// Indicates whether we have a detailed panel {@link #panelDetail}.
+    /// Indicates whether we have a detailed panel [#panelDetail].
     ///
-    /// @return true if {@link #panelDetail} is not null, else false
+    /// @return true if [#panelDetail] is not null, else false
     public boolean isDetailAvailable() {
         return this.panelDetail != null;
     }
 
-    /// Getter for {@link #panelDetail}.
+    /// Getter for [#panelDetail].
     ///
-    /// @return {@link #panelDetail} value
+    /// @return [#panelDetail] value
     @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP", justification="We need it")
     public JPanel getDetailPanel() {
         return this.panelDetail;

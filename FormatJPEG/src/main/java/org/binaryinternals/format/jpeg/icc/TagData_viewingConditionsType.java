@@ -45,7 +45,8 @@ public class TagData_viewingConditionsType extends TagData {
                     XYZNumber.LENGTH,
                     "illuminant");
             comp.setDescription("CIE ’absolute’ XYZ values for illuminant (in which Y is in cd/m<sup>2</sup>)");
-            parentNode.add(xyzNode = new DefaultMutableTreeNode(comp));
+            xyzNode = new DefaultMutableTreeNode(comp);
+            parentNode.add(xyzNode);
             this.illuminant.generateTreeNode(xyzNode, this.startPos + 8);
 
             comp = new JTreeNodeFileComponent(
@@ -53,7 +54,8 @@ public class TagData_viewingConditionsType extends TagData {
                     XYZNumber.LENGTH,
                     "surround");
             comp.setDescription("CIE ’absolute’ XYZ values for surround (in which Y is in cd/m<sup>2</sup>)");
-            parentNode.add(xyzNode = new DefaultMutableTreeNode(comp));
+            xyzNode = new DefaultMutableTreeNode(comp);
+            parentNode.add(xyzNode);
             this.surround.generateTreeNode(xyzNode, this.startPos + 8 + XYZNumber.LENGTH);
 
             comp = new JTreeNodeFileComponent(

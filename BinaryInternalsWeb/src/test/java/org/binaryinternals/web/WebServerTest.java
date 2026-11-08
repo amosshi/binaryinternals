@@ -53,7 +53,7 @@ class WebServerTest {
             c.setFixedLengthStreamingMode(body.length);
             try (OutputStream out = c.getOutputStream()) {
                 out.write(body);
-            } catch (IOException e) {
+            } catch (IOException _) {
                 // The server may reject the body before reading all of it
             }
         }

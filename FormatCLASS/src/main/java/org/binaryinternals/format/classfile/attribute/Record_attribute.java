@@ -49,11 +49,11 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Record_attribute extends attribute_info {
 
-    /// The value of the {@link #components_count} item indicates the number of
-    /// entries in the {@link #components} table.
+    /// The value of the [#components_count] item indicates the number of
+    /// entries in the [#components] table.
     public final u2 components_count;
 
-    /// Each entry in the {@link #components} table specifies a record component
+    /// Each entry in the [#components] table specifies a record component
     /// of the current class, in the order the record components were declared.
     public final record_component_info[] components;
 
@@ -134,14 +134,14 @@ public class Record_attribute extends attribute_info {
     public static final class record_component_info extends FileComponent implements GenerateTreeNodeClassFile {
 
         /// The value of the name_index item must be a valid index into the
-        /// {@link ClassFile#constant_pool} table. The `constant_pool`
+        /// [ClassFile#constant_pool] table. The `constant_pool`
         /// entry at that index must be a `CONSTANT_Utf8_info`
         /// structure representing a valid unqualified name denoting the record
         /// component.
         public final u2 name_index;
 
         /// The value of the descriptor_index item must be a valid index into the
-        /// {@link ClassFile#constant_pool} table. The `constant_pool`
+        /// [ClassFile#constant_pool] table. The `constant_pool`
         /// entry at that index must be a `CONSTANT_Utf8_info`
         /// structure representing a field descriptor which encodes the type of
         /// the record component.

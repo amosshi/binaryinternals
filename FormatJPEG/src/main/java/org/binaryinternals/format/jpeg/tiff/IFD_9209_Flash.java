@@ -48,16 +48,15 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);
 
-        JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode node;
 
-        comp = new JTreeNodeFileComponent(
+        final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 pos + 8,
                 2,
                 "%s: %s".formatted(super.getTagName(), this.getValueBinaryString()));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9209_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
-        parentNode.add(node = new DefaultMutableTreeNode(comp));
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
+        parentNode.add(node);
 
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,

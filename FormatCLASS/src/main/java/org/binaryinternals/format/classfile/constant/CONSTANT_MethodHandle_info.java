@@ -59,10 +59,8 @@ public class CONSTANT_MethodHandle_info extends cp_info {
 
     @Override
     public String getDescription() {
-        return this.getName() + ": Start Position: [" + super.startPos
-                + "], length: [" + super.length
-                + "], reference_kind: [" + this.reference_kind.value
-                + "], reference_index = [" + this.reference_index.value + "]";
+        return "%s: Start Position: [%d], length: [%d], reference_kind: [%d], reference_index = [%d]".formatted(
+                this.getName(), super.startPos, super.length, this.reference_kind.value, this.reference_index.value);
     }
 
     @Override
@@ -125,18 +123,18 @@ public class CONSTANT_MethodHandle_info extends cp_info {
         REF_newInvokeSpecial(MethodHandleInfo.REF_newInvokeSpecial),
         REF_invokeInterface(MethodHandleInfo.REF_invokeInterface);
 
-        /// ID of the {@link ReferenceKind}.
+        /// ID of the [ReferenceKind].
         public final int value;
 
         private ReferenceKind(int value) {
             this.value = value;
         }
 
-        /// Get the {@link ReferenceKind} name based on its internal
-        /// {@link #value}.
+        /// Get the [ReferenceKind] name based on its internal
+        /// [#value].
         ///
-        /// @param value Internal {@link #value}
-        /// @return {@link ReferenceKind} name
+        /// @param value Internal [#value]
+        /// @return [ReferenceKind] name
         public static String name(int value) {
             String result = "Un-recognized";
             for (ReferenceKind item : ReferenceKind.values()) {

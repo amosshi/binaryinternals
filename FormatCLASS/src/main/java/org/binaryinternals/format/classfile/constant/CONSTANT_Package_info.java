@@ -41,9 +41,9 @@ public class CONSTANT_Package_info extends cp_info {
 
     public static final int LENGTH = 3;
 
-    /// The value of the {@link name_index} item must be a valid index into the
+    /// The value of the [name_index] item must be a valid index into the
     /// `constant_pool` table. The constant_pool entry at that index must
-    /// be a {@link CONSTANT_Utf8_info} structure representing a valid package
+    /// be a [CONSTANT_Utf8_info] structure representing a valid package
     /// name encoded in internal form.
     public final u2 name_index;
 

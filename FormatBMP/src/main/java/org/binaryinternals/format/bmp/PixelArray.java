@@ -23,8 +23,14 @@ public final class PixelArray extends FileComponent implements GenerateTreeNode 
 
     private final DIBHeader dibHeader;
 
-    PixelArray(final DIBHeader dibHeader, final int startPos) {
-        super(startPos, Math.toIntExact(dibHeader.calcImageSize()));
+    /// The pixel array, limited to the bytes in the file.
+    ///
+    /// @param dibHeader The DIB header
+    /// @param startPos Start of the pixel array
+    /// @param available Bytes in the file from `startPos`
+    PixelArray(final DIBHeader dibHeader, final int startPos, final int available) {
+        // The header may claim more data than the file has
+        super(startPos, Math.clamp(dibHeader.calcImageSize(), 0, Math.max(available, 0)));
         this.dibHeader = dibHeader;
     }
 
@@ -43,13 +49,14 @@ public final class PixelArray extends FileComponent implements GenerateTreeNode 
                     this.length,
                     "Compressed Data")));
         } else if (ROW_BIT_COUNTS.contains(this.dibHeader.getBitCount())) {
-            // A top-down bitmap has a negative height
-            final int rowSize = Math.toIntExact(this.dibHeader.getRowSize());
-            final int rows = Math.abs(this.dibHeader.getHeight());
+            // A top-down bitmap has a negative height, and the header may claim
+            // more rows than the file has
+            final long rowSize = this.dibHeader.getRowSize();
+            final long rows = (rowSize > 0) ? Math.min(Math.abs((long) this.dibHeader.getHeight()), this.length / rowSize) : 0;
             for (int i = 0; i < rows; i++) {
                 node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        this.startPos + rowSize * i,
-                        rowSize,
+                        this.startPos + (int) (rowSize * i),
+                        (int) rowSize,                                      // At most this.length, when there is a row
                         "row [%d]".formatted(i))));
             }
         }

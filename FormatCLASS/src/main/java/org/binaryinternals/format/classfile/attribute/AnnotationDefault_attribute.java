@@ -42,7 +42,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class AnnotationDefault_attribute extends attribute_info {
 
-    /// The {@link #default_value} item represents the default value of the
+    /// The [#default_value] item represents the default value of the
     /// annotation type element whose default value is represented by this
     /// AnnotationDefault attribute.
     public final Annotation.element_value default_value;

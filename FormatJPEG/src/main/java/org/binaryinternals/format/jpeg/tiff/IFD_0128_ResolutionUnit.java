@@ -33,9 +33,8 @@ public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);
 
-        JTreeNodeFileComponent comp;
 
-        comp = new JTreeNodeFileComponent(
+        final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 pos + 8,
                 2,
                 "Resolution Unit: %d - %s".formatted(this.value[0], this.getResolutionUnitName()));

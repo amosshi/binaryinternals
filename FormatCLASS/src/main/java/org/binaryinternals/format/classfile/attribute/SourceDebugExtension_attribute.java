@@ -45,11 +45,11 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class SourceDebugExtension_attribute extends attribute_info {
 
-    /// The {@link #debug_extension} array holds extended debugging information
+    /// The [#debug_extension] array holds extended debugging information
     /// which has no semantic effect on the Java Virtual Machine.
     ///
     /// The information is represented using a modified UTF-8 string
-    /// ({@link CONSTANT_Utf8_info}) with no terminating zero byte.
+    /// ([CONSTANT_Utf8_info]) with no terminating zero byte.
     public final byte[] debug_extension;
 
     SourceDebugExtension_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws java.io.IOException {
@@ -68,9 +68,9 @@ public class SourceDebugExtension_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /// Get the {@link #debug_extension} as String.
+    /// Get the [#debug_extension] as String.
     ///
-    /// @return The string of {@link #debug_extension}
+    /// @return The string of [#debug_extension]
     public String getDebugExtesionString() {
         return new String(this.debug_extension, StandardCharsets.UTF_8);
     }

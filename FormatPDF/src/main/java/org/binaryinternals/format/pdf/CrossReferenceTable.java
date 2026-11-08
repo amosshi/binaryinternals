@@ -2,7 +2,6 @@ package org.binaryinternals.format.pdf;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
@@ -38,7 +37,7 @@ public final class CrossReferenceTable extends FileComponent implements Generate
                 subsections.add(new Subsection(stream, next));
             }
         }
-        this.Subsections = Collections.unmodifiableList(subsections);
+        this.Subsections = List.copyOf(subsections);
 
         super.length = stream.getPos() - super.startPos;
     }
@@ -103,7 +102,7 @@ public final class CrossReferenceTable extends FileComponent implements Generate
             for (int i = 0; i < this.NumberOfEntries; i++) {
                 entries.add(new Entry(stream));
             }
-            this.Entries = Collections.unmodifiableList(entries);
+            this.Entries = List.copyOf(entries);
 
             super.length = stream.getPos() - super.startPos;
         }

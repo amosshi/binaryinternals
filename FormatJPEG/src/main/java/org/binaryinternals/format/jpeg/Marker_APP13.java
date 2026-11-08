@@ -7,6 +7,7 @@
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -32,8 +33,8 @@ public class Marker_APP13 extends Marker {
         this.identifier = super.parseIdentifier(pDisMarker);
         if (this.identifier.contains(Marker_APP13.IDENTIFIER_PHOTOSHOP)) {
             final int lengthPhir = this.marker_length - 2 - this.identifier.length() - 1;
-            final byte[] bytesPhir = new byte[lengthPhir];
-            System.arraycopy(pDisMarker.getBuf(), 2 + 2 + this.identifier.length() + 1, bytesPhir, 0, lengthPhir);
+            final int startPhir = 2 + 2 + this.identifier.length() + 1;
+            final byte[] bytesPhir = Arrays.copyOfRange(pDisMarker.getBuf(), startPhir, startPhir + lengthPhir);
             this.psir = new PhotoshopImageResource(new PosDataInputStream(
                     new PosByteArrayInputStream(bytesPhir),
                     this.getStartPos() + 2 + 2 + this.identifier.length() + 1));
@@ -45,7 +46,6 @@ public class Marker_APP13 extends Marker {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
         int lastPos;
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode identifierNode;
 
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
@@ -71,7 +71,8 @@ public class Marker_APP13 extends Marker {
                     this.psir.getStartPos(),
                     this.psir.getLength(),
                     "Photoshop Image Resource Block");
-            markerNode.add(identifierNode = new DefaultMutableTreeNode(comp));
+            final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(comp);
+            markerNode.add(identifierNode);
             this.psir.generateTreeNode(identifierNode);
         } else {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

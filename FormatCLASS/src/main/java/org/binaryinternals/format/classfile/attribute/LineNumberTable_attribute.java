@@ -98,12 +98,10 @@ public class LineNumberTable_attribute extends attribute_info {
                     MESSAGES.getString("msg_attr_line_number_table")
             ));
 
-            DefaultMutableTreeNode treeNodeLntItem;
-            LineNumberTable_attribute.line_number_table lnt;
             for (int i = 0; i < lnt_length; i++) {
-                lnt = this.getLineNumberTable(i);
+                final LineNumberTable_attribute.line_number_table lnt = this.getLineNumberTable(i);
 
-                treeNodeLntItem = this.addNode(treeNodeLnt,
+                final DefaultMutableTreeNode treeNodeLntItem = this.addNode(treeNodeLnt,
                         lnt.getStartPos(),
                         lnt.getLength(),
                         String.valueOf(i + 1),

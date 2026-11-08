@@ -21,7 +21,7 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     @SuppressWarnings("ProtectedField")
     protected final int marker_code;
     @SuppressWarnings("ProtectedField")
-    protected int marker_length;
+    protected final int marker_length;
     /// Why the marker content cannot be parsed, or `null`.
     private String error;
 
@@ -103,12 +103,11 @@ public class Marker extends FileComponent implements GenerateTreeNode {
             if (b == 0) {
                 break;
             }
-            sb.append((char) b);
+            sb.append((char) Byte.toUnsignedInt(b));
         }
         return sb.toString();
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Get each field
     public int getMarker() {
         return this.marker_code;
@@ -162,14 +161,14 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     }
 
     DefaultMutableTreeNode generateTreeNode_Marker(DefaultMutableTreeNode root) {
-        DefaultMutableTreeNode markerNode;
 
         JTreeNodeFileComponent node = new JTreeNodeFileComponent(
                 this.getStartPos(),
                 this.getLength(),
                 this.getMarkerName());
         node.setDescription(this.getMarkerDescription());
-        root.add(markerNode = new DefaultMutableTreeNode(node));
+        final DefaultMutableTreeNode markerNode = new DefaultMutableTreeNode(node);
+        root.add(markerNode);
 
         return markerNode;
     }

@@ -66,32 +66,35 @@ public class TIFFHeader extends FileComponent {
                 this.startPos + 0,
                 2,
                 "byte order: %X - %s".formatted(this.byte_order, this.getByteOrderName()));
-        comp.setDescription("The byte order used within the file. Legal values are:<br />"
-                + "<ul>"
-                + "<li> <strong>II</strong> (4949.H): In the <code>II</code> format, byte order is always from the least significant byte to the most significant byte, for both 16-bit and 32-bit integers This is called <i>little-endian</i> byte order. </li>"
-                + "<li> <strong>MM</strong> (4D4D.H): In the <code>MM</code> format, byte order is always from most significant to least significant, for both 16-bit and 32-bit integers. This is called <i>big-endian</i> byte order.</li>"
-                + "</ul>");
+        comp.setDescription("""
+                The byte order used within the file. Legal values are:<br />\
+                <ul>\
+                <li> <strong>II</strong> (4949.H): In the <code>II</code> format, byte order is always from the least significant byte to the most significant byte, for both 16-bit and 32-bit integers This is called <i>little-endian</i> byte order. </li>\
+                <li> <strong>MM</strong> (4D4D.H): In the <code>MM</code> format, byte order is always from most significant to least significant, for both 16-bit and 32-bit integers. This is called <i>big-endian</i> byte order.</li>\
+                </ul>""");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.startPos + 2,
                 2,
                 "arbitrary number: %d".formatted(this.arbitray_number));
-        comp.setDescription("An arbitrary but carefully chosen number (<code>42</code>) that further identifies the file as a TIFF file.<br />"
-                + "The byte order depends on the value of <i>byte order</i>.");
+        comp.setDescription("""
+                An arbitrary but carefully chosen number (<code>42</code>) that further identifies the file as a TIFF file.<br />\
+                The byte order depends on the value of <i>byte order</i>.""");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.startPos + 4,
                 4,
                 "first IFD offset: %d".formatted(this.offset_0ifd));
-        comp.setDescription("The <code>offset</code> (in bytes) of the first IFD. "
-                + "The directory may be at any location in the file after the header but <i>must begin on a word boundary</i>. "
-                + "In particular, an Image File Directory may follow the image data it describes. "
-                + "Readers must follow the pointers wherever they may lead."
-                + "<br />"
-                + "The term <strong><i>byte offset</i></strong> is always used in this document to refer to a location with respect to the beginning of the TIFF file. "
-                + "The first byte of the file has an offset of <strong>0</strong>."
+        comp.setDescription("""
+                The <code>offset</code> (in bytes) of the first IFD.\s\
+                The directory may be at any location in the file after the header but <i>must begin on a word boundary</i>.\s\
+                In particular, an Image File Directory may follow the image data it describes.\s\
+                Readers must follow the pointers wherever they may lead.\
+                <br />\
+                The term <strong><i>byte offset</i></strong> is always used in this document to refer to a location with respect to the beginning of the TIFF file.\s\
+                The first byte of the file has an offset of <strong>0</strong>."""
                 );
         parentNode.add(new DefaultMutableTreeNode(comp));
     }

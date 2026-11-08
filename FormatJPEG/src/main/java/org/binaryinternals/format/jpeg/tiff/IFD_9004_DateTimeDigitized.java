@@ -7,7 +7,7 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -16,17 +16,14 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
 
     public static final int COUNT = 20;
-    public final Calendar datetime;
+    /// The date and time, or `null` when the value is not a valid date.
+    public final LocalDateTime datetime;
 
     public IFD_9004_DateTimeDigitized(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
-
-        final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
-        final byte[] buf = new byte[IFD_9004_DateTimeDigitized.COUNT];
-        reader.readFully(buf, 0, IFD_9004_DateTimeDigitized.COUNT);
-        this.datetime = IFD_0132_DateTime.buf2calendar(buf);
+        this.datetime = IFD_0132_DateTime.parse(this.value);
     }
 
     @Override
@@ -38,13 +35,7 @@ public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_ASCII(
                 parentNode,
-                "%04d:%02d:%02d %02d:%02d:%02d".formatted(
-                this.datetime.get(Calendar.YEAR),
-                this.datetime.get(Calendar.MONTH),
-                this.datetime.get(Calendar.DATE),
-                this.datetime.get(Calendar.HOUR_OF_DAY),
-                this.datetime.get(Calendar.MINUTE),
-                this.datetime.get(Calendar.SECOND)),
+                IFD_0132_DateTime.toText(this.datetime, this.value),
                 IFDMessage.getString(IFDMessage.KEY_IFD_9004_Description) + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F));
     }
 }

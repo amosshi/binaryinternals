@@ -51,9 +51,9 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
     }
 
 
-    /// Get {@link #class_idx} name.
+    /// Get [#class_idx] name.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return class name
     /// @see #class_idx
     public String get_class(DexFile dexFile) {
@@ -63,9 +63,9 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
         return this.clazz;
     }
 
-    /// Get {@link #class_idx} name in Java Language Specification format.
+    /// Get [#class_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return class name in JLS format
     /// @see #class_idx
     public String get_class_jls(DexFile dexFile) {
@@ -76,18 +76,18 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
         return this.clazz_jls;
     }
 
-    /// Get {@link #proto_idx} value.
+    /// Get [#proto_idx] value.
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link #proto_idx} value
+    /// @param dexFile Current [DexFile]
+    /// @return [#proto_idx] value
     public proto_id_item get_proto(DexFile dexFile) {
         return dexFile.proto_ids[this.proto_idx.value];
     }
 
 
-    /// Get {@link #name_idx} name.
+    /// Get [#name_idx] name.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return field name
     /// @see #name_idx
     public String get_name(DexFile dexFile) {
@@ -97,9 +97,9 @@ public final class method_id_item extends FileComponent implements GenerateTreeN
         return this.name;
     }
 
-    /// String format of current {@link method_id_item}.
+    /// String format of current [method_id_item].
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return String format of a method
     public String toString(DexFile dexFile) {
         proto_id_item proto = this.get_proto(dexFile);

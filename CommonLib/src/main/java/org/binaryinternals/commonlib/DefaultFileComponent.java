@@ -2,14 +2,14 @@ package org.binaryinternals.commonlib;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-/// Default implementation for {@link FileComponent}.
+/// Default implementation for [FileComponent].
 ///
 /// @author Amos Shi
 public class DefaultFileComponent extends FileComponent implements GenerateTreeNode {
 
     private String treeNodeText = "Default File Component";
 
-    /// Generates the {@link DefaultFileComponent}.
+    /// Generates the [DefaultFileComponent].
     ///
     /// @param start Start Position of the File component
     /// @param len Length of the File component
@@ -17,7 +17,7 @@ public class DefaultFileComponent extends FileComponent implements GenerateTreeN
         super(start, len);
     }
 
-    /// Generates the {@link DefaultFileComponent}.
+    /// Generates the [DefaultFileComponent].
     ///
     /// @param start Start Position of the File component
     /// @param len Length of the File component

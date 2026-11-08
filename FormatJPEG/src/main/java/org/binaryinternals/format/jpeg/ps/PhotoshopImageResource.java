@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.ps;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,7 @@ public class PhotoshopImageResource extends FileComponent {
         this.rawData = input.getBuf();
         this.irb_8bim = new ArrayList<>(100);
 
-        StringBuilder sb = new StringBuilder(5);
-        sb.append((char)this.rawData[0]);
-        sb.append((char)this.rawData[1]);
-        sb.append((char)this.rawData[2]);
-        sb.append((char)this.rawData[3]);
-        this.signature = sb.toString();
+        this.signature = new String(this.rawData, 0, 4, StandardCharsets.ISO_8859_1);
 
         if (IRB_8BIM.SIGNATURE_TEXT.equals(this.signature)) {
             while (((input.getPos() - input.getOffset()) < this.rawData.length)
@@ -46,16 +42,14 @@ public class PhotoshopImageResource extends FileComponent {
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        int count;
-        DefaultMutableTreeNode node;
-
         if (IRB_8BIM.SIGNATURE_TEXT.equals(this.signature)) {
-            count = 0;
+            int count = 0;
             for (IRB_8BIM irb : this.irb_8bim) {
-                parentNode.add(node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         irb.getStartPos(),
                         irb.getLength(),
-                        "IRB-8BIM [%d]".formatted(count))));
+                        "IRB-8BIM [%d]".formatted(count)));
+                parentNode.add(node);
                 count++;
                 irb.generateTreeNode(node);
             }

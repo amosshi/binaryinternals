@@ -10,6 +10,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.TreeSet;
 import javax.swing.BorderFactory;
@@ -52,8 +53,7 @@ final class JDialogAbout extends JDialog {
     }
 
     private static String getVersion() {
-        final String version = JDialogAbout.class.getPackage().getImplementationVersion();
-        return version == null ? "development" : version;
+        return Objects.requireNonNullElse(JDialogAbout.class.getPackage().getImplementationVersion(), "development");
     }
 
     private void initComponents() {

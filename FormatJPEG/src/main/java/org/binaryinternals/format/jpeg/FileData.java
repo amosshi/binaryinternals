@@ -29,13 +29,7 @@ public class FileData extends FileComponent implements GenerateTreeNode {
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        String nodeName;
-
-        if (isCompressedData) {
-            nodeName = "Compressed Data";
-        } else {
-            nodeName = "File Data";
-        }
+        final String nodeName = this.isCompressedData ? "Compressed Data" : "File Data";
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos(),
                 this.getLength(),

@@ -15,7 +15,6 @@ public class IFDTag {
     private IFDTag() {
     }
 
-    ////////////////////////////////////////////////////////////////////////////
     // ITFF-v6
 
     public static final int IFD_00FE_NewSubfileType = 0x00FE;
@@ -94,7 +93,6 @@ public class IFDTag {
     public static final int IFD_0214_ReferenceBlackWhite = 0x0214;
     public static final int IFD_8298_Copyright = 0x8298;
 
-    ////////////////////////////////////////////////////////////////////////////
     // CIPA DC-008-2010
 
     public static final int IFD_829A_ExposureTime = 0x829A;
@@ -214,7 +212,6 @@ public class IFDTag {
     public static String getTagName(int tag){
         return switch (tag) {
 
-            ////////////////////////////////////////////////////////////////////
             // ITFF-v6
 
             case IFDTag.IFD_00FE_NewSubfileType -> IFDTagMessage.getString("IFD_00FE_NewSubfileType");
@@ -366,7 +363,6 @@ public class IFDTag {
 
             case IFDTag.IFD_8298_Copyright -> IFDTagMessage.getString("IFD_8298_Copyright");
 
-            ////////////////////////////////////////////////////////////////////
             // CIPA DC-008-2010
 
             case IFDTag.IFD_829A_ExposureTime -> IFDTagMessage.getString("IFD_829A_ExposureTime");

@@ -15,8 +15,9 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class IFD_010E_ImageDescription extends IFD_ASCII {
 
-    private final static String IFD_Image_Description = "A string that describes the subject of the image."
-            + "For example, a user may wish to attach a comment such as \"1988 company picnic\" to an image.";
+    private final static String IFD_Image_Description = """
+            A string that describes the subject of the image. \
+            For example, a user may wish to attach a comment such as "1988 company picnic" to an image.""";
 
     public IFD_010E_ImageDescription(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {

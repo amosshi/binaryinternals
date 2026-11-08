@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.tiff;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.Icons;
@@ -24,14 +25,12 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
 
         if (super.value.length >= 8) {
-            StringBuilder sb = new StringBuilder(8);
-            for (int i = 0; i < 8; i++) {
-                if (super.value[i] == 0) {
-                    break;
-                }
-                sb.append((char)super.value[i]);
+            // The 8-byte character code, ended by the first NUL
+            int end = 0;
+            while (end < 8 && super.value[end] != 0) {
+                end++;
             }
-            this.CharacterCode = sb.toString();
+            this.CharacterCode = new String(super.value, 0, end, StandardCharsets.ISO_8859_1);
         } else {
             this.CharacterCode = null;
         }
@@ -48,7 +47,6 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
         super.generateTreeNode(parentNode, pos);
 
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode node;
 
         comp = new JTreeNodeFileComponent(
                 pos + 8,
@@ -64,7 +62,8 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
                 Icons.Shortcut, null);
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9286_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D));
-        parentNode.add(node = new DefaultMutableTreeNode(comp));
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
+        parentNode.add(node);
 
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.tiff_StartPos + super.ifd_value_offset,

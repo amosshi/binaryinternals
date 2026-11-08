@@ -47,7 +47,7 @@ import org.binaryinternals.commonlib.Icons;
 /// | `POST /api/v1/parse?name=Foo.class` | Parse the request body, get the JSON tree |
 /// | `GET /icons/{Name}.png` | Tree node icon |
 ///
-/// Configured by environment variables, see {@link Config#fromEnv()}.
+/// Configured by environment variables, see [Config#fromEnv()].
 ///
 /// @author Amos Shi
 public final class WebServer {
@@ -122,7 +122,7 @@ public final class WebServer {
         }
     }
 
-    /// Create the server, call {@link #start()} to start it.
+    /// Create the server, call [#start()] to start it.
     ///
     /// @param config Server settings
     /// @throws IOException Failed to open the port
@@ -143,8 +143,8 @@ public final class WebServer {
     /// Start the server.
     public void start() {
         this.server.start();
-        LOG.log(Level.INFO, "Listening on http://{0}:{1,number,#} with {2} format plug-ins",
-                new Object[]{this.config.host(), this.getPort(), this.parser.getPlugins().size()});
+        LOG.log(Level.INFO, () -> "Listening on http://%s:%d with %d format plug-ins".formatted(
+                this.config.host(), this.getPort(), this.parser.getPlugins().size()));
     }
 
     /// Stop the server.
@@ -232,10 +232,10 @@ public final class WebServer {
         });
         try {
             this.send(ex, 200, TYPE_JSON, result.get(this.config.parseTimeoutSeconds(), TimeUnit.SECONDS));
-        } catch (TimeoutException e) {
+        } catch (TimeoutException _) {
             result.cancel(true);
             throw new HttpError(504, "Parse timeout after " + this.config.parseTimeoutSeconds() + " seconds");
-        } catch (InterruptedException e) {
+        } catch (InterruptedException _) {
             Thread.currentThread().interrupt();
             throw new HttpError(503, "Server shutting down");
         } catch (ExecutionException e) {
@@ -253,7 +253,7 @@ public final class WebServer {
             }
             case null, default -> {
                 // Includes StackOverflowError and the plug-in runtime exceptions
-                LOG.log(Level.INFO, "Failed to parse {0}: {1}", new Object[]{name, cause});
+                LOG.log(Level.INFO, () -> "Failed to parse %s: %s".formatted(name, cause));
                 LOG.log(Level.FINE, "Failed to parse " + name, cause);
                 yield new HttpError(422, "Failed to parse the file: " + (cause == null ? "unknown error" : cause.getClass().getSimpleName()));
             }
@@ -264,10 +264,10 @@ public final class WebServer {
         final String length = ex.getRequestHeaders().getFirst("Content-Length");
         if (length != null) {
             try {
-                if (Long.parseLong(length.trim()) > this.config.maxUploadBytes()) {
+                if (Long.parseLong(length.strip()) > this.config.maxUploadBytes()) {
                     throw tooLarge();
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException _) {
                 throw new HttpError(400, "Invalid Content-Length");
             }
         }
@@ -297,7 +297,7 @@ public final class WebServer {
         final Icons icon;
         try {
             icon = Icons.valueOf(name.substring(0, name.length() - ".png".length()));
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException _) {
             throw new HttpError(404, "Not found");
         }
         final byte[] png = this.iconCache.computeIfAbsent(icon.name(), _ -> toPng(icon.getIcon()));
@@ -383,7 +383,7 @@ public final class WebServer {
 
     /// Start the web server.
     ///
-    /// @param args Not used, see {@link Config#fromEnv()}
+    /// @param args Not used, see [Config#fromEnv()]
     /// @throws IOException Failed to open the port
     public static void main(final String[] args) throws IOException {
         System.setProperty("java.awt.headless", "true");

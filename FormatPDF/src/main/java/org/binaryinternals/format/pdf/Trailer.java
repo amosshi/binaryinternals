@@ -63,8 +63,8 @@ public final class Trailer extends FileComponent implements GenerateTreeNode {
         while (content.hasNext()) {
             if (Analysis.parseNextObject(content, this.components) == null) {
                 final byte next = content.readByte();
-                LOGGER.log(Level.WARNING, "Unexpected byte in trailer at {0}: ''{1}''",
-                        new Object[]{content.getPos() - 1, (char) (next & 0xFF)});
+                LOGGER.log(Level.WARNING, () -> "Unexpected byte in trailer at %d: '%c'".formatted(
+                        content.getPos() - 1, (char) Byte.toUnsignedInt(next)));
             }
         }
     }

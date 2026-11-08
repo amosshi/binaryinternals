@@ -31,13 +31,13 @@ public abstract class CONSTANT_Dynamic extends cp_info {
 
     public static final int LENGTH = 5;
 
-    /// The value of the {@link #name_and_type_index} item must be a valid index
+    /// The value of the [#name_and_type_index] item must be a valid index
     /// into the bootstrap_methods array of the bootstrap method table of this
     /// class file.
     public final u2 bootstrap_method_attr_index;
 
-    /// The value of the {@link #name_and_type_index} item must be a valid index
-    /// into the {@link ClassFile#constant_pool} table. The `constant_pool`
+    /// The value of the [#name_and_type_index] item must be a valid index
+    /// into the [ClassFile#constant_pool] table. The `constant_pool`
     /// entry at that index must be a `CONSTANT_NameAndType_info` structure
     /// representing a method name and method descriptor.
     ///

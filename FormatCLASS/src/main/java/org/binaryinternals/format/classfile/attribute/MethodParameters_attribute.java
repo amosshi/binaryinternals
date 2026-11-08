@@ -150,7 +150,7 @@ public class MethodParameters_attribute extends attribute_info {
         ///
         /// @param classFile The class file containing the constant pool
         /// @return The parameter name, or `(no name)` when
-        /// {@link #name_index} is zero
+        /// [#name_index] is zero
         public String getName(final ClassFile classFile) {
             return (this.name_index.value == 0) ? "(no name)" : classFile.getCPDescription(this.name_index.value);
         }

@@ -76,33 +76,33 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
         }
     }
 
-    /// Get message key for {@link #num_parameters}.
+    /// Get message key for [#num_parameters].
     ///
-    /// @return Message key for {@link #num_parameters}
+    /// @return Message key for [#num_parameters]
     ///
     /// @see RuntimeVisibleParameterAnnotations_attribute
     /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_num_parameters();
 
-    /// Get message key for {@link #parameter_annotations}.
+    /// Get message key for [#parameter_annotations].
     ///
-    /// @return Message key for {@link #parameter_annotations}
+    /// @return Message key for [#parameter_annotations]
     ///
     /// @see RuntimeVisibleParameterAnnotations_attribute
     /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations();
 
-    /// Get message key for {@link parameter_annotations#num_annotations}.
+    /// Get message key for [parameter_annotations#num_annotations].
     ///
-    /// @return Message key for {@link parameter_annotations#num_annotations}
+    /// @return Message key for [parameter_annotations#num_annotations]
     ///
     /// @see RuntimeVisibleParameterAnnotations_attribute
     /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations__num_annotations();
 
-    /// Get message key for {@link parameter_annotations#annotations}0.
+    /// Get message key for [parameter_annotations#annotations]0.
     ///
-    /// @return Message key for {@link parameter_annotations#annotations}
+    /// @return Message key for [parameter_annotations#annotations]
     ///
     /// @see RuntimeVisibleParameterAnnotations_attribute
     /// @see RuntimeInvisibleParameterAnnotations_attribute

@@ -53,6 +53,6 @@ public final class Type_uint {
     /// @param l The `long` value
     /// @return The String for `l`
     public static String toString(long l) {
-        return "0x%s | %,d".formatted(Long.toHexString(l).toUpperCase(), l);
+        return "0x%X | %,d".formatted(l, l);
     }
 }

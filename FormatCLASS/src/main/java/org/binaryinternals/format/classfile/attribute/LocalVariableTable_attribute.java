@@ -132,22 +132,22 @@ public class LocalVariableTable_attribute extends attribute_info {
 
         public static final int LENGTH = 10;
         /// The given local variable must have a value at indices into the
-        /// {@link Code_attribute#code} array in the interval
+        /// [Code_attribute#code] array in the interval
         /// `[start_pc, start_pc + length)`, that is, between
         /// `start_pc` inclusive and `start_pc + length`
         /// exclusive.
         public final u2 start_pc;
-        /// See {@link local_variable_table#start_pc}.
+        /// See [local_variable_table#start_pc].
         public final u2 length_code;
         /// Representing a valid unqualified name denoting a local variable.
         public final u2 name_index;
         /// Representing a field descriptor which encodes the type of a local
         /// variable in the source program.
         public final u2 descriptor_index;
-        /// The given local variable must be at {@link #index} in the local
+        /// The given local variable must be at [#index] in the local
         /// variable array of the current frame.
         ///
-        /// If the local variable at {@link #index} is of type
+        /// If the local variable at [#index] is of type
         /// `double` or `long`, it occupies both
         /// `index` and `index + 1`.
         public final u2 index;

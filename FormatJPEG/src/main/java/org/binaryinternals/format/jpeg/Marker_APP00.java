@@ -34,14 +34,12 @@ public class Marker_APP00 extends Marker {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
         int lastPos;
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode identifierNode;
 
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
@@ -66,16 +64,16 @@ public class Marker_APP00 extends Marker {
         }
         markerNode.add(new DefaultMutableTreeNode(comp));
 
-        markerNode.add(identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + this.identifier.length() + 1,
                 this.startPos + this.length - lastPos,
-                this.identifier)));
+                this.identifier));
+        markerNode.add(identifierNode);
         if (this.compnent != null) {
             this.compnent.generateTreeNode(identifierNode);
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Inner Class
     private class JFIF implements GenerateTreeNode {
 
@@ -131,12 +129,13 @@ public class Marker_APP00 extends Marker {
                     pos + 0xB,
                     1,
                     "units: %d - %s".formatted(this.units, this.getUnitsDesc()));
-            comp.setDescription("Units for the X and Y densities.<br />"
-                    + "<ul>"
-                    + "<li> units = <strong>0</strong>: no units, X and Y specify the pixel aspect ratio </li>"
-                    + "<li> units = <strong>1</strong>: X and Y are dots per inch </li>"
-                    + "<li> units = <strong>2</strong>: X and Y are dots per cm </li>"
-                    + "</ul>");
+            comp.setDescription("""
+                    Units for the X and Y densities.<br />\
+                    <ul>\
+                    <li> units = <strong>0</strong>: no units, X and Y specify the pixel aspect ratio </li>\
+                    <li> units = <strong>1</strong>: X and Y are dots per inch </li>\
+                    <li> units = <strong>2</strong>: X and Y are dots per cm </li>\
+                    </ul>""");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
             // Marker_APP00 X,Y density

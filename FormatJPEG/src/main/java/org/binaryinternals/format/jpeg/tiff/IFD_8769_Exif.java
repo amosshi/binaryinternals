@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.tiff;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.Icons;
@@ -49,8 +50,6 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
-        DefaultMutableTreeNode node;
-        DefaultMutableTreeNode node_subifd;
 
         // Sub IFD
         comp = new JTreeNodeFileComponent(
@@ -59,7 +58,7 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
                 "Exif Sub IFD",
                 Icons.Shortcut, null);
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
-        node = new DefaultMutableTreeNode(comp);
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
         parentNode.add(node);
 
         comp = new JTreeNodeFileComponent(
@@ -80,7 +79,7 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
                     IFD.SIZE,
                     "Sub IFD[%d] - %s".formatted(i, this.ifd_sub[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
-            node_subifd = new DefaultMutableTreeNode(comp);
+            final DefaultMutableTreeNode node_subifd = new DefaultMutableTreeNode(comp);
             node.add(node_subifd);
             if (this.ifd_sub[i] != null) {
                 this.ifd_sub[i].generateTreeNode(node_subifd);
@@ -97,13 +96,7 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
     /// @see IFD_9000_ExifVersion
     /// @see IFD_A000_FlashpixVersion
     static String getVersion(byte[] value) {
-        final StringBuilder sb = new StringBuilder(5);
-        sb.append((char) value[0]);  // byte A1
-        sb.append((char) value[1]);  // byte A2
-        sb.append('.');
-        sb.append((char) value[2]);  // byte B1
-        sb.append((char) value[3]);  // byte B2
-
-        return sb.toString();
+        // Bytes A1 A2 . B1 B2
+        return new String(value, 0, 2, StandardCharsets.ISO_8859_1) + '.' + new String(value, 2, 2, StandardCharsets.ISO_8859_1);
     }
 }

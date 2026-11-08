@@ -51,7 +51,6 @@ public class Marker_SOS extends Marker {
 
         super.parseInitSkip(pDisMarker);
 
-        byte b;
 
         // Ns
         this.Ns = pDisMarker.readUnsignedByte();        // TODO - Check this value
@@ -64,23 +63,20 @@ public class Marker_SOS extends Marker {
             this.parameter[i] = new Parameter(cs, (tables & 0xF0) >> 4, tables & 0x0F);
         }
         // TODO - Now check the value Ls(marker length) matchs
-        //super.verify();
 
         // Ss, Se, Ah, Al
         this.Ss = pDisMarker.readUnsignedByte();
         this.Se = pDisMarker.readUnsignedByte();
 
-        b = pDisMarker.readByte();
+        final byte b = pDisMarker.readByte();
         this.Ah = (b & 0xF0) >> 4;
         this.Al = b & 0x0F;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
-        DefaultMutableTreeNode attributeNode;
         final int pos = super.getStartPos();
 
         // Marker code
@@ -103,15 +99,15 @@ public class Marker_SOS extends Marker {
 
         // Scan component-specification parameters: Cs, Td, Ta
         if (this.Ns > 0) {
-            DefaultMutableTreeNode parameterNode;
 
-            markerNode.add(attributeNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos + 5,
                     this.Ns * 2,
-                    "Scan component-specification parameters")));
+                    "Scan component-specification parameters"));
+            markerNode.add(attributeNode);
 
             for (int i = 0; i < this.Ns; i++) {
-                parameterNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                final DefaultMutableTreeNode parameterNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 5 + 2*i,
                         2,
                         "Parameter-%d".formatted(i + 1)));

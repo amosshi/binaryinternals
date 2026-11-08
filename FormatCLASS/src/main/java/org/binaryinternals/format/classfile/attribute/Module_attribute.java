@@ -168,9 +168,9 @@ public class Module_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /// Get extracted {@link #module_flags}.
+    /// Get extracted [#module_flags].
     ///
-    /// @return Extracted {@link #module_flags}
+    /// @return Extracted [#module_flags]
     public String getModuleFlags() {
         return AccessFlag.getModifier(this.module_flags.value, AccessFlag.ForModule);
     }
@@ -459,9 +459,9 @@ public class Module_attribute extends attribute_info {
             );
         }
 
-        /// Get extracted {@link #requires_flags}.
+        /// Get extracted [#requires_flags].
         ///
-        /// @return Extracted {@link #requires_flags}
+        /// @return Extracted [#requires_flags]
         public String getRequiresFlags() {
             return AccessFlag.getModifier(this.requires_flags.value, AccessFlag.ForModuleRequires);
         }
@@ -556,9 +556,9 @@ public class Module_attribute extends attribute_info {
             }
         }
 
-        /// Get extracted {@link #exports_flags}.
+        /// Get extracted [#exports_flags].
         ///
-        /// @return Extracted {@link #exports_flags}
+        /// @return Extracted [#exports_flags]
         public String getExportFlags() {
             return AccessFlag.getModifier(this.exports_flags.value, AccessFlag.ForModuleExports);
         }
@@ -644,9 +644,9 @@ public class Module_attribute extends attribute_info {
             }
         }
 
-        /// Get extracted {@link #opens_flags}.
+        /// Get extracted [#opens_flags].
         ///
-        /// @return Extracted {@link #opens_flags}
+        /// @return Extracted [#opens_flags]
         public String getOpenFlags() {
             return AccessFlag.getModifier(this.opens_flags.value, AccessFlag.ForModuleOpens);
         }

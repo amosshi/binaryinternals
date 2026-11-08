@@ -34,12 +34,12 @@ public final class header_item extends FileComponent implements GenerateTreeNode
     /// field); used to detect file corruption.
     public final Type_uint checksum;
 
-    /// SHA-1 signature (hash) of the rest of the file (everything but {@link DexFile#DEX_FILE_MAGIC1}, {@link DexFile#DEX_FILE_MAGIC2},
-    /// {@link #checksum}, and this field {@link #signature}); used to uniquely
+    /// SHA-1 signature (hash) of the rest of the file (everything but [DexFile#DEX_FILE_MAGIC1], [DexFile#DEX_FILE_MAGIC2],
+    /// [#checksum], and this field [#signature]); used to uniquely
     /// identify files.
     public final Type_ubyte[] signature = new Type_ubyte[20];
 
-    /// size of the entire file (including the {@link header_item}), in bytes.
+    /// size of the entire file (including the [header_item]), in bytes.
     public final Type_uint file_size;
 
     /// size of the header (this entire section), in bytes. This allows for at
@@ -47,14 +47,14 @@ public final class header_item extends FileComponent implements GenerateTreeNode
     /// invalidating the format.
     public final Type_uint header_size = new Type_uint(0x70);
 
-    /// Endianness tag. The value is either {@link Endian#ENDIAN_CONSTANT} or
-    /// {@link Endian#REVERSE_ENDIAN_CONSTANT}.
+    /// Endianness tag. The value is either [Endian#ENDIAN_CONSTANT] or
+    /// [Endian#REVERSE_ENDIAN_CONSTANT].
     public final Type_uint endian_tag;
     /// Size of the link section, or 0 if this file isn't statically linked.
     public final Type_uint link_size;
     /// Offset from the start of the file to the link section, or 0 if
-    /// {@link #link_size} == 0. The offset, if non-zero, should be to an offset
-    /// into the {@link DexFile#link_data} section. The format of the data
+    /// [#link_size] == 0. The offset, if non-zero, should be to an offset
+    /// into the [DexFile#link_data] section. The format of the data
     /// pointed at is left unspecified by this document; this header field (and
     /// the previous) are left as hooks for use by runtime implementations.
     public final Type_uint link_off;
@@ -131,7 +131,7 @@ public final class header_item extends FileComponent implements GenerateTreeNode
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
                 Type_uint.LENGTH,
-                "endian_tag: " + this.endian_tag.toString() + " / " + Endian.toString(this.endian_tag.intValue()),
+                "endian_tag: " + this.endian_tag + " / " + Endian.toString(this.endian_tag.intValue()),
                 Icons.Endian,
                 GenerateTreeNodeDexFile.MESSAGES.getString("msg_header_item_endian_tag")
         )));
@@ -189,12 +189,12 @@ public final class header_item extends FileComponent implements GenerateTreeNode
     }
 
 
-    /// The constant {@link Endian#ENDIAN_CONSTANT} is used to indicate the
+    /// The constant [Endian#ENDIAN_CONSTANT] is used to indicate the
     /// endianness of the file in which it is found. Although the standard .dex
     /// format is little-endian, implementations may choose to perform
     /// byte-swapping. Should an implementation come across a header whose
-    /// endian_tag is {@link Endian#REVERSE_ENDIAN_CONSTANT} instead of
-    /// {@link Endian#ENDIAN_CONSTANT}, it would know that the file has been
+    /// endian_tag is [Endian#REVERSE_ENDIAN_CONSTANT] instead of
+    /// [Endian#ENDIAN_CONSTANT], it would know that the file has been
     /// byte-swapped from the expected form.
     public enum Endian {
 
@@ -218,8 +218,8 @@ public final class header_item extends FileComponent implements GenerateTreeNode
             this.byte4 = (i << 24) >> 24;
         }
 
-        /// Map to {@link ByteOrder}. The existing parser reads
-        /// {@link #ENDIAN_CONSTANT} as {@link ByteOrder#BIG_ENDIAN}.
+        /// Map to [ByteOrder]. The existing parser reads
+        /// [#ENDIAN_CONSTANT] as [ByteOrder#BIG_ENDIAN].
         ///
         /// @return the matching byte order
         public ByteOrder toByteOrder() {

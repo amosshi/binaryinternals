@@ -49,9 +49,9 @@ public final class encoded_annotation extends FileComponent implements GenerateT
         super.length = stream.getPos() - super.startPos;
     }
 
-    /// Get {@link #type_idx} name in Java Language Specification format.
+    /// Get [#type_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return type name in JLS format
     /// @see #type_idx
     public String get_type_jls(DexFile dexFile) {

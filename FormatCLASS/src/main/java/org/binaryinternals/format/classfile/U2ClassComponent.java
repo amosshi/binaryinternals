@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/// Super class for all simple components which have only one 16-bit ({@link u2})
+/// Super class for all simple components which have only one 16-bit ([u2])
 /// field in a `class` file.
 ///
 /// @author Amos Shi
@@ -23,9 +23,9 @@ public class U2ClassComponent extends FileComponent {
         this.value = new u2(stream);
     }
 
-    /// Get the {@link u2} vaue in {@link java.lang.Integer} format.
+    /// Get the [u2] vaue in [java.lang.Integer] format.
     ///
-    /// @return Value of the {@link u2} component
+    /// @return Value of the [u2] component
     public int getValue() {
         return this.value.value;
     }

@@ -38,12 +38,12 @@ import org.binaryinternals.format.dex.header_item.Endian;
 public final class DexFile extends FileFormat {
 
     /// The constant NO_INDEX is used to indicate that an index value is absent.
-    /// Embedded in {@link class_def_item} and {@link debug_info_item}
+    /// Embedded in [class_def_item] and [debug_info_item]
     public static final long NO_INDEX = 0xffffffffL;
     private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
     /// The constant array/string
-    /// {@link #DEX_FILE_MAGIC1}|{@link #DEX_FILE_MAGIC2} is the list of bytes
+    /// [#DEX_FILE_MAGIC1]|[#DEX_FILE_MAGIC2] is the list of bytes
     /// that must appear at the beginning of a `.dex` file in order
     /// for it to be recognized as such.
     ///
@@ -114,11 +114,8 @@ public final class DexFile extends FileFormat {
         } else if (Endian.REVERSE_ENDIAN_CONSTANT.equals(i1, i2, i3, i4)) {
             endian = Endian.REVERSE_ENDIAN_CONSTANT;
         } else {
-            throw new FileFormatException("The dex file do not contain valid endian_tag. the value: 0x"
-                    + Integer.toHexString(i1) + ", 0x"
-                    + Integer.toHexString(i2) + ", 0x"
-                    + Integer.toHexString(i3) + ", 0x"
-                    + Integer.toHexString(i4));
+            throw new FileFormatException("The dex file do not contain valid endian_tag. the value: 0x%x, 0x%x, 0x%x, 0x%x".formatted(
+                    i1, i2, i3, i4));
         }
 
         PosDataInputStreamDex stream = new PosDataInputStreamDex(new PosByteArrayInputStream(super.fileByteArray), endian);
@@ -218,7 +215,7 @@ public final class DexFile extends FileFormat {
         }
     }
 
-    /// Parse an item of the {@link #data} section at the current stream position.
+    /// Parse an item of the [#data] section at the current stream position.
     @FunctionalInterface
     interface DataParser {
 
@@ -252,10 +249,10 @@ public final class DexFile extends FileFormat {
         return Optional.of(Icons.Dex);
     }
 
-    /// Get the underlying String value for a {@link #string_ids} item.
+    /// Get the underlying String value for a [#string_ids] item.
     ///
-    /// @param index Index in the {@link #string_ids} array
-    /// @return String value for the {@link #string_ids} item, or
+    /// @param index Index in the [#string_ids] array
+    /// @return String value for the [#string_ids] item, or
     /// `null` for invalid index
     public String get_string_ids_string(int index) {
         if (index < -1 || this.string_ids == null || index >= this.string_ids.length) {
@@ -268,10 +265,10 @@ public final class DexFile extends FileFormat {
                 : null;
     }
 
-    /// Get the underlying String value for a {@link #type_ids} item.
+    /// Get the underlying String value for a [#type_ids] item.
     ///
-    /// @param index Index in the {@link #type_ids} array
-    /// @return String value for the {@link #type_ids} item, or `null`
+    /// @param index Index in the [#type_ids] array
+    /// @return String value for the [#type_ids] item, or `null`
     /// for invalid index
     public String get_type_ids_string(int index) {
         if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {

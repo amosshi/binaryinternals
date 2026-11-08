@@ -21,10 +21,10 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 @SuppressWarnings("java:S101")
 public class u4 {
 
-    /// Length of the {@link u4} component.
+    /// Length of the [u4] component.
     public static final int LENGTH = 4;
 
-    /// Value of the {@link u4} component.
+    /// Value of the [u4] component.
     public final int value;
 
     public u4(final PosDataInputStream posDataInputStream) throws IOException {

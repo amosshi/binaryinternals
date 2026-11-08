@@ -37,7 +37,7 @@ public abstract class CONSTANT_Ref extends cp_info {
                 this.getName(), this.startPos, this.length, this.class_index.value, this.name_and_type_index.value);
     }
 
-    /// Shared {@link #toString(cp_info[])} method for methods.
+    /// Shared [#toString(cp_info\[\])] method for methods.
     ///
     /// @param constantPool Constant pool of current class file.
     /// @return Reader friendly string of current object

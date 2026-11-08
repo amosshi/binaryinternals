@@ -37,7 +37,8 @@ public class BMPFile extends FileFormat {
                 ? new ColorTable(input, this.dibHeader, this.bitmapFileHeader.offset)
                 : null;
 
-        this.pixelArray = new PixelArray(this.dibHeader, Math.toIntExact(this.bitmapFileHeader.offset));
+        final int pixelArrayOffset = Math.toIntExact(this.bitmapFileHeader.offset);
+        this.pixelArray = new PixelArray(this.dibHeader, pixelArrayOffset, this.fileByteArray.length - pixelArrayOffset);
     }
 
     @Override

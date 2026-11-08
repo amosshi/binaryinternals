@@ -69,10 +69,10 @@ public class Code_attribute extends attribute_info {
     public final u2 max_stack;
     public final u2 max_locals;
 
-    /// The value of the {@link #code_length} item gives the number of bytes in
+    /// The value of the [#code_length] item gives the number of bytes in
     /// the code array for this method.
     ///
-    /// The value of {@link #code_length} must be greater than `zero`
+    /// The value of [#code_length] must be greater than `zero`
     /// (as the code array must not be empty) and less than `65536`.
     public final u4 code_length;
     public final byte[] code;
@@ -84,7 +84,6 @@ public class Code_attribute extends attribute_info {
     Code_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         super(nameIndex, type, posDataInputStream);
 
-        int i;
 
         this.max_stack = new u2(posDataInputStream);
         this.max_locals = new u2(posDataInputStream);
@@ -98,7 +97,7 @@ public class Code_attribute extends attribute_info {
         this.exception_table_length = new u2(posDataInputStream);
         if (this.exception_table_length.value > 0) {
             this.exceptionTable = new exception_table[this.exception_table_length.value];
-            for (i = 0; i < this.exception_table_length.value; i++) {
+            for (int i = 0; i < this.exception_table_length.value; i++) {
                 this.exceptionTable[i] = new exception_table(posDataInputStream);
             }
         }
@@ -106,7 +105,7 @@ public class Code_attribute extends attribute_info {
         this.attributes_count = new u2(posDataInputStream);
         if (this.attributes_count.value > 0) {
             this.attributes = new attribute_info[this.attributes_count.value];
-            for (i = 0; i < this.attributes_count.value; i++) {
+            for (int i = 0; i < this.attributes_count.value; i++) {
                 this.attributes[i] = attribute_info.parse(posDataInputStream, cp);
             }
         } else {
@@ -116,10 +115,10 @@ public class Code_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /// Get the {@link #code} parse result. This method will return an empty list
-    /// if {@link #code} is `null`.
+    /// Get the [#code] parse result. This method will return an empty list
+    /// if [#code] is `null`.
     ///
-    /// @return Parsed {@link Opcode} list
+    /// @return Parsed [Opcode] list
     public List<Opcode.InstructionParsed> parseCode() {
         if (this.code != null && this.code.length > 0) {
             return Opcode.parseCode(this.code);
@@ -142,11 +141,7 @@ public class Code_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
-        int i;
         final int codeLength = this.code_length.value;
-        DefaultMutableTreeNode treeNodeExceptionTableItem;
-        DefaultMutableTreeNode treeNodeAttribute;
-        DefaultMutableTreeNode treeNodeAttributeItem;
 
         this.addNode(parentNode,
                 super.startPos + 6,
@@ -198,10 +193,9 @@ public class Code_attribute extends attribute_info {
                     MESSAGES.getString("msg_attr_exception_table")
             ));
 
-            Code_attribute.exception_table et;
-            for (i = 0; i < this.exception_table_length.value; i++) {
-                et = this.getExceptionTable(i);
-                treeNodeExceptionTableItem = this.addNode(treeNodeExceptionTable,
+            for (int i = 0; i < this.exception_table_length.value; i++) {
+                final Code_attribute.exception_table et = this.getExceptionTable(i);
+                final DefaultMutableTreeNode treeNodeExceptionTableItem = this.addNode(treeNodeExceptionTable,
                         et.getStartPos(),
                         et.getLength(),
                         String.valueOf(i + 1),
@@ -232,16 +226,16 @@ public class Code_attribute extends attribute_info {
                 attrLength += codeAttr.getLength();
             }
 
-            treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode treeNodeAttribute = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     attrStartPos + 2,
                     attrLength,
                     FIELD_ATTRS.formatted(attrCount),
                     MESSAGES.getString("msg_attr_Code_attributes")
             ));
 
-            for (i = 0; i < attrCount; i++) {
+            for (int i = 0; i < attrCount; i++) {
                 attribute_info attr = this.attributes[i];
-                treeNodeAttributeItem = this.addNode(treeNodeAttribute,
+                final DefaultMutableTreeNode treeNodeAttributeItem = this.addNode(treeNodeAttribute,
                         attr.getStartPos(),
                         attr.getLength(),
                         String.valueOf(i + 1),
