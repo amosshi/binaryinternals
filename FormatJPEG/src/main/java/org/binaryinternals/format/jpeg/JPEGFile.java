@@ -71,7 +71,7 @@ public final class JPEGFile extends FileFormat {
 
         // Parse each Marker, on a copy since a failed one is replaced
         for (final FileComponent comp : List.copyOf(super.components.values())) {
-            if (comp instanceof Marker marker && marker.getMarkerLength() > 0) {
+            if (comp instanceof Marker marker && (marker.getMarkerLength() > 0 || marker.getError() != null)) {
                 this.parseMarker(marker);
             }
         }
