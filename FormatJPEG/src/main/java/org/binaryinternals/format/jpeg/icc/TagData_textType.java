@@ -20,11 +20,7 @@ public class TagData_textType extends TagData {
     /// @throws IOException Parse file failed
     public TagData_textType(final PosDataInputStream input) throws IOException {
         super(input);
-        StringBuilder sb = new StringBuilder(this.length - 8);
-        for (int i = 8; i < this.length; i++) {
-            sb.append((char) input.readByte());
-        }
-        this.text = sb.toString();
+        this.text = (this.length > 8) ? input.readASCII(this.length - 8) : "";
     }
 
     @Override

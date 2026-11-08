@@ -79,7 +79,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /// Offset of the 1st byte.
     protected int offset = 0;
 
-    /// The underlying stream, same as {@link #in} but with position access.
+    /// The underlying stream, same as [#in] but with position access.
     private final PosByteArrayInputStream posIn;
 
     /// Creates a new instance of PosDataInputStream.
@@ -91,7 +91,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         this.posIn = in;
     }
 
-    /// Create a sub {@link PosDataInputStream}, which starts from
+    /// Create a sub [PosDataInputStream], which starts from
     /// `offset`.
     ///
     /// @param in Binary data input stream
@@ -101,12 +101,12 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         this.offset = offset;
     }
 
-    /// Get a partial {@link PosDataInputStream}, which starts from
+    /// Get a partial [PosDataInputStream], which starts from
     /// `startPos` of original stream, with length `length`.
     ///
     /// @param startPos Start position
     /// @param length Length
-    /// @return A partial {@link PosDataInputStream} object
+    /// @return A partial [PosDataInputStream] object
     public PosDataInputStream getPartialStream(final int startPos, final int length) {
         return new PosDataInputStream(
                 new PosByteArrayInputStream(this.getBuf(startPos, length)),
@@ -123,7 +123,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /// Get current absolute position of the file.
     ///
     /// @return The index of the next character to read from the input stream
-    /// buffer, plus {@link #getOffset()}
+    /// buffer, plus [#getOffset()]
     public int getPos() {
         return this.posIn.getPos() + this.offset;
     }
@@ -150,7 +150,6 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return Arrays.copyOfRange(bufFull, startPos, startPos + length);
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public short readShortInLittleEndian() throws IOException {
@@ -240,7 +239,7 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     /// Reads an unsigned `long` in the given byte order.
     ///
     /// @param order Byte order of the data
-    /// @return the unsigned value as {@link BigInteger}
+    /// @return the unsigned value as [BigInteger]
     /// @throws IOException Read failed
     public BigInteger readUnsignedLong(final ByteOrder order) throws IOException {
         return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedLongInLittleEndian() : this.readUnsignedLong();
@@ -296,8 +295,8 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return new String(this.getBuf(), start, stop - start, StandardCharsets.ISO_8859_1);
     }
 
-    /// Read current byte array as ASCII string until a {@link #NEWLINE_CR} /
-    /// {@link #NEWLINE_LF} flag found.
+    /// Read current byte array as ASCII string until a [#NEWLINE_CR] /
+    /// [#NEWLINE_LF] flag found.
     ///
     /// The new line is `CR`, `LF` or `CR LF`, so `LF LF` is two lines.
     ///
@@ -430,18 +429,18 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return this.posIn.getPos() < this.getBuf().length;
     }
 
-    /// An ASCII line read by {@link #readASCIILine()}.
+    /// An ASCII line read by [#readASCIILine()].
     ///
-    /// @param line Line text, excluding the {@link PosDataInputStream#NEWLINE_CR} /
-    /// {@link PosDataInputStream#NEWLINE_LF}
+    /// @param line Line text, excluding the [PosDataInputStream#NEWLINE_CR] /
+    /// [PosDataInputStream#NEWLINE_LF]
     /// @param newLineLength New Line length, could be 1 (0x0D or 0x0A) or 2 (0x0D0A), or 0
     /// for the last line without a new line
     public record ASCIILine(String line, int newLineLength) {
 
-        /// Length of the line, including the {@link PosDataInputStream#NEWLINE_CR} /
-        /// {@link PosDataInputStream#NEWLINE_LF}.
+        /// Length of the line, including the [PosDataInputStream#NEWLINE_CR] /
+        /// [PosDataInputStream#NEWLINE_LF].
         ///
-        /// @return {@link ASCIILine} length
+        /// @return [ASCIILine] length
         public int length() {
             return this.line.length() + this.newLineLength;
         }

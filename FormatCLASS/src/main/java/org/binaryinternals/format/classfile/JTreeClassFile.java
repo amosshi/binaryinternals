@@ -16,7 +16,7 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.attribute.attribute_info;
 import org.binaryinternals.format.classfile.constant.cp_info;
 
-/// A tree for {@link ClassFile} displaying all components in the class file.
+/// A tree for [ClassFile] displaying all components in the class file.
 ///
 /// @author Amos Shi
 /// @see ClassFile
@@ -29,7 +29,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
     private ClassFile classFile;
     private DefaultMutableTreeNode root;
 
-    /// Creates a tree for {@link ClassFile}.
+    /// Creates a tree for [ClassFile].
     JTreeClassFile() {
     }
 
@@ -43,7 +43,7 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
                 0,
                 u4.LENGTH,
                 "magic",
-                Integer.toHexString(java.lang.classfile.ClassFile.MAGIC_NUMBER).toUpperCase(),
+                "%X".formatted(java.lang.classfile.ClassFile.MAGIC_NUMBER),
                 "msg_magic",
                 Icons.Magic
         );
@@ -231,9 +231,8 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
             ));
             this.root.add(fieldsNode);
 
-            DefaultMutableTreeNode fieldNode;
             for (int i = 0; i < fieldCount; i++) {
-                fieldNode = this.addNode(fieldsNode,
+                final DefaultMutableTreeNode fieldNode = this.addNode(fieldsNode,
                         fields[i].getStartPos(),
                         fields[i].getLength(),
                         "field %d".formatted(i + 1),
@@ -302,10 +301,9 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
             ));
             this.root.add(attrsNode);
 
-            DefaultMutableTreeNode attrNode;
             for (int i = 0; i < attrCount; i++) {
                 attribute_info attr = attrs[i];
-                attrNode = this.addNode(attrsNode,
+                final DefaultMutableTreeNode attrNode = this.addNode(attrsNode,
                         attr.getStartPos(),
                         attr.getLength(),
                         String.valueOf(i + 1),
@@ -356,10 +354,9 @@ public class JTreeClassFile implements GenerateTreeNodeClassFile {
         StringBuilder sb = new StringBuilder(1024);
         sb.append(HTMLKit.START);
 
-        int count;
 
         // Constant Pool
-        count = this.classFile.constant_pool_count.value;
+        final int count = this.classFile.constant_pool_count.value;
         sb.append("Constant Pool Count: %d".formatted(count));
         sb.append(HTMLKit.NEW_LINE);
         if (count > 0) {

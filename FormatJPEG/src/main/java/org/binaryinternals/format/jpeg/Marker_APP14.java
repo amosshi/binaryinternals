@@ -31,7 +31,6 @@ public class Marker_APP14 extends Marker {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
         int lastPos;
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode identifierNode;
 
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
@@ -51,9 +50,10 @@ public class Marker_APP14 extends Marker {
                 lastPos = lastPos + 2,
                 this.identifier.length() + 1,
                 "identifier: %s".formatted(this.identifier))));
-        markerNode.add(identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + this.identifier.length() + 1,
                 this.startPos + this.length - lastPos,
-                this.identifier)));
+                this.identifier));
+        markerNode.add(identifierNode);
     } // End of method generateTreeNode
 }

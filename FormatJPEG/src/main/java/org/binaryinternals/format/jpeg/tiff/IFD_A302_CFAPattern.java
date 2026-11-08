@@ -38,7 +38,6 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
         super.generateTreeNode(parentNode, pos);
 
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode node;
         String description = IFDMessage.getString(IFDMessage.KEY_IFD_A302_Description)
                     + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G);
 
@@ -65,7 +64,8 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
                     super.getTagName(),
                     Icons.Shortcut, null);
             comp.setDescription(description);
-            parentNode.add(node = new DefaultMutableTreeNode(comp));
+            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
+            parentNode.add(node);
 
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset,
@@ -76,9 +76,8 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
                     2,
                     "Vertical repeat pixel unit = %d".formatted(this.m))));
 
-            int cfa;
             for (int i = 0; i < this.ifd_count - 4; i++) {
-                cfa = (int) super.value[4 + i];
+                final int cfa = (int) super.value[4 + i];
                 node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         super.tiff_StartPos + super.ifd_value_offset + 4 + i,
                         1,

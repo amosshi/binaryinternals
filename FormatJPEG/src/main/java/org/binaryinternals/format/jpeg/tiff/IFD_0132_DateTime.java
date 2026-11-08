@@ -7,7 +7,10 @@
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -15,40 +18,41 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class IFD_0132_DateTime extends IFD_ASCII {
 
     public static final int COUNT = 20;
-    public final Calendar datetime;
+    /// The EXIF date and time format, `YYYY:MM:DD HH:MM:SS`.
+    static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("uuuu:MM:dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT);
+    /// Length of the date and time text, without the NUL terminator.
+    private static final int TEXT_LENGTH = 19;
+
+    /// The date and time, or `null` when the value is not a valid date, like
+    /// the blanks EXIF allows for an unknown date.
+    public final LocalDateTime datetime;
 
     public IFD_0132_DateTime(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
-
-        final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
-        final byte[] buf = new byte[IFD_0132_DateTime.COUNT];
-        reader.readFully(buf, 0, IFD_0132_DateTime.COUNT);
-        this.datetime = IFD_0132_DateTime.buf2calendar(buf);
+        this.datetime = parse(this.value);
     }
 
-    /// Convert a `YYYY:MM:DD HH:MM:SS` byte buffer into a `Calendar` instance.
-    static Calendar buf2calendar(final byte[] buf) {
-        final int value_0 = 48;                                                 // ASCII value of '0'
-        final int year = (Byte.valueOf(buf[0]).intValue() - value_0) * 1000
-                + (Byte.valueOf(buf[1]).intValue() - value_0) * 100
-                + (Byte.valueOf(buf[2]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[3]).intValue() - value_0);
-        final int month = (Byte.valueOf(buf[5]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[6]).intValue() - value_0);
-        final int date = (Byte.valueOf(buf[8]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[9]).intValue() - value_0);
-        final int hourOfDay = (Byte.valueOf(buf[11]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[12]).intValue() - value_0);
-        final int minute = (Byte.valueOf(buf[14]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[15]).intValue() - value_0);
-        final int second = (Byte.valueOf(buf[17]).intValue() - value_0) * 10
-                + (Byte.valueOf(buf[18]).intValue() - value_0);
+    /// Parse the `YYYY:MM:DD HH:MM:SS` text of a date and time tag.
+    ///
+    /// @param value The tag value, with the NUL terminator
+    /// @return The date and time, or `null` if it is not a valid date
+    static LocalDateTime parse(final String value) {
+        if (value.length() < TEXT_LENGTH) {
+            return null;
+        }
+        try {
+            return LocalDateTime.parse(value.substring(0, TEXT_LENGTH), FORMAT);
+        } catch (DateTimeParseException _) {
+            return null;
+        }
+    }
 
-        Calendar c = Calendar.getInstance();
-        c.set(year, month, date, hourOfDay, minute, second);
-        return c;
+    /// Text of a date and time tag: the parsed date, or the raw text if it is
+    /// not a valid date.
+    static String toText(final LocalDateTime datetime, final String value) {
+        return (datetime != null) ? FORMAT.format(datetime) : value.substring(0, Math.min(value.length(), TEXT_LENGTH));
     }
 
     @Override
@@ -60,13 +64,7 @@ public class IFD_0132_DateTime extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_ASCII(
                 parentNode,
-                "%04d:%02d:%02d %02d:%02d:%02d".formatted(
-                this.datetime.get(Calendar.YEAR),
-                this.datetime.get(Calendar.MONTH),
-                this.datetime.get(Calendar.DATE),
-                this.datetime.get(Calendar.HOUR_OF_DAY),
-                this.datetime.get(Calendar.MINUTE),
-                this.datetime.get(Calendar.SECOND)),
+                toText(this.datetime, this.value),
                 IFDMessage.getString(IFDMessage.KEY_IFD_0132_Description));
     }
 }

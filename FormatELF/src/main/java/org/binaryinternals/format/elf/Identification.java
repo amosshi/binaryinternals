@@ -91,7 +91,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         // Magic number
         this.EI_MAG = input.readInt();
         if (this.EI_MAG != MAGIC_NUMBER) {
-            throw new FileFormatException("The magic number is not for ELF file. expected=" + Integer.toHexString(MAGIC_NUMBER) + ", value=" + Integer.toHexString(this.EI_MAG));
+            throw new FileFormatException("The magic number is not for ELF file. expected=%x, value=%x".formatted(MAGIC_NUMBER, this.EI_MAG));
         }
 
         // ELF Class: 32-/64-bit

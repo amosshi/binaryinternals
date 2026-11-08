@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.binaryinternals.commonlib.GenerateTreeNodeFileFormat;
 
-/// Interface for generating tree node for {@link ClassFile}.
+/// Interface for generating tree node for [ClassFile].
 ///
 /// @author Amos Shi
 public interface GenerateTreeNodeClassFile extends GenerateTreeNodeFileFormat {

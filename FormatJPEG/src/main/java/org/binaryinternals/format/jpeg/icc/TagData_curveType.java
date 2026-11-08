@@ -17,7 +17,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class TagData_curveType extends TagData {
 
     public final long count;
-    public final int curveValues[];
+    public final int[] curveValues;
 
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
@@ -45,7 +45,6 @@ public class TagData_curveType extends TagData {
             this.generateTreeNode_TagDataType(parentNode);
 
             JTreeNodeFileComponent comp;
-            DefaultMutableTreeNode node;
 
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
@@ -60,7 +59,8 @@ public class TagData_curveType extends TagData {
                         ((int) this.count) * 2,
                         "curve values");
                 comp.setDescription("Actual curve values starting with the zeroth entry and ending with the entry <code>n-1</code>.");
-                parentNode.add(node = new DefaultMutableTreeNode(comp));
+                final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
+                parentNode.add(node);
 
                 for (int i = 0; i < this.count; i++) {
                     node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

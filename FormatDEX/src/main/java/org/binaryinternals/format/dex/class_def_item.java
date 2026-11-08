@@ -108,9 +108,9 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         super.length = stream.getPos() - super.startPos;
     }
 
-    /// Get {@link #class_idx} name in Java Language Specification format.
+    /// Get [#class_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return class name in JLS format
     /// @see #class_idx
     public String get_class_jls(DexFile dexFile) {
@@ -120,9 +120,9 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         return this.clazz_jls;
     }
 
-    /// Get {@link #superclass_idx} name in Java Language Specification format.
+    /// Get [#superclass_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return super class name in JLS format
     /// @see #superclass_idx
     public String get_superclass_jls(DexFile dexFile) {
@@ -134,10 +134,10 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         return this.superclass_jls;
     }
 
-    /// Get {@link #interfaces_off} value.
+    /// Get [#interfaces_off] value.
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link type_list} value if {@link #interfaces_off} is not
+    /// @param dexFile Current [DexFile]
+    /// @return [type_list] value if [#interfaces_off] is not
     /// `0`, or else `null`
     /// @see #interfaces_off
     public type_list get_interfaces(DexFile dexFile) {
@@ -156,11 +156,11 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         return (types == null) ? "(no interface)" : types.toString(dexFile);
     }
 
-    /// Get {@link #annotations_off} value.
+    /// Get [#annotations_off] value.
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link annotations_directory_item} value if
-    /// {@link #annotations_off} is not `0`, or else `null`
+    /// @param dexFile Current [DexFile]
+    /// @return [annotations_directory_item] value if
+    /// [#annotations_off] is not `0`, or else `null`
     /// @see #annotations_off
     public annotations_directory_item get_annotations(DexFile dexFile) {
         if (this.annotations_off.value == 0) {
@@ -173,9 +173,9 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         return this.annotations;
     }
 
-    /// Get {@link #source_file_idx} value.
+    /// Get [#source_file_idx] value.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return source file
     /// @see #source_file_idx
     public String get_source_file(DexFile dexFile) {

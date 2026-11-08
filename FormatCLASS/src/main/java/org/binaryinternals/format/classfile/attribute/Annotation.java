@@ -124,7 +124,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         }
     }
 
-    /// Each value of the {@link Annotation#element_value_pairs} table represents
+    /// Each value of the [Annotation#element_value_pairs] table represents
     /// a single element-value pair in the annotation represented by this
     /// `annotation` structure.
     ///
@@ -139,10 +139,10 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
     public static final class element_value_pair extends FileComponent implements GenerateTreeNodeClassFile {
 
         /// The name of the element of the element-value pair represented by this
-        /// {@link Annotation#element_value_pairs} entry.
+        /// [Annotation#element_value_pairs] entry.
         public final u2 element_name_index;
         /// Represents the value of the element-value pair represented by this
-        /// {@link Annotation#element_value_pairs} entry.
+        /// [Annotation#element_value_pairs] entry.
         public final element_value value;
 
         protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException {
@@ -221,7 +221,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         /// @see TagEnum
         public final char tag;
         /// The `value` union, its type is determined by the
-        /// {@link #tag}.
+        /// [#tag].
         public final Value value;
 
         protected element_value(final PosDataInputStream posDataInputStream) throws IOException {
@@ -306,18 +306,18 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             }
         }
 
-        /// The `value` union of an {@link element_value}.
+        /// The `value` union of an [element_value].
         public sealed interface Value permits ConstValue, enum_const_value, ClassInfo, AnnotationValue, array_value {
         }
 
-        /// The `const_value_index` item, for the {@link #tag}
+        /// The `const_value_index` item, for the [#tag]
         /// `B C D F I J S Z s`.
         ///
         /// @param const_value_index Index of a constant in the constant pool
         public record ConstValue(u2 const_value_index) implements Value {
         }
 
-        /// The `class_info_index` item, for the {@link #tag}
+        /// The `class_info_index` item, for the [#tag]
         /// `c`.
         ///
         /// @param class_info_index Index of a return descriptor in the constant
@@ -325,7 +325,7 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         public record ClassInfo(u2 class_info_index) implements Value {
         }
 
-        /// The `annotation_value` item, for the {@link #tag}
+        /// The `annotation_value` item, for the [#tag]
         /// `@`.
         ///
         /// @param annotation_value The nested annotation
@@ -385,19 +385,19 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
                 this.Type = type;
             }
 
-            /// Get the type name for a enumeration {@link #value}.
+            /// Get the type name for a enumeration [#value].
             ///
-            /// @param v a enumeration {@link #value}
-            /// @return Corresponding {@link #Type} for the enumeration
-            /// {@link #value}, or `Un-recognized` if it is not a
+            /// @param v a enumeration [#value]
+            /// @return Corresponding [#Type] for the enumeration
+            /// [#value], or `Un-recognized` if it is not a
             /// valid enumeration value
             public static String getType(char v) {
                 return of(v).map(e -> e.Type).orElse("Un-recognized");
             }
 
-            /// Get the enumeration of a {@link #value}.
+            /// Get the enumeration of a [#value].
             ///
-            /// @param v a enumeration {@link #value}
+            /// @param v a enumeration [#value]
             /// @return The enumeration, or empty if it is not a valid value
             public static Optional<TagEnum> of(char v) {
                 return Arrays.stream(values()).filter(e -> e.value == v).findFirst();

@@ -7,6 +7,7 @@
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.JXMLViewer;
@@ -34,36 +35,26 @@ public class Marker_APP01 extends Marker {
         this.identifier = super.parseIdentifier(pDisMarker);
 
         if (this.identifier.equalsIgnoreCase(Marker_APP01.identifier_Exif)) {
-            // TODO - Clean the following code, call method 
-            //        pDisMarker.getPartialStream(startPos, length) - This method test failed June.19.2013
             final int lengthTiff = this.marker_length - 2 - 6;
-            final byte[] bytesTiff = new byte[lengthTiff];
-            System.arraycopy(pDisMarker.getBuf(), 2 + 2 + 6, bytesTiff, 0, lengthTiff);
+            final byte[] bytesTiff = Arrays.copyOfRange(pDisMarker.getBuf(), 2 + 2 + 6, 2 + 2 + 6 + lengthTiff);
             this.tiff = new TIFF(new PosDataInputStream(
                     new PosByteArrayInputStream(bytesTiff),
                     this.getStartPos() + 2 + 2 + 6));
-            
-//            pDisMarker.getPartialStream(this.getStartPos() + 2 + 2 + 6, lengthTiff);
-//            this.tiff = new TIFF(pDisMarker.getPartialStream(
-//                    this.getStartPos() + 2 + 2 + 6,
-//                    lengthTiff));            
         } else if (this.identifier.startsWith(Marker_APP01.identifier_XMP)) {
             final int lengthXMP = this.marker_length - 2 - this.identifier.length() - 1;
-            final byte[] bytesXMP = new byte[lengthXMP];
-            System.arraycopy(pDisMarker.getBuf(), 2 + 2 + this.identifier.length() + 1, bytesXMP, 0, lengthXMP);
+            final int startXMP = 2 + 2 + this.identifier.length() + 1;
+            final byte[] bytesXMP = Arrays.copyOfRange(pDisMarker.getBuf(), startXMP, startXMP + lengthXMP);
             this.xmp = new XMP(new PosDataInputStream(
                     new PosByteArrayInputStream(bytesXMP),
                     this.getStartPos() + 2 + 2 + this.identifier.length() + 1));
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode nodeExif;
 
         comp = new JTreeNodeFileComponent(
                 this.getStartPos(),
@@ -91,7 +82,8 @@ public class Marker_APP01 extends Marker {
                     this.length - 10,
                     "TIFF");
             comp.setDescription("Exchangeable image file format for digital still cameras");
-            markerNode.add(nodeExif = new DefaultMutableTreeNode(comp));
+            final DefaultMutableTreeNode nodeExif = new DefaultMutableTreeNode(comp);
+            markerNode.add(nodeExif);
             this.tiff.generateTreeNode(nodeExif);
         } else if (this.identifier.startsWith(Marker_APP01.identifier_XMP)) {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

@@ -34,7 +34,7 @@ public final class Type_ubyte {
 
     @Override
     public String toString() {
-        return "0x%s | %d".formatted(Integer.toHexString(this.value).toUpperCase(), this.value);
+        return "0x%X | %d".formatted(this.value, this.value);
     }
 
     /// Get string for `ubyte` array.
@@ -47,7 +47,7 @@ public final class Type_ubyte {
         }
 
         return Arrays.stream(bytes)
-                .map(b -> Integer.toHexString(b.value).toUpperCase())
+                .map(b -> "%X".formatted(b.value))
                 .collect(Collectors.joining(", ", "array (", ")"));
     }
 }

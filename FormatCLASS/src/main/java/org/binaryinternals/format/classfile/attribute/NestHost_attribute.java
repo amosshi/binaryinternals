@@ -40,9 +40,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class NestHost_attribute extends attribute_info {
 
-    /// The value of the {@link #host_class_index} item must be a valid index
-    /// into the {@link ClassFile#constant_pool} table. The
-    /// {@link ClassFile#constant_pool} entry at that index must be a
+    /// The value of the [#host_class_index] item must be a valid index
+    /// into the [ClassFile#constant_pool] table. The
+    /// [ClassFile#constant_pool] entry at that index must be a
     /// CONSTANT_Class_info structure representing a class or interface which is
     /// the nest host for the current class or interface.
     public final u2 host_class_index;

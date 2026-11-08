@@ -58,7 +58,6 @@ public class Marker_SOFnn extends Marker {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
@@ -100,20 +99,20 @@ public class Marker_SOFnn extends Marker {
             return;
         }
 
-        DefaultMutableTreeNode attributeNode;
-        DefaultMutableTreeNode componentNode;
 
-        markerNode.add(attributeNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 10,
                 this.Nf * 3,
-                "Component-specification parameters")));
+                "Component-specification parameters"));
+        markerNode.add(attributeNode);
 
         for (int i = 0; i < this.Nf; i++) {
 
-            attributeNode.add(componentNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode componentNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos + 10 + 3 * i,
                     3,
-                    "Component-%d".formatted(i + 1))));
+                    "Component-%d".formatted(i + 1)));
+            attributeNode.add(componentNode);
 
             if (this.C[i] != null) {
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

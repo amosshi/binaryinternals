@@ -11,7 +11,7 @@ import java.io.IOException;
 /// The file content does not follow its format, for example a corrupted or
 /// truncated file.
 ///
-/// It is an {@link IOException}, like {@link java.util.zip.ZipException}:
+/// It is an [IOException], like [java.util.zip.ZipException]:
 /// the file was read, but its bytes cannot be understood.
 ///
 /// @author Amos Shi

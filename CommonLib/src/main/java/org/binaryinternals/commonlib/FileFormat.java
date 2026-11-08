@@ -35,9 +35,9 @@ public abstract class FileFormat {
     /// The parsed file components.
     protected final SortedMap<Long, FileComponent> components = new TreeMap<>();
 
-    /// Parse the content from a {@link Path} object.
+    /// Parse the content from a [Path] object.
     ///
-    /// @param file {@link Path} object
+    /// @param file [Path] object
     /// @throws IOException Failed to Read file
     /// @throws FileFormatException The file is empty
     protected FileFormat(final Path file) throws IOException {
@@ -63,9 +63,9 @@ public abstract class FileFormat {
         this.fileByteArray = bytes;
     }
 
-    /// Add the `comp` to the {@link #components}.
+    /// Add the `comp` to the [#components].
     ///
-    /// @param comp The {@link FileComponent} to be added
+    /// @param comp The [FileComponent] to be added
     protected void addFileComponent(FileComponent comp) {
         this.components.put(Long.valueOf(comp.getStartPos()), comp);
     }

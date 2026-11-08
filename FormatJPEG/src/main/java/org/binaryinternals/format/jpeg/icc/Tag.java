@@ -7,6 +7,8 @@
 package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.Icons;
@@ -33,8 +35,9 @@ public class Tag extends FileComponent {
         this.Size = input.readUnsignedInt();
         this.BasePos = input.getOffset();
 
-        byte[] dataBuf = new byte[(int) this.Size];
-        System.arraycopy(input.getBuf(), (int) this.Offset, dataBuf, 0, dataBuf.length);
+        // copyOfRange would pad a tag beyond the profile with zeros
+        Objects.checkFromIndexSize(this.Offset, this.Size, input.getBuf().length);
+        final byte[] dataBuf = Arrays.copyOfRange(input.getBuf(), (int) this.Offset, (int) (this.Offset + this.Size));
         this.tagData = Tag.parse(new PosDataInputStream(
                 new PosByteArrayInputStream(dataBuf),
                 input.getOffset() + (int) this.Offset));
@@ -42,7 +45,6 @@ public class Tag extends FileComponent {
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode nodeTagData;
 
         comp = new JTreeNodeFileComponent(
                 this.getStartPos(),
@@ -70,7 +72,8 @@ public class Tag extends FileComponent {
                 (int) this.Size,
                 "Tag Data",
                 Icons.Shortcut, null);
-        parentNode.add(nodeTagData = new DefaultMutableTreeNode(comp));
+        final DefaultMutableTreeNode nodeTagData = new DefaultMutableTreeNode(comp);
+        parentNode.add(nodeTagData);
         this.tagData.generateTreeNode(nodeTagData);
     }
 

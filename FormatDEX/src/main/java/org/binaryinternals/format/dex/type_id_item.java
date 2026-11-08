@@ -40,7 +40,7 @@ public final class type_id_item extends FileComponent implements GenerateTreeNod
     /// The string must conform to the syntax for TypeDescriptor, defined above.
     public final Type_uint descriptor_idx;
 
-    /// Local cache for the {@link #get_descriptor_jls(DexFile)}.
+    /// Local cache for the [#get_descriptor_jls(DexFile)].
     private String descriptor_jls;
 
     type_id_item(PosDataInputStreamDex stream) throws IOException {
@@ -51,7 +51,7 @@ public final class type_id_item extends FileComponent implements GenerateTreeNod
     
     /// Get descriptor text.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return Descriptor text
     public String get_descriptor(DexFile dexFile) {
         return dexFile.get_string_ids_string(descriptor_idx.intValue());
@@ -59,7 +59,7 @@ public final class type_id_item extends FileComponent implements GenerateTreeNod
 
     /// Get parsed descriptor name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return Parsed descriptor name
     public String get_descriptor_jls(DexFile dexFile) {
         if (this.descriptor_jls == null) {

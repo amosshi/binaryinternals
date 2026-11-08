@@ -44,30 +44,31 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode nodeHeader;
-        DefaultMutableTreeNode nodeTagTable;
         int lastPos;
-        int diff;
 
-        parentNode.add(nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.header.getStartPos(),
                 this.header.getLength(),
-                "Profile header")));
+                "Profile header"));
+        parentNode.add(nodeHeader);
         this.header.generateTreeNode(nodeHeader);
 
-        parentNode.add(nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = this.header.getStartPos() + this.header.getLength(),
                 4,
-                "Tag count = %d".formatted(this.tagCount))));
+                "Tag count = %d".formatted(this.tagCount)));
+        parentNode.add(nodeHeader);
 
         lastPos = lastPos + 4;
 
         // Tag data in the order of the offset; tags may share their data
         final SortedMap<Long, RefItem> sortedMap = new TreeMap<>();
         for (int i = 0; i < this.tagTable.length; i++) {
-            parentNode.add(nodeTagTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode nodeTagTable = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos + Tag.LENGTH * i,
                     Tag.LENGTH,
-                    "Tag[%d]".formatted(i))));
+                    "Tag[%d]".formatted(i)));
+            parentNode.add(nodeTagTable);
             this.tagTable[i].generateTreeNode(nodeTagTable);
 
             sortedMap.putIfAbsent(this.tagTable[i].Offset, new RefItem(i, this.tagTable[i]));
@@ -75,7 +76,7 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
         lastPos = lastPos + this.tagTable.length * Tag.LENGTH;
         for (final RefItem ref : sortedMap.values()) {
-            diff = (int) ((this.startPos + ref.tag().Offset) - lastPos);
+            final int diff = (int) ((this.startPos + ref.tag().Offset) - lastPos);
             if (diff > 0) {
                 generateTreeNodeDiff(parentNode, lastPos, diff, this.rawData, this.startPos);
             }
@@ -87,7 +88,7 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
             lastPos = this.startPos + (int) ref.tag().Offset + (int) ref.tag().Size;
         }
 
-        diff = (this.startPos + this.rawData.length) - lastPos;
+        final int diff = (this.startPos + this.rawData.length) - lastPos;
         if (diff > 0) {
             generateTreeNodeDiff(parentNode, lastPos, diff, this.rawData, this.startPos);
         }

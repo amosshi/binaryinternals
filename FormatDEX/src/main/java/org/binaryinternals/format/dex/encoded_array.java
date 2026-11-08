@@ -92,7 +92,7 @@ public final class encoded_array extends FileComponent implements GenerateTreeNo
                     value.generateTreeNode(valueNode, dexFile);
                 } else {
                     // This should never happen
-                    LOGGER.log(Level.SEVERE, "{0} at 0x{1} : value[{2}] is null", new Object[]{this.getClass().getSimpleName(), Integer.toHexString(this.getStartPos()), i});
+                    LOGGER.severe("%s at 0x%x : value[%d] is null".formatted(this.getClass().getSimpleName(), this.getStartPos(), i));
                 }
             }
         }

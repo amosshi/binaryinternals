@@ -52,9 +52,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         super.length = stream.getPos() - super.startPos;
     }
 
-    /// Get {@link #class_idx} name.
+    /// Get [#class_idx] name.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return class name
     /// @see #class_idx
     public String get_class(DexFile dexFile) {
@@ -64,9 +64,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         return this.clazz;
     }
 
-    /// Get {@link #class_idx} name in Java Language Specification format.
+    /// Get [#class_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return class name in JLS format
     /// @see #class_idx
     public String get_class_jls(DexFile dexFile) {
@@ -76,9 +76,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         return this.clazz_jls;
     }
 
-    /// Get {@link #type_idx} name.
+    /// Get [#type_idx] name.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return type name
     /// @see #type_idx
     public String get_type(DexFile dexFile) {
@@ -88,9 +88,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         return this.type;
     }
 
-    /// Get {@link #type_idx} name in Java Language Specification format.
+    /// Get [#type_idx] name in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return type name in JLS format
     /// @see #type_idx
     public String get_type_jls(DexFile dexFile) {
@@ -100,9 +100,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         return this.type_jls;
     }
 
-    /// Get {@link #name_idx} name.
+    /// Get [#name_idx] name.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return field name
     /// @see #name_idx
     public String get_name(DexFile dexFile) {
@@ -112,9 +112,9 @@ public final class field_id_item extends FileComponent implements GenerateTreeNo
         return this.name;
     }
 
-    /// String format of current {@link field_id_item}.
+    /// String format of current [field_id_item].
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return String format of a field
     public String toString(DexFile dexFile) {
         return "%s  %s.%s".formatted(

@@ -10,15 +10,16 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
@@ -36,15 +37,10 @@ public final class ParseService {
     /// Allowed file name extension, also used as the temporary file suffix.
     private static final Pattern EXTENSION = Pattern.compile("[A-Za-z0-9]{1,16}");
 
-    /// Find the {@link Icons} of an icon object, see {@link Icons#getIcon()}
+    /// Find the [Icons] of an icon object, see [Icons#getIcon()]
     /// which returns the same object for each icon.
-    private static final Map<Icon, Icons> ICON_NAMES = new IdentityHashMap<>();
-
-    static {
-        for (Icons icon : Icons.values()) {
-            ICON_NAMES.put(icon.getIcon(), icon);
-        }
-    }
+    private static final Map<Icon, Icons> ICON_NAMES = Arrays.stream(Icons.values())
+            .collect(Collectors.toMap(Icons::getIcon, Function.identity(), (first, _) -> first, IdentityHashMap::new));
 
     private final List<PluginDescriptor> plugins;
     private final Path tempDir;
@@ -59,14 +55,15 @@ public final class ParseService {
         }
     }
 
-    /// Create the service with the plug-ins found by {@link ServiceLoader}.
+    /// Create the service with the plug-ins found by [ServiceLoader].
     ///
     /// @param tempDir Folder for the temporary copy of the uploaded files
     public ParseService(final Path tempDir) {
-        final List<PluginDescriptor> found = new ArrayList<>();
-        ServiceLoader.load(PluginDescriptor.class).forEach(found::add);
-        found.sort(Comparator.comparing(PluginDescriptor::getExtensionDescription));
-        this.plugins = Collections.unmodifiableList(found);
+        // List.copyOf, since SpotBugs does not know Stream.toList() is unmodifiable
+        this.plugins = List.copyOf(ServiceLoader.load(PluginDescriptor.class).stream()
+                .map(ServiceLoader.Provider::get)
+                .sorted(Comparator.comparing(PluginDescriptor::getExtensionDescription))
+                .toList());
         this.tempDir = tempDir;
     }
 
@@ -122,7 +119,7 @@ public final class ParseService {
     ///
     /// @param bytes File content
     /// @param fileName Original file name, its extension selects the plug-in
-    /// @return JSON tree, see {@link #toJson(DefaultMutableTreeNode)}
+    /// @return JSON tree, see [#toJson(DefaultMutableTreeNode)]
     /// @throws UnsupportedFormatException No plug-in for the file
     /// @throws FileFormatException The file content is invalid
     /// @throws IOException Failed to write or read the temporary file

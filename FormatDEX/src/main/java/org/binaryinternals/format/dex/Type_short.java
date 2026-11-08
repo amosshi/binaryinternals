@@ -31,6 +31,6 @@ public final class Type_short {
 
     @Override
     public String toString() {
-        return "0x%s | %,d".formatted(Integer.toHexString(this.value).toUpperCase(), this.value);
+        return "0x%X | %,d".formatted((int) this.value, this.value);
     }
 }

@@ -85,9 +85,7 @@ public class InnerClasses_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, final FileFormat classFile) {
-        int i;
         final int numOfClasses = this.number_of_classes.value;
-        DefaultMutableTreeNode treeNodeInnerClass;
 
         this.addNode(parentNode,
                 super.startPos + 6, u2.LENGTH,
@@ -95,16 +93,15 @@ public class InnerClasses_attribute extends attribute_info {
                 "msg_attr_InnerClasses__number_of_classes", Icons.Counter
         );
         if (numOfClasses > 0) {
-            treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode treeNodeInnerClass = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.startPos + 8,
                     this.getClass(numOfClasses - 1).getStartPos() + this.getClass(numOfClasses - 1).getLength() - (startPos + 8),
                     "classes [%d]".formatted(numOfClasses),
                     MESSAGES.getString("msg_attr_classes")
             ));
 
-            InnerClasses_attribute.Class cls;
-            for (i = 0; i < numOfClasses; i++) {
-                cls = this.getClass(i);
+            for (int i = 0; i < numOfClasses; i++) {
+                final InnerClasses_attribute.Class cls = this.getClass(i);
 
                 DefaultMutableTreeNode treeNodeInnerClassItem = this.addNode(treeNodeInnerClass,
                         cls.getStartPos(),
@@ -134,10 +131,10 @@ public class InnerClasses_attribute extends attribute_info {
         /// The length of current component.
         public static final int LENGTH = 8;
 
-        /// The value of the {@link inner_class_info_index} item must be a valid
-        /// index into the {@link ClassFile#constant_pool} table. The
-        /// {@link ClassFile#constant_pool} entry at that index must be a
-        /// {@link CONSTANT_Class_info} structure representing `C`.
+        /// The value of the [inner_class_info_index] item must be a valid
+        /// index into the [ClassFile#constant_pool] table. The
+        /// [ClassFile#constant_pool] entry at that index must be a
+        /// [CONSTANT_Class_info] structure representing `C`.
         public final u2 inner_class_info_index;
         /// If C is not a member of a class or an interface - that is, if C is a
         /// top-level class or interface or a local class or an anonymous class -
@@ -171,7 +168,7 @@ public class InnerClasses_attribute extends attribute_info {
         }
 
         /// Generate the modifier string from the
-        /// {@link #inner_class_access_flags} value.
+        /// [#inner_class_access_flags] value.
         ///
         /// @return A string for modifier
         public String getModifiers() {

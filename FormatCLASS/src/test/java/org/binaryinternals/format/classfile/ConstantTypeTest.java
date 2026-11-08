@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -19,7 +20,7 @@ class ConstantTypeTest {
             try {
                 final cp_info cp = ConstantType.parse(type.tag, stream());
                 assertEquals(type.tag, cp.tag.value, type.name());
-            } catch (Exception e) {
+            } catch (IOException e) {
                 // Zero bytes are not valid for every type, but the tag must be recognized
                 assertFalse(String.valueOf(e.getMessage()).startsWith("Unrecognizable"), type.name());
             }

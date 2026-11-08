@@ -75,17 +75,17 @@ public abstract class RuntimeAnnotations extends attribute_info {
         }
     }
 
-    /// Get message key for {@link #annotations}.
+    /// Get message key for [#annotations].
     ///
-    /// @return Message key for {@link #annotations}
+    /// @return Message key for [#annotations]
     ///
     /// @see RuntimeVisibleAnnotations_attribute
     /// @see RuntimeInvisibleAnnotations_attribute
     abstract String getMessageKey_4_annotations();
 
-    /// Get message key for {@link #num_annotations}.
+    /// Get message key for [#num_annotations].
     ///
-    /// @return Message key for {@link #num_annotations}
+    /// @return Message key for [#num_annotations]
     ///
     /// @see RuntimeVisibleAnnotations_attribute
     /// @see RuntimeInvisibleAnnotations_attribute

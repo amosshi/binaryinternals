@@ -7,6 +7,7 @@
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -32,8 +33,8 @@ public class Marker_APP02 extends Marker {
         if (Marker_APP02.IDENTIFIER_ICC_PROFILE.equals(this.identifier)) {
             int lengthICC = this.marker_length - 2 - this.identifier.length() - 1;
             lengthICC = lengthICC - 2;
-            final byte[] bytesICC = new byte[lengthICC];
-            System.arraycopy(pDisMarker.getBuf(), 2 + 2 + this.identifier.length() + 1 + 2, bytesICC, 0, lengthICC);
+            final int startICC = 2 + 2 + this.identifier.length() + 1 + 2;
+            final byte[] bytesICC = Arrays.copyOfRange(pDisMarker.getBuf(), startICC, startICC + lengthICC);
             this.icc = new ICCProfile(new PosDataInputStream(
                     new PosByteArrayInputStream(bytesICC),
                     this.getStartPos() + 2 + 2 + this.identifier.length() + 1 + 2));
@@ -45,7 +46,6 @@ public class Marker_APP02 extends Marker {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
         int lastPos;
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode identifierNode;
 
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
@@ -72,16 +72,18 @@ public class Marker_APP02 extends Marker {
                     2,
                     "????")));
             
-            markerNode.add(identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos = lastPos + 2,
                     this.startPos + this.length - lastPos,
-                    this.identifier)));
+                    this.identifier));
+            markerNode.add(identifierNode);
             this.icc.generateTreeNode(identifierNode);
         } else {
-            markerNode.add(identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+            final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos = lastPos + this.identifier.length() + 1,
                     this.startPos + this.length - lastPos,
-                    this.identifier)));
+                    this.identifier));
+            markerNode.add(identifierNode);
         }
 
     } // End of method generateTreeNode

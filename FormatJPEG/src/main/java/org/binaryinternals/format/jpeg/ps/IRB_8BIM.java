@@ -32,11 +32,7 @@ public class IRB_8BIM extends FileComponent {
 
         // name
         int nameLen = input.readUnsignedShort();
-        StringBuilder sb = new StringBuilder(10);
-        for (int i = 0; i < nameLen; i++) {
-            sb.append((char) input.readByte());
-        }
-        this.name = sb.toString();
+        this.name = (nameLen > 0) ? input.readASCII(nameLen) : "";
 
         // size
         this.size = input.readInt();

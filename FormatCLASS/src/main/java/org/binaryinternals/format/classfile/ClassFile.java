@@ -283,10 +283,10 @@ public class ClassFile extends FileFormat {
         }
     }
 
-    /// Get the text of {@link #this_class}, which is the class name.
+    /// Get the text of [#this_class], which is the class name.
     ///
-    /// @return Corresponding text of {@link #this_class}
-    /// @throws FileFormatException Invalid {@link #constant_pool} item found
+    /// @return Corresponding text of [#this_class]
+    /// @throws FileFormatException Invalid [#constant_pool] item found
     public String getThisClassName() throws FileFormatException {
         return this.getConstantClassInfoName(this.this_class.getValue());
     }
@@ -299,10 +299,10 @@ public class ClassFile extends FileFormat {
         return AccessFlag.getClassModifier(this.access_flags.value.value);
     }
 
-    /// Get the text of {@link #super_class}, which is the super class name.
+    /// Get the text of [#super_class], which is the super class name.
     ///
-    /// @return Corresponding text of {@link #super_class}
-    /// @throws FileFormatException Invalid {@link #constant_pool} item found
+    /// @return Corresponding text of [#super_class]
+    /// @throws FileFormatException Invalid [#constant_pool] item found
     public String getSuperClassName() throws FileFormatException {
         int superClass = this.super_class.getValue();
         if (superClass == 0) {
@@ -314,11 +314,11 @@ public class ClassFile extends FileFormat {
     }
 
     /// Get `CONSTANT_Class_info` name from the
-    /// {@link #constant_pool}.
+    /// [#constant_pool].
     ///
-    /// @param cpIndex {@link #constant_pool} item index
+    /// @param cpIndex [#constant_pool] item index
     /// @return Get `CONSTANT_Class_info` name at `cpIndex`
-    /// @throws FileFormatException Invalid {@link #constant_pool} item found
+    /// @throws FileFormatException Invalid [#constant_pool] item found
     public String getConstantClassInfoName(int cpIndex) throws FileFormatException {
         if (cpIndex >= 0 && cpIndex < this.constant_pool.length
                 && this.constant_pool[cpIndex] instanceof CONSTANT_Class_info clsInfo) {
@@ -328,7 +328,7 @@ public class ClassFile extends FileFormat {
     }
 
     /// Get `CONSTANT_Utf8_info` text from the
-    /// {@link #constant_pool}..
+    /// [#constant_pool]..
     ///
     /// @param cpIndex Constant Pool object Index for
     /// `CONSTANT_Utf8_info`
@@ -381,7 +381,7 @@ public class ClassFile extends FileFormat {
     /// Get the class file format version.
     ///
     /// @return The class file format version, or empty when the
-    /// {@link #major_version} is not known by the running JDK
+    /// [#major_version] is not known by the running JDK
     public Optional<ClassFileFormatVersion> getVersion() {
         try {
             return Optional.of(ClassFileFormatVersion.fromMajor(this.major_version.value));
@@ -391,8 +391,8 @@ public class ClassFile extends FileFormat {
     }
 
     /// Whether the class file depends on the preview features of its Java SE
-    /// release, that is the {@link #minor_version} is `65535` and the
-    /// {@link #major_version} is 56 (Java SE 12) or above.
+    /// release, that is the [#minor_version] is `65535` and the
+    /// [#major_version] is 56 (Java SE 12) or above.
     ///
     /// @return `true` if the class file uses preview features
     public boolean isPreview() {
@@ -434,7 +434,7 @@ public class ClassFile extends FileFormat {
     ///
     ///
     /// Classes outside the JDK are looked up under the class path root of
-    /// {@link #filePath}, for example `/out` for
+    /// [#filePath], for example `/out` for
     /// `/out/com/acme/Foo.class`.
     ///
     ///
@@ -466,7 +466,7 @@ public class ClassFile extends FileFormat {
         return new Verification(failures, unresolved);
     }
 
-    /// The result of {@link #verify()}.
+    /// The result of [#verify()].
     ///
     /// @param errors Verification errors
     /// @param unresolved Messages for the classes which could not be found, so
@@ -492,8 +492,8 @@ public class ClassFile extends FileFormat {
         }
     }
 
-    /// The class path root of {@link #filePath}, found by removing one
-    /// directory for each package level of {@link #this_class}.
+    /// The class path root of [#filePath], found by removing one
+    /// directory for each package level of [#this_class].
     private Optional<Path> classPathRoot() {
         try {
             final Path file = Path.of(this.filePath);

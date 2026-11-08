@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import org.binaryinternals.commonlib.GenerateTreeNodeFileFormat;
 
-/// Interface for generating tree node for {@link DexFile}.
+/// Interface for generating tree node for [DexFile].
 ///
 /// @author Amos Shi
 ///

@@ -21,10 +21,10 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 @SuppressWarnings("java:S101")
 public class u1 {
 
-    /// Length of the {@link u1} component.
+    /// Length of the [u1] component.
     public static final int LENGTH = 1;
 
-    /// Value of the {@link u1} component.
+    /// Value of the [u1] component.
     public final short value;
 
     public u1(short value) {
@@ -40,9 +40,9 @@ public class u1 {
         this.value = (short) posDataInputStream.readUnsignedByte();
     }
 
-    /// Return the {@link #value} as `int`.
+    /// Return the [#value] as `int`.
     ///
-    /// @return The {@link #value} as `int`
+    /// @return The [#value] as `int`
     public int intValue() {
         return this.value;
     }

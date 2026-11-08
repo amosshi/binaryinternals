@@ -6,6 +6,7 @@
  */
 package org.binaryinternals.format.jpeg.tiff;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -23,11 +24,7 @@ public class IFD_0002_InteroperabilityVersion extends IFD_UNDEFINED {
     }
 
     public String getVersion() {
-        final StringBuilder sb = new StringBuilder(COUNT + 1);
-        for (int i = 0; i < COUNT; i++) {
-            sb.append((char) super.value[i]);
-        }
-        return sb.toString();
+        return new String(super.value, 0, COUNT, StandardCharsets.ISO_8859_1);
     }
 
     @Override

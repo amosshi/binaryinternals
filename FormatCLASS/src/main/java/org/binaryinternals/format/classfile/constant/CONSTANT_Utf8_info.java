@@ -46,7 +46,7 @@ public class CONSTANT_Utf8_info extends cp_info {
     public final u2 length_utf8;
     public final byte[] bytes;
 
-    /// Buffer for {@link #getValue()}.
+    /// Buffer for [#getValue()].
     private String value = null;
 
     CONSTANT_Utf8_info(final PosDataInputStream posDataInputStream) throws IOException {
@@ -77,7 +77,7 @@ public class CONSTANT_Utf8_info extends cp_info {
         return ConstantType.CONSTANT_Utf8.name();
     }
 
-    /// Get the {@link #bytes} value as a String, using platform's default
+    /// Get the [#bytes] value as a String, using platform's default
     /// charset.
     ///
     /// @return The content as String

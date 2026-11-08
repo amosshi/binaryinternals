@@ -177,8 +177,8 @@ public final class IndirectObject extends FileComponent implements GenerateTreeN
         while (objects.hasNext()) {
             if (Analysis.parseNextObject(objects, this.components) == null) {
                 final byte next = objects.readByte();
-                LOGGER.log(Level.WARNING, "Unexpected byte in object {0} {1} at {2}: ''{3}''", new Object[]{
-                    this.objectNumber, this.generationNumber, objects.getPos() - 1, (char) (next & 0xFF)});
+                LOGGER.log(Level.WARNING, () -> "Unexpected byte in object %d %d at %d: '%c'".formatted(
+                        this.objectNumber, this.generationNumber, objects.getPos() - 1, (char) Byte.toUnsignedInt(next)));
             }
         }
     }

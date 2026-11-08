@@ -50,11 +50,11 @@ import org.binaryinternals.format.classfile.u2;
 public class BootstrapMethods_attribute extends attribute_info {
 
     /// Determines the number of bootstrap method specifiers in the
-    /// {@link #bootstrap_methods} array.
+    /// [#bootstrap_methods] array.
     public final u2 num_bootstrap_methods;
 
-    /// Each entry in the {@link #bootstrap_methods} table contains an index to a
-    /// {@link CONSTANT_MethodHandle_info} structure which specifies a bootstrap
+    /// Each entry in the [#bootstrap_methods] table contains an index to a
+    /// [CONSTANT_MethodHandle_info] structure which specifies a bootstrap
     /// method, and a sequence (perhaps empty) of indexes to static arguments for
     /// the bootstrap method.
     public final bootstrap_method[] bootstrap_methods;
@@ -121,19 +121,19 @@ public class BootstrapMethods_attribute extends attribute_info {
     @SuppressWarnings({"java:S101", "java:S116"})
     public static final class bootstrap_method extends FileComponent implements GenerateTreeNodeClassFile {
 
-        /// The value of the {@link #bootstrap_method_ref} item must be a valid
-        /// index into the {@link ClassFile#constant_pool} table, the
+        /// The value of the [#bootstrap_method_ref] item must be a valid
+        /// index into the [ClassFile#constant_pool] table, the
         /// `constant_pool` entry at that index must be a
-        /// {@link CONSTANT_MethodHandle_info} structure
+        /// [CONSTANT_MethodHandle_info] structure
         public final u2 bootstrap_method_ref;
 
-        /// Gives the number of items in the {@link #bootstrap_arguments} array.
+        /// Gives the number of items in the [#bootstrap_arguments] array.
         public final u2 num_bootstrap_arguments;
 
-        /// Each entry in the {@link #bootstrap_arguments} array must be a valid
-        /// index into the {@link ClassFile#constant_pool} table, the
+        /// Each entry in the [#bootstrap_arguments] array must be a valid
+        /// index into the [ClassFile#constant_pool] table, the
         /// `constant_pool` entry at that index must be loadable (
-        /// {@link ConstantType#loadable} is `true`) .
+        /// [ConstantType#loadable] is `true`) .
         public final u2[] bootstrap_arguments;
 
         private bootstrap_method(final PosDataInputStream posDataInputStream) throws IOException {

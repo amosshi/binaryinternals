@@ -139,12 +139,12 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
 
         try {
             returnType = SignatureConvertor.methodReturnType(this.descriptor);
-        } catch (FileFormatException se) {
+        } catch (FileFormatException _) {
             returnType = "[Unexpected method return type: %s]".formatted(this.descriptor);
         }
         try {
             parameters = SignatureConvertor.methodParameters(this.descriptor);
-        } catch (FileFormatException se) {
+        } catch (FileFormatException _) {
             parameters = "[Unexpected method parameters: %s]".formatted(this.descriptor);
         }
 
@@ -207,11 +207,10 @@ public class method_info extends FileComponent implements GenerateTreeNodeClassF
                     MESSAGES.getString("msg_method_info__attributes")
             ));
 
-            DefaultMutableTreeNode treeNodeAttrItem;
             attribute_info attr;
             for (int i = 0; i < attributesCount; i++) {
                 attr = this.getAttribute(i);
-                treeNodeAttrItem = this.addNode(treeNodeAttr,
+                final DefaultMutableTreeNode treeNodeAttrItem = this.addNode(treeNodeAttr,
                         attr.getStartPos(),
                         attr.getLength(),
                         String.valueOf(i + 1),

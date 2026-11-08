@@ -8,7 +8,6 @@ package org.binaryinternals.format.bmp;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
@@ -38,13 +37,13 @@ public final class ColorTable extends FileComponent implements GenerateTreeNode 
         final boolean core = dibHeader.data instanceof DIBHeader.BITMAPCOREHEADER;
         final int entrySize = core ? PixelBGR.LENGTH : PixelRGBA.LENGTH;
         final long tableEnd = Math.min(pixelArrayOffset, input.getBuf().length);
-        final int count = (int) Math.min(entryCount(dibHeader), Math.max(0, (tableEnd - this.startPos) / entrySize));
+        final int count = (int) Math.clamp((tableEnd - this.startPos) / entrySize, 0, entryCount(dibHeader));
 
         final List<Pixel> entries = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             entries.add(core ? new PixelBGR(input) : new PixelRGBA(input));
         }
-        this.palette = Collections.unmodifiableList(entries);
+        this.palette = List.copyOf(entries);
         this.length = count * entrySize;
     }
 

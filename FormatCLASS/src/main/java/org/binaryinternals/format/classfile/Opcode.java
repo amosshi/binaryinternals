@@ -37,7 +37,7 @@ public final class Opcode {
 
     private static final Logger LOG = Logger.getLogger(Opcode.class.getName());
 
-    /// Opcode and non {@link ClassFile#constant_pool} index value. Example:
+    /// Opcode and non [ClassFile#constant_pool] index value. Example:
     /// `bipush + immediate vlaue`,
     /// `lload + local frame vlaue`
     private static final String FORMAT_OPCODE_NUMBER = "%s %d";
@@ -990,7 +990,7 @@ public final class Opcode {
         /// Compare float, in current Operand Stack
         /// `..., value1, value2`.
         ///
-        /// The {@link #fcmpg} and {@link #fcmpl} instructions differ only in
+        /// The [#fcmpg] and [#fcmpl] instructions differ only in
         /// their treatment of a comparison involving NaN.
         ///
         /// @see #lcmp
@@ -1005,7 +1005,7 @@ public final class Opcode {
         /// Compare double, in current Operand Stack
         /// `..., value1, value2`.
         ///
-        /// The {@link #dcmpg} and {@link #dcmpl} instructions differ only in
+        /// The [#dcmpg] and [#dcmpl] instructions differ only in
         /// their treatment of a comparison involving NaN.
         ///
         /// @see #lcmp
@@ -1183,7 +1183,7 @@ public final class Opcode {
         ///
         /// If the current method is a synchronized method, the monitor entered
         /// or reentered on invocation of the method is updated and possibly
-        /// exited as if by execution of a {@link #monitorexit} instruction in
+        /// exited as if by execution of a [#monitorexit] instruction in
         /// the current thread.
         ireturn(java.lang.classfile.Opcode.IRETURN.bytecode()),
         /// Return long from method.
@@ -1334,7 +1334,7 @@ public final class Opcode {
         /// Create new array.
         ///
         /// The atype is a code that indicates the type of array to create. It
-        /// must take one of the values in {@link Opcode#newarrayTypeName(int)}.
+        /// must take one of the values in [Opcode#newarrayTypeName(int)].
         newarray(java.lang.classfile.Opcode.NEWARRAY.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -1346,7 +1346,7 @@ public final class Opcode {
         },
         /// Create new array of reference.
         ///
-        /// The {@link #anewarray} instruction is used to create a single
+        /// The [#anewarray] instruction is used to create a single
         /// dimension of an array of object references or part of a
         /// multidimensional array.
         anewarray(java.lang.classfile.Opcode.ANEWARRAY.bytecode()) {
@@ -1387,14 +1387,14 @@ public final class Opcode {
         ///
         /// Each object is associated with a monitor. A monitor is locked if and
         /// only if it has an owner. The thread that executes
-        /// {@link #monitorenter} attempts to gain ownership of the monitor
+        /// [#monitorenter] attempts to gain ownership of the monitor
         /// associated with objectref,
         monitorenter(java.lang.classfile.Opcode.MONITORENTER.bytecode()),
         /// Exit monitor for object.
         ///
         /// The objectref must be of type reference.
         ///
-        /// The thread that executes {@link #monitorexit} must be the owner of
+        /// The thread that executes [#monitorexit] must be the owner of
         /// the monitor associated with the instance referenced by objectref.
         monitorexit(java.lang.classfile.Opcode.MONITOREXIT.bytecode()),
         /// Extend local variable index by additional bytes.
@@ -1490,7 +1490,7 @@ public final class Opcode {
                 java.lang.classfile.Opcode.ASTORE.bytecode(),
                 java.lang.classfile.Opcode.RET.bytecode());
 
-        /// Instructions by opcode, for {@link #valueOf(int)}.
+        /// Instructions by opcode, for [#valueOf(int)].
         private static final Instruction[] BY_OPCODE = new Instruction[256];
 
         static {
@@ -1516,9 +1516,9 @@ public final class Opcode {
             this.reserved = r;
         }
 
-        /// Remove the postfix "_" from the {@link #name()}. Only applied for
-        /// {@link #goto_}, {@link #return_}, {@link #new_}, and
-        /// {@link #instanceof_}.
+        /// Remove the postfix "_" from the [#name()]. Only applied for
+        /// [#goto_], [#return_], [#new_], and
+        /// [#instanceof_].
         ///
         /// @return The postfix "_" from the name
         ///
@@ -1579,8 +1579,8 @@ public final class Opcode {
             return parsed;
         }
 
-        /// Skip 0-3 byte pad when needed, for {@link #tableswitch} and
-        /// {@link #lookupswitch}.
+        /// Skip 0-3 byte pad when needed, for [#tableswitch] and
+        /// [#lookupswitch].
         ///
         /// @see #tableswitch
         /// @see #lookupswitch
@@ -1594,7 +1594,7 @@ public final class Opcode {
 
     }
 
-    /// Get the name of a {@link Instruction#newarray} array type code, for
+    /// Get the name of a [Instruction#newarray] array type code, for
     /// example `T_INT`.
     ///
     /// @param atype The array type code
@@ -1638,7 +1638,7 @@ public final class Opcode {
         return codeResult;
     }
 
-    /// Instruction structure used by {@link Instruction#lookupswitch}.
+    /// Instruction structure used by [Instruction#lookupswitch].
     ///
     /// @see Instruction#lookupswitch
     @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
@@ -1653,17 +1653,15 @@ public final class Opcode {
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append('(').append(this.npairs).append(" Pairs)");
-            this.mapoffsets.keySet().forEach(key -> {
-                Integer value = this.mapoffsets.get(key);
-                sb.append("%n    case %d. jump to %d (relative offset = %d)".formatted(key, value + currentOffset, value));
-            });
+            this.mapoffsets.forEach((key, value) ->
+                    sb.append("%n    case %d. jump to %d (relative offset = %d)".formatted(key, value + currentOffset, value)));
             sb.append("%n    default. jump to %d (relative offset = %d) ".formatted(this.defaultbyte + currentOffset, this.defaultbyte));
 
             return sb.toString();
         }
     }
 
-    /// Instruction structure used by {@link Instruction#tableswitch}.
+    /// Instruction structure used by [Instruction#tableswitch].
     ///
     /// @see Instruction#tableswitch
     /// @see
@@ -1681,10 +1679,8 @@ public final class Opcode {
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append(" (from ").append(this.lowbyte).append(" to ").append(this.highbyte).append(')');
-            this.jumpoffsets.keySet().forEach(key -> {
-                Integer value = this.jumpoffsets.get(key);
-                sb.append("%n    case %d. jump to %d (relative offset = %d) ".formatted(key, value + currentOffset, value));
-            });
+            this.jumpoffsets.forEach((key, value) ->
+                    sb.append("%n    case %d. jump to %d (relative offset = %d) ".formatted(key, value + currentOffset, value)));
             sb.append("%n   default. jump to %d (relative offset = %d) ".formatted(this.defaultbyte + currentOffset, this.defaultbyte));
 
             return sb.toString();
@@ -1699,12 +1695,12 @@ public final class Opcode {
         /// attribute byte array.
         public final int offset;
 
-        /// Whether current opcode is {@link Instruction#wide} or not.
+        /// Whether current opcode is [Instruction#wide] or not.
         ///
         /// @see Instruction#wide
         protected boolean isWide = false;
 
-        /// Array type for {@link Instruction#newarray}.
+        /// Array type for [Instruction#newarray].
         ///
         /// @see Instruction#newarray
         protected Integer arrayType;
@@ -1714,20 +1710,20 @@ public final class Opcode {
         /// @see Instruction#code
         public final int opCode;
 
-        /// Name for {@link #opCode}.
+        /// Name for [#opCode].
         ///
         /// @see Instruction#code
         /// @see Instruction#getName()
         public final String opCodeName;
 
-        /// Text of the {@link #opCode}. In case {@link #opCode} is
-        /// {@link Instruction#wide}, the {@link #opCodeText} contains the
+        /// Text of the [#opCode]. In case [#opCode] is
+        /// [Instruction#wide], the [#opCodeText] contains the
         /// following opCode after `wide` also.
         protected String opCodeText;
 
-        /// Referenced {@link ClassFile#constant_pool} object index if exist. It
-        /// will be `null` if the {@link Instruction} did not
-        /// reference to any {@link ClassFile#constant_pool} object.
+        /// Referenced [ClassFile#constant_pool] object index if exist. It
+        /// will be `null` if the [Instruction] did not
+        /// reference to any [ClassFile#constant_pool] object.
         ///
         /// @see Instruction#ldc
         /// @see Instruction#ldc_w
@@ -1762,7 +1758,7 @@ public final class Opcode {
         /// @see Instruction#sipush
         protected Integer immediateValue = null;
 
-        /// Number of arguments for {@link Instruction#invokeinterface}
+        /// Number of arguments for [Instruction#invokeinterface]
         /// instruction.
         ///
         /// @see Instruction#invokeinterface
@@ -1793,12 +1789,12 @@ public final class Opcode {
         /// @see Instruction#jsr_w
         protected Integer branchbyte = null;
 
-        /// Parsed data for {@link Instruction#lookupswitch}.
+        /// Parsed data for [Instruction#lookupswitch].
         ///
         /// @see Instruction#lookupswitch
         protected lookupswitch lookupSwitch = null;
 
-        /// Parsed data for {@link Instruction#tableswitch}.
+        /// Parsed data for [Instruction#tableswitch].
         ///
         /// @see Instruction#tableswitch
         protected tableswitch tableSwitch = null;
@@ -1813,80 +1809,80 @@ public final class Opcode {
             this.opCodeName = opcodeName;
         }
 
-        /// Get the absolute value of the branch byte, if {@link #branchbyte} is
+        /// Get the absolute value of the branch byte, if [#branchbyte] is
         /// not null.
         ///
-        /// @return Absolute value of the {@link #branchbyte}; return
-        /// `null` in case {@link #branchbyte} is null
+        /// @return Absolute value of the [#branchbyte]; return
+        /// `null` in case [#branchbyte] is null
         /// @see #branchbyte
         public Integer getAbsoluteBranchByte() {
             return (this.branchbyte != null) ? this.offset + this.branchbyte : null;
         }
 
-        /// Getter for {@link #opCodeText}.
+        /// Getter for [#opCodeText].
         ///
-        /// @return {@link #opCodeText} value
+        /// @return [#opCodeText] value
         public String getOpcodeText() {
             return this.opCodeText;
         }
 
-        /// Getter for {@link #cpIndex}.
+        /// Getter for [#cpIndex].
         ///
-        /// @return {@link #cpIndex} value. `null` if no constant pool
+        /// @return [#cpIndex] value. `null` if no constant pool
         /// index.
         public Integer getCpindex() {
             return this.cpIndex;
         }
 
-        /// Getter for {@link #immediateValue}.
+        /// Getter for [#immediateValue].
         ///
-        /// @return {@link #immediateValue} value. `null` if not
+        /// @return [#immediateValue] value. `null` if not
         /// applicable
         public Integer getImmediateValue() {
             return this.immediateValue;
         }
 
-        /// Getter for {@link #lvIndex}.
+        /// Getter for [#lvIndex].
         ///
-        /// @return {@link #lvIndex} value. `null` if no local
+        /// @return [#lvIndex] value. `null` if no local
         /// variable index.
         public Integer getLvindex() {
             return this.lvIndex;
         }
 
-        /// Getter for {@link #lookupSwitch}.
+        /// Getter for [#lookupSwitch].
         ///
-        /// @return {@link #lookupSwitch} value. `null` if current
-        /// instruction is not {@link Instruction#lookupswitch}
+        /// @return [#lookupSwitch] value. `null` if current
+        /// instruction is not [Instruction#lookupswitch]
         public lookupswitch getLookupSwitch() {
             return this.lookupSwitch;
         }
 
-        /// Getter for {@link #nArgs}.
+        /// Getter for [#nArgs].
         ///
-        /// @return {@link #nArgs} value. `null` if not applicable
+        /// @return [#nArgs] value. `null` if not applicable
         public Integer getNargs() {
             return this.nArgs;
         }
 
-        /// Getter for {@link #tableSwitch}.
+        /// Getter for [#tableSwitch].
         ///
-        /// @return {@link #tableSwitch} value. `null` if current
-        /// instruction is not {@link Instruction#tableswitch}
+        /// @return [#tableSwitch] value. `null` if current
+        /// instruction is not [Instruction#tableswitch]
         public tableswitch getTableSwitch() {
             return this.tableSwitch;
         }
 
-        /// Getter for {@link #isWide}.
+        /// Getter for [#isWide].
         ///
-        /// @return {@link #isWide} value.
+        /// @return [#isWide] value.
         public boolean isWide() {
             return this.isWide;
         }
 
-        /// Getter for {@link #arrayType}.
+        /// Getter for [#arrayType].
         ///
-        /// @return {@link #arrayType} value.
+        /// @return [#arrayType] value.
         public Integer getArrayType() {
             return this.arrayType;
         }
@@ -1903,11 +1899,11 @@ public final class Opcode {
             return s;
         }
 
-        /// Get the {@link Instruction} analysis result with
-        /// {@link ClassFile#constant_pool} description.
+        /// Get the [Instruction] analysis result with
+        /// [ClassFile#constant_pool] description.
         ///
-        /// @param cf the {@link ClassFile}
-        /// @return {@link Instruction} analysis result
+        /// @param cf the [ClassFile]
+        /// @return [Instruction] analysis result
         public String toString(ClassFile cf) {
             String s = this.toString();
 

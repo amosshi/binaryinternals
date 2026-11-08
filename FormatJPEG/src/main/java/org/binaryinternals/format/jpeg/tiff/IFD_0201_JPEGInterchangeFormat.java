@@ -23,7 +23,7 @@ public class IFD_0201_JPEGInterchangeFormat extends IFD_LONG_COUNT1 {
     }
 
     /// The `JPEG` interchange format bit stream offset within the `TIFF`.
-    /// This attribute is valid only if {@link  #isBitstreamPresent} returns `true`.
+    /// This attribute is valid only if [#isBitstreamPresent] returns `true`.
     /// @return the offset value
     public long getBitstreamOffset(){
         return super.value[0];

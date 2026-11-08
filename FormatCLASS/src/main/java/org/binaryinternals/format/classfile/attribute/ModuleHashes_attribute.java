@@ -58,8 +58,8 @@ public class ModuleHashes_attribute extends attribute_info {
     /// Index to CONSTANT_utf8_info structure with algorithm name.
     public final u2 algorithm_index;
 
-    /// The value of the {@link #hashes_count} item indicates the number of
-    /// entries in the {@link #hashes} table.
+    /// The value of the [#hashes_count] item indicates the number of
+    /// entries in the [#hashes] table.
     public final u2 hashes_count;
     public final Hashes[] hashes;
 

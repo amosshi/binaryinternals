@@ -56,9 +56,9 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
         super.length = stream.getPos() - super.startPos;
     }
 
-    /// Get {@link #shorty_idx} text.
+    /// Get [#shorty_idx] text.
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return shorty text
     /// @see #shorty_idx
     public String get_shorty(final DexFile dexFile) {
@@ -68,10 +68,10 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
         return this.shorty;
     }
 
-    /// Get {@link #return_type_idx} text.
+    /// Get [#return_type_idx] text.
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link #return_type_idx} text
+    /// @param dexFile Current [DexFile]
+    /// @return [#return_type_idx] text
     /// @see #return_type_idx
     public String get_return_type(final DexFile dexFile) {
         if (this.return_type == null) {
@@ -80,10 +80,10 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
         return this.return_type;
     }
 
-    /// Get {@link #return_type_idx} text in Java Language Specification format.
+    /// Get [#return_type_idx] text in Java Language Specification format.
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link #return_type_idx} text in JSL format
+    /// @param dexFile Current [DexFile]
+    /// @return [#return_type_idx] text in JSL format
     /// @see #return_type_idx
     public String get_return_type_jls(final DexFile dexFile) {
         if (this.return_type_jls == null) {
@@ -92,10 +92,10 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
         return this.return_type_jls;
     }
 
-    /// Get the corresponding {@link type_list} for {@link #parameters_off}.
+    /// Get the corresponding [type_list] for [#parameters_off].
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return {@link type_list} for {@link #parameters_off}, or null if no
+    /// @param dexFile Current [DexFile]
+    /// @return [type_list] for [#parameters_off], or null if no
     /// parameters
     public type_list get_parameters(final DexFile dexFile) {
         if (this.parameters_off.value == 0) {
@@ -105,10 +105,10 @@ public final class proto_id_item extends FileComponent implements GenerateTreeNo
         }
     }
 
-    /// String format of current {@link proto_id_item}.
+    /// String format of current [proto_id_item].
     ///
-    /// @param dexFile Current {@link DexFile}
-    /// @return String format of a {@link proto_id_item}
+    /// @param dexFile Current [DexFile]
+    /// @return String format of a [proto_id_item]
     public String toString(DexFile dexFile) {
         type_list params = this.get_parameters(dexFile);
         return "%s - %s (%s)".formatted(

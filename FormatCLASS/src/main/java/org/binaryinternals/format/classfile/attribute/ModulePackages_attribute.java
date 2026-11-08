@@ -44,13 +44,13 @@ import org.binaryinternals.format.classfile.u2;
 public class ModulePackages_attribute extends attribute_info {
 
     /// The value of the package_count item indicates the number of entries in
-    /// the {@link #package_index}table.
+    /// the [#package_index]table.
     public final u2 package_count;
 
-    /// The value of each entry in the {@link #package_index} table must be a
-    /// valid index into the {@link ClassFile#constant_pool} table. The
-    /// {@link ClassFile#constant_pool} entry at that index must be a
-    /// {@link CONSTANT_Package_info} structure representing a package in the
+    /// The value of each entry in the [#package_index] table must be a
+    /// valid index into the [ClassFile#constant_pool] table. The
+    /// [ClassFile#constant_pool] entry at that index must be a
+    /// [CONSTANT_Package_info] structure representing a package in the
     /// current module.
     public final u2[] package_index;
 

@@ -20,7 +20,7 @@ public class Marker_DHT extends Marker {
     /// Huffman table destination identifier.
     private int Th;
     /// Number of Huffman codes of length `i`.
-    private int[] Li = new int[16];
+    private final int[] Li = new int[16];
     /// Value associated with each Huffman code. Specifies, for each
     /// `i`, the value associated with each Huffman code of length
     /// `i`. The meaning of each value is determined by the Huffman

@@ -31,6 +31,6 @@ public final class Type_sleb128 {
 
     @Override
     public String toString() {
-        return "length=%d value=0x%s | %,d".formatted(this.length, Integer.toHexString(this.value).toUpperCase(), this.value);
+        return "length=%d value=0x%X | %,d".formatted(this.length, this.value, this.value);
     }
 }

@@ -41,9 +41,9 @@ public class CONSTANT_Module_info extends cp_info {
 
     public static final int LENGTH = 3;
 
-    /// The value of the {@link name_index} item must be a valid index into the
+    /// The value of the [name_index] item must be a valid index into the
     /// `constant_pool` table. The constant_pool entry at that index must
-    /// be a {@link CONSTANT_Utf8_info} structure representing a valid module name.
+    /// be a [CONSTANT_Utf8_info] structure representing a valid module name.
     public final u2 name_index;
 
     CONSTANT_Module_info(final PosDataInputStream posDataInputStream) throws IOException {

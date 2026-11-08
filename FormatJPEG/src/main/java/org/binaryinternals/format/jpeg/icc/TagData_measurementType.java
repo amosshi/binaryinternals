@@ -41,7 +41,6 @@ public class TagData_measurementType extends TagData {
         if (this.length > 8) {
             this.generateTreeNode_TagDataType(parentNode);
 
-            DefaultMutableTreeNode xyzNode;
             JTreeNodeFileComponent comp;
 
             comp = new JTreeNodeFileComponent(
@@ -56,7 +55,8 @@ public class TagData_measurementType extends TagData {
                     XYZNumber.LENGTH,
                     "measurement backing");
             comp.setDescription("XYZ tristimulus values for measurement backing.");
-            parentNode.add(xyzNode = new DefaultMutableTreeNode(comp));
+            final DefaultMutableTreeNode xyzNode = new DefaultMutableTreeNode(comp);
+            parentNode.add(xyzNode);
             this.measurementBacking.generateTreeNode(xyzNode, this.startPos + 12);
 
             comp = new JTreeNodeFileComponent(

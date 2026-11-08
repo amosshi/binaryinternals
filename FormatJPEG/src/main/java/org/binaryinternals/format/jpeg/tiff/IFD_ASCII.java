@@ -22,21 +22,12 @@ public class IFD_ASCII extends IFD {
         super(pDIS, byteOrder, tag, IFDType.ASCII, startPosTiff, byteArrayTiff);
 
         if (this.data_size > 0 && this.data_size <= 4) {
-            final StringBuilder sb = new StringBuilder(5);
-            sb.append((char) pDIS.readByte());  // byte 1
-            sb.append((char) pDIS.readByte());  // byte 2
-            sb.append((char) pDIS.readByte());  // byte 3
-            sb.append((char) pDIS.readByte());  // byte 4
-            this.value = sb.toString();
+            this.value = pDIS.readASCII(4);                                    // The 4 bytes of the value field
         } else {
             super.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);             // Offset
 
             final PosDataInputStream reader = IFDParse.getTiffOffsetReader(byteArrayTiff, super.ifd_value_offset, super.data_size);
-            final StringBuilder sb = new StringBuilder(super.ifd_count + 2);
-            for (int i = 0; i < super.ifd_count; i++) {
-                sb.append((char) reader.readByte());
-            }
-            this.value = sb.toString();
+            this.value = reader.readASCII(super.ifd_count);
         }
     }
 

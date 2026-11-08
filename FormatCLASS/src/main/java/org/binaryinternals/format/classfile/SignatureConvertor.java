@@ -15,9 +15,9 @@ import org.binaryinternals.commonlib.FileFormatException;
 /// Convert field and method descriptors into Java language type names, for
 /// example `[[Ljava/lang/String;` into `java.lang.String[][]`.
 ///
-/// The descriptors are parsed by {@link ClassDesc} and {@link MethodTypeDesc};
+/// The descriptors are parsed by [ClassDesc] and [MethodTypeDesc];
 /// this class formats them with the fully qualified names, while
-/// {@link ClassDesc#displayName()} only gives the simple names.
+/// [ClassDesc#displayName()] only gives the simple names.
 ///
 /// @author Amos Shi
 /// @see

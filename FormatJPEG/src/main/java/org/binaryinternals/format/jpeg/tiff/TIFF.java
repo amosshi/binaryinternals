@@ -23,7 +23,7 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
     public static final String IFD_Number_Description = "A 2-byte count of the number of directory entries (i.e., the number of fields)";
     private final byte[] tiffByteArray;
     private final TIFFHeader tiffHeader;
-    ArrayList<IFDGroup> exifGroup = new ArrayList<>();
+    final ArrayList<IFDGroup> exifGroup = new ArrayList<>();
 
     public TIFF(final PosDataInputStream pDisTiff)
             throws IOException {
@@ -46,16 +46,15 @@ public class TIFF extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode nodeTiffHeader;
 
         // TIFF Header
-        comp = new JTreeNodeFileComponent(
+        final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 this.startPos,
                 TIFFHeader.SIZE,
                 "TIFF Header");
         comp.setDescription("A TIFF file begins with an 8-byte image file header that points to an image file directory (IFD).");
-        parentNode.add(nodeTiffHeader = new DefaultMutableTreeNode(comp));
+        final DefaultMutableTreeNode nodeTiffHeader = new DefaultMutableTreeNode(comp);
+        parentNode.add(nodeTiffHeader);
         this.tiffHeader.generateTreeNode(nodeTiffHeader);
 
         // TIFF Data, in the order of the offset

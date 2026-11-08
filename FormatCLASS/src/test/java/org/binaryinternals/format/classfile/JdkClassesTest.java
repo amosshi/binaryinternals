@@ -34,7 +34,7 @@ class JdkClassesTest {
     @Test
     void corpusIsComplete() {
         final int count = TestSupport.jdkClasses().size();
-        System.out.println("java.base classes: " + count);
+        IO.println("java.base classes: " + count);
         assertTrue(count > 5000, "java.base should have thousands of classes, found " + count);
     }
 

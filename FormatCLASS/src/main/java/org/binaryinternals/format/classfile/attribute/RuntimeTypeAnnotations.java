@@ -48,17 +48,17 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         checkAttributeSize(this.name, this.startPos, this.length, posDataInputStream.getPos());
     }
 
-    /// Get message key for {@link #annotations}.
+    /// Get message key for [#annotations].
     ///
-    /// @return Message key for {@link #annotations}
+    /// @return Message key for [#annotations]
     ///
     /// @see RuntimeVisibleTypeAnnotations_attribute
     /// @see RuntimeInvisibleTypeAnnotations_attribute
     abstract String getMessageKey_4_annotations();
 
-    /// Get message key for {@link #num_annotations}.
+    /// Get message key for [#num_annotations].
     ///
-    /// @return Message key for {@link #num_annotations}
+    /// @return Message key for [#num_annotations]
     ///
     /// @see RuntimeVisibleTypeAnnotations_attribute
     /// @see RuntimeInvisibleTypeAnnotations_attribute
@@ -129,11 +129,11 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
 
         public final u1 target_type;
         /// The `target_info` union, determined by the
-        /// {@link #target_type}; it is null for an unrecognized
-        /// {@link #target_type}.
+        /// [#target_type]; it is null for an unrecognized
+        /// [#target_type].
         public final target_info union_target_info;
         public final type_path target_path;
-        /// The rest fields are the same as {@link Annotation}
+        /// The rest fields are the same as [Annotation]
         public final Annotation at;
 
         /// Parse a `type_annotation` structure.
@@ -339,7 +339,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             this.at.generateTreeNode(parentNode, classFile);
         }
 
-        /// Get the {@link TargetType} of a `target_type` value.
+        /// Get the [TargetType] of a `target_type` value.
         ///
         /// @param v The `target_type` value
         /// @return The target type, or empty for an unrecognized value
@@ -368,7 +368,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             };
         }
 
-        /// The `target_info` union of a {@link type_annotation}.
+        /// The `target_info` union of a [type_annotation].
         public sealed interface target_info permits type_parameter_target, supertype_target, type_parameter_bound_target,
                 empty_target, formal_parameter_target, throws_target, localvar_target, catch_target, offset_target,
                 type_argument_target {

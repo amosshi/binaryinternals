@@ -73,9 +73,9 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
-    /// String format of current {@link type_list}.
+    /// String format of current [type_list].
     ///
-    /// @param dexFile Current {@link DexFile}
+    /// @param dexFile Current [DexFile]
     /// @return String format of type list
     public String toString(DexFile dexFile) {
         if (this.size.value < 1) {
@@ -87,7 +87,7 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
-    /// Elements of the {@link type_list}.
+    /// Elements of the [type_list].
     public static final class type_item extends FileComponent {
 
         /// Item Size In Bytes.
@@ -105,10 +105,10 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
             super.length = stream.getPos() - super.startPos;
         }
 
-        /// Get {@link #type} text.
+        /// Get [#type] text.
         ///
-        /// @param dexFile Current {@link DexFile}
-        /// @return {@link #type} text
+        /// @param dexFile Current [DexFile]
+        /// @return [#type] text
         /// @see #type
         public String get_type(DexFile dexFile) {
             if (this.type == null) {
@@ -117,10 +117,10 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
             return this.type;
         }
 
-        /// Get {@link #type} text in Java Language Specification format.
+        /// Get [#type] text in Java Language Specification format.
         ///
-        /// @param dexFile Current {@link DexFile}
-        /// @return {@link #type} parse result for JLS format
+        /// @param dexFile Current [DexFile]
+        /// @return [#type] parse result for JLS format
         /// @see #type
         public String get_type_jls(DexFile dexFile) {
             if (this.type_jls == null) {

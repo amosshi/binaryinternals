@@ -41,8 +41,6 @@ public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
-        DefaultMutableTreeNode node;
-        DefaultMutableTreeNode node_subifd;
 
         // Sub IFD
         comp = new JTreeNodeFileComponent(
@@ -51,7 +49,7 @@ public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
                 "Interoperability Sub IFD",
                 Icons.Shortcut, null);
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
-        node = new DefaultMutableTreeNode(comp);
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
         parentNode.add(node);
 
         comp = new JTreeNodeFileComponent(
@@ -72,7 +70,7 @@ public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
                     IFD.SIZE,
                     "Sub IFD[%d] - %s".formatted(i, this.ifd_sub[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
-            node_subifd = new DefaultMutableTreeNode(comp);
+            final DefaultMutableTreeNode node_subifd = new DefaultMutableTreeNode(comp);
             node.add(node_subifd);
             if (this.ifd_sub[i] != null) {
                 this.ifd_sub[i].generateTreeNode(node_subifd);

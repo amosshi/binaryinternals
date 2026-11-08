@@ -42,7 +42,7 @@ public class EnclosingMethod_attribute extends attribute_info {
     /// a valid index into the `constant_pool` table. The
     /// `constant_pool` entry at that index must be a
     /// `CONSTANT_NameAndType_info` structure representing the name
-    /// and type of a method in the class referenced by the {@link #class_index}
+    /// and type of a method in the class referenced by the [#class_index]
     /// attribute above.
     public final u2 method_index;
 

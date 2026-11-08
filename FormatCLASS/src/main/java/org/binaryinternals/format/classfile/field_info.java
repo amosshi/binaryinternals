@@ -103,7 +103,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
         return this.descriptor;
     }
 
-    /// Generate the modifier string from the {@link #access_flags} value.
+    /// Generate the modifier string from the [#access_flags] value.
     ///
     /// @return A string for modifier
     public String getModifiers() {
@@ -126,7 +126,7 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
         String type;
         try {
             type = SignatureConvertor.fieldType(this.descriptor);
-        } catch (FileFormatException se) {
+        } catch (FileFormatException _) {
             type = "[Unexpected signature type]: " + this.descriptor;
         }
 
@@ -187,11 +187,10 @@ public class field_info extends FileComponent implements GenerateTreeNodeClassFi
                     MESSAGES.getString("msg_field_info__attributes")
             ));
 
-            DefaultMutableTreeNode treeNodeAttrItem;
             attribute_info attr;
             for (int i = 0; i < attributesCount; i++) {
                 attr = this.attributes[i];
-                treeNodeAttrItem = this.addNode(treeNodeAttr,
+                final DefaultMutableTreeNode treeNodeAttrItem = this.addNode(treeNodeAttr,
                         attr.getStartPos(),
                         attr.getLength(),
                         String.valueOf(i + 1),

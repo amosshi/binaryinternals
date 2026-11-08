@@ -35,6 +35,6 @@ public final class Type_byte {
 
     @Override
     public String toString() {
-        return "0x%s | %d | %c".formatted(Integer.toHexString(this.value).toUpperCase(), this.value, this.value);
+        return "0x%X | %d | %c".formatted((int) this.value, this.value, this.value);
     }
 }

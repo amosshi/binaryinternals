@@ -58,7 +58,6 @@ public class IFD_RATIONAL extends IFD {
         super.generateTreeNode(parentNode, pos);
 
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode node;
 
         comp = new JTreeNodeFileComponent(
                 pos + 8,
@@ -77,7 +76,7 @@ public class IFD_RATIONAL extends IFD {
                     ShortText.getString(ShortText.KEY_rational_n).formatted(i),
                     Icons.Shortcut, null);
             comp.setDescription(description);
-            node = new DefaultMutableTreeNode(comp);
+            final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
             parentNode.add(node);
 
             comp = new JTreeNodeFileComponent(

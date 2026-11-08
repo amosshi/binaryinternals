@@ -61,13 +61,12 @@ class IFDGroup {
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode nodeGroup;
-        DefaultMutableTreeNode nodeIFD;
 
-        parentNode.add(nodeGroup = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        final DefaultMutableTreeNode nodeGroup = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos,
                 this.length,
-                "IFD Group")));
+                "IFD Group"));
+        parentNode.add(nodeGroup);
 
         // IFD number
         comp = new JTreeNodeFileComponent(
@@ -84,7 +83,8 @@ class IFDGroup {
                     IFD.SIZE,
                     "IFD[%d] - %s".formatted(i, this.ifd[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
-            nodeGroup.add(nodeIFD = new DefaultMutableTreeNode(comp));
+            final DefaultMutableTreeNode nodeIFD = new DefaultMutableTreeNode(comp);
+            nodeGroup.add(nodeIFD);
             this.ifd[i].generateTreeNode(nodeIFD);
         }
 

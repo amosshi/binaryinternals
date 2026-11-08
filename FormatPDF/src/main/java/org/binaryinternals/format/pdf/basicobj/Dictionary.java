@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SequencedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,13 +40,13 @@ public final class Dictionary extends FileComponent implements BasicObject {
     /// null [Null] shall be treated the same as if the entry does not exist.
     ///
     /// Multiple entries in the same dictionary shall not have the same key.
-    public final Map<String, BasicObject> DictionaryEntries;
+    public final SequencedMap<String, BasicObject> DictionaryEntries;
 
     Dictionary(final PosDataInputStream stream) throws IOException {
         super.startPos = stream.getPos();
         this.closed = this.parse(stream);
         super.length = stream.getPos() - super.startPos;
-        this.DictionaryEntries = Collections.unmodifiableMap(this.organizeDictionary());
+        this.DictionaryEntries = Collections.unmodifiableSequencedMap(this.organizeDictionary());
     }
 
     private boolean parse(final PosDataInputStream stream) throws IOException {
@@ -60,16 +60,16 @@ public final class Dictionary extends FileComponent implements BasicObject {
                         && stream.readByte() == PDFStatics.DelimiterCharacter.GT) {
                     return true;
                 }
-                LOGGER.log(Level.WARNING, "Unexpected byte in Dictionary at {0}: ''{1}''",
-                        new Object[]{stream.getPos() - 1, (char) (next & 0xFF)});
+                LOGGER.log(Level.WARNING, () -> "Unexpected byte in Dictionary at %d: '%c'".formatted(
+                        stream.getPos() - 1, (char) Byte.toUnsignedInt(next)));
             }
         }
         return false;
     }
 
     /// Pair the objects as key and value.
-    private Map<String, BasicObject> organizeDictionary() {
-        final Map<String, BasicObject> entries = new LinkedHashMap<>();
+    private SequencedMap<String, BasicObject> organizeDictionary() {
+        final SequencedMap<String, BasicObject> entries = new LinkedHashMap<>();
         Name key = null;
         for (final FileComponent comp : this.components) {
             if (!(comp instanceof BasicObject obj)) {
@@ -82,7 +82,7 @@ public final class Dictionary extends FileComponent implements BasicObject {
             } else if (obj instanceof Name name) {
                 key = name;
             } else {
-                LOGGER.log(Level.WARNING, "Dictionary key at {0} is not a Name: {1}", new Object[]{obj.getStartPos(), obj});
+                LOGGER.log(Level.WARNING, () -> "Dictionary key at %d is not a Name: %s".formatted(obj.getStartPos(), obj));
             }
         }
         return entries;

@@ -33,7 +33,6 @@ public class Marker_COM extends Marker {
         this.Cm = new FileComponentPlaceHolder(pDisMarker, super.getMarkerLength() - 2);
     }
 
-    ///////////////////////////////////////////////////////////////////////////
     // Interface Methods
 
     @Override

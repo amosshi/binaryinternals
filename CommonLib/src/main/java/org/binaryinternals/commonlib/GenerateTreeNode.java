@@ -30,13 +30,9 @@ public interface GenerateTreeNode {
             final int lastEnd,
             final int diff,
             final byte[] buff, final int buffStartPos) {
-        final String diffStr;
-
-        if (BytesTool.isByteArrayEmpty(buff, lastEnd - buffStartPos, diff)) {
-            diffStr = "Empty [0x%04X, 0x%04X] length = %d".formatted(lastEnd, lastEnd + diff - 1, diff);
-        } else {
-            diffStr = "Unknown [0x%04X, 0x%04X] length = %d".formatted(lastEnd, lastEnd + diff - 1, diff);
-        }
+        final String diffStr = "%s [0x%04X, 0x%04X] length = %d".formatted(
+                BytesTool.isByteArrayEmpty(buff, lastEnd - buffStartPos, diff) ? "Empty" : "Unknown",
+                lastEnd, lastEnd + diff - 1, diff);
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastEnd,
                 diff,

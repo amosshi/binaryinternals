@@ -47,13 +47,13 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Exceptions_attribute extends attribute_info {
 
-    /// The value of the {@link #number_of_exceptions} item indicates the number
-    /// of entries in the {@link #exception_index_table}.
+    /// The value of the [#number_of_exceptions] item indicates the number
+    /// of entries in the [#exception_index_table].
     public final u2 number_of_exceptions;
-    /// Each value in the {@link #exception_index_table} array must be a valid
-    /// index into the {@link ClassFile#constant_pool} table. The
-    /// {@link ClassFile#constant_pool} entry at that `index` must be
-    /// a {@link CONSTANT_Class_info} structure representing a class type that
+    /// Each value in the [#exception_index_table] array must be a valid
+    /// index into the [ClassFile#constant_pool] table. The
+    /// [ClassFile#constant_pool] entry at that `index` must be
+    /// a [CONSTANT_Class_info] structure representing a class type that
     /// this method is declared to throw.
     private final u2[] exception_index_table;
 
@@ -89,7 +89,6 @@ public class Exceptions_attribute extends attribute_info {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat classFile) {
-        int i;
         final int numOfExceptions = this.number_of_exceptions.value;
 
         this.addNode(parentNode,
@@ -108,7 +107,7 @@ public class Exceptions_attribute extends attribute_info {
                     MESSAGES.getString("msg_attr_Exceptions__exception_index_table")
             ));
 
-            for (i = 0; i < numOfExceptions; i++) {
+            for (int i = 0; i < numOfExceptions; i++) {
                 int cpIndex = this.getExceptionIndexTableItem(i);
                 this.addNode(treeNodeExceptions,
                         startPos + 8 + i * u2.LENGTH,

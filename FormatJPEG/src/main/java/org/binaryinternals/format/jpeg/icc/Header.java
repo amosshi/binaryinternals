@@ -37,7 +37,6 @@ public class Header extends FileComponent implements GenerateTreeNode {
     public final byte[] Reserved = new byte[28];                                // 100-127
 
     public Header(final PosDataInputStream input) throws IOException {
-        StringBuilder sb;
 
         super.startPos = input.getPos();
         super.length = Header.LENGTH;
@@ -46,7 +45,7 @@ public class Header extends FileComponent implements GenerateTreeNode {
         this.CMMType = input.readASCII(4);                                      // 4 - 7
 
         // 8 - 11
-        sb = new StringBuilder(8);
+        final StringBuilder sb = new StringBuilder(8);
         sb.append(input.readByte());
         sb.append('.');
         sb.append(input.readByte());
@@ -80,7 +79,6 @@ public class Header extends FileComponent implements GenerateTreeNode {
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
-        DefaultMutableTreeNode node;
 
         // 0 - 3
         comp = new JTreeNodeFileComponent(
@@ -149,7 +147,7 @@ public class Header extends FileComponent implements GenerateTreeNode {
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 44,
                 4,
-                "Profile flags = %s".formatted(Long.toHexString(this.ProfileFlags)));
+                "Profile flags = %x".formatted(this.ProfileFlags));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 48 - 51
@@ -185,7 +183,8 @@ public class Header extends FileComponent implements GenerateTreeNode {
                 this.getStartPos() + 68,
                 12,
                 "Profile connection space illuminant");
-        parentNode.add(node = new DefaultMutableTreeNode(comp));
+        final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
+        parentNode.add(node);
         this.ProfileConnectionSpaceIlluminant.generateTreeNode(node, this.getStartPos() + 68);
 
         // 80 - 83
