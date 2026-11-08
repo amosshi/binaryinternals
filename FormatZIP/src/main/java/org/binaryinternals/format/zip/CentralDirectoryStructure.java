@@ -33,7 +33,6 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
     }
 
     @Override
-    @SuppressWarnings({"java:S1121"})
     public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.getStartPos();
 
@@ -56,26 +55,31 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
                 "central file header signature:" + BytesTool.getByteDataHexView(this.header.Signature),
                 Icons.Signature
         )));
+        position += 4;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 "version made by = %d".formatted(this.header.VersionMadeBy),
                 Icons.Versions
         )));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "version needed to extract = %d".formatted(this.header.VersionNeededToExtract),
                 Icons.Versions
         )));
-        LocalFileHeader.generateTreeNodeGeneralPurposeBitFlag(headerNode, position += 2, this.header.GeneralPurposeBitFlag);
+        position += 2;
+        LocalFileHeader.generateTreeNodeGeneralPurposeBitFlag(headerNode, position, this.header.GeneralPurposeBitFlag);
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 Compression.toText(this.header.CompressionMethod))));
 
+        position += 2;
         final DefaultMutableTreeNode nodeTime = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "last mod file time = %s".formatted(this.header.LastModFileTimeValue),
                 Icons.Time
@@ -83,8 +87,9 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
         headerNode.add(nodeTime);
         this.header.LastModFileTimeValue.generateTreeNode(nodeTime);
 
+        position += 2;
         final DefaultMutableTreeNode nodeDate = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "last mod file date = %s".formatted(this.header.LastModFileDateValue),
                 Icons.Calendar
@@ -92,56 +97,65 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
         headerNode.add(nodeDate);
         this.header.LastModFileDateValue.generateTreeNode(nodeDate);
 
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 4,
                 "crc-32: " + BytesTool.getByteDataHexView(this.header.CRC32),
                 Icons.Checksum
         )));
+        position += 4;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "compressed size = %s".formatted(zip64Text(this.header.CompressedSize, this.header.CompressedSizeValue)),
                 Icons.Size
         )));
+        position += 4;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "uncompressed size = %s".formatted(zip64Text(this.header.UncompressedSize, this.header.UncompressedSizeValue)),
                 Icons.Size
         )));
+        position += 4;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 2,
                 "file name length = %d".formatted(this.header.FileNameLength),
                 Icons.Length
         )));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "extra field length = %d".formatted(this.header.ExtraFieldLength),
                 Icons.Length
         )));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "file comment length = %d".formatted(this.header.FileCommentLength),
                 Icons.Length
         )));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "disk number start = %d".formatted(this.header.DiskNumberStart))));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "internal file attributes = %02X %02X".formatted(
                         this.header.InternalFileAttributes[0],
                         this.header.InternalFileAttributes[1]),
                 Icons.Annotations
         )));
+        position += 2;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 4,
                 "external file attributes = %02X %02X %02X %02X".formatted(
                         this.header.ExternalFileAttributes[0],
@@ -150,8 +164,9 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
                         this.header.ExternalFileAttributes[3]),
                 Icons.Annotations
         )));
+        position += 4;
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 (this.header.RelativeOffsetOfLocalHeader == FileHeader.ZIP64_MAGIC)
                 ? "relative offset of local header = 0xFFFFFFFF (Zip64: 0x%08X)".formatted(this.header.RelativeOffsetOfLocalHeaderValue)

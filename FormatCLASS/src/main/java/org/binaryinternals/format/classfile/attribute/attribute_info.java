@@ -88,8 +88,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     /// {@link #attribute_length} items.
     public final u4 attribute_length;
 
-    @SuppressWarnings("java:S5993")
-    public attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
+    protected attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
         if (name == null || name.length() < 1) {
@@ -133,7 +132,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
                 case InnerClasses -> new InnerClasses_attribute(attrNameIndex, type, posDataInputStream);
                 case EnclosingMethod -> new EnclosingMethod_attribute(attrNameIndex, type, posDataInputStream);
                 case Synthetic -> new Synthetic_attribute(attrNameIndex, type, posDataInputStream);
-                case Signature -> new Signature_attribute(attrNameIndex, type, posDataInputStream, cp);
+                case Signature -> new Signature_attribute(attrNameIndex, type, posDataInputStream);
                 case SourceFile -> new SourceFile_attribute(attrNameIndex, type, posDataInputStream);
                 case SourceDebugExtension -> new SourceDebugExtension_attribute(attrNameIndex, type, posDataInputStream);
                 case LineNumberTable -> new LineNumberTable_attribute(attrNameIndex, type, posDataInputStream);

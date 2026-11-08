@@ -91,7 +91,6 @@ public final class Zip64EndOfCentralDirectoryRecord extends FileComponent implem
     }
 
     @Override
-    @SuppressWarnings({"java:S1121"})
     public void generateTreeNode(final DefaultMutableTreeNode parent) {
         int position = this.startPos;
 
@@ -106,48 +105,57 @@ public final class Zip64EndOfCentralDirectoryRecord extends FileComponent implem
                 4,
                 "signature:" + BytesTool.getByteDataHexView(this.Signature),
                 Icons.Signature)));
+        position += 4;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 8,
                 "size of zip64 end of central directory record = %d".formatted(this.RecordSize),
                 Icons.Size)));
+        position += 8;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 8,
+                position,
                 2,
                 "version made by = %d".formatted(this.VersionMadeBy),
                 Icons.Versions)));
+        position += 2;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 2,
                 "version needed to extract = %d".formatted(this.VersionNeededToExtract),
                 Icons.Versions)));
+        position += 2;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 2,
+                position,
                 4,
                 "number of this disk = %d".formatted(this.DiskNumber),
                 Icons.Counter)));
+        position += 4;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 4,
                 "number of the disk with the start of the central directory = %d".formatted(this.DiskNumberWithSCD),
                 Icons.Counter)));
+        position += 4;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 4,
+                position,
                 8,
                 "total number of entries in the central directory on this disk = %d".formatted(this.EntryTotalNumberDisk),
                 Icons.Counter)));
+        position += 8;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 8,
+                position,
                 8,
                 "total number of entries in the central directory = %d".formatted(this.EntryTotalNumber),
                 Icons.Counter)));
+        position += 8;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 8,
+                position,
                 8,
                 "size of the central directory = %d".formatted(this.CentralDirectorySize),
                 Icons.Size)));
+        position += 8;
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                position += 8,
+                position,
                 8,
                 "offset of start of central directory with respect to the starting disk number = 0x%016X".formatted(this.CentralDirectoryOffset),
                 Icons.Offset)));

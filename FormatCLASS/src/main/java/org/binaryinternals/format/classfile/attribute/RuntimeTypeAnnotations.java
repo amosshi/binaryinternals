@@ -26,13 +26,13 @@ import org.binaryinternals.format.classfile.u2;
 /// java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
 /// java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
 /// ```
-@SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S5993"})
+@SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeTypeAnnotations extends attribute_info {
 
     public final u2 num_annotations;
     public final type_annotation[] annotations;
 
-    public RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
+    protected RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, name, posDataInputStream);
 
         this.num_annotations = new u2(posDataInputStream);
