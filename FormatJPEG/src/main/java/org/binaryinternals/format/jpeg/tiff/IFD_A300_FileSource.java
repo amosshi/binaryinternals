@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_A300_FileSource extends IFD_UNDEFINED {
 
     public static final int COUNT = 1;
@@ -38,7 +35,7 @@ public class IFD_A300_FileSource extends IFD_UNDEFINED {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
-                String.format("%s: %d", this.getTagName(), this.getFileSource()),
+                "%s: %d".formatted(this.getTagName(), this.getFileSource()),
                 IFDMessage.getString(IFDMessage.KEY_IFD_A300_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }

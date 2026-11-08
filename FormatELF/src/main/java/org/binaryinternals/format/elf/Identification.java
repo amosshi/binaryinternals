@@ -17,36 +17,30 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- * ELF header.
- *
- * @author Amos Shi
- *
- * @see
- * <a href="https://github.com/torvalds/linux/blob/master/include/linux/elf.h">include/linux/elf.h</a>
- * @see
- * <a href="https://github.com/torvalds/linux/blob/master/include/linux/elfcore.h">include/linux/elfcore.h</a>
- * @see
- * <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
- *
- * <pre>
- * java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
- * </pre>
- */
+/// ELF header.
+///
+/// @author Amos Shi
+///
+/// @see
+/// <a href="https://github.com/torvalds/linux/blob/master/include/linux/elf.h">include/linux/elf.h</a>
+/// @see
+/// <a href="https://github.com/torvalds/linux/blob/master/include/linux/elfcore.h">include/linux/elfcore.h</a>
+/// @see
+/// <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
+///
+/// ```
+/// java:S116 - Field names should comply with a naming convention --- We respect the name from ELF C programming language source code
+/// ```
 @SuppressWarnings("java:S116")
 public class Identification extends FileComponent implements GenerateTreeNode {
 
-    /**
-     * Number of bytes in identification.
-     *
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-     */
+    /// Number of bytes in identification.
+    ///
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
     public static final int EI_NIDENT = 16;
 
-    /**
-     * Magic number of {@code class} file.
-     */
+    /// Magic number of `class` file.
     public static final int MAGIC_NUMBER = 0x7F454C46;
     public static final int EI_MAG_SIZE = 4;
     public static final int EI_CLASS_SIZE = 1;
@@ -56,53 +50,39 @@ public class Identification extends FileComponent implements GenerateTreeNode {
     public static final int EI_ABIVERSION_SIZE = 1;
     public static final int EI_PAD_SIZE = 7;
 
-    /**
-     * Magic number of ELF file: <code>0x7F454C46</code>.
-     *
-     * @see #MAGIC_NUMBER
-     */
+    /// Magic number of ELF file: `0x7F454C46`.
+    ///
+    /// @see #MAGIC_NUMBER
     public final int EI_MAG;
 
-    /**
-     * ELF classification: 32- or 64-bit.
-     *
-     * @see ElfClass
-     */
+    /// ELF classification: 32- or 64-bit.
+    ///
+    /// @see ElfClass
     public final ElfClass EI_CLASS;
 
-    /**
-     * ELV version.
-     */
+    /// ELV version.
     public final Version EI_VERSION;
 
-    /**
-     * Little or big endianness.
-     *
-     * @see Endianness
-     */
+    /// Little or big endianness.
+    ///
+    /// @see Endianness
     public final Endianness EI_DATA;
 
-    /**
-     * Target operating system ABI.
-     */
+    /// Target operating system ABI.
     public final OSAbi EI_OSABI;
 
-    /**
-     * Further specifies the ABI version. Its interpretation depends on the
-     * target ABI {@link #EI_OSABI}. Linux kernel (after at least 2.6) has no
-     * definition of it.
-     *
-     * @see
-     * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
-     * and Linkable Format</a>
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-     */
+    /// Further specifies the ABI version. Its interpretation depends on the
+    /// target ABI [#EI_OSABI]. Linux kernel (after at least 2.6) has no
+    /// definition of it.
+    ///
+    /// @see
+    /// <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
+    /// and Linkable Format</a>
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
     public final int EI_ABIVERSION;
 
-    /**
-     * Currently unused.
-     */
+    /// Currently unused.
     public final byte[] EI_PAD = new byte[EI_PAD_SIZE];
 
     Identification(final PosDataInputStream input) throws IOException {
@@ -223,82 +203,61 @@ public class Identification extends FileComponent implements GenerateTreeNode {
     }
 
     public enum ElfClass {
-        /**
-         * Invalid class.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
-         */
+        /// Invalid class.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
         ELFCLASSNONE(0),
-        /**
-         * Current ELF file is 32-bit format.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Current ELF file is 32-bit format.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFCLASS32(1),
-        /**
-         * Current ELF file is 64-bit format.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Current ELF file is 64-bit format.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFCLASS64(2);
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
         ElfClass(final int i) {
             this.value = i;
         }
 
-        /**
-         * Find the {@link ElfClass} by its {@link #value}.
-         *
-         * @param v Value to look up
-         * @return The matching constant, or empty if not recognized
-         */
+        /// Find the [ElfClass] by its [#value].
+        ///
+        /// @param v Value to look up
+        /// @return The matching constant, or empty if not recognized
         public static Optional<ElfClass> of(final int v) {
             return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
     }
 
-    /**
-     * Little or big endianness.
-     *
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/kernel/kexec_elf.c">kernel/kexec_elf.c</a>
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/arch/x86/um/asm/elf.h">arch/x86/um/asm/elf.h</a>
-     *
-     */
+    /// Little or big endianness.
+    ///
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/kernel/kexec_elf.c">kernel/kexec_elf.c</a>
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/arch/x86/um/asm/elf.h">arch/x86/um/asm/elf.h</a>
     public enum Endianness {
 
-        /**
-         * Little endianness.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Little endianness.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFDATA2LSB(1, "Little endianness"),
-        /**
-         * Big endianness.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Big endianness.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFDATA2MSB(2, "Big endianness.");
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
-        /**
-         * Description of the endianness since the enum name is not readable.
-         */
+        /// Description of the endianness since the enum name is not readable.
         public final String description;
 
         Endianness(int e, String d) {
@@ -311,87 +270,71 @@ public class Identification extends FileComponent implements GenerateTreeNode {
             return this.name() + ", " + this.description;
         }
 
-        /**
-         * Find the {@link Endianness} by its {@link #value}.
-         *
-         * @param v Value to look up
-         * @return The matching constant, or empty if not recognized
-         */
+        /// Find the [Endianness] by its [#value].
+        ///
+        /// @param v Value to look up
+        /// @return The matching constant, or empty if not recognized
         public static Optional<Endianness> of(final int v) {
             return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
 
     }
 
-    /**
-     * Set to 1 for the original and current version of ELF.
-     */
+    /// Set to 1 for the original and current version of ELF.
     public enum Version {
-        /**
-         * ELV version: current version.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// ELV version: current version.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         EV_CURRENT(1);
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
         Version(int v) {
             this.value = v;
         }
 
-        /**
-         * Find the {@link Version} by its {@link #value}.
-         *
-         * @param v Value to look up
-         * @return The matching constant, or empty if not recognized
-         */
+        /// Find the [Version] by its [#value].
+        ///
+        /// @param v Value to look up
+        /// @return The matching constant, or empty if not recognized
         public static Optional<Version> of(final int v) {
             return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }
     }
 
-    /**
-     * Identifies the target operating system ABI.
-     *
-     * @see
-     * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
-     * and Linkable Format</a>
-     * @see
-     * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-     *
-     * <pre>
-     * java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
-     * </pre>
-     */
+    /// Identifies the target operating system ABI.
+    ///
+    /// @see
+    /// <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
+    /// and Linkable Format</a>
+    /// @see
+    /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
+    ///
+    /// ```
+    /// java:S115 - Constant names should comply with a naming convention --- We respect the name from ELF Spec instead
+    /// ```
     @SuppressWarnings("java:S115")
     public enum OSAbi {
-        /**
-         * Regardless of the target platform. The value <code>0</code> could be
-         * either <code>System V</code> or <code>ELFOSABI_NONE</code>. Here we
-         * respect the constant name defined in Linux source code located at
-         * <code>include/uapi/linux/elf.h</code>.
-         *
-         * @see
-         * <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
-         * and Linkable Format</a>
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Regardless of the target platform. The value `0` could be
+        /// either `System V` or `ELFOSABI_NONE`. Here we
+        /// respect the constant name defined in Linux source code located at
+        /// `include/uapi/linux/elf.h`.
+        ///
+        /// @see
+        /// <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable
+        /// and Linkable Format</a>
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFOSABI_NONE(0x00),
         HP_UNIX(0x01),
         NetBSD(0x02),
-        /**
-         * Linux system.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
-         */
+        /// Linux system.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFOSABI_LINUX(0x03),
         GNU_Hurd(0x04),
         Solaris(0x06),
@@ -407,29 +350,23 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         Fenix_OS(0x10),
         CloudABI(0x11),
         Stratus_Technologies_OpenVOS(0x12),
-        /**
-         * ARM FDPIC platform.
-         *
-         * @see
-         * <a href="https://github.com/torvalds/linux/blob/master/arch/arm/include/asm/elf.h">arch/arm/include/asm/elf.h</a>
-         */
+        /// ARM FDPIC platform.
+        ///
+        /// @see
+        /// <a href="https://github.com/torvalds/linux/blob/master/arch/arm/include/asm/elf.h">arch/arm/include/asm/elf.h</a>
         ELFOSABI_ARM_FDPIC(65);
 
-        /**
-         * Inner value of the enumeration item.
-         */
+        /// Inner value of the enumeration item.
         public final int value;
 
         OSAbi(int v) {
             this.value = v;
         }
 
-        /**
-         * Find the {@link OSAbi} by its {@link #value}.
-         *
-         * @param v Value to look up
-         * @return The matching constant, or empty if not recognized
-         */
+        /// Find the [OSAbi] by its [#value].
+        ///
+        /// @param v Value to look up
+        /// @return The matching constant, or empty if not recognized
         public static Optional<OSAbi> of(final int v) {
             return Arrays.stream(values()).filter(e -> e.value == v).findFirst();
         }

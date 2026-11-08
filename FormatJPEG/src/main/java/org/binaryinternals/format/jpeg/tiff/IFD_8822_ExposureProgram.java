@@ -10,10 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_8822_ExposureProgram extends IFD_SHORT_COUNT1 {
 
     private final static String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_8822_Description)

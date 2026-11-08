@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IRB_8BIM extends FileComponent {
 
     public static final int SIGNATURE = 0x3842494D;
@@ -79,12 +76,12 @@ public class IRB_8BIM extends FileComponent {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + 4,
                 2,
-                String.format("Resource Unique Identifier = 0x%04X", this.identifier))));
+                "Resource Unique Identifier = 0x%04X".formatted(this.identifier))));
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 2 + this.name.length(),
-                String.format("Name = '%s'", this.name))));
+                "Name = '%s'".formatted(this.name))));
         if (this.name_skip1byte) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos = lastPos + 2 + this.name.length(),
@@ -95,7 +92,7 @@ public class IRB_8BIM extends FileComponent {
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + ((this.name_skip1byte) ? 1 : 2 + this.name.length()),
                 4,
-                String.format("Size = %d", this.size))));
+                "Size = %d".formatted(this.size))));
 
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + 4,

@@ -12,12 +12,9 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_010E_ImageDescription
- * @see IFD_8769_Exif#CATEGORY_D
- */
+/// @author Amos Shi
+/// @see IFD_010E_ImageDescription
+/// @see IFD_8769_Exif#CATEGORY_D
 public class IFD_9286_UserComment extends IFD_UNDEFINED {
 
     public final String CharacterCode;
@@ -56,7 +53,7 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 4,
-                String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -72,7 +69,7 @@ public class IFD_9286_UserComment extends IFD_UNDEFINED {
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 super.tiff_StartPos + super.ifd_value_offset,
                 8,
-                String.format("Character Code: %s", this.CharacterCode))));
+                "Character Code: %s".formatted(this.CharacterCode))));
         if (super.data_size - 8 > 0) {
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset + 8,

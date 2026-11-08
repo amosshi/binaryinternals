@@ -14,23 +14,18 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- */
 public class TIFFHeader extends FileComponent {
 
     public static final int SIZE = 8; // Size of TIFF Header
     public static final int BYTEORDER_LITTLEENDIAN = 18761; // "II"
     public static final int BYTEORDER_BIGENDIAN = 19789; // "MM"
     public static final int ARBITRARY_NUMBER_42 = 42;
-    /** The byte order used within the file. */
+    /// The byte order used within the file.
     public final int byte_order;
-    /**
-     * An arbitrary but carefully chosen number (<code>42</code>)
-     * that further identifies the file as a <code>TIFF</code> file.
-     */
+    /// An arbitrary but carefully chosen number (`42`)
+    /// that further identifies the file as a `TIFF` file.
     public final int arbitray_number;
-    /** The offset (in bytes) of the first IFD. */
+    /// The offset (in bytes) of the first IFD.
     public final int offset_0ifd;
 
     public TIFFHeader(final PosDataInputStream pDisMarker) 
@@ -44,29 +39,24 @@ public class TIFFHeader extends FileComponent {
             this.arbitray_number = pDisMarker.readUnsignedShort(order);
             this.offset_0ifd = pDisMarker.readInt(order);
         } else {
-            throw new FileFormatException(String.format("Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.", TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
+            throw new FileFormatException("Marker APP01: Un-recognized TIFF header byte order value: expected value is %x or %s, current value is %x.".formatted(TIFFHeader.BYTEORDER_BIGENDIAN, TIFFHeader.BYTEORDER_LITTLEENDIAN, this.byte_order));
         }
     }
 
-    /**
-     * Convert the TIFF byte order value to {@link ByteOrder}.
-     *
-     * @param byteOrder {@link #BYTEORDER_BIGENDIAN} or {@link #BYTEORDER_LITTLEENDIAN}
-     * @return {@link ByteOrder#BIG_ENDIAN} for "MM", otherwise {@link ByteOrder#LITTLE_ENDIAN}
-     */
+    /// Convert the TIFF byte order value to [ByteOrder].
+    ///
+    /// @param byteOrder [#BYTEORDER_BIGENDIAN] or [#BYTEORDER_LITTLEENDIAN]
+    /// @return [ByteOrder#BIG_ENDIAN] for "MM", otherwise [ByteOrder#LITTLE_ENDIAN]
     public static ByteOrder toByteOrder(final int byteOrder) {
         return byteOrder == BYTEORDER_BIGENDIAN ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
     }
 
     public String getByteOrderName() {
-        switch (this.byte_order) {
-            case BYTEORDER_LITTLEENDIAN:
-                return "little-endian byte order";
-            case BYTEORDER_BIGENDIAN:
-                return "big-endian byte order";
-            default:
-                return "Unknown byte order";
-        }
+        return switch (this.byte_order) {
+            case BYTEORDER_LITTLEENDIAN -> "little-endian byte order";
+            case BYTEORDER_BIGENDIAN -> "big-endian byte order";
+            default -> "Unknown byte order";
+        };
     }
 
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
@@ -75,7 +65,7 @@ public class TIFFHeader extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 this.startPos + 0,
                 2,
-                String.format("byte order: %X - %s", this.byte_order, this.getByteOrderName()));
+                "byte order: %X - %s".formatted(this.byte_order, this.getByteOrderName()));
         comp.setDescription("The byte order used within the file. Legal values are:<br />"
                 + "<ul>"
                 + "<li> <strong>II</strong> (4949.H): In the <code>II</code> format, byte order is always from the least significant byte to the most significant byte, for both 16-bit and 32-bit integers This is called <i>little-endian</i> byte order. </li>"
@@ -86,7 +76,7 @@ public class TIFFHeader extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 this.startPos + 2,
                 2,
-                String.format("arbitrary number: %d", this.arbitray_number));
+                "arbitrary number: %d".formatted(this.arbitray_number));
         comp.setDescription("An arbitrary but carefully chosen number (<code>42</code>) that further identifies the file as a TIFF file.<br />"
                 + "The byte order depends on the value of <i>byte order</i>.");
         parentNode.add(new DefaultMutableTreeNode(comp));
@@ -94,7 +84,7 @@ public class TIFFHeader extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 this.startPos + 4,
                 4,
-                String.format("first IFD offset: %d", this.offset_0ifd));
+                "first IFD offset: %d".formatted(this.offset_0ifd));
         comp.setDescription("The <code>offset</code> (in bytes) of the first IFD. "
                 + "The directory may be at any location in the file after the header but <i>must begin on a word boundary</i>. "
                 + "In particular, an Image File Directory may follow the image data it describes. "

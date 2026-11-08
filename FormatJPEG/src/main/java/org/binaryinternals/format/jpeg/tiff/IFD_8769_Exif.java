@@ -10,14 +10,10 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
-import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
-public class IFD_8769_Exif extends IFD_LONG_Pointer {
+/// @author Amos Shi
+public final class IFD_8769_Exif extends IFD_LONG_Pointer {
 
     public static final String CATEGORY_A = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A);
     public static final String CATEGORY_B = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_B);
@@ -31,19 +27,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
-
-        // Sub IFD
-        final PosDataInputStream reader = new PosDataInputStream(
-                new PosByteArrayInputStream(this.tiff_ByteArray),
-                super.tiff_StartPos);
-        reader.skipNBytes((int) this.getExifOffset() + 2);
-        if (this.ifd_number > 0) {
-            for (int i = 0; i < this.ifd_number; i++) {
-                this.ifd_sub[i] = IFDParse.parse(reader, byteOrder, startPosTiff, byteArrayTiff);
-            }
-        }
-        // Next IFD
-        super.next = IFDParse.readInt(reader, byteOrder);
+        this.parseSubIFDs(IFDParse::parse, TagSpace.DEFAULT);
     }
 
     public final long getExifOffset() {
@@ -61,7 +45,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 4,
-                String.format("Exif Offset: %d", this.getExifOffset()));
+                "Exif Offset: %d".formatted(this.getExifOffset()));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -81,7 +65,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
         comp = new JTreeNodeFileComponent(
                 super.tiff_StartPos + (int) this.value[0],
                 2,
-                String.format("IFD number: %d", this.ifd_number));
+                "IFD number: %d".formatted(this.ifd_number));
         comp.setDescription(TIFF.IFD_Number_Description);
         node.add(new DefaultMutableTreeNode(comp));
 
@@ -94,7 +78,7 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
             comp = new JTreeNodeFileComponent(
                     this.ifd_sub[i].getStartPos(),
                     IFD.SIZE,
-                    String.format("Sub IFD[%d] - %s", i, this.ifd_sub[i].getTagName()));
+                    "Sub IFD[%d] - %s".formatted(i, this.ifd_sub[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
             node_subifd = new DefaultMutableTreeNode(comp);
             node.add(node_subifd);
@@ -106,18 +90,14 @@ public class IFD_8769_Exif extends IFD_LONG_Pointer {
         // Next IFD
         super.generateTreeNode_NextIFD(node);
     }
-    /**
-     * @see IFD_9000_ExifVersion
-     * @see IFD_A000_FlashpixVersion
-     */
+    /// @see IFD_9000_ExifVersion
+    /// @see IFD_A000_FlashpixVersion
     public static final String FormatVersion = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion);  // Section 4.2
 
-    /**
-     * @see IFD_9000_ExifVersion
-     * @see IFD_A000_FlashpixVersion
-     */
+    /// @see IFD_9000_ExifVersion
+    /// @see IFD_A000_FlashpixVersion
     static String getVersion(byte[] value) {
-        final StringBuffer sb = new StringBuffer(5);
+        final StringBuilder sb = new StringBuilder(5);
         sb.append((char) value[0]);  // byte A1
         sb.append((char) value[1]);  // byte A2
         sb.append('.');

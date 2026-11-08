@@ -10,10 +10,7 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_0106_PhotometricInterpretation extends IFD_SHORT_COUNT1 {
 
     public IFD_0106_PhotometricInterpretation(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -22,9 +19,7 @@ public class IFD_0106_PhotometricInterpretation extends IFD_SHORT_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(

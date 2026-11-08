@@ -10,10 +10,7 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class PluginDescriptorELF implements PluginDescriptor {
 
     public PluginDescriptorELF() {

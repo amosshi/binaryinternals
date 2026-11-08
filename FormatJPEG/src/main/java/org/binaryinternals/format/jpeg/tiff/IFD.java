@@ -41,7 +41,7 @@ public class IFD extends FileComponent {
         this.ifd_type = type;
         this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
 
-        this.data_size = IFDType.getTypeLength(this.ifd_type) * this.ifd_count;
+        this.data_size = dataSize(tag, type, this.ifd_count);
     }
 
     public IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff) throws IOException {
@@ -56,7 +56,17 @@ public class IFD extends FileComponent {
         this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
         this.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                  // Maybe value
 
-        this.data_size = IFDType.getTypeLength(this.ifd_type) * this.ifd_count;
+        this.data_size = dataSize(tag, type, this.ifd_count);
+    }
+
+    /// Total size of the values: count times the size of the type, or 0 for
+    /// an unknown type.
+    private static int dataSize(final int tag, final int type, final int count) throws FileFormatException {
+        final long size = (long) Math.max(IFDType.getTypeLength(type), 0) * Integer.toUnsignedLong(count);
+        if (size > Integer.MAX_VALUE) {
+            throw new FileFormatException("IFD %04X: the data size %d is too big".formatted(tag, size));
+        }
+        return (int) size;
     }
 
     protected final void checkIFDCount(int countExpected) throws FileFormatException {
@@ -70,8 +80,7 @@ public class IFD extends FileComponent {
     private static void checkIFDCount(int tag, String tagName, int actualCount, int expectedCount)
             throws FileFormatException {
         if (actualCount != expectedCount) {
-            throw new FileFormatException(String.format(
-                    "IFD %d (%s): ifd count must be %d. current value = %d",
+            throw new FileFormatException("IFD %d (%s): ifd count must be %d. current value = %d".formatted(
                     tag,
                     tagName,
                     expectedCount,
@@ -93,26 +102,7 @@ public class IFD extends FileComponent {
 
     // Note: Common tag only, none GPS, none InterO
     public String getTagName() {
-        String s = null;
-        if (this.tag_space == TagSpace.DEFAULT) {
-            s = IFDTag.getTagName(this.ifd_tag);
-        } else if (this.tag_space == TagSpace.GPS) {
-            s = IFDTag.getTagNameGPS(this.ifd_tag);
-        } else if (this.tag_space == TagSpace.INTERO) {
-            s = IFDTag.getTagNameIntero(this.ifd_tag);
-        }
-
-        // Temp
-        if (this.getClass().getName().equalsIgnoreCase(IFD.class.getName())) {
-            String care = String.format("- CARE ME !!!!! - %s, %04X, %d",
-                    this.tag_space.toString(),
-                    this.ifd_tag,
-                    this.ifd_tag);
-            System.out.println(care);
-            s = s + care;
-        }
-
-        return s;
+        return this.getTagNameForValidation();
     }
 
     public TagSpace getTagSpace() {
@@ -146,21 +136,21 @@ public class IFD extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 this.startPos + 0,
                 2,
-                String.format("Tag: %04X.H (%d)", this.ifd_tag, this.ifd_tag));
+                "Tag: %04X.H (%d)".formatted(this.ifd_tag, this.ifd_tag));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Tag));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.startPos + 2,
                 2,
-                String.format("Type: %d - %s", this.ifd_type, IFDType.getTypeName(this.ifd_type)));
+                "Type: %d - %s".formatted(this.ifd_type, IFDType.getTypeName(this.ifd_type)));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Type));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 this.startPos + 4,
                 4,
-                String.format("Count: %d", this.ifd_count));
+                "Count: %d".formatted(this.ifd_count));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Count));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -168,14 +158,14 @@ public class IFD extends FileComponent {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
                     4,
-                    String.format("Value: %X", this.ifd_value_offset));
+                    "Value: %X".formatted(this.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Value));
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
                     4,
-                    String.format("Offset: %d", this.ifd_value_offset));
+                    "Offset: %d".formatted(this.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -196,21 +186,21 @@ public class IFD extends FileComponent {
         comp = new JTreeNodeFileComponent(
                 pos + 0,
                 2,
-                String.format("Tag: %04X.H (%d)", this.ifd_tag, this.ifd_tag));
+                "Tag: %04X.H (%d)".formatted(this.ifd_tag, this.ifd_tag));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Tag));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 pos + 2,
                 2,
-                String.format("Type: %d - %s", this.ifd_type, IFDType.getTypeName(this.ifd_type)));
+                "Type: %d - %s".formatted(this.ifd_type, IFDType.getTypeName(this.ifd_type)));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Type));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 pos + 4,
                 4,
-                String.format("Count: %d", this.ifd_count));
+                "Count: %d".formatted(this.ifd_count));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Count));
         parentNode.add(new DefaultMutableTreeNode(comp));
     }

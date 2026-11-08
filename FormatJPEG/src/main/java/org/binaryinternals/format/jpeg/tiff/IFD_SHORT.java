@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_SHORT extends IFD {
 
     public final int[] value;
@@ -56,11 +53,11 @@ public class IFD_SHORT extends IFD {
 
         if (this.isValue()) {
             switch (super.ifd_count) {
-                case 1:
+                case 1 -> {
                     comp = new JTreeNodeFileComponent(
                             pos + 8,
                             2,
-                            String.format("%s: %d", super.getTagName(), this.value[0]));
+                            "%s: %d".formatted(super.getTagName(), this.value[0]));
                     comp.setDescription(description);
                     parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -68,31 +65,31 @@ public class IFD_SHORT extends IFD {
                             pos + 10,
                             2,
                             ShortText.getString(ShortText.KEY_Unused))));
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     comp = new JTreeNodeFileComponent(
                             pos + 8,
                             2,
-                            String.format("%s[0]: %d", super.getTagName(), this.value[0]));
+                            "%s[0]: %d".formatted(super.getTagName(), this.value[0]));
                     comp.setDescription(description);
                     parentNode.add(new DefaultMutableTreeNode(comp));
 
                     comp = new JTreeNodeFileComponent(
                             pos + 10,
                             2,
-                            String.format("%s[1]: %d", super.getTagName(), this.value[1]));
+                            "%s[1]: %d".formatted(super.getTagName(), this.value[1]));
                     comp.setDescription(description);
                     parentNode.add(new DefaultMutableTreeNode(comp));
-                    break;
-                default:
+                }
+                default -> {
                     // Do nothing
-                    break;
+                }
             }
         } else {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                    ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 

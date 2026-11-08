@@ -13,17 +13,14 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
 
     static final String[] FILTER_COLORS = {"RED", "GREEN", "BLUE", "CYAN", "MAGENTA", "YELLOW", "WHITE"};
-    /** Horizontal repeat pixel unit. */
+    /// Horizontal repeat pixel unit.
     public final int n;
-    /** Vertical repeat pixel unit. */
+    /// Vertical repeat pixel unit.
     public final int m;
 
     public IFD_A302_CFAPattern(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -58,7 +55,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                    ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -73,11 +70,11 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset,
                     2,
-                    String.format("Horizontal repeat pixel unit = %d", this.n))));
+                    "Horizontal repeat pixel unit = %d".formatted(this.n))));
             node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset + 2,
                     2,
-                    String.format("Vertical repeat pixel unit = %d", this.m))));
+                    "Vertical repeat pixel unit = %d".formatted(this.m))));
 
             int cfa;
             for (int i = 0; i < this.ifd_count - 4; i++) {
@@ -85,7 +82,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
                 node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         super.tiff_StartPos + super.ifd_value_offset + 4 + i,
                         1,
-                        String.format("CFA value: %d - %s", cfa, FILTER_COLORS[cfa]))));
+                        "CFA value: %d - %s".formatted(cfa, FILTER_COLORS[cfa]))));
             }
         }
     }

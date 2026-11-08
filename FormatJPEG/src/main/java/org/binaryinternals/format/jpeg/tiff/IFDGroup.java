@@ -8,23 +8,24 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
 class IFDGroup {
 
-    /** Absolute start position within the file. */
+    /// Absolute start position within the file.
     public final int startPos;
-    /** Total length of the group, in bytes. */
+    /// Total length of the group, in bytes.
     public final int length;
-    /** The Offset position within TIFF. */
+    /// The Offset position within TIFF.
     public final int offset;
-    /** The 2-byte count of the number of directory entries. */
+    /// The 2-byte count of the number of directory entries.
     public final int ifd_number;
-    /** The sequence of 12-byte IFD field entries. */
+    /// The sequence of 12-byte IFD field entries.
     public final IFD[] ifd;
-    /** The 4-byte offset of the next IFD */
+    /// The 4-byte offset of the next IFD
     public final int next;
 
     IFDGroup(byte[] byteArrayTiff, final TIFFHeader tiffHeader, final int offset)
@@ -38,6 +39,10 @@ class IFDGroup {
         final PosDataInputStream pDisTiff = new PosDataInputStream(
                 new PosByteArrayInputStream(byteArrayTiff),
                 tiffHeader.getStartPos());
+        if (offset < 0 || (long) offset + 2 > byteArrayTiff.length) {
+            throw new FileFormatException("TIFF IFD: the IFD offset %d is beyond the TIFF data length %d".formatted(
+                    Integer.toUnsignedLong(offset), byteArrayTiff.length));
+        }
         pDisTiff.skipNBytes(offset);
         this.ifd_number = IFDParse.readUnsignedShort(pDisTiff, tiffHeader.byte_order);
         if (this.ifd_number > 0) {                                              // IFD count could be zero
@@ -68,7 +73,7 @@ class IFDGroup {
         comp = new JTreeNodeFileComponent(
                 this.startPos,
                 2,
-                String.format("IFD number: %d", this.ifd_number));
+                "IFD number: %d".formatted(this.ifd_number));
         comp.setDescription(TIFF.IFD_Number_Description);
         nodeGroup.add(new DefaultMutableTreeNode(comp));
 
@@ -77,7 +82,7 @@ class IFDGroup {
             comp = new JTreeNodeFileComponent(
                     this.ifd[i].getStartPos(),
                     IFD.SIZE,
-                    String.format("IFD[%d] - %s", i, this.ifd[i].getTagName()));
+                    "IFD[%d] - %s".formatted(i, this.ifd[i].getTagName()));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD));
             nodeGroup.add(nodeIFD = new DefaultMutableTreeNode(comp));
             this.ifd[i].generateTreeNode(nodeIFD);
@@ -87,6 +92,6 @@ class IFDGroup {
         nodeGroup.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.startPos + this.length - 4,
                 4,
-                String.format("Next IFD: Offset within Tiff = %04X (%d)", this.next, this.next))));
+                "Next IFD: Offset within Tiff = %04X (%d)".formatted(this.next, this.next))));
     }
 }

@@ -11,20 +11,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData_signatureType extends TagData {
 
     public final static int LENGTH = 12;
     public final String signature;
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_signatureType(final PosDataInputStream input) throws IOException {
         super(input);
         if (super.length != LENGTH) {
@@ -42,7 +36,7 @@ public class TagData_signatureType extends TagData {
             JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
                     4,
-                    String.format("signature = %s", this.signature));
+                    "signature = %s".formatted(this.signature));
             comp.setDescription("Four-byte signature.");
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {

@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_DOUBLE extends IFD {
 
     public IFD_DOUBLE(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 

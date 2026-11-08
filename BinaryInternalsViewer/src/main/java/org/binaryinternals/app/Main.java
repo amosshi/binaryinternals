@@ -227,7 +227,7 @@ public final class Main extends JFrame {
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     final Object drops = evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    if (drops instanceof List<?> list && !list.isEmpty() && list.get(0) instanceof File dropped) {
+                    if (drops instanceof List<?> list && !list.isEmpty() && list.getFirst() instanceof File dropped) {
                         openFile(dropped.toPath());
                         evt.dropComplete(true);
                     } else {

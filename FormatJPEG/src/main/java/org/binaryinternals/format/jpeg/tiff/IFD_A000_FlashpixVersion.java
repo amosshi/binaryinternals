@@ -10,13 +10,10 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_9000_ExifVersion
- * @see IFD_8769_Exif#CATEGORY_A
- * @see IFD_8769_Exif#FormatVersion
- */
+/// @author Amos Shi
+/// @see IFD_9000_ExifVersion
+/// @see IFD_8769_Exif#CATEGORY_A
+/// @see IFD_8769_Exif#FormatVersion
 public class IFD_A000_FlashpixVersion extends IFD_UNDEFINED {
 
     public static final int COUNT = 4;
@@ -40,7 +37,7 @@ public class IFD_A000_FlashpixVersion extends IFD_UNDEFINED {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
-                String.format("%s: %s", this.getTagName(), this.getFlashpixVersion()),
+                "%s: %s".formatted(this.getTagName(), this.getFlashpixVersion()),
                 IFDMessage.getString(IFDMessage.KEY_IFD_A000_Description)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion));

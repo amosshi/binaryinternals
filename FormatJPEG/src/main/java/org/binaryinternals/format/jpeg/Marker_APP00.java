@@ -13,10 +13,7 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_APP00 extends Marker {
 
     public static final String identifier_JFIF = "JFIF";
@@ -49,21 +46,21 @@ public class Marker_APP00 extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
                 2,
-                String.format("Marker code: 0x04X", this.marker_code));
+                "Marker code: 0x%04X".formatted(this.marker_code));
         comp.setDescription(MarkerCode.getMarkerCodeDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 2,
-                String.format("length: %d", this.getMarkerLength()));
+                "length: %d".formatted(this.getMarkerLength()));
         comp.setDescription("Total APP0 field byte count, including the byte count value (2 bytes), but excluding the APP0 marker itself.");
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 this.identifier.length() + 1,
-                String.format("identifier: %s", this.identifier));
+                "identifier: %s".formatted(this.identifier));
         if (this.identifier.equals(Marker_APP00.identifier_JFIF)) {
             comp.setDescription("This zero terminated string (“JFIF”) uniquely identifies this APP0 marker. This string shall have zero parity (bit 7=0).");
         }
@@ -119,13 +116,13 @@ public class Marker_APP00 extends Marker {
             comp = new JTreeNodeFileComponent(
                     pos + 9,
                     1,
-                    String.format("major version: %d", this.version_major));
+                    "major version: %d".formatted(this.version_major));
             comp.setDescription("The most significant byte is used for major revisions.");
             parentNode.add(new DefaultMutableTreeNode(comp));
             comp = new JTreeNodeFileComponent(
                     pos + 0xA,
                     1,
-                    String.format("minor version: %d", this.version_minor));
+                    "minor version: %d".formatted(this.version_minor));
             comp.setDescription("The least significant byte for minor revisions.");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -133,7 +130,7 @@ public class Marker_APP00 extends Marker {
             comp = new JTreeNodeFileComponent(
                     pos + 0xB,
                     1,
-                    String.format("units: %d - %s", this.units, this.getUnitsDesc()));
+                    "units: %d - %s".formatted(this.units, this.getUnitsDesc()));
             comp.setDescription("Units for the X and Y densities.<br />"
                     + "<ul>"
                     + "<li> units = <strong>0</strong>: no units, X and Y specify the pixel aspect ratio </li>"
@@ -146,13 +143,13 @@ public class Marker_APP00 extends Marker {
             comp = new JTreeNodeFileComponent(
                     pos + 0xC,
                     2,
-                    String.format("X density: %d", this.Xdensity));
+                    "X density: %d".formatted(this.Xdensity));
             comp.setDescription("Horizontal pixel density");
             parentNode.add(new DefaultMutableTreeNode(comp));
             comp = new JTreeNodeFileComponent(
                     pos + 0xE,
                     2,
-                    String.format("Y density: %d", this.Ydensity));
+                    "Y density: %d".formatted(this.Ydensity));
             comp.setDescription("Vertical pixel density");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -160,13 +157,13 @@ public class Marker_APP00 extends Marker {
             comp = new JTreeNodeFileComponent(
                     pos + 0x10,
                     1,
-                    String.format("X thumbnail: %d", this.Xthumbnail));
+                    "X thumbnail: %d".formatted(this.Xthumbnail));
             comp.setDescription("Thumbnail horizontal pixel count");
             parentNode.add(new DefaultMutableTreeNode(comp));
             comp = new JTreeNodeFileComponent(
                     pos + 0x11,
                     1,
-                    String.format("Y thumbnail: %d", this.Ythumbnail));
+                    "Y thumbnail: %d".formatted(this.Ythumbnail));
             comp.setDescription("Thumbnail vertical pixel count");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -174,22 +171,18 @@ public class Marker_APP00 extends Marker {
             comp = new JTreeNodeFileComponent(
                     pos + 0x12,
                     this.RGBn.getLength(),
-                    String.format("RGBn: length = %d", this.RGBn.getLength()));
+                    "RGBn: length = %d".formatted(this.RGBn.getLength()));
             comp.setDescription("Packed (24-bit) RGB values for the thumbnail pixels, <br />n = Xthumbnail * Ythumbnail");
             parentNode.add(new DefaultMutableTreeNode(comp));
         }
 
         public String getUnitsDesc() {
-            switch (this.units) {
-                case 0:
-                    return "no units, X and Y specify the pixel spect ratio";
-                case 1:
-                    return "X and Y are dots per inch";
-                case 2:
-                    return "X and Y are dots per cm";
-                default:
-                    return "Unknown";
-            }
+            return switch (this.units) {
+                case 0 -> "no units, X and Y specify the pixel spect ratio";
+                case 1 -> "X and Y are dots per inch";
+                case 2 -> "X and Y are dots per cm";
+                default -> "Unknown";
+            };
         }
     }
 }

@@ -17,4 +17,8 @@ import org.binaryinternals.commonlib.FileComponent;
 /// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class debug_info_item extends FileComponent {
+
+    /// Not parsed yet, the class only names the map item type.
+    private debug_info_item() {
+    }
 }

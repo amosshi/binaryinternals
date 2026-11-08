@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_D
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_D
 public class IFD_927C_MakerNode extends IFD_UNDEFINED {
 
     public IFD_927C_MakerNode(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)

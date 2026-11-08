@@ -13,10 +13,7 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.icc.ICCProfile;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_APP02 extends Marker {
 
     public static final String IDENTIFIER_ICC_PROFILE = "ICC_PROFILE";
@@ -53,21 +50,21 @@ public class Marker_APP02 extends Marker {
         comp = new JTreeNodeFileComponent(
                 lastPos = this.getStartPos(),
                 2,
-                String.format("Marker code: 0x04X", this.marker_code));
+                "Marker code: 0x%04X".formatted(this.marker_code));
         comp.setDescription(MarkerCode.getMarkerCodeDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         comp = new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 2,
-                String.format("length: %d", this.getMarkerLength()));
+                "length: %d".formatted(this.getMarkerLength()));
         comp.setDescription(MarkerCode.getHeaderLengthDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
 
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 lastPos = lastPos + 2,
                 this.identifier.length() + 1,
-                String.format("identifier: %s", this.identifier))));
+                "identifier: %s".formatted(this.identifier))));
 
         if (Marker_APP02.IDENTIFIER_ICC_PROFILE.equals(this.identifier)) {
             markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

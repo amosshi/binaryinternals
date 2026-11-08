@@ -11,11 +11,8 @@ import java.util.Calendar;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_F
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_F
 public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
 
     public static final int COUNT = 20;
@@ -41,7 +38,7 @@ public class IFD_9004_DateTimeDigitized extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_ASCII(
                 parentNode,
-                String.format("%04d:%02d:%02d %02d:%02d:%02d",
+                "%04d:%02d:%02d %02d:%02d:%02d".formatted(
                 this.datetime.get(Calendar.YEAR),
                 this.datetime.get(Calendar.MONTH),
                 this.datetime.get(Calendar.DATE),

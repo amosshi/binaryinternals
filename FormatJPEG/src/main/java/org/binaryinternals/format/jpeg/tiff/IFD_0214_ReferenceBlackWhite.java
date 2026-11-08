@@ -10,12 +10,9 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_0213_YCbCrPositioning
- * @see org.binaryinternals.format.jpeg.ps.PhotoshopImageResource
- */
+/// @author Amos Shi
+/// @see IFD_0213_YCbCrPositioning
+/// @see org.binaryinternals.format.jpeg.ps.PhotoshopImageResource
 public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
 
     public static final int COUNT = 6;
@@ -26,9 +23,7 @@ public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(parentNode, IFDMessage.getString(IFDMessage.KEY_IFD_0214_Description));

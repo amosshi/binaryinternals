@@ -9,10 +9,7 @@ package org.binaryinternals.format.jpeg.tiff;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_RATIONAL_COUNT1 extends IFD_RATIONAL {
 
     public static final int COUNT = 1;

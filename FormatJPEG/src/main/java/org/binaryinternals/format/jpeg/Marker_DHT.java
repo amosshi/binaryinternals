@@ -12,31 +12,20 @@ import org.binaryinternals.commonlib.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_DHT extends Marker {
 
-    /**
-     * Table class. 0 = DC table or lossless table; 1 = AC table.
-     */
+    /// Table class. 0 = DC table or lossless table; 1 = AC table.
     private int Tc;                      // TODO - Set all attributes as final
-    /**
-     * Huffman table destination identifier.
-     */
+    /// Huffman table destination identifier.
     private int Th;
-    /**
-     * Number of Huffman codes of length <code>i</code>.
-     */
+    /// Number of Huffman codes of length `i`.
     private int[] Li = new int[16];
-    /**
-     * Value associated with each Huffman code. Specifies, for each
-     * <code>i</code>, the value associated with each Huffman code of length
-     * <code>i</code>. The meaning of each value is determined by the Huffman
-     * coding model. The Vi,j’s are the elements of the list
-     * <code>HUFFVAL</code>.
-     */
+    /// Value associated with each Huffman code. Specifies, for each
+    /// `i`, the value associated with each Huffman code of length
+    /// `i`. The meaning of each value is determined by the Huffman
+    /// coding model. The Vi,j’s are the elements of the list
+    /// `HUFFVAL`.
     private FileComponentPlaceHolder Vij;
 
     Marker_DHT(final PosDataInputStream pDIS, int marker_code) throws IOException {
@@ -63,9 +52,7 @@ public class Marker_DHT extends Marker {
         this.Vij = new FileComponentPlaceHolder(pDisMarker, super.marker_length - 19);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         DefaultMutableTreeNode markerNode = this.generateTreeNode_Marker(parentNode);
@@ -75,23 +62,23 @@ public class Marker_DHT extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 0,
                 2,
-                String.format("Marker code: 0x%X", super.getMarker()))));
+                "Marker code: 0x%X".formatted(super.getMarker()))));
 
         // Marker Length
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 2,
                 2,
-                String.format("length: %d", super.getMarkerLength()))));
+                "length: %d".formatted(super.getMarkerLength()))));
 
         // Tc, Th
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 4,
                 1,
-                String.format("Tc: %d", this.Tc))));
+                "Tc: %d".formatted(this.Tc))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 4,
                 1,
-                String.format("Th: %d", this.Th))));
+                "Th: %d".formatted(this.Th))));
 
         // Li
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

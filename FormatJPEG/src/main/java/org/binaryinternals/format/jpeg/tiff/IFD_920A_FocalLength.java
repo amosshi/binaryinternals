@@ -10,11 +10,8 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- * @see IFD_8769_Exif#CATEGORY_G
- */
+/// @author Amos Shi
+/// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
 
     public IFD_920A_FocalLength(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
@@ -22,9 +19,7 @@ public class IFD_920A_FocalLength extends IFD_RATIONAL_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(

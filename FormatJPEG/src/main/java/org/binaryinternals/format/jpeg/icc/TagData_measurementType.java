@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData_measurementType extends TagData {
 
     public final static int LENGTH = 36;
@@ -24,11 +21,8 @@ public class TagData_measurementType extends TagData {
     public final long measurementFlare;
     public final long standardIlluminant;
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_measurementType(final PosDataInputStream input) throws IOException {
         super(input);
         if (super.length != LENGTH) {
@@ -53,7 +47,7 @@ public class TagData_measurementType extends TagData {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8,
                     4,
-                    String.format("standard observer = %d", this.standardObserver));
+                    "standard observer = %d".formatted(this.standardObserver));
             comp.setDescription(null);  //  TODO - load the values from table 40
             parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -68,21 +62,21 @@ public class TagData_measurementType extends TagData {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 24,
                     4,
-                    String.format("measurement geometry = %d", this.measurementGeometry));
+                    "measurement geometry = %d".formatted(this.measurementGeometry));
             comp.setDescription(null);  //  TODO - load the values from table 41
             parentNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
                     this.startPos + 28,
                     4,
-                    String.format("measurement flare = %d", this.measurementFlare));
+                    "measurement flare = %d".formatted(this.measurementFlare));
             comp.setDescription(null);  //  TODO - load the values from table 42
             parentNode.add(new DefaultMutableTreeNode(comp));
 
             comp = new JTreeNodeFileComponent(
                     this.startPos + 32,
                     4,
-                    String.format("standard illuminant = %d", this.standardIlluminant));
+                    "standard illuminant = %d".formatted(this.standardIlluminant));
             comp.setDescription(null);  //  TODO - load the values from table 43
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {

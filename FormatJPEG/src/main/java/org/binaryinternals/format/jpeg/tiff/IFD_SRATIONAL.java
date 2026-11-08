@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_SRATIONAL extends IFD {
 
     public final SRational[] value;
@@ -66,7 +63,7 @@ public class IFD_SRATIONAL extends IFD {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 4,
-                String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
 
@@ -77,7 +74,7 @@ public class IFD_SRATIONAL extends IFD {
             comp = new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     8,
-                    String.format(ShortText.getString(ShortText.KEY_srational_n), i),
+                    ShortText.getString(ShortText.KEY_srational_n).formatted(i),
                     Icons.Shortcut, null);
             comp.setDescription(description);
             node = new DefaultMutableTreeNode(comp);
@@ -86,7 +83,7 @@ public class IFD_SRATIONAL extends IFD {
             comp = new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset + i * 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_numerator_n), this.value[0].numerator),
+                    ShortText.getString(ShortText.KEY_numerator_n).formatted(this.value[0].numerator),
                     Icons.Shortcut, null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Numerator));
             node.add(new DefaultMutableTreeNode(comp));
@@ -94,7 +91,7 @@ public class IFD_SRATIONAL extends IFD {
             comp = new JTreeNodeFileComponent(
                     super.tiff_StartPos + super.ifd_value_offset + i * 8 + 4,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_denominator_n), this.value[0].denominator),
+                    ShortText.getString(ShortText.KEY_denominator_n).formatted(this.value[0].denominator),
                     Icons.Shortcut, null);
             comp.setDescription(ShortText.getString(ShortText.KEY_Denominator));
             node.add(new DefaultMutableTreeNode(comp));

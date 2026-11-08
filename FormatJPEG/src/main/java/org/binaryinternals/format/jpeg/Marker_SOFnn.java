@@ -11,36 +11,33 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_SOFnn extends Marker {
 
     private static class Component {
 
-        /** Component Identifier */
+        /// Component Identifier
         @SuppressWarnings("PackageVisibleField")
         int C;
-        /** Horizontal sampling factor */
+        /// Horizontal sampling factor
         @SuppressWarnings("PackageVisibleField")
         int H;
-        /** Vertical sampling factor  */
+        /// Vertical sampling factor
         @SuppressWarnings("PackageVisibleField")
         int V;
-        /** Quantization table destination selector */
+        /// Quantization table destination selector
         @SuppressWarnings("PackageVisibleField")
         int Tq;
     }
-    /** Sample precision */
+    /// Sample precision
     private int P;
-    /** Number of lines */
+    /// Number of lines
     private int Y;
-    /** Number of samples per line */
+    /// Number of samples per line
     private int X;
-    /** Number of image components in frame */
+    /// Number of image components in frame
     private int Nf;
-    /** Image Components */
+    /// Image Components
     private Component[] C;
 
     Marker_SOFnn(final PosDataInputStream pDIS, int marker_code) throws IOException {
@@ -83,31 +80,31 @@ public class Marker_SOFnn extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 0,
                 2,
-                String.format("Marker code: 0x%X", super.getMarker()))));
+                "Marker code: 0x%X".formatted(super.getMarker()))));
 
         // Marker Length
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 2,
                 2,
-                String.format("length: %d", super.getMarkerLength()))));
+                "length: %d".formatted(super.getMarkerLength()))));
 
         // P, Y, X, Nf
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 4,
                 1,
-                String.format("P: %d", this.P))));
+                "P: %d".formatted(this.P))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 5,
                 2,
-                String.format("Y: %d", this.Y))));
+                "Y: %d".formatted(this.Y))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 7,
                 2,
-                String.format("X: %d", this.X))));
+                "X: %d".formatted(this.X))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 9,
                 1,
-                String.format("Nf: %d", this.Nf))));
+                "Nf: %d".formatted(this.Nf))));
 
         // Components: Ci, Hi, Vi, Tqi
         if (this.Nf <= 0 || this.C == null) {
@@ -127,25 +124,25 @@ public class Marker_SOFnn extends Marker {
             attributeNode.add(componentNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     pos + 10 + 3 * i,
                     3,
-                    String.format("Component-%d", i + 1))));
+                    "Component-%d".formatted(i + 1))));
 
             if (this.C[i] != null) {
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 0,
                         1,
-                        String.format("C: %d", this.C[i].C))));
+                        "C: %d".formatted(this.C[i].C))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 1,
                         1,
-                        String.format("H: %d", this.C[i].H))));
+                        "H: %d".formatted(this.C[i].H))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 1,
                         1,
-                        String.format("V: %d", this.C[i].V))));
+                        "V: %d".formatted(this.C[i].V))));
                 componentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                         pos + 10 + 3 * i + 2,
                         1,
-                        String.format("Tq: %d", this.C[i].Tq))));
+                        "Tq: %d".formatted(this.C[i].Tq))));
             }
         }
     }

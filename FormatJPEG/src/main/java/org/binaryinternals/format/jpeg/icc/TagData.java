@@ -13,19 +13,13 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData extends FileComponent implements GenerateTreeNode {
 
     public final int tagType;
 
-    /**
-     * 
-     * @param input The input stream for this Tag Data only
-     * @throws IOException Parse file failed
-     */
+    /// @param input The input stream for this Tag Data only
+    /// @throws IOException Parse file failed
     public TagData(final PosDataInputStream input) throws IOException {
         super.startPos = input.getPos();
         super.length = input.getBuf().length;
@@ -56,7 +50,7 @@ public class TagData extends FileComponent implements GenerateTreeNode {
         comp = new JTreeNodeFileComponent(
                 this.startPos,
                 4,
-                String.format("Signature = %s", TagType.getTypeSignature(this.tagType)));
+                "Signature = %s".formatted(TagType.getTypeSignature(this.tagType)));
         comp.setDescription("Identify what kind of data is contained within a tag.");
         parentNode.add(new DefaultMutableTreeNode(comp));
 

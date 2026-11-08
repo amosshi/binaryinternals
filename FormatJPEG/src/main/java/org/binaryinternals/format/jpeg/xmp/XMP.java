@@ -6,44 +6,35 @@
  */
 package org.binaryinternals.format.jpeg.xmp;
 
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.binaryinternals.commonlib.FileComponent;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-
-/**
- *
- * @author Amos Shi
- * @see <a href="http://www.adobemediaplayer.com/devnet/xmp.html">Adobe XMP Developer Center </a>
- */
-public class XMP extends FileComponent{
+/// Extensible Metadata Platform (XMP) packet, an XML document in UTF-8.
+///
+/// @author Amos Shi
+public final class XMP extends FileComponent {
 
     private static final Logger LOG = Logger.getLogger(XMP.class.getName());
     public final byte[] rawData;
+    /// The XMP packet as text.
     private final String xmpmeta;
-    //public final XMPMeta xmpMeta;
 
-    public XMP(final PosDataInputStream input) throws FileFormatException {
+    public XMP(final PosDataInputStream input) {
         super.startPos = input.getPos();
         super.length = input.getBuf().length;
 
         this.rawData = input.getBuf();
-        StringBuilder sb = new StringBuilder(this.rawData.length + 1);
-        for (byte b : this.rawData) {
-            sb.append((char) b);
-        }
-        this.xmpmeta = sb.toString();
-        LOG.info(this.xmpmeta);
+        this.xmpmeta = new String(this.rawData, StandardCharsets.UTF_8);
+        LOG.log(Level.FINE, this.xmpmeta);
+    }
 
-        // TODO - Analysis the data via XMPMeta
-
-//        try {
-//            this.xmpMeta = XMPMetaFactory.parse(input);
-//        } catch (XMPException ex) {
-//            Logger.getLogger(XMP.class.getName()).log(Level.SEVERE, null, ex);
-//            throw new JPEGFileFormatException(ex);
-//        }
-
+    /// The XMP packet as text.
+    ///
+    /// @return The XML text
+    public String getXmpMeta() {
+        return this.xmpmeta;
     }
 }

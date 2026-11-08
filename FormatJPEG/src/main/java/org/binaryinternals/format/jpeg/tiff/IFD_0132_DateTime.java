@@ -11,10 +11,7 @@ import java.util.Calendar;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_0132_DateTime extends IFD_ASCII {
 
     public static final int COUNT = 20;
@@ -31,9 +28,7 @@ public class IFD_0132_DateTime extends IFD_ASCII {
         this.datetime = IFD_0132_DateTime.buf2calendar(buf);
     }
 
-    /**
-     * Convert a <code>YYYY:MM:DD HH:MM:SS</code> byte buffer into a <code>Calendar</code> instance.
-     */
+    /// Convert a `YYYY:MM:DD HH:MM:SS` byte buffer into a `Calendar` instance.
     static Calendar buf2calendar(final byte[] buf) {
         final int value_0 = 48;                                                 // ASCII value of '0'
         final int year = (Byte.valueOf(buf[0]).intValue() - value_0) * 1000
@@ -65,7 +60,7 @@ public class IFD_0132_DateTime extends IFD_ASCII {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_ASCII(
                 parentNode,
-                String.format("%04d:%02d:%02d %02d:%02d:%02d",
+                "%04d:%02d:%02d %02d:%02d:%02d".formatted(
                 this.datetime.get(Calendar.YEAR),
                 this.datetime.get(Calendar.MONTH),
                 this.datetime.get(Calendar.DATE),

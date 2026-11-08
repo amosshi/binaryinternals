@@ -7,22 +7,23 @@
 
 package org.binaryinternals.format.jpeg;
 
-import org.binaryinternals.commonlib.PluginDescriptor;
 import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
+import org.binaryinternals.commonlib.PluginDescriptor;
 
-/**
- *
- * @author Amos Shi
- */
-public class PluginDescriptorJPEG implements PluginDescriptor{
+/// Plug-in descriptor for the JPEG file format.
+///
+/// @author Amos Shi
+public final class PluginDescriptorJPEG implements PluginDescriptor {
 
+    /// Public no-argument constructor, required by `ServiceLoader`.
     public PluginDescriptorJPEG() {
+        // Nothing to initialize
     }
 
     @Override
     public String getExtensionDescription() {
-        return "JPEG Image (*.jpg,*jpeg)";
+        return "JPEG Image (*.jpg, *.jpeg)";
     }
 
     @Override
@@ -34,5 +35,4 @@ public class PluginDescriptorJPEG implements PluginDescriptor{
     public Class<? extends FileFormat> getFileFormatClass() {
         return JPEGFile.class;
     }
-
 }

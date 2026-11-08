@@ -10,99 +10,36 @@ import java.io.IOException;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class MarkerParse {
 
     private MarkerParse() {
     }
 
-    /**
-     *
-     * @param pDisFile Data Input Stream for <code>file</code> byte array
-     * @return The generated proper marker instance
-     * @throws IOException Parse file failed
-     * @throws FileFormatException Parse file failed
-     */
+    /// @param pDisFile Data Input Stream for `file` byte array
+    /// @return The generated proper marker instance
+    /// @throws IOException Parse file failed
+    /// @throws FileFormatException Parse file failed
     public static Marker parse(final PosDataInputStream pDisFile) throws IOException {
-        Marker marker;
-
-        final int marker_code = pDisFile.readUnsignedShort();
-        switch (marker_code) {
-            case MarkerCode.APP00:
-                marker = new Marker_APP00(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.APP01:
-                marker = new Marker_APP01(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.APP02:
-                marker = new Marker_APP02(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.APP13:
-                marker = new Marker_APP13(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.APP14:
-                marker = new Marker_APP14(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.DQT:
-                marker = new Marker_DQT(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.DRI:
-                marker = new Marker_DRI(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.SOF00:
-            case MarkerCode.SOF01:
-            case MarkerCode.SOF02:
-            case MarkerCode.SOF03:
-
-            case MarkerCode.SOF05:
-            case MarkerCode.SOF06:
-            case MarkerCode.SOF07:
-
-            case MarkerCode.SOF09:
-            case MarkerCode.SOF10:
-            case MarkerCode.SOF11:
-
-            case MarkerCode.SOF13:
-            case MarkerCode.SOF14:
-            case MarkerCode.SOF15:
-                marker = new Marker_SOFnn(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.SOI:
-                marker = new Marker_SOI(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.EOI:
-                marker = new Marker_EOI(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.DHT:
-                marker = new Marker_DHT(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.SOS:
-                marker = new Marker_SOS(pDisFile, marker_code);
-                break;
-
-            case MarkerCode.COM:
-                marker = new Marker_COM(pDisFile, marker_code);
-                break;
-
-            default:
-                marker = new Marker(pDisFile, marker_code);
-                break;
-        }
-
-        return marker;
+        final int markerCode = pDisFile.readUnsignedShort();
+        return switch (markerCode) {
+            case MarkerCode.APP00 -> new Marker_APP00(pDisFile, markerCode);
+            case MarkerCode.APP01 -> new Marker_APP01(pDisFile, markerCode);
+            case MarkerCode.APP02 -> new Marker_APP02(pDisFile, markerCode);
+            case MarkerCode.APP13 -> new Marker_APP13(pDisFile, markerCode);
+            case MarkerCode.APP14 -> new Marker_APP14(pDisFile, markerCode);
+            case MarkerCode.DQT -> new Marker_DQT(pDisFile, markerCode);
+            case MarkerCode.DRI -> new Marker_DRI(pDisFile, markerCode);
+            case MarkerCode.SOF00, MarkerCode.SOF01, MarkerCode.SOF02, MarkerCode.SOF03,
+                 MarkerCode.SOF05, MarkerCode.SOF06, MarkerCode.SOF07, MarkerCode.SOF09,
+                 MarkerCode.SOF10, MarkerCode.SOF11, MarkerCode.SOF13, MarkerCode.SOF14,
+                 MarkerCode.SOF15 -> new Marker_SOFnn(pDisFile, markerCode);
+            case MarkerCode.SOI -> new Marker_SOI(pDisFile, markerCode);
+            case MarkerCode.EOI -> new Marker_EOI(pDisFile, markerCode);
+            case MarkerCode.DHT -> new Marker_DHT(pDisFile, markerCode);
+            case MarkerCode.SOS -> new Marker_SOS(pDisFile, markerCode);
+            case MarkerCode.COM -> new Marker_COM(pDisFile, markerCode);
+            default -> new Marker(pDisFile, markerCode);
+        };
     }
 }

@@ -12,10 +12,7 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_BYTE extends IFD {
 
     public final byte[] value;
@@ -47,12 +44,12 @@ public class IFD_BYTE extends IFD {
         if (this.isValue()) {
             this.generateTreeNode_BYTE(
                     parentNode,
-                    String.format("%s: %s", super.getTagName(), this.value),
+                    "%s: %s".formatted(super.getTagName(), this.value),
                     IFDMessage.getString(IFDMessage.KEY_IFD_Value));
         } else {
             this.generateTreeNode_BYTE(
                     parentNode,
-                    String.format("%s: %s", super.getTagName(), this.value),
+                    "%s: %s".formatted(super.getTagName(), this.value),
                     IFDMessage.getString(IFDMessage.KEY_IFD_Value_Ref));
         }
     }
@@ -75,7 +72,7 @@ public class IFD_BYTE extends IFD {
             comp = new JTreeNodeFileComponent(
                     pos + 8,
                     4,
-                    String.format(ShortText.getString(ShortText.KEY_Offset_n), super.ifd_value_offset));
+                    ShortText.getString(ShortText.KEY_Offset_n).formatted(super.ifd_value_offset));
             comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
             parentNode.add(new DefaultMutableTreeNode(comp));
 

@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_EOI extends Marker {
 
     Marker_EOI(final PosDataInputStream pDIS, int marker_code) throws IOException {
@@ -31,7 +28,7 @@ public class Marker_EOI extends Marker {
         JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 this.getStartPos(),
                 MarkerCode.MARKER_CODE_BYTES_COUNT,
-                String.format("Marker code = 0x%X", super.getMarker()));
+                "Marker code = 0x%X".formatted(super.getMarker()));
         comp.setDescription(MarkerCode.getMarkerCodeDescription());
         markerNode.add(new DefaultMutableTreeNode(comp));
     }

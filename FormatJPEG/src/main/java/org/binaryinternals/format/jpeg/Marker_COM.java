@@ -12,13 +12,10 @@ import org.binaryinternals.commonlib.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_COM extends Marker {
 
-    /** Comment byte. */
+    /// Comment byte.
     private FileComponentPlaceHolder Cm;
 
 
@@ -53,13 +50,13 @@ public class Marker_COM extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 2,
                 2,
-                String.format("length: %d", this.getMarkerLength()))));
+                "length: %d".formatted(this.getMarkerLength()))));
 
         // Comment
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 4,
                 this.Cm.getLength(),
-                String.format("Cm: length = %d", this.Cm.getLength()))));
+                "Cm: length = %d".formatted(this.Cm.getLength()))));
 
     }
 }

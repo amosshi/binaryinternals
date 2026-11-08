@@ -11,9 +11,15 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
-
+/// Plug-in descriptor for the Android DEX file format.
+///
 /// @author Amos Shi
 public final class PluginDescriptorDEX implements PluginDescriptor {
+
+    /// Public no-argument constructor, required by `ServiceLoader`.
+    public PluginDescriptorDEX() {
+        // Nothing to initialize
+    }
 
     @Override
     public String getExtensionDescription() {

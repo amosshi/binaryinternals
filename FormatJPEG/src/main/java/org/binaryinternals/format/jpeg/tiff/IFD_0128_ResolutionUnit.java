@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
 
     public IFD_0128_ResolutionUnit(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -23,16 +20,12 @@ public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
     }
 
     public String getResolutionUnitName() {
-        switch (super.value[0]) {
-            case 1:
-                return "No absolute unit of measurement";
-            case 2:
-                return "Inch";
-            case 3:
-                return "Centimeter";
-            default:
-                return "Unrecognized value";
-        }
+        return switch (super.value[0]) {
+            case 1 -> "No absolute unit of measurement";
+            case 2 -> "Inch";
+            case 3 -> "Centimeter";
+            default -> "Unrecognized value";
+        };
     }
 
     @Override
@@ -45,7 +38,7 @@ public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
         comp = new JTreeNodeFileComponent(
                 pos + 8,
                 2,
-                String.format("Resolution Unit: %d - %s", this.value[0], this.getResolutionUnitName()));
+                "Resolution Unit: %d - %s".formatted(this.value[0], this.getResolutionUnitName()));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0128_Description));
         parentNode.add(new DefaultMutableTreeNode(comp));
 

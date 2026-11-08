@@ -11,10 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class TagData_viewingConditionsType extends TagData {
 
     public final static int LENGTH = 36;
@@ -22,11 +19,8 @@ public class TagData_viewingConditionsType extends TagData {
     public final XYZNumber surround;
     public final long illuminantType;
 
-    /**
-     *
-     * @param input Input stream of the file
-     * @throws IOException Parse file failed
-     */
+    /// @param input Input stream of the file
+    /// @throws IOException Parse file failed
     public TagData_viewingConditionsType(final PosDataInputStream input) throws IOException {
         super(input);
         if (super.length != LENGTH) {
@@ -65,7 +59,7 @@ public class TagData_viewingConditionsType extends TagData {
             comp = new JTreeNodeFileComponent(
                     this.startPos + 8 + XYZNumber.LENGTH + XYZNumber.LENGTH,
                     4,
-                    String.format("illuminant type = %d", this.illuminantType));
+                    "illuminant type = %d".formatted(this.illuminantType));
             comp.setDescription(null);
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {

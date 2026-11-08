@@ -6,9 +6,11 @@
  */
 package org.binaryinternals.format.jpeg;
 
-import java.nio.file.Path;
 import java.io.IOException;
-import java.util.Iterator;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
@@ -17,11 +19,15 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
-public class JPEGFile extends FileFormat {
+/// JPEG file: a sequence of markers, with the compressed data between them.
+///
+/// A marker whose content cannot be parsed is shown as a plain marker, so a
+/// broken APP segment does not hide the rest of the file.
+///
+/// @author Amos Shi
+public final class JPEGFile extends FileFormat {
+
+    private static final Logger LOGGER = Logger.getLogger(JPEGFile.class.getName());
 
     public JPEGFile(final Path file) throws IOException {
         super(file);
@@ -29,77 +35,68 @@ public class JPEGFile extends FileFormat {
     }
 
     private void parse() throws IOException {
-        Marker marker;
-        PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
+        final PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         // Marker - SOI
         final int soi = posDataInputStream.readUnsignedShort();
         if (MarkerCode.SOI != soi) {
-            throw new FileFormatException(String.format(
-                    "File is not started with JPEG SOI. Expected value %x, current value %x.",
-                    MarkerCode.SOI, soi));
+            throw new FileFormatException(
+                    "File is not started with JPEG SOI. Expected value %x, current value %x.".formatted(MarkerCode.SOI, soi));
         }
-        final Marker soiMarker = new Marker_SOI(posDataInputStream, soi);
-        super.components.put(Long.valueOf(soiMarker.getStartPos()), soiMarker);
+        this.addFileComponent(new Marker_SOI(posDataInputStream, soi));
 
         // Markers & File Data
         boolean isCompressedData = false;
-        boolean isNextMarkerFound;
-        int i;
-        int length;
         while (posDataInputStream.getPos() < (this.fileByteArray.length - 1)) {
             if (MarkerCode.isValid(getMarkerCode(this.fileByteArray, posDataInputStream.getPos()))) {
-                marker = MarkerParse.parse(posDataInputStream);
-                super.components.put(Long.valueOf(marker.getStartPos()), marker);
+                final Marker marker = MarkerParse.parse(posDataInputStream);
+                this.addFileComponent(marker);
                 isCompressedData = MarkerCode.isCompressedDataFollowed(marker.marker_code);
             } else {
-                // find next marker
-                isNextMarkerFound = false;
-                for (i = posDataInputStream.getPos() + 1; i < this.fileByteArray.length - 1; i++) {
-                    if (MarkerCode.isValid(getMarkerCode(this.fileByteArray, i))) {
-                        isNextMarkerFound = true;
-                        break;
-                    }
+                // Data until the next marker
+                int next = posDataInputStream.getPos() + 1;
+                while (next < this.fileByteArray.length - 1 && !MarkerCode.isValid(getMarkerCode(this.fileByteArray, next))) {
+                    next++;
                 }
-                // Determine the length
-                if (isNextMarkerFound) {
-                    length = i - posDataInputStream.getPos();
-                } else {
-                    length = this.fileByteArray.length - posDataInputStream.getPos();
+                if (next >= this.fileByteArray.length - 1) {
+                    next = this.fileByteArray.length;
                 }
-                // Add one component
-                final FileData fileData = new FileData(posDataInputStream, length, isCompressedData);
-                super.components.put(Long.valueOf(fileData.getStartPos()), fileData);
+                this.addFileComponent(new FileData(posDataInputStream, next - posDataInputStream.getPos(), isCompressedData));
             }
         }
+        // A last byte, too short for a marker
+        if (posDataInputStream.getPos() < this.fileByteArray.length) {
+            this.addFileComponent(new FileData(posDataInputStream, this.fileByteArray.length - posDataInputStream.getPos(), isCompressedData));
+        }
 
-        // Parse each Marker
-        final Iterator<FileComponent> iteratorMarker = super.components.values().iterator();
-        FileComponent comp;
-        byte[] markerByteArray;
-        int markerByteArraySize;
-
-        while (iteratorMarker.hasNext()) {
-            comp = iteratorMarker.next();
-            if (comp instanceof Marker) {
-                marker = (Marker) comp;
-                if (marker.getMarkerLength() > 0) {
-                    markerByteArraySize = marker.getLength() + MarkerCode.MARKER_CODE_BYTES_COUNT;
-                    markerByteArray = new byte[markerByteArraySize];
-                    System.arraycopy(this.fileByteArray, marker.getStartPos(), markerByteArray, 0, markerByteArraySize);
-                    try {
-                        marker.parse(new PosDataInputStream(new PosByteArrayInputStream(markerByteArray), marker.getStartPos()));
-                    } catch (IOException ex) {
-                        System.out.println("JPEGFile.parse() - " + marker.getMarkerName() + " - " + ex.toString());
-                    }
-                }
+        // Parse each Marker, on a copy since a failed one is replaced
+        for (final FileComponent comp : List.copyOf(super.components.values())) {
+            if (comp instanceof Marker marker && (marker.getMarkerLength() > 0 || marker.getError() != null)) {
+                this.parseMarker(marker);
             }
         }
-    } // End method parse
+    }
 
-    private static int getMarkerCode(byte[] fileByteArray, int markerOffset) {
-        return ((fileByteArray[markerOffset] & 0x000000FF) << 8)
-                + (fileByteArray[markerOffset + 1] & 0x000000FF);
+    /// Parse the content of `marker`, or replace it with a plain marker if
+    /// that fails.
+    private void parseMarker(final Marker marker) {
+        String error = marker.getError();
+        if (error == null) {
+            try {
+                marker.parse(new PosDataInputStream(
+                        new PosByteArrayInputStream(this.getFileByteArray(marker.getStartPos(), marker.getLength())),
+                        marker.getStartPos()));
+                return;
+            } catch (IOException | RuntimeException ex) {
+                LOGGER.log(Level.WARNING, "Failed to parse marker %s at %d".formatted(marker.getMarkerName(), marker.getStartPos()), ex);
+                error = "Failed to parse the marker: " + ex.getMessage();
+            }
+        }
+        this.addFileComponent(new Marker(marker, error));
+    }
+
+    private static int getMarkerCode(final byte[] fileByteArray, final int markerOffset) {
+        return ((fileByteArray[markerOffset] & 0xFF) << 8) | (fileByteArray[markerOffset + 1] & 0xFF);
     }
 
     @Override
@@ -108,15 +105,11 @@ public class JPEGFile extends FileFormat {
     }
 
     @Override
-    public void generateTreeNode(DefaultMutableTreeNode root) {
-        final Iterator<FileComponent> iterator = super.components.values().iterator();
-
-        while (iterator.hasNext()) {
-            FileComponent comp = iterator.next();
-            if (comp instanceof GenerateTreeNode) {
-                GenerateTreeNode generator = (GenerateTreeNode) comp;
-                generator.generateTreeNode(root);
+    public void generateTreeNode(final DefaultMutableTreeNode root) {
+        for (final FileComponent comp : super.components.values()) {
+            if (comp instanceof GenerateTreeNode node) {
+                node.generateTreeNode(root);
             }
-        } // End while
+        }
     }
 }

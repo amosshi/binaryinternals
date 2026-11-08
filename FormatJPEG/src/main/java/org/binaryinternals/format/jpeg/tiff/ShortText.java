@@ -8,10 +8,7 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.util.ResourceBundle;
 
-/**
- *
- * @author Amos shi
- */
+/// @author Amos shi
 public class ShortText{
 
     private ShortText() {

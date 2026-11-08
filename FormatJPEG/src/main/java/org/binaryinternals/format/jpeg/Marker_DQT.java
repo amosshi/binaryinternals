@@ -13,10 +13,7 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/**
- *
- * @author Amos Shi
- */
+/// @author Amos Shi
 public class Marker_DQT extends Marker {
 
     private int Pq;
@@ -40,13 +37,11 @@ public class Marker_DQT extends Marker {
         this.Tq = (b & 0x0F);
 
         if (this.Pq != 0 && this.Pq != 1) {
-            throw new FileFormatException(String.format(
-                    "DQT Pq value unrecognizable: expected value is 0 or 1; current value is %d.",
+            throw new FileFormatException("DQT Pq value unrecognizable: expected value is 0 or 1; current value is %d.".formatted(
                     this.Pq));
         }
         if (this.Tq != 0 && this.Tq != 1 && this.Tq != 2 && this.Tq != 3) {
-            throw new FileFormatException(String.format(
-                    "DQT Tq value unrecognizable: expected value is 0, 1, 2 or 3; current value is %d.",
+            throw new FileFormatException("DQT Tq value unrecognizable: expected value is 0, 1, 2 or 3; current value is %d.".formatted(
                     this.Pq));
         }
 
@@ -74,24 +69,24 @@ public class Marker_DQT extends Marker {
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 2,
                 2,
-                String.format("length: %d", super.getMarkerLength()))));
+                "length: %d".formatted(super.getMarkerLength()))));
 
         // Pq
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 4,
                 1,
-                String.format("Pq: %d", this.Pq))));
+                "Pq: %d".formatted(this.Pq))));
 
         // Tq
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 4,
                 1,
-                String.format("Tq: %d", this.Tq))));
+                "Tq: %d".formatted(this.Tq))));
 
         // Qk
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.getStartPos() + 5,
                 this.Qk.getLength(),
-                String.format("Qk: length = %d", this.Qk.getLength()))));
+                "Qk: length = %d".formatted(this.Qk.getLength()))));
     }
 }

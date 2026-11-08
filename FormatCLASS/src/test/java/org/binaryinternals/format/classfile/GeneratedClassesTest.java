@@ -83,7 +83,7 @@ class GeneratedClassesTest {
                 .filter(n -> n.getText().startsWith("parameter "))
                 .toList();
         assertEquals(2, params.size());
-        assertTrue(params.get(1).getStartPos() > params.get(0).getStartPos(), "each parameter has its own position");
+        assertTrue(params.get(1).getStartPos() > params.getFirst().getStartPos(), "each parameter has its own position");
     }
 
     @Test
@@ -152,8 +152,8 @@ class GeneratedClassesTest {
         });
         final List<Opcode.InstructionParsed> parsed = Opcode.parseCode(code);
 
-        assertEquals("wide iinc index = 0 const = -300", parsed.get(0).getOpcodeText());
-        assertEquals(-300, parsed.get(0).getImmediateValue());
+        assertEquals("wide iinc index = 0 const = -300", parsed.getFirst().getOpcodeText());
+        assertEquals(-300, parsed.getFirst().getImmediateValue());
         assertEquals(-5, parsed.get(1).getImmediateValue());
         assertEquals("ifnull", parsed.get(3).getOpcodeText());
         assertEquals(0, parsed.get(3).getAbsoluteBranchByte(), "backward branch to the start");
@@ -164,7 +164,7 @@ class GeneratedClassesTest {
         final List<Opcode.InstructionParsed> parsed = Opcode.parseCode(codeOf(cob -> cob
                 .iinc(0, 1000).iload(0).istore(300).iinc(0, 2000).return_()));
 
-        assertEquals("wide iinc", parsed.get(0).opCodeName);
+        assertEquals("wide iinc", parsed.getFirst().opCodeName);
         assertEquals("wide istore", parsed.get(2).opCodeName);
         assertEquals("wide iinc", parsed.get(3).opCodeName);
     }
