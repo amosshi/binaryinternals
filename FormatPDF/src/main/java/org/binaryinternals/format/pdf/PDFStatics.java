@@ -30,10 +30,10 @@ public final class PDFStatics {
     public static boolean isDelimiter(final byte b) {
         return switch (b) {
             case DelimiterCharacter.LP, DelimiterCharacter.RP,
-                 DelimiterCharacter.LT, DelimiterCharacter.GT,
-                 DelimiterCharacter.LS, DelimiterCharacter.RS,
-                 DelimiterCharacter.LC, DelimiterCharacter.RC,
-                 DelimiterCharacter.SO, DelimiterCharacter.PS -> true;
+                    DelimiterCharacter.LT, DelimiterCharacter.GT,
+                    DelimiterCharacter.LS, DelimiterCharacter.RS,
+                    DelimiterCharacter.LC, DelimiterCharacter.RC,
+                    DelimiterCharacter.SO, DelimiterCharacter.PS -> true;
             default -> false;
         };
     }
@@ -59,9 +59,6 @@ public final class PDFStatics {
     /// See `PDF 32000-1:2008` `7.2.2`: Table 1 – White-space characters.
     public static final class WhiteSpace {
 
-        private WhiteSpace() {
-        }
-
         /// Null (NUL), value `0x00`.
         public static final byte NUL = 0x00;
         /// HORIZONTAL TAB (HT), value `0x09`.
@@ -74,13 +71,13 @@ public final class PDFStatics {
         public static final byte CR = 0x0D;
         /// SPACE (SP), value `0x20`.
         public static final byte SP = 0x20;
+
+        private WhiteSpace() {
+        }
     }
 
     /// See `PDF 32000-1:2008` `7.2.2`: Table 2 – Delimiter characters.
     public static final class DelimiterCharacter {
-
-        private DelimiterCharacter() {
-        }
 
         /// LEFT PARENTHESIS: `(`.
         public static final byte LP = 0x28;
@@ -106,5 +103,8 @@ public final class PDFStatics {
         ///
         /// @see #PS
         public static final char PS_CHAR = '%';
+
+        private DelimiterCharacter() {
+        }
     }
 }

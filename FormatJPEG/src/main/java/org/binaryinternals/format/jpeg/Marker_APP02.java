@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class Marker_APP02 extends Marker {
                     lastPos = lastPos + this.identifier.length() + 1,
                     2,
                     "????")));
-            
+
             final DefaultMutableTreeNode identifierNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     lastPos = lastPos + 2,
                     this.startPos + this.length - lastPos,

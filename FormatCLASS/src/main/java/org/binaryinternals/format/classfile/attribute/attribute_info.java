@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -125,46 +126,46 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         }
 
         return switch (attrType.get()) {
-                case ConstantValue -> new ConstantValue_attribute(attrNameIndex, type, posDataInputStream);
-                case Code -> new Code_attribute(attrNameIndex, type, posDataInputStream, cp);
-                case StackMapTable -> new StackMapTable_attribute(attrNameIndex, type, posDataInputStream);
-                case Exceptions -> new Exceptions_attribute(attrNameIndex, type, posDataInputStream);
-                case InnerClasses -> new InnerClasses_attribute(attrNameIndex, type, posDataInputStream);
-                case EnclosingMethod -> new EnclosingMethod_attribute(attrNameIndex, type, posDataInputStream);
-                case Synthetic -> new Synthetic_attribute(attrNameIndex, type, posDataInputStream);
-                case Signature -> new Signature_attribute(attrNameIndex, type, posDataInputStream);
-                case SourceFile -> new SourceFile_attribute(attrNameIndex, type, posDataInputStream);
-                case SourceDebugExtension -> new SourceDebugExtension_attribute(attrNameIndex, type, posDataInputStream);
-                case LineNumberTable -> new LineNumberTable_attribute(attrNameIndex, type, posDataInputStream);
-                case LocalVariableTable -> new LocalVariableTable_attribute(attrNameIndex, type, posDataInputStream);
-                case LocalVariableTypeTable -> new LocalVariableTypeTable_attribute(attrNameIndex, type, posDataInputStream);
-                case Deprecated -> new Deprecated_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeVisibleAnnotations -> new RuntimeVisibleAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeInvisibleAnnotations -> new RuntimeInvisibleAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeVisibleParameterAnnotations -> new RuntimeVisibleParameterAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeInvisibleParameterAnnotations -> new RuntimeInvisibleParameterAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeVisibleTypeAnnotations -> new RuntimeVisibleTypeAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case RuntimeInvisibleTypeAnnotations -> new RuntimeInvisibleTypeAnnotations_attribute(attrNameIndex, type, posDataInputStream);
-                case AnnotationDefault -> new AnnotationDefault_attribute(attrNameIndex, type, posDataInputStream);
-                case BootstrapMethods -> new BootstrapMethods_attribute(attrNameIndex, type, posDataInputStream);
-                case MethodParameters -> new MethodParameters_attribute(attrNameIndex, type, posDataInputStream);
-                case Module -> new Module_attribute(attrNameIndex, type, posDataInputStream);
-                case ModulePackages -> new ModulePackages_attribute(attrNameIndex, type, posDataInputStream);
-                case ModuleMainClass -> new ModuleMainClass_attribute(attrNameIndex, type, posDataInputStream);
-                case ModuleHashes -> new ModuleHashes_attribute(attrNameIndex, type, posDataInputStream);
-                case ModuleTarget -> new ModuleTarget_attribute(attrNameIndex, type, posDataInputStream);
-                case NestHost -> new NestHost_attribute(attrNameIndex, type, posDataInputStream);
-                case NestMembers -> new NestMembers_attribute(attrNameIndex, type, posDataInputStream);
-                case Bridge -> new Bridge_attribute(attrNameIndex, type, posDataInputStream);
-                case Record -> new Record_attribute(attrNameIndex, type, posDataInputStream, cp);
-                case PermittedSubclasses -> new PermittedSubclasses_attribute(attrNameIndex, type, posDataInputStream);
-                case ModuleResolution -> new ModuleResolution_attribute(attrNameIndex, type, posDataInputStream);
-                case Scala -> new Scala_attribute(attrNameIndex, type, posDataInputStream);
-                case ScalaSig -> new ScalaSig_attribute(attrNameIndex, type, posDataInputStream);
-                case WeaverVersion -> new WeaverVersion_attribute(attrNameIndex, type, posDataInputStream);
-                case AjSynthetic -> new AjSynthetic_attribute(attrNameIndex, type, posDataInputStream);
-                case MethodDeclarationLineNumber -> new MethodDeclarationLineNumber_attribute(attrNameIndex, type, posDataInputStream);
-                default -> new Unrecognized_attribute(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
+            case ConstantValue -> new ConstantValue_attribute(attrNameIndex, type, posDataInputStream);
+            case Code -> new Code_attribute(attrNameIndex, type, posDataInputStream, cp);
+            case StackMapTable -> new StackMapTable_attribute(attrNameIndex, type, posDataInputStream);
+            case Exceptions -> new Exceptions_attribute(attrNameIndex, type, posDataInputStream);
+            case InnerClasses -> new InnerClasses_attribute(attrNameIndex, type, posDataInputStream);
+            case EnclosingMethod -> new EnclosingMethod_attribute(attrNameIndex, type, posDataInputStream);
+            case Synthetic -> new Synthetic_attribute(attrNameIndex, type, posDataInputStream);
+            case Signature -> new Signature_attribute(attrNameIndex, type, posDataInputStream);
+            case SourceFile -> new SourceFile_attribute(attrNameIndex, type, posDataInputStream);
+            case SourceDebugExtension -> new SourceDebugExtension_attribute(attrNameIndex, type, posDataInputStream);
+            case LineNumberTable -> new LineNumberTable_attribute(attrNameIndex, type, posDataInputStream);
+            case LocalVariableTable -> new LocalVariableTable_attribute(attrNameIndex, type, posDataInputStream);
+            case LocalVariableTypeTable -> new LocalVariableTypeTable_attribute(attrNameIndex, type, posDataInputStream);
+            case Deprecated -> new Deprecated_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeVisibleAnnotations -> new RuntimeVisibleAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeInvisibleAnnotations -> new RuntimeInvisibleAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeVisibleParameterAnnotations -> new RuntimeVisibleParameterAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeInvisibleParameterAnnotations -> new RuntimeInvisibleParameterAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeVisibleTypeAnnotations -> new RuntimeVisibleTypeAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case RuntimeInvisibleTypeAnnotations -> new RuntimeInvisibleTypeAnnotations_attribute(attrNameIndex, type, posDataInputStream);
+            case AnnotationDefault -> new AnnotationDefault_attribute(attrNameIndex, type, posDataInputStream);
+            case BootstrapMethods -> new BootstrapMethods_attribute(attrNameIndex, type, posDataInputStream);
+            case MethodParameters -> new MethodParameters_attribute(attrNameIndex, type, posDataInputStream);
+            case Module -> new Module_attribute(attrNameIndex, type, posDataInputStream);
+            case ModulePackages -> new ModulePackages_attribute(attrNameIndex, type, posDataInputStream);
+            case ModuleMainClass -> new ModuleMainClass_attribute(attrNameIndex, type, posDataInputStream);
+            case ModuleHashes -> new ModuleHashes_attribute(attrNameIndex, type, posDataInputStream);
+            case ModuleTarget -> new ModuleTarget_attribute(attrNameIndex, type, posDataInputStream);
+            case NestHost -> new NestHost_attribute(attrNameIndex, type, posDataInputStream);
+            case NestMembers -> new NestMembers_attribute(attrNameIndex, type, posDataInputStream);
+            case Bridge -> new Bridge_attribute(attrNameIndex, type, posDataInputStream);
+            case Record -> new Record_attribute(attrNameIndex, type, posDataInputStream, cp);
+            case PermittedSubclasses -> new PermittedSubclasses_attribute(attrNameIndex, type, posDataInputStream);
+            case ModuleResolution -> new ModuleResolution_attribute(attrNameIndex, type, posDataInputStream);
+            case Scala -> new Scala_attribute(attrNameIndex, type, posDataInputStream);
+            case ScalaSig -> new ScalaSig_attribute(attrNameIndex, type, posDataInputStream);
+            case WeaverVersion -> new WeaverVersion_attribute(attrNameIndex, type, posDataInputStream);
+            case AjSynthetic -> new AjSynthetic_attribute(attrNameIndex, type, posDataInputStream);
+            case MethodDeclarationLineNumber -> new MethodDeclarationLineNumber_attribute(attrNameIndex, type, posDataInputStream);
+            default -> new Unrecognized_attribute(attrNameIndex, UNRECOGNIZED + type, posDataInputStream);
         };
     }
 
@@ -180,7 +181,8 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
             final String name,
             final int startPos,
             final int length,
-            final int endPos) throws FileFormatException {
+            final int endPos)
+                    throws FileFormatException {
         if (startPos + length != endPos) {
             throw new FileFormatException("Attribute analysis failed. type='%s', startPos=%d, length=%d, endPos=%d".formatted(name, startPos, length, endPos));
         }
@@ -354,7 +356,8 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.17">
         /// VM Spec: The RuntimeInvisibleAnnotations Attribute
         /// </a>
-        RuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_INVISIBLE_ANNOTATIONS),
+        RuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5,
+                Attributes.NAME_RUNTIME_INVISIBLE_ANNOTATIONS),
         /// The name for `RuntimeVisibleParameterAnnotations ` attribute
         /// type.
         ///
@@ -362,7 +365,8 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.18">
         /// VM Spec: The RuntimeVisibleParameterAnnotations Attribute
         /// </a>
-        RuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS),
+        RuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5,
+                Attributes.NAME_RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS),
         /// The name for `RuntimeInvisibleParameterAnnotations` attribute
         /// type.
         ///
@@ -370,21 +374,24 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.19">
         /// VM Spec: The RuntimeInvisibleParameterAnnotations Attribute
         /// </a>
-        RuntimeInvisibleParameterAnnotations(RuntimeInvisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5, Attributes.NAME_RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS),
+        RuntimeInvisibleParameterAnnotations(RuntimeInvisibleParameterAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_5,
+                Attributes.NAME_RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS),
         /// The name for `RuntimeVisibleTypeAnnotations` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.20">
         /// VM Spec: The RuntimeVisibleTypeAnnotations Attribute
         /// </a>
-        RuntimeVisibleTypeAnnotations(RuntimeVisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, Attributes.NAME_RUNTIME_VISIBLE_TYPE_ANNOTATIONS),
+        RuntimeVisibleTypeAnnotations(RuntimeVisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8,
+                Attributes.NAME_RUNTIME_VISIBLE_TYPE_ANNOTATIONS),
         /// The name for `RuntimeInvisibleTypeAnnotations` attribute type.
         ///
         /// @see
         /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.21">
         /// VM Spec: The RuntimeInvisibleTypeAnnotations Attribute
         /// </a>
-        RuntimeInvisibleTypeAnnotations(RuntimeInvisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8, Attributes.NAME_RUNTIME_INVISIBLE_TYPE_ANNOTATIONS),
+        RuntimeInvisibleTypeAnnotations(RuntimeInvisibleTypeAnnotations_attribute.class, ClassFileFormatVersion.RELEASE_8,
+                Attributes.NAME_RUNTIME_INVISIBLE_TYPE_ANNOTATIONS),
         /// The name for `AnnotationDefault` attribute type.
         ///
         /// @see
@@ -498,6 +505,9 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// This is a none-JVM-Spec attribute.
         MethodDeclarationLineNumber(MethodDeclarationLineNumber_attribute.class, MethodDeclarationLineNumber_attribute.FULLNAME);
 
+        private static final Map<String, AttributeTypes> BY_NAME = Arrays.stream(values())
+                .collect(Collectors.toUnmodifiableMap(AttributeTypes::getName, Function.identity()));
+
         /// The Java class representing to the attributes.
         ///
         /// If [#clazz] is null, which means it is not implemented yet.
@@ -508,10 +518,8 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// Class file format.
         public final ClassFileFormatVersion format;
 
-        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format, String name) {
-            this.clazz = clazz;
-            this.format = format;
-            this.fullname = name;
+        AttributeTypes(Class<?> clazz) {
+            this(clazz, null, null);
         }
 
         AttributeTypes(Class<?> clazz, ClassFileFormatVersion format) {
@@ -522,12 +530,11 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
             this(clazz, null, name);
         }
 
-        AttributeTypes(Class<?> clazz) {
-            this(clazz, null, null);
+        AttributeTypes(Class<?> clazz, ClassFileFormatVersion format, String name) {
+            this.clazz = clazz;
+            this.format = format;
+            this.fullname = name;
         }
-
-        private static final Map<String, AttributeTypes> BY_NAME = Arrays.stream(values())
-                .collect(Collectors.toUnmodifiableMap(AttributeTypes::getName, Function.identity()));
 
         /// Get the attribute type of an attribute name used in `.class`
         /// files.
@@ -548,7 +555,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// Get the attribute full name used in `.class` file.
         ///
         /// @return Attribute full name used in `.class` file
-        public String getName(){
+        public String getName() {
             return (this.fullname == null) ? this.name() : this.fullname;
         }
     }

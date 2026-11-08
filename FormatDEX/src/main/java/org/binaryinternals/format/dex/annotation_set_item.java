@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public final class annotation_set_item extends FileComponent implements Generate
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        final DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
         addNode(parentNode,
                 floatPos,
@@ -127,14 +128,14 @@ public final class annotation_set_item extends FileComponent implements Generate
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-            DexFile dexFile = (DexFile)format;
+            DexFile dexFile = (DexFile) format;
             int floatPos = super.startPos;
             addNode(parentNode,
                     floatPos,
                     Type_ubyte.LENGTH,
                     "size",
                     FORMAT_STRING_STRING.formatted(this.visibility, Visibility.toString(this.visibility.value)),
-                    "msg_annotation_item__visibility", //
+                    "msg_annotation_item__visibility",
                     Icons.Data // TODO Icon to be changed
             );
             floatPos += Type_ubyte.LENGTH;

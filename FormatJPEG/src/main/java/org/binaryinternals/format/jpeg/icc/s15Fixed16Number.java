@@ -4,12 +4,13 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /// @author Amos Shi
 @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")

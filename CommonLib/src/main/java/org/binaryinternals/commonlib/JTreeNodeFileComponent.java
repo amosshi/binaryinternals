@@ -4,6 +4,7 @@
  * Copyright 2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import javax.swing.Icon;
@@ -133,12 +134,12 @@ public final class JTreeNodeFileComponent {
     public Icon getIcon() {
         return this.icon;
     }
-    
+
     /// Setter for [#icon].
     ///
-    /// @param icon value for [#icon]
-    public void setIcon(Icon icon) {
-        this.icon = icon;
+    /// @param newIcon value for [#icon]
+    public void setIcon(Icon newIcon) {
+        this.icon = newIcon;
     }
 
     /// Setter for [#description].
@@ -158,11 +159,11 @@ public final class JTreeNodeFileComponent {
     /// Setter for [#panelDetail].
     ///
     /// @param p Value for [#panelDetail]
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP2", justification="We need it")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "We need it")
     public void setDetailPanel(final JPanel p) {
         this.panelDetail = p;
     }
-    
+
     /// Indicates whether we have a detailed panel [#panelDetail].
     ///
     /// @return true if [#panelDetail] is not null, else false
@@ -173,7 +174,7 @@ public final class JTreeNodeFileComponent {
     /// Getter for [#panelDetail].
     ///
     /// @return [#panelDetail] value
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value="EI_EXPOSE_REP", justification="We need it")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "We need it")
     public JPanel getDetailPanel() {
         return this.panelDetail;
     }

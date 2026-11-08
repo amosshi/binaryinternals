@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -66,7 +67,7 @@ public class CONSTANT_NameAndType_info extends cp_info {
     public String getName() {
         return ConstantType.CONSTANT_NameAndType.name();
     }
-    
+
     @Override
     public String toString(cp_info[] constantPool) {
         String nameStr = constantPool[this.name_index.value].toString(constantPool);

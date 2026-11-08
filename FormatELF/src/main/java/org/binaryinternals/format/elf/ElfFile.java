@@ -4,10 +4,11 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.elf;
 
-import java.nio.file.Path;
 import java.io.IOException;
+import java.nio.file.Path;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -25,7 +26,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see <a href="https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/elf.h">arch/arm64/include/asm/elf.h</a>
 /// @see <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
 public class ElfFile extends FileFormat {
-    
+
     public final Identification ident;
     public final Elf64_Ehdr header;
 

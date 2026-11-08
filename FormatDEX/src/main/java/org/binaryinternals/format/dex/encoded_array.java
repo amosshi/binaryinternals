@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;

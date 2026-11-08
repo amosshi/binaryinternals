@@ -4,6 +4,7 @@
  * Copyright 2026, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
@@ -70,7 +71,8 @@ public final class Zip64EndOfCentralDirectoryRecord extends FileComponent implem
 
         stream.readFully(this.Signature);
         if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_ZIP64_RECORD)) {
-            throw new FileFormatException(LocalFileHeader.signatureMismatch("zip64 end of central dir signature", this.startPos, this.Signature, ZIPFile.CENTRAL_ZIP64_RECORD));
+            throw new FileFormatException(LocalFileHeader.signatureMismatch("zip64 end of central dir signature", this.startPos, this.Signature,
+                            ZIPFile.CENTRAL_ZIP64_RECORD));
         }
         this.RecordSize = stream.readLongInLittleEndian();
         this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();
@@ -85,7 +87,8 @@ public final class Zip64EndOfCentralDirectoryRecord extends FileComponent implem
         final long recordLength = LEADING_LENGTH + this.RecordSize;
         if (this.RecordSize < MIN_LENGTH - LEADING_LENGTH
                 || this.RecordSize > (long) stream.getBuf().length - this.startPos - LEADING_LENGTH) {
-            throw new FileFormatException("Invalid 'size of zip64 end of central directory record' at 0x%08X: %d".formatted(this.startPos + 4, this.RecordSize));
+            throw new FileFormatException("Invalid 'size of zip64 end of central directory record' at 0x%08X: %d".formatted(this.startPos + 4,
+                            this.RecordSize));
         }
         this.length = (int) recordLength;
     }

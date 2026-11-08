@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.bmp;
 
 import java.io.IOException;
@@ -65,7 +66,8 @@ public final class BitmapFileHeader extends FileComponent implements GenerateTre
                 this.startPos,
                 this.length,
                 "Bitmap File Header [0x%08X, %d]".formatted(this.startPos, this.length),
-                "This block of bytes is at the start of the file and is used to identify the file. A typical application reads this block first to ensure that the file is actually a BMP file and that it is not damaged."));
+                "This block of bytes is at the start of the file and is used to identify the file. A typical application reads this block first to ensure "
+                        + "that the file is actually a BMP file and that it is not damaged."));
         parentNode.add(node);
 
         node.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

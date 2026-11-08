@@ -4,6 +4,7 @@
  * Copyright  2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -102,11 +103,11 @@ public class Record_attribute extends attribute_info {
                     info.getStartPos(),
                     info.getLength(),
                     "component %d".formatted(i + 1),
-                    ((ClassFile)classFile).getCPDescription(info.name_index.value),
+                    ((ClassFile) classFile).getCPDescription(info.name_index.value),
                     "msg_attr_record_component_info",
                     Icons.Data
             );
-            info.generateTreeNode(infoNode, (ClassFile)classFile);
+            info.generateTreeNode(infoNode, (ClassFile) classFile);
         }
     }
 

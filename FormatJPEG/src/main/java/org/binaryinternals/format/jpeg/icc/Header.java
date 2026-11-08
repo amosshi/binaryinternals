@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
@@ -61,16 +62,16 @@ public class Header extends FileComponent implements GenerateTreeNode {
         this.DateTime = new dateTimeNumber(input);                              // 24 - 35
         this.ProfileFileSignature = input.readASCII(4);                         // 36 - 39
         this.PrimaryPlatform = input.readASCII(4);                              // 40 - 43
-        this.ProfileFlags = input.readUnsignedInt();                            // 44 - 47 - TODO: Analysis known flags
+        this.ProfileFlags = input.readUnsignedInt();                            // 44 - 47, flags not decoded yet
         this.DeviceManufacturer = input.readASCII(4);                           // 48 - 51
         this.DeviceModel = input.readASCII(4);                                  // 52 - 55
 
-        // 56 - 63 - TODO: Analysis known flags
+        // 56 - 63, attributes not decoded yet
         this.DeviceAttributes = new long[2];
         this.DeviceAttributes[0] = input.readUnsignedInt();
         this.DeviceAttributes[1] = input.readUnsignedInt();
 
-        this.RenderingIntent = input.readUnsignedInt();                         // 64 - 67 - TODO: Analysis known flags
+        this.RenderingIntent = input.readUnsignedInt();                         // 64 - 67, not decoded yet
         this.ProfileConnectionSpaceIlluminant = new XYZNumber(input);           // 68 - 79
         this.ProfileCreator = input.readASCII(4);                               // 80 - 83
         input.readFully(this.ProfileID);                                        // 84 - 99

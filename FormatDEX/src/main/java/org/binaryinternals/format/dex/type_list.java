@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -65,7 +66,7 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
                         item.getStartPos(),
                         item.getLength(),
                         "type_item[%d].type_idx".formatted(i),
-                        item.get_type_jls((DexFile)dexFile),
+                        item.get_type_jls((DexFile) dexFile),
                         "msg_type_item__type_idx",
                         Icons.Index
                 );

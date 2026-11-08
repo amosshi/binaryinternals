@@ -4,6 +4,7 @@
  * Copyright  2019, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.binaryviewer;
 
 import javax.swing.JTextPane;

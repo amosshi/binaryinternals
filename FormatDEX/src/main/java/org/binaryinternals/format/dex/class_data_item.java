@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -88,16 +89,20 @@ public final class class_data_item extends FileComponent implements GenerateTree
     @Override
     @SuppressWarnings("java:S3776")
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dex = (DexFile)format;
+        final DexFile dex = (DexFile) format;
         int floatPos = super.startPos;
 
-        addNode(parentNode, floatPos, this.static_fields_size.length, "static_fields_size", this.static_fields_size, "msg_class_data_item__static_fields_size", Icons.Size);
+        addNode(parentNode, floatPos, this.static_fields_size.length, "static_fields_size", this.static_fields_size, "msg_class_data_item__static_fields_size",
+                Icons.Size);
         floatPos += this.static_fields_size.length;
-        addNode(parentNode, floatPos, this.instance_fields_size.length, "instance_fields_size", this.instance_fields_size, "msg_class_data_item__instance_fields_size", Icons.Size);
+        addNode(parentNode, floatPos, this.instance_fields_size.length, "instance_fields_size", this.instance_fields_size,
+                "msg_class_data_item__instance_fields_size", Icons.Size);
         floatPos += this.instance_fields_size.length;
-        addNode(parentNode, floatPos, this.direct_methods_size.length, "direct_methods_size", this.direct_methods_size, "msg_class_data_item__direct_methods_size", Icons.Size);
+        addNode(parentNode, floatPos, this.direct_methods_size.length, "direct_methods_size", this.direct_methods_size,
+                "msg_class_data_item__direct_methods_size", Icons.Size);
         floatPos += this.direct_methods_size.length;
-        addNode(parentNode, floatPos, this.virtual_methods_size.length, "virtual_methods_size", this.virtual_methods_size, "msg_class_data_item__virtual_methods_size", Icons.Size);
+        addNode(parentNode, floatPos, this.virtual_methods_size.length, "virtual_methods_size", this.virtual_methods_size,
+                "msg_class_data_item__virtual_methods_size", Icons.Size);
 
         if (this.static_fields != null) {
             DefaultMutableTreeNode nodes = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -211,7 +216,7 @@ public final class class_data_item extends FileComponent implements GenerateTree
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-            DexFile dexFile = (DexFile)format;
+            DexFile dexFile = (DexFile) format;
             int floatPos = super.startPos;
 
             field_id_item field = dexFile.field_ids[this.field_idx_diff.value];
@@ -228,7 +233,8 @@ public final class class_data_item extends FileComponent implements GenerateTree
                     floatPos,
                     access_flags.length,
                     "access_flags",
-                    this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getFieldModifier(this.access_flags.value),
+                    this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value)
+                            + access_flag.getFieldModifier(this.access_flags.value),
                     "msg_class_def_item__access_flags",
                     Icons.AccessFlag
             );
@@ -254,7 +260,7 @@ public final class class_data_item extends FileComponent implements GenerateTree
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-            DexFile dexFile = (DexFile)format;
+            DexFile dexFile = (DexFile) format;
             int floatPos = super.startPos;
 
             method_id_item method = dexFile.method_ids[this.method_idx_diff.value];
@@ -271,7 +277,8 @@ public final class class_data_item extends FileComponent implements GenerateTree
                     floatPos,
                     this.access_flags.length,
                     "access_flags",
-                    this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value) + access_flag.getMethodModifier(this.access_flags.value),
+                    this.access_flags.toString() + " - " + BytesTool.getBinaryString(this.access_flags.value)
+                            + access_flag.getMethodModifier(this.access_flags.value),
                     "msg_encoded_method__access_flags",
                     Icons.AccessFlag
             );

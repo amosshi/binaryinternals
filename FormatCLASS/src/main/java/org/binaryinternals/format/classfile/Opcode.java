@@ -4,9 +4,9 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.lang.classfile.TypeKind;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /// Opcode parser to interpret the Java `code` byte array into human
 /// readable text.
@@ -1641,7 +1642,7 @@ public final class Opcode {
     /// Instruction structure used by [Instruction#lookupswitch].
     ///
     /// @see Instruction#lookupswitch
-    @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+    @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from JVM Spec")
     public record lookupswitch(int defaultbyte, int npairs, Map<Integer, Integer> mapoffsets) {
 
         /// Creates the instruction, with an unmodifiable copy of the jump
@@ -1667,7 +1668,7 @@ public final class Opcode {
     /// @see
     /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html#jvms-6.5.tableswitch">VM
     /// Spec: The Java Virtual Machine Instruction Set</a>
-    @SuppressFBWarnings(value="NM_CLASS_NAMING_CONVENTION", justification="Use the type name from JVM Spec")
+    @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from JVM Spec")
     public record tableswitch(int defaultbyte, int lowbyte, int highbyte, Map<Integer, Integer> jumpoffsets) {
 
         /// Creates the instruction, with an unmodifiable copy of the jump

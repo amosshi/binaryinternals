@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -27,8 +28,8 @@ public class IFD_A301_SceneType extends IFD_UNDEFINED {
         return true;
     }
 
-    public int getSceneType(){
-        return (int)super.value[0];
+    public int getSceneType() {
+        return (int) super.value[0];
     }
 
     @Override

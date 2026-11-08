@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -71,7 +72,7 @@ public final class encoded_annotation extends FileComponent implements GenerateT
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
         addNode(parentNode,
                 floatPos,
@@ -146,7 +147,7 @@ public final class encoded_annotation extends FileComponent implements GenerateT
 
         @Override
         public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-            DexFile dexFile = (DexFile)format;
+            DexFile dexFile = (DexFile) format;
             int floatPos = super.startPos;
             addNode(parentNode,
                     floatPos,

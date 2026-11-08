@@ -179,148 +179,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             );
             startPosMoving += u1.LENGTH;
 
-            switch (this.union_target_info) {
-                case type_parameter_target target -> {
-                    DefaultMutableTreeNode typeParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.type_parameter_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_parameter_target")
-                    ));
-                    parentNode.add(typeParameterTarget);
-
-                    this.addNode(typeParameterTarget,
-                            startPosMoving,
-                            u1.LENGTH,
-                            "type_parameter_index",
-                            target.type_parameter_index.value,
-                            "msg_attr_type_annotation__target_info__type_parameter_target__type_parameter_index",
-                            Icons.Index
-                    );
-                }
-                case supertype_target target -> {
-                    DefaultMutableTreeNode supertypeTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.supertype_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__supertype_target")
-                    ));
-                    parentNode.add(supertypeTarget);
-
-                    this.addNode(supertypeTarget,
-                            startPosMoving,
-                            u2.LENGTH,
-                            "supertype_index",
-                            target.supertype_index.value,
-                            "msg_attr_type_annotation__target_info__supertype_target__supertype_index",
-                            Icons.Index
-                    );
-                }
-                case type_parameter_bound_target target -> {
-                    DefaultMutableTreeNode typeParameterBoundTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.type_parameter_bound_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_parameter_bound_target")
-                    ));
-                    parentNode.add(typeParameterBoundTarget);
-                    target.generateTreeNode(typeParameterBoundTarget, fileFormat);
-                }
-                case empty_target _ -> {
-                    // Do nothing since it is empty
-                }
-                case formal_parameter_target target -> {
-                    DefaultMutableTreeNode formalParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.formal_parameter_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__formal_parameter_target")
-                    ));
-                    parentNode.add(formalParameterTarget);
-
-                    this.addNode(formalParameterTarget,
-                            startPosMoving,
-                            u1.LENGTH,
-                            "formal_parameter_index",
-                            target.formal_parameter_index.value,
-                            "msg_attr_type_annotation__target_info__formal_parameter_target__formal_parameter_index",
-                            Icons.Index
-                    );
-                }
-                case throws_target target -> {
-                    DefaultMutableTreeNode throwsTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.throws_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__throws_target")
-                    ));
-                    parentNode.add(throwsTarget);
-
-                    this.addNode(throwsTarget,
-                            startPosMoving, u2.LENGTH,
-                            "throws_type_index", target.throws_type_index.value,
-                            "msg_attr_type_annotation__target_info__throws_target__throws_type_index",
-                            Icons.Index
-                    );
-                }
-                case localvar_target target -> {
-                    DefaultMutableTreeNode localvarTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.localvar_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__localvar_target")
-                    ));
-                    parentNode.add(localvarTargetNode);
-
-                    target.generateTreeNode(localvarTargetNode, fileFormat);
-                }
-                case catch_target target -> {
-                    DefaultMutableTreeNode catchTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.catch_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__catch_target")
-                    ));
-                    parentNode.add(catchTarget);
-
-                    this.addNode(catchTarget,
-                            startPosMoving, u2.LENGTH,
-                            "exception_table_index", target.exception_table_index.value,
-                            "msg_attr_type_annotation__target_info__catch_target__exception_table_index",
-                            Icons.Index
-                    );
-                }
-                case offset_target target -> {
-                    DefaultMutableTreeNode offsetTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.offset_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__offset_target")
-                    ));
-                    parentNode.add(offsetTarget);
-
-                    this.addNode(offsetTarget,
-                            startPosMoving, u2.LENGTH,
-                            "offset", target.offset.value,
-                            "msg_attr_type_annotation__target_info__offset_target__offset",
-                            Icons.Offset
-                    );
-                }
-                case type_argument_target target -> {
-                    DefaultMutableTreeNode typeArgumentTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                            startPosMoving,
-                            target.getLength(),
-                            type_annotation.type_argument_target.UNION_NAME,
-                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_argument_target")
-                    ));
-                    parentNode.add(typeArgumentTargetNode);
-
-                    target.generateTreeNode(typeArgumentTargetNode, fileFormat);
-                }
-                case null -> {
-                    // Unrecognized target_type
-                }
-            }
+            this.generateTreeNodeTargetInfo(parentNode, fileFormat, startPosMoving);
             if (this.union_target_info != null) {
                 startPosMoving += this.union_target_info.getLength();
             }
@@ -337,6 +196,156 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
 
             // Annotation
             this.at.generateTreeNode(parentNode, classFile);
+        }
+
+        /// Generate the node of the `target_info` union.
+        ///
+        /// @param parentNode Parent tree node
+        /// @param fileFormat The class file
+        /// @param startPos Start position of `target_info`
+        private void generateTreeNodeTargetInfo(final DefaultMutableTreeNode parentNode, final FileFormat fileFormat, final int startPos) {
+            switch (this.union_target_info) {
+                case type_parameter_target target -> {
+                    DefaultMutableTreeNode typeParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.type_parameter_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_parameter_target")
+                    ));
+                    parentNode.add(typeParameterTarget);
+
+                    this.addNode(typeParameterTarget,
+                            startPos,
+                            u1.LENGTH,
+                            "type_parameter_index",
+                            target.type_parameter_index.value,
+                            "msg_attr_type_annotation__target_info__type_parameter_target__type_parameter_index",
+                            Icons.Index
+                    );
+                }
+                case supertype_target target -> {
+                    DefaultMutableTreeNode supertypeTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.supertype_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__supertype_target")
+                    ));
+                    parentNode.add(supertypeTarget);
+
+                    this.addNode(supertypeTarget,
+                            startPos,
+                            u2.LENGTH,
+                            "supertype_index",
+                            target.supertype_index.value,
+                            "msg_attr_type_annotation__target_info__supertype_target__supertype_index",
+                            Icons.Index
+                    );
+                }
+                case type_parameter_bound_target target -> {
+                    DefaultMutableTreeNode typeParameterBoundTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.type_parameter_bound_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_parameter_bound_target")
+                    ));
+                    parentNode.add(typeParameterBoundTarget);
+                    target.generateTreeNode(typeParameterBoundTarget, fileFormat);
+                }
+                case empty_target _ -> {
+                    // Do nothing since it is empty
+                }
+                case formal_parameter_target target -> {
+                    DefaultMutableTreeNode formalParameterTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.formal_parameter_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__formal_parameter_target")
+                    ));
+                    parentNode.add(formalParameterTarget);
+
+                    this.addNode(formalParameterTarget,
+                            startPos,
+                            u1.LENGTH,
+                            "formal_parameter_index",
+                            target.formal_parameter_index.value,
+                            "msg_attr_type_annotation__target_info__formal_parameter_target__formal_parameter_index",
+                            Icons.Index
+                    );
+                }
+                case throws_target target -> {
+                    DefaultMutableTreeNode throwsTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.throws_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__throws_target")
+                    ));
+                    parentNode.add(throwsTarget);
+
+                    this.addNode(throwsTarget,
+                            startPos, u2.LENGTH,
+                            "throws_type_index", target.throws_type_index.value,
+                            "msg_attr_type_annotation__target_info__throws_target__throws_type_index",
+                            Icons.Index
+                    );
+                }
+                case localvar_target target -> {
+                    DefaultMutableTreeNode localvarTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.localvar_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__localvar_target")
+                    ));
+                    parentNode.add(localvarTargetNode);
+
+                    target.generateTreeNode(localvarTargetNode, fileFormat);
+                }
+                case catch_target target -> {
+                    DefaultMutableTreeNode catchTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.catch_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__catch_target")
+                    ));
+                    parentNode.add(catchTarget);
+
+                    this.addNode(catchTarget,
+                            startPos, u2.LENGTH,
+                            "exception_table_index", target.exception_table_index.value,
+                            "msg_attr_type_annotation__target_info__catch_target__exception_table_index",
+                            Icons.Index
+                    );
+                }
+                case offset_target target -> {
+                    DefaultMutableTreeNode offsetTarget = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.offset_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__offset_target")
+                    ));
+                    parentNode.add(offsetTarget);
+
+                    this.addNode(offsetTarget,
+                            startPos, u2.LENGTH,
+                            "offset", target.offset.value,
+                            "msg_attr_type_annotation__target_info__offset_target__offset",
+                            Icons.Offset
+                    );
+                }
+                case type_argument_target target -> {
+                    DefaultMutableTreeNode typeArgumentTargetNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                            startPos,
+                            target.getLength(),
+                            type_annotation.type_argument_target.UNION_NAME,
+                            MESSAGES.getString("msg_attr_type_annotation__target_info__type_argument_target")
+                    ));
+                    parentNode.add(typeArgumentTargetNode);
+
+                    target.generateTreeNode(typeArgumentTargetNode, fileFormat);
+                }
+                case null -> {
+                    // Unrecognized target_type
+                }
+            }
         }
 
         /// Get the [TargetType] of a `target_type` value.

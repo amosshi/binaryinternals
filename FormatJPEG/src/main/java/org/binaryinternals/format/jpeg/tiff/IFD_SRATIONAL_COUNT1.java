@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class IFD_SRATIONAL_COUNT1 extends IFD_SRATIONAL {
     }
 
     @Override
-    public boolean isValue(){
+    public boolean isValue() {
         return false;
     }
 

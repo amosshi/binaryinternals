@@ -4,6 +4,7 @@
  * Copyright  2004, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;

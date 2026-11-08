@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -117,16 +118,17 @@ public final class header_item extends FileComponent implements GenerateTreeNode
         parentNode.add(headerNode);
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "checksum", this.checksum, "msg_header_item_checksum", Icons.Checksum);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
-        nodeTemp = addNode(headerNode, floatPos, this.signature.length, "signature", Type_ubyte.toString(this.signature), "msg_header_item_signature", Icons.Signature);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        nodeTemp = addNode(headerNode, floatPos, this.signature.length, "signature", Type_ubyte.toString(this.signature), "msg_header_item_signature",
+                Icons.Signature);
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "file_size", this.file_size, "msg_header_item_file_size", Icons.Size);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "header_size", this.header_size, "msg_header_item_header_size", Icons.Size);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 floatPos,
@@ -138,56 +140,55 @@ public final class header_item extends FileComponent implements GenerateTreeNode
         floatPos += Type_uint.LENGTH;
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "link_size", this.link_size, "msg_header_item_link_size", Icons.Size);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "link_off", this.link_off, "msg_header_item_link_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "map_off", this.map_off, "msg_header_item_map_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_size", this.string_ids_size, "msg_header_item_string_ids_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "string_ids_off", this.string_ids_off, "msg_header_item_string_ids_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_size", this.type_ids_size, "msg_header_item_type_ids_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "type_ids_off", this.type_ids_off, "msg_header_item_type_ids_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_size", this.proto_ids_size, "msg_header_item_proto_ids_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "proto_ids_off", this.proto_ids_off, "msg_header_item_proto_ids_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_size", this.field_ids_size, "msg_header_item_field_ids_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "field_ids_off", this.field_ids_off, "msg_header_item_field_ids_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_size", this.method_ids_size, "msg_header_item_method_ids_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "method_ids_off", this.method_ids_off, "msg_header_item_method_ids_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_size", this.class_defs_size, "msg_header_item_class_defs_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "class_defs_off", this.class_defs_off, "msg_header_item_class_defs_off", Icons.Offset);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         nodeTemp = addNode(headerNode, floatPos, Type_uint.LENGTH, "data_size", this.data_size, "msg_header_item_data_size", Icons.Counter);
-        floatPos = ((JTreeNodeFileComponent)nodeTemp.getUserObject()).getLastPosPlus1();
+        floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
 
         addNode(headerNode, floatPos, Type_uint.LENGTH, "data_off", this.data_off, "msg_header_item_data_off", Icons.Offset);
     }
-
 
     /// The constant [Endian#ENDIAN_CONSTANT] is used to indicate the
     /// endianness of the file in which it is found. Although the standard .dex
@@ -210,7 +211,7 @@ public final class header_item extends FileComponent implements GenerateTreeNode
         public final int byte3;
         public final int byte4;
 
-        private Endian(int i) {
+        Endian(int i) {
             this.value = i;
             this.byte1 = i >> 24;
             this.byte2 = (i << 8) >> 24;

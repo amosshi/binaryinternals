@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.io.DataInputStream;
@@ -171,6 +172,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return Integer.toUnsignedLong(this.readInt());
     }
 
+    /// Reads an unsigned `int` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the unsigned value as `long`
+    /// @throws IOException Read failed
+    public long readUnsignedInt(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedIntInLittleEndian() : this.readUnsignedInt();
+    }
+
     @Override
     public long readUnsignedIntInLittleEndian() throws IOException {
         return Integer.toUnsignedLong(this.readIntInLittleEndian());
@@ -184,6 +194,15 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
     @Override
     public BigInteger readUnsignedLong() throws IOException {
         return toUnsignedBigInteger(this.readLong());
+    }
+
+    /// Reads an unsigned `long` in the given byte order.
+    ///
+    /// @param order Byte order of the data
+    /// @return the unsigned value as [BigInteger]
+    /// @throws IOException Read failed
+    public BigInteger readUnsignedLong(final ByteOrder order) throws IOException {
+        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedLongInLittleEndian() : this.readUnsignedLong();
     }
 
     @Override
@@ -218,15 +237,6 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return order == ByteOrder.LITTLE_ENDIAN ? this.readIntInLittleEndian() : this.readInt();
     }
 
-    /// Reads an unsigned `int` in the given byte order.
-    ///
-    /// @param order Byte order of the data
-    /// @return the unsigned value as `long`
-    /// @throws IOException Read failed
-    public long readUnsignedInt(final ByteOrder order) throws IOException {
-        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedIntInLittleEndian() : this.readUnsignedInt();
-    }
-
     /// Reads a `long` in the given byte order.
     ///
     /// @param order Byte order of the data
@@ -236,17 +246,13 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return order == ByteOrder.LITTLE_ENDIAN ? this.readLongInLittleEndian() : this.readLong();
     }
 
-    /// Reads an unsigned `long` in the given byte order.
-    ///
-    /// @param order Byte order of the data
-    /// @return the unsigned value as [BigInteger]
-    /// @throws IOException Read failed
-    public BigInteger readUnsignedLong(final ByteOrder order) throws IOException {
-        return order == ByteOrder.LITTLE_ENDIAN ? this.readUnsignedLongInLittleEndian() : this.readUnsignedLong();
-    }
-
     private static BigInteger toUnsignedBigInteger(final long value) {
         return BigInteger.valueOf(value).and(UNSIGNED_LONG_MASK);
+    }
+
+    @Override
+    public String readASCII() throws IOException {
+        return this.readASCIIUntil((byte) 0);
     }
 
     @Override
@@ -259,11 +265,6 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         final byte[] bytes = new byte[length];
         this.readFully(bytes);
         return new String(bytes, StandardCharsets.ISO_8859_1);
-    }
-
-    @Override
-    public String readASCII() throws IOException {
-        return this.readASCIIUntil((byte) 0);
     }
 
     /// Read current byte array as ASCII string until `byte` `end`.
@@ -375,21 +376,6 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         return -1;
     }
 
-    /// Forward current position until the byte value `b`.
-    ///
-    /// @param b Target byte
-    /// @return the new position, or -1 if `b` not found
-    public int forwardTo(final byte b) {
-        final byte[] buf = this.getBuf();
-        for (int i = this.posIn.getPos(); i < buf.length; i++) {
-            if (buf[i] == b) {
-                this.posIn.setPos(i);
-                return i;
-            }
-        }
-        return -1;
-    }
-
     /// Backward current position until the byte array value `b`.
     ///
     /// @return the new position, or -1 if `b` not found
@@ -402,6 +388,21 @@ public class PosDataInputStream extends DataInputStream implements DataInputEx {
         final byte[] buf = this.getBuf();
         for (int i = this.posIn.getPos() - b.length; i > -1; i--) {
             if (BytesTool.isByteArraySame(b, buf, i)) {
+                this.posIn.setPos(i);
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /// Forward current position until the byte value `b`.
+    ///
+    /// @param b Target byte
+    /// @return the new position, or -1 if `b` not found
+    public int forwardTo(final byte b) {
+        final byte[] buf = this.getBuf();
+        for (int i = this.posIn.getPos(); i < buf.length; i++) {
+            if (buf[i] == b) {
                 this.posIn.setPos(i);
                 return i;
             }

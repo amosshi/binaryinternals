@@ -4,10 +4,11 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
-import java.nio.charset.StandardCharsets;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
@@ -23,6 +24,9 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
     public static final String CATEGORY_E = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_E);
     public static final String CATEGORY_F = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F);
     public static final String CATEGORY_G = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G);
+    /// @see IFD_9000_ExifVersion
+    /// @see IFD_A000_FlashpixVersion
+    public static final String FormatVersion = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion);  // Section 4.2
 
     public IFD_8769_Exif(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
@@ -31,7 +35,7 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
         this.parseSubIFDs(IFDParse::parse, TagSpace.DEFAULT);
     }
 
-    public final long getExifOffset() {
+    public long getExifOffset() {
         return super.value[0];
     }
 
@@ -49,7 +53,6 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
                 "Exif Offset: %d".formatted(this.getExifOffset()));
         comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_Offset));
         parentNode.add(new DefaultMutableTreeNode(comp));
-
 
         // Sub IFD
         comp = new JTreeNodeFileComponent(
@@ -89,9 +92,6 @@ public final class IFD_8769_Exif extends IFD_LONG_Pointer {
         // Next IFD
         super.generateTreeNode_NextIFD(node);
     }
-    /// @see IFD_9000_ExifVersion
-    /// @see IFD_A000_FlashpixVersion
-    public static final String FormatVersion = IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion);  // Section 4.2
 
     /// @see IFD_9000_ExifVersion
     /// @see IFD_A000_FlashpixVersion

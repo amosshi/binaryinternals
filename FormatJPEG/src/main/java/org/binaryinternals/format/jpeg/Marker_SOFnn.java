@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -98,7 +99,6 @@ public class Marker_SOFnn extends Marker {
         if (this.Nf <= 0 || this.C == null) {
             return;
         }
-
 
         final DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 pos + 10,

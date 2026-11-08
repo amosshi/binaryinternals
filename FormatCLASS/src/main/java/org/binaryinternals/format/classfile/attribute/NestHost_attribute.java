@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class NestHost_attribute extends attribute_info {
         int cpIndex = this.host_class_index.value;
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
-                "host_class_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "host class", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "host_class_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "host class", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_attr_NestHost__host_class_index", Icons.Class
         );
     }

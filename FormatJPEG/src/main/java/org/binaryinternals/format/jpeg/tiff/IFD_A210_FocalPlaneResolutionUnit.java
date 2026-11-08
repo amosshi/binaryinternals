@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_A210_FocalPlaneResolutionUnit extends IFD_SHORT_COUNT1 {
 
-    public IFD_A210_FocalPlaneResolutionUnit(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
+    public IFD_A210_FocalPlaneResolutionUnit(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
@@ -26,7 +27,6 @@ public class IFD_A210_FocalPlaneResolutionUnit extends IFD_SHORT_COUNT1 {
         super.generateTreeNode_SHORT(
                 parentNode,
                 IFDMessage.getString(IFDMessage.KEY_IFD_A210_Description)
-                + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G)
-                );
+                + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

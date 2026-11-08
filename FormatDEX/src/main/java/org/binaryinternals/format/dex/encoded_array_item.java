@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import org.binaryinternals.commonlib.Icons;
 /// ```
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class encoded_array_item extends FileComponent implements GenerateTreeNodeDexFile {
-    
+
     public final encoded_array value;
 
     encoded_array_item(PosDataInputStreamDex stream) throws IOException {
@@ -32,7 +33,8 @@ public final class encoded_array_item extends FileComponent implements GenerateT
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
-        DefaultMutableTreeNode valueNode = addNode(parentNode, super.startPos, this.value.getLength(), "value", this.value, "msg_encoded_array_item__value", Icons.Data);
+        DefaultMutableTreeNode valueNode = addNode(parentNode, super.startPos, this.value.getLength(), "value", this.value, "msg_encoded_array_item__value",
+                Icons.Data);
         this.value.generateTreeNode(valueNode, dexFile);
     }
 }

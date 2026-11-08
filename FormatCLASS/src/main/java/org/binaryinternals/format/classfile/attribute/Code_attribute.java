@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -83,7 +84,6 @@ public class Code_attribute extends attribute_info {
 
     Code_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
         super(nameIndex, type, posDataInputStream);
-
 
         this.max_stack = new u2(posDataInputStream);
         this.max_locals = new u2(posDataInputStream);

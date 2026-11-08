@@ -4,6 +4,7 @@
  * Copyright 2026, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.web;
 
 /// Minimal JSON writing helpers, to keep the project free of 3rd party
@@ -12,7 +13,20 @@ package org.binaryinternals.web;
 /// @author Amos Shi
 final class Json {
 
+    /// Unicode LINE SEPARATOR (U+2028), valid in JSON but a line break in JavaScript.
+    private static final char LINE_SEPARATOR = 0x2028;
+    /// Unicode PARAGRAPH SEPARATOR (U+2029), valid in JSON but a line break in JavaScript.
+    private static final char PARAGRAPH_SEPARATOR = 0x2029;
+
     private Json() {
+    }
+
+    /// Get `s` as a quoted JSON string.
+    ///
+    /// @param s The string
+    /// @return JSON string
+    static String string(final String s) {
+        return string(new StringBuilder(), s).toString();
     }
 
     /// Append `s` as a quoted JSON string, or `null`.
@@ -36,7 +50,7 @@ final class Json {
                 case '\b' -> sb.append("\\b");
                 case '\f' -> sb.append("\\f");
                 // < and > escaped too, so the JSON is safe to embed in HTML
-                case '<', '>', '\u2028', '\u2029' -> sb.append("\\u%04x".formatted((int) c));
+                case '<', '>', LINE_SEPARATOR, PARAGRAPH_SEPARATOR -> sb.append("\\u%04x".formatted((int) c));
                 default -> {
                     if (c < 0x20) {
                         sb.append("\\u%04x".formatted((int) c));
@@ -47,14 +61,6 @@ final class Json {
             }
         }
         return sb.append('"');
-    }
-
-    /// Get `s` as a quoted JSON string.
-    ///
-    /// @param s The string
-    /// @return JSON string
-    static String string(final String s) {
-        return string(new StringBuilder(), s).toString();
     }
 
     /// Get the JSON error body `{"status": 415, "error": "..."}`.

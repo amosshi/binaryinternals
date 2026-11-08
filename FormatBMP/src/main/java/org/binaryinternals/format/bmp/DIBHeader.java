@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.bmp;
 
 import java.io.IOException;
@@ -372,7 +373,8 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         public final long AlphaMask;
         /// The color space of the DIB.
         public final int ColorSpaceType;
-        /// Specifies the x, y, and z coordinates of the three colors that correspond to the red, green, and blue endpoints for the logical color space associated with the bitmap.
+        /// Specifies the x, y, and z coordinates of the three colors that correspond to the red, green, and blue endpoints for the logical color space
+        /// associated with the bitmap.
         public final CIEXYZTRIPLE Endpoints;
         /// Tone response curve for red.
         public final long GammaRed;

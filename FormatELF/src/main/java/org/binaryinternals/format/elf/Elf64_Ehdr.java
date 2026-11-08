@@ -4,6 +4,7 @@
  * Copyright 2020, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.elf;
 
 import java.io.IOException;
@@ -22,13 +23,13 @@ import org.binaryinternals.format.elf.Elf64Type.Elf64_Word;
 ///
 /// ```
 ///   typedef struct elf64_hdr {
-///     unsigned char	e_ident[EI_NIDENT];      // ELF "magic number"
+///     unsigned char   e_ident[EI_NIDENT];      // ELF "magic number"
 ///     Elf64_Half e_type;
 ///     Elf64_Half e_machine;
 ///     Elf64_Word e_version;
-///     Elf64_Addr e_entry;		         // Entry point virtual address
-///     Elf64_Off e_phoff;	         	 // Program header table file offset
-///     Elf64_Off e_shoff         ;		 // Section header table file offset
+///     Elf64_Addr e_entry;                      // Entry point virtual address
+///     Elf64_Off e_phoff;                       // Program header table file offset
+///     Elf64_Off e_shoff         ;              // Section header table file offset
 ///     Elf64_Word e_flags;
 ///     Elf64_Half e_ehsize;
 ///     Elf64_Half e_phentsize;
@@ -128,10 +129,10 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
         ET_EXEC(0x02),
         ET_DYN(0x03),
         ET_CORE(0x04),
-        ET_LOOS(0xfe00),
-        ET_HIOS(0xfeff),
-        ET_LOPROC(0xff00),
-        ET_HIPROC(0xffff);
+        ET_LOOS(0xFE00),
+        ET_HIOS(0xFEFF),
+        ET_LOPROC(0xFF00),
+        ET_HIPROC(0xFFFF);
 
         /// Inner value of the enumeration item.
         public final int value;
@@ -293,7 +294,8 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
                 currentPos,
                 Elf64_Addr.LENGTH,
                 "e_entry = 0x%016X (%d)".formatted(this.e_entry.value(), this.e_entry.value()),
-                "This is the memory address of the entry point from where the process starts executing. This field is either 32 or 64 bits long depending on the format defined earlier.")));
+                "This is the memory address of the entry point from where the process starts executing. This field is either 32 or 64 bits long depending on "
+                        + "the format defined earlier.")));
         currentPos += Elf64_Addr.LENGTH;
 
         // e_phoff
@@ -301,7 +303,8 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
                 currentPos,
                 Elf64_Off.LENGTH,
                 "e_phoff = 0x%016X (%d)".formatted(this.e_phoff.value(), this.e_phoff.value()),
-                "Points to the start of the program header table. It usually follows the file header immediately, making the offset 0x34 or 0x40 for 32- and 64-bit ELF executables, respectively.")));
+                "Points to the start of the program header table. It usually follows the file header immediately, making the offset 0x34 or 0x40 for 32- and "
+                        + "64-bit ELF executables, respectively.")));
         currentPos += Elf64_Off.LENGTH;
 
         // e_shoff

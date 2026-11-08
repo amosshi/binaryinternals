@@ -4,6 +4,7 @@
  * Copyright 2009, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.awt.BorderLayout;

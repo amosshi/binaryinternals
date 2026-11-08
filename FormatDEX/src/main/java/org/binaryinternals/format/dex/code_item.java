@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -75,7 +76,6 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
             this.handlers = null;
         }
 
-
         super.length = stream.getPos() - super.startPos;
     }
 
@@ -92,7 +92,6 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_uint.LENGTH, "debug_info_off", this.debug_info_off, "msg_code_item__debug_info_off", Icons.Offset);
     }
-
 
     public static final class try_item extends FileComponent implements GenerateTreeNode {
 

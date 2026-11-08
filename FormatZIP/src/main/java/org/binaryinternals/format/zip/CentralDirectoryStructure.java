@@ -4,6 +4,7 @@
  * Copyright 2011, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.zip;
 
 import java.io.IOException;
@@ -174,6 +175,15 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
                 Icons.Offset
         )));
         position += 4;
+        this.generateTreeNodeVariableFields(headerNode, position);
+    }
+
+    /// Generate the variable length fields: file name, extra field and file comment.
+    ///
+    /// @param headerNode The file header node
+    /// @param start Start position of the file name
+    private void generateTreeNodeVariableFields(final DefaultMutableTreeNode headerNode, final int start) {
+        int position = start;
         if (this.header.FileName != null) {
             headerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     position,
@@ -282,7 +292,8 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
             final int startPos = stream.getPos();
             stream.readFully(this.Signature);
             if (!Arrays.equals(this.Signature, ZIPFile.CENTRAL_FILE_HEADER)) {
-                throw new FileFormatException(LocalFileHeader.signatureMismatch("central file header signature", startPos, this.Signature, ZIPFile.CENTRAL_FILE_HEADER));
+                throw new FileFormatException(LocalFileHeader.signatureMismatch("central file header signature", startPos, this.Signature,
+                                ZIPFile.CENTRAL_FILE_HEADER));
             }
 
             this.VersionMadeBy = stream.readUnsignedShortInLittleEndian();

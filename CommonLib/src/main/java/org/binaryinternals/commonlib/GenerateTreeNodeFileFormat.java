@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import java.util.ResourceBundle;
@@ -25,7 +26,7 @@ public interface GenerateTreeNodeFileFormat {
     ///
     /// @param parentNode The parent JTree node
     /// @param fileFormat The current [FileFormat] object
-    void generateTreeNode(final DefaultMutableTreeNode parentNode, FileFormat fileFormat);
+    void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat);
 
     /// Get the messages resource of current file format.
     ///
@@ -43,7 +44,8 @@ public interface GenerateTreeNodeFileFormat {
     /// @param msgkey Display message key
     /// @param icon Node icon
     /// @return The new added tree node
-    default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String fieldName, Object value, String msgkey, Icons icon) {
+    default DefaultMutableTreeNode addNode(DefaultMutableTreeNode parentNode, int startPos, int len, String fieldName, Object value, String msgkey,
+            Icons icon) {
         JTreeNodeFileComponent fileComp = new JTreeNodeFileComponent(
                 startPos,
                 len,

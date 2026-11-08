@@ -4,19 +4,17 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.util.ResourceBundle;
 
 /// @author Amos shi
-public class ShortText{
-
-    private ShortText() {
-    }
+public class ShortText {
 
     private static final ResourceBundle res;
 
-    static{
+    static {
         res = ResourceBundle.getBundle(ShortText.class.getName().replace('.', '/'));
     }
 
@@ -33,7 +31,10 @@ public class ShortText{
     public static final String KEY_denominator_n = "denominator_n";
     public static final String KEY_Unused = "Unused";
 
-    public static String getString(String key){
+    private ShortText() {
+    }
+
+    public static String getString(String key) {
         return res.getString(key);
     }
 }

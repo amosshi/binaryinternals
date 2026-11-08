@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -62,7 +63,8 @@ public final class string_data_item extends FileComponent implements GenerateTre
         int floatPos = this.getStartPos();
         int utf16Size = this.utf16_size.value;
 
-        final DefaultMutableTreeNode nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size, "msg_string_data_item__utf16_size", Icons.Size);
+        final DefaultMutableTreeNode nodeTemp = addNode(parentNode, floatPos, this.utf16_size.length, "utf16_size", utf16Size,
+                "msg_string_data_item__utf16_size", Icons.Size);
         floatPos = ((JTreeNodeFileComponent) nodeTemp.getUserObject()).getLastPosPlus1();
         if (utf16Size > 0) {
             addNode(parentNode, floatPos, this.data.length, "data", this.getString(), "msg_string_data_item__data", Icons.Data);

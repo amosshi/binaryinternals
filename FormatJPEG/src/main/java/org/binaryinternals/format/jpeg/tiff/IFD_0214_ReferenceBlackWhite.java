@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
 
     public static final int COUNT = 6;
 
-    public IFD_0214_ReferenceBlackWhite(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff) 
+    public IFD_0214_ReferenceBlackWhite(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         IFD.checkIFDCount(super.ifd_tag, super.ifd_count, COUNT);

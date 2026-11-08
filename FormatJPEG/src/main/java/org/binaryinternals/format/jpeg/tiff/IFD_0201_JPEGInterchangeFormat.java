@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -18,14 +19,14 @@ public class IFD_0201_JPEGInterchangeFormat extends IFD_LONG_COUNT1 {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
     }
 
-    public boolean isBitstreamPresent(){
-        return (super.value[0] > 0);
+    public boolean isBitstreamPresent() {
+        return super.value[0] > 0;
     }
 
     /// The `JPEG` interchange format bit stream offset within the `TIFF`.
     /// This attribute is valid only if [#isBitstreamPresent] returns `true`.
     /// @return the offset value
-    public long getBitstreamOffset(){
+    public long getBitstreamOffset() {
         return super.value[0];
     }
 

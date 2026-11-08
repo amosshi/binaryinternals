@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public final class annotation_set_ref_list extends FileComponent implements Gene
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat format) {
-        DexFile dexFile = (DexFile)format;
+        final DexFile dexFile = (DexFile) format;
         int floatPos = super.startPos;
 
         addNode(parentNode,

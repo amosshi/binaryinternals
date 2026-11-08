@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile;
 
 import java.io.IOException;
@@ -71,9 +72,7 @@ public class ClassFile extends FileFormat {
 
     public final u4 magic;
 
-    //
     // Class file Version
-    //
     /// Minor version of a `class` file. It is the `minor_version` in
     /// `ClassFile` structure.
     ///
@@ -102,9 +101,7 @@ public class ClassFile extends FileFormat {
     /// </a>
     public final u2 major_version;
 
-    //
     // Constant pool
-    //
     /// Constant Pool Count of a `class` or `interface`. It is the
     /// `constant_pool_count` in `ClassFile` structure.
     ///
@@ -115,9 +112,7 @@ public class ClassFile extends FileFormat {
     public final u2 constant_pool_count;
     public final cp_info[] constant_pool;
 
-    //
     // Class Declaration
-    //
     /// A mask of flags used to denote access permissions to and properties of
     /// this class or interface.
     ///
@@ -162,9 +157,7 @@ public class ClassFile extends FileFormat {
     public final U2ClassComponent interfaces_count;
     public final U2ClassComponent[] interfaces;
 
-    //
     // Field
-    //
     /// Fields Count of a `class` or `interface`. It is the
     /// `fields_count` in `ClassFile` structure.
     ///
@@ -175,9 +168,7 @@ public class ClassFile extends FileFormat {
     public final U2ClassComponent fields_count;
     public final field_info[] fields;
 
-    //
     // Method
-    //
     /// Methods Count of a `class` or `interface`. It is the
     /// `methods_count` in `ClassFile` structure.
     ///
@@ -189,9 +180,7 @@ public class ClassFile extends FileFormat {
     public final U2ClassComponent methods_count;
     public final method_info[] methods;
 
-    //
     // Attribute
-    //
     /// Attributes count of a `class` or `interface`. It is the
     /// `attributes_count` in `ClassFile` structure.
     ///
@@ -202,6 +191,8 @@ public class ClassFile extends FileFormat {
     /// </a>
     public final U2ClassComponent attributes_count;
     public final attribute_info[] attributes;
+
+    private final JTreeClassFile jtreeAdapter = new JTreeClassFile();
 
     /// Creates a new instance of ClassFile from byte array.
     ///
@@ -223,9 +214,7 @@ public class ClassFile extends FileFormat {
     public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException {
         super(classFileBytes, fileName, filePath);
 
-        //
         // Parse the Classfile byte by byte
-        //
         PosDataInputStream posDataInputStream = new PosDataInputStream(new PosByteArrayInputStream(super.fileByteArray));
 
         // magic number
@@ -536,8 +525,6 @@ public class ClassFile extends FileFormat {
     public Optional<Icons> getIcon() {
         return Optional.of(Icons.Java);
     }
-
-    private final JTreeClassFile jtreeAdapter = new JTreeClassFile();
 
     private JTreeClassFile getJTreeAdapter() {
         return this.jtreeAdapter;

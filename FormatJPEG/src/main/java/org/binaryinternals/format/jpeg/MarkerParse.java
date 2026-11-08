@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -31,9 +32,9 @@ public class MarkerParse {
             case MarkerCode.DQT -> new Marker_DQT(pDisFile, markerCode);
             case MarkerCode.DRI -> new Marker_DRI(pDisFile, markerCode);
             case MarkerCode.SOF00, MarkerCode.SOF01, MarkerCode.SOF02, MarkerCode.SOF03,
-                 MarkerCode.SOF05, MarkerCode.SOF06, MarkerCode.SOF07, MarkerCode.SOF09,
-                 MarkerCode.SOF10, MarkerCode.SOF11, MarkerCode.SOF13, MarkerCode.SOF14,
-                 MarkerCode.SOF15 -> new Marker_SOFnn(pDisFile, markerCode);
+                    MarkerCode.SOF05, MarkerCode.SOF06, MarkerCode.SOF07, MarkerCode.SOF09,
+                    MarkerCode.SOF10, MarkerCode.SOF11, MarkerCode.SOF13, MarkerCode.SOF14,
+                    MarkerCode.SOF15 -> new Marker_SOFnn(pDisFile, markerCode);
             case MarkerCode.SOI -> new Marker_SOI(pDisFile, markerCode);
             case MarkerCode.EOI -> new Marker_EOI(pDisFile, markerCode);
             case MarkerCode.DHT -> new Marker_DHT(pDisFile, markerCode);

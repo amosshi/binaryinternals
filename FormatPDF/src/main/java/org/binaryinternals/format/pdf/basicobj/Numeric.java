@@ -47,9 +47,6 @@ public final class Numeric extends FileComponent implements BasicObject {
 
     public static final class StartByte {
 
-        private StartByte() {
-        }
-
         /// Sign '+'.
         public static final byte SIGN_ADD = 0x2B;
         /// Sign '-'.
@@ -76,5 +73,8 @@ public final class Numeric extends FileComponent implements BasicObject {
         public static final byte NUMBER_8 = 0x38;
         /// Number '9'.
         public static final byte NUMBER_9 = 0x39;
+
+        private StartByte() {
+        }
     }
 }

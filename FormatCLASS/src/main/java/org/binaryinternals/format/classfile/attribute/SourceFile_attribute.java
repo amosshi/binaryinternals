@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class SourceFile_attribute extends attribute_info {
         int cpIndex = this.sourcefile_index.value;
         this.addNode(parentNode,
                 super.startPos + 6, u2.LENGTH,
-                "sourcefile_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "source file", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "sourcefile_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "source file", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_attr_SourceFile__sourcefile_index", Icons.Name
         );
     }

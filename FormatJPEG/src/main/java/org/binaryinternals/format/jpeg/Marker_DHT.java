@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -40,8 +41,8 @@ public class Marker_DHT extends Marker {
 
         // Tc, Th
         byte b = pDisMarker.readByte();
-        this.Tc = (b & 0xF0) >> 4;    // TODO: Check this value
-        this.Th = (b & 0x0F);         // TODO: Check this value
+        this.Tc = (b & 0xF0) >> 4;    // Table class: 0 = DC table, 1 = AC table
+        this.Th = (b & 0x0F);         // Huffman table destination identifier: 0 - 3
 
         // Li
         for (int i = 0; i < 16; i++) {

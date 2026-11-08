@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class IFD_010E_ImageDescription extends IFD_ASCII {
 
-    private final static String IFD_Image_Description = """
+    private static final String IFD_Image_Description = """
             A string that describes the subject of the image. \
             For example, a user may wish to attach a comment such as "1988 company picnic" to an image.""";
 

@@ -4,11 +4,12 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /// The type `dateTimeNumber` defined in ICC Specification
 /// ICC.1:2004-10 (Profile version 4.2.0.0).

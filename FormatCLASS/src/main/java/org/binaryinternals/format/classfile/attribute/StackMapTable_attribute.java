@@ -4,6 +4,7 @@
  * Copyright  2014, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ import org.binaryinternals.format.classfile.u2;
 public class StackMapTable_attribute extends attribute_info {
 
     private static final String FIELD_OFFSET_DELTA = "offset_delta";
-    private static final String MSGKEY_OFFSET_DELTA= "msg_attr_stack_map_frame__all__offset_delta";
+    private static final String MSGKEY_OFFSET_DELTA = "msg_attr_stack_map_frame__all__offset_delta";
     private static final String MSGKEY_VTI = "msg_attr_verification_type_info";
 
     /// Gives the number of [stack_map_frame] entries in the

@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.EOFException;
@@ -138,12 +139,13 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
     /// @throws IOException I/O Error
     public Type_long Dex_long(int length) throws IOException {
         final boolean constant = this.endian == header_item.Endian.ENDIAN_CONSTANT;
-        return new Type_long(switch (length) {
+        final long value = switch (length) {
             case 5 -> constant ? this.readLong5() : this.readLong5InLittleEndian();
             case 6 -> constant ? this.readLong6() : this.readLong6InLittleEndian();
             case 7 -> constant ? this.readLong7() : this.readLong7InLittleEndian();
             default -> throw new IllegalArgumentException("Unexpected long value length: %d".formatted(length));
-        });
+        };
+        return new Type_long(value);
     }
 
     /// Read a [Type_ulong] from the input stream.
@@ -160,7 +162,7 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
     /// @throws FileFormatException Invalid LEB128 format
     /// @return a [Type_sleb128]
     public Type_sleb128 Dex_sleb128() throws IOException {
-        int startPos = super.getPos();
+        final int startPos = super.getPos();
         int result = 0;
         int cur;
         int count = 0;
@@ -168,7 +170,7 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
 
         do {
             cur = super.readUnsignedByte();
-            result |= (cur & 0x7f) << (count * 7);
+            result |= (cur & 0x7F) << (count * 7);
             signBits <<= 7;
             count++;
         } while (((cur & 0x80) == 0x80) && count < 5);
@@ -197,7 +199,7 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
 
         do {
             cur = super.readUnsignedByte();
-            result |= (cur & 0x7f) << (count * 7);
+            result |= (cur & 0x7F) << (count * 7);
             count++;
         } while (((cur & 0x80) == 0x80) && count < 5);
 
@@ -277,18 +279,18 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
-            return (0xFFFFFF0000000000L
+            return 0xFFFFFF0000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
+            return ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255));
         }
     }
 
@@ -297,18 +299,18 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_4] & 0x80) > 0) {
-            return (0xFFFFFF0000000000L
+            return 0xFFFFFF0000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
+            return ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         }
     }
 
@@ -317,41 +319,42 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
-            return (0xFFFF000000000000L
+            return 0xFFFF000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
+            return ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255));
         }
     }
+
     private long readLong6InLittleEndian() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_6];
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_5] & 0x80) > 0) {
-            return (0xFFFF000000000000L
+            return 0xFFFF000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
+            return ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         }
     }
 
@@ -360,45 +363,46 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_6] & 0x80) > 0) {
-            return (0xFF00000000000000L
+            return 0xFF00000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
+            return ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255));
         }
     }
+
     private long readLong7InLittleEndian() throws IOException {
         final byte[] readBuffer = new byte[BYTE_LENGTH_7];
         super.readFully(readBuffer);
 
         if ((readBuffer[BYTE_OFFSET_6] & 0x80) > 0) {
-            return (0xFF00000000000000L
+            return 0xFF00000000000000L
                     | ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         } else {
-            return (  ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
+            return ((long) (readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_48)
                     | ((long) (readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_40)
                     | ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_32)
                     | ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_24)
                     | ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_16)
                     | ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_8)
-                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255)));
+                    | ((long) (readBuffer[BYTE_OFFSET_0] & BYTE_MAX_255));
         }
     }
 
@@ -413,14 +417,14 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         readBuffer[BYTE_OFFSET_3] = 0;
         readBuffer[BYTE_OFFSET_4] = 0;
 
-        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+        return ((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
                 + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
                 + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
                 + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
                 + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
                 + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
                 + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
-                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255));
     }
 
     /// Read 3-byte unsigned int in little-endian.
@@ -437,13 +441,13 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         readBuffer[BYTE_OFFSET_1] = 0;
         readBuffer[BYTE_OFFSET_0] = 0;
 
-        return (((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
+        return ((long) readBuffer[BYTE_OFFSET_0] << SHIFT_56)
                 + ((long) (readBuffer[BYTE_OFFSET_1] & BYTE_MAX_255) << SHIFT_48)
                 + ((long) (readBuffer[BYTE_OFFSET_2] & BYTE_MAX_255) << SHIFT_40)
                 + ((long) (readBuffer[BYTE_OFFSET_3] & BYTE_MAX_255) << SHIFT_32)
                 + ((long) (readBuffer[BYTE_OFFSET_4] & BYTE_MAX_255) << SHIFT_24)
                 + ((readBuffer[BYTE_OFFSET_5] & BYTE_MAX_255) << SHIFT_16)
                 + ((readBuffer[BYTE_OFFSET_6] & BYTE_MAX_255) << SHIFT_8)
-                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255)));
+                + ((readBuffer[BYTE_OFFSET_7] & BYTE_MAX_255));
     }
 }

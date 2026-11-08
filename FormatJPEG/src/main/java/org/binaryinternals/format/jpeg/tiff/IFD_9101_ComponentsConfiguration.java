@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class IFD_9101_ComponentsConfiguration extends IFD_UNDEFINED {
         return true;
     }
 
-    public String getValue(){
+    public String getValue() {
         final StringBuilder sb = new StringBuilder(20);
         sb.append(super.value[0]);
         sb.append(' ');

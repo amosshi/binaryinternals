@@ -4,6 +4,7 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -101,7 +102,7 @@ public final class map_list extends FileComponent implements GenerateTreeNode {
         public final Type_ushort value;
         final Class<?> item_type;
 
-        private TypeCodes(Class<?> clazz, int value) {
+        TypeCodes(Class<?> clazz, int value) {
             this.value = new Type_ushort(value);
             this.item_type = clazz;
         }

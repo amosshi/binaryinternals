@@ -4,13 +4,11 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 /// @author Amos Shi
 public class IFDType {
-
-    private IFDType() {
-    }
 
     public static final int UnexpectedType = 0;
     public static final int BYTE = 1;
@@ -39,7 +37,9 @@ public class IFDType {
     public static final int LENGTH_FLOAT = 4;
     public static final int LENGTH_DOUBLE = 8;
 
-    
+    private IFDType() {
+    }
+
     public static String getTypeName(int type) {
         return switch (type) {
             case IFDType.BYTE -> "BYTE";
@@ -58,7 +58,7 @@ public class IFDType {
         };
     }
 
-    public static int getTypeLength(int type){
+    public static int getTypeLength(int type) {
         return switch (type) {
             case IFDType.BYTE -> IFDType.LENGTH_BYTE;
             case IFDType.ASCII -> IFDType.LENGTH_ASCII;

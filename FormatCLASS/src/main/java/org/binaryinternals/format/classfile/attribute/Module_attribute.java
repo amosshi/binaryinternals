@@ -4,6 +4,7 @@
  * Copyright 2019, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -222,45 +223,10 @@ public class Module_attribute extends attribute_info {
         );
         startPosMoving += u2.LENGTH;
 
-        //
         // requires
-        //
-        this.addNode(parentNode,
-                startPosMoving, u2.LENGTH,
-                "requires_count", this.requires_count.value,
-                "msg_attr_requires_count", Icons.Counter
-        );
-        startPosMoving += u2.LENGTH;
+        startPosMoving = this.generateTreeNodeRequires(parentNode, classFile, startPosMoving);
 
-        if (this.requires_count.value > 0) {
-            final DefaultMutableTreeNode requiresNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    Module_attribute.Requires.LENGTH * this.requires_count.value,
-                    "requires [%d]".formatted(this.requires_count.value),
-                    MESSAGES.getString("msg_attr_requires")
-            ));
-            parentNode.add(requiresNode);
-
-            for (int i = 0; i < this.requires.length; i++) {
-                DefaultMutableTreeNode requireNode = this.addNode(requiresNode,
-                        this.requires[i].getStartPos(),
-                        this.requires[i].getLength(),
-                        "requires %d".formatted(i + 1),
-                        classFile.getCPDescription(this.requires[i].requires_index.value),
-                        "msg_attr_requires",
-                        Icons.Data
-                );
-                this.requires[i].generateTreeNode(requireNode, format);
-            }
-
-            // Update the new startPos
-            Module_attribute.Requires requireLastItem = this.requires[this.requires.length - 1];
-            startPosMoving = requireLastItem.getStartPos() + requireLastItem.getLength();
-        }
-
-        //
         // exports
-        //
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
                 "exports_count", this.exports_count.value,
@@ -292,9 +258,7 @@ public class Module_attribute extends attribute_info {
             startPosMoving = exporstLastItem.getStartPos() + exporstLastItem.getLength();
         }
 
-        //
         // opens
-        //
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
                 "opens_count", this.opens_count.value,
@@ -326,9 +290,90 @@ public class Module_attribute extends attribute_info {
             startPosMoving = opensLastItem.getStartPos() + opensLastItem.getLength();
         }
 
-        //
         // uses
-        //
+        startPosMoving = this.generateTreeNodeUses(parentNode, classFile, startPosMoving);
+
+        // provides
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "provides_count", this.provides_count.value,
+                "msg_attr_provides_count", Icons.Counter
+        );
+        startPosMoving += u2.LENGTH;
+
+        if (this.provides_count.value > 0) {
+            Module_attribute.Provides provideLastItem = this.provides[this.provides_count.value - 1];
+            final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    provideLastItem.getStartPos() + provideLastItem.getLength() - startPosMoving,
+                    "provides [%d]".formatted(this.provides_count.value),
+                    MESSAGES.getString("msg_attr_provides")
+            ));
+            parentNode.add(providesNode);
+
+            for (int i = 0; i < this.provides.length; i++) {
+                DefaultMutableTreeNode provideNode = this.addNode(providesNode,
+                        this.provides[i].getStartPos(),
+                        this.provides[i].getLength(),
+                        "provide %d".formatted(i + 1), classFile.getCPDescription(this.provides[i].provides_index.value),
+                        "msg_attr_provides", Icons.Data
+                );
+                this.provides[i].generateTreeNode(provideNode, format);
+            }
+        }
+    }
+
+    /// Generate the `requires_count` and `requires` nodes.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param classFile The class file
+    /// @param startPos Start position of the count
+    /// @return Position after the section
+    private int generateTreeNodeRequires(final DefaultMutableTreeNode parentNode, final ClassFile classFile, final int startPos) {
+        int startPosMoving = startPos;
+        this.addNode(parentNode,
+                startPosMoving, u2.LENGTH,
+                "requires_count", this.requires_count.value,
+                "msg_attr_requires_count", Icons.Counter
+        );
+        startPosMoving += u2.LENGTH;
+
+        if (this.requires_count.value > 0) {
+            final DefaultMutableTreeNode requiresNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    startPosMoving,
+                    Module_attribute.Requires.LENGTH * this.requires_count.value,
+                    "requires [%d]".formatted(this.requires_count.value),
+                    MESSAGES.getString("msg_attr_requires")
+            ));
+            parentNode.add(requiresNode);
+
+            for (int i = 0; i < this.requires.length; i++) {
+                DefaultMutableTreeNode requireNode = this.addNode(requiresNode,
+                        this.requires[i].getStartPos(),
+                        this.requires[i].getLength(),
+                        "requires %d".formatted(i + 1),
+                        classFile.getCPDescription(this.requires[i].requires_index.value),
+                        "msg_attr_requires",
+                        Icons.Data
+                );
+                this.requires[i].generateTreeNode(requireNode, classFile);
+            }
+
+            // Update the new startPos
+            Module_attribute.Requires requireLastItem = this.requires[this.requires.length - 1];
+            startPosMoving = requireLastItem.getStartPos() + requireLastItem.getLength();
+        }
+        return startPosMoving;
+    }
+
+    /// Generate the `uses_count` and `uses_index` nodes.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param classFile The class file
+    /// @param startPos Start position of the count
+    /// @return Position after the section
+    private int generateTreeNodeUses(final DefaultMutableTreeNode parentNode, final ClassFile classFile, final int startPos) {
+        int startPosMoving = startPos;
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
                 "uses_count", this.uses_count.value,
@@ -360,37 +405,7 @@ public class Module_attribute extends attribute_info {
 
             startPosMoving += uses_count_length;
         }
-
-        //
-        // provides
-        //
-        this.addNode(parentNode,
-                startPosMoving, u2.LENGTH,
-                "provides_count", this.provides_count.value,
-                "msg_attr_provides_count", Icons.Counter
-        );
-        startPosMoving += u2.LENGTH;
-
-        if (this.provides_count.value > 0) {
-            Module_attribute.Provides provideLastItem = this.provides[this.provides_count.value - 1];
-            final DefaultMutableTreeNode providesNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                    startPosMoving,
-                    provideLastItem.getStartPos() + provideLastItem.getLength() - startPosMoving,
-                    "provides [%d]".formatted(this.provides_count.value),
-                    MESSAGES.getString("msg_attr_provides")
-            ));
-            parentNode.add(providesNode);
-
-            for (int i = 0; i < this.provides.length; i++) {
-                DefaultMutableTreeNode provideNode = this.addNode(providesNode,
-                        this.provides[i].getStartPos(),
-                        this.provides[i].getLength(),
-                        "provide %d".formatted(i + 1), classFile.getCPDescription(this.provides[i].provides_index.value),
-                        "msg_attr_provides", Icons.Data
-                );
-                this.provides[i].generateTreeNode(provideNode, format);
-            }
-        }
+        return startPosMoving;
     }
 
     @Override

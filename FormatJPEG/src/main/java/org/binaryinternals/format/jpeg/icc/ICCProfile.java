@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.icc;
 
 import java.io.IOException;
@@ -43,18 +44,16 @@ public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        DefaultMutableTreeNode nodeHeader;
-        int lastPos;
-
-        nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+        DefaultMutableTreeNode nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                 this.header.getStartPos(),
                 this.header.getLength(),
                 "Profile header"));
         parentNode.add(nodeHeader);
         this.header.generateTreeNode(nodeHeader);
 
+        int lastPos = this.header.getStartPos() + this.header.getLength();
         nodeHeader = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                lastPos = this.header.getStartPos() + this.header.getLength(),
+                lastPos,
                 4,
                 "Tag count = %d".formatted(this.tagCount)));
         parentNode.add(nodeHeader);

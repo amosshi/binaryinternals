@@ -4,10 +4,11 @@
  * Copyright 2015, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
-import java.nio.file.Path;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public final class DexFile extends FileFormat {
 
     /// The constant NO_INDEX is used to indicate that an index value is absent.
     /// Embedded in [class_def_item] and [debug_info_item]
-    public static final long NO_INDEX = 0xffffffffL;
+    public static final long NO_INDEX = 0xFFFFFFFFL;
     private static final Logger LOGGER = Logger.getLogger(DexFile.class.getName());
 
     /// The constant array/string
@@ -119,7 +120,7 @@ public final class DexFile extends FileFormat {
         }
 
         PosDataInputStreamDex stream = new PosDataInputStreamDex(new PosByteArrayInputStream(super.fileByteArray), endian);
-        SortedMap<Long, DataParser> todoData = new TreeMap<>();
+        final SortedMap<Long, DataParser> todoData = new TreeMap<>();
 
         // Header
         stream.skipNBytes(DEX_FILE_MAGIC1.length);

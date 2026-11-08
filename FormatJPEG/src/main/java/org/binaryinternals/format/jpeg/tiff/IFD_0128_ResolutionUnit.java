@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -32,7 +33,6 @@ public class IFD_0128_ResolutionUnit extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);
-
 
         final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
                 pos + 8,

@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class ModuleMainClass_attribute extends attribute_info {
         int cpIndex = this.main_class_index.value;
         this.addNode(parentNode,
                 startPosMoving, u2.LENGTH,
-                "main_class_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "main class", ((ClassFile)classFile).getCPDescription(cpIndex)),
+                "main_class_index", TEXT_CPINDEX_VALUE.formatted(cpIndex, "main class", ((ClassFile) classFile).getCPDescription(cpIndex)),
                 "msg_attr_ModuleMainClass__main_class_index", Icons.Class
         );
     }

@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.attribute;
 
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class ModulePackages_attribute extends attribute_info {
                         startPosMoving + i * u2.LENGTH,
                         u2.LENGTH,
                         "package_index %d".formatted(i + 1),
-                        TEXT_CPINDEX_VALUE.formatted(packageIndex, "package", ((ClassFile)classFile).getCPDescription(packageIndex)),
+                        TEXT_CPINDEX_VALUE.formatted(packageIndex, "package", ((ClassFile) classFile).getCPDescription(packageIndex)),
                         "msg_attr_ModulePackages__package_index",
                         Icons.Package
                 );

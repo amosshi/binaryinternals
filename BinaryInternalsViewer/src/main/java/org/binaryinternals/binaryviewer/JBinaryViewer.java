@@ -4,6 +4,7 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.binaryviewer;
 
 import java.awt.BorderLayout;
@@ -110,8 +111,6 @@ public final class JBinaryViewer extends JPanel {
         // Content Panel
         final JPanel panel = new JPanel();
         final SpringLayout panelLayout = new SpringLayout();
-        int left;
-        int right;
 
         panel.setLayout(panelLayout);
 
@@ -130,8 +129,8 @@ public final class JBinaryViewer extends JPanel {
         panelLayout.putConstraint(SpringLayout.SOUTH, this.rowViewer, MINUS_4, SpringLayout.SOUTH, panel);
         panelLayout.putConstraint(SpringLayout.EAST, this.rowViewer, JRowViewer.WIDTH_VALUE, SpringLayout.WEST, panel);
 
-        left = 2 + JRowViewer.WIDTH_VALUE + 2;
-        right = left + JRawDataViewer.WIDTH_VALUE;
+        int left = 2 + JRowViewer.WIDTH_VALUE + 2;
+        int right = left + JRawDataViewer.WIDTH_VALUE;
         panelLayout.putConstraint(SpringLayout.WEST, this.rawViewer, left, SpringLayout.WEST, panel);
         panelLayout.putConstraint(SpringLayout.NORTH, this.rawViewer, 2, SpringLayout.NORTH, panel);
         panelLayout.putConstraint(SpringLayout.SOUTH, this.rawViewer, MINUS_4, SpringLayout.SOUTH, panel);

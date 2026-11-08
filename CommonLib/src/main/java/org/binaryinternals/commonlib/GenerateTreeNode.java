@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.commonlib;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -16,7 +17,7 @@ public interface GenerateTreeNode {
     /// Generate children nodes for current file component.
     ///
     /// @param parentNode Parent tree node
-    void generateTreeNode(final DefaultMutableTreeNode parentNode);
+    void generateTreeNode(DefaultMutableTreeNode parentNode);
 
     /// Generate tree node for difference with Raw Data.
     ///

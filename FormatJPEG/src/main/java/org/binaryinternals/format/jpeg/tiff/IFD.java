@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg.tiff;
 
 import java.io.IOException;
@@ -29,21 +30,6 @@ public class IFD extends FileComponent {
     public final int data_size;                                                 // Total size of the IFD data
     private TagSpace tag_space = TagSpace.DEFAULT;
 
-    protected IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff, byte[] byteArrayTiff) throws IOException {
-        super.startPos = pDIS.getPos() - 4;
-        super.length = IFD.SIZE;
-
-        this.tiff_StartPos = startPosTiff;
-        this.tiff_ByteArray = byteArrayTiff;
-        this.byte_order = byteOrder;
-
-        this.ifd_tag = tag;
-        this.ifd_type = type;
-        this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
-
-        this.data_size = dataSize(tag, type, this.ifd_count);
-    }
-
     public IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff) throws IOException {
         super.startPos = pDIS.getPos() - 4;
         super.length = IFD.SIZE;
@@ -55,6 +41,21 @@ public class IFD extends FileComponent {
         this.ifd_type = type;
         this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
         this.ifd_value_offset = IFDParse.readInt(pDIS, byteOrder);                  // Maybe value
+
+        this.data_size = dataSize(tag, type, this.ifd_count);
+    }
+
+    protected IFD(final PosDataInputStream pDIS, int byteOrder, int tag, int type, int startPosTiff, byte[] byteArrayTiff) throws IOException {
+        super.startPos = pDIS.getPos() - 4;
+        super.length = IFD.SIZE;
+
+        this.tiff_StartPos = startPosTiff;
+        this.tiff_ByteArray = byteArrayTiff;
+        this.byte_order = byteOrder;
+
+        this.ifd_tag = tag;
+        this.ifd_type = type;
+        this.ifd_count = IFDParse.readInt(pDIS, byteOrder);
 
         this.data_size = dataSize(tag, type, this.ifd_count);
     }

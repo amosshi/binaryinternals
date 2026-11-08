@@ -4,6 +4,7 @@
  * Copyright 2014, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.classfile.constant;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class CONSTANT_MethodType_info extends cp_info {
         return "%s: Start Position: [%d], length: [%d], descriptor_index: [%d]. ".formatted(
                 this.getName(), this.startPos, super.length, this.descriptor_index.value);
     }
-    
+
     @Override
     public String getMessageKey() {
         return "msg_const_methodtype";

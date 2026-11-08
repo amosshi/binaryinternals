@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+          "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+          "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<!--
+  Project-wide exceptions to the bundled openjdk_checks.xml rules (the rule file
+  itself is used unchanged).
+-->
+<suppressions>
+    <!-- The repository keeps each file's existing line endings (both CRLF and LF are used) -->
+    <suppress checks="LineEnding" files=".*"/>
+
+    <!-- Names follow the file format specifications, e.g. InnerClasses_attribute, u4, tableswitch -->
+    <suppress checks="[A-Za-z]*Name" files=".*"/>
+
+    <!-- Checkstyle does not see references in Markdown doc comments (///, JEP 467), e.g. [CONSTANT_Class_info] -->
+    <suppress checks="\bUnusedImports" files=".*"/>
+
+    <!--
+      Arrow switch cases, e.g. `case X -> value;`: braces would need `{ yield value; }` in every
+      switch expression. Braces stay required for if, else, for, while and do.
+    -->
+    <suppress checks="\bNeedBraces" message="^'(case|default)' construct" files=".*"/>
+
+    <!--
+      Maximum line length 160 instead of 100: openjdk_checks.xml sets max="100" with no property
+      to override it, so lines of 101 - 160 characters are suppressed by their message.
+    -->
+    <suppress checks="\bLineLength" message="^Line is longer than 100 characters \(found (10[1-9]|1[1-5][0-9]|160)\)\.$" files=".*"/>
+</suppressions>

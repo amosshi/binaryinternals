@@ -4,6 +4,7 @@
  * Copyright 2010, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
@@ -44,13 +45,11 @@ public class Marker_SOS extends Marker {
         super(pDIS, marker_code);
     }
 
-
     @Override
     protected void parse(final PosDataInputStream pDisMarker)
             throws IOException {
 
         super.parseInitSkip(pDisMarker);
-
 
         // Ns
         this.Ns = pDisMarker.readUnsignedByte();        // TODO - Check this value
@@ -108,22 +107,22 @@ public class Marker_SOS extends Marker {
 
             for (int i = 0; i < this.Ns; i++) {
                 final DefaultMutableTreeNode parameterNode = new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        pos + 5 + 2*i,
+                        pos + 5 + 2 * i,
                         2,
                         "Parameter-%d".formatted(i + 1)));
                 attributeNode.add(parameterNode);
 
                 // Cs, Td, Ta
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        pos + 5 + 2*i + 0,
+                        pos + 5 + 2 * i + 0,
                         1,
                         "Cs: %d".formatted(this.parameter[i].cs()))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        pos + 5 + 2*i + 1,
+                        pos + 5 + 2 * i + 1,
                         1,
                         "Td: %d".formatted(this.parameter[i].td()))));
                 parameterNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                        pos + 5 + 2*i + 1,
+                        pos + 5 + 2 * i + 1,
                         1,
                         "Ta: %d".formatted(this.parameter[i].ta()))));
             }
@@ -131,19 +130,19 @@ public class Marker_SOS extends Marker {
 
         // Ss, Se, Ah, Al
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 5 + this.Ns*2 + 0,
+                pos + 5 + this.Ns * 2 + 0,
                 1,
                 "Ss: %d".formatted(this.Ss))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 5 + this.Ns*2 + 1,
+                pos + 5 + this.Ns * 2 + 1,
                 1,
                 "Se: %d".formatted(this.Se))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 5 + this.Ns*2 + 2,
+                pos + 5 + this.Ns * 2 + 2,
                 1,
                 "Ah: %d".formatted(this.Ah))));
         markerNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
-                pos + 5 + this.Ns*2 + 2,
+                pos + 5 + this.Ns * 2 + 2,
                 1,
                 "Al: %d".formatted(this.Al))));
     }

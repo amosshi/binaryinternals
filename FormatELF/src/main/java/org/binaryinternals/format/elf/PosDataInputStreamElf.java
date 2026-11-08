@@ -4,10 +4,10 @@
  * Copyright 2020, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.elf;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.ByteOrder;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -57,7 +57,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_Half]
-    /// (`typedef __u16	Elf64_Half;`).
+    /// (`typedef __u16 Elf64_Half;`).
     ///
     /// @return Value in [Elf64_Half]
     /// @throws IOException Read data failed
@@ -65,7 +65,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
         return new Elf64_Half(this.readUnsignedShort(this.byteOrder));
     }
 
-    /// Read data for [Elf64_Off] (`typedef __u64	Elf64_Off;`).
+    /// Read data for [Elf64_Off] (`typedef __u64       Elf64_Off;`).
     ///
     /// @return Value in [Elf64_Off]
     /// @throws IOException Read data failed
@@ -74,7 +74,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_SHalf]
-    /// (`typedef __s16	Elf64_SHalf;`).
+    /// (`typedef __s16 Elf64_SHalf;`).
     ///
     /// @return Value in [Elf64_SHalf]
     /// @throws IOException Read data failed
@@ -83,7 +83,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_Sword]
-    /// (`typedef __s32	Elf64_Sword;`).
+    /// (`typedef __s32 Elf64_Sword;`).
     ///
     /// @return Value in [Elf64_Sword]
     /// @throws IOException Read data failed
@@ -92,7 +92,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_Sxword]
-    /// (`typedef __s64	Elf64_Sxword;`).
+    /// (`typedef __s64 Elf64_Sxword;`).
     ///
     /// @return Value in [Elf64_Sxword]
     /// @throws IOException Read data failed
@@ -101,7 +101,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_Word]
-    /// (`typedef __u32	Elf64_Word;`).
+    /// (`typedef __u32 Elf64_Word;`).
     ///
     /// @return Value in [Elf64_Word]
     /// @throws IOException Read data failed
@@ -110,7 +110,7 @@ public class PosDataInputStreamElf extends PosDataInputStream {
     }
 
     /// Read data for [Elf64_Xword]
-    /// (`typedef __u64	Elf64_Xword;`).
+    /// (`typedef __u64 Elf64_Xword;`).
     ///
     /// @return Value in [Elf64_Xword]
     /// @throws IOException Read data failed

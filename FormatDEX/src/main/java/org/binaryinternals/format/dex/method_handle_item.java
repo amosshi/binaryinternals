@@ -4,6 +4,7 @@
  * Copyright 2021, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
@@ -50,11 +51,13 @@ public final class method_handle_item extends FileComponent implements GenerateT
     public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat fileFormat) {
         int floatPos = this.getStartPos();
 
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type", Icons.Offset);
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "string_data_off", this.method_handle_type, "msg_method_handle_item__method_handle_type",
+                Icons.Offset);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)", "msg_method_handle_item__unused", Icons.Empty);
         floatPos += Type_ushort.LENGTH;
-        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id", Icons.Index);
+        addNode(parentNode, floatPos, Type_ushort.LENGTH, "field_or_method_id", this.field_or_method_id, "msg_method_handle_item__field_or_method_id",
+                Icons.Index);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)", "msg_method_handle_item__unused", Icons.Empty);
     }
@@ -72,7 +75,7 @@ public final class method_handle_item extends FileComponent implements GenerateT
 
         public final int value;
 
-        private Type(int v) {
+        Type(int v) {
             this.value = v;
         }
     }

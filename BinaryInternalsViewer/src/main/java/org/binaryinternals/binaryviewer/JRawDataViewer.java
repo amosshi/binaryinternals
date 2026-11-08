@@ -4,10 +4,11 @@
  * Copyright  2007, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.binaryviewer;
 
-import org.binaryinternals.commonlib.HTMLKit;
 import java.util.HexFormat;
+import org.binaryinternals.commonlib.HTMLKit;
 
 /// Display binary data as HEX text.
 ///

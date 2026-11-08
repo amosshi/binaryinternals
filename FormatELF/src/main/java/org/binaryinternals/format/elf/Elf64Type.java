@@ -4,6 +4,7 @@
  * Copyright 2020, BinaryInternals.org. All rights reserved.
  * Use is subject to license terms.
  */
+
 package org.binaryinternals.format.elf;
 
 import java.math.BigInteger;

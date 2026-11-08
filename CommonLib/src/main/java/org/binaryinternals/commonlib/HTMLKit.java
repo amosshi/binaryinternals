@@ -25,9 +25,6 @@ public final class HTMLKit {
     /// ASCII code 255.
     private static final int ASCII_255 = 255;
 
-    private HTMLKit() {
-    }
-
     /// HTML start tags.
     public static final String START = "<!DOCTYPE html><html><head></head><body>";
 
@@ -39,6 +36,9 @@ public final class HTMLKit {
 
     /// HTML space.
     public static final String SPACE = "&nbsp;";
+
+    private HTMLKit() {
+    }
 
     /// Get HTML format for text with new line.
     ///
