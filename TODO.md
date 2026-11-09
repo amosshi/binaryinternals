@@ -35,8 +35,6 @@ Two problems were confirmed by running them:
 
 ### 1. Make Checkstyle check something, or remove it
 
-- [x] Adopt a ruleset that fails the build: the bundled `openjdk_checks.xml` (OpenJDK Java Style), used unchanged, with project exceptions in `checkstyle-suppressions.xml`.
-- [x] Fix the temporary baseline (`EmptyLineSeparator`, `DeclarationOrder`, lines over 160 characters); no baseline is left.
 - [ ] Decode the ICC profile header flags, device attributes and rendering intent (`FormatJPEG` `icc/Header.java`, bytes 44 - 67). They were `TODO` comments, which `openjdk_checks.xml` does not allow.
 
 Permanent exceptions, each explained in `checkstyle-suppressions.xml`:

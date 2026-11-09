@@ -67,7 +67,10 @@ Build the Source Code
   * Java Version: `JDK 25` or higher
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
-  * Build Tool: no Maven installation needed, the Maven Wrapper (`./mvnw`, `mvnw.cmd` on Windows) downloads the Maven version set in [maven-wrapper.properties](.mvn/wrapper/maven-wrapper.properties) on its first run
+  * Build Tool: no Maven installation needed, the Maven Wrapper (`./mvnw`, `mvnw.cmd` on Windows) downloads the Maven version set in [maven-wrapper.properties](.mvn/wrapper/maven-wrapper.properties) on its first run, and checks it against `distributionSha256Sum`
+  * To change the Maven version, update both values in `maven-wrapper.properties`, e.g. for Maven 3.10.0:
+    * `./mvnw wrapper:wrapper -Dmaven=3.10.0 -DdistributionSha256Sum=<sha256>`, without `-DdistributionSha256Sum` the check is removed
+    * `<sha256>`: `curl -sO https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.10.0/apache-maven-3.10.0-bin.zip && shasum -a 256 apache-maven-3.10.0-bin.zip`, after checking the zip against its published `.sha512`
 * MacOS need to install the Linux style commands
   * `brew install coreutils`
   * `brew install parallel`
