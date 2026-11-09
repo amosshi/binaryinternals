@@ -237,6 +237,11 @@
                     <version>3.6.1</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-report-plugin -->
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>3.3.4</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-wrapper-plugin -->
+                </plugin>
+                <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
                     <version>4.10.5.0</version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->

@@ -44,7 +44,7 @@ Web Server and API
 * Run with Docker Compose, from the repository root
   * `docker compose -f BinaryInternalsWeb/docker-compose.yml up -d --build`, settings in [docker-compose.yml](BinaryInternalsWeb/docker-compose.yml)
   * `docker compose -f BinaryInternalsWeb/docker-compose.yml down` to stop
-* Run without Docker, after `mvn install`
+* Run without Docker, after `./mvnw install`
   * `java -jar BinaryInternalsWeb/target/binaryinternals.web-3.7.jar`
   * Or, as a Java module: `java -p BinaryInternalsWeb/target/libs:BinaryInternalsWeb/target/binaryinternals.web-3.7.jar -m org.binaryinternals.web/org.binaryinternals.web.WebServer`
 * API
@@ -64,17 +64,18 @@ Web Server and API
 Build the Source Code
 
 * Prerequisite
-  * Java Version: `OpenJDK version 11` or higher
+  * Java Version: `JDK 25` or higher
   * Set `JAVA_HOME` environment variable
     * If not set use the export statements in the `build.sh` script
-  * Build Tool: `Apache Maven 3.6` or higher: because we are using the [Maven CI Friendly Versions](https://maven.apache.org/maven-ci-friendly.html) `${revision}` feature
+  * Build Tool: no Maven installation needed, the Maven Wrapper (`./mvnw`, `mvnw.cmd` on Windows) downloads the Maven version set in [maven-wrapper.properties](.mvn/wrapper/maven-wrapper.properties) on its first run
 * MacOS need to install the Linux style commands
   * `brew install coreutils`
   * `brew install parallel`
   * `brew install graphviz`
 * Build
+  * `./mvnw clean install`, or `./mvnw -Prelease clean install` with the javadoc and sources jars
   * `./build.sh` (Linux/MacOS/Windows Git Bash)
-  * `build.cmd` (Windows CMD)
+  * `build.ps1` (Windows PowerShell)
 
 Structure
 

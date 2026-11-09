@@ -6,4 +6,4 @@
 echo %JAVA_HOME%
 java -version
 
-mvn  clean package install dependency:tree versions:display-dependency-updates
+.\mvnw.cmd  clean package install dependency:tree versions:display-dependency-updates

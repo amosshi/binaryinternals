@@ -23,5 +23,5 @@ jobs:
       - name: Build, test, and run static analysis
         run: |
           java -version
-          mvn -version
-          mvn -B -Prelease clean verify
+          ./mvnw -version
+          ./mvnw -B -Prelease clean verify
