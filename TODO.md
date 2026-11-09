@@ -54,11 +54,8 @@ SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checks
 
 ### 3. Pin every plugin version in a `<pluginManagement>` section
 
-- [ ] Move all plugin versions into one `<pluginManagement>` list.
-
-Versions are currently set three different ways: a property for some plugins, inline for others (compiler, jdeps, source, pdf, site, deploy, flatten), and not at all for surefire, resources, install and clean, which come from Maven's built-in defaults. Surefire matters most: it runs the JUnit 6 tests, and its version shouldn't change with the Maven version.
-
-One `<pluginManagement>` list lets the Viewer and Web declare their compiler plugin without a version, which they already do. It also lets the reporting section share configuration with the build instead of repeating the javadoc/umldoclet setup.
+- [x] Move all plugin versions into one `<pluginManagement>` list, including clean, resources, surefire and install, which came from Maven's built-in defaults.
+- [ ] Optional: share the javadoc/umldoclet configuration between the build and the reporting section. Report plugins take their versions from `<pluginManagement>`, but not its configuration, so this needs a different approach than moving it there.
 
 ### 4. Speed up the everyday build
 
