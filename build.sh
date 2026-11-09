@@ -27,11 +27,10 @@ fi
 java -version
 mvn --version
 
+rm -rf dist
+
 # Clean local Maven repository to ensure fresh dependencies
 # To avoid silent-stale-jar trap
-rm -rf ~/.m2/repository
-
-rm -rf dist
 mvn dependency:purge-local-repository -DreResolve=true
 
 mvn  clean install

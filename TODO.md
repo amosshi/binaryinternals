@@ -52,29 +52,17 @@ Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
 
 SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checkstyle-suppressions.xml`) through `${maven.multiModuleProjectDirectory}`. That is the directory where Maven started unless a `.mvn/` folder marks the project root, and this repo has none. The wrapper also pins the Maven version for CI and contributors.
 
-### 3. Make the build fully reproducible
-
-- [ ] Drop or rename the three settings below.
-
-`outputTimestamp` makes jars reproducible, but three settings undo it:
-
-- `git.properties` includes `git.build.time`;
-- the Viewer's jar name contains `${maven.build.timestamp}`;
-- the manifest `Build-Time` shows the fixed release date while its name suggests the actual build time.
-
-The git commit already identifies the build.
-
-### 4. CI improvements in `.github/workflows/ci.yml`
+### 3. CI improvements in `.github/workflows/ci.yml`
 
 - [ ] Also run on `push` to `master`, not only pull requests.
 - [ ] Add `cache: maven` to `setup-java` to cache downloaded dependencies.
 
-### 5. `build.sh`
+### 4. `build.sh`
 
 - [ ] `mvn dependency:purge-local-repository` re-downloads everything on every build, which is slow and rarely needed. Make it a flag.
 - [ ] `versions:display-dependency-updates` lists betas and milestones. Add a small versions rules file in the POM to filter them out.
 
-### 6. Cosmetic
+### 5. Cosmetic
 
 - [ ] **Naming:** artifact IDs are mixed (`BinaryInternalsViewer` vs `binaryinternals.format.bmp`).
 - [ ] **Descriptions:** the Viewer and Web POMs have none.
