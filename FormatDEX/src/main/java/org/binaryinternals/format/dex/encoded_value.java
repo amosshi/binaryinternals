@@ -17,6 +17,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 
+/// A piece of (nearly) arbitrary hierarchically structured data.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -28,6 +30,7 @@ import org.binaryinternals.commonlib.Icons;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
 public final class encoded_value extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Byte indicating the type of the immediately subsequent value along with an optional clarifying argument in the high-order three bits.
     public final Type_ubyte value_arg_and_type;
 
     /// low-order five (5) bits as value_type.
@@ -45,57 +48,109 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
     public sealed interface Value {
     }
 
+    /// A signed one-byte integer value.
+    ///
+    /// @param value The value
     public record ByteValue(Type_ubyte value) implements Value {
     }
 
+    /// A signed two-byte integer value.
+    ///
+    /// @param value The value
     public record ShortValue(Type_short value) implements Value {
     }
 
+    /// An unsigned two-byte integer value.
+    ///
+    /// @param value The value
     public record CharValue(Type_ushort value) implements Value {
     }
 
+    /// A signed four-byte integer value.
+    ///
+    /// @param value The value
     public record IntValue(Type_int value) implements Value {
     }
 
+    /// A signed eight-byte integer value.
+    ///
+    /// @param value The value
     public record LongValue(Type_long value) implements Value {
     }
 
+    /// A four-byte IEEE754 floating point value.
+    ///
+    /// @param value The value
     public record FloatValue(float value) implements Value {
     }
 
+    /// An eight-byte IEEE754 floating point value.
+    ///
+    /// @param value The value
     public record DoubleValue(double value) implements Value {
     }
 
+    /// A method type value.
+    ///
+    /// @param index Index into the `proto_ids` list
     public record MethodTypeValue(Type_uint index) implements Value {
     }
 
+    /// A method handle value.
+    ///
+    /// @param index Index into the `method_handles` list
     public record MethodHandleValue(Type_uint index) implements Value {
     }
 
+    /// A string value.
+    ///
+    /// @param index Index into the `string_ids` list
     public record StringValue(Type_uint index) implements Value {
     }
 
+    /// A reflective type value.
+    ///
+    /// @param index Index into the `type_ids` list
     public record TypeValue(Type_uint index) implements Value {
     }
 
+    /// A reflective field value.
+    ///
+    /// @param index Index into the `field_ids` list
     public record FieldValue(Type_uint index) implements Value {
     }
 
+    /// A reflective method value.
+    ///
+    /// @param index Index into the `method_ids` list
     public record MethodValue(Type_uint index) implements Value {
     }
 
+    /// An enumerated type constant value.
+    ///
+    /// @param index Index into the `field_ids` list
     public record EnumValue(Type_uint index) implements Value {
     }
 
+    /// An array of values.
+    ///
+    /// @param value The array
     public record ArrayValue(encoded_array value) implements Value {
     }
 
+    /// A sub-annotation.
+    ///
+    /// @param value The annotation
     public record AnnotationValue(encoded_annotation value) implements Value {
     }
 
+    /// The `null` reference value.
     public record NullValue() implements Value {
     }
 
+    /// A one-bit Boolean value.
+    ///
+    /// @param value The value
     public record BooleanValue(boolean value) implements Value {
     }
 
@@ -294,24 +349,43 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
         }
     }
 
+    /// The value types of an [encoded_value].
     public enum ValueFormat {
+        /// Signed one-byte integer value.
         VALUE_BYTE(0x00, 0),
+        /// Signed two-byte integer value, sign-extended.
         VALUE_SHORT(0x02, 1),
+        /// Unsigned two-byte integer value, zero-extended.
         VALUE_CHAR(0x03, 1),
+        /// Signed four-byte integer value, sign-extended.
         VALUE_INT(0x04, 3),
+        /// Signed eight-byte integer value, sign-extended.
         VALUE_LONG(0x06, 7),
+        /// Four-byte bit pattern, zero-extended to the right, and interpreted as an IEEE754 32-bit floating point value.
         VALUE_FLOAT(0x10, 3),
+        /// Eight-byte bit pattern, zero-extended to the right, and interpreted as an IEEE754 64-bit floating point value.
         VALUE_DOUBLE(0x11, 7),
+        /// Unsigned four-byte index into the `proto_ids` list.
         VALUE_METHOD_TYPE(0x15, 3),
+        /// Unsigned four-byte index into the `method_handles` list.
         VALUE_METHOD_HANDLE(0x16, 3),
+        /// Unsigned four-byte index into the `string_ids` list.
         VALUE_STRING(0x17, 3),
+        /// Unsigned four-byte index into the `type_ids` list.
         VALUE_TYPE(0x18, 3),
+        /// Unsigned four-byte index into the `field_ids` list, a reflective field.
         VALUE_FIELD(0x19, 3),
+        /// Unsigned four-byte index into the `method_ids` list, a reflective method.
         VALUE_METHOD(0x1A, 3),
+        /// Unsigned four-byte index into the `field_ids` list, an enumerated type constant.
         VALUE_ENUM(0x1B, 3),
+        /// An [encoded_array].
         VALUE_ARRAY(0x1C, 0),
+        /// An [encoded_annotation].
         VALUE_ANNOTATION(0x1D, 0),
+        /// The `null` reference value.
         VALUE_NULL(0x1E, 0),
+        /// One-bit value; `0` for `false` and `1` for `true`.
         VALUE_BOOLEAN(0x1F, 1);
 
         /// Internal code of the value type.

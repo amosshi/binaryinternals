@@ -27,9 +27,15 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
 public class ElfFile extends FileFormat {
 
+    /// The ELF identification, the first 16 bytes of the file.
     public final Identification ident;
+    /// The ELF header.
     public final Elf64_Ehdr header;
 
+    /// Reads and parses an ELF file.
+    ///
+    /// @param file The ELF file
+    /// @throws IOException if the file cannot be read or parsed
     public ElfFile(final Path file) throws IOException {
         super(file);
 

@@ -9,6 +9,8 @@ package org.binaryinternals.format.dex;
 
 import org.binaryinternals.commonlib.FileComponent;
 
+/// The debug information of a method: a state machine program that produces the line number and local variable tables.
+///
 /// @author Amos Shi
 ///
 /// ```

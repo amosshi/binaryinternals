@@ -16,10 +16,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.IntPredicate;
 
+/// A [DataInputStream] that tracks its current read position, with extra read helpers for binary file parsing.
+///
 /// @author Amos Shi
 public class PosDataInputStream extends DataInputStream implements DataInputEx {
 
+    /// Number in bytes for an unsigned `short` value.
     public static final int USHORT_LENGTH = 2;
+    /// An empty byte array, to avoid creating new empty arrays.
     public static final byte[] EMPTY_BYTE_ARRAY = {};
 
     /// Number in bytes for Java `byte` type.

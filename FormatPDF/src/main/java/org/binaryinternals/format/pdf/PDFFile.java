@@ -28,6 +28,10 @@ import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 /// @see <a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf">PDF 32000-1:2008</a>
 public final class PDFFile extends FileFormat {
 
+    /// Reads and parses a PDF file.
+    ///
+    /// @param file The PDF file
+    /// @throws IOException if the file cannot be read or parsed
     public PDFFile(final Path file) throws IOException {
         super(file);
         this.parse();

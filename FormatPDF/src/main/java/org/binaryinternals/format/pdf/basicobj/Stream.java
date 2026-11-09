@@ -23,7 +23,9 @@ import org.binaryinternals.format.pdf.Texts;
 /// @author Amos Shi
 public final class Stream extends FileComponent implements BasicObject {
 
+    /// Keyword at the start of a stream.
     public static final String SIGNATURE_START = "stream";
+    /// Keyword at the end of a stream.
     public static final String SIGNATURE_END = "endstream";
     private static final byte[] SIGNATURE_END_BYTES = SIGNATURE_END.getBytes(StandardCharsets.ISO_8859_1);
     /// The signature length, `stream` and the end-of-line marker after it.
@@ -112,6 +114,9 @@ public final class Stream extends FileComponent implements BasicObject {
         return this.dataLength;
     }
 
+    /// Gets the `endstream` line.
+    ///
+    /// @return The end line of the stream
     public ASCIILine getSignatureEnd() {
         return this.signatureEnd;
     }

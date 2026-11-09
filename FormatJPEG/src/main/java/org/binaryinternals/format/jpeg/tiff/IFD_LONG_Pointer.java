@@ -27,10 +27,19 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
     /// Nesting of the sub IFDs being parsed, bound while parsing a sub IFD.
     private static final ScopedValue<Integer> DEPTH = ScopedValue.newInstance();
 
+    /// Number of entries in the sub IFD.
     public final int ifd_number;
     final IFD[] ifd_sub;
     int next;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_LONG_Pointer(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
@@ -79,6 +88,9 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
         });
     }
 
+    /// Add the tree node of the offset of the next IFD, after the sub IFD entries.
+    ///
+    /// @param parentNode Parent tree node
     protected void generateTreeNode_NextIFD(DefaultMutableTreeNode parentNode) {
         if (this.ifd_sub != null) {
             parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
@@ -92,6 +104,14 @@ public class IFD_LONG_Pointer extends IFD_LONG_COUNT1 {
     @FunctionalInterface
     protected interface EntryParser {
 
+        /// Parses an IFD entry, with its tag already read.
+        ///
+        /// @param pDIS The input stream, positioned after the tag
+        /// @param byteOrder Byte order of the TIFF data
+        /// @param startPosTiff Start position of the TIFF header in the file
+        /// @param byteArrayTiff The TIFF data, from the TIFF header
+        /// @return The IFD entry
+        /// @throws IOException if the entry cannot be read
         IFD parse(PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff) throws IOException;
     }
 }

@@ -16,6 +16,8 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// Builds the tree nodes of a DEX file.
+///
 /// @author Amos Shi
 ///
 /// ```

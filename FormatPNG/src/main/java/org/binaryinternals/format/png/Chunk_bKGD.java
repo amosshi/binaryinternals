@@ -28,6 +28,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_bKGD extends Chunk {
 
+    /// Chunk type of the background color chunk.
     public static final String CHUNK_TYPE_NAME = "bKGD";
 
     /// The value is the palette index of the color to be used as background.

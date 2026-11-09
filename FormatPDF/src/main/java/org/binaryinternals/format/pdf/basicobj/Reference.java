@@ -16,6 +16,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public final class Reference extends FileComponent implements BasicObject {
 
     static final byte SIGNATURE = 'R';
+    /// The reference keyword byte, `R`.
     public final byte Value;
     /// The object number, generation number and white-space before the `R`.
     final List<FileComponent> formerComponents = new ArrayList<>(3);

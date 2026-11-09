@@ -124,8 +124,11 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
     /// following five items (the 5 instance fields of current class).
     public static final class local_variable_type_table extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = 10;
+        /// Start of the code range where the local variable has a value, an index into the code array.
         public final u2 start_pc;
+        /// Length of the code range where the local variable has a value.
         public final u2 lvtt_length;
         /// Representing a valid unqualified name denoting a local variable.
         public final u2 name_index;
@@ -136,6 +139,10 @@ public class LocalVariableTypeTable_attribute extends attribute_info {
         /// variable array of the current frame.
         public final u2 index;
 
+        /// Reads the structure from the class file.
+        ///
+        /// @param posDataInputStream Class file input stream
+        /// @throws IOException if the class file cannot be read
         protected local_variable_type_table(final PosDataInputStream posDataInputStream) throws IOException {
             super(posDataInputStream.getPos(), LENGTH);
 

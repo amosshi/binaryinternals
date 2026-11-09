@@ -20,12 +20,19 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class BMPFile extends FileFormat {
 
+    /// The bitmap file header.
     public final BitmapFileHeader bitmapFileHeader;
+    /// The DIB header.
     public final DIBHeader dibHeader;
     /// The color table, or `null` when the pixel data follows the DIB header.
     public final ColorTable colorTable;
+    /// The pixel data.
     public final PixelArray pixelArray;
 
+    /// Reads and parses a BMP file.
+    ///
+    /// @param file The BMP file
+    /// @throws IOException if the file cannot be read or parsed
     public BMPFile(final Path file) throws IOException {
         super(file);
 

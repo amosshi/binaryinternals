@@ -18,6 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_pHYs extends Chunk {
 
+    /// Chunk type of the physical pixel dimensions chunk.
     public static final String CHUNK_TYPE_NAME = "pHYs";
     /// Pixels per unit, X axis.
     public final int AxisX;

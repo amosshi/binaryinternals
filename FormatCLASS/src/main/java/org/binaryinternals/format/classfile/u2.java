@@ -28,6 +28,10 @@ public class u2 {
     /// Value of the [u2] component.
     public final int value;
 
+    /// Reads an unsigned 16-bit value.
+    ///
+    /// @param posDataInputStream Input stream
+    /// @throws IOException if the stream cannot be read
     public u2(final PosDataInputStream posDataInputStream) throws IOException {
         this.value = posDataInputStream.readUnsignedShort();
     }

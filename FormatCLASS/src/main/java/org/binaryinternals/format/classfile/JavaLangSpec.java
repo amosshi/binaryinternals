@@ -35,58 +35,110 @@ public class JavaLangSpec {
 
         // ReservedKeyword
 
+        /// Keyword `abstract`.
         ABSTRACT("abstract"),
+        /// Keyword `assert`.
         ASSERT("assert"),
+        /// Keyword `boolean`.
         BOOLEAN("boolean"),
+        /// Keyword `break`.
         BREAK("break"),
+        /// Keyword `byte`.
         BYTE("byte"),
+        /// Keyword `case`.
         CASE("case"),
+        /// Keyword `catch`.
         CATCH("catch"),
+        /// Keyword `char`.
         CHAR("char"),
+        /// Keyword `class`.
         CLASS("class"),
+        /// Keyword `const`, reserved but not used.
         CONST("const"),
+        /// Keyword `continue`.
         CONTINUE("continue"),
+        /// Keyword `default`.
         DEFAULT("default"),
+        /// Keyword `do`.
         DO("do"),
+        /// Keyword `double`.
         DOUBLE("double"),
+        /// Keyword `else`.
         ELSE("else"),
+        /// Keyword `enum`.
         ENUM("enum"),
+        /// Keyword `extends`.
         EXTENDS("extends"),
+        /// Keyword `final`.
         FINAL("final"),
+        /// Keyword `finally`.
         FINALLY("finally"),
+        /// Keyword `float`.
         FLOAT("float"),
+        /// Keyword `for`.
         FOR("for"),
+        /// Keyword `if`.
         IF("if"),
+        /// Keyword `goto`, reserved but not used.
         GOTO("goto"),
+        /// Keyword `implements`.
         IMPLEMENTS("implements"),
+        /// Keyword `import`.
         IMPORT("import"),
+        /// Keyword `instanceof`.
         INSTANCEOF("instanceof"),
+        /// Keyword `int`.
         INT("int"),
+        /// Keyword `interface`.
         INTERFACE("interface"),
+        /// Keyword `long`.
         LONG("long"),
+        /// Keyword `native`.
         NATIVE("native"),
+        /// Keyword `new`.
         NEW("new"),
+        /// Keyword `package`.
         PACKAGE("package"),
+        /// Keyword `private`.
         PRIVATE("private"),
+        /// Keyword `protected`.
         PROTECTED("protected"),
+        /// Keyword `public`.
         PUBLIC("public"),
+        /// Keyword `return`.
         RETURN("return"),
+        /// Keyword `short`.
         SHORT("short"),
+        /// Keyword `static`.
         STATIC("static"),
+        /// Keyword `strictfp`.
         STRICTFP("strictfp"),
+        /// Keyword `super`.
         SUPER("super"),
+        /// Keyword `switch`.
         SWITCH("switch"),
+        /// Keyword `synchronized`.
         SYNCHRONIZED("synchronized"),
+        /// Keyword `this`.
         THIS("this"),
+        /// Keyword `throw`.
         THROW("throw"),
+        /// Keyword `throws`.
         THROWS("throws"),
+        /// Keyword `transient`.
         TRANSIENT("transient"),
+        /// Keyword `try`.
         TRY("try"),
+        /// Keyword `void`.
         VOID("void"),
+        /// Keyword `volatile`.
         VOLATILE("volatile"),
+        /// Keyword `while`.
         WHILE("while"),
+        /// Keyword `_`, the underscore.
         UNDERSCORE("_");
 
+        /// The keyword text.
         public final String text;
 
         Keyword(String k) {
@@ -103,24 +155,42 @@ public class JavaLangSpec {
     /// </a>
     public enum ContextualKeyword {
 
+        /// Contextual keyword `exports`.
         EXPORTS("exports"),
+        /// Contextual keyword `module`.
         MODULE("module"),
+        /// Contextual keyword `non-sealed`.
         NON_SEALED("non-sealed"),
+        /// Contextual keyword `open`.
         OPEN("open"),
+        /// Contextual keyword `opens`.
         OPENS("opens"),
+        /// Contextual keyword `permits`.
         PERMITS("permits"),
+        /// Contextual keyword `provides`.
         PROVIDES("provides"),
+        /// Contextual keyword `record`.
         RECORD("record"),
+        /// Contextual keyword `requires`.
         REQUIRES("requires"),
+        /// Contextual keyword `sealed`.
         SEALED("sealed"),
+        /// Contextual keyword `to`.
         TO("to"),
+        /// Contextual keyword `transitive`.
         TRANSITIVE("transitive"),
+        /// Contextual keyword `uses`.
         USES("uses"),
+        /// Contextual keyword `var`.
         VAR("var"),
+        /// Contextual keyword `when`.
         WHEN("when"),
+        /// Contextual keyword `with`.
         WITH("with"),
+        /// Contextual keyword `yield`.
         YIELD("yield");
 
+        /// The keyword text.
         public final String keyword;
 
         ContextualKeyword(String k) {

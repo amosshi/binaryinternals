@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// A field identifier: the defining class, type and name of a field.
+///
 /// @author Amos Shi
 ///
 /// ```

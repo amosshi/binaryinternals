@@ -20,6 +20,7 @@ import org.binaryinternals.format.jpeg.ps.PhotoshopImageResource;
 /// @author Amos Shi
 public class Marker_APP13 extends Marker {
 
+    /// Identifier of a Photoshop image resources segment.
     public static final String IDENTIFIER_PHOTOSHOP = "Photoshop";
     private String identifier;
     private PhotoshopImageResource psir;

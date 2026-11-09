@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A list of annotation set references, the annotations of the parameters of a method.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -24,7 +26,9 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class annotation_set_ref_list extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Size of the list in entries.
     public final Type_uint size;
+    /// Elements of the list.
     public final annotation_set_ref_item[] list;
 
     annotation_set_ref_list(PosDataInputStreamDex stream, DexFile dex) throws IOException {
@@ -106,9 +110,12 @@ public final class annotation_set_ref_list extends FileComponent implements Gene
         }
     }
 
+    /// An element of the list: the offset of an annotation set.
     public static final class annotation_set_ref_item extends FileComponent {
 
+        /// Length of the item in bytes.
         public static final int LENGTH = Type_uint.LENGTH;
+        /// Offset from the start of the file to the referenced annotation set, or `0` if there are no annotations for this element.
         public final Type_uint annotations_off;
 
         annotation_set_ref_item(PosDataInputStreamDex stream, DexFile dex) throws IOException {

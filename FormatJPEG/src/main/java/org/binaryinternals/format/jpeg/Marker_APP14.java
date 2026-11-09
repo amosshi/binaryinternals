@@ -12,6 +12,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `APP14` application segment, used by Adobe.
+///
 /// @author Amos Shi
 public class Marker_APP14 extends Marker {
 

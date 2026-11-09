@@ -13,11 +13,22 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// An IFD entry of type `RATIONAL`, unsigned fractions.
+///
 /// @author Amos Shi
 public class IFD_RATIONAL extends IFD {
 
+    /// The values.
     public final Rational[] value;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_RATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.RATIONAL, startPosTiff, byteArrayTiff);
@@ -38,6 +49,9 @@ public class IFD_RATIONAL extends IFD {
         }
     }
 
+    /// Gets the values.
+    ///
+    /// @return The values
     public Rational[] getValues() {
         return this.value;
     }
@@ -96,10 +110,13 @@ public class IFD_RATIONAL extends IFD {
         }
     }
 
+    /// An unsigned fraction.
     @SuppressWarnings("PublicInnerClass")
     public static class Rational {
 
+        /// The numerator.
         public final long numerator;
+        /// The denominator.
         public final long denominator;
 
         private Rational(long n, long d) {

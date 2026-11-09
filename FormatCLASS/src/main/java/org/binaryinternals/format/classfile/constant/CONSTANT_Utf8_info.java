@@ -44,7 +44,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_Utf8_info extends cp_info {
 
+    /// Number of bytes in the [#bytes] array.
     public final u2 length_utf8;
+    /// The modified UTF-8 bytes of the string.
     public final byte[] bytes;
 
     /// Buffer for [#getValue()].

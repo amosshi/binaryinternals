@@ -19,6 +19,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_IHDR extends Chunk {
 
+    /// Chunk type of the image header chunk.
     public static final String CHUNK_TYPE_NAME = "IHDR";
 
     /// Width and height give the image dimensions in pixels.

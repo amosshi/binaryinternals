@@ -51,6 +51,12 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings("java:S101")
 public class Scala_attribute extends attribute_info {
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param type Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     public Scala_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 

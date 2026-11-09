@@ -18,6 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_IEND extends Chunk {
 
+    /// Chunk type of the image trailer chunk.
     public static final String CHUNK_TYPE_NAME = "IEND";
 
     Chunk_IEND(final PosDataInputStream stream) throws IOException {

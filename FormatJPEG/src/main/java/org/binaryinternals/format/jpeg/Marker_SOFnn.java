@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `SOFn` marker: start of frame.
+///
 /// @author Amos Shi
 public class Marker_SOFnn extends Marker {
 

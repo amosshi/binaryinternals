@@ -37,11 +37,14 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 @SuppressWarnings("java:S101")
 public class CONSTANT_Double_info extends cp_info {
 
+    /// Size of the raw data in bytes.
     public static final int RAW_DATA_SIZE = 8;
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 9;
 
     /// In JVM Spec we have two fields: u4 high_bytes and u4 low_bytes.
     public final byte[] rawData;
+    /// The `double` value.
     public final double doubleValue;
 
     CONSTANT_Double_info(final PosDataInputStream posDataInputStream) throws IOException {

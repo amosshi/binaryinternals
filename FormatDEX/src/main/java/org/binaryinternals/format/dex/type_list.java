@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// A list of types, e.g. the interfaces of a class or the parameters of a method.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -26,7 +28,9 @@ import org.binaryinternals.commonlib.Icons;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
 public final class type_list extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Size of the list, in entries.
     public final Type_uint size;
+    /// Elements of the list.
     public final type_item[] list;
 
     type_list(PosDataInputStreamDex stream) throws IOException {
@@ -96,6 +100,7 @@ public final class type_list extends FileComponent implements GenerateTreeNodeDe
         /// @see map_list.TypeCodes#TYPE_TYPE_LIST
         public static final int ITEM_SIZE = 2;
 
+        /// Index into the `type_ids` list.
         public final Type_ushort type_idx;
         private String type;
         private String type_jls;

@@ -27,8 +27,11 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 /// @see <a href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-dosdatetimetofiletime">DosDateTimeToFileTime</a>
 public final class MSDosTime extends FileComponent implements GenerateTreeNode {
 
+    /// Second, an even number since it is stored in 2-second units.
     public final int Second;
+    /// Minute, 0 - 59.
     public final int Minute;
+    /// Hour, 0 - 23.
     public final int Hour;
 
     MSDosTime(final int value, final int start, final int len) {

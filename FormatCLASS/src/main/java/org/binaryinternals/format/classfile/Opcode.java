@@ -1021,78 +1021,117 @@ public final class Opcode {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison with zero succeeds.
+        ///
+        /// ifne succeeds if and only if value ≠ 0.
         ifne(java.lang.classfile.Opcode.IFNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison with zero succeeds.
+        ///
+        /// iflt succeeds if and only if value < 0.
         iflt(java.lang.classfile.Opcode.IFLT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison with zero succeeds.
+        ///
+        /// ifge succeeds if and only if value ≥ 0.
         ifge(java.lang.classfile.Opcode.IFGE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison with zero succeeds.
+        ///
+        /// ifgt succeeds if and only if value > 0.
         ifgt(java.lang.classfile.Opcode.IFGT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison with zero succeeds.
+        ///
+        /// ifle succeeds if and only if value ≤ 0.
         ifle(java.lang.classfile.Opcode.IFLE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmpeq succeeds if and only if value1 = value2.
         if_icmpeq(java.lang.classfile.Opcode.IF_ICMPEQ.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmpne succeeds if and only if value1 ≠ value2.
         if_icmpne(java.lang.classfile.Opcode.IF_ICMPNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmplt succeeds if and only if value1 < value2.
         if_icmplt(java.lang.classfile.Opcode.IF_ICMPLT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmpge succeeds if and only if value1 ≥ value2.
         if_icmpge(java.lang.classfile.Opcode.IF_ICMPGE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmpgt succeeds if and only if value1 > value2.
         if_icmpgt(java.lang.classfile.Opcode.IF_ICMPGT.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if int comparison succeeds.
+        ///
+        /// if_icmple succeeds if and only if value1 ≤ value2.
         if_icmple(java.lang.classfile.Opcode.IF_ICMPLE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if reference comparison succeeds.
+        ///
+        /// if_acmpeq succeeds if and only if value1 = value2.
         if_acmpeq(java.lang.classfile.Opcode.IF_ACMPEQ.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
                 return super.parseBranchbyteShort(curPos, pdis);
             }
         },
+        /// Branch if reference comparison succeeds.
+        ///
+        /// if_acmpne succeeds if and only if value1 ≠ value2.
         if_acmpne(java.lang.classfile.Opcode.IF_ACMPNE.bytecode()) {
             @Override
             protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
@@ -1477,6 +1516,7 @@ public final class Opcode {
         /// Unknown Opcode. This should never happen.
         UNKNOWN(-1, true);
 
+        /// Prefix of the name of a reserved opcode.
         public static final String OPCODE_NAME_RESERVED_PREFIX = "[Reserved] ";
         private static final Set<Integer> WIDE_SINGLE_OPCODES = Set.of(
                 java.lang.classfile.Opcode.ILOAD.bytecode(),
@@ -1506,6 +1546,7 @@ public final class Opcode {
         /// Internal code for an Instruction.
         public final int code;
 
+        /// Whether the opcode is reserved, and should not appear in a class file.
         public final boolean reserved;
 
         Instruction(int i) {
@@ -1552,6 +1593,12 @@ public final class Opcode {
 
         // java:S1130 - "throws" declarations should not be superfluous --- The subclass throws IOException
         // java:S1172 - Unused method parameters should be removed --- `pdis` is used by children classes
+        /// Parses the operands of the instruction.
+        ///
+        /// @param curPos Position of the opcode in the code array
+        /// @param pdis Code array input stream, positioned after the opcode
+        /// @return The parsed instruction
+        /// @throws IOException if the code array cannot be read
         @SuppressWarnings({"java:S1130", "java:S1172"})
         protected InstructionParsed parse(final int curPos, final PosDataInputStream pdis) throws IOException {
             InstructionParsed parsed = new InstructionParsed(curPos, this.code);
@@ -1642,6 +1689,9 @@ public final class Opcode {
     /// Instruction structure used by [Instruction#lookupswitch].
     ///
     /// @see Instruction#lookupswitch
+    /// @param defaultbyte Relative offset of the default jump target
+    /// @param npairs Number of match-offset pairs
+    /// @param mapoffsets Relative jump offsets by match value
     @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from JVM Spec")
     public record lookupswitch(int defaultbyte, int npairs, Map<Integer, Integer> mapoffsets) {
 
@@ -1651,6 +1701,10 @@ public final class Opcode {
             mapoffsets = Collections.unmodifiableMap(new LinkedHashMap<>(mapoffsets));
         }
 
+        /// Gets the text of the instruction operands.
+        ///
+        /// @param currentOffset Offset of the instruction in the code array
+        /// @return The match-offset pairs and the default jump target
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append('(').append(this.npairs).append(" Pairs)");
@@ -1668,6 +1722,10 @@ public final class Opcode {
     /// @see
     /// <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-6.html#jvms-6.5.tableswitch">VM
     /// Spec: The Java Virtual Machine Instruction Set</a>
+    /// @param defaultbyte Relative offset of the default jump target
+    /// @param lowbyte Lowest index value of the table
+    /// @param highbyte Highest index value of the table
+    /// @param jumpoffsets Relative jump offsets by index value
     @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from JVM Spec")
     public record tableswitch(int defaultbyte, int lowbyte, int highbyte, Map<Integer, Integer> jumpoffsets) {
 
@@ -1677,6 +1735,10 @@ public final class Opcode {
             jumpoffsets = Collections.unmodifiableMap(new LinkedHashMap<>(jumpoffsets));
         }
 
+        /// Gets the text of the instruction operands.
+        ///
+        /// @param currentOffset Offset of the instruction in the code array
+        /// @return The index range, the jump targets and the default jump target
         public String toString(int currentOffset) {
             final StringBuilder sb = new StringBuilder(256);
             sb.append(" (from ").append(this.lowbyte).append(" to ").append(this.highbyte).append(')');

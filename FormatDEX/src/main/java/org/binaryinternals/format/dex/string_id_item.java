@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A string identifier: the offset of the string data.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -24,6 +26,8 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class string_id_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Size of the item in bytes.
+    ///
     /// @see map_list.TypeCodes#TYPE_STRING_ID_ITEM
     public static final int ITEM_SIZE = 0x04;
 

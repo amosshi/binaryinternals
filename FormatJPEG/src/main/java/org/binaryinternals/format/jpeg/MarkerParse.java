@@ -11,12 +11,16 @@ import java.io.IOException;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Creates the marker instances of a JPEG file.
+///
 /// @author Amos Shi
 public class MarkerParse {
 
     private MarkerParse() {
     }
 
+    /// Reads the next marker of the file.
+    ///
     /// @param pDisFile Data Input Stream for `file` byte array
     /// @return The generated proper marker instance
     /// @throws IOException Parse file failed

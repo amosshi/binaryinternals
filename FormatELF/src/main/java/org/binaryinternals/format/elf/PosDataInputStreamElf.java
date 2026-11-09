@@ -31,6 +31,7 @@ import org.binaryinternals.format.elf.Identification.Endianness;
 @SuppressWarnings("java:S100")
 public class PosDataInputStreamElf extends PosDataInputStream {
 
+    /// Byte order of the file, from `EI_DATA`.
     protected final Endianness endian;
 
     private final ByteOrder byteOrder;

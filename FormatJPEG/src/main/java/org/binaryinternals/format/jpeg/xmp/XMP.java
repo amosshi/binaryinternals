@@ -19,10 +19,14 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public final class XMP extends FileComponent {
 
     private static final Logger LOG = Logger.getLogger(XMP.class.getName());
+    /// The raw bytes of the XMP packet.
     public final byte[] rawData;
     /// The XMP packet as text.
     private final String xmpmeta;
 
+    /// Reads the XMP packet.
+    ///
+    /// @param input Input stream of the XMP packet
     public XMP(final PosDataInputStream input) {
         super.startPos = input.getPos();
         super.length = input.getBuf().length;

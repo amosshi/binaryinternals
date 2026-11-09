@@ -9,6 +9,8 @@ package org.binaryinternals.commonlib;
 
 import java.io.ByteArrayInputStream;
 
+/// A [ByteArrayInputStream] that exposes its current read position.
+///
 /// @author Amos Shi
 public final class PosByteArrayInputStream extends ByteArrayInputStream {
 
@@ -22,6 +24,9 @@ public final class PosByteArrayInputStream extends ByteArrayInputStream {
         this.pos = i;
     }
 
+    /// Gets the current read position.
+    ///
+    /// @return Index of the next byte to read
     public int getPos() {
         return this.pos;
     }

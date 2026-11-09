@@ -77,6 +77,8 @@
         <spotbugs.xmlOutput>true</spotbugs.xmlOutput>
         <!-- The Java version PMD parses the sources as; the plugin's default, ${maven.compiler.source}, is not set here -->
         <targetJdk>${maven.compiler.release}</targetJdk>
+        <!-- The plugin's default ruleset still lists rules deprecated in PMD 7.27.0 -->
+        <pmd.ruleset>${maven.multiModuleProjectDirectory}/pmd-ruleset.xml</pmd.ruleset>
 
         <pmd.version>7.29.0</pmd.version><!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-java -->
         <junit-jupiter.version>6.1.3</junit-jupiter.version><!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
@@ -266,6 +268,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>3.28.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+                    <configuration>
+                        <rulesets>
+                            <ruleset>${pmd.ruleset}</ruleset>
+                        </rulesets>
+                    </configuration>
                     <!-- A newer PMD than the one bundled with the plugin, the same in the build and in the site report:
                          https://maven.apache.org/plugins/maven-pmd-plugin/examples/upgrading-PMD-at-runtime.html -->
                     <dependencies>
@@ -636,6 +643,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <rulesets>
+                        <ruleset>${pmd.ruleset}</ruleset>
+                    </rulesets>
+                </configuration>
                 <reportSets>
                     <reportSet><!-- by default, id = "default" -->
                         <reports><!-- select non-aggregate reports -->

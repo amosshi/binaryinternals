@@ -36,6 +36,12 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings("java:S101")
 public class RuntimeVisibleTypeAnnotations_attribute extends RuntimeTypeAnnotations {
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param name Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     public RuntimeVisibleTypeAnnotations_attribute(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, name, posDataInputStream);
     }

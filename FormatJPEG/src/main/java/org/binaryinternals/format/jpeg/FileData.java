@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Image data between the markers, like the entropy-coded data after a `SOS` marker.
+///
 /// @author Amos Shi
 public class FileData extends FileComponent implements GenerateTreeNode {
 

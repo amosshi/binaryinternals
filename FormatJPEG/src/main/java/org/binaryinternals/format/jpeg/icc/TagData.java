@@ -14,11 +14,16 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// The data of an ICC profile tag: a type signature and the type-specific data.
+///
 /// @author Amos Shi
 public class TagData extends FileComponent implements GenerateTreeNode {
 
+    /// The tag type signature, see [TagType].
     public final int tagType;
 
+    /// Reads the tag data.
+    ///
     /// @param input The input stream for this Tag Data only
     /// @throws IOException Parse file failed
     public TagData(final PosDataInputStream input) throws IOException {
@@ -31,6 +36,9 @@ public class TagData extends FileComponent implements GenerateTreeNode {
         input.skipNBytes(4);
     }
 
+    /// Gets the tag type signature as text.
+    ///
+    /// @return The 4-character type signature
     public String getTagType() {
         return TagType.getTypeSignature(this.tagType);
     }
@@ -45,6 +53,9 @@ public class TagData extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// Add the tree nodes of the tag type signature and the reserved bytes.
+    ///
+    /// @param parentNode Parent tree node
     public void generateTreeNode_TagDataType(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
 

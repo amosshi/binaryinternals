@@ -12,6 +12,7 @@ import org.binaryinternals.format.pdf.PDFStatics;
 /// @author Amos Shi
 public final class Null extends FileComponent implements BasicObject {
 
+    /// Raw text of the null object.
     public static final String VALUE = "null";
     /// Null text in `Raw` format.
     private final String RawText;
@@ -46,6 +47,7 @@ public final class Null extends FileComponent implements BasicObject {
                 this.RawText);
     }
 
+    /// Start bytes of a Null object.
     public static final class StartByte {
 
         /// Start byte for `null`.

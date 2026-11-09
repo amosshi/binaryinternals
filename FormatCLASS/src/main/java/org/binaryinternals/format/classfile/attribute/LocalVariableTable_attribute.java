@@ -50,6 +50,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class LocalVariableTable_attribute extends attribute_info {
 
+    /// Number of entries in the local variable table.
     public final u2 local_variable_table_length;
     private final local_variable_table[] localVariableTable;
 
@@ -131,6 +132,7 @@ public class LocalVariableTable_attribute extends attribute_info {
     /// @see LocalVariableTable_attribute
     public static final class local_variable_table extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = 10;
         /// The given local variable must have a value at indices into the
         /// [Code_attribute#code] array in the interval

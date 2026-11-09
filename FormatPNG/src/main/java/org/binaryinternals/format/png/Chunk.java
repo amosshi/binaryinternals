@@ -87,11 +87,15 @@ public sealed class Chunk extends FileComponent implements GenerateTreeNode
         stream.readFully(this.CRC);
     }
 
+    /// Gets the chunk type as text, e.g. `IHDR`.
+    ///
+    /// @return The chunk type name
     public String getChunkTypeName() {
         return new String(this.ChunkType, StandardCharsets.ISO_8859_1);
     }
 
     /// File position of the first byte of [#ChunkData].
+    /// @return The start position of the chunk data
     protected final int getDataStartPos() {
         return this.startPos + LENGTH_SIZE + PNGFile.CHUNK_TYPE_SIZE;
     }

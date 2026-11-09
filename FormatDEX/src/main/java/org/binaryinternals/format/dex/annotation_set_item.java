@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A set of annotations: the offsets of the annotations, sorted by type index.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -25,7 +27,9 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class annotation_set_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Size of the set in entries.
     public final Type_uint size;
+    /// Elements of the set.
     public final annotation_off_item[] entries;
 
     annotation_set_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
@@ -100,9 +104,12 @@ public final class annotation_set_item extends FileComponent implements Generate
         }
     }
 
+    /// An element of the annotation set: the offset of an annotation.
     public static final class annotation_off_item extends FileComponent {
 
+        /// Length of the item in bytes.
         public static final int LENGTH = Type_uint.LENGTH;
+        /// Offset from the start of the file to an [annotation_item].
         public final Type_uint annotation_off;
 
         annotation_off_item(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {
@@ -114,9 +121,12 @@ public final class annotation_set_item extends FileComponent implements Generate
         }
     }
 
+    /// An annotation, with its visibility.
     public static final class annotation_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Intended visibility of this annotation, see [Visibility].
         public final Type_ubyte visibility;
+        /// Encoded annotation contents.
         public final encoded_annotation annotation;
 
         annotation_item(PosDataInputStreamDex stream) throws IOException {
@@ -151,12 +161,18 @@ public final class annotation_set_item extends FileComponent implements Generate
             this.annotation.generateTreeNode(annoNode, dexFile);
         }
 
+        /// The visibility values of an annotation.
         public enum Visibility {
+            /// Intended only to be visible at build time, e.g. during compilation of other code.
             VISIBILITY_BUILD(0x00, "msg_annotation_item__visibility_build"),
+            /// Intended to visible at runtime.
             VISIBILITY_RUNTIME(0x01, "msg_annotation_item__visibility_runtime"),
+            /// Intended to visible at runtime, but only to the underlying system, not to regular user code.
             VISIBILITY_SYSTEM(0x02, "msg_annotation_item__visibility_system");
 
+            /// Value stored in the file.
             public final int value;
+            /// Description of the visibility.
             public final String description;
 
             Visibility(int v, String d) {
@@ -169,6 +185,10 @@ public final class annotation_set_item extends FileComponent implements Generate
                 return "%d - %s".formatted(this.value, this.description);
             }
 
+            /// Gets the text of a visibility value.
+            ///
+            /// @param v The visibility value
+            /// @return The visibility text, e.g. `1 - Runtime`
             public static String toString(int v) {
                 return Arrays.stream(values())
                         .filter(item -> item.value == v)

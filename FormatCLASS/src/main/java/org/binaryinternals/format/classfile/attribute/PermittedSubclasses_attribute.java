@@ -38,6 +38,12 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings("java:S101")
 public class PermittedSubclasses_attribute extends ClassesCount {
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param type Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     public PermittedSubclasses_attribute(u2 nameIndex, String type, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
     }

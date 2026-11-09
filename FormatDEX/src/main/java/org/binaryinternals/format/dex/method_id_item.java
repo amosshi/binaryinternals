@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// A method identifier: the defining class, prototype and name of a method.
+///
 /// @author Amos Shi
 ///
 /// ```

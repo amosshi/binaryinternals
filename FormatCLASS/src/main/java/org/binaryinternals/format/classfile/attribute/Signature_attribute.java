@@ -32,6 +32,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Signature_attribute extends attribute_info {
 
+    /// Constant pool index of a `CONSTANT_Utf8_info` with a class, method or field signature.
     public final u2 signature_index;
 
     Signature_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
@@ -83,7 +84,9 @@ public class Signature_attribute extends attribute_info {
         /// true or false.
         Z('Z', JavaLangSpec.Keyword.BOOLEAN.text);
 
+        /// The signature character.
         public final char signature;
+        /// The Java keyword of the base type.
         public final String JavaKeyWord;
 
         BaseType(char c, String kw) {
@@ -139,11 +142,16 @@ public class Signature_attribute extends attribute_info {
     @SuppressWarnings("java:S115")
     public enum ReferenceType {
 
+        /// Class type signature start, `L`.
         ClassTypeSignature('L'),
+        /// Class type signature end, `;`.
         ClassTypeSignatureSuffix(';'),
+        /// Type variable signature start, `T`.
         TypeVariableSignature('T'),
+        /// Array type signature start, `[`.
         ArrayTypeSignature('[');
 
+        /// The signature character.
         public final char signature;
 
         ReferenceType(char c) {

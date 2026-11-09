@@ -119,6 +119,7 @@ public class BootstrapMethods_attribute extends attribute_info {
 
     // java:S101 - Class names should comply with a naming convention --- We respect the name from JVM Spec instead
     // java:S116 - Field names should comply with a naming convention --- We respect the name from JVM Spec instead
+    /// A bootstrap method: a method handle and its static arguments.
     @SuppressWarnings({"java:S101", "java:S116"})
     public static final class bootstrap_method extends FileComponent implements GenerateTreeNodeClassFile {
 

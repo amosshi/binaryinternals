@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A string: its UTF-16 size and its MUTF-8 encoded data.
+///
 /// @author Amos Shi
 ///
 /// ```

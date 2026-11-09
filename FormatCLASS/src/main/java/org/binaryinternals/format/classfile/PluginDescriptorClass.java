@@ -11,9 +11,12 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
+/// Plug-in descriptor of the Java class file format.
+///
 /// @author Amos Shi
 public class PluginDescriptorClass implements PluginDescriptor {
 
+    /// Creates the plug-in descriptor.
     public PluginDescriptorClass() {
     }
 

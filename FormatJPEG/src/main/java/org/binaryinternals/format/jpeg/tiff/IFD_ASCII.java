@@ -13,11 +13,22 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// An IFD entry of type `ASCII`, a NUL terminated text.
+///
 /// @author Amos Shi
 public class IFD_ASCII extends IFD {
 
+    /// The text value.
     public final String value;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_ASCII(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.ASCII, startPosTiff, byteArrayTiff);

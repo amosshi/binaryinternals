@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// An annotation: its type and its name-value elements.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -25,9 +27,12 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116", "java:S1104"})
 public final class encoded_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Type of the annotation, an index into the `type_ids` list.
     public final Type_uleb128 type_idx;
     private String type_jls;
+    /// Number of name-value mappings in this annotation.
     public final Type_uleb128 size;
+    /// Elements of the annotation, sorted by `name_idx` in increasing order.
     public final annotation_element[] elements;
 
     encoded_annotation(PosDataInputStreamDex stream) throws IOException {
@@ -59,6 +64,10 @@ public final class encoded_annotation extends FileComponent implements GenerateT
         return this.type_jls;
     }
 
+    /// Gets the description text of the annotation.
+    ///
+    /// @param dexFile The DEX file of the annotation
+    /// @return The annotation text
     public String toString(DexFile dexFile) {
         return "%s type=%d | %s size=%d".formatted(
                 this.getClass().getSimpleName(),
@@ -123,8 +132,11 @@ public final class encoded_annotation extends FileComponent implements GenerateT
 
     }
 
+    /// A name-value element of an annotation.
     public static final class annotation_element extends FileComponent implements GenerateTreeNodeDexFile {
+        /// Element name, an index into the `string_ids` list.
         public final Type_uleb128 name_idx;
+        /// Element value.
         public final encoded_value value;
 
         annotation_element(PosDataInputStreamDex stream) throws IOException {

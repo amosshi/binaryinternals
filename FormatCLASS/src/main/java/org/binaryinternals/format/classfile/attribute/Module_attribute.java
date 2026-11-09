@@ -82,23 +82,36 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class Module_attribute extends attribute_info {
 
+    /// Constant pool index of a `CONSTANT_Module_info` with the name of the current module.
     public final u2 module_name_index;
+    /// The module flags: `ACC_OPEN`, `ACC_SYNTHETIC` and `ACC_MANDATED`.
     public final u2 module_flags;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the module version, or `0` if there is no version.
     public final u2 module_version_index;
 
+    /// Number of entries in the requires table.
     public final u2 requires_count;
+    /// The dependencies of the current module.
     public final Requires[] requires;
 
+    /// Number of entries in the exports table.
     public final u2 exports_count;
+    /// The packages exported by the current module.
     public final Exports[] exports;
 
+    /// Number of entries in the opens table.
     public final u2 opens_count;
+    /// The packages opened by the current module.
     public final Opens[] opens;
 
+    /// Number of entries in the uses_index table.
     public final u2 uses_count;
+    /// Constant pool indexes of `CONSTANT_Class_info` entries, the services the current module may discover via `java.util.ServiceLoader`.
     public final u2[] uses_index;
 
+    /// Number of entries in the provides table.
     public final u2 provides_count;
+    /// The service implementations provided by the current module.
     public final Provides[] provides;
 
     // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
@@ -420,9 +433,13 @@ public class Module_attribute extends attribute_info {
     /// @see Module
     public static final class Requires extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = 6;
+        /// Constant pool index of a `CONSTANT_Module_info` with the module the current module depends on.
         public final u2 requires_index;
+        /// The flags of the dependency: `ACC_TRANSITIVE`, `ACC_STATIC_PHASE`, `ACC_SYNTHETIC` and `ACC_MANDATED`.
         public final u2 requires_flags;
+        /// Constant pool index of a `CONSTANT_Utf8_info` with the version of the dependency, or `0` if there is no version.
         public final u2 requires_version_index;
 
         private Requires(final PosDataInputStream posDataInputStream)
@@ -489,9 +506,13 @@ public class Module_attribute extends attribute_info {
     /// @see Module
     public static final class Exports extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Constant pool index of a `CONSTANT_Package_info` with the exported package.
         public final u2 exports_index;
+        /// The flags of the export: `ACC_SYNTHETIC` and `ACC_MANDATED`.
         public final u2 exports_flags;
+        /// Number of entries in the exports_to_index table, `0` for an unqualified export.
         public final u2 exports_to_count;
+        /// Constant pool indexes of `CONSTANT_Module_info` entries, the modules the package is exported to.
         public final u2[] exports_to_index;
 
         private Exports(final PosDataInputStream posDataInputStream) throws IOException {
@@ -586,9 +607,13 @@ public class Module_attribute extends attribute_info {
     /// @see Module
     public static final class Opens extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Constant pool index of a `CONSTANT_Package_info` with the opened package.
         public final u2 opens_index;
+        /// The flags of the open: `ACC_SYNTHETIC` and `ACC_MANDATED`.
         public final u2 opens_flags;
+        /// Number of entries in the opens_to_index table, `0` for an unqualified open.
         public final u2 opens_to_count;
+        /// Constant pool indexes of `CONSTANT_Module_info` entries, the modules the package is opened to.
         public final u2[] opens_to_index;
 
         private Opens(final PosDataInputStream posDataInputStream) throws IOException {
@@ -674,8 +699,11 @@ public class Module_attribute extends attribute_info {
     /// @see Module
     public static final class Provides extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Constant pool index of a `CONSTANT_Class_info` with the service interface.
         public final u2 provides_index;
+        /// Number of entries in the provides_with_index table.
         public final u2 provides_with_count;
+        /// Constant pool indexes of `CONSTANT_Class_info` entries, the service implementations.
         public final u2[] provides_with_index;
 
         private Provides(final PosDataInputStream posDataInputStream) throws IOException {

@@ -43,12 +43,19 @@ public class Identification extends FileComponent implements GenerateTreeNode {
 
     /// Magic number of `class` file.
     public static final int MAGIC_NUMBER = 0x7F454C46;
+    /// Size of `EI_MAG`, the magic number.
     public static final int EI_MAG_SIZE = 4;
+    /// Size of `EI_CLASS`, the file class.
     public static final int EI_CLASS_SIZE = 1;
+    /// Size of `EI_DATA`, the data encoding.
     public static final int EI_DATA_SIZE = 1;
+    /// Size of `EI_VERSION`, the file version.
     public static final int EI_VERSION_SIZE = 1;
+    /// Size of `EI_OSABI`, the operating system and ABI.
     public static final int EI_OSABI_SIZE = 1;
+    /// Size of `EI_ABIVERSION`, the ABI version.
     public static final int EI_ABIVERSION_SIZE = 1;
+    /// Size of `EI_PAD`, the unused padding bytes.
     public static final int EI_PAD_SIZE = 7;
 
     /// Magic number of ELF file: `0x7F454C46`.
@@ -206,6 +213,7 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         )));
     }
 
+    /// The file class, `EI_CLASS`: 32-bit or 64-bit objects.
     public enum ElfClass {
         /// Invalid class.
         ///
@@ -333,26 +341,42 @@ public class Identification extends FileComponent implements GenerateTreeNode {
         /// @see
         /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFOSABI_NONE(0x00),
+        /// HP-UX.
         HP_UNIX(0x01),
+        /// NetBSD.
         NetBSD(0x02),
         /// Linux system.
         ///
         /// @see
         /// <a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/elf.h">include/uapi/linux/elf.h</a>
         ELFOSABI_LINUX(0x03),
+        /// GNU Hurd.
         GNU_Hurd(0x04),
+        /// Solaris.
         Solaris(0x06),
+        /// AIX.
         AIX(0x07),
+        /// IRIX.
         IRIX(0x08),
+        /// FreeBSD.
         FreeBSD(0x09),
+        /// Tru64.
         Tru64(0x0A),
+        /// Novell Modesto.
         Novell_Modesto(0x0B),
+        /// OpenBSD.
         OpenBSD(0x0C),
+        /// OpenVMS.
         OpenVMS(0x0D),
+        /// NonStop Kernel.
         NonStop_Kernel(0x0E),
+        /// AROS.
         AROS(0x0F),
+        /// Fenix OS.
         Fenix_OS(0x10),
+        /// CloudABI.
         CloudABI(0x11),
+        /// Stratus Technologies OpenVOS.
         Stratus_Technologies_OpenVOS(0x12),
         /// ARM FDPIC platform.
         ///

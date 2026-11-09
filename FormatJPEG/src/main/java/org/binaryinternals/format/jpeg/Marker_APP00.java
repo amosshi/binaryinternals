@@ -14,9 +14,12 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `APP0` application segment, used by JFIF.
+///
 /// @author Amos Shi
 public class Marker_APP00 extends Marker {
 
+    /// Identifier of a JFIF segment.
     public static final String identifier_JFIF = "JFIF";
     private String identifier;
     private GenerateTreeNode compnent;

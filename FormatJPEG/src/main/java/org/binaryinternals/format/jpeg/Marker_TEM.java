@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `TEM` marker: for temporary private use in arithmetic coding.
+///
 /// @author Amos Shi
 public class Marker_TEM extends Marker {
 

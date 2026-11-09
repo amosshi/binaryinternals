@@ -29,9 +29,17 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeTypeAnnotations extends attribute_info {
 
+    /// Number of type annotations.
     public final u2 num_annotations;
+    /// The type annotations.
     public final type_annotation[] annotations;
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param name Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     protected RuntimeTypeAnnotations(u2 nameIndex, String name, PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, name, posDataInputStream);
 
@@ -127,11 +135,13 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
     /// ```
     public static class type_annotation extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// The kind of target on which the annotation appears.
         public final u1 target_type;
         /// The `target_info` union, determined by the
         /// [#target_type]; it is null for an unrecognized
         /// [#target_type].
         public final target_info union_target_info;
+        /// The part of the type indicated by [#union_target_info] that is annotated.
         public final type_path target_path;
         /// The rest fields are the same as [Annotation]
         public final Annotation at;
@@ -398,6 +408,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         /// </a>
         public static final class type_parameter_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "type_parameter_target";
 
             /// The value of the type_parameter_index item specifies which type
@@ -405,6 +416,10 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             /// of 0 specifies the first type parameter declaration.
             public final u1 type_parameter_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected type_parameter_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.type_parameter_index = new u1(posDataInputStream);
@@ -422,6 +437,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         /// </a>
         public static final class supertype_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "supertype_target";
 
             /// A supertype_index value of 65535 specifies that the annotation
@@ -438,6 +454,10 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             /// extends clause of an interface declaration.
             public final u2 supertype_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected supertype_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.supertype_index = new u2(posDataInputStream);
@@ -445,13 +465,22 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on the bound of a type parameter of a generic class, interface, method, or constructor.
         public static final class type_parameter_bound_target extends FileComponent implements GenerateTreeNodeClassFile, target_info {
 
+            /// Length of the structure in bytes.
             public static final int LENGTH = u1.LENGTH + u1.LENGTH;
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "type_parameter_bound_target";
+            /// Index of the type parameter declaration.
             public final u1 type_parameter_index;
+            /// Index of the bound of the type parameter declaration.
             public final u1 bound_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected type_parameter_bound_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.type_parameter_index = new u1(posDataInputStream);
@@ -484,20 +513,35 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on a type in a field declaration, the return type of a
+        /// method, the type of a newly constructed object, or the receiver type of a method or
+        /// constructor.
         public static final class empty_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "empty_target";
 
+            /// Creates the item, it has no data.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException never, for a uniform constructor signature
             protected empty_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super(posDataInputStream.getPos(), 0);
             }
         }
 
+        /// The type annotation appears on the type in a formal parameter declaration of a method, constructor, or lambda expression.
         public static final class formal_parameter_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "formal_parameter_target";
+            /// Index of the formal parameter declaration.
             public final u1 formal_parameter_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected formal_parameter_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.formal_parameter_index = new u1(posDataInputStream);
@@ -505,11 +549,18 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on the type in the `throws` clause of a method or constructor declaration.
         public static final class throws_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "throws_target";
+            /// Index into the `exception_index_table` of the `Exceptions` attribute.
             public final u2 throws_type_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected throws_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.throws_type_index = new u2(posDataInputStream);
@@ -532,10 +583,17 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
         /// ```
         public static final class localvar_target extends FileComponent implements GenerateTreeNodeClassFile, target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "localvar_target";
+            /// Number of entries in the table.
             public final u2 table_length;
+            /// The code ranges where the local variable has a value.
             public final Table[] table;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected localvar_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.table_length = new u2(posDataInputStream);
@@ -588,12 +646,20 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 }
             }
 
+            /// A code range where a local variable has a value.
             public static final class Table extends FileComponent implements GenerateTreeNodeClassFile {
 
+                /// Start of the code range, an index into the code array.
                 public final u2 start_pc;
+                /// Length of the code range.
                 public final u2 length_code;
+                /// Index of the local variable in the local variable array of the current frame.
                 public final u2 index;
 
+                /// Reads the structure from the class file.
+                ///
+                /// @param posDataInputStream Class file input stream
+                /// @throws IOException if the class file cannot be read
                 protected Table(final PosDataInputStream posDataInputStream) throws IOException {
                     super.startPos = posDataInputStream.getPos();
                     this.start_pc = new u2(posDataInputStream);
@@ -631,11 +697,18 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on the type in an exception parameter declaration.
         public static final class catch_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "catch_target";
+            /// Index into the `exception_table` of the `Code` attribute.
             public final u2 exception_table_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected catch_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.exception_table_index = new u2(posDataInputStream);
@@ -643,11 +716,18 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on the type in an `instanceof` expression, a `new` expression, or a method reference expression.
         public static final class offset_target extends FileComponent implements target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "offset_target";
+            /// Offset of the bytecode instruction, an index into the code array.
             public final u2 offset;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected offset_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset = new u2(posDataInputStream);
@@ -655,12 +735,20 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The type annotation appears on a type in a cast expression, or on an explicit type argument of a generic constructor or method invocation.
         public static final class type_argument_target extends FileComponent implements GenerateTreeNodeClassFile, target_info {
 
+            /// Name of this item of the `target_info` union.
             public static final String UNION_NAME = "type_argument_target";
+            /// Offset of the bytecode instruction, an index into the code array.
             public final u2 offset;
+            /// Index of the type in the cast operator, or of the explicit type argument.
             public final u1 type_argument_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected type_argument_target(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.offset = new u2(posDataInputStream);
@@ -689,11 +777,18 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
             }
         }
 
+        /// The part of a type that a type annotation is on.
         public static final class type_path extends FileComponent implements GenerateTreeNodeClassFile {
 
+            /// Number of entries in the path.
             public final u1 path_length;
+            /// The path steps.
             public final Path[] path;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected type_path(final PosDataInputStream posDataInputStream) throws IOException {
                 super.startPos = posDataInputStream.getPos();
                 this.path_length = new u1(posDataInputStream);
@@ -744,12 +839,20 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 }
             }
 
+            /// A step of the type path.
             public static final class Path extends FileComponent implements GenerateTreeNodeClassFile {
 
+                /// The kind of the path step.
+                ///
                 /// @see TypePathKind
                 public final u1 type_path_kind;
+                /// Index of the type argument annotated, only meaningful when [#type_path_kind] is `3`; otherwise `0`.
                 public final u1 type_argument_index;
 
+                /// Reads the structure from the class file.
+                ///
+                /// @param posDataInputStream Class file input stream
+                /// @throws IOException if the class file cannot be read
                 protected Path(final PosDataInputStream posDataInputStream) throws IOException {
                     super.startPos = posDataInputStream.getPos();
                     this.type_path_kind = new u1(posDataInputStream);
@@ -781,6 +884,7 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                 }
             }
 
+            /// The kinds of a type path step.
             public enum TypePathKind {
 
                 /// Annotation is deeper in an array type.
@@ -803,6 +907,10 @@ public abstract class RuntimeTypeAnnotations extends attribute_info {
                     this.description = d;
                 }
 
+                /// Gets the description of a type path kind.
+                ///
+                /// @param v The type path kind value
+                /// @return The description, or `Un-Recognized` for an unknown value
                 public static String getDescription(short v) {
                     for (TypePathKind item : TypePathKind.values()) {
                         if (item.value == v) {

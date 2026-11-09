@@ -40,6 +40,9 @@ public final class Type_uint {
         return Long.hashCode(this.value);
     }
 
+    /// Gets the value as an `int`; values above [Integer#MAX_VALUE] become negative.
+    ///
+    /// @return The value as `int`
     public int intValue() {
         return (int) value;
     }

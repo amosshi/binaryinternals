@@ -24,7 +24,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeParameterAnnotations extends attribute_info {
 
+    /// Number of method parameters with annotations.
     public final u1 num_parameters;
+    /// The annotations of each parameter.
     public final parameter_annotations[] parameter_annotations;
 
     RuntimeParameterAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
@@ -108,9 +110,12 @@ public abstract class RuntimeParameterAnnotations extends attribute_info {
     /// @see RuntimeInvisibleParameterAnnotations_attribute
     abstract String getMessageKey_4_parameter_annotations__annotations();
 
+    /// The annotations of a parameter.
     public class parameter_annotations extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Number of annotations of the parameter.
         public final u2 num_annotations;
+        /// The annotations of the parameter.
         public final Annotation[] annotations;
 
         private parameter_annotations(final PosDataInputStream posDataInputStream) throws IOException {

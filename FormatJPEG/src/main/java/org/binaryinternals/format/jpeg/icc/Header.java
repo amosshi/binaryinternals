@@ -14,29 +14,54 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// The ICC profile header, the first 128 bytes of the profile.
+///
 /// @author Amos Shi
 public class Header extends FileComponent implements GenerateTreeNode {
 
+    /// Length of the header in bytes.
     public static final int LENGTH = 128;
+    /// Bytes 0 - 3: profile size.
     public final long ProfileSize;                                              //  0 -  3
+    /// Bytes 4 - 7: preferred CMM type.
     public final String CMMType;                                                //  4 -  7
+    /// Bytes 8 - 11: profile version number.
     public final String ProfileVersion;                                         //  8 - 11
+    /// Bytes 12 - 15: profile/device class.
     public final String ProfileDeviceClass;                                     // 12 - 15
+    /// Bytes 16 - 19: colour space of data.
     public final String DataColourSpace;                                        // 16 - 19
+    /// Bytes 20 - 23: profile connection space (PCS).
     public final String ProfileConnectionSpace;                                 // 20 - 23
+    /// Bytes 24 - 35: date and time this profile was first created.
     public final dateTimeNumber DateTime;                                       // 24 - 35
+    /// Bytes 36 - 39: profile file signature, `acsp`.
     public final String ProfileFileSignature;                                   // 36 - 39
+    /// Bytes 40 - 43: primary platform signature.
     public final String PrimaryPlatform;                                        // 40 - 43
+    /// Bytes 44 - 47: profile flags.
     public final long ProfileFlags;                                             // 44 - 47
+    /// Bytes 48 - 51: device manufacturer.
     public final String DeviceManufacturer;                                     // 48 - 51
+    /// Bytes 52 - 55: device model.
     public final String DeviceModel;                                            // 52 - 55
+    /// Bytes 56 - 63: device attributes.
     public final long[] DeviceAttributes;                                       // 56 - 63
+    /// Bytes 64 - 67: rendering intent.
     public final long RenderingIntent;                                          // 64 - 67
+    /// Bytes 68 - 79: the nCIEXYZ values of the illuminant of the PCS.
     public final XYZNumber ProfileConnectionSpaceIlluminant;                    // 68 - 79
+    /// Bytes 80 - 83: profile creator signature.
     public final String ProfileCreator;                                         // 80 - 83
+    /// Bytes 84 - 99: profile ID.
     public final byte[] ProfileID = new byte[16];                               // 84 - 99
+    /// Bytes 100 - 127: reserved, set to zero.
     public final byte[] Reserved = new byte[28];                                // 100-127
 
+    /// Reads the profile header.
+    ///
+    /// @param input Input stream of the the ICC profile
+    /// @throws IOException if the stream cannot be read
     public Header(final PosDataInputStream input) throws IOException {
 
         super.startPos = input.getPos();

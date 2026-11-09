@@ -62,6 +62,7 @@ public class ModuleHashes_attribute extends attribute_info {
     /// The value of the [#hashes_count] item indicates the number of
     /// entries in the [#hashes] table.
     public final u2 hashes_count;
+    /// The hashes of the modules.
     public final Hashes[] hashes;
 
     ModuleHashes_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
@@ -138,7 +139,9 @@ public class ModuleHashes_attribute extends attribute_info {
 
         /// Index to CONSTANT_Module_info structure.
         public final u2 module_name_index;
+        /// Number of bytes of the hash.
         public final u2 hash_length;
+        /// The hash bytes of the module.
         public final u1[] hash;
 
         private Hashes(final PosDataInputStream posDataInputStream) throws IOException {

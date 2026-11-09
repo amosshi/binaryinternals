@@ -70,6 +70,7 @@ import org.binaryinternals.format.classfile.constant.cp_info.ConstantType;
 @SuppressWarnings("java:S116")
 public class ClassFile extends FileFormat {
 
+    /// The magic number identifying the class file format; it has the value `0xCAFEBABE`.
     public final u4 magic;
 
     // Class file Version
@@ -110,6 +111,7 @@ public class ClassFile extends FileFormat {
     /// VM Spec: The ClassFile Structure
     /// </a>
     public final u2 constant_pool_count;
+    /// The constant pool, indexed from 1 to [#constant_pool_count] - 1.
     public final cp_info[] constant_pool;
 
     // Class Declaration
@@ -155,6 +157,7 @@ public class ClassFile extends FileFormat {
     /// VM Spec: The ClassFile Structure
     /// </a>
     public final U2ClassComponent interfaces_count;
+    /// The direct superinterfaces of this class or interface, as indexes into the constant pool.
     public final U2ClassComponent[] interfaces;
 
     // Field
@@ -166,6 +169,7 @@ public class ClassFile extends FileFormat {
     /// VM Spec: The ClassFile Structure
     /// </a>
     public final U2ClassComponent fields_count;
+    /// The fields of this class or interface.
     public final field_info[] fields;
 
     // Method
@@ -178,6 +182,7 @@ public class ClassFile extends FileFormat {
     /// VM Spec: The ClassFile Structure
     /// </a>
     public final U2ClassComponent methods_count;
+    /// The methods of this class or interface.
     public final method_info[] methods;
 
     // Attribute
@@ -190,6 +195,7 @@ public class ClassFile extends FileFormat {
     /// VM Spec: The ClassFile Structure
     /// </a>
     public final U2ClassComponent attributes_count;
+    /// The attributes of this class or interface.
     public final attribute_info[] attributes;
 
     private final JTreeClassFile jtreeAdapter = new JTreeClassFile();
@@ -205,11 +211,21 @@ public class ClassFile extends FileFormat {
                 classFile.toRealPath().toString());
     }
 
+    /// Parses a class file from its bytes.
+    ///
+    /// @param classFileBytes The class file bytes
+    /// @throws IOException if the class file cannot be parsed
     public ClassFile(final byte[] classFileBytes) throws IOException {
         this(classFileBytes, null, null);
     }
 
     // java:S3776 - Cognitive Complexity of methods should not be too high --- No, it is not high
+    /// Parses a class file from its bytes.
+    ///
+    /// @param classFileBytes The class file bytes
+    /// @param fileName The file name, or `null`
+    /// @param filePath The file path, or `null`
+    /// @throws IOException if the class file cannot be parsed
     @SuppressWarnings("java:S3776")
     public ClassFile(final byte[] classFileBytes, final String fileName, final String filePath) throws IOException {
         super(classFileBytes, fileName, filePath);

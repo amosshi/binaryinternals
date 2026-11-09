@@ -22,9 +22,13 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see <a href="https://learn.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-rgbquad">RGBQUAD structure</a>
 public final class PixelRGBA extends FileComponent implements Pixel {
 
+    /// Length of the element in bytes.
     public static final int LENGTH = 4;
+    /// Blue intensity.
     public final int Blue;
+    /// Green intensity.
     public final int Green;
+    /// Red intensity.
     public final int Red;
     /// The reserved byte, usually 0.
     public final int Alpha;

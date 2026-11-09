@@ -30,6 +30,10 @@ public final class JPEGFile extends FileFormat {
 
     private static final Logger LOGGER = Logger.getLogger(JPEGFile.class.getName());
 
+    /// Reads and parses a JPEG file.
+    ///
+    /// @param file The JPEG file
+    /// @throws IOException if the file cannot be read or parsed
     public JPEGFile(final Path file) throws IOException {
         super(file);
         this.parse();

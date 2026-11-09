@@ -18,6 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream.ASCIILine;
 public final class CrossReferenceTable extends FileComponent implements GenerateTreeNode {
 
     static final String SIGNATURE = "xref";
+    /// The subsections of the table.
     public final List<Subsection> Subsections;
     /// The first line current object.
     public final ASCIILine HeaderLine;
@@ -68,6 +69,7 @@ public final class CrossReferenceTable extends FileComponent implements Generate
         }
     }
 
+    /// A subsection of the Cross-Reference Table: a header line with the first object number and the number of entries, followed by the entries.
     public static final class Subsection extends FileComponent implements GenerateTreeNode {
 
         /// First object number.
@@ -142,15 +144,23 @@ public final class CrossReferenceTable extends FileComponent implements Generate
     /// accepted too.
     public static final class Entry extends FileComponent implements GenerateTreeNode {
 
+        /// Length of an entry in bytes, end-of-line marker included.
         public static final int LENGTH = 20;
+        /// Length of the byte offset field of an entry.
         public static final int OFFSET_LENGTH = 10;
+        /// Length of the generation number field of an entry.
         public static final int GENERATIONNUMBER_LENGTH = 5;
+        /// Entry type of an in-use object.
         public static final char TYPE_IN_USE = 'n';
+        /// Entry type of a free object.
         public static final char TYPE_FREE = 'f';
         /// Length of the end-of-line marker.
         private static final int EOL_LENGTH_MAX = 2;
+        /// Byte offset of the object for an in-use entry, or the object number of the next free object for a free entry.
         public final int Offset;
+        /// Generation number of the object.
         public final int GenerationNumber;
+        /// Entry type, [#TYPE_IN_USE] or [#TYPE_FREE].
         public final char Type;
 
         Entry(final PosDataInputStream stream) throws IOException {

@@ -90,6 +90,9 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         return (((long) this.getWidth() * this.getBitCount() + 31) / 32) * 4;
     }
 
+    /// The width in pixels.
+    ///
+    /// @return the width
     public int getWidth() {
         return switch (this.data) {
             case BITMAPCOREHEADER core -> core.Width;
@@ -108,6 +111,9 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         };
     }
 
+    /// The compression method, one of the [CompressionMethod] values.
+    ///
+    /// @return the compression method value
     public int getCompressionMethod() {
         return switch (this.data) {
             // If it is BITMAPCOREHEADER, it is the same as not compressed.
@@ -133,6 +139,9 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         };
     }
 
+    /// The offset of the ICC profile data, from the beginning of the `BITMAPV5HEADER` structure.
+    ///
+    /// @return the offset, or `-1` if the header is not a `BITMAPV5HEADER`
     public long getICCProfileData() {
         return this.data instanceof BITMAPV5HEADER v5 ? v5.ICCProfileData : -1;
     }
@@ -165,10 +174,15 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
     @SuppressWarnings("PublicInnerClass")
     public static final class BITMAPCOREHEADER extends FileComponent implements Header {
 
+        /// The number of bytes required by the structure.
         public static final int SIZE = 12;
+        /// The width of the bitmap, in pixels.
         public final int Width;
+        /// The height of the bitmap, in pixels.
         public final int Height;
+        /// The number of planes, must be 1.
         public final int Planes;
+        /// The number of bits per pixel.
         public final int BitCount;
 
         BITMAPCOREHEADER(final PosDataInputStream input) throws IOException {
@@ -190,6 +204,8 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// The Windows 3.x DIB header, the most common one.
+    ///
     /// @see <a href="http://msdn.microsoft.com/en-us/library/dd183376%28VS.85%29.aspx">BITMAPINFOHEADER Structure</a>
     @SuppressWarnings("PublicInnerClass")
     public static sealed class BITMAPINFOHEADER extends FileComponent implements Header
@@ -276,6 +292,7 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
     @SuppressWarnings("PublicInnerClass")
     public static final class BITMAPV2INFOHEADER extends BITMAPINFOHEADER {
 
+        /// The number of bytes required by the structure.
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 52;
 
@@ -296,6 +313,7 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
     @SuppressWarnings("PublicInnerClass")
     public static final class BITMAPV3INFOHEADER extends BITMAPINFOHEADER {
 
+        /// The number of bytes required by the structure.
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 56;
 
@@ -312,19 +330,30 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// The OS/2 2.x DIB header, named `OS22XBITMAPHEADER` too.
+    ///
     /// @see <a href="http://doxygen.reactos.org/d7/d02/structBITMAPCOREHEADER2.html">BITMAPCOREHEADER2 Structure Reference</a>
     @SuppressWarnings("PublicInnerClass")
     public static final class BITMAPCOREHEADER2 extends BITMAPINFOHEADER {
 
+        /// The number of bytes required by the structure.
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 64;
+        /// The unit of the horizontal and vertical resolutions; 0 is pixels per meter.
         public final int ResUnit;
+        /// Padding, always 0.
         public final int Reserved;
+        /// How the bitmap rows are recorded; 0 is bottom-up.
         public final int Orientation;
+        /// The halftoning algorithm.
         public final int Halftoning;
+        /// Halftoning parameter 1, depends on the halftoning algorithm.
         public final long HalftoneSize1;
+        /// Halftoning parameter 2, depends on the halftoning algorithm.
         public final long HalftoneSize2;
+        /// The color encoding; 0 is RGB.
         public final long ColorSpace;
+        /// Application-defined identifier, not used for image rendering.
         public final long AppData;
 
         BITMAPCOREHEADER2(final PosDataInputStream input) throws IOException {
@@ -357,10 +386,13 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// Adds the color space and gamma information to `BITMAPINFOHEADER`.
+    ///
     /// @see <a href="http://msdn.microsoft.com/en-us/library/dd183380%28VS.85%29.aspx">BITMAPV4HEADER Structure</a>
     @SuppressWarnings("PublicInnerClass")
     public static sealed class BITMAPV4HEADER extends BITMAPINFOHEADER permits BITMAPV5HEADER {
 
+        /// The number of bytes required by the structure.
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 108;
         /// Color mask that specifies the red component of each pixel, valid only if `Compression` is set to `BI_BITFIELDS`.
@@ -415,10 +447,13 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// Adds the rendering intent and the ICC color profile to `BITMAPV4HEADER`.
+    ///
     /// @see <a href="http://msdn.microsoft.com/en-us/library/dd183381%28VS.85%29.aspx">BITMAPV5HEADER Structure</a>
     @SuppressWarnings("PublicInnerClass")
     public static final class BITMAPV5HEADER extends BITMAPV4HEADER {
 
+        /// The number of bytes required by the structure.
         @SuppressWarnings("FieldNameHidesFieldInSuperclass")
         public static final int SIZE = 124;
         /// Rendering intent for bitmap.
@@ -452,6 +487,8 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// The x, y and z coordinates of a color in the CIE XYZ color space.
+    ///
     /// @param x The x coordinate in fix point.
     /// @param y The y coordinate in fix point.
     /// @param z The z coordinate in fix point.
@@ -467,6 +504,8 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// The x, y and z coordinates of the red, green and blue endpoints of a color space.
+    ///
     /// @param red The xyz coordinates of red endpoint.
     /// @param green The xyz coordinates of green endpoint.
     /// @param blue The xyz coordinates of blue endpoint.
@@ -481,6 +520,7 @@ public final class DIBHeader extends FileComponent implements GenerateTreeNode {
         }
     }
 
+    /// The compression method of the pixel data.
     @SuppressWarnings("PublicInnerClass")
     public enum CompressionMethod {
 

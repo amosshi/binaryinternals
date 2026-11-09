@@ -39,7 +39,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_String_info extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 3;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the string value.
     public final u2 string_index;
 
     CONSTANT_String_info(final PosDataInputStream posDataInputStream) throws IOException {

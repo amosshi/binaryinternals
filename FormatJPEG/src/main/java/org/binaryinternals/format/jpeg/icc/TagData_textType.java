@@ -12,11 +12,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `textType`: a 7-bit ASCII text.
+///
 /// @author Amos Shi
 public class TagData_textType extends TagData {
 
+    /// The text.
     public final String text;
 
+    /// Reads the tag data.
+    ///
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
     public TagData_textType(final PosDataInputStream input) throws IOException {

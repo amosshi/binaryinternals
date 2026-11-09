@@ -47,6 +47,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_sPLT extends Chunk {
 
+    /// Chunk type of the suggested palette chunk.
     public static final String CHUNK_TYPE_NAME = "sPLT";
     /// Size of [SuggestedPaletteEntry#frequency()].
     private static final int FREQUENCY_SIZE = 2;

@@ -12,6 +12,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `EOI` marker: end of image.
+///
 /// @author Amos Shi
 public class Marker_EOI extends Marker {
 

@@ -41,6 +41,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_MethodHandle_info extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 5;
     /// The value of the `reference_kind` item must be in the range 1 to 9.
     /// The value denotes the `kind` of this method handle, which
@@ -114,14 +115,23 @@ public class CONSTANT_MethodHandle_info extends cp_info {
     @SuppressWarnings("java:S115")
     public enum ReferenceKind {
 
+        /// Reference kind 1, `getfield C.f:T`.
         REF_getField(MethodHandleInfo.REF_getField),
+        /// Reference kind 2, `getstatic C.f:T`.
         REF_getStatic(MethodHandleInfo.REF_getStatic),
+        /// Reference kind 3, `putfield C.f:T`.
         REF_putField(MethodHandleInfo.REF_putField),
+        /// Reference kind 4, `putstatic C.f:T`.
         REF_putStatic(MethodHandleInfo.REF_putStatic),
+        /// Reference kind 5, `invokevirtual C.m:(A*)T`.
         REF_invokeVirtual(MethodHandleInfo.REF_invokeVirtual),
+        /// Reference kind 6, `invokestatic C.m:(A*)T`.
         REF_invokeStatic(MethodHandleInfo.REF_invokeStatic),
+        /// Reference kind 7, `invokespecial C.m:(A*)T`.
         REF_invokeSpecial(MethodHandleInfo.REF_invokeSpecial),
+        /// Reference kind 8, `new C; dup; invokespecial C.<init>:(A*)V`.
         REF_newInvokeSpecial(MethodHandleInfo.REF_newInvokeSpecial),
+        /// Reference kind 9, `invokeinterface C.m:(A*)T`.
         REF_invokeInterface(MethodHandleInfo.REF_invokeInterface);
 
         /// ID of the [ReferenceKind].

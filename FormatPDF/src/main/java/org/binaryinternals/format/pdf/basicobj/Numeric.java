@@ -45,6 +45,7 @@ public final class Numeric extends FileComponent implements BasicObject {
                 this.RawNumberText);
     }
 
+    /// Start bytes of a Numeric object.
     public static final class StartByte {
 
         /// Sign '+'.

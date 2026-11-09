@@ -11,12 +11,22 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// TIFF 6.0 tag `0x011A`, `XResolution`.
+///
 /// @author Amos Shi
 /// @see IFD_0112_Orientation
 /// @see IFD_0128_ResolutionUnit
 /// @see IFD_011B_YResolution
 public class IFD_011A_XResolution extends IFD_RATIONAL_COUNT1 {
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_011A_XResolution(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);

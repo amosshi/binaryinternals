@@ -20,7 +20,9 @@ import org.binaryinternals.commonlib.GenerateTreeNodeFileFormat;
 /// ```
 @SuppressWarnings({"java:S115"})
 public interface GenerateTreeNodeDexFile extends GenerateTreeNodeFileFormat {
+    /// Messages of the DEX file tree nodes.
     ResourceBundle MESSAGES = ResourceBundle.getBundle(JTreeDexFile.class.getPackageName() + ".MessagesBundle", Locale.ROOT);
+    /// Message key for `annotation_set_item`.
     String msg_annotation_set_item = "msg_annotation_set_item";
 
     @Override

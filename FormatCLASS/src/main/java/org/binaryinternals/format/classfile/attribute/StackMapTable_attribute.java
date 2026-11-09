@@ -105,21 +105,33 @@ public class StackMapTable_attribute extends attribute_info {
         return "msg_attr_StackMapTable";
     }
 
+    /// The stack map frame types, by `frame_type` range.
     public enum FrameTypeEnum {
 
+        /// `same_frame`: the frame has the same locals as the previous frame and an empty stack.
         SAME(0, 63, "same_frame", "msg_attr_stack__same_frame"),
+        /// `same_locals_1_stack_item_frame`: the frame has the same locals as the previous frame and one stack item.
         SAME_LOCALS_1_STACK_ITEM(64, 127, "same_locals_1_stack_item_frame", "msg_attr_stack__same_locals_1_stack_item_frame"),
         /// Tags in the range [128-246] are reserved for future use.
         RESERVED(128, 246, "RESERVED", "msg_attr_stack__reserved"),
+        /// `same_locals_1_stack_item_frame_extended`: like `same_locals_1_stack_item_frame`, with an explicit `offset_delta`.
         SAME_LOCALS_1_STACK_ITEM_EXTENDED(247, 247, "same_locals_1_stack_item_frame_extended", "msg_attr_stack__same_locals_1_stack_item_frame_extended"),
+        /// `chop_frame`: the frame has the same locals as the previous frame, without the last 1 to 3 locals, and an empty stack.
         CHOP(248, 250, "chop_frame", "msg_attr_stack__chop_frame"),
+        /// `same_frame_extended`: like `same_frame`, with an explicit `offset_delta`.
         SAME_FRAME_EXTENDED(251, 251, "same_frame_extended", "msg_attr_stack__same_frame_extended"),
+        /// `append_frame`: the frame has the same locals as the previous frame with 1 to 3 more locals, and an empty stack.
         APPEND(252, 254, "append_frame", "msg_attr_stack__append_frame"),
+        /// `full_frame`: the frame lists all of its locals and stack items.
         FULL_FRAME(255, 255, "full_frame", "msg_attr_stack__full_frame");
 
+        /// Lowest `frame_type` value of the frame type.
         public final short low;
+        /// Highest `frame_type` value of the frame type.
         public final short high;
+        /// Name of the frame type in the `stack_map_frame` union.
         public final String unionName;
+        /// Message key of the frame type description.
         public final String messageKey;
 
         /// The Java class representing to the frame.
@@ -153,11 +165,16 @@ public class StackMapTable_attribute extends attribute_info {
         }
     }
 
+    /// Super class of the items of the `stack_map_frame` union.
     public abstract static sealed class stack_frame extends FileComponent implements GenerateTreeNodeClassFile {
+        /// Creates a frame.
         protected stack_frame() {
         }
 
         /// Get the calculated `offset_delta`.
+        /// Get the calculated `offset_delta`.
+        ///
+        /// @return The `offset_delta`
         public abstract int getOffsetDelta();
     }
 
@@ -178,6 +195,7 @@ public class StackMapTable_attribute extends attribute_info {
     /// }
     /// ```
     public static final class stack_map_frame extends FileComponent implements GenerateTreeNodeClassFile {
+        /// The frame type tag.
         public final u1 frame_type;
 
         /// The frame data after the [#frame_type], or `null` for `same_frame`. It is one of:
@@ -240,6 +258,7 @@ public class StackMapTable_attribute extends attribute_info {
         }
 
         /// Get the calculated `offset_delta`.
+        /// @return The `offset_delta`
         public int getOffsetDelta() {
             final FrameTypeEnum type = FrameTypeEnum.valueOf(this.frame_type.value);
             return switch (type) {
@@ -263,6 +282,7 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class same_locals_1_stack_item_frame extends stack_frame {
 
+            /// The stack item.
             public final verification_type_info[] stack = new verification_type_info[1];
 
             same_locals_1_stack_item_frame(final PosDataInputStream posDataInputStream) throws IOException {
@@ -312,7 +332,9 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class same_locals_1_stack_item_frame_extended extends stack_frame {
 
+            /// The `offset_delta` of the frame.
             public final u2 offset_delta;
+            /// The stack item.
             public final verification_type_info[] stack = new verification_type_info[1];
 
             same_locals_1_stack_item_frame_extended(final PosDataInputStream posDataInputStream)
@@ -372,6 +394,7 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class chop_frame extends stack_frame {
 
+            /// The `offset_delta` of the frame.
             public final u2 offset_delta;
 
             chop_frame(final PosDataInputStream posDataInputStream) throws IOException {
@@ -408,6 +431,7 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class same_frame_extended extends stack_frame {
 
+            /// The `offset_delta` of the frame.
             public final u2 offset_delta;
 
             same_frame_extended(final PosDataInputStream posDataInputStream) throws IOException {
@@ -445,7 +469,9 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class append_frame extends stack_frame {
 
+            /// The `offset_delta` of the frame.
             public final u2 offset_delta;
+            /// The additional locals.
             public final verification_type_info[] locals;
 
             append_frame(final PosDataInputStream posDataInputStream, short frameType) throws IOException {
@@ -518,10 +544,15 @@ public class StackMapTable_attribute extends attribute_info {
         /// ```
         public static final class full_frame extends stack_frame {
 
+            /// The `offset_delta` of the frame.
             public final u2 offset_delta;
+            /// Number of locals.
             public final u2 number_of_locals;
+            /// The locals.
             public final verification_type_info[] locals;
+            /// Number of stack items.
             public final u2 number_of_stack_items;
+            /// The stack items.
             public final verification_type_info[] stack;
 
             full_frame(final PosDataInputStream posDataInputStream) throws IOException {
@@ -638,8 +669,10 @@ public class StackMapTable_attribute extends attribute_info {
         }
     }
 
+    /// The verification type of a local variable or stack item.
     public static final class verification_type_info extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// The verification type tag, see [TagEnum].
         public final u1 tag;
         /// The `*_variable_info` item of the union, determined by
         /// the [#tag].
@@ -728,20 +761,32 @@ public class StackMapTable_attribute extends attribute_info {
         }
 
         // java:S115 - Constant names should comply with a naming convention --- We respect the name from JVM Spec instead
+        /// The verification type tags.
         @SuppressWarnings("java:S115")
         public enum TagEnum {
 
+            /// `Top_variable_info`.
             ITEM_Top(VerificationTypeInfo.ITEM_TOP),
+            /// `Integer_variable_info`.
             ITEM_Integer(VerificationTypeInfo.ITEM_INTEGER),
+            /// `Float_variable_info`.
             ITEM_Float(VerificationTypeInfo.ITEM_FLOAT),
+            /// `Double_variable_info`.
             ITEM_Double(VerificationTypeInfo.ITEM_DOUBLE),
+            /// `Long_variable_info`.
             ITEM_Long(VerificationTypeInfo.ITEM_LONG),
+            /// `Null_variable_info`.
             ITEM_Null(VerificationTypeInfo.ITEM_NULL),
+            /// `UninitializedThis_variable_info`.
             ITEM_UninitializedThis(VerificationTypeInfo.ITEM_UNINITIALIZED_THIS),
+            /// `Object_variable_info`.
             ITEM_Object(VerificationTypeInfo.ITEM_OBJECT),
+            /// `Uninitialized_variable_info`.
             ITEM_Uninitialized(VerificationTypeInfo.ITEM_UNINITIALIZED);
 
+            /// The tag value.
             public final short value;
+            /// Name of an unrecognized tag.
             public static final String TAGNAME_UNRECOGNIZED = "Unrecognized";
 
             TagEnum(int value) {

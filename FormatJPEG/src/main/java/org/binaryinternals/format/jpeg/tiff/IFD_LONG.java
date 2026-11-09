@@ -13,11 +13,22 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// An IFD entry of type `LONG`, 32-bit unsigned integers.
+///
 /// @author Amos Shi
 public class IFD_LONG extends IFD {
 
+    /// The values.
     public final long[] value;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_LONG(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.LONG, startPosTiff, byteArrayTiff);
@@ -45,6 +56,10 @@ public class IFD_LONG extends IFD {
         }
     }
 
+    /// Add the tree nodes of the entry, with a description of the value.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param description Description of the value
     public void generateTreeNode_LONG(DefaultMutableTreeNode parentNode, String description) {
         int pos = super.startPos;
         super.generateTreeNode(parentNode, pos);

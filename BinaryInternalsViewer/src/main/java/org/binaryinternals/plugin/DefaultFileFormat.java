@@ -19,6 +19,10 @@ import org.binaryinternals.commonlib.Icons;
 /// @author Amos Shi
 public final class DefaultFileFormat extends FileFormat {
 
+    /// Reads a file as raw binary data.
+    ///
+    /// @param file The file to read
+    /// @throws IOException if the file cannot be read
     public DefaultFileFormat(final Path file) throws IOException {
         super(file);
     }

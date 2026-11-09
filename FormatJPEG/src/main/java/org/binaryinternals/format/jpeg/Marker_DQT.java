@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `DQT` marker: define quantization table(s).
+///
 /// @author Amos Shi
 public class Marker_DQT extends Marker {
 

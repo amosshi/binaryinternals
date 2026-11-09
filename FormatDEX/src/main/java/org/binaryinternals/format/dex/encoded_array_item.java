@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// An encoded array item, e.g. the static field initial values of a class.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -23,6 +25,7 @@ import org.binaryinternals.commonlib.Icons;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class encoded_array_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Bytes representing the encoded array value.
     public final encoded_array value;
 
     encoded_array_item(PosDataInputStreamDex stream) throws IOException {

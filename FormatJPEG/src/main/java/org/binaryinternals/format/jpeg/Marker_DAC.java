@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `DAC` marker: define arithmetic coding conditioning(s).
+///
 /// @author Amos Shi
 public class Marker_DAC extends Marker {
 

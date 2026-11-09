@@ -27,8 +27,11 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 /// @see <a href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-dosdatetimetofiletime">DosDateTimeToFileTime</a>
 public final class MSDosDate extends FileComponent implements GenerateTreeNode {
 
+    /// Day of month, 1 - 31.
     public final int Day;
+    /// Month, 1 - 12.
     public final int Month;
+    /// Year, from 1980.
     public final int Year;
 
     MSDosDate(final int value, final int start, final int len) {

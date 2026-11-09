@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `DNL` marker: define number of lines.
+///
 /// @author Amos Shi
 public class Marker_DNL extends Marker {
 

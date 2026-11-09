@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `DHT` marker: define Huffman table(s).
+///
 /// @author Amos Shi
 public class Marker_DHT extends Marker {
 

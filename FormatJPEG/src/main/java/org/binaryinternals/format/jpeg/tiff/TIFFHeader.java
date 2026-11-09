@@ -15,11 +15,16 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// The 8-byte TIFF header: byte order, the number 42, and the offset of the first IFD.
 public class TIFFHeader extends FileComponent {
 
+    /// Size of the TIFF header in bytes.
     public static final int SIZE = 8; // Size of TIFF Header
+    /// Byte order `II`, little-endian.
     public static final int BYTEORDER_LITTLEENDIAN = 18761; // "II"
+    /// Byte order `MM`, big-endian.
     public static final int BYTEORDER_BIGENDIAN = 19789; // "MM"
+    /// The number that identifies the file as a TIFF file.
     public static final int ARBITRARY_NUMBER_42 = 42;
     /// The byte order used within the file.
     public final int byte_order;
@@ -29,6 +34,10 @@ public class TIFFHeader extends FileComponent {
     /// The offset (in bytes) of the first IFD.
     public final int offset_0ifd;
 
+    /// Reads the TIFF header.
+    ///
+    /// @param pDisMarker Input stream of the TIFF data
+    /// @throws IOException if the stream cannot be read
     public TIFFHeader(final PosDataInputStream pDisMarker)
             throws IOException {
         super.startPos = pDisMarker.getPos();
@@ -54,6 +63,9 @@ public class TIFFHeader extends FileComponent {
         return byteOrder == BYTEORDER_BIGENDIAN ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
     }
 
+    /// Gets the name of the byte order.
+    ///
+    /// @return The byte order name
     public String getByteOrderName() {
         return switch (this.byte_order) {
             case BYTEORDER_LITTLEENDIAN -> "little-endian byte order";
@@ -62,6 +74,9 @@ public class TIFFHeader extends FileComponent {
         };
     }
 
+    /// Add the tree nodes of the header.
+    ///
+    /// @param parentNode Parent tree node
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
 

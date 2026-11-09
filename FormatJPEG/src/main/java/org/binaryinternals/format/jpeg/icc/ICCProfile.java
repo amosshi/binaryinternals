@@ -16,15 +16,25 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// An ICC color profile, embedded in `APP2` segments: a header and a tag table.
+///
 /// @author Amos Shi
 /// @see <a href="http://www.color.org/">INTERNATIONAL COLOR CONSORTIUM</a>
 public class ICCProfile extends FileComponent implements GenerateTreeNode {
 
+    /// The raw bytes of the profile.
     public final byte[] rawData;
+    /// The profile header.
     public final Header header;
+    /// Number of tags in the tag table.
     public final int tagCount;
+    /// The tag table.
     public final Tag[] tagTable;
 
+    /// Reads the profile.
+    ///
+    /// @param input Input stream of the the ICC profile
+    /// @throws IOException if the stream cannot be read
     public ICCProfile(final PosDataInputStream input) throws IOException {
         super.startPos = input.getPos();
         super.length = input.getBuf().length;

@@ -209,6 +209,9 @@ public enum Icons {
         this.filename = filename;
     }
 
+    /// Gets the icon, loaded from the resources once and then cached.
+    ///
+    /// @return The icon image
     public Icon getIcon() {
         synchronized (CACHE_LOCK) {
             return ICON_CACHE.computeIfAbsent(this, _ -> {

@@ -40,6 +40,7 @@ import org.binaryinternals.commonlib.PluginDescriptor;
 public final class PluginManager {
 
     private static final Logger LOGGER = Logger.getLogger(PluginManager.class.getName());
+    /// Directory of the plug-in jar files.
     public static final String PLUGIN_DIR = resolvePluginDir();
     /// Plug-in descriptor class name and the plug-in descriptor. Keyed by class
     /// rather than jar, since several plug-ins can share a location, e.g.
@@ -120,6 +121,9 @@ public final class PluginManager {
         return type.getName();
     }
 
+    /// Gets all file extensions handled by the loaded plug-ins, for the window title.
+    ///
+    /// @return The extensions, e.g. ` - class, dex, ...`; empty string if no plug-in is loaded
     public static String getPluggedExtensions() {
         if (PLUGINS.isEmpty()) {
             return "";
@@ -129,6 +133,9 @@ public final class PluginManager {
                 .collect(Collectors.joining(", ", " - ", ", ..."));
     }
 
+    /// Adds one file filter per loaded plug-in to the file chooser.
+    ///
+    /// @param chooser The file chooser to add the filters to
     public static void initChooseFilters(final JFileChooser chooser) {
         for (final PluginDescriptor plugin : PLUGINS.values()) {
             chooser.addChoosableFileFilter(new FileNameExtensionFilter(
@@ -137,6 +144,12 @@ public final class PluginManager {
         }
     }
 
+    /// Parses a file with the plug-in handling its file extension, or as raw binary data if no plug-in handles it.
+    ///
+    /// @param file The file to parse
+    /// @return The parsed file
+    /// @throws IOException if the file cannot be read or parsed
+    /// @throws ReflectiveOperationException if the plug-in file format class cannot be created
     public static FileFormat getFile(final Path file) throws IOException,
             ReflectiveOperationException {
         final String name = String.valueOf(file.getFileName());

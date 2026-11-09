@@ -70,10 +70,14 @@ public final class Main extends JFrame {
     /// Name of the detail popup windows, to find them among the owned windows.
     private static final String POPUP_NAME = "detailPopup";
 
+    /// Drop target panel, shown while no file is open.
     private final JPanel filedropPanel = new JPanel();
     private final transient SequencedSet<Path> recentFiles = new LinkedHashSet<>();
+    /// Menu listing the recently opened files.
     private final JMenu menuFileRecentFile = new JMenu("Recent Files");
+    /// File chooser for the open file dialog.
     private final JFileChooser fileChooser = new JFileChooser();
+    /// Panel of the currently opened file, `null` when no file is open.
     private JSplitPaneFile contentPane = null;
     private transient SwingWorker<FileFormat, Void> loader = null;
 
@@ -92,6 +96,8 @@ public final class Main extends JFrame {
         this.enableFileDrop(this.getJMenuBar());
     }
 
+    /// Starts the viewer application.
+    ///
     /// @param args the command line arguments
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

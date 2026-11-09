@@ -16,14 +16,23 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Photoshop image resources, embedded in `APP13` segments: a signature and image resource blocks.
+///
 /// @author Amos Shi
 /// @see <a href="http://www.adobe.com/devnet/photoshop.html">Adobe Photoshop Developer Center</a>
 public class PhotoshopImageResource extends FileComponent {
 
+    /// The raw bytes.
     public final byte[] rawData;
+    /// The signature, like `Photoshop 3.0`.
     public final String signature;
+    /// The image resource blocks.
     public final List<IRB_8BIM> irb_8bim;
 
+    /// Reads the image resources.
+    ///
+    /// @param input Input stream of the the image resources
+    /// @throws IOException if the stream cannot be read
     public PhotoshopImageResource(final PosDataInputStream input) throws IOException {
         super.startPos = input.getPos();
         super.length = input.getBuf().length;
@@ -42,6 +51,9 @@ public class PhotoshopImageResource extends FileComponent {
         // else if ... (other signature)
     }
 
+    /// Add the tree nodes of the image resources.
+    ///
+    /// @param parentNode Parent tree node
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         if (IRB_8BIM.SIGNATURE_TEXT.equals(this.signature)) {
             int count = 0;

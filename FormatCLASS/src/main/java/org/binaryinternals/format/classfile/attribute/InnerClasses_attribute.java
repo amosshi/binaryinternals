@@ -52,6 +52,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class InnerClasses_attribute extends attribute_info {
 
+    /// Number of entries in the classes array.
     public final u2 number_of_classes;
     private final Class[] classes;
 
@@ -157,6 +158,7 @@ public class InnerClasses_attribute extends attribute_info {
         /// name of C, as given in the source code from which this class file was
         /// compiled.
         public final u2 inner_name_index;
+        /// Access permissions to and properties of the inner class, as declared in the source code.
         public final u2 inner_class_access_flags;
 
         private Class(final PosDataInputStream posDataInputStream) throws IOException {

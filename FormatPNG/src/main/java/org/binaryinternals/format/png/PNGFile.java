@@ -43,6 +43,10 @@ public class PNGFile extends FileFormat {
     /// Size of chunk type.
     static final int CHUNK_TYPE_SIZE = 4;
 
+    /// Reads and parses a PNG file.
+    ///
+    /// @param file The PNG file
+    /// @throws IOException if the file cannot be read or parsed
     public PNGFile(final Path file) throws IOException {
         super(file);
 

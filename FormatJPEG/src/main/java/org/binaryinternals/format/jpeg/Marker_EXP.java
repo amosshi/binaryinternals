@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `EXP` marker: expand reference component(s).
+///
 /// @author Amos Shi
 public class Marker_EXP extends Marker {
 

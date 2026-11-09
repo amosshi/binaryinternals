@@ -61,6 +61,7 @@ public class MethodParameters_attribute extends attribute_info {
     /// descriptors in the method descriptor referenced by the descriptor_index
     /// of the attribute's enclosing method_info structure.
     public final u1 parameters_count;
+    /// The parameters of the method.
     public final Parameter[] parameters;
 
     MethodParameters_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
@@ -122,8 +123,10 @@ public class MethodParameters_attribute extends attribute_info {
         return "msg_attr_MethodParameters";
     }
 
+    /// A method parameter: its name and access flags.
     public static final class Parameter extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = u2.LENGTH + u2.LENGTH;
 
         /// The value of the name_index item must either be zero or a valid index
@@ -156,6 +159,9 @@ public class MethodParameters_attribute extends attribute_info {
             return (this.name_index.value == 0) ? "(no name)" : classFile.getCPDescription(this.name_index.value);
         }
 
+        /// Gets the modifiers text of the parameter.
+        ///
+        /// @return The modifiers, e.g. `final`
         public String getAccessFlagsText() {
             return AccessFlag.getMethodParametersModifier(this.access_flags.value);
         }

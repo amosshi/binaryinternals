@@ -17,6 +17,8 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// An array of encoded values.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -28,7 +30,9 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 public final class encoded_array extends FileComponent implements GenerateTreeNodeDexFile {
 
     private static final Logger LOGGER = Logger.getLogger(encoded_array.class.getName());
+    /// Number of elements in the array.
     public final Type_uleb128 size;
+    /// Elements of the array.
     public final encoded_value[] values;
 
     encoded_array(PosDataInputStreamDex stream) throws IOException {

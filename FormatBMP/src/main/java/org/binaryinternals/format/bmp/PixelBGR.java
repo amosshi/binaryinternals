@@ -19,9 +19,13 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see <a href="http://netghost.narod.ru/gff/graphics/summary/os2bmp.htm"> OS/2 Bitmap </a>
 public final class PixelBGR extends FileComponent implements Pixel {
 
+    /// Length of the element in bytes.
     public static final int LENGTH = 3;
+    /// Blue intensity.
     public final int Blue;
+    /// Green intensity.
     public final int Green;
+    /// Red intensity.
     public final int Red;
 
     PixelBGR(final PosDataInputStream input) throws IOException {
