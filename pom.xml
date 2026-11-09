@@ -288,7 +288,7 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                     <includeOnlyProperties>
-                        <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.build.version$</includeOnlyProperty>
                         <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
                         <includeOnlyProperty>^git.branch$</includeOnlyProperty>
                     </includeOnlyProperties>
@@ -303,7 +303,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Build-Time>${project.build.outputTimestamp}</Build-Time>
+                            <Release-Date>${project.build.outputTimestamp}</Release-Date>
                         </manifestEntries>
 
                         <manifestSections>

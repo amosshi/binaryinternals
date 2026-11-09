@@ -30,8 +30,7 @@ Download
 User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.7-timestamp.jar`
-    * Where `timestamp` is the auto-generated build timestamp
+  * `java -jar BinaryInternalsViewer-3.7.jar`
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
 
