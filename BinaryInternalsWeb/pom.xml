@@ -17,47 +17,38 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.class</artifactId>
-            <version>${format.class.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.bmp</artifactId>
-            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.jpeg</artifactId>
-            <version>2.1</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.zip</artifactId>
-            <version>0.8</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.pdf</artifactId>
-            <version>0.6</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.dex</artifactId>
-            <version>0.8</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.elf</artifactId>
-            <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.png</artifactId>
-            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
