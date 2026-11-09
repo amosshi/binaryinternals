@@ -15,7 +15,7 @@ WORKDIR /src
 COPY . .
 RUN mvn -B -q -pl BinaryInternalsWeb -am package \
         -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Dpmd.skip=true \
-    && cp BinaryInternalsWeb/target/BinaryInternalsWeb-*[0-9].jar BinaryInternalsWeb/target/libs/
+    && cp BinaryInternalsWeb/target/binaryinternals.web-*[0-9].jar BinaryInternalsWeb/target/libs/
 # The format plug-ins are listed explicitly: they are found via ServiceLoader,
 # so no module requires them
 RUN jlink --module-path BinaryInternalsWeb/target/libs \

@@ -30,7 +30,7 @@ Download
 User guide
 
 * We need the `java` command to run this tool
-  * `java -jar BinaryInternalsViewer-3.7.jar`
+  * `java -jar binaryinternals.viewer-3.7.jar`
   * Menu item: `File` > `Open...`
   * Choose the binary file to view
 
@@ -45,8 +45,8 @@ Web Server and API
   * `docker compose -f BinaryInternalsWeb/docker-compose.yml up -d --build`, settings in [docker-compose.yml](BinaryInternalsWeb/docker-compose.yml)
   * `docker compose -f BinaryInternalsWeb/docker-compose.yml down` to stop
 * Run without Docker, after `mvn install`
-  * `java -jar BinaryInternalsWeb/target/BinaryInternalsWeb-3.7.jar`
-  * Or, as a Java module: `java -p BinaryInternalsWeb/target/libs:BinaryInternalsWeb/target/BinaryInternalsWeb-3.7.jar -m org.binaryinternals.web/org.binaryinternals.web.WebServer`
+  * `java -jar BinaryInternalsWeb/target/binaryinternals.web-3.7.jar`
+  * Or, as a Java module: `java -p BinaryInternalsWeb/target/libs:BinaryInternalsWeb/target/binaryinternals.web-3.7.jar -m org.binaryinternals.web/org.binaryinternals.web.WebServer`
 * API
   * `GET /api/v1/formats` - the supported formats and file extensions
   * `POST /api/v1/parse?name=Foo.class` - the request body is the file content, the response is the JSON tree of the file
