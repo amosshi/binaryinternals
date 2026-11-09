@@ -6,9 +6,23 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - os: macos-latest
+            maven-command: ./mvnw
+          - os: windows-latest
+            maven-command: .\mvnw.cmd
+          - os: ubuntu-latest
+            maven-command: ./mvnw
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -20,8 +34,8 @@ jobs:
           distribution: temurin
           java-version: 25
 
+      - name: Show JDK and Maven versions
+        run: ${{ matrix.maven-command }} --version
+
       - name: Build, test, and run static analysis
-        run: |
-          java -version
-          ./mvnw -version
-          ./mvnw -B -Prelease clean verify
+        run: ${{ matrix.maven-command }} -B -Prelease clean verify

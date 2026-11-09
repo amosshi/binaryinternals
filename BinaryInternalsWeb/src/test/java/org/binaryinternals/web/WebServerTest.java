@@ -1,9 +1,12 @@
 package org.binaryinternals.web;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -72,6 +75,27 @@ class WebServerTest {
         return request("POST", path, body);
     }
 
+    /// Sends only the headers of an upload, to test the `Content-Length` check.
+    ///
+    /// Sending the body as well is not reliable: the server answers without reading it,
+    /// and on Windows closing a socket with unread data resets the connection before
+    /// the client has read the response.
+    ///
+    /// @param path The request path
+    /// @param contentLength The declared body length
+    /// @return The response status code
+    private static int postHeadersOnly(final String path, final long contentLength) throws IOException {
+        try (Socket s = new Socket("127.0.0.1", server.getPort());
+                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.US_ASCII))) {
+            s.setSoTimeout(10_000);
+            final OutputStream out = s.getOutputStream();
+            out.write(("POST " + path + " HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Length: " + contentLength
+                    + "\r\nConnection: close\r\n\r\n").getBytes(StandardCharsets.US_ASCII));
+            out.flush();
+            return Integer.parseInt(in.readLine().split(" ")[1]);
+        }
+    }
+
     private static byte[] ownClassFile() throws IOException {
         try (InputStream in = WebServerTest.class.getResourceAsStream("WebServerTest.class")) {
             return in.readAllBytes();
@@ -125,7 +149,7 @@ class WebServerTest {
     void parseErrors() throws IOException {
         assertEquals(400, post("/api/v1/parse", new byte[]{1}).statusCode());
         assertEquals(415, post("/api/v1/parse?name=a.unknown", new byte[]{1}).statusCode());
-        assertEquals(413, post("/api/v1/parse?name=a.class", new byte[MAX_UPLOAD + 1]).statusCode());
+        assertEquals(413, postHeadersOnly("/api/v1/parse?name=a.class", MAX_UPLOAD + 1));
         assertEquals(405, get("/api/v1/parse?name=a.class").statusCode());
 
         final Response invalid = post("/api/v1/parse?name=a.class", new byte[]{1, 2, 3});
