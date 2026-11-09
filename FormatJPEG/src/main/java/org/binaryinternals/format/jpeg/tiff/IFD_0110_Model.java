@@ -35,7 +35,7 @@ public class IFD_0110_Model extends IFD_ASCII {
                     pos + 8,
                     4,
                     "Model: %s".formatted(this.value));
-            comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0110_Description));
+            comp.setDescription(this.getDescription());
             parentNode.add(new DefaultMutableTreeNode(comp));
         } else {
             comp = new JTreeNodeFileComponent(
@@ -50,7 +50,7 @@ public class IFD_0110_Model extends IFD_ASCII {
                     super.data_size,
                     "Model: %s".formatted(this.value),
                     Icons.Shortcut, null);
-            comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_0110_Description));
+            comp.setDescription(this.getDescription());
             parentNode.add(new DefaultMutableTreeNode(comp));
         }
     }

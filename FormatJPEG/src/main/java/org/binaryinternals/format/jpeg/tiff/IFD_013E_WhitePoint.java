@@ -26,6 +26,6 @@ public class IFD_013E_WhitePoint extends IFD_RATIONAL {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_013E_Description));
+                this.getDescription());
     }
 }

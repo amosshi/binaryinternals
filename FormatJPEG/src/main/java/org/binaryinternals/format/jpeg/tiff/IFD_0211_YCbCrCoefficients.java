@@ -26,6 +26,6 @@ public class IFD_0211_YCbCrCoefficients extends IFD_RATIONAL {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_0211_Description));
+                this.getDescription());
     }
 }

@@ -39,7 +39,7 @@ public class IFD_A302_CFAPattern extends IFD_UNDEFINED {
         super.generateTreeNode(parentNode, pos);
 
         JTreeNodeFileComponent comp;
-        String description = IFDMessage.getString(IFDMessage.KEY_IFD_A302_Description)
+        String description = this.getDescription()
                     + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G);
 
         if (this.isValue()) {

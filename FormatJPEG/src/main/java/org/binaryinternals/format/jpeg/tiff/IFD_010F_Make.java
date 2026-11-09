@@ -26,6 +26,6 @@ public class IFD_010F_Make extends IFD_ASCII {
         super.generateTreeNode_ASCII(
                 parentNode,
                 "%s: %s".formatted(super.getTagName(), this.value),
-                IFDMessage.getString(IFDMessage.KEY_IFD_010F_Description));
+                this.getDescription());
     }
 }

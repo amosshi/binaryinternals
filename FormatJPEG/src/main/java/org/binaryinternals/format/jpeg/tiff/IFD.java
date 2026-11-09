@@ -106,6 +106,16 @@ public class IFD extends FileComponent {
         return this.getTagNameForValidation();
     }
 
+    /// Description of the tag: the `IFD_<tag>_Description` entry of `IFDMessage.properties`, with
+    /// the tag in 4 upper case hex digits, like `IFD_A409_Description`.
+    ///
+    /// Common tag only, none GPS, none InterO.
+    ///
+    /// @return The description
+    protected String getDescription() {
+        return IFDMessage.getString(IFDMessage.KEY_FORMAT_IFD_DESCRIPTION.formatted(this.ifd_tag));
+    }
+
     public TagSpace getTagSpace() {
         return this.tag_space;
     }

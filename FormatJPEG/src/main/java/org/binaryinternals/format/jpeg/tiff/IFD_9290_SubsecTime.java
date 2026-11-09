@@ -28,7 +28,7 @@ public class IFD_9290_SubsecTime extends IFD_ASCII {
         super.generateTreeNode_ASCII(
                 parentNode,
                 "%s: %s".formatted(super.getTagName(), this.value),
-                IFDMessage.getString(IFDMessage.KEY_IFD_9290_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_F));
     }
 }

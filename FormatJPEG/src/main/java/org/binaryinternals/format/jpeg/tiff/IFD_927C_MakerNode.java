@@ -25,7 +25,7 @@ public class IFD_927C_MakerNode extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 this.getTagName(),
-                IFDMessage.getString(IFDMessage.KEY_IFD_927C_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_D));
     }
 }

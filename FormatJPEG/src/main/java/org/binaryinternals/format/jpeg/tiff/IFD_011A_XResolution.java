@@ -25,6 +25,6 @@ public class IFD_011A_XResolution extends IFD_RATIONAL_COUNT1 {
     /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        super.generateTreeNode_RATIONAL(parentNode, IFDMessage.getString(IFDMessage.KEY_IFD_011A_Description));
+        super.generateTreeNode_RATIONAL(parentNode, this.getDescription());
     }
 }

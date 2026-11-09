@@ -53,7 +53,7 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
                 pos + 8,
                 2,
                 "%s: %s".formatted(super.getTagName(), this.getValueBinaryString()));
-        comp.setDescription(IFDMessage.getString(IFDMessage.KEY_IFD_9209_Description)
+        comp.setDescription(this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
         final DefaultMutableTreeNode node = new DefaultMutableTreeNode(comp);
         parentNode.add(node);

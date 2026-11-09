@@ -27,6 +27,6 @@ public class IFD_0214_ReferenceBlackWhite extends IFD_RATIONAL {
     /// {@inheritDoc}
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        super.generateTreeNode_RATIONAL(parentNode, IFDMessage.getString(IFDMessage.KEY_IFD_0214_Description));
+        super.generateTreeNode_RATIONAL(parentNode, this.getDescription());
     }
 }

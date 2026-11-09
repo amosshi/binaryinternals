@@ -23,6 +23,6 @@ public class IFD_0112_Orientation extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_0112_Description));
+                this.getDescription());
     }
 }

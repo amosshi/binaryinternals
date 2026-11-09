@@ -66,6 +66,6 @@ public class IFD_0132_DateTime extends IFD_ASCII {
         super.generateTreeNode_ASCII(
                 parentNode,
                 toText(this.datetime, this.value),
-                IFDMessage.getString(IFDMessage.KEY_IFD_0132_Description));
+                this.getDescription());
     }
 }

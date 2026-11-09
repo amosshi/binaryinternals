@@ -14,9 +14,6 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class IFD_8822_ExposureProgram extends IFD_SHORT_COUNT1 {
 
-    private static final String IFD_Description = IFDMessage.getString(IFDMessage.KEY_IFD_8822_Description)
-            + IFD_8769_Exif.CATEGORY_G;
-
     public IFD_8822_ExposureProgram(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
@@ -24,6 +21,6 @@ public class IFD_8822_ExposureProgram extends IFD_SHORT_COUNT1 {
 
     @Override
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-        super.generateTreeNode_SHORT(parentNode, IFD_Description);
+        super.generateTreeNode_SHORT(parentNode, this.getDescription() + IFD_8769_Exif.CATEGORY_G);
     }
 }

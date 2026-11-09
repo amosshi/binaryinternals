@@ -39,7 +39,7 @@ public class IFD_A000_FlashpixVersion extends IFD_UNDEFINED {
         this.generateTreeNode_UNDEFINED(
                 parentNode,
                 "%s: %s".formatted(this.getTagName(), this.getFlashpixVersion()),
-                IFDMessage.getString(IFDMessage.KEY_IFD_A000_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_A)
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_FormatVersion));
     }

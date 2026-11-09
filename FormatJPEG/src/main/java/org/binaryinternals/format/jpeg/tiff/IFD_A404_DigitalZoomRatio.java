@@ -24,7 +24,7 @@ public class IFD_A404_DigitalZoomRatio extends IFD_RATIONAL_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_RATIONAL(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_A404_Description)
+                this.getDescription()
                 + IFD_8769_Exif.CATEGORY_G);
     }
 }

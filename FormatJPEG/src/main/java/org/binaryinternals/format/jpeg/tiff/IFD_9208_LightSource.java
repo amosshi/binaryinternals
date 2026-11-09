@@ -24,7 +24,7 @@ public class IFD_9208_LightSource extends IFD_SHORT_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_SHORT(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_9208_Description)
+                this.getDescription()
                 + IFDMessage.getString(IFDMessage.KEY_IFD_8769_Exif_Category_G));
     }
 }

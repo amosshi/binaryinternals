@@ -34,6 +34,6 @@ public class IFD_0201_JPEGInterchangeFormat extends IFD_LONG_COUNT1 {
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         super.generateTreeNode_LONG(
                 parentNode,
-                IFDMessage.getString(IFDMessage.KEY_IFD_0201_Description));
+                this.getDescription());
     }
 }
