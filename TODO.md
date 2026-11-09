@@ -54,10 +54,10 @@ SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checks
 
 ### 3. Put internal module versions in one place
 
-- [ ] Add a `<dependencyManagement>` section to the root listing every internal artifact and its version once; modules declare dependencies without versions.
-- [ ] Import `junit-bom` there, and drop the `<version>` line from the three modules that use JUnit.
+- [x] Add a `<dependencyManagement>` section to the root listing every internal artifact and its version once; modules declare dependencies without versions.
+- [x] Import `junit-bom` there, and drop the `<version>` line from the four modules that use JUnit.
 
-The Viewer and Web POMs each repeat all 8 module versions, and DEX, Viewer and Web use `format.class.version`, whose comment says to keep it in sync by hand. With `junit-bom` imported, the `junit-jupiter.version` property becomes the only place the JUnit version appears.
+A module's version is still written twice: in its own `pom.xml` and in the root `<dependencyManagement>`. When you bump a module, change both. If only the module's own version changes, a local build can silently package the old version from `~/.m2`; CI, which starts with an empty `~/.m2`, fails instead.
 
 ### 4. Pin every plugin version in a `<pluginManagement>` section
 

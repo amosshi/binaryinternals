@@ -18,12 +18,10 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.commonlib</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>binaryinternals.format.class</artifactId>
-            <version>${format.class.version}</version>
         </dependency>
     </dependencies>
 
