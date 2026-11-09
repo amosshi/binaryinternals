@@ -52,28 +52,7 @@ Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
 
 SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checkstyle-suppressions.xml`) through `${maven.multiModuleProjectDirectory}`. That is the directory where Maven started unless a `.mvn/` folder marks the project root, and this repo has none. The wrapper also pins the Maven version for CI and contributors.
 
-### 3. Pin every plugin version in a `<pluginManagement>` section
-
-- [x] Move all plugin versions into one `<pluginManagement>` list, including clean, resources, surefire and install, which came from Maven's built-in defaults.
-- [ ] Optional: share the javadoc/umldoclet configuration between the build and the reporting section. Report plugins take their versions from `<pluginManagement>`, but not its configuration, so this needs a different approach than moving it there.
-
-### 4. Speed up the everyday build
-
-- [ ] Move javadoc, source and the deploy step into a `release` profile (`mvn -Prelease install`).
-
-Every `mvn install` builds javadoc with UML diagrams (4 GB heap, private members) plus a sources jar for all 12 modules. With the profile, normal builds and CI get much faster.
-
-### 5. Remove settings that do nothing or are duplicated
-
-- [ ] **Repeated compiler flag:** the Viewer and Web *append* `-Xlint:all` and `-Xlint:-requires-automatic`, which the parent already sets. Delete those plugin blocks.
-- [ ] **Unused manifest entry:** CommonLib's `Automatic-Module-Name` is ignored because CommonLib has a `module-info.java`.
-- [ ] **PMD in `<build>`:** it has no execution, so it does nothing there.
-- [ ] **Explicit `default-deploy` execution:** Maven already does this. Also, nothing defines a repository to deploy to.
-- [ ] **Javadoc links:** `detectJavaApiLink` and the explicit docs.oracle.com link do the same job; keep one.
-- [ ] **Defaults spelled out:** `<type>jar</type>` (root) and `<scope>compile</scope>` (FormatCLASS).
-- [ ] **Two git-info plugins:** git-commit-id and buildnumber both read git. Use one; git-commit-id can also supply the manifest values.
-
-### 6. Make the build fully reproducible
+### 3. Make the build fully reproducible
 
 - [ ] Drop or rename the three settings below.
 
@@ -85,21 +64,21 @@ Every `mvn install` builds javadoc with UML diagrams (4 GB heap, private members
 
 The git commit already identifies the build.
 
-### 7. CI improvements in `.github/workflows/ci.yml`
+### 4. CI improvements in `.github/workflows/ci.yml`
 
 - [ ] Also run on `push` to `master`, not only pull requests.
 - [ ] Add `cache: maven` to `setup-java` to cache downloaded dependencies.
 
-### 8. `build.sh`
+### 5. `build.sh`
 
 - [ ] `mvn dependency:purge-local-repository` re-downloads everything on every build, which is slow and rarely needed. Make it a flag.
 - [ ] `versions:display-dependency-updates` lists betas and milestones. Add a small versions rules file in the POM to filter them out.
 
-### 9. Cosmetic
+### 6. Cosmetic
 
 - [ ] **Naming:** artifact IDs are mixed (`BinaryInternalsViewer` vs `binaryinternals.format.bmp`).
 - [ ] **Descriptions:** the Viewer and Web POMs have none.
 - [ ] **Whitespace:** trailing spaces in the ELF and JPEG POMs, and a line-wrapped `<outputDirectory>` in the Viewer.
 - [ ] **Outside the POMs:** a `jvnet-nexus` certificate warning appears in every build. It doesn't come from these POMs (nor from `~/.m2/settings.xml`), so it's probably a repository declared inside some third-party dependency's POM. Harmless.
 
-Suggested order: start with 2–4. They are mechanical changes the existing build checks can verify. The Checkstyle baseline in item 1 can be worked off one rule at a time.
+Suggested order: start with 2. It is a mechanical change the existing build checks can verify. The Checkstyle baseline in item 1 can be worked off one rule at a time.

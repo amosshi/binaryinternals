@@ -117,7 +117,6 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <version>${spotbugs.version}</version>
-            <type>jar</type>
             <scope>provided</scope><!-- Compile time only, not packaged: "requires static" in module-info.java -->
         </dependency>
     </dependencies>
@@ -127,11 +126,6 @@
              Plugins in <plugins> and <reporting>, here and in the modules, are declared without a version. -->
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>buildnumber-maven-plugin</artifactId>
-                    <version>3.3.1</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/buildnumber-maven-plugin -->
-                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
@@ -296,29 +290,13 @@
                     <includeOnlyProperties>
                         <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
                         <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.branch$</includeOnlyProperty>
                     </includeOnlyProperties>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
             </plugin>
 
-            <!-- Add SCM version to manifest -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                    <attach>true</attach>
-                    <addOutputDirectoryToResources>true</addOutputDirectoryToResources>
-                </configuration>
-            </plugin>
+            <!-- Add the git information to the manifest -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -333,8 +311,8 @@
                                 <name>Versions</name>
                                 <manifestEntries>
                                     <Implementation-Version>${project.version}</Implementation-Version>
-                                    <Implementation-SCM-Revision>${buildNumber}</Implementation-SCM-Revision>
-                                    <Implementation-SCM-Branch>${scmBranch}</Implementation-SCM-Branch>
+                                    <Implementation-SCM-Revision>${git.commit.id.full}</Implementation-SCM-Revision>
+                                    <Implementation-SCM-Branch>${git.branch}</Implementation-SCM-Branch>
                                 </manifestEntries>
                             </manifestSection>
                         </manifestSections>
@@ -415,11 +393,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
-
             <!-- Make sure we did not call JDK internal APIs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -428,53 +401,6 @@
                     <execution>
                         <goals>
                             <goal>jdkinternals</goal> <!-- verify main classes -->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Generate Javadocs -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <additionalJOption>-J-Xmx4g </additionalJOption>
-                    <additionalOptions>-html5</additionalOptions>
-                    <detectJavaApiLink>true</detectJavaApiLink>
-                    <doclint>all,-missing</doclint><!-- Ignore Javadoc warning as of now -->
-                    <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
-                    <show>private</show>
-                    <links>
-                        <link>https://docs.oracle.com/en/java/javase/25/docs/api</link>
-                    </links>
-                    <!-- Generate UML diagrams into the Javadoc -->
-                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
-                    <docletArtifact>
-                        <groupId>nl.talsmasoftware</groupId>
-                        <artifactId>umldoclet</artifactId>
-                        <version>${umldoclet.version}</version>
-                    </docletArtifact>
-                    <useStandardDocletOptions>true</useStandardDocletOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Creates a jar archive of the source files of the current project -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -502,20 +428,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- https://maven.apache.org/maven-ci-friendly.html -->
@@ -681,4 +593,50 @@
         <!-- Libs on hold -->
         <module>FormatPDF</module>
     </modules>
+
+    <profiles>
+        <!-- Javadoc and sources jars, only with: mvn -Prelease install -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Javadoc jar; the UML diagrams are only in the site report (mvn site) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalJOption>-J-Xmx4g </additionalJOption>
+                            <additionalOptions>-html5</additionalOptions>
+                            <detectJavaApiLink>true</detectJavaApiLink>
+                            <doclint>all,-missing</doclint><!-- Ignore Javadoc warning as of now -->
+                            <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
+                            <show>private</show>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Creates a jar archive of the source files of the current project -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
