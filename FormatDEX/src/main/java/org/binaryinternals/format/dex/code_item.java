@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.Icons;
 
 /// @author Amos Shi
@@ -45,7 +44,6 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         this.outs_size = stream.Dex_ushort();
         this.tries_size = stream.Dex_ushort();
         this.debug_info_off = stream.Dex_uint();
-        // TODO Parse debug info
 
         this.insns_size = stream.Dex_uint();
         if (this.insns_size.value > 0) {
@@ -91,9 +89,40 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "tries_size", this.tries_size, "msg_code_item__tries_size", Icons.Size);
         floatPos += Type_ushort.LENGTH;
         addNode(parentNode, floatPos, Type_uint.LENGTH, "debug_info_off", this.debug_info_off, "msg_code_item__debug_info_off", Icons.Offset);
+        floatPos += Type_uint.LENGTH;
+        addNode(parentNode, floatPos, Type_uint.LENGTH, "insns_size", this.insns_size, "msg_code_item__insns_size", Icons.Size);
+        floatPos += Type_uint.LENGTH;
+
+        if (this.insns != null) {
+            final int insnsLength = this.insns.length * Type_ushort.LENGTH;
+            addNode(parentNode, floatPos, insnsLength, "insns", "%d code units".formatted(this.insns.length), "msg_code_item__insns", Icons.Data);
+            floatPos += insnsLength;
+        }
+        if (this.padding != null) {
+            addNode(parentNode, floatPos, Type_ushort.LENGTH, "padding", this.padding, "msg_code_item__padding", Icons.Empty);
+            floatPos += Type_ushort.LENGTH;
+        }
+        if (this.tries != null) {
+            final DefaultMutableTreeNode triesNode = addNode(parentNode, floatPos, this.tries.length * try_item.LENGTH,
+                    "tries", "[%d]".formatted(this.tries.length), "msg_code_item__tries", Icons.Array);
+            for (int i = 0; i < this.tries.length; i++) {
+                final try_item item = this.tries[i];
+                final DefaultMutableTreeNode itemNode = addNode(triesNode, item.getStartPos(), item.getLength(),
+                        "try_item[%d]".formatted(i), item.handler_off, null, Icons.Exception);
+                item.generateTreeNode(itemNode, dexFile);
+            }
+        }
+        if (this.handlers != null) {
+            final DefaultMutableTreeNode handlersNode = addNode(parentNode, this.handlers.getStartPos(), this.handlers.getLength(),
+                    "handlers", "[%d]".formatted(this.handlers.size.value), "msg_code_item__handlers", Icons.Array);
+            this.handlers.generateTreeNode(handlersNode, dexFile);
+        }
     }
 
-    public static final class try_item extends FileComponent implements GenerateTreeNode {
+    public static final class try_item extends FileComponent implements GenerateTreeNodeDexFile {
+
+        /// Length of a `try_item`: `uint` + `ushort` + `ushort`.
+        static final int LENGTH = Type_uint.LENGTH + Type_ushort.LENGTH + Type_ushort.LENGTH;
 
         public final Type_uint start_addr;
         public final Type_ushort insn_count;
@@ -108,12 +137,17 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            // TODO
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
+            int floatPos = super.startPos;
+            addNode(parentNode, floatPos, Type_uint.LENGTH, "start_addr", this.start_addr, "msg_try_item__start_addr", Icons.Offset);
+            floatPos += Type_uint.LENGTH;
+            addNode(parentNode, floatPos, Type_ushort.LENGTH, "insn_count", this.insn_count, "msg_try_item__insn_count", Icons.Size);
+            floatPos += Type_ushort.LENGTH;
+            addNode(parentNode, floatPos, Type_ushort.LENGTH, "handler_off", this.handler_off, "msg_try_item__handler_off", Icons.Offset);
         }
     }
 
-    public static final class encoded_catch_handler_list extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_catch_handler_list extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_uleb128 size;
         public final encoded_catch_handler[] list;
@@ -133,12 +167,21 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            // TODO
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
+            addNode(parentNode, super.startPos, this.size.length, "size", this.size, "msg_encoded_catch_handler_list__size", Icons.Size);
+            if (this.list != null) {
+                for (int i = 0; i < this.list.length; i++) {
+                    final encoded_catch_handler handler = this.list[i];
+                    final DefaultMutableTreeNode node = addNode(parentNode, handler.getStartPos(), handler.getLength(),
+                            "encoded_catch_handler[%d]".formatted(i), "offset %d".formatted(handler.getStartPos() - super.startPos),
+                            "msg_encoded_catch_handler_list__list", Icons.Exception);
+                    handler.generateTreeNode(node, dexFile);
+                }
+            }
         }
     }
 
-    public static final class encoded_catch_handler extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_catch_handler extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_sleb128 size;
         public final encoded_type_addr_pair[] handlers;
@@ -168,12 +211,27 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            // TODO
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
+            int floatPos = super.startPos;
+            addNode(parentNode, floatPos, this.size.length, "size", this.size, "msg_encoded_catch_handler__size", Icons.Size);
+            floatPos += this.size.length;
+            if (this.handlers != null) {
+                for (int i = 0; i < this.handlers.length; i++) {
+                    final encoded_type_addr_pair pair = this.handlers[i];
+                    final DefaultMutableTreeNode node = addNode(parentNode, pair.getStartPos(), pair.getLength(),
+                            "handlers[%d]".formatted(i), pair.addr, "msg_encoded_catch_handler__handlers", Icons.Exception);
+                    pair.generateTreeNode(node, dexFile);
+                    floatPos += pair.getLength();
+                }
+            }
+            if (this.catch_all_addr != null) {
+                addNode(parentNode, floatPos, this.catch_all_addr.length, "catch_all_addr", this.catch_all_addr,
+                        "msg_encoded_catch_handler__catch_all_addr", Icons.Offset);
+            }
         }
     }
 
-    public static final class encoded_type_addr_pair extends FileComponent implements GenerateTreeNode {
+    public static final class encoded_type_addr_pair extends FileComponent implements GenerateTreeNodeDexFile {
 
         public final Type_uleb128 type_idx;
         public final Type_uleb128 addr;
@@ -186,8 +244,13 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
 
         @Override
-        public void generateTreeNode(DefaultMutableTreeNode parentNode) {
-            throw new UnsupportedOperationException("Not supported yet 5.");
+        public void generateTreeNode(DefaultMutableTreeNode parentNode, FileFormat dexFile) {
+            final DexFile dex = (DexFile) dexFile;
+            addNode(parentNode, super.startPos, this.type_idx.length, "type_idx",
+                    FORMAT_STRING_STRING.formatted(this.type_idx, dex.get_type_ids_string(this.type_idx.value)),
+                    "msg_encoded_type_addr_pair__type_idx", Icons.Class);
+            addNode(parentNode, super.startPos + this.type_idx.length, this.addr.length, "addr", this.addr,
+                    "msg_encoded_type_addr_pair__addr", Icons.Offset);
         }
     }
 }

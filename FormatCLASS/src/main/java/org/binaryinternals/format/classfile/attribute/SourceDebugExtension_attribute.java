@@ -31,12 +31,10 @@ import org.binaryinternals.format.classfile.u2;
 /// }
 /// ```
 ///
-/// Note. TODO - This Attribute is not tested - since no test case found
-///
 /// @author Amos Shi
 /// @since Java 5
 /// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.7.11">
-/// VM Spec: The Signature Attribute
+/// VM Spec: The SourceDebugExtension Attribute
 /// </a>
 ///
 /// ```
@@ -45,6 +43,9 @@ import org.binaryinternals.format.classfile.u2;
 /// ```
 @SuppressWarnings({"java:S101", "java:S116"})
 public class SourceDebugExtension_attribute extends attribute_info {
+
+    /// Longest byte array [CONSTANT_Utf8_info#decodeModifiedUtf8(byte\[\])] can decode.
+    private static final int MODIFIED_UTF8_MAX_LENGTH = 0xFFFF;
 
     /// The [#debug_extension] array holds extended debugging information
     /// which has no semantic effect on the Java Virtual Machine.
@@ -69,11 +70,15 @@ public class SourceDebugExtension_attribute extends attribute_info {
         super.checkSize(posDataInputStream.getPos());
     }
 
-    /// Get the [#debug_extension] as String.
+    /// Get the [#debug_extension] as String, decoded as modified UTF-8 like
+    /// [CONSTANT_Utf8_info]. Longer than 65535 bytes, which modified UTF-8
+    /// strings of the JDK cannot be, it is decoded as standard UTF-8.
     ///
     /// @return The string of [#debug_extension]
     public String getDebugExtesionString() {
-        return new String(this.debug_extension, StandardCharsets.UTF_8);
+        return this.debug_extension.length <= MODIFIED_UTF8_MAX_LENGTH
+                ? CONSTANT_Utf8_info.decodeModifiedUtf8(this.debug_extension)
+                : new String(this.debug_extension, StandardCharsets.UTF_8);
     }
 
     @Override

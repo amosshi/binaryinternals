@@ -220,26 +220,40 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
         return new Type_uleb128p1(uleb128.value - 1, uleb128.length);
     }
 
-    /// Skip a `double` value.
-    /// TODO Not implemented, the value is not read.
+    /// Read the `double` value of an `encoded_value`: the high-order bytes of
+    /// the IEEE754 64-bit value, zero-extended to the right.
     ///
-    /// @param length Length of the value in bytes
-    /// @return [Double#MAX_VALUE] as a place holder
+    /// @param length Length of the value in bytes, 1 - 8
+    /// @return The value
     /// @throws IOException I/O Error
     public double readDouble(int length) throws IOException {
-        this.readFully(new byte[length]);
-        return Double.MAX_VALUE;
+        return Double.longBitsToDouble(this.readHighOrderBytes(length, Double.BYTES));
     }
 
-    /// Skip a `float` value.
-    /// TODO Not implemented, the value is not read.
+    /// Read the `float` value of an `encoded_value`: the high-order bytes of
+    /// the IEEE754 32-bit value, zero-extended to the right.
     ///
-    /// @param length Length of the value in bytes
-    /// @return [Float#MIN_VALUE] as a place holder
+    /// @param length Length of the value in bytes, 1 - 4
+    /// @return The value
     /// @throws IOException I/O Error
     public float readFloat(int length) throws IOException {
-        this.readFully(new byte[length]);
-        return Float.MIN_VALUE;
+        return Float.intBitsToFloat((int) this.readHighOrderBytes(length, Float.BYTES));
+    }
+
+    /// Read `length` bytes as the high-order bytes of a `size` bytes value,
+    /// zero-extended to the right, in the byte order of the file.
+    private long readHighOrderBytes(final int length, final int size) throws IOException {
+        if (length < 1 || length > size) {
+            throw new FileFormatException("Invalid encoded value length %d, expected 1 - %d.".formatted(length, size));
+        }
+        final byte[] bytes = new byte[length];
+        this.readFully(bytes);
+        long bits = 0;
+        for (int i = 0; i < length; i++) {
+            // Most significant byte first
+            bits = (bits << Byte.SIZE) | (bytes[this.byteOrder == ByteOrder.LITTLE_ENDIAN ? length - 1 - i : i] & 0xFF);
+        }
+        return bits << (Byte.SIZE * (size - length));
     }
 
     /// Read 3-byte int.

@@ -12,7 +12,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
-/// TODO - Study cure
+/// `curveType`, see ICC.1 `curveType`: a one-dimensional curve, given by its `count`:
+///
+/// - `0`: the identity, no data follows
+/// - `1`: a gamma value, as a `u8Fixed8Number` (the value divided by 256)
+/// - `n`: a table of `n` 16-bit values
 ///
 /// @author Amos Shi
 public class TagData_curveType extends TagData {
@@ -31,7 +35,7 @@ public class TagData_curveType extends TagData {
             this.curveValues[0] = 0;
         } else if (this.count == 1) {
             this.curveValues = new int[1];
-            this.curveValues[0] = 0;   // TODO - Read page 53
+            this.curveValues[0] = input.readUnsignedShort();   // Gamma, u8Fixed8Number
         } else {
             this.curveValues = new int[((int) this.count)];
             for (int i = 0; i < this.count; i++) {
@@ -54,7 +58,14 @@ public class TagData_curveType extends TagData {
             comp.setDescription("Count value specifying the number of entries (<code>n</code>) that follow.");
             parentNode.add(new DefaultMutableTreeNode(comp));
 
-            if (this.count > 1) {
+            if (this.count == 1) {
+                comp = new JTreeNodeFileComponent(
+                        this.startPos + 12,
+                        2,
+                        "gamma = %.4f (0x%04X)".formatted(this.curveValues[0] / 256.0, this.curveValues[0]));
+                comp.setDescription("Gamma value of the curve, an unsigned 8.8 fixed point number (<code>u8Fixed8Number</code>).");
+                parentNode.add(new DefaultMutableTreeNode(comp));
+            } else if (this.count > 1) {
                 comp = new JTreeNodeFileComponent(
                         this.startPos + 12,
                         ((int) this.count) * 2,

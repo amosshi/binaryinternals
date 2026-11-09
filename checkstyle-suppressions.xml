@@ -10,12 +10,17 @@
     <!-- Names follow the file format specifications, e.g. InnerClasses_attribute, u4, tableswitch -->
     <suppress checks="[A-Za-z]*Name" files=".*"/>
 
-    <!-- Checkstyle does not see references in Markdown doc comments (///, JEP 467), e.g. [CONSTANT_Class_info] -->
+    <!--
+      Checkstyle does not see references in Markdown doc comments (///, JEP 467), e.g. [CONSTANT_Class_info] 
+      https://github.com/checkstyle/checkstyle/issues/16100
+    -->
     <suppress checks="\bUnusedImports" files=".*"/>
 
     <!--
       Arrow switch cases, e.g. `case X -> value;`: braces would need `{ yield value; }` in every
       switch expression. Braces stay required for if, else, for, while and do.
+
+      https://github.com/openjdk/jdk.git code base itself did not use this NeedBraces check.
     -->
     <suppress checks="\bNeedBraces" message="^'(case|default)' construct" files=".*"/>
 

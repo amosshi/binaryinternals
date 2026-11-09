@@ -69,8 +69,9 @@ public final class Chunk_iTXt extends Chunk {
     ///
     /// @see #TranslatedKeyword
     public final byte[] Text;
-    /// [#Text] decoded as UTF-8, or `null` when the text is empty or compressed.
-    public final String TextString;   // TODO - Un-compress the compressed text
+    /// [#Text] decoded as UTF-8, decompressed first when [#CompressionFlag] is
+    /// 1, or `null` when the text is empty or cannot be decompressed.
+    public final String TextString;
 
     Chunk_iTXt(final PosDataInputStream stream) throws IOException {
         super(stream);
@@ -89,9 +90,13 @@ public final class Chunk_iTXt extends Chunk {
                 - this.LanguageTag.length() - 1
                 - this.TranslatedKeyword.length - 1;
         this.Text = rest > 0 ? chunkDataStream.readNBytes(rest) : null;
-        this.TextString = this.Text != null && this.CompressionFlag == UNCOMPRESSED
-                ? new String(this.Text, StandardCharsets.UTF_8)
-                : null;
+        if (this.Text == null) {
+            this.TextString = null;
+        } else if (this.CompressionFlag == UNCOMPRESSED) {
+            this.TextString = new String(this.Text, StandardCharsets.UTF_8);
+        } else {
+            this.TextString = this.CompressionMethod == 0 ? inflateText(this.Text, StandardCharsets.UTF_8) : null;
+        }
     }
 
     @Override
@@ -154,7 +159,9 @@ public final class Chunk_iTXt extends Chunk {
             parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     this.Text.length,
-                    this.TextString != null ? "Text = %s".formatted(this.TextString) : "Text (compressed)")));
+                    this.TextString == null ? "Text (compressed)"
+                            : this.CompressionFlag == UNCOMPRESSED ? "Text = %s".formatted(this.TextString)
+                            : "Text (compressed) = %s".formatted(this.TextString))));
         }
     }
 }

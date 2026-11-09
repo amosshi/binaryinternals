@@ -9,6 +9,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -45,10 +46,25 @@ public class Marker_SOFnn extends Marker {
         super.parseInitSkip(pDisMarker);
 
         // P,Y, X, Nf
-        this.P = pDisMarker.readUnsignedByte();   // TODO - Check the values
-        this.Y = pDisMarker.readUnsignedShort();  // TODO - Check the values
-        this.X = pDisMarker.readUnsignedShort();  // TODO - Check the values
-        this.Nf = pDisMarker.readUnsignedByte();  // TODO - Check the values
+        this.P = pDisMarker.readUnsignedByte();
+        this.Y = pDisMarker.readUnsignedShort();  // 0: defined by the DNL marker
+        this.X = pDisMarker.readUnsignedShort();
+        this.Nf = pDisMarker.readUnsignedByte();
+
+        // ITU-T T.81, B.2.2: Frame header syntax
+        if (this.P < 2 || this.P > 16) {
+            throw new FileFormatException("SOF sample precision P is %d, expected 2 - 16.".formatted(this.P));
+        }
+        if (this.X < 1) {
+            throw new FileFormatException("SOF number of samples per line X is 0, expected 1 - 65535.");
+        }
+        if (this.Nf < 1) {
+            throw new FileFormatException("SOF number of image components Nf is 0, expected 1 - 255.");
+        }
+        if (super.marker_length != 8 + 3 * this.Nf) {
+            throw new FileFormatException("SOF length Lf is %d, expected 8 + 3 * Nf = %d.".formatted(
+                    super.marker_length, 8 + 3 * this.Nf));
+        }
 
         // Components: Ci, Hi, Vi, Tqi
         this.C = new Component[this.Nf];

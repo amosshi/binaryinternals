@@ -98,7 +98,7 @@ public class CONSTANT_Utf8_info extends cp_info {
     /// @return The decoded string; malformed bytes are decoded as standard UTF-8
     /// @see <a href="https://docs.oracle.com/javase/specs/jvms/se25/html/jvms-4.html#jvms-4.4.7">
     /// VM Spec: The CONSTANT_Utf8_info Structure</a>
-    static String decodeModifiedUtf8(final byte[] bytes) {
+    public static String decodeModifiedUtf8(final byte[] bytes) {
         final ByteBuffer withLength = ByteBuffer.allocate(u2.LENGTH + bytes.length)
                 .putShort((short) bytes.length)
                 .put(bytes);

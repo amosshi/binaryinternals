@@ -272,7 +272,7 @@ public final class DexFile extends FileFormat {
     /// @return String value for the [#type_ids] item, or `null`
     /// for invalid index
     public String get_type_ids_string(int index) {
-        if (index < -1 || this.type_ids == null || index >= this.type_ids.length) {
+        if (index < 0 || this.type_ids == null || index >= this.type_ids.length) {
             LOGGER.log(Level.WARNING, "Return null for invalid type_ids index={0}", index);
             return null;
         }

@@ -8,12 +8,9 @@
 package org.binaryinternals.format.dex;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
-import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
@@ -127,20 +124,14 @@ public final class encoded_annotation extends FileComponent implements GenerateT
     }
 
     public static final class annotation_element extends FileComponent implements GenerateTreeNodeDexFile {
-        private static final Logger LOGGER = Logger.getLogger(annotation_element.class.getName());
         public final Type_uleb128 name_idx;
-        public encoded_value value;
+        public final encoded_value value;
 
         annotation_element(PosDataInputStreamDex stream) throws IOException {
             super.startPos = stream.getPos();
             this.name_idx = stream.Dex_uleb128();
 
-            try {  // TODO Dev phase only
-                this.value = new encoded_value(stream);
-            } catch (FileFormatException e) {
-                // This should never happen
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
+            this.value = new encoded_value(stream);
 
             super.length = stream.getPos() - super.startPos;
         }
@@ -157,11 +148,6 @@ public final class encoded_annotation extends FileComponent implements GenerateT
                     "msg_annotation_element__name_idx",
                     Icons.Index);
             floatPos += this.name_idx.length;
-
-            // Dev phase only
-            if (this.value == null) {
-                return;
-            }
 
             DefaultMutableTreeNode valueNode = addNode(parentNode,
                     floatPos,
