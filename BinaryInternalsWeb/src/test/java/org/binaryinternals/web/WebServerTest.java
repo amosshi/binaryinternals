@@ -1,8 +1,5 @@
 package org.binaryinternals.web;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,6 +12,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WebServerTest {
 
@@ -149,6 +149,6 @@ class WebServerTest {
 
     @Test
     void jsonEscape() {
-        assertEquals("\"a\\\"b\\\\c\\n\\u003c/script\\u003e\\u0001\"", Json.string("a\"b\\c\n</script>\u0001"));
+        assertEquals("\"a\\\"b\\\\c\\n\\u003c/script\\u003e\\u0001\"", Json.string("a\"b\\c\n</script>\001"));
     }
 }

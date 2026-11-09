@@ -1,13 +1,13 @@
 package org.binaryinternals.format.dex;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.IOException;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /// The `float` and `double` values of an `encoded_value`: the high-order
 /// bytes of the IEEE754 value, zero-extended to the right.

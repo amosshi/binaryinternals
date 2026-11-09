@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.png</artifactId>
     <version>1.1</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatPNG</name>
-    <description>Portable Network Graphics (PNG) is a raster-graphics file format that supports lossless data compression.</description>
+    <description>PNG: the image file (.png) that keeps every pixel exactly, with transparency</description>
 
     <dependencies>
         <dependency>

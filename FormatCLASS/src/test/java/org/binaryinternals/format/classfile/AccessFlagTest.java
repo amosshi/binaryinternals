@@ -1,5 +1,9 @@
 package org.binaryinternals.format.classfile;
 
+import java.util.EnumSet;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+
 import static org.binaryinternals.format.classfile.AccessFlag.ACC_ABSTRACT;
 import static org.binaryinternals.format.classfile.AccessFlag.ACC_ANNOTATION;
 import static org.binaryinternals.format.classfile.AccessFlag.ACC_BRIDGE;
@@ -22,10 +26,6 @@ import static org.binaryinternals.format.classfile.AccessFlag.ACC_TRANSITIVE;
 import static org.binaryinternals.format.classfile.AccessFlag.ACC_VARARGS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.EnumSet;
-import java.util.List;
-import org.junit.jupiter.api.Test;
 
 class AccessFlagTest {
 

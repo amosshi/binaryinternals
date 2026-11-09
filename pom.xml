@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- child.*.inherit.append.path="false": the modules inherit the url and scm as they are,
+     instead of with "/<artifactId>" appended (such as https://github.com/amosshi/binaryinternals.git/binaryinternals.format.bmp) -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         child.project.url.inherit.append.path="false">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.binaryinternals</groupId>
     <artifactId>binaryinternals</artifactId>
@@ -32,20 +35,50 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/amosshi/binaryinternals.git</connection>
+    <scm child.scm.connection.inherit.append.path="false"
+         child.scm.developerConnection.inherit.append.path="false"
+         child.scm.url.inherit.append.path="false">
+        <connection>scm:git:https://github.com/amosshi/binaryinternals.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/amosshi/binaryinternals.git</developerConnection>
         <url>https://github.com/amosshi/binaryinternals</url>
         <tag>HEAD</tag>
     </scm>
 
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/amosshi/binaryinternals/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/amosshi/binaryinternals/actions</url>
+    </ciManagement>
+
     <properties>
+        <revision>3.7</revision><!-- the project version: https://maven.apache.org/maven-ci-friendly.html -->
+
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.outputTimestamp>2026-10-17T00:00:00Z</project.build.outputTimestamp><!-- reproducible builds; update on each release -->
-        <checkstyle.failOnViolation>true</checkstyle.failOnViolation><!-- override with -Dcheckstyle.failOnViolation=false -->
-        <spotbugs.failOnError>true</spotbugs.failOnError><!-- override with -Dspotbugs.failOnError=false -->
-        <revision>3.7</revision>
+        <!-- Reproducible builds: the time (UTC) of the last git commit, for the jar and zip entries and the Release-Date manifest entry.
+             Set by git-commit-id-maven-plugin at initialize; without a .git folder, see the profile no-git -->
+        <project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format><!-- for the profile no-git -->
+        <maven.compiler.failOnWarning>true</maven.compiler.failOnWarning><!-- javac -Werror for the -Xlint:all warnings; override with -Dmaven.compiler.failOnWarning=false -->
+        <!-- Read by the plugins directly, so no <configuration> is needed; override with -D...=false -->
+        <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+        <spotbugs.failOnError>true</spotbugs.failOnError>
+        <pmd.failOnViolation>true</pmd.failOnViolation>
 
+        <!-- Read by the plugins both in the build and in the site reports, so both use the same rules -->
+        <!-- OpenJDK Java Style, bundled with Checkstyle and used unchanged: https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/openjdk_checks.xml -->
+        <checkstyle.config.location>openjdk_checks.xml</checkstyle.config.location>
+        <checkstyle.suppressions.location>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</checkstyle.suppressions.location>
+        <spotbugs.excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude-filter.xml</spotbugs.excludeFilterFile>
+        <spotbugs.xmlOutput>true</spotbugs.xmlOutput>
+        <!-- The Java version PMD parses the sources as; the plugin's default, ${maven.compiler.source}, is not set here -->
+        <targetJdk>${maven.compiler.release}</targetJdk>
+
+        <pmd.version>7.29.0</pmd.version><!-- https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd-java -->
         <junit-jupiter.version>6.1.3</junit-jupiter.version><!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
         <spotbugs.version>4.10.5</spotbugs.version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations -->
         <umldoclet.version>2.3.2</umldoclet.version><!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
@@ -136,6 +169,12 @@
                     <artifactId>git-commit-id-maven-plugin</artifactId>
                     <version>10.0.1</version><!-- https://mvnrepository.com/artifact/io.github.git-commit-id/git-commit-id-maven-plugin -->
                 </plugin>
+                <!-- Reproducible builds check: mvn initialize artifact:check-buildplan (initialize: for git.commit.time); after an install: mvn clean verify artifact:compare -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-artifact-plugin</artifactId>
+                    <version>3.7.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-artifact-plugin -->
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
@@ -145,6 +184,17 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.6.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-checkstyle-plugin -->
+                    <!-- Declared here, not in <build><plugins>, so the site report uses the same Checkstyle version and settings -->
+                    <configuration>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory><!-- no user property for it -->
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>14.4.0</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -185,6 +235,22 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.12.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+                    <!-- Declared here, so the site report and the release profile's Javadoc jar use the same settings -->
+                    <configuration>
+                        <additionalJOption>-J-Xmx4g</additionalJOption>
+                        <doclint>all,-missing</doclint><!-- every check except the missing Javadoc comments, for now -->
+                        <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
+                        <show>private</show>
+
+                        <!-- Generate UML diagrams into the Javadoc -->
+                        <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                        <docletArtifact>
+                            <groupId>nl.talsmasoftware</groupId>
+                            <artifactId>umldoclet</artifactId>
+                            <version>${umldoclet.version}</version>
+                        </docletArtifact>
+                        <useStandardDocletOptions>true</useStandardDocletOptions>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -198,13 +264,32 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pdf-plugin</artifactId>
-                    <version>1.6.2</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pdf-plugin -->
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>3.28.0</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-pmd-plugin -->
+                    <!-- A newer PMD than the one bundled with the plugin, the same in the build and in the site report:
+                         https://maven.apache.org/plugins/maven-pmd-plugin/examples/upgrading-PMD-at-runtime.html -->
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-core</artifactId>
+                            <version>${pmd.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-java</artifactId>
+                            <version>${pmd.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-javascript</artifactId>
+                            <version>${pmd.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>net.sourceforge.pmd</groupId>
+                            <artifactId>pmd-jsp</artifactId>
+                            <version>${pmd.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -240,6 +325,25 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-wrapper-plugin</artifactId>
                     <version>3.3.4</version><!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-wrapper-plugin -->
+                </plugin>
+                <!-- Dependency graph of the modules, shown in the README: mvn depgraph:aggregate (needs Graphviz "dot" on the PATH) -->
+                <plugin>
+                    <groupId>com.github.ferstl</groupId>
+                    <artifactId>depgraph-maven-plugin</artifactId>
+                    <version>4.0.6</version><!-- https://mvnrepository.com/artifact/com.github.ferstl/depgraph-maven-plugin -->
+                    <configuration>
+                        <createImage>true</createImage>
+                        <imageFormat>svg</imageFormat>
+                        <includes>
+                            <include>org.binaryinternals</include>
+                        </includes>
+                        <excludes>
+                            <exclude>org.binaryinternals:binaryinternals.apps</exclude><!-- the applications' parent pom, not a dependency -->
+                        </excludes>
+                        <showGroupIds>true</showGroupIds>
+                        <showVersions>true</showVersions>
+                        <outputDirectory>${maven.multiModuleProjectDirectory}/docs</outputDirectory>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
@@ -280,12 +384,18 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <requireMavenVersion>
-                                    <version>[3.9.0,)</version>
+                                <requireMavenVersion><!-- keep in sync with distributionUrl in .mvn/wrapper/maven-wrapper.properties -->
+                                    <version>[3.10.0,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>[${maven.compiler.release},)</version>
                                 </requireJavaVersion>
+                                <!-- Every plugin used has its version pinned in <pluginManagement> -->
+                                <requirePluginVersions/>
+                                <!-- One version per dependency across the transitive tree -->
+                                <dependencyConvergence/>
+                                <!-- No dependency declared twice in the same pom -->
+                                <banDuplicatePomDependencyVersions/>
                             </rules>
                         </configuration>
                     </execution>
@@ -309,11 +419,18 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                     <includeOnlyProperties>
-                        <includeOnlyProperty>^git.build.version$</includeOnlyProperty>
-                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
-                        <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+                        <includeOnlyProperty>^git\.build\.version$</includeOnlyProperty>
+                        <includeOnlyProperty>^git\.commit\.id\.(abbrev|full)$</includeOnlyProperty>
+                        <includeOnlyProperty>^git\.branch$</includeOnlyProperty>
+                        <includeOnlyProperty>^git\.commit\.time$</includeOnlyProperty><!-- project.build.outputTimestamp -->
                     </includeOnlyProperties>
+                    <dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat><!-- ISO 8601, as project.build.outputTimestamp needs -->
+                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory><!-- allow building from a source zip, without .git -->
+                    <!-- Also run in the pom modules (root, BinaryInternalsApps), so project.build.outputTimestamp
+                         is a valid timestamp there too, instead of the unresolved "${git.commit.time}" -->
+                    <skipPoms>false</skipPoms>
                 </configuration>
             </plugin>
 
@@ -323,6 +440,10 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
+                        <manifest>
+                            <!-- Implementation-Title/Version/Vendor in the main section, read by Package.getImplementationVersion() -->
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
                         <manifestEntries>
                             <Release-Date>${project.build.outputTimestamp}</Release-Date>
                         </manifestEntries>
@@ -331,7 +452,6 @@
                             <manifestSection>
                                 <name>Versions</name>
                                 <manifestEntries>
-                                    <Implementation-Version>${project.version}</Implementation-Version>
                                     <Implementation-SCM-Revision>${git.commit.id.full}</Implementation-SCM-Revision>
                                     <Implementation-SCM-Branch>${git.branch}</Implementation-SCM-Branch>
                                 </manifestEntries>
@@ -341,13 +461,11 @@
                 </configuration>
             </plugin>
 
-            <!-- Java Compiler Show Deprecation and Warnings -->
+            <!-- Java Compiler: all lint warnings, deprecation included; failed on by maven.compiler.failOnWarning -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
                     <compilerArgs>
                         <arg>-Xlint:all,-requires-automatic</arg>
                     </compilerArgs>
@@ -358,25 +476,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>14.4.0</version><!-- https://mvnrepository.com/artifact/com.puppycrawl.tools/checkstyle -->
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <!-- OpenJDK Java Style, bundled with Checkstyle and used unchanged: https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/openjdk_checks.xml -->
-                    <configLocation>openjdk_checks.xml</configLocation>
-                    <suppressionsLocation>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</suppressionsLocation>
-                </configuration>
+                <!-- Checkstyle version and config: see <pluginManagement> and <properties> -->
                 <executions>
                     <execution>
                         <id>checkstyle</id>
                         <phase>validate</phase>
-                        <configuration>
-                            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
-                        </configuration>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -388,24 +492,30 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <configuration>
-                    <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude-filter.xml</excludeFilterFile>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.github.spotbugs</groupId>
-                        <artifactId>spotbugs</artifactId>
-                        <version>${spotbugs.version}</version>
-                    </dependency>
-                </dependencies>
-
+                <!-- Exclude filter and XML output: see spotbugs.* in <properties>. SpotBugs itself: the version bundled with the plugin -->
                 <executions>
                     <execution>
                         <id>spotbugs</id>
                         <phase>verify</phase><!-- needs compiled classes -->
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- PMD: the plugin's default rule set, the same as in the site report.
+                 The build fails on priorities 1 - 3 only: the style hints of priority 4 - 5 are in the site report -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>pmd</id>
+                        <phase>verify</phase><!-- needs compiled classes, for type resolution -->
                         <configuration>
-                            <xmlOutput>true</xmlOutput>
-                            <failOnError>${spotbugs.failOnError}</failOnError>
+                            <failurePriority>3</failurePriority>
+                            <printFailingErrors>true</printFailingErrors>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -425,30 +535,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pdf-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pdf</id>
-                        <phase>site</phase>
-                        <goals>
-                            <goal>pdf</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
-                            <includeReports>false</includeReports>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Site -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
             </plugin>
 
             <!-- https://maven.apache.org/maven-ci-friendly.html -->
@@ -504,16 +590,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <!-- Generate UML diagrams into the Javadoc -->
-                    <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
-                    <docletArtifact>
-                        <groupId>nl.talsmasoftware</groupId>
-                        <artifactId>umldoclet</artifactId>
-                        <version>${umldoclet.version}</version>
-                    </docletArtifact>
-                    <useStandardDocletOptions>true</useStandardDocletOptions>
-                </configuration>
+                <!-- Settings, UML diagrams included: see <pluginManagement>, shared with the release profile -->
                 <reportSets>
                     <reportSet><!-- aggregate reportSet, to define in poms having modules -->
                         <id>aggregate</id>
@@ -542,10 +619,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                    <configLocation>openjdk_checks.xml</configLocation>
-                    <suppressionsLocation>${maven.multiModuleProjectDirectory}/checkstyle-suppressions.xml</suppressionsLocation>
-                </configuration>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -558,18 +631,11 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <configuration>
-                    <xmlOutput>true</xmlOutput>
-                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <linkXref>true</linkXref>
-                    <inputEncoding>utf-8</inputEncoding>
-                </configuration>
                 <reportSets>
                     <reportSet><!-- by default, id = "default" -->
                         <reports><!-- select non-aggregate reports -->
@@ -597,6 +663,7 @@
 
     <modules>
         <module>CommonLib</module>
+        <module>BinaryInternalsApps</module><!-- parent of the applications below -->
         <module>BinaryInternalsViewer</module>
         <module>BinaryInternalsWeb</module>
 
@@ -616,23 +683,31 @@
     </modules>
 
     <profiles>
+        <!-- Building without .git (from a source zip): no git.commit.time, so use the build time instead -->
+        <profile>
+            <id>no-git</id>
+            <activation>
+                <file>
+                    <missing>${maven.multiModuleProjectDirectory}/.git</missing>
+                </file>
+            </activation>
+            <properties>
+                <project.build.outputTimestamp>${maven.build.timestamp}</project.build.outputTimestamp>
+                <!-- For the manifest, instead of the unresolved placeholders -->
+                <git.commit.id.full>not-a-git-repo</git.commit.id.full>
+                <git.branch>not-a-git-repo</git.branch>
+            </properties>
+        </profile>
+
         <!-- Javadoc and sources jars, only with: mvn -Prelease install -->
         <profile>
             <id>release</id>
             <build>
                 <plugins>
-                    <!-- Javadoc jar; the UML diagrams are only in the site report (mvn site) -->
+                    <!-- Javadoc jar; settings, UML diagrams included: see <pluginManagement> -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <additionalJOption>-J-Xmx4g </additionalJOption>
-                            <additionalOptions>-html5</additionalOptions>
-                            <detectJavaApiLink>true</detectJavaApiLink>
-                            <doclint>all,-missing</doclint><!-- Ignore Javadoc warning as of now -->
-                            <header>Binary Internals &lt;br&gt; View Internals of Binary File</header>
-                            <show>private</show>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -643,7 +718,8 @@
                         </executions>
                     </plugin>
 
-                    <!-- Creates a jar archive of the source files of the current project -->
+                    <!-- Creates a jar archive of the source files of the current project.
+                         jar-no-fork: the goal "jar" forks the lifecycle up to generate-sources, running enforcer, git and Checkstyle twice -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -651,7 +727,7 @@
                             <execution>
                                 <id>attach-sources</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>jar-no-fork</goal>
                                 </goals>
                             </execution>
                         </executions>

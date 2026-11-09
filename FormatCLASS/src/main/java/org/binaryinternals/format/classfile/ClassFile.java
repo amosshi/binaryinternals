@@ -494,7 +494,7 @@ public class ClassFile extends FileFormat {
             if (root != null && Files.isRegularFile(file) && Files.isSameFile(file, root.resolve(internalName + ".class"))) {
                 return Optional.of(root);
             }
-        } catch (InvalidPathException | IOException _) {
+        } catch (InvalidPathException | IOException _) { // NOPMD EmptyCatchBlock: PMD allows only the names ignored and expected, not the unnamed _
             // In-memory bytes, or this_class is invalid: no class path
         }
         return Optional.empty();

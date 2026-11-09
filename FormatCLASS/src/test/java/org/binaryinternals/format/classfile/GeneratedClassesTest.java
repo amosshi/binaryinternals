@@ -1,16 +1,7 @@
 package org.binaryinternals.format.classfile;
 
-import static java.lang.classfile.ClassFile.ACC_FINAL;
-import static java.lang.classfile.ClassFile.ACC_STATIC;
-import static java.lang.constant.ConstantDescs.CD_String;
-import static java.lang.constant.ConstantDescs.CD_int;
-import static java.lang.constant.ConstantDescs.CD_void;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.lang.classfile.Annotation;
 import java.lang.classfile.AnnotationElement;
 import java.lang.classfile.AnnotationValue;
@@ -18,8 +9,8 @@ import java.lang.classfile.Label;
 import java.lang.classfile.attribute.CodeAttribute;
 import java.lang.classfile.attribute.ConstantValueAttribute;
 import java.lang.classfile.attribute.MethodParameterInfo;
-import java.lang.classfile.attribute.ModuleAttribute;
 import java.lang.classfile.attribute.MethodParametersAttribute;
+import java.lang.classfile.attribute.ModuleAttribute;
 import java.lang.classfile.attribute.PermittedSubclassesAttribute;
 import java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute;
 import java.lang.classfile.attribute.RuntimeVisibleParameterAnnotationsAttribute;
@@ -30,8 +21,6 @@ import java.lang.constant.ClassDesc;
 import java.lang.constant.ConstantDescs;
 import java.lang.constant.MethodTypeDesc;
 import java.lang.constant.ModuleDesc;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.lang.reflect.ClassFileFormatVersion;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,6 +35,17 @@ import org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import static java.lang.classfile.ClassFile.ACC_FINAL;
+import static java.lang.classfile.ClassFile.ACC_STATIC;
+import static java.lang.constant.ConstantDescs.CD_String;
+import static java.lang.constant.ConstantDescs.CD_int;
+import static java.lang.constant.ConstantDescs.CD_void;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /// Edge cases which the JDK's own classes do not cover, built with the
 /// Class-File API.
 class GeneratedClassesTest {
@@ -54,7 +54,7 @@ class GeneratedClassesTest {
 
     @Test
     void modifiedUtf8IsDecoded() throws Exception {
-        final String value = "a\u0000b😀";
+        final String value = "a\0b😀";
         final ClassFile cf = TestSupport.parse(TestSupport.build(cb -> cb.withField("s", CD_String,
                 fb -> fb.withFlags(ACC_STATIC | ACC_FINAL).with(ConstantValueAttribute.of(value)))));
 
@@ -66,13 +66,13 @@ class GeneratedClassesTest {
     /// other compilers, with a modified UTF-8 string like an SMAP.
     @Test
     void sourceDebugExtension() throws Exception {
-        final String smap = "SMAP\nHello.kt\nKotlin\n*S Kotlin\n*F\n+ 1 Hello.kt\n\u0000 \uD83D\uDE00\n*E\n";
+        final String smap = "SMAP\nHello.kt\nKotlin\n*S Kotlin\n*F\n+ 1 Hello.kt\n\0 😀\n*E\n";
         final ByteArrayOutputStream modifiedUtf8 = new ByteArrayOutputStream();
         new DataOutputStream(modifiedUtf8).writeUTF(smap);
         final byte[] bytes = Arrays.copyOfRange(modifiedUtf8.toByteArray(), 2, modifiedUtf8.size());  // Without the u2 length
         final ClassFile cf = TestSupport.parse(TestSupport.build(cb -> cb.with(SourceDebugExtensionAttribute.of(bytes))));
 
-        final SourceDebugExtension_attribute attr = sourceDebugExtension(cf);
+        final SourceDebugExtension_attribute attr = findSourceDebugExtension(cf);
         assertArrayEquals(bytes, attr.debug_extension);
         assertEquals(smap, attr.getDebugExtesionString());
         assertTrue(TestSupport.treeTexts(cf).stream().anyMatch(t -> t.contains("debug_extension")));
@@ -83,11 +83,11 @@ class GeneratedClassesTest {
     void emptySourceDebugExtension() throws Exception {
         final ClassFile cf = TestSupport.parse(TestSupport.build(cb -> cb.with(SourceDebugExtensionAttribute.of(new byte[0]))));
 
-        assertNull(sourceDebugExtension(cf).debug_extension);
+        assertNull(findSourceDebugExtension(cf).debug_extension);
         assertEquals(List.of(), TestSupport.nodesOutsideParent(cf));
     }
 
-    private static SourceDebugExtension_attribute sourceDebugExtension(final ClassFile cf) {
+    private static SourceDebugExtension_attribute findSourceDebugExtension(final ClassFile cf) {
         return Arrays.stream(cf.attributes)
                 .filter(SourceDebugExtension_attribute.class::isInstance)
                 .map(SourceDebugExtension_attribute.class::cast)

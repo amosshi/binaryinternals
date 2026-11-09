@@ -1,8 +1,5 @@
 package org.binaryinternals.format.jpeg.tiff;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.classfile.ClassFile;
@@ -16,6 +13,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /// Every message key used for the TIFF tags must exist in `IFDMessage.properties`, so a missing
 /// entry or a typo fails the build instead of the viewer.

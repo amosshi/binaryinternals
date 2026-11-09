@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.binaryinternals</groupId>
+        <artifactId>binaryinternals</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>binaryinternals.apps</artifactId>
+    <packaging>pom</packaging>
+
+    <name>binaryinternals :: BinaryInternalsApps</name>
+    <description>Parent of the applications (BinaryInternalsViewer, BinaryInternalsWeb): the format plug-ins, and the packaging as a runnable jar plus a zip in dist/</description>
+
+    <dependencies>
+        <!-- The plug-in API, compiled against by every application ("requires org.binaryinternals.commonlib") -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.commonlib</artifactId>
+        </dependency>
+
+        <!-- The format plug-ins, inherited by every application and found at run time via ServiceLoader.
+             Runtime scope: not on the compile path, so no application code can use a format class directly.
+             A new format is added here only. -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.bmp</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.class</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.dex</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.elf</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.jpeg</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.pdf</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.png</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binaryinternals.format.zip</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- Packaging of each application; the application sets the property app.mainClass.
+             Active in the applications only, not in this pom itself: the shared assembly descriptor
+             src/assembly/bin.xml is here, so it is missing in the applications. -->
+        <profile>
+            <id>app</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/src/assembly/bin.xml</missing>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- mvn clean: also delete this application's zips in dist/, any version -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${maven.multiModuleProjectDirectory}/dist</directory>
+                                    <includes>
+                                        <include>${project.artifactId}-*-bin.zip</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Copy dependencies libraries to Target folder -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                                    <includeScope>runtime</includeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Add manifest -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>libs/</classpathPrefix>
+                                    <mainClass>${app.mainClass}</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Package -->
+                    <!-- https://maven.apache.org/plugins/maven-assembly-plugin/usage.html -->
+                    <!-- https://maven.apache.org/plugins/maven-assembly-plugin/assembly.html -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${project.parent.basedir}/src/assembly/bin.xml</descriptor><!-- the shared one, in this pom's folder -->
+                            </descriptors>
+                            <outputDirectory>${maven.multiModuleProjectDirectory}/dist</outputDirectory>
+                            <attach>false</attach><!-- the zip goes to dist/ only, not installed or deployed -->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

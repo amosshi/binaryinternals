@@ -1,7 +1,5 @@
 package org.binaryinternals.format.classfile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.lang.classfile.Attributes;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,6 +8,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.binaryinternals.format.classfile.attribute.attribute_info.AttributeTypes;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AttributeTypesTest {
 
