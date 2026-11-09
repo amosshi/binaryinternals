@@ -99,7 +99,7 @@ public final class WebServer {
         public static Config fromEnv() {
             final Map<String, String> env = System.getenv();
             return new Config(
-                    env.getOrDefault("HOST", "127.0.0.1"),
+                    env.getOrDefault("HOST", "127.0.0.1"), // NOPMD AvoidUsingHardCodedIP: loopback only, unless HOST is set
                     Integer.parseInt(env.getOrDefault("PORT", "8080")),
                     Math.multiplyExact(Integer.parseInt(env.getOrDefault("MAX_UPLOAD_MB", "20")), 1024 * 1024),
                     Integer.parseInt(env.getOrDefault("MAX_CONCURRENT_PARSES",

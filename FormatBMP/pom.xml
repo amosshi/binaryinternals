@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.bmp</artifactId>
     <version>1.1</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatBMP</name>
-    <description>Bitmap image, or Device Independent Bitmap (DIB) file format</description>
+    <description>BMP: the Windows bitmap image file (.bmp)</description>
 
     <dependencies>
         <dependency>

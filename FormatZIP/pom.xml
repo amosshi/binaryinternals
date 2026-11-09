@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.zip</artifactId>
     <version>0.8</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatZIP</name>
-    <description>ZIP is an archive file format that supports lossless data compression.</description>
+    <description>ZIP: the compressed archive file (.zip) that bundles many files into one</description>
 
     <dependencies>
         <dependency>

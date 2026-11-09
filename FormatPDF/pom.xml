@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.pdf</artifactId>
     <version>0.6</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatPDF</name>
-    <description>Portable Document Format (PDF), standardized as ISO 32000, is a file format developed by Adobe in 1993 to present documents, including text formatting and images, in a manner independent of application software, hardware, and operating systems.</description>
+    <description>PDF: the document file (.pdf) that looks the same on every device</description>
 
     <dependencies>
         <dependency>

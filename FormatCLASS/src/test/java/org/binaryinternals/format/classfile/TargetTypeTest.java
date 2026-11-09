@@ -1,10 +1,10 @@
 package org.binaryinternals.format.classfile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Map;
 import org.binaryinternals.format.classfile.attribute.RuntimeTypeAnnotations.type_annotation;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TargetTypeTest {
 

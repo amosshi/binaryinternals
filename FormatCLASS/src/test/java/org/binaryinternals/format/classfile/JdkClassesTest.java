@@ -1,7 +1,5 @@
 package org.binaryinternals.format.classfile;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.lang.classfile.ClassModel;
 import java.lang.classfile.CodeElement;
 import java.lang.classfile.Instruction;
@@ -26,6 +24,8 @@ import java.util.function.ToIntFunction;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.format.classfile.constant.CONSTANT_Utf8_info;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /// Parses every class of the running JDK's `java.base` module, and cross-checks
 /// the result with the JDK's own Class-File API (`java.lang.classfile`).
@@ -155,13 +155,15 @@ class JdkClassesTest {
                     case TableSwitchInstruction t -> {
                         expect(failures, at, bci.applyAsInt(t.defaultTarget()) - pos, mine.getTableSwitch().defaultbyte());
                         for (SwitchCase c : t.cases()) {
-                            expect(failures, at + "case " + c.caseValue() + " ", bci.applyAsInt(c.target()) - pos, mine.getTableSwitch().jumpoffsets().get(c.caseValue()));
+                            expect(failures, at + "case " + c.caseValue() + " ", bci.applyAsInt(c.target()) - pos,
+                                    mine.getTableSwitch().jumpoffsets().get(c.caseValue()));
                         }
                     }
                     case LookupSwitchInstruction l -> {
                         expect(failures, at, bci.applyAsInt(l.defaultTarget()) - pos, mine.getLookupSwitch().defaultbyte());
                         for (SwitchCase c : l.cases()) {
-                            expect(failures, at + "case " + c.caseValue() + " ", bci.applyAsInt(c.target()) - pos, mine.getLookupSwitch().mapoffsets().get(c.caseValue()));
+                            expect(failures, at + "case " + c.caseValue() + " ", bci.applyAsInt(c.target()) - pos,
+                                    mine.getLookupSwitch().mapoffsets().get(c.caseValue()));
                         }
                     }
                     default -> {

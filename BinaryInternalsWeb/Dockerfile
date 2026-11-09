@@ -10,11 +10,16 @@
 #   PORT=8080  MAX_UPLOAD_MB=20  MAX_CONCURRENT_PARSES=<processors>  PARSE_TIMEOUT_SECONDS=30  CORS_ORIGIN=*
 
 # ---- Build the modules and a minimal Java runtime ----
-FROM maven:3.9-eclipse-temurin-25 AS build
+# A plain JDK: ./mvnw downloads the Maven version of .mvn/wrapper/maven-wrapper.properties.
+# unzip is required: without it, mvnw downloads the .tar.gz, which fails the zip's distributionSha256Sum
+FROM eclipse-temurin:25-jdk AS build
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY . .
-RUN mvn -B -q -pl BinaryInternalsWeb -am package \
-        -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Dpmd.skip=true \
+RUN ./mvnw -B -q -pl BinaryInternalsWeb -am package \
+        -DskipTests -Dspotbugs.skip=true -Dcheckstyle.skip=true -Dpmd.skip=true \
     && cp BinaryInternalsWeb/target/binaryinternals.web-*[0-9].jar BinaryInternalsWeb/target/libs/
 # The format plug-ins are listed explicitly: they are found via ServiceLoader,
 # so no module requires them

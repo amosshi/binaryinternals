@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.dex</artifactId>
     <version>0.8</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatDEX</name>
-    <description>Dalvik Executable format</description>
+    <description>DEX: the compiled code of Android apps (.dex), run by the Dalvik / ART virtual machine</description>
 
     <dependencies>
         <dependency>

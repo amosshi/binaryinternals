@@ -8,10 +8,8 @@
     </parent>
 
     <artifactId>binaryinternals.commonlib</artifactId>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: CommonLib</name>
-    <description>Common library for Binary File Format parsers</description>
-
+    <description>Shared code used by all the format plug-ins, such as reading bytes and building the tree view</description>
 
 </project>

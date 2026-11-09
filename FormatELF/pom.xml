@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.elf</artifactId>
     <version>0.3</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatELF</name>
-    <description>Executable and Linkable Format</description>
+    <description>ELF: the program and library file on Linux and Unix (executables, .so, .o)</description>
 
     <dependencies>
         <dependency>

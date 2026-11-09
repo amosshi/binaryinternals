@@ -1,9 +1,5 @@
 package org.binaryinternals.format.classfile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.IOException;
 import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -11,6 +7,10 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.classfile.constant.cp_info;
 import org.binaryinternals.format.classfile.constant.cp_info.ConstantType;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ConstantTypeTest {
 

@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.class</artifactId>
     <version>25.0</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatCLASS</name>
-    <description>The Java Virtual Machine Specification - The class File Format</description>
+    <description>CLASS: the compiled Java class file (.class) run by the Java Virtual Machine</description>
 
     <dependencies>
         <dependency>

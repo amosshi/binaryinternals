@@ -1,8 +1,5 @@
 package org.binaryinternals.format.jpeg.icc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -13,6 +10,9 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /// The profile flags, device attributes and rendering intent of the ICC
 /// profile header are decoded.

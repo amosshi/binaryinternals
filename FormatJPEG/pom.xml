@@ -9,10 +9,9 @@
 
     <artifactId>binaryinternals.format.jpeg</artifactId>
     <version>2.1</version>
-    <packaging>jar</packaging>
 
     <name>binaryinternals :: FormatJPEG</name>
-    <description>JPEG or JPG is a commonly used method of lossy compression for digital images, particularly for those images produced by digital photography.</description>
+    <description>JPEG: the photo image file (.jpg, .jpeg), including the camera information it carries (EXIF)</description>
 
     <dependencies>
         <dependency>

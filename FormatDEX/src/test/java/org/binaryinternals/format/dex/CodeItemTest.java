@@ -1,8 +1,5 @@
 package org.binaryinternals.format.dex;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +10,9 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /// The tree of a [code_item] covers every byte: instructions, padding, tries
 /// and the catch handlers.

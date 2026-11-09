@@ -1,7 +1,5 @@
 package org.binaryinternals.format.pdf.basicobj;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -9,6 +7,8 @@ import java.util.List;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StringsTest {
 

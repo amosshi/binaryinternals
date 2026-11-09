@@ -1,9 +1,9 @@
 package org.binaryinternals.format.classfile;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OpcodeTest {
 
