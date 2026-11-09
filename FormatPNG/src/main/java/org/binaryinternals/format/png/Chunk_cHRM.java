@@ -37,25 +37,42 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_cHRM extends Chunk {
 
+    /// Chunk type of the primary chromaticities and white point chunk.
     public static final String CHUNK_TYPE_NAME = "cHRM";
     /// The stored values are the chromaticities times this scale.
     private static final double SCALE = 100000;
 
+    /// White point x, stored value.
     public final int WhitePointX;
+    /// White point y, stored value.
     public final int WhitePointY;
+    /// Red x, stored value.
     public final int RedX;
+    /// Red y, stored value.
     public final int RedY;
+    /// Green x, stored value.
     public final int GreenX;
+    /// Green y, stored value.
     public final int GreenY;
+    /// Blue x, stored value.
     public final int BlueX;
+    /// Blue y, stored value.
     public final int BlueY;
+    /// White point x, the stored value divided by 100000.
     public final double WhitePointX_value;
+    /// White point y, the stored value divided by 100000.
     public final double WhitePointY_value;
+    /// Red x, the stored value divided by 100000.
     public final double RedX_value;
+    /// Red y, the stored value divided by 100000.
     public final double RedY_value;
+    /// Green x, the stored value divided by 100000.
     public final double GreenX_value;
+    /// Green y, the stored value divided by 100000.
     public final double GreenY_value;
+    /// Blue x, the stored value divided by 100000.
     public final double BlueX_value;
+    /// Blue y, the stored value divided by 100000.
     public final double BlueY_value;
 
     Chunk_cHRM(final PosDataInputStream stream) throws IOException {

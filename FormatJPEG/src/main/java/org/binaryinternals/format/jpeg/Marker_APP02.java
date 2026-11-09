@@ -15,9 +15,12 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.icc.ICCProfile;
 
+/// `APP2` application segment, used by ICC profiles.
+///
 /// @author Amos Shi
 public class Marker_APP02 extends Marker {
 
+    /// Identifier of an ICC profile segment.
     public static final String IDENTIFIER_ICC_PROFILE = "ICC_PROFILE";
     private String identifier;
     private ICCProfile icc;

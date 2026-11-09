@@ -13,15 +13,23 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// A Photoshop image resource block: signature `8BIM`, resource ID, name and data.
+///
 /// @author Amos Shi
 public class IRB_8BIM extends FileComponent {
 
+    /// Signature of a resource block, `8BIM`.
     public static final int SIGNATURE = 0x3842494D;
+    /// Signature of a resource block as text.
     public static final String SIGNATURE_TEXT = "8BIM";
+    /// Unique identifier of the resource.
     public final int identifier;
+    /// Name of the resource, a Pascal string padded to an even size.
     public final String name;
     private final boolean name_skip1byte;
+    /// Size of the resource data.
     public final int size;
+    /// The resource data.
     public final byte[] data;
     private final boolean data_skip1byte;
 
@@ -64,6 +72,9 @@ public class IRB_8BIM extends FileComponent {
         super.length = input.getPos() - super.startPos;
     }
 
+    /// Add the tree nodes of the resource block.
+    ///
+    /// @param parentNode Parent tree node
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         int lastPos;
         parentNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(

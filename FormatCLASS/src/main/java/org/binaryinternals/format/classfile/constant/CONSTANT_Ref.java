@@ -11,6 +11,8 @@ import org.binaryinternals.format.classfile.ClassFile;
 import org.binaryinternals.format.classfile.SignatureConvertor;
 import org.binaryinternals.format.classfile.u2;
 
+/// Super class of the field, method and interface method reference constants.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -20,10 +22,18 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public abstract class CONSTANT_Ref extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 5;
+    /// Constant pool index of a `CONSTANT_Class_info` with the class or interface of the member.
     public final u2 class_index;
+    /// Constant pool index of a `CONSTANT_NameAndType_info` with the name and descriptor of the member.
     public final u2 name_and_type_index;
 
+    /// Reads the constant from the class file.
+    ///
+    /// @param tag The constant pool tag
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     protected CONSTANT_Ref(final short tag, final PosDataInputStream posDataInputStream) throws IOException {
         super(tag, posDataInputStream.getPos() - 1, LENGTH);
 
@@ -69,6 +79,11 @@ public abstract class CONSTANT_Ref extends cp_info {
         return "%s.%s%s : %s".formatted(clazz, nameStr, parameters, returnType);
     }
 
+    /// Add the tree nodes of the reference.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param classFile The class file of the constant
+    /// @param classPerfix Text prefix of the class node
     protected void generateTreeNode(DefaultMutableTreeNode parentNode, ClassFile classFile, String classPerfix) {
         final int classIndex = this.class_index.value;
         this.addNode(parentNode,

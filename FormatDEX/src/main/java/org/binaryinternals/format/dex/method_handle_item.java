@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// A method handle.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -62,17 +64,28 @@ public final class method_handle_item extends FileComponent implements GenerateT
         addNode(parentNode, floatPos, Type_ushort.LENGTH, "unused", "(unused)", "msg_method_handle_item__unused", Icons.Empty);
     }
 
+    /// The method handle types.
     public enum Type {
+        /// Method handle is a static field setter (accessor).
         METHOD_HANDLE_TYPE_STATIC_PUT(0x00),
+        /// Method handle is a static field getter (accessor).
         METHOD_HANDLE_TYPE_STATIC_GET(0x01),
+        /// Method handle is an instance field setter (accessor).
         METHOD_HANDLE_TYPE_INSTANCE_PUT(0x02),
+        /// Method handle is an instance field getter (accessor).
         METHOD_HANDLE_TYPE_INSTANCE_GET(0x03),
+        /// Method handle is a static method invoker.
         METHOD_HANDLE_TYPE_INVOKE_STATIC(0x04),
+        /// Method handle is an instance method invoker.
         METHOD_HANDLE_TYPE_INVOKE_INSTANCE(0x05),
+        /// Method handle is a constructor method invoker.
         METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR(0x06),
+        /// Method handle is a direct method invoker.
         METHOD_HANDLE_TYPE_INVOKE_DIRECT(0x07),
+        /// Method handle is an interface method invoker.
         METHOD_HANDLE_TYPE_INVOKE_INTERFACE(0x08);
 
+        /// The type value stored in the file.
         public final int value;
 
         Type(int v) {

@@ -19,13 +19,19 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// TIFF data, as used by Exif: a TIFF header followed by the IFDs.
 public class TIFF extends FileComponent implements GenerateTreeNode {
 
+    /// Description of the IFD entry count field.
     public static final String IFD_Number_Description = "A 2-byte count of the number of directory entries (i.e., the number of fields)";
     private final byte[] tiffByteArray;
     private final TIFFHeader tiffHeader;
     final ArrayList<IFDGroup> exifGroup = new ArrayList<>();
 
+    /// Reads the TIFF data.
+    ///
+    /// @param pDisTiff Input stream of the TIFF data
+    /// @throws IOException if the stream cannot be read
     public TIFF(final PosDataInputStream pDisTiff)
             throws IOException {
 

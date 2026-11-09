@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// The annotations of a class: annotations of the class itself, its fields, methods, and method parameters.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -26,12 +28,19 @@ public final class annotations_directory_item extends FileComponent implements G
 
     private static final String MSG_ANNOTATIONS_OFF = "annotations_off";
 
+    /// Offset from the start of the file to the annotations made directly on the class, or `0` if the class has no direct annotations.
     public final Type_uint class_annotations_off;
+    /// Count of fields annotated by this item.
     public final Type_uint fields_size;
+    /// Count of methods annotated by this item.
     public final Type_uint annotated_methods_size;
+    /// Count of method parameter lists annotated by this item.
     public final Type_uint annotated_parameters_size;
+    /// List of associated field annotations, sorted by field index.
     public final field_annotation[] field_annotations;
+    /// List of associated method annotations, sorted by method index.
     public final method_annotation[] method_annotations;
+    /// List of associated method parameter annotations, sorted by method index.
     public final parameter_annotation[] parameter_annotations;
 
     annotations_directory_item(PosDataInputStreamDex stream, DexFile dex) throws IOException {
@@ -208,10 +217,14 @@ public final class annotations_directory_item extends FileComponent implements G
         }
     }
 
+    /// The annotations of a field.
     public static final class field_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Length of the item in bytes.
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
+        /// Index into the `field_ids` list for the identity of the field being annotated.
         public final Type_uint field_idx;
+        /// Offset from the start of the file to the list of annotations for the field.
         public final Type_uint annotations_off;
 
         field_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {
@@ -261,11 +274,15 @@ public final class annotations_directory_item extends FileComponent implements G
         }
     }
 
+    /// The annotations of a method.
     public static final class method_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Length of the item in bytes.
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
 
+        /// Index into the `method_ids` list for the identity of the method being annotated.
         public final Type_uint method_idx;
+        /// Offset from the start of the file to the list of annotations for the method.
         public final Type_uint annotations_off;
 
         method_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {
@@ -315,11 +332,15 @@ public final class annotations_directory_item extends FileComponent implements G
         }
     }
 
+    /// The annotations of the parameters of a method.
     public static final class parameter_annotation extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Length of the item in bytes.
         public static final int LENGTH = Type_uint.LENGTH + Type_uint.LENGTH;
 
+        /// Index into the `method_ids` list for the identity of the method whose parameters are being annotated.
         public final Type_uint method_idx;
+        /// Offset from the start of the file to the list of annotations for the method parameters.
         public final Type_uint annotations_off;
 
         parameter_annotation(PosDataInputStreamDex stream, DexFile dex) throws IOException {

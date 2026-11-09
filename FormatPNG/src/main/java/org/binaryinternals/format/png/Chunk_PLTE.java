@@ -29,7 +29,9 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_PLTE extends Chunk {
 
+    /// Chunk type of the palette chunk.
     public static final String CHUNK_TYPE_NAME = "PLTE";
+    /// The palette entries, 3 bytes each.
     public final PaletteEntry[] Palette;
 
     Chunk_PLTE(final PosDataInputStream stream) throws IOException {

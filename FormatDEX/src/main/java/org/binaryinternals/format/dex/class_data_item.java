@@ -16,6 +16,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// The fields and methods of a class.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -26,14 +28,22 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class class_data_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// The number of static fields defined in this item.
     public final Type_uleb128 static_fields_size;
+    /// The number of instance fields defined in this item.
     public final Type_uleb128 instance_fields_size;
+    /// The number of direct methods defined in this item.
     public final Type_uleb128 direct_methods_size;
+    /// The number of virtual methods defined in this item.
     public final Type_uleb128 virtual_methods_size;
 
+    /// The defined static fields, sorted by `field_idx` in increasing order.
     public final encoded_field[] static_fields;
+    /// The defined instance fields, sorted by `field_idx` in increasing order.
     public final encoded_field[] instance_fields;
+    /// The defined direct (any of static, private, or constructor) methods, sorted by `method_idx` in increasing order.
     public final encoded_method[] direct_methods;
+    /// The defined virtual (none of static, private, or constructor) methods, sorted by `method_idx` in increasing order.
     public final encoded_method[] virtual_methods;
 
     /// ```
@@ -202,9 +212,12 @@ public final class class_data_item extends FileComponent implements GenerateTree
 
     }
 
+    /// A field of a class.
     public static final class encoded_field extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Index into the `field_ids` list, as a difference from the index of the previous element.
         public final Type_uleb128 field_idx_diff;
+        /// Access flags for the field.
         public final Type_uleb128 access_flags;
 
         encoded_field(PosDataInputStreamDex stream) throws IOException {
@@ -241,10 +254,14 @@ public final class class_data_item extends FileComponent implements GenerateTree
         }
     }
 
+    /// A method of a class.
     public static final class encoded_method extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Index into the `method_ids` list, as a difference from the index of the previous element.
         public final Type_uleb128 method_idx_diff;
+        /// Access flags for the method.
         public final Type_uleb128 access_flags;
+        /// Offset from the start of the file to the code structure for this method, or `0` if this method is either `abstract` or `native`.
         public final Type_uleb128 code_off;
 
         encoded_method(PosDataInputStreamDex stream, DexFile dexFile) throws IOException {

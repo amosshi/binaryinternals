@@ -28,6 +28,9 @@ public class u1 {
     /// Value of the [u1] component.
     public final short value;
 
+    /// Creates the value.
+    ///
+    /// @param value The unsigned 8-bit value
     public u1(short value) {
         this.value = value;
     }

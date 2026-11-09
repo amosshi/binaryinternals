@@ -89,6 +89,12 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
     /// [#attribute_length] items.
     public final u4 attribute_length;
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param name Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     protected attribute_info(final u2 nameIndex, final String name, final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos() - 2;
 
@@ -177,6 +183,13 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         checkAttributeSize(this.name, this.startPos, this.length, endPos);
     }
 
+    /// Verify the attribute length matches the stream position after parsing the attribute.
+    ///
+    /// @param name Attribute name
+    /// @param startPos Start position of the attribute
+    /// @param length Length of the attribute
+    /// @param endPos Current position
+    /// @throws FileFormatException if the attribute length does not match
     protected static void checkAttributeSize(
             final String name,
             final int startPos,
@@ -209,6 +222,10 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         return this.name;
     }
 
+    /// Add the tree nodes of the common attribute fields, `attribute_name_index` and `attribute_length`.
+    ///
+    /// @param parentNode Parent tree node
+    /// @param classFile The class file of the attribute
     public void generateTreeNodeCommon(final DefaultMutableTreeNode parentNode, final ClassFile classFile) {
         int startPosMoving = this.getStartPos();
         this.addNode(parentNode,
@@ -513,6 +530,7 @@ public abstract class attribute_info extends FileComponent implements GenerateTr
         /// If [#clazz] is null, which means it is not implemented yet.
         final Class<?> clazz;
 
+        /// Full name of the attribute.
         public final String fullname;
 
         /// Class file format.

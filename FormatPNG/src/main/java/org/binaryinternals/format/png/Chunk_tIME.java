@@ -21,6 +21,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_tIME extends Chunk {
 
+    /// Chunk type of the image last-modification time chunk.
     public static final String CHUNK_TYPE_NAME = "tIME";
     /// Complete year, for example 1995; not 95. A 2-byte unsigned integer.
     public final int Year;

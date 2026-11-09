@@ -33,9 +33,12 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 public final class JSplitPaneFile extends JSplitPane {
 
     private static final long serialVersionUID = 4876543219876500003L;
+    /// The frame showing this panel, owner of the pop-up windows.
     private final JFrame topLevelFrame;
     private final transient FileFormat file;
+    /// Tabs showing the parsed file details.
     private final JTabbedPane tabbedPane = new JTabbedPane();
+    /// Viewer of the raw bytes of the file.
     private final JBinaryViewer binaryViewer = new JBinaryViewer();
 
     /// Creates a split panel from an already parsed file.

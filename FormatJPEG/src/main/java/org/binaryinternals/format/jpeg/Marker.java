@@ -15,12 +15,16 @@ import org.binaryinternals.commonlib.GenerateTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Super class of the JPEG markers: a marker code, and the segment length for the markers with a segment.
+///
 /// @author Amos Shi
 public class Marker extends FileComponent implements GenerateTreeNode {
 
     private static final int IDENTIFIER_LENGTH_MAX = 100;
+    /// The marker code, see [MarkerCode].
     @SuppressWarnings("ProtectedField")
     protected final int marker_code;
+    /// The segment length, the length field included; `0` for the standalone markers.
     @SuppressWarnings("ProtectedField")
     protected final int marker_length;
     /// Why the marker content cannot be parsed, or `null`.
@@ -86,15 +90,28 @@ public class Marker extends FileComponent implements GenerateTreeNode {
         return this.error;
     }
 
+    /// Parses the marker segment content, nothing by default.
+    ///
+    /// @param pDisMarker Input stream of the marker segment
+    /// @throws IOException if the stream cannot be read
     protected void parse(final PosDataInputStream pDisMarker) throws IOException {
     }
 
+    /// Skips the marker code and the segment length.
+    ///
+    /// @param pDisMarker Input stream of the marker segment
+    /// @throws IOException if the stream cannot be read
     protected void parseInitSkip(final PosDataInputStream pDisMarker) throws IOException {
         // Skip the marker code and length field
         long skip = MarkerCode.MARKER_CODE_BYTES_COUNT + MarkerCode.MARKER_LENGTH_BYTES_COUNT;
         pDisMarker.skipNBytes(skip);
     }
 
+    /// Reads the identifier of an application segment: a NUL terminated ASCII text.
+    ///
+    /// @param pDisMarker Input stream of the marker segment, positioned at the identifier
+    /// @return The identifier, without the NUL
+    /// @throws IOException if the stream cannot be read
     protected String parseIdentifier(final PosDataInputStream pDisMarker) throws IOException {
 
         // Parse the Identifier, an '\000' ended ASCII string
@@ -110,18 +127,30 @@ public class Marker extends FileComponent implements GenerateTreeNode {
     }
 
     // Get each field
+    /// Gets the marker code.
+    ///
+    /// @return The marker code
     public int getMarker() {
         return this.marker_code;
     }
 
+    /// Gets the marker name.
+    ///
+    /// @return The marker name
     public String getMarkerName() {
         return MarkerCode.getMarkerName(this.marker_code);
     }
 
+    /// Gets the marker description.
+    ///
+    /// @return The marker description
     public String getMarkerDescription() {
         return MarkerCode.getMarkerDescription(this.marker_code);
     }
 
+    /// Gets the segment length.
+    ///
+    /// @return The segment length, the length field included
     public int getMarkerLength() {
         return this.marker_length;
     }

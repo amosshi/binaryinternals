@@ -63,11 +63,16 @@ import org.binaryinternals.format.classfile.u4;
 @SuppressWarnings({"java:S101", "java:S1104", "java:S116"})
 public class Code_attribute extends attribute_info {
 
+    /// Tree node name of the code array.
     public static final String ATTRIBUTE_CODE_NODE = "code";
+    /// Tree node value of the code array.
     public static final String ATTRIBUTE_CODE_VALUE = "byte codes";
+    /// Tree node text of the code array.
     public static final String ATTRIBUTE_CODE_TEXT = "%s: %s".formatted(ATTRIBUTE_CODE_NODE, ATTRIBUTE_CODE_VALUE);
 
+    /// The maximum depth of the operand stack of this method at any point during its execution.
     public final u2 max_stack;
+    /// The number of local variables in the local variable array allocated upon invocation of this method, including the parameters.
     public final u2 max_locals;
 
     /// The value of the [#code_length] item gives the number of bytes in
@@ -76,10 +81,15 @@ public class Code_attribute extends attribute_info {
     /// The value of [#code_length] must be greater than `zero`
     /// (as the code array must not be empty) and less than `65536`.
     public final u4 code_length;
+    /// The bytecode of the method.
     public final byte[] code;
+    /// Number of entries in the exception table.
     public final u2 exception_table_length;
+    /// The exception handlers in the code array.
     public exception_table[] exceptionTable;
+    /// Number of attributes of the Code attribute.
     public final u2 attributes_count;
+    /// The attributes of the Code attribute.
     public final attribute_info[] attributes;
 
     Code_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream, final cp_info[] cp) throws IOException {
@@ -260,9 +270,13 @@ public class Code_attribute extends attribute_info {
     /// @author Amos Shi
     public static final class exception_table extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = 8;
+        /// Start of the code range where the exception handler is active, inclusive.
         public final u2 start_pc;
+        /// End of the code range where the exception handler is active, exclusive.
         public final u2 end_pc;
+        /// Start of the exception handler, an index into the code array.
         public final u2 handler_pc;
 
         /// If the value of the catch_type item is nonzero, it must be a valid

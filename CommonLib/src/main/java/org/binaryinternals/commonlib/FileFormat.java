@@ -23,6 +23,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/// Super class of all parsed file formats: holds the raw bytes of the file and its parsed components.
+///
 /// @author Amos Shi
 public abstract class FileFormat {
 

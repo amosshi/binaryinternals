@@ -13,11 +13,22 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// An IFD entry of type `SRATIONAL`, signed fractions.
+///
 /// @author Amos Shi
 public class IFD_SRATIONAL extends IFD {
 
+    /// The values.
     public final SRational[] value;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_SRATIONAL(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, IFDType.SRATIONAL, startPosTiff, byteArrayTiff);
@@ -38,6 +49,9 @@ public class IFD_SRATIONAL extends IFD {
         }
     }
 
+    /// Gets the values.
+    ///
+    /// @return The values
     public SRational[] getValues() {
         return this.value;
     }
@@ -96,10 +110,13 @@ public class IFD_SRATIONAL extends IFD {
         }
     }
 
+    /// A signed fraction.
     @SuppressWarnings("PublicInnerClass")
     public static class SRational {
 
+        /// The numerator.
         public final int numerator;
+        /// The denominator.
         public final int denominator;
 
         private SRational(int n, int d) {

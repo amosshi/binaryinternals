@@ -28,6 +28,8 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class header_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// Size of the header item in bytes.
+    ///
     /// @see map_list.TypeCodes#TYPE_HEADER_ITEM
     public static final int ITEM_SIZE = 0x70;
 
@@ -59,20 +61,35 @@ public final class header_item extends FileComponent implements GenerateTreeNode
     /// pointed at is left unspecified by this document; this header field (and
     /// the previous) are left as hooks for use by runtime implementations.
     public final Type_uint link_off;
+    /// Offset from the start of the file to the map item.
     public final Type_uint map_off;
+    /// Count of strings in the string identifiers list.
     public final Type_uint string_ids_size;
+    /// Offset from the start of the file to the string identifiers list, or `0` if [#string_ids_size] is `0`.
     public final Type_uint string_ids_off;
+    /// Count of elements in the type identifiers list, at most 65535.
     public final Type_uint type_ids_size;
+    /// Offset from the start of the file to the type identifiers list, or `0` if [#type_ids_size] is `0`.
     public final Type_uint type_ids_off;
+    /// Count of elements in the prototype identifiers list, at most 65535.
     public final Type_uint proto_ids_size;
+    /// Offset from the start of the file to the prototype identifiers list, or `0` if [#proto_ids_size] is `0`.
     public final Type_uint proto_ids_off;
+    /// Count of elements in the field identifiers list.
     public final Type_uint field_ids_size;
+    /// Offset from the start of the file to the field identifiers list, or `0` if [#field_ids_size] is `0`.
     public final Type_uint field_ids_off;
+    /// Count of elements in the method identifiers list.
     public final Type_uint method_ids_size;
+    /// Offset from the start of the file to the method identifiers list, or `0` if [#method_ids_size] is `0`.
     public final Type_uint method_ids_off;
+    /// Count of elements in the class definitions list.
     public final Type_uint class_defs_size;
+    /// Offset from the start of the file to the class definitions list, or `0` if [#class_defs_size] is `0`.
     public final Type_uint class_defs_off;
+    /// Size of data section in bytes, an even multiple of `sizeof(uint)`.
     public final Type_uint data_size;
+    /// Offset from the start of the file to the start of the data section.
     public final Type_uint data_off;
 
     header_item(PosDataInputStreamDex stream) throws IOException {
@@ -206,9 +223,13 @@ public final class header_item extends FileComponent implements GenerateTreeNode
 
         /// Internal value of the endianness.
         public final int value;
+        /// Byte 1 of the value, the most significant one.
         public final int byte1;
+        /// Byte 2 of the value.
         public final int byte2;
+        /// Byte 3 of the value.
         public final int byte3;
+        /// Byte 4 of the value, the least significant one.
         public final int byte4;
 
         Endian(int i) {
@@ -227,10 +248,21 @@ public final class header_item extends FileComponent implements GenerateTreeNode
             return this == ENDIAN_CONSTANT ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN;
         }
 
+        /// Checks whether the 4 bytes are this endian tag.
+        ///
+        /// @param i1 Byte 1, the most significant one
+        /// @param i2 Byte 2
+        /// @param i3 Byte 3
+        /// @param i4 Byte 4, the least significant one
+        /// @return `true` if the bytes match
         public boolean equals(int i1, int i2, int i3, int i4) {
             return (i1 == this.byte1) && (i2 == this.byte2) && (i3 == this.byte3) && (i4 == this.byte4);
         }
 
+        /// Gets the name of an endian tag value.
+        ///
+        /// @param i The endian tag value
+        /// @return The enum name, or `Un-recognized !!!`
         public static String toString(int i) {
             return Arrays.stream(values())
                     .filter(item -> item.value == i)

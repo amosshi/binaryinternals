@@ -28,6 +28,10 @@ public class u4 {
     /// Value of the [u4] component.
     public final int value;
 
+    /// Reads a 32-bit value.
+    ///
+    /// @param posDataInputStream Input stream
+    /// @throws IOException if the stream cannot be read
     public u4(final PosDataInputStream posDataInputStream) throws IOException {
         value = posDataInputStream.readInt();
     }

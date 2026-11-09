@@ -73,12 +73,22 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class MethodDeclarationLineNumber_attribute extends attribute_info {
 
+    /// Length of the attribute data in bytes.
     public static final int LENGTH = 8;
+    /// Full name of the attribute.
     public static final String FULLNAME = "org.aspectj.weaver.MethodDeclarationLineNumber";
 
+    /// Line number of the method declaration.
     public final int line_number;
+    /// Offset of the method declaration in the source file.
     public final int offset;
 
+    /// Reads the attribute from the class file.
+    ///
+    /// @param nameIndex Constant pool index of the attribute name
+    /// @param type Attribute name
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     public MethodDeclarationLineNumber_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
         super(nameIndex, type, posDataInputStream);
 

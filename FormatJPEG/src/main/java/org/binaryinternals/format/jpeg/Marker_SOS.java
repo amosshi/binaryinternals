@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `SOS` marker: start of scan.
+///
 /// @author Amos Shi
 public class Marker_SOS extends Marker {
 

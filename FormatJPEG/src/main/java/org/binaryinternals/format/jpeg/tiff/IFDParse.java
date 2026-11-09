@@ -12,12 +12,22 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Parses IFD entries into the class of their tag.
+///
 /// @author Amos Shi
 public class IFDParse {
 
     private IFDParse() {
     }
 
+    /// Parses an IFD entry.
+    ///
+    /// @param pDIS The input stream, positioned at the entry
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @return The IFD entry
+    /// @throws IOException if the entry cannot be read
     public static IFD parse(final PosDataInputStream pDIS, int byteOrder, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         final int tag = readUnsignedShort(pDIS, byteOrder);
@@ -136,10 +146,22 @@ public class IFDParse {
         };
     }
 
+    /// Reads an unsigned 16-bit value.
+    ///
+    /// @param pDIS The input stream
+    /// @param byteOrder Byte order of the TIFF data
+    /// @return The value
+    /// @throws IOException if the stream cannot be read
     public static int readUnsignedShort(final PosDataInputStream pDIS, int byteOrder) throws IOException {
         return pDIS.readUnsignedShort(TIFFHeader.toByteOrder(byteOrder));
     }
 
+    /// Reads a 32-bit value.
+    ///
+    /// @param pDIS The input stream
+    /// @param byteOrder Byte order of the TIFF data
+    /// @return The value
+    /// @throws IOException if the stream cannot be read
     public static int readInt(final PosDataInputStream pDIS, int byteOrder) throws IOException {
         return pDIS.readInt(TIFFHeader.toByteOrder(byteOrder));
     }

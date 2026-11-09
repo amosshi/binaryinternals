@@ -54,6 +54,10 @@ public final class ZIPFile extends FileFormat implements GenerateTreeNode {
     /// Optional signature of the data descriptor.
     static final byte[] DATA_DESCRIPTOR = {(byte) 0x50, (byte) 0x4B, (byte) 0x07, (byte) 0x08};
 
+    /// Reads and parses a ZIP file.
+    ///
+    /// @param file The ZIP file
+    /// @throws IOException if the file cannot be read or parsed
     public ZIPFile(final Path file) throws IOException {
         super(file);
 

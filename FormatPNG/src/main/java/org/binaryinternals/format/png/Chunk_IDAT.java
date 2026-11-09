@@ -19,6 +19,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_IDAT extends Chunk {
 
+    /// Chunk type of the image data chunk.
     public static final String CHUNK_TYPE_NAME = "IDAT";
 
     Chunk_IDAT(final PosDataInputStream stream) throws IOException {

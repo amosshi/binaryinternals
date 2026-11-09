@@ -24,15 +24,14 @@ if [ -z "$JAVA_HOME" ] || [ ! -x "$JAVA_HOME/bin/java" ]; then
     exit 1
 fi
 
-java -version
-./mvnw --version
-
-rm -rf dist
-
 # Clean local Maven repository to ensure fresh dependencies
 # To avoid silent-stale-jar trap
 rm -rf ~/.m2/repository/org/binaryinternals
 
+java -version
+./mvnw --version
+
+rm -rf dist
 ./mvnw  clean install
 #./mvnw --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
 #./mvnw --projects CommonLib,FormatDEX,BinaryInternalsViewer    clean package install

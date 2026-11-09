@@ -42,6 +42,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_MethodType_info extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 3;
     /// The value of the `descriptor_index` item must be a valid index into
     /// the `constant_pool` table. The `constant_pool` entry at that

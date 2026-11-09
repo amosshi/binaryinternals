@@ -18,6 +18,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_gAMA extends Chunk {
 
+    /// Chunk type of the image gamma chunk.
     public static final String CHUNK_TYPE_NAME = "gAMA";
 
     /// The gamma times 100000.

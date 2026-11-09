@@ -13,14 +13,22 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `viewingConditionsType`: the viewing conditions.
+///
 /// @author Amos Shi
 public class TagData_viewingConditionsType extends TagData {
 
+    /// Length of the tag data in bytes.
     public static final int LENGTH = 36;
+    /// Un-normalized CIEXYZ values for the illuminant, in which Y is in cd/m².
     public final XYZNumber illuminant;
+    /// Un-normalized CIEXYZ values for the surround, in which Y is in cd/m².
     public final XYZNumber surround;
+    /// Encoded value for the illuminant type.
     public final long illuminantType;
 
+    /// Reads the tag data.
+    ///
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
     public TagData_viewingConditionsType(final PosDataInputStream input) throws IOException {

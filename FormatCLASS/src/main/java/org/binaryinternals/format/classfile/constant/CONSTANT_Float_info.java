@@ -37,9 +37,13 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 @SuppressWarnings("java:S101")
 public class CONSTANT_Float_info extends cp_info {
 
+    /// Size of the raw data in bytes.
     public static final int RAW_DATA_SIZE = 4;
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 5;
+    /// The raw bytes of the value.
     public final byte[] rawData;
+    /// The `float` value.
     public final Float floatValue;
 
     CONSTANT_Float_info(final PosDataInputStream posDataInputStream) throws IOException {

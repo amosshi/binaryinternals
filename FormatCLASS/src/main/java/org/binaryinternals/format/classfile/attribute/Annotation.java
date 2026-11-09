@@ -42,10 +42,17 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S1104", "java:S116"})
 public class Annotation extends FileComponent implements GenerateTreeNodeClassFile {
 
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the field descriptor of the annotation type.
     public final u2 type_index;
+    /// Number of element-value pairs of the annotation.
     public final u2 num_element_value_pairs;
+    /// The element-value pairs of the annotation.
     public final Annotation.element_value_pair[] element_value_pairs;
 
+    /// Reads the structure from the class file.
+    ///
+    /// @param posDataInputStream Class file input stream
+    /// @throws IOException if the class file cannot be read
     protected Annotation(final PosDataInputStream posDataInputStream) throws IOException {
         super.startPos = posDataInputStream.getPos();
         this.type_index = new u2(posDataInputStream);
@@ -145,6 +152,10 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         /// [Annotation#element_value_pairs] entry.
         public final element_value value;
 
+        /// Reads the structure from the class file.
+        ///
+        /// @param posDataInputStream Class file input stream
+        /// @throws IOException if the class file cannot be read
         protected element_value_pair(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
 
@@ -224,6 +235,10 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
         /// [#tag].
         public final Value value;
 
+        /// Reads the structure from the class file.
+        ///
+        /// @param posDataInputStream Class file input stream
+        /// @throws IOException if the class file cannot be read
         protected element_value(final PosDataInputStream posDataInputStream) throws IOException {
             this.startPos = posDataInputStream.getPos();
 
@@ -404,12 +419,20 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             }
         }
 
+        /// The value of an enum constant element: the enum type and the constant name.
         public static final class enum_const_value extends FileComponent implements GenerateTreeNodeClassFile, Value {
 
+            /// Length of the structure in bytes.
             public static final int LENGTH = 4;
+            /// Constant pool index of a `CONSTANT_Utf8_info` with the field descriptor of the enum type.
             public final u2 type_name_index;
+            /// Constant pool index of a `CONSTANT_Utf8_info` with the simple name of the enum constant.
             public final u2 const_name_index;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected enum_const_value(final PosDataInputStream posDataInputStream) throws IOException {
                 super(posDataInputStream.getPos(), LENGTH);
 
@@ -445,11 +468,18 @@ public class Annotation extends FileComponent implements GenerateTreeNodeClassFi
             }
         }
 
+        /// The value of an array element.
         public static final class array_value extends FileComponent implements GenerateTreeNodeClassFile, Value {
 
+            /// Number of elements in the array.
             public final u2 num_values;
+            /// The elements of the array.
             public final element_value[] values;
 
+            /// Reads the structure from the class file.
+            ///
+            /// @param posDataInputStream Class file input stream
+            /// @throws IOException if the class file cannot be read
             protected array_value(final PosDataInputStream posDataInputStream)
                     throws IOException {
                 this.startPos = posDataInputStream.getPos();

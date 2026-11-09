@@ -54,7 +54,9 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
 
     /// ELF file types.
     public final Elf64_Half e_type;
+    /// Target instruction set architecture, see [ELF_Machine].
     public final Elf64_Half e_machine;
+    /// ELF version, 1 for the original version.
     public final Elf64_Word e_version;
     /// Entry point virtual address
     public final Elf64_Addr e_entry;
@@ -62,12 +64,19 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
     public final Elf64_Off e_phoff;
     /// Section header table file offset
     public final Elf64_Off e_shoff;
+    /// Processor-specific flags.
     public final Elf64_Word e_flags;
+    /// Size of this ELF header in bytes.
     public final Elf64_Half e_ehsize;
+    /// Size of one program header table entry in bytes.
     public final Elf64_Half e_phentsize;
+    /// Number of entries in the program header table.
     public final Elf64_Half e_phnum;
+    /// Size of one section header table entry in bytes.
     public final Elf64_Half e_shentsize;
+    /// Number of entries in the section header table.
     public final Elf64_Half e_shnum;
+    /// Index of the section header table entry that contains the section names.
     public final Elf64_Half e_shstrndx;
 
     Elf64_Ehdr(final PosDataInputStreamElf input) throws IOException {
@@ -124,14 +133,23 @@ public class Elf64_Ehdr extends FileComponent implements GenerateTreeNode {
     /// @see
     /// <a href="https://github.com/torvalds/linux/blob/master/arch/powerpc/boot/elf.h">arch/powerpc/boot/elf.h</a>
     public enum ELF_FileType {
+        /// No file type.
         ET_NONE(0x00),
+        /// Relocatable file.
         ET_REL(0x01),
+        /// Executable file.
         ET_EXEC(0x02),
+        /// Shared object file.
         ET_DYN(0x03),
+        /// Core file.
         ET_CORE(0x04),
+        /// Start of the operating system specific range.
         ET_LOOS(0xFE00),
+        /// End of the operating system specific range.
         ET_HIOS(0xFEFF),
+        /// Start of the processor specific range.
         ET_LOPROC(0xFF00),
+        /// End of the processor specific range.
         ET_HIPROC(0xFFFF);
 
         /// Inner value of the enumeration item.

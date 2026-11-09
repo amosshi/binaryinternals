@@ -12,11 +12,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `XYZType`: an array of XYZ values.
+///
 /// @author Amos Shi
 public class TagData_XYZType extends TagData {
 
+    /// The XYZ values.
     public final XYZNumber[] data;
 
+    /// Reads the tag data.
+    ///
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
     public TagData_XYZType(final PosDataInputStream input) throws IOException {

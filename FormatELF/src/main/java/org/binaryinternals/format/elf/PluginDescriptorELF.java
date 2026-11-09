@@ -11,9 +11,12 @@ import java.util.List;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.PluginDescriptor;
 
+/// Plug-in descriptor of the ELF file format.
+///
 /// @author Amos Shi
 public class PluginDescriptorELF implements PluginDescriptor {
 
+    /// Creates the plug-in descriptor.
     public PluginDescriptorELF() {
     }
 

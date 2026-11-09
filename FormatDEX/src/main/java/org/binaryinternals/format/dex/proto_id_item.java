@@ -14,6 +14,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A method prototype identifier: the return type and parameter types of a method.
+///
 /// @author Amos Shi
 ///
 /// ```

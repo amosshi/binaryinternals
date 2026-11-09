@@ -21,9 +21,13 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class TagData_curveType extends TagData {
 
+    /// Number of entries.
     public final long count;
+    /// The curve values.
     public final int[] curveValues;
 
+    /// Reads the tag data.
+    ///
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
     public TagData_curveType(final PosDataInputStream input) throws IOException {

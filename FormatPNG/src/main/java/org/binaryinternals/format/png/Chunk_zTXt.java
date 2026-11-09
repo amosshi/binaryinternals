@@ -26,6 +26,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see Chunk_tEXt
 public final class Chunk_zTXt extends Chunk {
 
+    /// Chunk type of the compressed textual data chunk.
     public static final String CHUNK_TYPE_NAME = "zTXt";
     /// Refer to [Chunk_tEXt#Keyword].
     public final String Keyword;

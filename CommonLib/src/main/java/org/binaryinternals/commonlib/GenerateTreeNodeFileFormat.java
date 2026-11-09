@@ -15,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /// @author Amos Shi
 public interface GenerateTreeNodeFileFormat {
 
+    /// Format string to join two strings with ` - `, e.g. a name and its value.
     String FORMAT_STRING_STRING = "%s - %s";
 
     /// Max length for tree node string.

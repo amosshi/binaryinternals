@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 
+/// The code of a method: registers, instructions and exception handlers.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -23,17 +25,27 @@ import org.binaryinternals.commonlib.Icons;
 @SuppressWarnings({"java:S101", "java:S116", "java:S1104"})
 public final class code_item extends FileComponent implements GenerateTreeNodeDexFile {
 
+    /// The number of registers used by this code.
     public final Type_ushort registers_size;
+    /// The number of words of incoming arguments to the method that this code is for.
     public final Type_ushort ins_size;
+    /// The number of words of outgoing argument space required by this code for method invocation.
     public final Type_ushort outs_size;
+    /// The number of [try_item]s for this instance.
     public final Type_ushort tries_size;
+    /// Offset from the start of the file to the debug info sequence for this code, or `0` if there simply is no information.
     public final Type_uint debug_info_off;
 
+    /// Size of the instructions list, in 16-bit code units.
     public final Type_uint insns_size;
+    /// Actual array of bytecode.
     public final Type_ushort[] insns;
 
+    /// Two bytes of padding to make [#tries] four-byte aligned, only present if [#tries_size] is non-zero and [#insns_size] is odd.
     public final Type_ushort padding;
+    /// Array indicating where in the code exceptions are caught and how to handle them.
     public final try_item[] tries;
+    /// Bytes representing a list of lists of catch types and associated handler addresses.
     public final encoded_catch_handler_list handlers;
 
     code_item(PosDataInputStreamDex stream) throws IOException {
@@ -119,13 +131,17 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
+    /// A range of instructions covered by exception handlers.
     public static final class try_item extends FileComponent implements GenerateTreeNodeDexFile {
 
         /// Length of a `try_item`: `uint` + `ushort` + `ushort`.
         static final int LENGTH = Type_uint.LENGTH + Type_ushort.LENGTH + Type_ushort.LENGTH;
 
+        /// Start address of the block of code covered by this entry, in 16-bit code units from the start of the first covered instruction.
         public final Type_uint start_addr;
+        /// Number of 16-bit code units covered by this entry.
         public final Type_ushort insn_count;
+        /// Offset in bytes from the start of the associated [encoded_catch_handler_list] to the [encoded_catch_handler] for this entry.
         public final Type_ushort handler_off;
 
         try_item(PosDataInputStreamDex stream) throws IOException {
@@ -147,9 +163,12 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
+    /// The list of exception handler lists of a method.
     public static final class encoded_catch_handler_list extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Size of this list, in entries.
         public final Type_uleb128 size;
+        /// Actual list of handler lists.
         public final encoded_catch_handler[] list;
 
         encoded_catch_handler_list(PosDataInputStreamDex stream) throws IOException {
@@ -181,10 +200,15 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
+    /// A list of exception types and their handler addresses.
     public static final class encoded_catch_handler extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Number of catch types in this list. If non-positive, then this is the negative of the
+        /// number of catch types, and the catches are followed by a catch-all handler.
         public final Type_sleb128 size;
+        /// Stream of encoded items, one for each caught type, in the order that the types should be tested.
         public final encoded_type_addr_pair[] handlers;
+        /// Bytecode address of the catch-all handler, only present if [#size] is non-positive.
         public final Type_uleb128 catch_all_addr;
 
         encoded_catch_handler(PosDataInputStreamDex stream) throws IOException {
@@ -231,9 +255,12 @@ public final class code_item extends FileComponent implements GenerateTreeNodeDe
         }
     }
 
+    /// An exception type and the address of its handler.
     public static final class encoded_type_addr_pair extends FileComponent implements GenerateTreeNodeDexFile {
 
+        /// Index into the `type_ids` list for the type of the exception to catch.
         public final Type_uleb128 type_idx;
+        /// Bytecode address of the associated exception handler.
         public final Type_uleb128 addr;
 
         encoded_type_addr_pair(PosDataInputStreamDex stream) throws IOException {

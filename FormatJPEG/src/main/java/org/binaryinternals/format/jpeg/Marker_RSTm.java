@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `RSTm` marker: restart with modulo 8 count `m`.
+///
 /// @author Amos Shi
 public class Marker_RSTm extends Marker {
 

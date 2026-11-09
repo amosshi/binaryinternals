@@ -27,6 +27,10 @@ public class FileFormatException extends IOException {
         super(msg);
     }
 
+    /// Constructs an instance of `FileFormatException` with the specified detail message and cause.
+    ///
+    /// @param msg the detail message.
+    /// @param cause the cause, e.g. the parser exception.
     public FileFormatException(final String msg, final Throwable cause) {
         super(msg, cause);
     }

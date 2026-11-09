@@ -45,10 +45,15 @@ import org.binaryinternals.format.classfile.constant.cp_info;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class method_info extends FileComponent implements GenerateTreeNodeClassFile {
 
+    /// Access permissions to and properties of the method.
     public final u2 access_flags;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the simple name of the method, or `<init>` / `<clinit>`.
     public final u2 name_index;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the method descriptor.
     public final u2 descriptor_index;
+    /// Number of attributes of the method.
     public final u2 attributes_count;
+    /// The attributes of the method.
     public final attribute_info[] attributes;
     private String declaration;
     private String descriptor;

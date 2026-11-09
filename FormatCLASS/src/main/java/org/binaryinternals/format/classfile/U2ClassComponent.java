@@ -17,6 +17,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public class U2ClassComponent extends FileComponent {
 
+    /// The 16-bit value.
     public final u2 value;
 
     U2ClassComponent(final PosDataInputStream stream) throws IOException {

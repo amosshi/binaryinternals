@@ -13,6 +13,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 class IFD_SHORT_COUNT1 extends IFD_SHORT {
 
+    /// The expected number of values.
     public static final int COUNT = 1;
 
     IFD_SHORT_COUNT1(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -27,6 +28,9 @@ class IFD_SHORT_COUNT1 extends IFD_SHORT {
         return true;
     }
 
+    /// Gets the value.
+    ///
+    /// @return The value
     public int getValue() {
         return super.value[0];
     }

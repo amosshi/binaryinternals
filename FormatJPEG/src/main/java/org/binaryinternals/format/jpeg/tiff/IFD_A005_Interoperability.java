@@ -13,17 +13,31 @@ import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Exif tag `0xA005`, `Interoperability`.
+///
 /// @author Amos Shi
 public final class IFD_A005_Interoperability extends IFD_LONG_Pointer {
 
+    /// Category A: the Interoperability tags.
     public static final String Category_A = IFDMessage.getString(IFDMessage.KEY_IFD_A005_Intero_Category_A);
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_A005_Interoperability(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
         this.parseSubIFDs(IFDParse::parseIntero, TagSpace.INTERO);
     }
 
+    /// Gets the offset of the Interoperability IFD.
+    ///
+    /// @return The offset from the TIFF header
     public long getInteroperabilityOffset() {
         return super.value[0];
     }

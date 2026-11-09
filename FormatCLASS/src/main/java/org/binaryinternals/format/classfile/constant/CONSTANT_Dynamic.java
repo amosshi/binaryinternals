@@ -30,6 +30,7 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public abstract class CONSTANT_Dynamic extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 5;
 
     /// The value of the [#name_and_type_index] item must be a valid index

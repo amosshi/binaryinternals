@@ -13,6 +13,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 class IFD_LONG_COUNT1 extends IFD_LONG {
 
+    /// The expected number of values.
     public static final int COUNT = 1;
 
     IFD_LONG_COUNT1(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
@@ -26,6 +27,9 @@ class IFD_LONG_COUNT1 extends IFD_LONG {
         return true;
     }
 
+    /// Gets the value.
+    ///
+    /// @return The value
     public long getValue() {
         return super.value[0];
     }

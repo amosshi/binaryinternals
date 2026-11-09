@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.FileFormat;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 
+/// A class definition.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -152,6 +154,10 @@ public final class class_def_item extends FileComponent implements GenerateTreeN
         return this.interfaces;
     }
 
+    /// Gets the description of the interfaces implemented by the class.
+    ///
+    /// @param dexFile The DEX file of the class
+    /// @return The interfaces, or `(no interface)` if there are none
     public String get_interfaces_desc(DexFile dexFile) {
         type_list types = this.get_interfaces(dexFile);
         return (types == null) ? "(no interface)" : types.toString(dexFile);

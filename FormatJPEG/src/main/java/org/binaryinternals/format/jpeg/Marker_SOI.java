@@ -12,6 +12,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `SOI` marker: start of image.
+///
 /// @author Amos Shi
 public class Marker_SOI extends Marker {
 

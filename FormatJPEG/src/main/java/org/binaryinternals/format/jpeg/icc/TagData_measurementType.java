@@ -13,9 +13,12 @@ import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `measurementType`: the measurement conditions.
+///
 /// @author Amos Shi
 public class TagData_measurementType extends TagData {
 
+    /// Length of the tag data in bytes.
     public static final int LENGTH = 36;
 
     /// Standard observer encodings, ICC.1 `measurementType`.
@@ -25,12 +28,19 @@ public class TagData_measurementType extends TagData {
     private static final String[] MEASUREMENT_GEOMETRIES = {"Unknown", "0°:45° or 45°:0°", "0°:d or d:0°"};
     /// Standard illuminant encodings, ICC.1 `measurementType`.
     private static final String[] STANDARD_ILLUMINANTS = {"Unknown", "D50", "D65", "D93", "F2", "D55", "A", "Equi-Power (E)", "F8"};
+    /// Encoded value for the standard observer.
     public final long standardObserver;
+    /// nCIEXYZ tristimulus values for the measurement backing.
     public final XYZNumber measurementBacking;
+    /// Encoded value for the measurement geometry.
     public final long measurementGeometry;
+    /// Encoded value for the measurement flare.
     public final long measurementFlare;
+    /// Encoded value for the standard illuminant.
     public final long standardIlluminant;
 
+    /// Reads the tag data.
+    ///
     /// @param input Input stream of the file
     /// @throws IOException Parse file failed
     public TagData_measurementType(final PosDataInputStream input) throws IOException {

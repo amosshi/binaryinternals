@@ -9,206 +9,393 @@ package org.binaryinternals.format.jpeg.tiff;
 
 import java.util.ResourceBundle;
 
+/// TIFF, Exif, GPS and Interoperability IFD tag numbers, and their display names.
+///
 /// @author Amos Shi
 public class IFDTag {
 
     // ITFF-v6
 
+    /// TIFF 6.0 tag `0x00FE`, `NewSubfileType`.
     public static final int IFD_00FE_NewSubfileType = 0x00FE;
+    /// TIFF 6.0 tag `0x00FF`, `SubfileType`.
     public static final int IFD_00FF_SubfileType = 0x00FF;
+    /// TIFF 6.0 tag `0x0100`, `ImageWidth`.
     public static final int IFD_0100_ImageWidth = 0x0100;                       // TIFF-v6: Page 18, 34
+    /// TIFF 6.0 tag `0x0101`, `ImageLength`.
     public static final int IFD_0101_ImageLength = 0x0101;                      // TIFF-v6: Page 18, 34
+    /// TIFF 6.0 tag `0x0102`, `BitsPerSample`.
     public static final int IFD_0102_BitsPerSample = 0x0102;                    // TIFF-v6: Page 22, 29
+    /// TIFF 6.0 tag `0x0103`, `Compression`.
     public static final int IFD_0103_Compression = 0x0103;                      // TIFF-v6: Page 17, 30, 49, 104
+    /// TIFF 6.0 tag `0x0106`, `Color`.
     public static final int IFD_0106_Color = 0x0106;                            // TIFF-v6: Page 17, 111
+    /// TIFF 6.0 tag `0x0106`, `PhotometricInterpretation`.
     public static final int IFD_0106_PhotometricInterpretation = 0x0106;        // TIFF-v6: Page 37, 90, 111
+    /// TIFF 6.0 tag `0x0107`, `Threshholding`.
     public static final int IFD_0107_Threshholding = 0x0107;
+    /// TIFF 6.0 tag `0x0108`, `CellWidth`.
     public static final int IFD_0108_CellWidth = 0x0108;
+    /// TIFF 6.0 tag `0x0109`, `CellLength`.
     public static final int IFD_0109_CellLength = 0x0109;
+    /// TIFF 6.0 tag `0x010A`, `FillOrder`.
     public static final int IFD_010A_FillOrder = 0x010A;
+    /// TIFF 6.0 tag `0x010D`, `DocumentName`.
     public static final int IFD_010D_DocumentName = 0x010D;
+    /// TIFF 6.0 tag `0x010E`, `ImageDescription`.
     public static final int IFD_010E_ImageDescription = 0x010E;
+    /// TIFF 6.0 tag `0x010F`, `Make`.
     public static final int IFD_010F_Make = 0x010F;
+    /// TIFF 6.0 tag `0x0110`, `Model`.
     public static final int IFD_0110_Model = 0x0110;
+    /// TIFF 6.0 tag `0x0111`, `StripOffsets`.
     public static final int IFD_0111_StripOffsets = 0x0111;                     // TIFF-v6: Page 19, 40
+    /// TIFF 6.0 tag `0x0112`, `Orientation`.
     public static final int IFD_0112_Orientation = 0x0112;
+    /// TIFF 6.0 tag `0x0115`, `SamplesPerPixel`.
     public static final int IFD_0115_SamplesPerPixel = 0x0115;                  // TIFF-v6: Page 24, 39
+    /// TIFF 6.0 tag `0x0116`, `RowsPerStrip`.
     public static final int IFD_0116_RowsPerStrip = 0x0116;                     // TIFF-v6: Page 19, 39
+    /// TIFF 6.0 tag `0x0117`, `StripByteCounts`.
     public static final int IFD_0117_StripByteCounts = 0x0117;                  // TIFF-v6: Page 19, 40
+    /// TIFF 6.0 tag `0x0118`, `MinSampleValue`.
     public static final int IFD_0118_MinSampleValue = 0x0118;
+    /// TIFF 6.0 tag `0x0119`, `MaxSampleValue`.
     public static final int IFD_0119_MaxSampleValue = 0x0119;
+    /// TIFF 6.0 tag `0x011A`, `XResolution`.
     public static final int IFD_011A_XResolution = 0x011A;                      // TIFF-v6: Page 19, 41
+    /// TIFF 6.0 tag `0x011B`, `YResolution`.
     public static final int IFD_011B_YResolution = 0x011B;                      // TIFF-v6: Page 19, 41
+    /// TIFF 6.0 tag `0x011C`, `PlanarConfiguration`.
     public static final int IFD_011C_PlanarConfiguration = 0x011C;
+    /// TIFF 6.0 tag `0x011D`, `PageName`.
     public static final int IFD_011D_PageName = 0x011D;
+    /// TIFF 6.0 tag `0x011E`, `XPosition`.
     public static final int IFD_011E_XPosition = 0x011E;
+    /// TIFF 6.0 tag `0x011F`, `YPosition`.
     public static final int IFD_011F_YPosition = 0x011F;
+    /// TIFF 6.0 tag `0x0120`, `FreeOffsets`.
     public static final int IFD_0120_FreeOffsets = 0x0120;
+    /// TIFF 6.0 tag `0x0121`, `FreeByteCounts`.
     public static final int IFD_0121_FreeByteCounts = 0x0121;
+    /// TIFF 6.0 tag `0x0122`, `GrayResponseUnit`.
     public static final int IFD_0122_GrayResponseUnit = 0x0122;
+    /// TIFF 6.0 tag `0x0123`, `GrayResponseCurve`.
     public static final int IFD_0123_GrayResponseCurve = 0x0123;
+    /// TIFF 6.0 tag `0x0124`, `T4Options`.
     public static final int IFD_0124_T4Options = 0x0124;
+    /// TIFF 6.0 tag `0x0125`, `T6Options`.
     public static final int IFD_0125_T6Options = 0x0125;
+    /// TIFF 6.0 tag `0x0128`, `ResolutionUnit`.
     public static final int IFD_0128_ResolutionUnit = 0x0128;                   // TIFF-v6: Page 18, 38
+    /// TIFF 6.0 tag `0x0129`, `PageNumber`.
     public static final int IFD_0129_PageNumber = 0x0129;
+    /// TIFF 6.0 tag `0x012D`, `TransferFunction`.
     public static final int IFD_012D_TransferFunction = 0x012D;
+    /// TIFF 6.0 tag `0x0131`, `Software`.
     public static final int IFD_0131_Software = 0x0131;
+    /// TIFF 6.0 tag `0x0132`, `DateTime`.
     public static final int IFD_0132_DateTime = 0x0132;
+    /// TIFF 6.0 tag `0x013B`, `Artist`.
     public static final int IFD_013B_Artist = 0x013B;
+    /// TIFF 6.0 tag `0x013C`, `HostComputer`.
     public static final int IFD_013C_HostComputer = 0x013C;
+    /// TIFF 6.0 tag `0x013D`, `Predictor`.
     public static final int IFD_013D_Predictor = 0x013D;
+    /// TIFF 6.0 tag `0x013E`, `WhitePoint`.
     public static final int IFD_013E_WhitePoint = 0x013E;
+    /// TIFF 6.0 tag `0x013F`, `PrimaryChromaticities`.
     public static final int IFD_013F_PrimaryChromaticities = 0x013F;
+    /// TIFF 6.0 tag `0x0140`, `ColorMap`.
     public static final int IFD_0140_ColorMap = 0x0140;                         // TIFF-v6: Page 23, 29
+    /// TIFF 6.0 tag `0x0141`, `HalftoneHints`.
     public static final int IFD_0141_HalftoneHints = 0x0141;
+    /// TIFF 6.0 tag `0x0142`, `TileWidth`.
     public static final int IFD_0142_TileWidth = 0x0142;
+    /// TIFF 6.0 tag `0x0143`, `TileLength`.
     public static final int IFD_0143_TileLength = 0x0143;
+    /// TIFF 6.0 tag `0x0144`, `TileOffsets`.
     public static final int IFD_0144_TileOffsets = 0x0144;
+    /// TIFF 6.0 tag `0x0145`, `TileByteCounts`.
     public static final int IFD_0145_TileByteCounts = 0x0145;
+    /// TIFF 6.0 tag `0x014C`, `InkSet`.
     public static final int IFD_014C_InkSet = 0x014C;
+    /// TIFF 6.0 tag `0x014D`, `InkNames`.
     public static final int IFD_014D_InkNames = 0x014D;
+    /// TIFF 6.0 tag `0x014E`, `NumberOfInks`.
     public static final int IFD_014E_NumberOfInks = 0x014E;
+    /// TIFF 6.0 tag `0x0150`, `DotRange`.
     public static final int IFD_0150_DotRange = 0x0150;
+    /// TIFF 6.0 tag `0x0151`, `TargetPrinter`.
     public static final int IFD_0151_TargetPrinter = 0x0151;
+    /// TIFF 6.0 tag `0x0152`, `ExtraSamples`.
     public static final int IFD_0152_ExtraSamples = 0x0152;                     // TIFF-v6: Page 31, 77
+    /// TIFF 6.0 tag `0x0153`, `SampleFormat`.
     public static final int IFD_0153_SampleFormat = 0x0153;
+    /// TIFF 6.0 tag `0x0154`, `SMinSampleValue`.
     public static final int IFD_0154_SMinSampleValue = 0x0154;
+    /// TIFF 6.0 tag `0x0155`, `SMaxSampleValue`.
     public static final int IFD_0155_SMaxSampleValue = 0x0155;
+    /// TIFF 6.0 tag `0x0156`, `TransferRange`.
     public static final int IFD_0156_TransferRange = 0x0156;
+    /// TIFF 6.0 tag `0x0200`, `JPEGProc`.
     public static final int IFD_0200_JPEGProc = 0x0200;
+    /// TIFF 6.0 tag `0x0201`, `JPEGInterchangeFormat`.
     public static final int IFD_0201_JPEGInterchangeFormat = 0x0201;
+    /// TIFF 6.0 tag `0x0202`, `JPEGInterchangeFormatLength`.
     public static final int IFD_0202_JPEGInterchangeFormatLength = 0x0202;
+    /// TIFF 6.0 tag `0x0203`, `JPEGRestartInterval`.
     public static final int IFD_0203_JPEGRestartInterval = 0x0203;
+    /// TIFF 6.0 tag `0x0205`, `JPEGLosslessPredictors`.
     public static final int IFD_0205_JPEGLosslessPredictors = 0x0205;
+    /// TIFF 6.0 tag `0x0206`, `JPEGPointTransforms`.
     public static final int IFD_0206_JPEGPointTransforms = 0x0206;
+    /// TIFF 6.0 tag `0x0207`, `JPEGQTables`.
     public static final int IFD_0207_JPEGQTables = 0x0207;
+    /// TIFF 6.0 tag `0x0208`, `JPEGDCTables`.
     public static final int IFD_0208_JPEGDCTables = 0x0208;
+    /// TIFF 6.0 tag `0x0209`, `JPEGACTables`.
     public static final int IFD_0209_JPEGACTables = 0x0209;
+    /// TIFF 6.0 tag `0x0211`, `YCbCrCoefficients`.
     public static final int IFD_0211_YCbCrCoefficients = 0x0211;
+    /// TIFF 6.0 tag `0x0212`, `YCbCrSubSampling`.
     public static final int IFD_0212_YCbCrSubSampling = 0x0212;
+    /// TIFF 6.0 tag `0x0213`, `YCbCrPositioning`.
     public static final int IFD_0213_YCbCrPositioning = 0x0213;
+    /// TIFF 6.0 tag `0x0214`, `ReferenceBlackWhite`.
     public static final int IFD_0214_ReferenceBlackWhite = 0x0214;
+    /// TIFF 6.0 tag `0x8298`, `Copyright`.
     public static final int IFD_8298_Copyright = 0x8298;
 
     // CIPA DC-008-2010
 
+    /// Exif tag `0x829A`, `ExposureTime`.
     public static final int IFD_829A_ExposureTime = 0x829A;
+    /// Exif tag `0x829D`, `FNumber`.
     public static final int IFD_829D_FNumber = 0x829D;
+    /// Exif tag `0x8769`, `Exif`.
     public static final int IFD_8769_Exif = 0x8769;
+    /// Exif tag `0x8822`, `ExposureProgram`.
     public static final int IFD_8822_ExposureProgram = 0x8822;
+    /// Exif tag `0x8824`, `SpectralSensitivity`.
     public static final int IFD_8824_SpectralSensitivity = 0x8824;
+    /// Exif tag `0x8825`, `GPS`.
     public static final int IFD_8825_GPS = 0x8825;                              // GPS Info IFD Pointer
+    /// Exif tag `0x8827`, `PhotographicSensitivity`.
     public static final int IFD_8827_PhotographicSensitivity = 0x8827;
+    /// Exif tag `0x8828`, `OECF`.
     public static final int IFD_8828_OECF = 0x8828;
+    /// Exif tag `0x8830`, `SensitivityType`.
     public static final int IFD_8830_SensitivityType = 0x8830;
+    /// Exif tag `0x8831`, `StandardOutputSensitivity`.
     public static final int IFD_8831_StandardOutputSensitivity = 0x8831;
+    /// Exif tag `0x8832`, `RecommendedExposureIndex`.
     public static final int IFD_8832_RecommendedExposureIndex = 0x8832;
+    /// Exif tag `0x8833`, `ISOSpeed`.
     public static final int IFD_8833_ISOSpeed = 0x8833;
+    /// Exif tag `0x8834`, `ISOSpeedLatitudeyyy`.
     public static final int IFD_8834_ISOSpeedLatitudeyyy = 0x8834;
+    /// Exif tag `0x8835`, `ISOSpeedLatitudezzz`.
     public static final int IFD_8835_ISOSpeedLatitudezzz = 0x8835;
+    /// Exif tag `0x9000`, `ExifVersion`.
     public static final int IFD_9000_ExifVersion = 0x9000;
+    /// Exif tag `0x9003`, `DateTimeOriginal`.
     public static final int IFD_9003_DateTimeOriginal = 0x9003;
+    /// Exif tag `0x9004`, `DateTimeDigitized`.
     public static final int IFD_9004_DateTimeDigitized = 0x9004;
+    /// Exif tag `0x9101`, `ComponentsConfiguration`.
     public static final int IFD_9101_ComponentsConfiguration = 0x9101;
+    /// Exif tag `0x9102`, `CompressedBitsPerPixel`.
     public static final int IFD_9102_CompressedBitsPerPixel = 0x9102;
+    /// Exif tag `0x9201`, `ShutterSpeedValue`.
     public static final int IFD_9201_ShutterSpeedValue = 0x9201;
+    /// Exif tag `0x9202`, `ApertureValue`.
     public static final int IFD_9202_ApertureValue = 0x9202;
+    /// Exif tag `0x9203`, `BrightnessValue`.
     public static final int IFD_9203_BrightnessValue = 0x9203;
+    /// Exif tag `0x9204`, `ExposureBiasValue`.
     public static final int IFD_9204_ExposureBiasValue = 0x9204;
+    /// Exif tag `0x9205`, `MaxApertureValue`.
     public static final int IFD_9205_MaxApertureValue = 0x9205;
+    /// Exif tag `0x9206`, `SubjectDistance`.
     public static final int IFD_9206_SubjectDistance = 0x9206;
+    /// Exif tag `0x9207`, `MeteringMode`.
     public static final int IFD_9207_MeteringMode = 0x9207;
+    /// Exif tag `0x9208`, `LightSource`.
     public static final int IFD_9208_LightSource = 0x9208;
+    /// Exif tag `0x9209`, `Flash`.
     public static final int IFD_9209_Flash = 0x9209;
+    /// Exif tag `0x920A`, `FocalLength`.
     public static final int IFD_920A_FocalLength = 0x920A;
+    /// Exif tag `0x9214`, `SubjectArea`.
     public static final int IFD_9214_SubjectArea = 0x9214;
+    /// Exif tag `0x927C`, `MakerNode`.
     public static final int IFD_927C_MakerNode = 0x927C;
+    /// Exif tag `0x9286`, `UserComment`.
     public static final int IFD_9286_UserComment = 0x9286;
+    /// Exif tag `0x9290`, `SubsecTime`.
     public static final int IFD_9290_SubsecTime = 0x9290;
+    /// Exif tag `0x9291`, `SubsecTimeOriginal`.
     public static final int IFD_9291_SubsecTimeOriginal = 0x9291;
+    /// Exif tag `0x9292`, `SubsecTimeDigitized`.
     public static final int IFD_9292_SubsecTimeDigitized = 0x9292;
+    /// Exif tag `0xA000`, `FlashpixVersion`.
     public static final int IFD_A000_FlashpixVersion = 0xA000;
+    /// Exif tag `0xA001`, `ColorSpace`.
     public static final int IFD_A001_ColorSpace = 0xA001;
+    /// Exif tag `0xA002`, `PixelXDimension`.
     public static final int IFD_A002_PixelXDimension = 0xA002;
+    /// Exif tag `0xA003`, `PixelYDimension`.
     public static final int IFD_A003_PixelYDimension = 0xA003;
+    /// Exif tag `0xA004`, `RelatedSoundFile`.
     public static final int IFD_A004_RelatedSoundFile = 0xA004;
+    /// Exif tag `0xA005`, `Interoperability`.
     public static final int IFD_A005_Interoperability = 0xA005;                 // Interoperability IFD Pointer
+    /// Exif tag `0xA20B`, `FlashEnergy`.
     public static final int IFD_A20B_FlashEnergy = 0xA20B;
+    /// Exif tag `0xA20C`, `SpatialFrequencyResponse`.
     public static final int IFD_A20C_SpatialFrequencyResponse = 0xA20C;
+    /// Exif tag `0xA20E`, `FocalPlaneXResolution`.
     public static final int IFD_A20E_FocalPlaneXResolution = 0xA20E;
+    /// Exif tag `0xA20F`, `FocalPlaneYResolution`.
     public static final int IFD_A20F_FocalPlaneYResolution = 0xA20F;
+    /// Exif tag `0xA210`, `FocalPlaneResolutionUnit`.
     public static final int IFD_A210_FocalPlaneResolutionUnit = 0xA210;
+    /// Exif tag `0xA214`, `SubjectLocation`.
     public static final int IFD_A214_SubjectLocation = 0xA214;
+    /// Exif tag `0xA215`, `ExposureIndex`.
     public static final int IFD_A215_ExposureIndex = 0xA215;
+    /// Exif tag `0xA217`, `SensingMethod`.
     public static final int IFD_A217_SensingMethod = 0xA217;
+    /// Exif tag `0xA300`, `FileSource`.
     public static final int IFD_A300_FileSource = 0xA300;
+    /// Exif tag `0xA301`, `SceneType`.
     public static final int IFD_A301_SceneType = 0xA301;
+    /// Exif tag `0xA302`, `CFAPattern`.
     public static final int IFD_A302_CFAPattern = 0xA302;
+    /// Exif tag `0xA401`, `CustomRendered`.
     public static final int IFD_A401_CustomRendered = 0xA401;
+    /// Exif tag `0xA402`, `ExposureMode`.
     public static final int IFD_A402_ExposureMode = 0xA402;
+    /// Exif tag `0xA403`, `WhiteBalance`.
     public static final int IFD_A403_WhiteBalance = 0xA403;
+    /// Exif tag `0xA404`, `DigitalZoomRatio`.
     public static final int IFD_A404_DigitalZoomRatio = 0xA404;
+    /// Exif tag `0xA405`, `FocalLengthIn35mmFilm`.
     public static final int IFD_A405_FocalLengthIn35mmFilm = 0xA405;
+    /// Exif tag `0xA406`, `SceneCaptureType`.
     public static final int IFD_A406_SceneCaptureType = 0xA406;
+    /// Exif tag `0xA407`, `GainControl`.
     public static final int IFD_A407_GainControl = 0xA407;
+    /// Exif tag `0xA408`, `Contrast`.
     public static final int IFD_A408_Contrast = 0xA408;
+    /// Exif tag `0xA409`, `Saturation`.
     public static final int IFD_A409_Saturation = 0xA409;
+    /// Exif tag `0xA40A`, `Sharpness`.
     public static final int IFD_A40A_Sharpness = 0xA40A;
+    /// Exif tag `0xA40B`, `DeviceSettingDescription`.
     public static final int IFD_A40B_DeviceSettingDescription = 0xA40B;
+    /// Exif tag `0xA40C`, `SubjectDistanceRange`.
     public static final int IFD_A40C_SubjectDistanceRange = 0xA40C;
+    /// Exif tag `0xA420`, `ImageUniqueID`.
     public static final int IFD_A420_ImageUniqueID = 0xA420;
+    /// Exif tag `0xA430`, `CameraOwnerName`.
     public static final int IFD_A430_CameraOwnerName = 0xA430;
+    /// Exif tag `0xA431`, `BodySerialNumber`.
     public static final int IFD_A431_BodySerialNumber = 0xA431;
+    /// Exif tag `0xA432`, `LensSpecification`.
     public static final int IFD_A432_LensSpecification = 0xA432;
+    /// Exif tag `0xA433`, `LensMake`.
     public static final int IFD_A433_LensMake = 0xA433;
+    /// Exif tag `0xA434`, `LensModel`.
     public static final int IFD_A434_LensModel = 0xA434;
+    /// Exif tag `0xA435`, `LensSerialNumber`.
     public static final int IFD_A435_LensSerialNumber = 0xA435;
+    /// Exif tag `0xA500`, `Gamma`.
     public static final int IFD_A500_Gamma = 0xA500;
 
     // GPS Private IFD
 
+    /// GPS tag `0x0000`, `GPSVersionID`.
     public static final int IFD_0000_GPSVersionID = 0x0000;
+    /// GPS tag `0x0001`, `GPSLatitudeRef`.
     public static final int IFD_0001_GPSLatitudeRef = 0x0001;
+    /// GPS tag `0x0002`, `GPSLatitude`.
     public static final int IFD_0002_GPSLatitude = 0x0002;
+    /// GPS tag `0x0003`, `GPSLongitudeRef`.
     public static final int IFD_0003_GPSLongitudeRef = 0x0003;
+    /// GPS tag `0x0004`, `GPSLongitude`.
     public static final int IFD_0004_GPSLongitude = 0x0004;
+    /// GPS tag `0x0005`, `GPSAltitudeRef`.
     public static final int IFD_0005_GPSAltitudeRef = 0x0005;
+    /// GPS tag `0x0006`, `GPSAltitude`.
     public static final int IFD_0006_GPSAltitude = 0x0006;
+    /// GPS tag `0x0007`, `GPSTimeStamp`.
     public static final int IFD_0007_GPSTimeStamp = 0x0007;
+    /// GPS tag `0x0008`, `GPSSatellites`.
     public static final int IFD_0008_GPSSatellites = 0x0008;
+    /// GPS tag `0x0009`, `GPSStatus`.
     public static final int IFD_0009_GPSStatus = 0x0009;
+    /// GPS tag `0x000A`, `GPSMeasureMode`.
     public static final int IFD_000A_GPSMeasureMode = 0x000A;
+    /// GPS tag `0x000B`, `GPSDOP`.
     public static final int IFD_000B_GPSDOP = 0x000B;
+    /// GPS tag `0x000C`, `GPSSpeedRef`.
     public static final int IFD_000C_GPSSpeedRef = 0x000C;
+    /// GPS tag `0x000D`, `GPSSpeed`.
     public static final int IFD_000D_GPSSpeed = 0x000D;
+    /// GPS tag `0x000E`, `GPSTrackRef`.
     public static final int IFD_000E_GPSTrackRef = 0x000E;
+    /// GPS tag `0x000F`, `GPSTrack`.
     public static final int IFD_000F_GPSTrack = 0x000F;
+    /// GPS tag `0x0010`, `GPSImgDirectionRef`.
     public static final int IFD_0010_GPSImgDirectionRef = 0x0010;
+    /// GPS tag `0x0011`, `GPSImgDirection`.
     public static final int IFD_0011_GPSImgDirection = 0x0011;
+    /// GPS tag `0x0012`, `GPSMapDatum`.
     public static final int IFD_0012_GPSMapDatum = 0x0012;
+    /// GPS tag `0x0013`, `GPSDestLatitudeRef`.
     public static final int IFD_0013_GPSDestLatitudeRef = 0x0013;
+    /// GPS tag `0x0014`, `GPSDestLatitude`.
     public static final int IFD_0014_GPSDestLatitude = 0x0014;
+    /// GPS tag `0x0015`, `GPSDestLongitudeRef`.
     public static final int IFD_0015_GPSDestLongitudeRef = 0x0015;
+    /// GPS tag `0x0016`, `GPSDestLongitude`.
     public static final int IFD_0016_GPSDestLongitude = 0x0016;
+    /// GPS tag `0x0017`, `GPSDestBearingRef`.
     public static final int IFD_0017_GPSDestBearingRef = 0x0017;
+    /// GPS tag `0x0018`, `GPSDestBearing`.
     public static final int IFD_0018_GPSDestBearing = 0x0018;
+    /// GPS tag `0x0019`, `GPSDestDistanceRef`.
     public static final int IFD_0019_GPSDestDistanceRef = 0x0019;
+    /// GPS tag `0x001A`, `GPSDestDistance`.
     public static final int IFD_001A_GPSDestDistance = 0x001A;
+    /// GPS tag `0x001B`, `GPSProcessingMethod`.
     public static final int IFD_001B_GPSProcessingMethod = 0x001B;
+    /// GPS tag `0x001C`, `GPSAreaInformation`.
     public static final int IFD_001C_GPSAreaInformation = 0x001C;
+    /// GPS tag `0x001D`, `GPSDateStamp`.
     public static final int IFD_001D_GPSDateStamp = 0x001D;
+    /// GPS tag `0x001E`, `GPSDifferential`.
     public static final int IFD_001E_GPSDifferential = 0x001E;
+    /// GPS tag `0x001F`, `GPSHPositioiningError`.
     public static final int IFD_001F_GPSHPositioiningError = 0x001F;
 
     // Interoperability Private IFD
 
+    /// Interoperability tag `0x0001`, `InteroperabilityIndex`.
     public static final int IFD_0001_InteroperabilityIndex = 0x0001;
+    /// Interoperability tag `0x0002`, `InteroperabilityVersion`.
     public static final int IFD_0002_InteroperabilityVersion = 0x0002;
     private static final ResourceBundle IFDTagMessage = ResourceBundle.getBundle(IFDTag.class.getName().replace('.', '/'));
 
     private IFDTag() {
     }
 
+    /// Gets the display name of a TIFF or Exif tag.
+    ///
+    /// @param tag The tag number
+    /// @return The tag name, or the unknown tag text
     public static String getTagName(int tag) {
         return switch (tag) {
             // ITFF-v6
@@ -370,6 +557,10 @@ public class IFDTag {
         };
     }
 
+    /// Gets the display name of a GPS tag.
+    ///
+    /// @param tag The tag number
+    /// @return The tag name, or the unknown GPS tag text
     public static String getTagNameGPS(int tag) {
         return switch (tag) {
             case IFDTag.IFD_0000_GPSVersionID -> IFDTagMessage.getString("IFD_0000_GPSVersionID");
@@ -408,6 +599,10 @@ public class IFDTag {
         };
     }
 
+    /// Gets the display name of an Interoperability tag.
+    ///
+    /// @param tag The tag number
+    /// @return The tag name, or the unknown tag text
     public static String getTagNameIntero(int tag) {
         return switch (tag) {
             case IFDTag.IFD_0001_InteroperabilityIndex -> IFDTagMessage.getString("IFD_0001_InteroperabilityIndex");

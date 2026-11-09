@@ -18,16 +18,28 @@ import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// A tag table entry of an ICC profile: the tag signature, and the offset and size of the tag data.
+///
 /// @author Amos Shi
 public class Tag extends FileComponent {
 
+    /// Length of a tag table entry in bytes.
     public static final int LENGTH = 12;
+    /// Tag signature.
     public final String TagSignature;
+    /// Offset to the beginning of the tag data, from the profile start.
     public final long Offset;
+    /// Size of the tag data in bytes.
     public final long Size;
+    /// Start position of the profile, the base of [#Offset].
     public final int BasePos;
+    /// The tag data.
     public final TagData tagData;
 
+    /// Reads a tag table entry and its tag data.
+    ///
+    /// @param input Input stream of the the ICC profile
+    /// @throws IOException if the stream cannot be read
     public Tag(final PosDataInputStream input) throws IOException {
         super.startPos = input.getPos();
         super.length = LENGTH;
@@ -45,6 +57,9 @@ public class Tag extends FileComponent {
                 input.getOffset() + (int) this.Offset));
     }
 
+    /// Add the tree nodes of the tag.
+    ///
+    /// @param parentNode Parent tree node
     public void generateTreeNode(DefaultMutableTreeNode parentNode) {
         JTreeNodeFileComponent comp;
 

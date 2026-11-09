@@ -25,6 +25,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class CentralDirectoryStructure extends FileComponent implements GenerateTreeNode {
 
+    /// The central directory file header.
     public final FileHeader header;
 
     CentralDirectoryStructure(final PosDataInputStream stream) throws IOException {
@@ -247,27 +248,43 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
         /// extended information extra field.
         public static final long ZIP64_MAGIC = 0xFFFFFFFFL;
 
+        /// Central file header signature, `0x02014b50`.
         public final byte[] Signature = new byte[4];
+        /// Version made by: the upper byte is the host system, the lower byte the specification version.
         public final int VersionMadeBy;
+        /// Version needed to extract: the minimum specification version.
         public final int VersionNeededToExtract;
+        /// General purpose bit flag.
         public final byte[] GeneralPurposeBitFlag = new byte[2];
         /// Compression method, see [Compression].
         public final int CompressionMethod;
+        /// Last modification file time, in MS-DOS format.
         public final int LastModFileTime;
         /// Parsed value of [#LastModFileTime].
         public final MSDosTime LastModFileTimeValue;
+        /// Last modification file date, in MS-DOS format.
         public final int LastModFileDate;
         /// Parsed value of [#LastModFileDate].
         public final MSDosDate LastModFileDateValue;
+        /// CRC-32 of the uncompressed data.
         public final byte[] CRC32 = new byte[4];
+        /// Compressed size, from the Zip64 extra field when the stored value is [#ZIP64_MAGIC].
         public final long CompressedSize;
+        /// Uncompressed size, from the Zip64 extra field when the stored value is [#ZIP64_MAGIC].
         public final long UncompressedSize;
+        /// File name length.
         public final int FileNameLength;
+        /// Extra field length.
         public final int ExtraFieldLength;
+        /// File comment length.
         public final int FileCommentLength;
+        /// Number of the disk on which this file starts.
         public final int DiskNumberStart;
+        /// Internal file attributes; bit 0 set means a text file.
         public final byte[] InternalFileAttributes = new byte[2];
+        /// External file attributes, depends on the host system.
         public final byte[] ExternalFileAttributes = new byte[4];
+        /// Offset of the local file header, from the Zip64 extra field when the stored value is [#ZIP64_MAGIC].
         public final long RelativeOffsetOfLocalHeader;
         /// Contains the file name or `null` if [#FileNameLength] is zero.
         public final byte[] FileName;
@@ -338,6 +355,9 @@ public final class CentralDirectoryStructure extends FileComponent implements Ge
             return (value == ZIP64_MAGIC && zip64.remaining() >= Long.BYTES) ? zip64.getLong() : value;
         }
 
+        /// Calculates the total length of the header: the fixed part, file name, extra field and file comment.
+        ///
+        /// @return The header length in bytes
         public int calcLength() {
             return MIN_LENGTH + this.FileNameLength + this.ExtraFieldLength + this.FileCommentLength;
         }

@@ -22,6 +22,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_tRNS extends Chunk {
 
+    /// Chunk type of the transparency chunk.
     public static final String CHUNK_TYPE_NAME = "tRNS";
     /// A copy of [Chunk_IHDR#ColorType].
     public final int ColorType;

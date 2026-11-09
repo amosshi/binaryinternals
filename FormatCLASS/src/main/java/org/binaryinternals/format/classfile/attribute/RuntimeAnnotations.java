@@ -21,7 +21,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S100", "java:S101", "java:S116"})
 public abstract class RuntimeAnnotations extends attribute_info {
 
+    /// Number of annotations.
     public final u2 num_annotations;
+    /// The annotations.
     public final Annotation[] annotations;
 
     RuntimeAnnotations(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {

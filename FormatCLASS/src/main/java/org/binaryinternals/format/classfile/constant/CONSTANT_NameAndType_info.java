@@ -41,8 +41,11 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class CONSTANT_NameAndType_info extends cp_info {
 
+    /// Length of the constant pool entry in bytes, the tag included.
     public static final int LENGTH = 5;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the name of the field or method.
     public final u2 name_index;
+    /// Constant pool index of a `CONSTANT_Utf8_info` with the field or method descriptor.
     public final u2 descriptor_index;
 
     CONSTANT_NameAndType_info(final PosDataInputStream posDataInputStream) throws IOException {

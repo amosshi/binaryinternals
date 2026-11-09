@@ -13,6 +13,8 @@ import org.binaryinternals.commonlib.FileComponentPlaceHolder;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `COM` marker: a comment.
+///
 /// @author Amos Shi
 public class Marker_COM extends Marker {
 

@@ -66,14 +66,26 @@ public final class access_flag {
     private access_flag() {
     }
 
+    /// Gets the modifiers text of a class.
+    ///
+    /// @param value The `access_flags` value
+    /// @return The modifiers, e.g. `public final`
     public static String getClassModifier(long value) {
         return AccessFlag.getModifier(value, access_flag.ForClass);
     }
 
+    /// Gets the modifiers text of a field.
+    ///
+    /// @param value The `access_flags` value
+    /// @return The modifiers, e.g. `private static`
     public static String getFieldModifier(int value) {
         return AccessFlag.getModifier(value, access_flag.ForField);
     }
 
+    /// Gets the modifiers text of a method.
+    ///
+    /// @param value The `access_flags` value
+    /// @return The modifiers, e.g. `public synchronized`
     public static String getMethodModifier(int value) {
         return AccessFlag.getModifier(value, access_flag.ForMethod);
     }

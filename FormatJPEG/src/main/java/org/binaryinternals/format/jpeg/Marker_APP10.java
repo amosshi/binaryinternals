@@ -10,6 +10,8 @@ package org.binaryinternals.format.jpeg;
 import java.io.IOException;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// `APP10` application segment.
+///
 /// @author Amos Shi
 public class Marker_APP10 extends Marker {
 

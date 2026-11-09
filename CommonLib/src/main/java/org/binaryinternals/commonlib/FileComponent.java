@@ -22,6 +22,7 @@ public class FileComponent {
     @SuppressWarnings("ProtectedField")
     protected int length;
 
+    /// Creates an empty file component, at position `0` with length `0`.
     public FileComponent() {
         this(0, 0);
     }

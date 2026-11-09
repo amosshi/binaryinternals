@@ -18,13 +18,23 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressFBWarnings(value = "NM_CLASS_NAMING_CONVENTION", justification = "Use the type name from ICC Specification")
 public class dateTimeNumber {
 
+    /// Year, like 1994.
     public final int year;
+    /// Month, 1 - 12.
     public final int month;
+    /// Day of the month, 1 - 31.
     public final int day;
+    /// Hour, 0 - 23.
     public final int hour;
+    /// Minute, 0 - 59.
     public final int minute;
+    /// Second, 0 - 59.
     public final int second;
 
+    /// Reads the value.
+    ///
+    /// @param input Input stream of the the ICC profile
+    /// @throws IOException if the stream cannot be read
     public dateTimeNumber(final PosDataInputStream input) throws IOException {
         this.year = input.readUnsignedShort();
         this.month = input.readUnsignedShort();

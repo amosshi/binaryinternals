@@ -21,6 +21,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_sBIT extends Chunk {
 
+    /// Chunk type of the significant bits chunk.
     public static final String CHUNK_TYPE_NAME = "sBIT";
 
     Chunk_sBIT(final PosDataInputStream stream) throws IOException {

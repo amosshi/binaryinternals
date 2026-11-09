@@ -12,16 +12,31 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// Exif tag `0x9209`, `Flash`.
+///
 /// @author Amos Shi
 /// @see IFD_8769_Exif#CATEGORY_G
 public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
 
+    /// Bit 0: whether the flash fired.
     public final int FlashFired;
+    /// Bits 1 - 2: the status of returned light.
     public final int FlashReturn;
+    /// Bits 3 - 4: the camera flash mode.
     public final int FlashMode;
+    /// Bit 5: whether the flash function is present.
     public final int FlashFunction;
+    /// Bit 6: whether the red-eye reduction mode is used.
     public final int RedeyeMode;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_9209_Flash(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);
@@ -33,6 +48,9 @@ public class IFD_9209_Flash extends IFD_SHORT_COUNT1 {
         this.RedeyeMode = (this.value[0] >> 6) & 0x000000001;
     }
 
+    /// Gets the flash value as 7 binary digits.
+    ///
+    /// @return The binary text
     public String getValueBinaryString() {
         StringBuilder sb = new StringBuilder(8);
         sb.append(Integer.toBinaryString(this.value[0]));

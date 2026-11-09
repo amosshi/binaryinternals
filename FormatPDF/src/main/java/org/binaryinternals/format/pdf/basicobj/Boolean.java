@@ -12,7 +12,9 @@ import org.binaryinternals.format.pdf.PDFStatics;
 /// @author Amos Shi
 public final class Boolean extends FileComponent implements BasicObject {
 
+    /// Raw text of the `true` value.
     public static final String VALUE_TRUE = "true";
+    /// Raw text of the `false` value.
     public static final String VALUE_FALSE = "false";
     /// Boolean text in `Raw` format.
     private final String RawText;
@@ -23,6 +25,9 @@ public final class Boolean extends FileComponent implements BasicObject {
         this.length = stream.getPos() - super.startPos;
     }
 
+    /// Gets the boolean value of the raw text.
+    ///
+    /// @return `true` or `false`
     public boolean getValue() {
         return switch (this.RawText) {
             case VALUE_TRUE -> true;
@@ -58,6 +63,7 @@ public final class Boolean extends FileComponent implements BasicObject {
                 this.RawText);
     }
 
+    /// Start bytes of a Boolean object.
     public static final class StartByte {
 
         /// Start byte for `true`.

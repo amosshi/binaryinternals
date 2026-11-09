@@ -46,7 +46,9 @@ import org.binaryinternals.format.classfile.u2;
 @SuppressWarnings({"java:S101", "java:S116"})
 public class LineNumberTable_attribute extends attribute_info {
 
+    /// Number of entries in the line number table.
     public final u2 line_number_table_length;
+    /// The line number table.
     public final line_number_table[] lineNumberTable;
 
     LineNumberTable_attribute(final u2 nameIndex, final String type, final PosDataInputStream posDataInputStream) throws IOException {
@@ -129,8 +131,11 @@ public class LineNumberTable_attribute extends attribute_info {
     /// @see LineNumberTable_attribute
     public static final class line_number_table extends FileComponent implements GenerateTreeNodeClassFile {
 
+        /// Length of the structure in bytes.
         public static final int LENGTH = 4;
+        /// Index into the code array where the code for a new line in the original source file begins.
         public final u2 start_pc;
+        /// The corresponding line number in the original source file.
         public final u2 line_number;
 
         private line_number_table(final PosDataInputStream posDataInputStream) throws IOException {

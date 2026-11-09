@@ -27,6 +27,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_hIST extends Chunk {
 
+    /// Chunk type of the image histogram chunk.
     public static final String CHUNK_TYPE_NAME = "hIST";
     /// One frequency per palette entry, or `null` when the chunk is empty.
     public final int[] Frequency;

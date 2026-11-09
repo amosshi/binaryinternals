@@ -7,78 +7,150 @@
 
 package org.binaryinternals.format.jpeg;
 
+/// JPEG marker codes, see `ITU T.81` Table B.1, and their names and descriptions.
+///
 /// @author Amos Shi
 public class MarkerCode {
 
+    /// Number of bytes of a marker code.
     public static final int MARKER_CODE_BYTES_COUNT = 2;
+    /// Number of bytes of the segment length after a marker code.
     public static final int MARKER_LENGTH_BYTES_COUNT = 2;
+    /// Lowest marker code value.
     public static final int MIN = 0xFF00;
+    /// `TEM`: for temporary private use in arithmetic coding, standalone.
     public static final int TEMP = 0xFF01;                      // Standalone, For temporary private use in arithmetic coding
+    /// First reserved marker code.
     public static final int RES_MIN = 0xFF02;                   // Reserved
+    /// Last reserved marker code.
     public static final int RES_MAX = 0xFFBF;                   // Reserved
+    /// `SOF0`: Start of frame, Baseline DCT.
     public static final int SOF00 = 0xFFC0;                     // Specified
+    /// `SOF1`: Start of frame, Extended sequential DCT, Huffman coding.
     public static final int SOF01 = 0xFFC1;                     // Specified
+    /// `SOF2`: Start of frame, Progressive DCT, Huffman coding.
     public static final int SOF02 = 0xFFC2;                     // Specified
+    /// `SOF3`: Start of frame, Lossless (sequential), Huffman coding.
     public static final int SOF03 = 0xFFC3;                     // Specified
+    /// `DHT`: Define Huffman table(s).
     public static final int DHT = 0xFFC4;                       // Specified
+    /// `SOF5`: Start of frame, Differential sequential DCT, Huffman coding.
     public static final int SOF05 = 0xFFC5;                     // Specified
+    /// `SOF6`: Start of frame, Differential progressive DCT, Huffman coding.
     public static final int SOF06 = 0xFFC6;                     // Specified
+    /// `SOF7`: Start of frame, Differential lossless (sequential), Huffman coding.
     public static final int SOF07 = 0xFFC7;                     // Specified
+    /// `JPG`: Reserved for JPEG extensions.
     public static final int JPG = 0xFFC8;                       // Specified
+    /// `SOF9`: Start of frame, Extended sequential DCT, arithmetic coding.
     public static final int SOF09 = 0xFFC9;                     // Specified
+    /// `SOF10`: Start of frame, Progressive DCT, arithmetic coding.
     public static final int SOF10 = 0xFFCA;                     // Specified
+    /// `SOF11`: Start of frame, Lossless (sequential), arithmetic coding.
     public static final int SOF11 = 0xFFCB;                     // Specified
+    /// `DAC`: Define arithmetic coding conditioning(s).
     public static final int DAC = 0xFFCC;                       // Specified
+    /// `SOF13`: Start of frame, Differential sequential DCT, arithmetic coding.
     public static final int SOF13 = 0xFFCD;                     // Specified
+    /// `SOF14`: Start of frame, Differential progressive DCT, arithmetic coding.
     public static final int SOF14 = 0xFFCE;                     // Specified
+    /// `SOF15`: Start of frame, Differential lossless (sequential), arithmetic coding.
     public static final int SOF15 = 0xFFCF;                     // Specified
+    /// `RST0`: Restart with modulo 8 count 0, standalone.
     public static final int RST0 = 0xFFD0;                      // Specified, Standalone
+    /// `RST1`: Restart with modulo 8 count 1, standalone.
     public static final int RST1 = 0xFFD1;                      // Specified, Standalone
+    /// `RST2`: Restart with modulo 8 count 2, standalone.
     public static final int RST2 = 0xFFD2;                      // Specified, Standalone
+    /// `RST3`: Restart with modulo 8 count 3, standalone.
     public static final int RST3 = 0xFFD3;                      // Specified, Standalone
+    /// `RST4`: Restart with modulo 8 count 4, standalone.
     public static final int RST4 = 0xFFD4;                      // Specified, Standalone
+    /// `RST5`: Restart with modulo 8 count 5, standalone.
     public static final int RST5 = 0xFFD5;                      // Specified, Standalone
+    /// `RST6`: Restart with modulo 8 count 6, standalone.
     public static final int RST6 = 0xFFD6;                      // Specified, Standalone
+    /// `RST7`: Restart with modulo 8 count 7, standalone.
     public static final int RST7 = 0xFFD7;                      // Specified, Standalone
+    /// `SOI`: Start of image, standalone.
     public static final int SOI = 0xFFD8;                       // Specified, Standalone
+    /// `EOI`: End of image, standalone.
     public static final int EOI = 0xFFD9;                       // Specified, Standalone
+    /// `SOS`: Start of scan.
     public static final int SOS = 0xFFDA;                       // Specified
+    /// `DQT`: Define quantization table(s).
     public static final int DQT = 0xFFDB;                       // Specified
+    /// `DNL`: Define number of lines.
     public static final int DNL = 0xFFDC;                       // Specified
+    /// `DRI`: Define restart interval.
     public static final int DRI = 0xFFDD;                       // Specified
+    /// `DHP`: Define hierarchical progression.
     public static final int DHP = 0xFFDE;                       // Specified
+    /// `EXP`: Expand reference component(s).
     public static final int EXP = 0xFFDF;                       // Specified
+    /// `APP0`: Reserved for application segments.
     public static final int APP00 = 0xFFE0;                     // Specified
+    /// `APP1`: Reserved for application segments.
     public static final int APP01 = 0xFFE1;                     // Specified
+    /// `APP2`: Reserved for application segments.
     public static final int APP02 = 0xFFE2;                     // Specified
+    /// `APP3`: Reserved for application segments.
     public static final int APP03 = 0xFFE3;                     // Specified
+    /// `APP4`: Reserved for application segments.
     public static final int APP04 = 0xFFE4;                     // Specified
+    /// `APP5`: Reserved for application segments.
     public static final int APP05 = 0xFFE5;                     // Specified
+    /// `APP6`: Reserved for application segments.
     public static final int APP06 = 0xFFE6;                     // Specified
+    /// `APP7`: Reserved for application segments.
     public static final int APP07 = 0xFFE7;                     // Specified
+    /// `APP8`: Reserved for application segments.
     public static final int APP08 = 0xFFE8;                     // Specified
+    /// `APP9`: Reserved for application segments.
     public static final int APP09 = 0xFFE9;                     // Specified
+    /// `APP10`: Reserved for application segments.
     public static final int APP10 = 0xFFEA;                     // Specified
+    /// `APP11`: Reserved for application segments.
     public static final int APP11 = 0xFFEB;                     // Specified
+    /// `APP12`: Reserved for application segments.
     public static final int APP12 = 0xFFEC;                     // Specified
+    /// `APP13`: Reserved for application segments.
     public static final int APP13 = 0xFFED;                     // Specified
+    /// `APP14`: Reserved for application segments.
     public static final int APP14 = 0xFFEE;                     // Specified
+    /// `APP15`: Reserved for application segments.
     public static final int APP15 = 0xFFEF;                     // Specified
+    /// `JPG0`: Reserved for JPEG extensions.
     public static final int JPG00 = 0xFFF0;                     // Reserved for JPEG extensions
+    /// `JPG1`: Reserved for JPEG extensions.
     public static final int JPG01 = 0xFFF1;                     // Reserved for JPEG extensions
+    /// `JPG2`: Reserved for JPEG extensions.
     public static final int JPG02 = 0xFFF2;                     // Reserved for JPEG extensions
+    /// `JPG3`: Reserved for JPEG extensions.
     public static final int JPG03 = 0xFFF3;                     // Reserved for JPEG extensions
+    /// `JPG4`: Reserved for JPEG extensions.
     public static final int JPG04 = 0xFFF4;                     // Reserved for JPEG extensions
+    /// `JPG5`: Reserved for JPEG extensions.
     public static final int JPG05 = 0xFFF5;                     // Reserved for JPEG extensions
+    /// `JPG6`: Reserved for JPEG extensions.
     public static final int JPG06 = 0xFFF6;                     // Reserved for JPEG extensions
+    /// `JPG7`: Reserved for JPEG extensions.
     public static final int JPG07 = 0xFFF7;                     // Reserved for JPEG extensions
+    /// `JPG8`: Reserved for JPEG extensions.
     public static final int JPG08 = 0xFFF8;                     // Reserved for JPEG extensions
+    /// `JPG9`: Reserved for JPEG extensions.
     public static final int JPG09 = 0xFFF9;                     // Reserved for JPEG extensions
+    /// `JPG10`: Reserved for JPEG extensions.
     public static final int JPG10 = 0xFFFA;                     // Reserved for JPEG extensions
+    /// `JPG11`: Reserved for JPEG extensions.
     public static final int JPG11 = 0xFFFB;                     // Reserved for JPEG extensions
+    /// `JPG12`: Reserved for JPEG extensions.
     public static final int JPG12 = 0xFFFC;                     // Reserved for JPEG extensions
+    /// `JPG13`: Reserved for JPEG extensions.
     public static final int JPG13 = 0xFFFD;                     // Reserved for JPEG extensions
+    /// `COM`: Comment.
     public static final int COM = 0xFFFE;                       // Specified
+    /// Highest marker code value.
     public static final int MAX = 0xFFFF;
 
     private MarkerCode() {
@@ -161,6 +233,10 @@ public class MarkerCode {
         }
     }
 
+    /// Gets the name of a marker.
+    ///
+    /// @param markerCode The marker code
+    /// @return The marker name
     public static String getMarkerName(int markerCode) {
         String name = "Error";
 
@@ -240,6 +316,10 @@ public class MarkerCode {
         return name;
     }
 
+    /// Gets the description of a marker.
+    ///
+    /// @param markerCode The marker code
+    /// @return The marker description
     public static String getMarkerDescription(int markerCode) {
         String desc = "Error";
 
@@ -323,11 +403,17 @@ public class MarkerCode {
         return desc;
     }
 
+    /// Gets the description of the marker code field.
+    ///
+    /// @return The description
     public static String getMarkerCodeDescription() {
         // CCITT T.81, P31
         return "Two-byte codes assigned to marker.";
     }
 
+    /// Gets the description of the segment length field.
+    ///
+    /// @return The description
     public static String getHeaderLengthDescription() {
         // CCITT T.81, P37
         return "Header length – Specifies the length of the header.";

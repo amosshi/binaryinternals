@@ -25,6 +25,8 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 
+/// A Dalvik Executable (DEX) file, the compiled code of Android applications.
+///
 /// @author Amos Shi
 /// @see
 /// <a href="https://source.android.com/devices/tech/dalvik/dex-format.html">
@@ -65,13 +67,19 @@ public final class DexFile extends FileFormat {
     public final header_item header;
     /// String identifiers list, or `null`.
     public final string_id_item[] string_ids;
+    /// Type identifiers list, or `null`.
     public final type_id_item[] type_ids;
+    /// Method prototype identifiers list, or `null`.
     public final proto_id_item[] proto_ids;
+    /// Field identifiers list, or `null`.
     public final field_id_item[] field_ids;
+    /// Method identifiers list, or `null`.
     public final method_id_item[] method_ids;
+    /// Class definitions list, or `null`.
     public final class_def_item[] class_defs;
     /// The parsed file components.
     public final SortedMap<Long, FileComponent> data = new TreeMap<>();
+    /// Data used in statically linked files, or `null`.
     public Type_ubyte[] link_data;
 
     /// ```

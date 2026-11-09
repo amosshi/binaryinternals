@@ -15,6 +15,8 @@ import org.binaryinternals.commonlib.PosByteArrayInputStream;
 import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.dex.header_item.Endian;
 
+/// Input stream reading the DEX data types, in the byte order of the file.
+///
 /// @author Amos Shi
 ///
 /// ```
@@ -40,12 +42,19 @@ public final class PosDataInputStreamDex extends PosDataInputStream {
 
     private final ByteOrder byteOrder;
 
+    /// Creates a stream with the standard DEX byte order, [header_item.Endian#ENDIAN_CONSTANT].
+    ///
+    /// @param in The input bytes
     public PosDataInputStreamDex(PosByteArrayInputStream in) {
         super(in);
         this.endian = Endian.ENDIAN_CONSTANT;
         this.byteOrder = this.endian.toByteOrder();
     }
 
+    /// Creates a stream with the given byte order.
+    ///
+    /// @param in The input bytes
+    /// @param e The byte order, from the `endian_tag` of the header
     public PosDataInputStreamDex(PosByteArrayInputStream in, header_item.Endian e) {
         super(in);
         this.endian = e;

@@ -15,9 +15,12 @@ import java.time.format.ResolverStyle;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
+/// TIFF 6.0 tag `0x0132`, `DateTime`.
+///
 /// @author Amos Shi
 public class IFD_0132_DateTime extends IFD_ASCII {
 
+    /// The expected number of values.
     public static final int COUNT = 20;
     /// The EXIF date and time format, `YYYY:MM:DD HH:MM:SS`.
     static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("uuuu:MM:dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT);
@@ -28,6 +31,14 @@ public class IFD_0132_DateTime extends IFD_ASCII {
     /// the blanks EXIF allows for an unknown date.
     public final LocalDateTime datetime;
 
+    /// Reads the IFD entry, with its tag and type already read.
+    ///
+    /// @param pDIS The input stream, positioned after the type
+    /// @param byteOrder Byte order of the TIFF data
+    /// @param tag The tag
+    /// @param startPosTiff Start position of the TIFF header in the file
+    /// @param byteArrayTiff The TIFF data, from the TIFF header
+    /// @throws IOException if the entry cannot be read
     public IFD_0132_DateTime(final PosDataInputStream pDIS, int byteOrder, int tag, int startPosTiff, byte[] byteArrayTiff)
             throws IOException {
         super(pDIS, byteOrder, tag, startPosTiff, byteArrayTiff);

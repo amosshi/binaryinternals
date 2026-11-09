@@ -36,6 +36,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @see Chunk_zTXt
 public final class Chunk_iTXt extends Chunk {
 
+    /// Chunk type of the international textual data chunk.
     public static final String CHUNK_TYPE_NAME = "iTXt";
     /// Value of [#CompressionFlag] for uncompressed text.
     private static final int UNCOMPRESSED = 0;

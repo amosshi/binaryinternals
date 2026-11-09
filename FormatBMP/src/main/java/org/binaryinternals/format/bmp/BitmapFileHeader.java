@@ -21,6 +21,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class BitmapFileHeader extends FileComponent implements GenerateTreeNode {
 
+    /// Length of the bitmap file header in bytes.
     public static final int LENGTH = 14;
     /// The valid values of [#magic].
     private static final List<String> MAGICS = List.of("BM", "BA", "CI", "CP", "IC", "PT");

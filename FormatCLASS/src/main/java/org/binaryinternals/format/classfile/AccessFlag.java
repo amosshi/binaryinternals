@@ -237,6 +237,11 @@ public enum AccessFlag {
         return getModifier(value, AccessFlag.ForMethodParameters);
     }
 
+    /// Get the modifiers text of the flags in a list.
+    ///
+    /// @param value Value in the Class file
+    /// @param list The flags to check
+    /// @return Modifier text, the matched flags joined by spaces
     public static String getModifier(long value, List<AccessFlag> list) {
         return list.stream()
                 .filter(flag -> flag.match(value))

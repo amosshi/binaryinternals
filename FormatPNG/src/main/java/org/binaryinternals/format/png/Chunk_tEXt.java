@@ -31,6 +31,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 /// @author Amos Shi
 public final class Chunk_tEXt extends Chunk {
 
+    /// Chunk type of the textual data chunk.
     public static final String CHUNK_TYPE_NAME = "tEXt";
     /// Each of the text chunks contains as its first field a keyword that
     /// indicates the type of information represented by the text string.

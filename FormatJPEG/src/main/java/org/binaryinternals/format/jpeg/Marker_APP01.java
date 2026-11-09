@@ -17,10 +17,14 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 import org.binaryinternals.format.jpeg.tiff.TIFF;
 import org.binaryinternals.format.jpeg.xmp.XMP;
 
+/// `APP1` application segment, used by Exif and XMP.
+///
 /// @author Amos Shi
 public class Marker_APP01 extends Marker {
 
+    /// Identifier of an Exif segment.
     public static final String identifier_Exif = "Exif";
+    /// Identifier of an XMP segment.
     public static final String identifier_XMP = "http://ns.adobe.com/xap/";
     private String identifier;
     private TIFF tiff;
