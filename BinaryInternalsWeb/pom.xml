@@ -7,10 +7,11 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>BinaryInternalsWeb</artifactId>
+    <artifactId>binaryinternals.web</artifactId>
     <packaging>jar</packaging>
 
     <name>binaryinternals :: BinaryInternalsWeb</name>
+    <description>Web page and HTTP API to view binary file internals, using the format plug-ins</description>
 
     <dependencies>
         <!-- The format plug-ins, found at run time via ServiceLoader -->

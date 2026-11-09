@@ -241,6 +241,22 @@
                     <artifactId>spotbugs-maven-plugin</artifactId>
                     <version>4.10.5.0</version><!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.24.0</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
+                    <configuration>
+                        <!-- Report only stable releases: skip alpha, beta, RC, milestone, preview and snapshot versions -->
+                        <ruleSet>
+                            <ignoreVersions>
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>(?i).*-(alpha|beta|rc|cr|m|milestone|preview|snapshot)[.-]?\d*.*</version>
+                                </ignoreVersion>
+                            </ignoreVersions>
+                        </ruleSet>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 

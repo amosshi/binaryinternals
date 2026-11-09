@@ -7,10 +7,11 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>BinaryInternalsViewer</artifactId>
+    <artifactId>binaryinternals.viewer</artifactId>
     <packaging>jar</packaging>
 
     <name>binaryinternals :: BinaryInternalsViewer</name>
+    <description>Desktop application to view binary file internals visually and interactively, using the format plug-ins</description>
 
     <dependencies>
         <dependency>
@@ -62,9 +63,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/libs
-                            </outputDirectory>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
                             <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>

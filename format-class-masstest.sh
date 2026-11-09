@@ -11,13 +11,13 @@
 # Java folder location, default to current JAVA_HOME
 JAVA_FOLDER=$JAVA_HOME
 
-# The viewer jar, e.g. BinaryInternalsViewer-3.7.jar; any version, skipping the -sources and
+# The viewer jar, e.g. binaryinternals.viewer-3.7.jar; any version, skipping the -sources and
 # -javadoc jars of a release build (mvn -Prelease install)
-VIEWER_JAR=$(ls BinaryInternalsViewer/target/BinaryInternalsViewer-*.jar 2>/dev/null \
+VIEWER_JAR=$(ls BinaryInternalsViewer/target/binaryinternals.viewer-*.jar 2>/dev/null \
   | grep -v -e '-sources\.jar$' -e '-javadoc\.jar$' \
   | head -1)
 if [ -z "$VIEWER_JAR" ]; then
-  echo "BinaryInternalsViewer jar not found in BinaryInternalsViewer/target/, please build it first: mvn install"
+  echo "binaryinternals.viewer jar not found in BinaryInternalsViewer/target/, please build it first: mvn install"
   exit 1
 fi
 # Absolute path, since the commands below run in target/masstest

@@ -20,5 +20,5 @@
             <artifactId>binaryinternals.commonlib</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>
