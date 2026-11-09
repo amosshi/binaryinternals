@@ -25,25 +25,25 @@ if [ -z "$JAVA_HOME" ] || [ ! -x "$JAVA_HOME/bin/java" ]; then
 fi
 
 java -version
-mvn --version
+./mvnw --version
 
 rm -rf dist
 
 # Clean local Maven repository to ensure fresh dependencies
 # To avoid silent-stale-jar trap
-mvn dependency:purge-local-repository -DreResolve=true
+./mvnw dependency:purge-local-repository -DreResolve=true
 
-mvn  clean install
-#mvn --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
-#mvn --projects CommonLib,FormatDEX,BinaryInternalsViewer    clean package install
-#mvn --projects CommonLib,FormatZIP,BinaryInternalsViewer   clean package install
-#mvn --projects FormatELF,BinaryInternalsViewer              clean package install
-#mvn --projects FormatPDF,BinaryInternalsViewer              clean package install
+./mvnw  clean install
+#./mvnw --projects CommonLib,FormatCLASS,BinaryInternalsViewer  clean package install
+#./mvnw --projects CommonLib,FormatDEX,BinaryInternalsViewer    clean package install
+#./mvnw --projects CommonLib,FormatZIP,BinaryInternalsViewer   clean package install
+#./mvnw --projects FormatELF,BinaryInternalsViewer              clean package install
+#./mvnw --projects FormatPDF,BinaryInternalsViewer              clean package install
 
 # Dependency graph, shown in the README
-mvn  com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -DimageFormat=svg -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs
+./mvnw  com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage -DimageFormat=svg -Dincludes=org.binaryinternals -DshowGroupIds -DshowVersions -DoutputDirectory=docs
 
-mvn  javadoc:aggregate-no-fork
-mvn  dependency:tree versions:display-dependency-updates
-#mvn source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
-#mvn spotbugs:gui
+./mvnw  javadoc:aggregate-no-fork
+./mvnw  dependency:tree versions:display-dependency-updates
+#./mvnw source:aggregate javadoc:aggregate javadoc:aggregate-jar pdf:aggregate checkstyle:checkstyle-aggregate pmd:aggregate-pmd site:site site:deploy 
+#./mvnw spotbugs:gui

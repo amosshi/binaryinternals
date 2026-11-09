@@ -1,0 +1,4 @@
+# Line endings, the same on every machine whatever core.autocrlf is set to
+*.java   text eol=lf
+mvnw     text eol=lf
+*.cmd    text eol=crlf

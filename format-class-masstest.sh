@@ -17,7 +17,7 @@ VIEWER_JAR=$(ls BinaryInternalsViewer/target/binaryinternals.viewer-*.jar 2>/dev
   | grep -v -e '-sources\.jar$' -e '-javadoc\.jar$' \
   | head -1)
 if [ -z "$VIEWER_JAR" ]; then
-  echo "binaryinternals.viewer jar not found in BinaryInternalsViewer/target/, please build it first: mvn install"
+  echo "binaryinternals.viewer jar not found in BinaryInternalsViewer/target/, please build it first: ./mvnw install"
   exit 1
 fi
 # Absolute path, since the commands below run in target/masstest

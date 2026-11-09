@@ -35,8 +35,6 @@ Two problems were confirmed by running them:
 
 ### 1. Make Checkstyle check something, or remove it
 
-- [x] Adopt a ruleset that fails the build: the bundled `openjdk_checks.xml` (OpenJDK Java Style), used unchanged, with project exceptions in `checkstyle-suppressions.xml`.
-- [x] Fix the temporary baseline (`EmptyLineSeparator`, `DeclarationOrder`, lines over 160 characters); no baseline is left.
 - [ ] Decode the ICC profile header flags, device attributes and rendering intent (`FormatJPEG` `icc/Header.java`, bytes 44 - 67). They were `TODO` comments, which `openjdk_checks.xml` does not allow.
 
 Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
@@ -45,11 +43,3 @@ Permanent exceptions, each explained in `checkstyle-suppressions.xml`:
 - `UnusedImports`: Checkstyle does not see references in Markdown doc comments (`///`, JEP 467).
 - `NeedBraces` for arrow switch cases only (`case X -> value;`); braces stay required for `if`, `else`, `for`, `while` and `do`.
 - `LineLength`: the limit is 160 instead of 100, by suppressing the messages for 101 - 160 characters.
-
-### 2. Fix building a single module
-
-- [ ] Add an empty `.mvn/` directory at the root, or better, add the Maven Wrapper (`mvn wrapper:wrapper`).
-
-SpotBugs and Checkstyle find their files (`spotbugs-exclude-filter.xml`, `checkstyle-suppressions.xml`) through `${maven.multiModuleProjectDirectory}`. That is the directory where Maven started unless a `.mvn/` folder marks the project root, and this repo has none. The wrapper also pins the Maven version for CI and contributors.
-
-Suggested order: start with 2. It is a mechanical change the existing build checks can verify. The Checkstyle baseline in item 1 can be worked off one rule at a time.
