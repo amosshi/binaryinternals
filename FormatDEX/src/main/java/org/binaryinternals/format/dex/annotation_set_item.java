@@ -133,10 +133,10 @@ public final class annotation_set_item extends FileComponent implements Generate
             addNode(parentNode,
                     floatPos,
                     Type_ubyte.LENGTH,
-                    "size",
+                    "visibility",
                     FORMAT_STRING_STRING.formatted(this.visibility, Visibility.toString(this.visibility.value)),
                     "msg_annotation_item__visibility",
-                    Icons.Data // TODO Icon to be changed
+                    Icons.AccessFlag
             );
             floatPos += Type_ubyte.LENGTH;
 

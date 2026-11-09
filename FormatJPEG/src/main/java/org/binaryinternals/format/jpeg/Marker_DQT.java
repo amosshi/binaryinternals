@@ -33,7 +33,7 @@ public class Marker_DQT extends Marker {
 
         // Pq & Tq
         final byte b = pDisMarker.readByte();
-        this.Pq = (b & 0xF0) >> 4;    // TODO - Check value more precisely
+        this.Pq = (b & 0xF0) >> 4;
         this.Tq = (b & 0x0F);
 
         if (this.Pq != 0 && this.Pq != 1) {
@@ -42,7 +42,7 @@ public class Marker_DQT extends Marker {
         }
         if (this.Tq != 0 && this.Tq != 1 && this.Tq != 2 && this.Tq != 3) {
             throw new FileFormatException("DQT Tq value unrecognizable: expected value is 0, 1, 2 or 3; current value is %d.".formatted(
-                    this.Pq));
+                    this.Tq));
         }
 
         // Qk

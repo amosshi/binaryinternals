@@ -62,16 +62,16 @@ public class Header extends FileComponent implements GenerateTreeNode {
         this.DateTime = new dateTimeNumber(input);                              // 24 - 35
         this.ProfileFileSignature = input.readASCII(4);                         // 36 - 39
         this.PrimaryPlatform = input.readASCII(4);                              // 40 - 43
-        this.ProfileFlags = input.readUnsignedInt();                            // 44 - 47, flags not decoded yet
+        this.ProfileFlags = input.readUnsignedInt();                            // 44 - 47
         this.DeviceManufacturer = input.readASCII(4);                           // 48 - 51
         this.DeviceModel = input.readASCII(4);                                  // 52 - 55
 
-        // 56 - 63, attributes not decoded yet
+        // 56 - 63
         this.DeviceAttributes = new long[2];
         this.DeviceAttributes[0] = input.readUnsignedInt();
         this.DeviceAttributes[1] = input.readUnsignedInt();
 
-        this.RenderingIntent = input.readUnsignedInt();                         // 64 - 67, not decoded yet
+        this.RenderingIntent = input.readUnsignedInt();                         // 64 - 67
         this.ProfileConnectionSpaceIlluminant = new XYZNumber(input);           // 68 - 79
         this.ProfileCreator = input.readASCII(4);                               // 80 - 83
         input.readFully(this.ProfileID);                                        // 84 - 99
@@ -145,11 +145,7 @@ public class Header extends FileComponent implements GenerateTreeNode {
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 44 - 47
-        comp = new JTreeNodeFileComponent(
-                this.getStartPos() + 44,
-                4,
-                "Profile flags = %x".formatted(this.ProfileFlags));
-        parentNode.add(new DefaultMutableTreeNode(comp));
+        this.generateTreeNodeProfileFlags(parentNode);
 
         // 48 - 51
         comp = new JTreeNodeFileComponent(
@@ -166,17 +162,15 @@ public class Header extends FileComponent implements GenerateTreeNode {
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 56 - 63
-        comp = new JTreeNodeFileComponent(
-                this.getStartPos() + 56,
-                8,
-                "Device attributes");
-        parentNode.add(new DefaultMutableTreeNode(comp));
+        this.generateTreeNodeDeviceAttributes(parentNode);
 
         // 64 - 67
         comp = new JTreeNodeFileComponent(
                 this.getStartPos() + 64,
                 4,
-                "Rendering intent");
+                "Rendering intent = %d (%s)".formatted(this.RenderingIntent, this.getRenderingIntentName()));
+        comp.setDescription("Rendering intent, which shall be used, unless another is given, when the profile is combined with"
+                + " other profiles. Only the least-significant 16 bits are used.");
         parentNode.add(new DefaultMutableTreeNode(comp));
 
         // 68 - 79
@@ -208,5 +202,81 @@ public class Header extends FileComponent implements GenerateTreeNode {
                 4,
                 "Reserved = %s".formatted(this.ProfileCreator));
         parentNode.add(new DefaultMutableTreeNode(comp));
+    }
+
+    /// Profile flags, bytes 44 - 47, with the flags defined by the ICC.
+    private void generateTreeNodeProfileFlags(final DefaultMutableTreeNode parentNode) {
+        final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
+                this.getStartPos() + 44,
+                4,
+                "Profile flags = 0x%08X".formatted(this.ProfileFlags));
+        comp.setDescription("Flags to indicate various options for the CMM such as distributed processing and caching options."
+                + " The least-significant 16 bits are reserved for the ICC, the most-significant 16 bits are vendor specific.");
+        final DefaultMutableTreeNode flagsNode = new DefaultMutableTreeNode(comp);
+        parentNode.add(flagsNode);
+        flagsNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.getStartPos() + 44,
+                2,
+                "Vendor specific flags = 0x%04X".formatted(this.ProfileFlags >>> 16))));
+        flagsNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.getStartPos() + 47,
+                1,
+                "Bit 0 = %d: %s".formatted(this.ProfileFlags & 1,
+                        bit(this.ProfileFlags, 0) ? "Embedded profile" : "Not embedded"))));
+        flagsNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.getStartPos() + 47,
+                1,
+                "Bit 1 = %d: %s".formatted((this.ProfileFlags >> 1) & 1,
+                        bit(this.ProfileFlags, 1)
+                                ? "Cannot be used independently of the embedded colour data"
+                                : "Can be used independently of the embedded colour data"))));
+    }
+
+    /// Device attributes, bytes 56 - 63, with the attributes defined by the ICC.
+    private void generateTreeNodeDeviceAttributes(final DefaultMutableTreeNode parentNode) {
+        final JTreeNodeFileComponent comp = new JTreeNodeFileComponent(
+                this.getStartPos() + 56,
+                8,
+                "Device attributes = 0x%08X%08X".formatted(this.DeviceAttributes[0], this.DeviceAttributes[1]));
+        comp.setDescription("Attributes unique to the particular device setup for which the profile is applicable."
+                + " The least-significant 32 bits are reserved for the ICC, the most-significant 32 bits are vendor specific.");
+        final DefaultMutableTreeNode attributesNode = new DefaultMutableTreeNode(comp);
+        parentNode.add(attributesNode);
+        attributesNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                this.getStartPos() + 56,
+                4,
+                "Vendor specific attributes = 0x%08X".formatted(this.DeviceAttributes[0]))));
+        final long attributes = this.DeviceAttributes[1];
+        final String[][] attributeBits = {
+            {"Reflective", "Transparency"},
+            {"Glossy", "Matte"},
+            {"Positive media polarity", "Negative media polarity"},
+            {"Colour media", "Black & white media"},
+            {"Paper-based", "Non-paper-based"},
+        };
+        for (int i = 0; i < attributeBits.length; i++) {
+            attributesNode.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
+                    this.getStartPos() + 63,
+                    1,
+                    "Bit %d = %d: %s".formatted(i, (attributes >> i) & 1, attributeBits[i][bit(attributes, i) ? 1 : 0]))));
+        }
+    }
+
+    /// Name of the [#RenderingIntent], of which only the least-significant 16
+    /// bits are used.
+    ///
+    /// @return The rendering intent name
+    public String getRenderingIntentName() {
+        return switch ((int) (this.RenderingIntent & 0xFFFF)) {
+            case 0 -> "Perceptual";
+            case 1 -> "Media-relative colorimetric";
+            case 2 -> "Saturation";
+            case 3 -> "ICC-absolute colorimetric";
+            default -> "Unrecognized";
+        };
+    }
+
+    private static boolean bit(final long value, final int index) {
+        return ((value >> index) & 1) == 1;
     }
 }

@@ -10,6 +10,7 @@ package org.binaryinternals.format.dex;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.FileFormat;
@@ -246,9 +247,10 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
             case LongValue(Type_long v) -> addNode(parentNode, floatPos, size, "VALUE_LONG", v, "msg_encoded_value__value_long", Icons.Data);
             case FloatValue(float v) -> addNode(parentNode, floatPos, size, "VALUE_FLOAT", v, "msg_encoded_value__value_float", Icons.Data);
             case DoubleValue(double v) -> addNode(parentNode, floatPos, size, "VALUE_DOUBLE", v, "msg_encoded_value__value_double", Icons.Data);
-            // TODO for value of the indexes: method type, method handle, type, field, method
-            case MethodTypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_TYPE", i, "msg_encoded_value__value_method_type",
+            case MethodTypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_TYPE",
+                    FORMAT_STRING_STRING.formatted(i, idName(dex.proto_ids, i, p -> p.toString(dex))), "msg_encoded_value__value_method_type",
                     Icons.Data);
+            // No method handle list is parsed, so only the index is shown
             case MethodHandleValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD_HANDLE", i, "msg_encoded_value__value_method_handle",
                     Icons.Data);
             case StringValue(Type_uint i) -> addNode(parentNode,
@@ -258,9 +260,12 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
                     FORMAT_STRING_STRING.formatted(i, dex.get_string_ids_string(i.intValue())),
                     "msg_encoded_value__value_string",
                     Icons.Data);
-            case TypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_TYPE", i, "msg_encoded_value__type", Icons.Data);
-            case FieldValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_FIELD", i, "msg_encoded_value__value_field", Icons.Data);
-            case MethodValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD", i, "msg_encoded_value__value_method", Icons.Data);
+            case TypeValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_TYPE",
+                    FORMAT_STRING_STRING.formatted(i, dex.get_type_ids_string(i.intValue())), "msg_encoded_value__type", Icons.Data);
+            case FieldValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_FIELD",
+                    FORMAT_STRING_STRING.formatted(i, idName(dex.field_ids, i, f -> f.toString(dex))), "msg_encoded_value__value_field", Icons.Data);
+            case MethodValue(Type_uint i) -> addNode(parentNode, floatPos, size, "VALUE_METHOD",
+                    FORMAT_STRING_STRING.formatted(i, idName(dex.method_ids, i, m -> m.toString(dex))), "msg_encoded_value__value_method", Icons.Data);
             case EnumValue(Type_uint i) -> {
                 field_id_item fieldId = dex.field_ids[i.intValue()];
                 addNode(parentNode,
@@ -327,5 +332,11 @@ public final class encoded_value extends FileComponent implements GenerateTreeNo
         public static Optional<ValueFormat> of(final int value) {
             return Arrays.stream(values()).filter(item -> item.code == value).findFirst();
         }
+    }
+
+    /// Description of the item at `index` of a `*_ids` list, or `invalid index`.
+    private static <T> String idName(final T[] ids, final Type_uint index, final Function<T, String> toString) {
+        final long i = index.value;
+        return (ids == null || i < 0 || i >= ids.length || ids[(int) i] == null) ? "invalid index" : toString.apply(ids[(int) i]);
     }
 }

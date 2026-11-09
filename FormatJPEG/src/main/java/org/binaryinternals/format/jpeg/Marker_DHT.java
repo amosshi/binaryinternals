@@ -17,7 +17,7 @@ import org.binaryinternals.commonlib.PosDataInputStream;
 public class Marker_DHT extends Marker {
 
     /// Table class. 0 = DC table or lossless table; 1 = AC table.
-    private int Tc;                      // TODO - Set all attributes as final
+    private int Tc;
     /// Huffman table destination identifier.
     private int Th;
     /// Number of Huffman codes of length `i`.

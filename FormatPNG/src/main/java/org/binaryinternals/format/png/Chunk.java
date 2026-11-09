@@ -7,8 +7,12 @@
 
 package org.binaryinternals.format.png;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
 import org.binaryinternals.commonlib.GenerateTreeNode;
@@ -30,6 +34,8 @@ public sealed class Chunk extends FileComponent implements GenerateTreeNode
     static final int LENGTH_SIZE = 4;
     /// Size of [#CRC].
     static final int CRC_SIZE = 4;
+    /// Most bytes of decompressed text kept by [#inflateText(byte\[\], Charset)].
+    static final int INFLATED_TEXT_MAX = 1024 * 1024;
 
     /// A 4-byte unsigned integer giving the number of bytes in the chunk's data
     /// field.
@@ -88,6 +94,34 @@ public sealed class Chunk extends FileComponent implements GenerateTreeNode
     /// File position of the first byte of [#ChunkData].
     protected final int getDataStartPos() {
         return this.startPos + LENGTH_SIZE + PNGFile.CHUNK_TYPE_SIZE;
+    }
+
+    /// Decompress a zlib data stream with deflate compression (compression
+    /// method 0), as used by the `zTXt` and `iTXt` chunks.
+    ///
+    /// @param compressed The zlib data stream
+    /// @param charset Charset of the text
+    /// @return The text, cut at [#INFLATED_TEXT_MAX] bytes, or `null` when
+    ///     `compressed` is not a valid zlib data stream
+    static String inflateText(final byte[] compressed, final Charset charset) {
+        final Inflater inflater = new Inflater();
+        try {
+            inflater.setInput(compressed);
+            final ByteArrayOutputStream text = new ByteArrayOutputStream();
+            final byte[] buf = new byte[8192];
+            while (!inflater.finished() && text.size() < INFLATED_TEXT_MAX) {
+                final int n = inflater.inflate(buf);
+                if (n == 0 && (inflater.needsInput() || inflater.needsDictionary())) {
+                    return null;  // Truncated data stream
+                }
+                text.write(buf, 0, Math.min(n, INFLATED_TEXT_MAX - text.size()));
+            }
+            return text.toString(charset);
+        } catch (DataFormatException _) {
+            return null;
+        } finally {
+            inflater.end();
+        }
     }
 
     /// A stream over [#ChunkData], which reports positions in the file.

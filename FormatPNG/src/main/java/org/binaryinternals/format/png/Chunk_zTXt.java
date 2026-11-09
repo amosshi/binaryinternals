@@ -8,6 +8,7 @@
 package org.binaryinternals.format.png;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
@@ -33,7 +34,9 @@ public final class Chunk_zTXt extends Chunk {
     public final int CompressionMethod;
     /// The compressed text, or `null` when there is none.
     public final byte[] CompressedText;
-    public final String CompressedTextString = null;      // TODO - Un-compress the text
+    /// [#CompressedText] decompressed, as Latin-1 like [Chunk_tEXt#Text], or
+    /// `null` when there is none or it cannot be decompressed.
+    public final String TextString;
 
     Chunk_zTXt(final PosDataInputStream stream) throws IOException {
         super(stream);
@@ -44,6 +47,9 @@ public final class Chunk_zTXt extends Chunk {
 
         final int rest = this.Length - this.Keyword.length() - 1 - 1;
         this.CompressedText = rest > 0 ? chunkDataStream.readNBytes(rest) : null;
+        this.TextString = this.CompressedText != null && this.CompressionMethod == 0
+                ? inflateText(this.CompressedText, StandardCharsets.ISO_8859_1)
+                : null;
     }
 
     @Override
@@ -70,7 +76,7 @@ public final class Chunk_zTXt extends Chunk {
             parent.add(new DefaultMutableTreeNode(new JTreeNodeFileComponent(
                     start,
                     this.CompressedText.length,
-                    "Compressed text")));
+                    this.TextString != null ? "Compressed text = %s".formatted(this.TextString) : "Compressed text")));
         }
     }
 }

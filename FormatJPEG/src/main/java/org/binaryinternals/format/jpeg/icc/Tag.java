@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.binaryinternals.commonlib.FileComponent;
+import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.Icons;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosByteArrayInputStream;
@@ -83,14 +84,20 @@ public class Tag extends FileComponent {
         int tagType = input.readInt();
         input.reset();
 
-        return switch (tagType) {
-            case TagType.textType -> new TagData_textType(input);
-            case TagType.XYZType -> new TagData_XYZType(input);
-            case TagType.viewingConditionsType -> new TagData_viewingConditionsType(input);
-            case TagType.curveType -> new TagData_curveType(input);
-            case TagType.measurementType -> new TagData_measurementType(input);
-            case TagType.signatureType -> new TagData_signatureType(input);
-            default -> new TagData(input);
-        };
+        try {
+            return switch (tagType) {
+                case TagType.textType -> new TagData_textType(input);
+                case TagType.XYZType -> new TagData_XYZType(input);
+                case TagType.viewingConditionsType -> new TagData_viewingConditionsType(input);
+                case TagType.curveType -> new TagData_curveType(input);
+                case TagType.measurementType -> new TagData_measurementType(input);
+                case TagType.signatureType -> new TagData_signatureType(input);
+                default -> new TagData(input);
+            };
+        } catch (FileFormatException _) {
+            // Malformed tag data: show it as raw bytes, keeping the rest of the profile
+            input.reset();
+            return new TagData(input);
+        }
     }
 }

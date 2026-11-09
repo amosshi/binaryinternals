@@ -9,6 +9,7 @@ package org.binaryinternals.format.jpeg;
 
 import java.io.IOException;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.binaryinternals.commonlib.FileFormatException;
 import org.binaryinternals.commonlib.JTreeNodeFileComponent;
 import org.binaryinternals.commonlib.PosDataInputStream;
 
@@ -52,7 +53,16 @@ public class Marker_SOS extends Marker {
         super.parseInitSkip(pDisMarker);
 
         // Ns
-        this.Ns = pDisMarker.readUnsignedByte();        // TODO - Check this value
+        this.Ns = pDisMarker.readUnsignedByte();
+
+        // ITU-T T.81, B.2.3: Scan header syntax
+        if (this.Ns < 1 || this.Ns > 4) {
+            throw new FileFormatException("SOS number of image components Ns is %d, expected 1 - 4.".formatted(this.Ns));
+        }
+        if (super.marker_length != 6 + 2 * this.Ns) {
+            throw new FileFormatException("SOS length Ls is %d, expected 6 + 2 * Ns = %d.".formatted(
+                    super.marker_length, 6 + 2 * this.Ns));
+        }
 
         // Scan component-specification parameters: Cs, Td, Ta
         this.parameter = new Parameter[this.Ns];
@@ -61,7 +71,6 @@ public class Marker_SOS extends Marker {
             final int tables = pDisMarker.readUnsignedByte();
             this.parameter[i] = new Parameter(cs, (tables & 0xF0) >> 4, tables & 0x0F);
         }
-        // TODO - Now check the value Ls(marker length) matchs
 
         // Ss, Se, Ah, Al
         this.Ss = pDisMarker.readUnsignedByte();
