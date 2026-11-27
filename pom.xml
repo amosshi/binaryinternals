@@ -162,7 +162,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
-                    <version>1.9.0</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/flatten-maven-plugin -->
+                    <version>1.10.0</version><!-- https://mvnrepository.com/artifact/org.codehaus.mojo/flatten-maven-plugin -->
                 </plugin>
                 <plugin>
                     <groupId>io.github.git-commit-id</groupId>
